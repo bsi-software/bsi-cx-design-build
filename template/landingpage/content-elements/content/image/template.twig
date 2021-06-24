@@ -1,0 +1,5 @@
+{% set _caption = caption ?: 'lorem ipsum' %}
+<figure data-bsi-element="image">
+  <img src="./preview.jpg" alt="{{ _caption }}" data-bsi-element-part="image" />
+  <figcaption>{{ _caption }}</figcaption>
+</figure>
