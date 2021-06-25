@@ -3,8 +3,9 @@
 <head>
 </head>
 <body>
-  {% for index in range(0,5) %}
-    {{ index }}
-  {% endfor %}
+  <div data-bsi-dropzone="content">
+    {% block content %}{% endblock %}
+  </div>
+  <script src="./static/script.js"></script>
 </body>
 </html>

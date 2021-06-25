@@ -1,10 +1,8 @@
-const path = require('path');
-
 module.exports = {
   elementId: 'image',
   icon: 'image',
   label: 'Bild',
-  file: path.resolve(__dirname, 'template.twig'),
+  file: require('./template.twig'),
   parts: [
     {
       partId: 'image',

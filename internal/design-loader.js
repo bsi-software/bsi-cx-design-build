@@ -1,4 +1,7 @@
 const path = require('path');
+const { Module } = require('module');
+
+const parentModule = module;
 
 class DesignLoader {
   static CONTENT_ELEMENT_BASE_PATH = 'content-elements';
@@ -9,9 +12,9 @@ class DesignLoader {
     ['.html', '.html']
   ]);
 
-  constructor(webpack) {
-    this._webpack = webpack;
-    this._callback = webpack.async();
+  constructor(context) {
+    this._context = context;
+    this._callback = context.async();
   }
 
   /**
@@ -26,7 +29,7 @@ class DesignLoader {
       .flat());
 
     let designJson = JSON.stringify(designObj);
-    this._webpack.emitFile(DesignLoader.DESIGN_JSON_FILENAME, designJson)
+    this._context.emitFile(DesignLoader.DESIGN_JSON_FILENAME, designJson)
     this._callback(null, `export default ${designJson};`);
   }
 
@@ -42,8 +45,8 @@ class DesignLoader {
 
     element.file = filePath;
 
-    this._webpack.addDependency(originalFilePath);
-    this._webpack.emitFile(filePath, await this._loadTemplate(originalFilePath));
+    this._context.addDependency(originalFilePath);
+    this._context.emitFile(filePath, await this._loadTemplate(originalFilePath));
   }
 
   /**
@@ -52,9 +55,26 @@ class DesignLoader {
    * @returns {Promise<string>}
    */
   _loadTemplate(filePath) {
-    return new Promise(resolve => {
-      this._webpack.loadModule(filePath, (err, source, sourceMap, module) => {
-        resolve(eval(source));
+    return new Promise((resolve, reject) => {
+      this._context.loadModule(filePath, (err, source) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(source);
+          /*
+          let module = new Module(filePath, parentModule);
+          let modulePath = path.dirname(filePath);
+
+          module.paths = Module._nodeModulePaths(modulePath);
+          module.filename = filePath;
+
+          console.info(source);
+
+          module._compile(source, filePath);
+
+          resolve(module.exports);
+          */
+        }
       });
     });
   }
@@ -79,7 +99,7 @@ class DesignLoader {
    * @returns {{}}
    */
   _loadResource() {
-    let resourcePath = this._webpack.resource.replace(/\\/g, '/');
+    let resourcePath = this._context.resource.replace(/\\/g, '/');
     let designObj = eval(`require('${resourcePath}')`);
     return this._deepClone(designObj);
   }

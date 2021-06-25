@@ -1,4 +1,5 @@
-import './design';
-
-import './design.twig';
-import './preview.twig';
+module.exports = {
+  meta: require('./meta'),
+  design: require('./design.twig'),
+  preview: require('./preview.twig')
+};
