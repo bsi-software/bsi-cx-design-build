@@ -6,18 +6,18 @@ class BsiCxWebpackPlugin {
   constructor(compiler) {
     this._compiler = compiler;
     this._outputPath = compiler.options.output.path;
-    this._entryPath = path.resolve(this._outputPath, 'main.js');
+    this._entryPath = path.resolve(this._outputPath, 'design.js');
     this._designJsonPath = path.resolve(this._outputPath, 'design.json');
     this._designHtmlPath = path.resolve(this._outputPath, 'design.html');
     this._previewHtmlPath = path.resolve(this._outputPath, 'preview.html');
   }
 
-  apply() {
-    let template = this._loadTemplate();
+  async apply() {
+    //let template = this._loadTemplate();
 
-    this._exportDesignJson(template.meta);
-    this._exportDesignHtml(template.design);
-    this._exportPreviewHtml(template.preview);
+    //this._exportDesignJson(template);
+    //this._exportDesignHtml(template.design);
+    //this._exportPreviewHtml(template.preview);
   }
 
   _loadTemplate() {
@@ -60,8 +60,9 @@ class BsiCxWebpackPlugin {
 class Plugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
   apply(compiler) {
-    compiler.hooks.done.tap(Plugin.PLUGIN_NAME, () => {
-      new BsiCxWebpackPlugin(compiler).apply();
+    compiler.hooks.done.tapAsync(Plugin.PLUGIN_NAME, async (stats, callback) => {
+      await new BsiCxWebpackPlugin(compiler).apply();
+      callback();
     });
   }
 };

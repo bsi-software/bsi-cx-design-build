@@ -4,7 +4,9 @@ const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
 
 module.exports = (name, rootPath) => {
   return {
-    entry: path.resolve(rootPath, 'index.js'),
+    entry: {
+      designJson: { import: path.resolve(rootPath, 'meta.js'), filename: 'design.json' }
+    },
     name: name,
     target: 'web',
     module: {
@@ -12,16 +14,12 @@ module.exports = (name, rootPath) => {
         {
           test: /\.twig$/i,
           use: [
-            {
-              loader: 'file-loader'
-            },
-            {
-              loader: 'extract-loader'
-            },
+            'ref-loader',
+            path.resolve(__dirname, 'template-loader.js'),
             {
               loader: 'twing-loader',
               options: {
-                environmentModulePath: path.resolve(__dirname, 'environment.js'),
+                environmentModulePath: require.resolve('./environment.js'),
                 renderContext: {}
               }
             }
@@ -29,26 +27,24 @@ module.exports = (name, rootPath) => {
         },
         {
           test: /\.(html|hbs)/i,
-          type: 'asset/resource',
-          generator: {
-            publicPath: '',
-            filename: '[name]-[hash][ext]'
-          }
+          use: [
+            'ref-loader'
+          ]
         },
         {
           test: /\.(png|jpg|jpeg)/i,
           type: 'asset/resource',
           generator: {
             publicPath: '{{designBaseUrl}}/',
-            filename: '[name]-[hash][ext]'
+            filename: 'assets/[name]-[hash][ext]'
           }
         },
         {
-          resource: /(static).*\.js$/i,
+          resource: /static.+\.js$/i,
           type: 'asset/resource',
           generator: {
             publicPath: '{{designBaseUrl}}/',
-            filename: '[name]-[hash][ext]'
+            filename: 'assets/[name]-[hash][ext]'
           }
         }
       ]
@@ -58,11 +54,6 @@ module.exports = (name, rootPath) => {
     ],
     stats: {
       children: true
-    },
-    optimization: {
-      splitChunks: {
-        chunks: 'all'
-      },
     },
     output: {
       path: path.resolve(__dirname, '..', 'dist', name),

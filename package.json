@@ -15,6 +15,7 @@
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.2",
     "raw-loader": "^4.0.2",
+    "ref-loader": "^1.0.3",
     "slash": "^4.0.0",
     "twing": "^5.0.2",
     "twing-loader": "^4.0.0",
