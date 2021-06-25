@@ -13,10 +13,7 @@ module.exports = (name, rootPath) => {
           test: /\.twig$/i,
           use: [
             {
-              loader: 'html-loader',
-              options: {
-                esModule: false,
-              }
+              loader: 'file-loader'
             },
             {
               loader: 'extract-loader'
