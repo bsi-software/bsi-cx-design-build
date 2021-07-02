@@ -5,7 +5,8 @@ const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
 module.exports = (name, rootPath) => {
   return {
     entry: {
-      designJson: { import: path.resolve(rootPath, 'meta.js'), filename: 'design.json' }
+      designJson: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json.js' },
+      designHtml: { import: path.resolve(rootPath, 'design.twig'), filename: 'design.html.js' }
     },
     name: name,
     target: 'web',
@@ -14,8 +15,9 @@ module.exports = (name, rootPath) => {
         {
           test: /\.twig$/i,
           use: [
+            ({ realResource }) => /(design|preview)\.twig$/.test(realResource) ? path.resolve(__dirname, 'pass-loader.js') : path.resolve(__dirname, 'template-loader.js'),
             'ref-loader',
-            path.resolve(__dirname, 'template-loader.js'),
+            ({ realResource }) => /(design|preview)\.twig$/.test(realResource) ? path.resolve(__dirname, 'pass-loader.js') : path.resolve(__dirname, 'apply-loader.js'),
             {
               loader: 'twing-loader',
               options: {
@@ -28,7 +30,8 @@ module.exports = (name, rootPath) => {
         {
           test: /\.(html|hbs)/i,
           use: [
-            'ref-loader'
+            path.resolve(__dirname, 'template-loader.js'),
+            'ref-loader',
           ]
         },
         {
@@ -59,7 +62,8 @@ module.exports = (name, rootPath) => {
       path: path.resolve(__dirname, '..', 'dist', name),
       publicPath: '',
       library: {
-        type: 'commonjs'
+        type: 'commonjs',
+        name: '[name]'
       },
       clean: true
     }
