@@ -10,17 +10,11 @@
   "author": "Oliver Fabel <Oliver.Fabel@bsi-software.com>",
   "license": "ISC",
   "devDependencies": {
-    "extract-loader": "^5.1.0",
-    "file-loader": "^6.2.0",
-    "html-loader": "^2.1.2",
-    "html-webpack-plugin": "^5.3.2",
-    "raw-loader": "^4.0.2",
     "ref-loader": "^1.0.3",
-    "slash": "^4.0.0",
     "twing": "^5.0.2",
     "twing-loader": "^4.0.0",
-    "val-loader": "^4.0.0",
     "webpack": "^5.40.0",
-    "webpack-cli": "^4.7.2"
+    "webpack-cli": "^4.7.2",
+    "zip-webpack-plugin": "^4.0.1"
   }
 }

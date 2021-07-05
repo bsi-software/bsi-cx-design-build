@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const ZipWebpackPlugin = require('zip-webpack-plugin');
+
 const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
 
 const passLoader = path.resolve(__dirname, 'pass-loader.js');
@@ -69,7 +71,10 @@ module.exports = (name, rootPath) => ({
     ]
   },
   plugins: [
-    new BsiCxWebpackPlugin()
+    new BsiCxWebpackPlugin(),
+    new ZipWebpackPlugin({
+      filename: `${name}.zip`
+    })
   ],
   stats: {
     children: true,
