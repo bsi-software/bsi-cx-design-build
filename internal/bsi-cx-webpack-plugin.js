@@ -1,61 +1,72 @@
 const path = require('path');
-const fs = require('fs');
 const { createHash } = require('crypto');
+const vm = require('vm');
+
+const { Compilation, sources } = require('webpack');
 
 class BsiCxWebpackPlugin {
-  constructor(compiler, stats) {
-    this._compiler = compiler;
-    this._stats = stats;
-    this._outputPath = compiler.options.output.path;
-    this._designJsonPath = path.resolve(this._outputPath, 'design.json');
-    this._designHtmlPath = path.resolve(this._outputPath, stats.compilation.entrypoints.get('design').options.filename.replace(/\.js$/, ''));
-    this._previewHtmlPath = path.resolve(this._outputPath, stats.compilation.entrypoints.get('preview').options.filename.replace(/\.js$/, ''));
+  static DESIGN_JSON = /^design\.json$/;
+  static DESIGN_HTML = /^design\.(html|hbs)$/;
+  static PREVIEW_HTML = /^preview\.(html|hbs)$/;
+
+  static ELEMENT_FILE_HASH_LENGTH = 20;
+
+  constructor(compilation) {
+    /**
+     * @type {Compilation}
+     */
+    this._compilation = compilation;
   }
 
-  async apply() {
-    this._exportDesignJson();
+  apply() {
+    this._handleDesignJson();
     this._exportDesignHtml();
     this._exportPreviewHtml();
   }
 
-  /**
-   * @returns {{}}
-   */
-  _loadDesignJson() {
-    let designJsonPath = `${this._designJsonPath}.js`;
-    let designJsonObj = require(designJsonPath);
-    return designJsonObj.json;
+  _exportDesignHtml() {
+    let designHtmlPath = this._getAssetName(BsiCxWebpackPlugin.DESIGN_HTML);
+    this._updateHtmlTemplate(designHtmlPath, 'design');
   }
 
-  _exportDesignJson() {
-    let designJsonObj = this._loadDesignJson();
+  _exportPreviewHtml() {
+    let previewHtmlPath = this._getAssetName(BsiCxWebpackPlugin.PREVIEW_HTML);
+    this._updateHtmlTemplate(previewHtmlPath, 'preview');
+  }
+
+  _handleDesignJson() {
+    let designJsonPath = this._getAssetName(BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonObj = this._loadAsset(designJsonPath, 'json');
+
     designJsonObj.contentElementGroups
       .forEach(group => group.contentElements
         .forEach(element => this._handleElement(element)));
-    fs.writeFileSync(this._designJsonPath, JSON.stringify(designJsonObj, null, 4));
+
+    let jsonStr = JSON.stringify(designJsonObj, null, 4);
+    this._updateAsset(designJsonPath, jsonStr);
   }
 
   _handleElement(element) {
-    element.file = this._handleFile(element.file);
+    element.file = this._handleElementFile(element.file);
   }
 
   /**
    * @param {{content:string,path:string}} fileObj
    * @returns {string}
    */
-  _handleFile(fileObj) {
+  _handleElementFile(fileObj) {
     let content = fileObj.content;
     let originalExtension = path.extname(fileObj.path);
     let fileName = path.basename(fileObj.path, originalExtension);
-    let contentHash = createHash('sha256').update(content).digest('hex').substr(0, 20);
+    let contentHash = this._createContentHash(content);
 
     let extension = this._getElementFileExtension(fileObj.path);
-    let elementFileName = `${fileName}-${contentHash}.${extension}`;
-    let elementFilePath = path.resolve(this._outputPath, elementFileName);
+    let elementFilePath = `contentElements${path.posix.sep}${fileName}-${contentHash}.${extension}`;
+    let source = new sources.RawSource(content);
 
-    fs.writeFileSync(elementFilePath, content.trim());
+    this._compilation.emitAsset(elementFilePath, source);
 
-    return elementFileName;
+    return elementFilePath;
   }
 
   /**
@@ -63,41 +74,83 @@ class BsiCxWebpackPlugin {
    * @returns {string}
    */
   _getElementFileExtension(fileName) {
-    if (/\.hbs\.twig/.test(fileName)) {
+    if (/\.hbs\.twig$/.test(fileName)) {
       return 'hbs';
     }
-    if (/\.hbs/.test(fileName)) {
+    if (/\.hbs$/.test(fileName)) {
       return 'hbs';
     }
     return 'html';
   }
 
   /**
+   * @param {RegExp} nameRegEx 
+   * @returns {string}
+   */
+  _getAssetName(nameRegEx) {
+    return Object.keys(this._compilation.assets)
+      .filter(name => nameRegEx.test(name))
+      .shift();
+  }
+
+  /**
+   * @param {string} name 
+   * @param {string} scope 
+   * @returns {*}
+   */
+  _loadAsset(name, scope) {
+    let asset = this._compilation.getAsset(name);
+    let script = new vm.Script(asset.source.source());
+    let context = {};
+
+    script.runInNewContext(context);
+
+    return context[scope];
+  }
+
+  /**
+   * @param {string} name 
+   * @param {string} content 
+   */
+  _updateAsset(filePath, content) {
+    let source = new sources.RawSource(content);
+    this._compilation.updateAsset(filePath, source);
+  }
+
+  /**
    * @param {string} filePath 
    * @param {string} name 
    */
-  _saveHtmlTemplate(filePath, name) {
-    let templatePath = `${filePath}.js`;
-    let templateObj = require(templatePath)[name];
+  _updateHtmlTemplate(filePath, name) {
+    let templateObj = this._loadAsset(filePath, name);
     let templateStr = eval(templateObj.content);
-    fs.writeFileSync(filePath, templateStr.trim());
+    this._updateAsset(filePath, templateStr.trim());
   }
 
-  _exportDesignHtml() {
-    this._saveHtmlTemplate(this._designHtmlPath, 'design');
-  }
-
-  _exportPreviewHtml() {
-    this._saveHtmlTemplate(this._previewHtmlPath, 'preview');
+  /**
+   * @param {string} content 
+   * @returns {string}
+   */
+  _createContentHash(content) {
+    return createHash('sha256')
+      .update(content)
+      .digest('hex')
+      .substr(0, BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
   }
 }
 
 class Plugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
   apply(compiler) {
-    compiler.hooks.done.tapAsync(Plugin.PLUGIN_NAME, async (stats, callback) => {
-      await new BsiCxWebpackPlugin(compiler, stats).apply();
-      callback();
+    compiler.hooks.thisCompilation.tap(Plugin.PLUGIN_NAME, compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: Plugin.PLUGIN_NAME,
+          stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+        },
+        () => {
+          new BsiCxWebpackPlugin(compilation).apply();
+        })
     });
   }
 };

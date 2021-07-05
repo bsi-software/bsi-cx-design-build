@@ -14,13 +14,13 @@ const evaluateEntryTemplate = (rootPath, name) => {
   let extension = isTwig ? 'html' : 'hbs';
   return {
     import: isTwig ? twigFilePath : hbsFilePath,
-    filename: `${name}.${extension}.js`
+    filename: `${name}.${extension}`
   };
 };
 
 module.exports = (name, rootPath) => ({
   entry: () => ({
-    json: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json.js' },
+    json: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json' },
     design: evaluateEntryTemplate(rootPath, 'design'),
     preview: evaluateEntryTemplate(rootPath, 'preview'),
   }),
@@ -72,13 +72,14 @@ module.exports = (name, rootPath) => ({
     new BsiCxWebpackPlugin()
   ],
   stats: {
-    children: true
+    children: true,
+    errorDetails: true
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist', name),
     publicPath: '',
     library: {
-      type: 'commonjs',
+      type: 'var',
       name: '[name]'
     },
     clean: true
