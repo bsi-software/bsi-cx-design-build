@@ -37,7 +37,7 @@ module.exports = (name, rootPath) => ({
           {
             loader: 'twing-loader',
             options: {
-              environmentModulePath: require.resolve('./environment.js'),
+              environmentModulePath: require.resolve('./twing-environment.js'),
               renderContext: {}
             }
           }

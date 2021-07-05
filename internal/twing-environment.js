@@ -5,7 +5,7 @@ const { TwingEnvironment, TwingLoaderRelativeFilesystem, TwingFunction } = requi
 let twing = new TwingEnvironment(
   new TwingLoaderRelativeFilesystem()
 );
-twing.addFunction(new TwingFunction('asset', (template, assetPath) => {
+twing.addFunction(new TwingFunction('bsi_cx_asset', (template, assetPath) => {
   let templatePath = template.source.getResolvedName();
   let templateDirPath = path.dirname(templatePath);
   let absoluteAssetPath = path.resolve(templateDirPath, assetPath).replace(/\\/g, path.posix.sep);
