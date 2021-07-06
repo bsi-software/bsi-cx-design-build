@@ -21,6 +21,29 @@ const evaluateEntryTemplate = (rootPath, name) => {
   };
 };
 
+const cssLoaderChain = [
+  {
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+      publicPath: '../'
+    }
+  },
+  {
+    loader: 'css-loader'
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      postcssOptions: {
+        plugins: [
+          'postcss-preset-env',
+          'cssnano'
+        ]
+      }
+    }
+  }
+];
+
 module.exports = (name, rootPath) => ({
   entry: () => ({
     json: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json' },
@@ -56,22 +79,29 @@ module.exports = (name, rootPath) => ({
       {
         test: /\.less$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../'
-            }
-          },
-          {
-            loader: 'css-loader'
-          },
+          ...cssLoaderChain,
           {
             loader: 'less-loader'
           }
         ]
       },
       {
-        test: /\.(png|jpg|jpeg)$/,
+        test: /\.s[ac]ss$/,
+        use: [
+          ...cssLoaderChain,
+          {
+            loader: 'sass-loader'
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          ...cssLoaderChain
+        ]
+      },
+      {
+        test: /\.(png|jpg|jpeg|webp)$/,
         type: 'asset/resource',
         generator: {
           filename: 'assets/[name]-[hash][ext]'

@@ -1,4 +1,4 @@
-require('./styles.less');
+require('./styles.scss');
 
 module.exports = {
   elementId: 'image',

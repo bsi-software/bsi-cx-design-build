@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "whatwedo.twig",
-        "editorconfig.editorconfig"
+        "editorconfig.editorconfig",
+        "webben.browserslist"
     ]
 }
