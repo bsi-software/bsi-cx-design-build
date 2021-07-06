@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ZipWebpackPlugin = require('zip-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
 
@@ -46,31 +47,49 @@ module.exports = (name, rootPath) => ({
         ]
       },
       {
-        test: /\.(html|hbs)$/i,
+        test: /\.(html|hbs)$/,
         use: [
           templateLoader,
           'ref-loader',
         ]
       },
       {
-        test: /\.(png|jpg|jpeg)$/i,
+        test: /\.less$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../'
+            }
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'less-loader'
+          }
+        ]
+      },
+      {
+        test: /\.(png|jpg|jpeg)$/,
         type: 'asset/resource',
         generator: {
-          publicPath: '{{designBaseUrl}}/',
           filename: 'assets/[name]-[hash][ext]'
         }
       },
       {
-        resource: /static.+\.js$/i,
+        resource: /static.+\.js$/,
         type: 'asset/resource',
         generator: {
-          publicPath: '{{designBaseUrl}}/',
           filename: 'assets/[name]-[hash][ext]'
         }
       }
     ]
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'assets/styles.css',
+    }),
     new BsiCxWebpackPlugin(),
     new ZipWebpackPlugin({
       filename: `${name}.zip`
@@ -82,7 +101,7 @@ module.exports = (name, rootPath) => ({
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist', name),
-    publicPath: '',
+    publicPath: '{{designBaseUrl}}/',
     library: {
       type: 'var',
       name: '[name]'

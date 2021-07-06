@@ -1,10 +1,10 @@
 require('./styles.less');
 
 module.exports = {
-  elementId: 'title',
+  elementId: 'header',
   icon: 'heading',
-  label: 'Titel',
-  file: require('./template.hbs.twig'),
+  label: 'Header',
+  file: require('./template.html'),
   parts: [
     {
       partId: 'plain-text',

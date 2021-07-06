@@ -1,3 +1,5 @@
+require('./styles.less');
+
 module.exports = {
   elementId: 'image',
   icon: 'image',
