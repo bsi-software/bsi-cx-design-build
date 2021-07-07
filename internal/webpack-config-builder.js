@@ -8,6 +8,12 @@ const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
 
+/**
+ * 
+ * @param {string} rootPath 
+ * @param {string} name 
+ * @returns {{import:string,filename:string}}
+ */
 const evaluateEntryTemplate = (rootPath, name) => {
   let twigFilePath = path.resolve(rootPath, `${name}.twig`);
   let hbsFilePath = path.resolve(rootPath, `${name}.hbs.twig`);
@@ -44,7 +50,10 @@ const cssLoaderChain = [
 
 module.exports = (name, rootPath, model, devServerPort) => ({
   entry: () => ({
-    json: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json' },
+    json: {
+      import: path.resolve(rootPath, 'design.js'),
+      filename: 'design.json'
+    },
     design: evaluateEntryTemplate(rootPath, 'design'),
     preview: evaluateEntryTemplate(rootPath, 'preview'),
   }),
@@ -53,7 +62,7 @@ module.exports = (name, rootPath, model, devServerPort) => ({
   module: {
     rules: [
       {
-        test: /\.twig$/i,
+        test: /\.twig$/,
         use: [
           templateLoader,
           'ref-loader',
@@ -121,21 +130,21 @@ module.exports = (name, rootPath, model, devServerPort) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/styles-[contenthash].css',
+      filename: 'assets/styles-[contenthash].css'
     }),
     new BsiCxWebpackPlugin(),
     new ZipWebpackPlugin({
       filename: `${name}.zip`
     })
   ],
-  devtool: false,
+  devtool: 'source-map',
   devServer: {
     port: devServerPort || 9000,
     contentBase: path.resolve(__dirname, '..', 'dist'),
     publicPath: '/',
     compress: true,
     writeToDisk: true,
-    inline: false,
+    inline: false
   },
   stats: {
     children: true,

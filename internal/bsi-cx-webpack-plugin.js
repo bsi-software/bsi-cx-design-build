@@ -16,7 +16,7 @@ class BsiCxWebpackPlugin {
 
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
-  constructor(compiler, compilation) {
+  constructor(compiler, compilation, logger) {
     /**
      * @type {Compiler}
      */
@@ -25,12 +25,20 @@ class BsiCxWebpackPlugin {
      * @type {Compilation}
      */
     this._compilation = compilation;
+    /**
+     * @type {WebpackLogger}
+     */
+    this._logger = logger;
   }
 
   apply() {
-    this._handleDesignJson();
-    this._exportDesignHtml();
-    this._exportPreviewHtml();
+    try {
+      this._handleDesignJson();
+      this._exportDesignHtml();
+      this._exportPreviewHtml();
+    } catch (e) {
+      this._logger.debug(e);
+    }
   }
 
   _exportDesignHtml() {
@@ -65,9 +73,9 @@ class BsiCxWebpackPlugin {
    */
   _handleElementFile(fileObj) {
     let rawContent = fileObj.content;
-    let content = /^module\.exports/.test(rawContent) ? eval(rawContent) : rawContent;
+    let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
     let originalExtension = path.extname(fileObj.path);
-    let fileName = path.basename(fileObj.path, originalExtension);
+    let fileName = path.basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
     let contentHash = this._createContentHash(content);
 
     let extension = this._getElementFileExtension(fileObj.path);
@@ -118,6 +126,13 @@ class BsiCxWebpackPlugin {
     return context[scope];
   }
 
+  _eval(source) {
+    let script = new vm.Script(source);
+    let context = { module: {} };
+    script.runInNewContext(context);
+    return context.module.exports;
+  }
+
   /**
    * @param {string} name 
    * @param {string} content 
@@ -133,7 +148,7 @@ class BsiCxWebpackPlugin {
    */
   _updateHtmlTemplate(filePath, name) {
     let templateObj = this._loadAsset(filePath, name);
-    let templateStr = eval(templateObj.content);
+    let templateStr = this._eval(templateObj.content);
 
     templateStr = templateStr.trim();
     templateStr = this._handleBsiCxTags(templateStr);
@@ -184,7 +199,8 @@ class Plugin {
           stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
         },
         () => {
-          new BsiCxWebpackPlugin(compiler, compilation).apply();
+          const logger = compilation.getLogger(Plugin.PLUGIN_NAME);
+          new BsiCxWebpackPlugin(compiler, compilation, logger).apply();
         })
     });
   }
