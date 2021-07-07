@@ -44,7 +44,7 @@ const cssLoaderChain = [
   }
 ];
 
-module.exports = (name, rootPath) => ({
+module.exports = (name, rootPath, model) => ({
   entry: () => ({
     json: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json' },
     design: evaluateEntryTemplate(rootPath, 'design'),
@@ -81,7 +81,10 @@ module.exports = (name, rootPath) => ({
         use: [
           ...cssLoaderChain,
           {
-            loader: 'less-loader'
+            loader: 'less-loader',
+            options: {
+              additionalData: ''
+            }
           }
         ]
       },
@@ -90,7 +93,10 @@ module.exports = (name, rootPath) => ({
         use: [
           ...cssLoaderChain,
           {
-            loader: 'sass-loader'
+            loader: 'sass-loader',
+            options: {
+              additionalData: ''
+            }
           }
         ]
       },
@@ -118,7 +124,7 @@ module.exports = (name, rootPath) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/styles.css',
+      filename: 'assets/styles-[contenthash].css',
     }),
     new BsiCxWebpackPlugin(),
     new ZipWebpackPlugin({

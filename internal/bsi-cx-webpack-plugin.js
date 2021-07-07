@@ -2,16 +2,25 @@ const path = require('path');
 const { createHash } = require('crypto');
 const vm = require('vm');
 
-const { Compilation, sources } = require('webpack');
+const { Compilation, sources, Compiler } = require('webpack');
 
 class BsiCxWebpackPlugin {
   static DESIGN_JSON = /^design\.json$/;
   static DESIGN_HTML = /^design\.(html|hbs)$/;
   static PREVIEW_HTML = /^preview\.(html|hbs)$/;
 
+  static STYLES_CSS = /^assets\/styles\-[0-9a-z]+\.css$/;
+
+  static BSI_CX_TAG_CSS_STYLE = /\<bsi\:cx.*(style).*\/\>/ig;
+  static BSI_CX_TAG_CSS_LINK = /\<bsi\:cx.*(link).*\/\>/ig;
+
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
-  constructor(compilation) {
+  constructor(compiler, compilation) {
+    /**
+     * @type {Compiler}
+     */
+    this._compiler = compiler;
     /**
      * @type {Compilation}
      */
@@ -124,7 +133,32 @@ class BsiCxWebpackPlugin {
   _updateHtmlTemplate(filePath, name) {
     let templateObj = this._loadAsset(filePath, name);
     let templateStr = eval(templateObj.content);
-    this._updateAsset(filePath, templateStr.trim());
+
+    templateStr = templateStr.trim();
+    templateStr = this._handleBsiCxTags(templateStr);
+
+    this._updateAsset(filePath, templateStr);
+  }
+
+  /**
+   * @param {string} content 
+   * @returns {string}
+   */
+  _handleBsiCxTags(content) {
+    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let cssStylesFilename = this._getAssetName(BsiCxWebpackPlugin.STYLES_CSS);
+    let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
+    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/assets/` : './assets/';
+    let asset = this._compilation.getAsset(cssStylesFilename);
+    let source = asset.source.source()
+      .trim()
+      .replace(/\n/g, '')
+      .replace(/\.\.\/assets\//g, inlineSourceAssetsUrl);
+
+    content = content.replace(BsiCxWebpackPlugin.BSI_CX_TAG_CSS_STYLE, `<style>${source}</style>`);
+    content = content.replace(BsiCxWebpackPlugin.BSI_CX_TAG_CSS_LINK, `<link rel="stylesheet" href="${linkStyleUrl}"/>`);
+
+    return content;
   }
 
   /**
@@ -149,7 +183,7 @@ class Plugin {
           stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
         },
         () => {
-          new BsiCxWebpackPlugin(compilation).apply();
+          new BsiCxWebpackPlugin(compiler, compilation).apply();
         })
     });
   }
