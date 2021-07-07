@@ -64,7 +64,8 @@ class BsiCxWebpackPlugin {
    * @returns {string}
    */
   _handleElementFile(fileObj) {
-    let content = fileObj.content;
+    let rawContent = fileObj.content;
+    let content = /^module\.exports/.test(rawContent) ? eval(rawContent) : rawContent;
     let originalExtension = path.extname(fileObj.path);
     let fileName = path.basename(fileObj.path, originalExtension);
     let contentHash = this._createContentHash(content);

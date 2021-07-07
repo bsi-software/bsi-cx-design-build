@@ -6,8 +6,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
 
-const passLoader = path.resolve(__dirname, 'pass-loader.js');
-const applyLoader = path.resolve(__dirname, 'apply-loader.js');
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
 
 const evaluateEntryTemplate = (rootPath, name) => {
@@ -44,7 +42,7 @@ const cssLoaderChain = [
   }
 ];
 
-module.exports = (name, rootPath, model) => ({
+module.exports = (name, rootPath, model, devServerPort) => ({
   entry: () => ({
     json: { import: path.resolve(rootPath, 'design.js'), filename: 'design.json' },
     design: evaluateEntryTemplate(rootPath, 'design'),
@@ -59,12 +57,11 @@ module.exports = (name, rootPath, model) => ({
         use: [
           templateLoader,
           'ref-loader',
-          ({ realResource }) => /(design|preview)\.(hbs\.twig|twig)$/.test(realResource) ? passLoader : applyLoader,
           {
             loader: 'twing-loader',
             options: {
               environmentModulePath: require.resolve('./twing-environment.js'),
-              renderContext: {}
+              renderContext: model || {}
             }
           }
         ]
@@ -110,14 +107,14 @@ module.exports = (name, rootPath, model) => ({
         test: /\.(png|jpg|jpeg|webp)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name]-[hash][ext]'
+          filename: 'assets/[name]-[contenthash][ext]'
         }
       },
       {
         resource: /static.+\.js$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name]-[hash][ext]'
+          filename: 'assets/[name]-[contenthash][ext]'
         }
       }
     ]
@@ -131,6 +128,15 @@ module.exports = (name, rootPath, model) => ({
       filename: `${name}.zip`
     })
   ],
+  devtool: false,
+  devServer: {
+    port: devServerPort || 9000,
+    contentBase: path.resolve(__dirname, '..', 'dist'),
+    publicPath: '/',
+    compress: true,
+    writeToDisk: true,
+    inline: false,
+  },
   stats: {
     children: true,
     errorDetails: true
