@@ -2,7 +2,10 @@ const path = require('path');
 const { createHash } = require('crypto');
 const vm = require('vm');
 
+const Handlebars = require('handlebars');
 const { Compilation, sources, Compiler } = require('webpack');
+
+const helpers = require('./helpers');
 
 class BsiCxWebpackPlugin {
   static DESIGN_JSON = /^design\.json$/;
@@ -37,7 +40,7 @@ class BsiCxWebpackPlugin {
       this._exportDesignHtml();
       this._exportPreviewHtml();
     } catch (e) {
-      this._logger.debug(e);
+      this._logger.error(e);
     }
   }
 
@@ -47,8 +50,12 @@ class BsiCxWebpackPlugin {
   }
 
   _exportPreviewHtml() {
-    let previewHtmlPath = this._getAssetName(BsiCxWebpackPlugin.PREVIEW_HTML);
-    this._updateHtmlTemplate(previewHtmlPath, 'preview');
+    let previewFilePath = this._getAssetName(BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview');
+
+    if (/\.hbs$/.test(previewFilePath)) {
+      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
+    }
   }
 
   _handleDesignJson() {
@@ -77,14 +84,28 @@ class BsiCxWebpackPlugin {
     let originalExtension = path.extname(fileObj.path);
     let fileName = path.basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
     let contentHash = this._createContentHash(content);
-
     let extension = this._getElementFileExtension(fileObj.path);
     let elementFilePath = `contentElements${path.posix.sep}${fileName}-${contentHash}.${extension}`;
-    let source = new sources.RawSource(content);
 
-    this._compilation.emitAsset(elementFilePath, source);
+    this._emitAsset(elementFilePath, content);
 
     return elementFilePath;
+  }
+
+  /**
+   * @param {string} previewFilePath 
+   * @param {string} previewTemplate 
+   */
+  _handlePreviewHandlebars(previewFilePath, previewTemplate) {
+    let parser = this._getHandlebarsParser();
+    let template = parser.compile(previewTemplate.replace(/bsi\.nls/g, 'bsi_nls'));
+    let rendered = template({
+      designBaseUrl: '.'
+    });
+    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, '.html');
+
+    this._emitAsset(previewHtmlPath, rendered);
+    this._deleteAsset(previewFilePath);
   }
 
   /**
@@ -111,21 +132,6 @@ class BsiCxWebpackPlugin {
       .shift();
   }
 
-  /**
-   * @param {string} name 
-   * @param {string} scope 
-   * @returns {*}
-   */
-  _loadAsset(name, scope) {
-    let asset = this._compilation.getAsset(name);
-    let script = new vm.Script(asset.source.source());
-    let context = {};
-
-    script.runInNewContext(context);
-
-    return context[scope];
-  }
-
   _eval(source) {
     let script = new vm.Script(source);
     let context = { module: {} };
@@ -143,8 +149,40 @@ class BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} filePath 
    * @param {string} name 
+   * @param {string} scope 
+   * @returns {*}
+   */
+  _loadAsset(name, scope) {
+    let asset = this._compilation.getAsset(name);
+    let script = new vm.Script(asset.source.source());
+    let context = {};
+
+    script.runInNewContext(context);
+
+    return context[scope];
+  }
+
+  /**
+   * @param {string} filePath 
+   * @param {string} source 
+   */
+  _emitAsset(filePath, content) {
+    let source = new sources.RawSource(content);
+    this._compilation.emitAsset(filePath, source);
+  }
+
+  /**
+   * @param {string} filePath 
+   */
+  _deleteAsset(filePath) {
+    this._compilation.deleteAsset(filePath);
+  }
+
+  /**
+   * @param {string} filePath 
+   * @param {string} name
+   * @returns {string}
    */
   _updateHtmlTemplate(filePath, name) {
     let templateObj = this._loadAsset(filePath, name);
@@ -154,6 +192,8 @@ class BsiCxWebpackPlugin {
     templateStr = this._handleBsiCxTags(templateStr);
 
     this._updateAsset(filePath, templateStr);
+
+    return templateStr;
   }
 
   /**
@@ -186,6 +226,15 @@ class BsiCxWebpackPlugin {
       .update(content)
       .digest('hex')
       .substr(0, BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
+  }
+
+  /**
+   * @returns {Handlebars}
+   */
+  _getHandlebarsParser() {
+    let parser = Handlebars.create();
+    parser.registerHelper(helpers);
+    return parser;
   }
 }
 

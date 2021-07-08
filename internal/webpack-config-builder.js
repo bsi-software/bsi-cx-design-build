@@ -48,6 +48,13 @@ const cssLoaderChain = [
   }
 ];
 
+/**
+ * @param {string} name 
+ * @param {string} rootPath 
+ * @param {{}} [model={}]
+ * @param {number} [devServerPort=9000]
+ * @returns 
+ */
 module.exports = (name, rootPath, model, devServerPort) => ({
   entry: () => ({
     json: {
@@ -143,7 +150,7 @@ module.exports = (name, rootPath, model, devServerPort) => ({
     contentBase: path.resolve(__dirname, '..', 'dist'),
     publicPath: '/',
     compress: true,
-    writeToDisk: true,
+    writeToDisk: filePath => /\.zip$/.test(filePath),
     inline: false
   },
   stats: {
