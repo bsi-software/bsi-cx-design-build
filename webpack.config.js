@@ -1,5 +1,4 @@
 const path = require('path');
-const { config } = require('webpack');
 
 const webpackConfigBuilder = require('./internal/webpack-config-builder');
 

@@ -9,6 +9,10 @@ module.exports = {
     {
       partId: 'image',
       label: 'Bild'
+    },
+    {
+      partId: 'plain-text',
+      label: 'Label'
     }
   ]
 };
