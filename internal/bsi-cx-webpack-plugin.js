@@ -6,7 +6,7 @@ const Handlebars = require('handlebars');
 const { Compilation, sources, Compiler } = require('webpack');
 
 const helpers = require('./helpers');
-const placeholders = require('./placeholders');
+const constants = require('./constants');
 
 class BsiCxWebpackPlugin {
   static DESIGN_JSON = /^design\.json$/;
@@ -60,12 +60,20 @@ class BsiCxWebpackPlugin {
     let designJsonPath = this._getAssetName(BsiCxWebpackPlugin.DESIGN_JSON);
     let designJsonObj = this._loadAsset(designJsonPath, 'json');
 
+    this._handleDesignPreviewImage(designJsonObj);
+
     designJsonObj.contentElementGroups
       .forEach(group => group.contentElements
         .forEach(element => this._handleElement(element)));
 
     let jsonStr = JSON.stringify(designJsonObj, null, 4);
     this._updateAsset(designJsonPath, jsonStr);
+  }
+
+  _handleDesignPreviewImage(designJsonObj) {
+    if (typeof designJsonObj.previewImage !== 'undefined') {
+      designJsonObj.previewImage = this._removeDesignBaseUrl(designJsonObj.previewImage);
+    }
   }
 
   _handleElement(element) {
@@ -188,7 +196,7 @@ class BsiCxWebpackPlugin {
     let templateStr = this._eval(templateObj.content);
 
     templateStr = templateStr.trim();
-    templateStr = this._handleBsiCxTags(templateStr);
+    templateStr = this._handleStylesheets(templateStr);
 
     this._updateAsset(filePath, templateStr);
 
@@ -199,9 +207,14 @@ class BsiCxWebpackPlugin {
    * @param {string} content 
    * @returns {string}
    */
-  _handleBsiCxTags(content) {
+  _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
     let cssStylesFilename = this._getAssetName(BsiCxWebpackPlugin.STYLES_CSS);
+    
+    if (cssStylesFilename === undefined) {
+      return content;
+    }
+
     let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
     let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/assets/` : './assets/';
     let asset = this._compilation.getAsset(cssStylesFilename);
@@ -210,8 +223,8 @@ class BsiCxWebpackPlugin {
       .replace(/\n/g, '')
       .replace(/\.\.\/assets\//g, inlineSourceAssetsUrl);
 
-    content = content.replace(new RegExp(placeholders.bsiCxCssInline, 'g'), source);
-    content = content.replace(new RegExp(placeholders.bsiCxCssHref, 'g'), linkStyleUrl);
+    content = content.replace(new RegExp(constants.BSI_CX_CSS_INLINE, 'g'), source);
+    content = content.replace(new RegExp(constants.BSI_CX_CSS_HREF, 'g'), linkStyleUrl);
 
     return content;
   }
@@ -245,6 +258,14 @@ class BsiCxWebpackPlugin {
       helpersObj[name] = func;
     });
     return helpersObj;
+  }
+
+  /**
+   * @param {string} url 
+   * @returns {string}
+   */
+  _removeDesignBaseUrl(url) {
+    return url.replace(`${constants.BSI_CX_DESIGN_BASE_URL}/`, '');
   }
 }
 

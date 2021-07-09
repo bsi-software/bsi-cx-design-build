@@ -5,6 +5,7 @@ const ZipWebpackPlugin = require('zip-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
+const constants = require('./constants');
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
 
@@ -155,11 +156,14 @@ module.exports = (name, rootPath, model, devServerPort) => ({
   },
   stats: {
     children: true,
-    errorDetails: true
+    errorDetails: true,
+  },
+  performance: {
+    hints: false
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist', name),
-    publicPath: '{{designBaseUrl}}/',
+    publicPath: `${constants.BSI_CX_DESIGN_BASE_URL}/`,
     library: {
       type: 'var',
       name: '[name]'

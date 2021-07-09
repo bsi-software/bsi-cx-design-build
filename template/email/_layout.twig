@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <bsi:cx css="link"/>
-  <bsi:cx css="style"/>
 </head>
 <body>
 {% apply spaceless %}
   <div data-bsi-dropzone="content">
     {% block content %}{% endblock %}
   </div>
-  <script src="{{ bsi_cx_asset('./static/script.js') }}"></script>
 {% endapply %}
 </body>
 </html>

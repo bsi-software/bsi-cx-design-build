@@ -2,7 +2,7 @@ const path = require('path');
 
 const { TwingEnvironment, TwingLoaderRelativeFilesystem, TwingFunction } = require('twing');
 
-const placeholders = require('./placeholders');
+const constants = require('./constants');
 
 let twing = new TwingEnvironment(
   new TwingLoaderRelativeFilesystem()
@@ -16,11 +16,11 @@ twing.addFunction(new TwingFunction('bsi_cx_asset', (template, assetPath) => {
 }, [], { needs_template: true }));
 
 twing.addFunction(new TwingFunction('bsi_cx_css_href', () => {
-  return Promise.resolve(placeholders.bsiCxCssHref);
+  return Promise.resolve(constants.BSI_CX_CSS_HREF);
 }, [], {}));
 
 twing.addFunction(new TwingFunction('bsi_cx_css_inline', () => {
-  return Promise.resolve(placeholders.bsiCxCssInline);
+  return Promise.resolve(constants.BSI_CX_CSS_INLINE);
 }, [], {}));
 
 module.exports = twing;
