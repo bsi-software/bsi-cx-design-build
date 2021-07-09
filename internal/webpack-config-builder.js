@@ -144,7 +144,7 @@ module.exports = (name, rootPath, model, devServerPort) => ({
       filename: `${name}.zip`
     })
   ],
-  devtool: 'source-map',
+  devtool: false,
   devServer: {
     port: devServerPort || 9000,
     contentBase: path.resolve(__dirname, '..', 'dist'),

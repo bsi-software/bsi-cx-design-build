@@ -6,6 +6,7 @@ const Handlebars = require('handlebars');
 const { Compilation, sources, Compiler } = require('webpack');
 
 const helpers = require('./helpers');
+const placeholders = require('./placeholders');
 
 class BsiCxWebpackPlugin {
   static DESIGN_JSON = /^design\.json$/;
@@ -13,9 +14,6 @@ class BsiCxWebpackPlugin {
   static PREVIEW_HTML = /^preview\.(html|hbs)$/;
 
   static STYLES_CSS = /^assets\/styles\-[0-9a-z]+\.css$/;
-
-  static BSI_CX_TAG_CSS_STYLE = /\<bsi\:cx.*(style).*\/\>/ig;
-  static BSI_CX_TAG_CSS_LINK = /\<bsi\:cx.*(link).*\/\>/ig;
 
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
@@ -98,9 +96,10 @@ class BsiCxWebpackPlugin {
    */
   _handlePreviewHandlebars(previewFilePath, previewTemplate) {
     let parser = this._getHandlebarsParser();
-    let template = parser.compile(previewTemplate.replace(/bsi\.nls/g, 'bsi_nls'));
+    let template = parser.compile(previewTemplate);
     let rendered = template({
-      designBaseUrl: '.'
+      designBaseUrl: '.',
+      bsi: this._getHandlebarsHelpers()
     });
     let previewHtmlPath = previewFilePath.replace(/\.hbs$/, '.html');
 
@@ -211,8 +210,8 @@ class BsiCxWebpackPlugin {
       .replace(/\n/g, '')
       .replace(/\.\.\/assets\//g, inlineSourceAssetsUrl);
 
-    content = content.replace(BsiCxWebpackPlugin.BSI_CX_TAG_CSS_STYLE, `<style>${source}</style>`);
-    content = content.replace(BsiCxWebpackPlugin.BSI_CX_TAG_CSS_LINK, `<link rel="stylesheet" href="${linkStyleUrl}"/>`);
+    content = content.replace(new RegExp(placeholders.bsiCxCssInline, 'g'), source);
+    content = content.replace(new RegExp(placeholders.bsiCxCssHref, 'g'), linkStyleUrl);
 
     return content;
   }
@@ -232,9 +231,20 @@ class BsiCxWebpackPlugin {
    * @returns {Handlebars}
    */
   _getHandlebarsParser() {
-    let parser = Handlebars.create();
-    parser.registerHelper(helpers);
-    return parser;
+    return Handlebars.create();
+  }
+
+  /**
+   * @returns {{}} 
+   */
+  _getHandlebarsHelpers() {
+    let helpersObj = {};
+    Object.keys(helpers).forEach(helper => {
+      let name = helper.replace(/^bsi\./, '');
+      let func = helpers[helper];
+      helpersObj[name] = func;
+    });
+    return helpersObj;
   }
 }
 

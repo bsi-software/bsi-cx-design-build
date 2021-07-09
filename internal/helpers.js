@@ -1,3 +1,3 @@
 module.exports = {
-  'bsi_nls': key => key
+  'bsi.nls': key => key
 };

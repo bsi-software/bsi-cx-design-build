@@ -5,13 +5,14 @@ module.exports = {
   title: 'Landingpage Template',
   author: 'Oliver Fabel',
   date: '21.06.2021',
-  previewImage: 'preview.png',
+  previewImage: require('./design-preview.png'),
   defaultLocale: 'en',
   locales: [
     'en',
     'de',
     'de-DE'
   ],
+  nls: require('../nls'),
   contentElementGroups: [
     {
       groupId: 'content',
