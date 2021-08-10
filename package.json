@@ -4,13 +4,16 @@
   "description": "A design template to create a design for BSI CX.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=production",
-    "watch": "webpack --mode=development --watch",
-    "serve": "webpack serve --mode=development"
+    "build": "webpack --config webpack.config.babel.js --mode=production",
+    "watch": "webpack --config webpack.config.babel.js --mode=development --watch",
+    "serve": "webpack serve --config webpack.config.babel.js --mode=development"
   },
   "author": "Oliver Fabel <Oliver.Fabel@bsi-software.com>",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/register": "^7.14.5",
     "autoprefixer": "^10.2.6",
     "css-loader": "^5.2.6",
     "cssnano": "^5.0.6",

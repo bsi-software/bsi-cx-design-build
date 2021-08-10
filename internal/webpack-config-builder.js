@@ -1,30 +1,13 @@
-const fs = require('fs');
-const path = require('path');
+import path from 'path';
 
-const ZipWebpackPlugin = require('zip-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+import ZipPlugin from 'zip-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const BsiCxWebpackPlugin = require('./bsi-cx-webpack-plugin');
-const constants = require('./constants');
+import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
+import constants from './constant';
+import { evaluateEntryTemplate } from './utility';
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
-
-/**
- * 
- * @param {string} rootPath 
- * @param {string} name 
- * @returns {{import:string,filename:string}}
- */
-const evaluateEntryTemplate = (rootPath, name) => {
-  let twigFilePath = path.resolve(rootPath, `${name}.twig`);
-  let hbsFilePath = path.resolve(rootPath, `${name}.hbs.twig`);
-  let isTwig = fs.existsSync(twigFilePath);
-  let extension = isTwig ? 'html' : 'hbs';
-  return {
-    import: isTwig ? twigFilePath : hbsFilePath,
-    filename: `${name}.${extension}`
-  };
-};
 
 const cssLoaderChain = [
   {
@@ -141,7 +124,7 @@ module.exports = (name, rootPath, model, devServerPort) => ({
       filename: 'assets/styles-[contenthash].css'
     }),
     new BsiCxWebpackPlugin(),
-    new ZipWebpackPlugin({
+    new ZipPlugin({
       filename: `${name}.zip`
     })
   ],

@@ -1,22 +1,42 @@
-const path = require('path');
-const { createHash } = require('crypto');
-const vm = require('vm');
+import path from 'path';
+import { createHash } from 'crypto';
+import vm from 'vm';
 
-const Handlebars = require('handlebars');
-const { Compilation, sources, Compiler } = require('webpack');
+import Handlebars from 'handlebars';
+import { Compilation, sources, Compiler, WebpackLogger } from 'webpack';
 
-const helpers = require('./helpers');
-const constants = require('./constants');
+import handlebarsHelpers from './handlebars-helpers';
+import Constant from './constant';
 
-class BsiCxWebpackPlugin {
+class _BsiCxWebpackPlugin {
+  /**
+   * @type {RegExp}
+   */
   static DESIGN_JSON = /^design\.json$/;
+  /**
+   * @type {RegExp}
+   */
   static DESIGN_HTML = /^design\.(html|hbs)$/;
+  /**
+   * @type {RegExp}
+   */
   static PREVIEW_HTML = /^preview\.(html|hbs)$/;
 
+  /**
+   * @type {RegExp}
+   */
   static STYLES_CSS = /^assets\/styles\-[0-9a-z]+\.css$/;
 
+  /**
+   * @type {number}
+   */
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
+  /**
+   * @param {Compiler} compiler 
+   * @param {Compilation} compilation 
+   * @param {WebpackLogger} logger 
+   */
   constructor(compiler, compilation, logger) {
     /**
      * @type {Compiler}
@@ -43,12 +63,12 @@ class BsiCxWebpackPlugin {
   }
 
   _exportDesignHtml() {
-    let designHtmlPath = this._getAssetName(BsiCxWebpackPlugin.DESIGN_HTML);
+    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
     this._updateHtmlTemplate(designHtmlPath, 'design');
   }
 
   _exportPreviewHtml() {
-    let previewFilePath = this._getAssetName(BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
     let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview');
 
     if (/\.hbs$/.test(previewFilePath)) {
@@ -57,7 +77,7 @@ class BsiCxWebpackPlugin {
   }
 
   _handleDesignJson() {
-    let designJsonPath = this._getAssetName(BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     let designJsonObj = this._loadAsset(designJsonPath, 'json');
 
     this._handleDesignPreviewImage(designJsonObj);
@@ -209,8 +229,8 @@ class BsiCxWebpackPlugin {
    */
   _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let cssStylesFilename = this._getAssetName(BsiCxWebpackPlugin.STYLES_CSS);
-    
+    let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
+
     if (cssStylesFilename === undefined) {
       return content;
     }
@@ -223,8 +243,8 @@ class BsiCxWebpackPlugin {
       .replace(/\n/g, '')
       .replace(/\.\.\/assets\//g, inlineSourceAssetsUrl);
 
-    content = content.replace(new RegExp(constants.BSI_CX_CSS_INLINE, 'g'), source);
-    content = content.replace(new RegExp(constants.BSI_CX_CSS_HREF, 'g'), linkStyleUrl);
+    content = content.replace(new RegExp(Constant.BSI_CX_CSS_INLINE, 'g'), source);
+    content = content.replace(new RegExp(Constant.BSI_CX_CSS_HREF, 'g'), linkStyleUrl);
 
     return content;
   }
@@ -237,7 +257,7 @@ class BsiCxWebpackPlugin {
     return createHash('sha256')
       .update(content)
       .digest('hex')
-      .substr(0, BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
+      .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
   }
 
   /**
@@ -252,11 +272,10 @@ class BsiCxWebpackPlugin {
    */
   _getHandlebarsHelpers() {
     let helpersObj = {};
-    Object.keys(helpers).forEach(helper => {
-      let name = helper.replace(/^bsi\./, '');
-      let func = helpers[helper];
-      helpersObj[name] = func;
-    });
+    for (const [name, func] of Object.entries(handlebarsHelpers)) {
+      let fixedName = name.replace(/^bsi\./, '');
+      helpersObj[fixedName] = func;
+    }
     return helpersObj;
   }
 
@@ -265,25 +284,23 @@ class BsiCxWebpackPlugin {
    * @returns {string}
    */
   _removeDesignBaseUrl(url) {
-    return url.replace(`${constants.BSI_CX_DESIGN_BASE_URL}/`, '');
+    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
   }
 }
 
-class Plugin {
+export default class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
   apply(compiler) {
-    compiler.hooks.thisCompilation.tap(Plugin.PLUGIN_NAME, compilation => {
+    compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
       compilation.hooks.processAssets.tap(
         {
-          name: Plugin.PLUGIN_NAME,
+          name: BsiCxWebpackPlugin.PLUGIN_NAME,
           stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
         },
         () => {
-          const logger = compilation.getLogger(Plugin.PLUGIN_NAME);
-          new BsiCxWebpackPlugin(compiler, compilation, logger).apply();
+          const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
+          new _BsiCxWebpackPlugin(compiler, compilation, logger).apply();
         })
     });
   }
 };
-
-module.exports = Plugin;
