@@ -73,7 +73,7 @@ class _BsiCxWebpackPlugin {
     } catch (error) {
       if (error instanceof WebpackError) {
         this._compilation.errors.push(error);
-      } else if (error instanceof Error) {
+      } else {
         this._logger.error(error);
       }
     }
@@ -200,9 +200,10 @@ class _BsiCxWebpackPlugin {
   _loadAsset(name, scope) {
     let asset = this._compilation.getAsset(name);
     let script = new vm.Script(asset.source.source());
-    let context = {};
+    let context = { self: {} };
 
     script.runInNewContext(context);
+
 
     return context[scope];
   }

@@ -1,3 +1,4 @@
+require('bootstrap/dist/css/bootstrap.min.css');
 require('./static/styles.less');
 
 module.exports = {

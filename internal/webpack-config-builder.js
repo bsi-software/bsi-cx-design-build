@@ -82,9 +82,6 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
           ...cssLoaderChain,
           {
             loader: 'less-loader',
-            options: {
-              additionalData: ''
-            }
           }
         ]
       },
@@ -94,9 +91,6 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
           ...cssLoaderChain,
           {
             loader: 'sass-loader',
-            options: {
-              additionalData: ''
-            }
           }
         ]
       },
@@ -124,7 +118,7 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/styles-[contenthash].css'
+      filename: 'assets/styles-[contenthash].css',
     }),
     new BsiCxWebpackPlugin(),
     new ZipPlugin({
@@ -148,8 +142,27 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
     hints: false
   },
   optimization: {
+    runtimeChunk: false,
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
+      name: (module, _, cacheGroupKey) => {
+        return cacheGroupKey !== 'vendors' ? false : (module.rawRequest || false);
+      },
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10,
+          reuseExistingChunk: true,
+          filename: 'vendors/[name]-[chunkhash].js'
+        },
+        styles: {
+          name: 'styles',
+          type: 'css/mini-extract',
+          chunks: 'all',
+          priority: 20,
+          enforce: true,
+        },
+      }
     }
   },
   output: {
