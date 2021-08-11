@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import Constant from './constant';
+
 /**
  * 
  * @param {string} rootPath 
@@ -14,6 +16,66 @@ export function evaluateEntryTemplate(rootPath, name) {
   let extension = isTwig ? 'html' : 'hbs';
   return {
     import: isTwig ? twigFilePath : hbsFilePath,
-    filename: `${name}.${extension}`
+    filename: `${name}.${extension}`,
+    library: {
+      type: 'var',
+      name: '[name]'
+    }
   };
+}
+
+/**
+ * @param {{}} modules 
+ * @returns {{import:string,filename:string}}
+ */
+export function getJavaScriptModuleEntries(modules) {
+  let entries = {};
+  for (const [name, filePath] of Object.entries(modules)) {
+    entries[name] = {
+      import: path.resolve(filePath),
+      filename: 'modules/[name]-[contenthash].js'
+    };
+  }
+  return entries;
+}
+
+/**
+ * @param {{}} model 
+ * @returns {{}}
+ */
+export function getTwingLoaderOptions(model) {
+  return {
+    environmentModulePath: require.resolve('./twing-environment.js'),
+    renderContext: {
+      properties: model,
+      designBaseUrl: Constant.BSI_CX_DESIGN_BASE_URL
+    }
+  };
+}
+
+export class StaticJavaScriptCondition {
+  /**
+   * @type {RegExp}
+   */
+  static FILE_EXTENSION = /\.js/i;
+
+  /**
+   * @param {string} root 
+   * @param {string} file 
+   * @returns {boolean}
+   */
+  static isInsideStaticFolder(root, file) {
+    const staticFilePath = path.resolve(root, 'static') + path.sep;
+    return file.startsWith(staticFilePath);
+  }
+
+  /**
+   * @param {string} root 
+   * @param {string} file 
+   * @returns {boolean}
+   */
+  static test(root, file) {
+    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
+      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
+  }
 }

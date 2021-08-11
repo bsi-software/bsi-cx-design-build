@@ -3,7 +3,7 @@ import { createHash } from 'crypto';
 import vm from 'vm';
 
 import Handlebars from 'handlebars';
-import { Compilation, sources, Compiler, WebpackLogger } from 'webpack';
+import { Compilation, sources, Compiler, WebpackLogger, WebpackError } from 'webpack';
 
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
@@ -26,6 +26,19 @@ class _BsiCxWebpackPlugin {
    * @type {RegExp}
    */
   static STYLES_CSS = /^assets\/styles\-[0-9a-z]+\.css$/;
+  /**
+   * @type {RegExp}
+   */
+  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, 'g');
+
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE = new RegExp(`${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`, 'g');
 
   /**
    * @type {number}
@@ -57,8 +70,12 @@ class _BsiCxWebpackPlugin {
       this._handleDesignJson();
       this._exportDesignHtml();
       this._exportPreviewHtml();
-    } catch (e) {
-      this._logger.error(e);
+    } catch (error) {
+      if (error instanceof WebpackError) {
+        this._compilation.errors.push(error);
+      } else if (error instanceof Error) {
+        this._logger.error(error);
+      }
     }
   }
 
@@ -217,6 +234,7 @@ class _BsiCxWebpackPlugin {
 
     templateStr = templateStr.trim();
     templateStr = this._handleStylesheets(templateStr);
+    templateStr = this._handleJavaScriptModules(templateStr);
 
     this._updateAsset(filePath, templateStr);
 
@@ -243,10 +261,74 @@ class _BsiCxWebpackPlugin {
       .replace(/\n/g, '')
       .replace(/\.\.\/assets\//g, inlineSourceAssetsUrl);
 
-    content = content.replace(new RegExp(Constant.BSI_CX_CSS_INLINE, 'g'), source);
-    content = content.replace(new RegExp(Constant.BSI_CX_CSS_HREF, 'g'), linkStyleUrl);
+    content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
+    content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
 
     return content;
+  }
+
+  /**
+   * @param {string} content 
+   * @returns {string}
+   */
+  _handleJavaScriptModules(content) {
+    let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
+
+    for (const match of jsModuleMatches) {
+      content = this._handleFoundJavaScriptModule(content, match);
+    }
+
+    return content;
+  }
+
+  /**
+   * @param {string} content 
+   * @param {RegExpMatchArray} match 
+   * @returns {string}
+   */
+  _handleFoundJavaScriptModule(content, match) {
+    /**
+     * @type {{template:string,module:string}}
+     */
+    let metaInfo = JSON.parse(match.groups.metaInfo);
+    let strToReplace = match[0];
+    let module = metaInfo.module;
+    let moduleAssetRegex = new RegExp(`^modules\/${module}\-[0-9a-z]+\.js$`);
+    let moduleAssetPath = this._getAssetName(moduleAssetRegex);
+    let moduleAssetUrl = Constant.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
+
+    if (!moduleAssetPath) {
+      throw this._webpackError(
+        `Module "${module}" does not exist.`,
+        `The module "${module}" does not exist. You need to include it in your modules configuration.`,
+        metaInfo.template
+      );
+    }
+
+    return content.replace(strToReplace, moduleAssetUrl);
+  }
+
+  /**
+   * @param {string} message 
+   * @param {string} details 
+   * @param {string|undefined} [location=undefined]
+   * @returns 
+   */
+  _webpackError(message, details, location) {
+    let error = new WebpackError(message);
+    error.details = details;
+    if (!!location) {
+      error.loc = {
+        name: this._getContextRelativePath(location)
+      };
+    }
+    return error;
+  }
+
+  _getContextRelativePath(absolutePath) {
+    let contextPath = this._compiler.context;
+    let relativePath = path.relative(contextPath, absolutePath).replace(/\\/g, path.posix.sep);
+    return '.' + path.posix.sep + relativePath;
   }
 
   /**

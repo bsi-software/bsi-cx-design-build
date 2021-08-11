@@ -4,8 +4,10 @@ const webpackConfigBuilder = require('./internal/webpack-config-builder');
 const BuildConfig = require('./internal/build-config');
 
 const webpackConfigs = [
-  webpackConfigBuilder('landingpage', path.resolve(__dirname, 'template', 'landingpage')),
-  webpackConfigBuilder('email', path.resolve(__dirname, 'template', 'email')),
+  webpackConfigBuilder('landingpage', path.resolve(__dirname, 'template', 'landingpage'), {
+    main: path.resolve(__dirname, 'template', 'landingpage', 'modules', 'main.js')
+  }),
+  //webpackConfigBuilder('email', path.resolve(__dirname, 'template', 'email')),
 ];
 
 let devServerPort = undefined;

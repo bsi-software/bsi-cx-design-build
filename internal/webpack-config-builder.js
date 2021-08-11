@@ -5,7 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
 import constants from './constant';
-import { evaluateEntryTemplate } from './utility';
+import { evaluateEntryTemplate, getJavaScriptModuleEntries, getTwingLoaderOptions, StaticJavaScriptCondition } from './utility';
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
 
@@ -34,47 +34,50 @@ const cssLoaderChain = [
 
 /**
  * @param {string} name 
- * @param {string} rootPath 
+ * @param {string} rootPath
+ * @param {{}} [modules={}]
  * @param {{}} [model={}]
  * @param {number} [devServerPort=9000]
  * @returns 
  */
-module.exports = (name, rootPath, model, devServerPort) => ({
+module.exports = (name, rootPath, modules, model, devServerPort) => ({
   entry: () => ({
+    ...getJavaScriptModuleEntries(modules || {}),
     json: {
       import: path.resolve(rootPath, 'design.js'),
-      filename: 'design.json'
+      filename: 'design.json',
+      library: {
+        type: 'var',
+        name: '[name]'
+      }
     },
     design: evaluateEntryTemplate(rootPath, 'design'),
-    preview: evaluateEntryTemplate(rootPath, 'preview'),
+    preview: evaluateEntryTemplate(rootPath, 'preview')
   }),
   name: name,
   target: 'web',
   module: {
     rules: [
       {
-        test: /\.twig$/,
+        test: /\.twig$/i,
         use: [
           templateLoader,
           'ref-loader',
           {
             loader: 'twing-loader',
-            options: {
-              environmentModulePath: require.resolve('./twing-environment.js'),
-              renderContext: model || {}
-            }
+            options: getTwingLoaderOptions(model || {})
           }
         ]
       },
       {
-        test: /\.(html|hbs)$/,
+        test: /\.(html|hbs)$/i,
         use: [
           templateLoader,
           'ref-loader',
         ]
       },
       {
-        test: /\.less$/,
+        test: /\.less$/i,
         use: [
           ...cssLoaderChain,
           {
@@ -86,7 +89,7 @@ module.exports = (name, rootPath, model, devServerPort) => ({
         ]
       },
       {
-        test: /\.s[ac]ss$/,
+        test: /\.s[ac]ss$/i,
         use: [
           ...cssLoaderChain,
           {
@@ -98,20 +101,20 @@ module.exports = (name, rootPath, model, devServerPort) => ({
         ]
       },
       {
-        test: /\.css$/,
+        test: /\.css$/i,
         use: [
           ...cssLoaderChain
         ]
       },
       {
-        test: /\.(png|jpg|jpeg|webp)$/,
+        test: /\.(png|jpg|jpeg|webp|gif)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'assets/[name]-[contenthash][ext]'
         }
       },
       {
-        resource: /static.+\.js$/,
+        resource: (file) => StaticJavaScriptCondition.test(rootPath, file),
         type: 'asset/resource',
         generator: {
           filename: 'assets/[name]-[contenthash][ext]'
@@ -144,13 +147,17 @@ module.exports = (name, rootPath, model, devServerPort) => ({
   performance: {
     hints: false
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   output: {
     path: path.resolve(__dirname, '..', 'dist', name),
     publicPath: `${constants.BSI_CX_DESIGN_BASE_URL}/`,
-    library: {
-      type: 'var',
-      name: '[name]'
-    },
-    clean: true
+    clean: true,
+    enabledLibraryTypes: [
+      'var', 'umd', 'commonjs'
+    ]
   }
 });
