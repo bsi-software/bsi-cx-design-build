@@ -180,12 +180,19 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx 
+   * @returns {string[]}
+   */
+  _getAssetNames(nameRegEx) {
+    return Object.keys(this._compilation.assets)
+      .filter(name => nameRegEx.test(name));
+  }
+
+  /**
+   * @param {RegExp} nameRegEx 
    * @returns {string}
    */
   _getAssetName(nameRegEx) {
-    return Object.keys(this._compilation.assets)
-      .filter(name => nameRegEx.test(name))
-      .shift();
+    return this._getAssetNames(nameRegEx).shift();
   }
 
   _eval(source) {
@@ -285,9 +292,10 @@ class _BsiCxWebpackPlugin {
    */
   _handleJavaScriptModules(content) {
     let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
+    let importedModules = [];
 
     for (const match of jsModuleMatches) {
-      content = this._handleFoundJavaScriptModule(content, match);
+      content = this._handleFoundJavaScriptModule(content, match, importedModules);
     }
 
     content = this._injectModuleRuntime(content);
@@ -318,18 +326,36 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} content 
    * @param {RegExpMatchArray} match 
+   * @param {string[]} importedModules
    * @returns {string}
    */
-  _handleFoundJavaScriptModule(content, match) {
+  _handleFoundJavaScriptModule(content, match, importedModules) {
     /**
-     * @type {{template:string,module:string}}
+     * @type {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}}
      */
     let metaInfo = JSON.parse(match.groups.metaInfo);
     let strToReplace = match[0];
+    let replacement = '';
+
+    if (typeof metaInfo.module !== 'undefined') {
+      replacement = this._handleFoundJavaScriptModuleImport(metaInfo, importedModules);
+    } else if (typeof metaInfo.chunks !== 'undefined') {
+      replacement = this._handleFoundJavaScriptModuleChunks(metaInfo, importedModules);
+    }
+
+    return content.replace(strToReplace, replacement);
+  }
+
+  /**
+   * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
+   * @param {string[]} importedModules
+   * @returns {string}
+   */
+  _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
+    let inline = metaInfo.inline;
     let moduleAssetRegex = new RegExp(`^modules\/${module}\-[0-9a-z]+\.js$`);
     let moduleAssetPath = this._getAssetName(moduleAssetRegex);
-    let moduleAssetUrl = Constant.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
 
     if (!moduleAssetPath) {
       throw this._webpackError(
@@ -339,7 +365,45 @@ class _BsiCxWebpackPlugin {
       );
     }
 
-    return content.replace(strToReplace, moduleAssetUrl);
+    let replacement = '';
+
+    if (inline) {
+      let asset = this._compilation.getAsset(moduleAssetPath);
+      replacement = asset.source();
+    } else {
+      replacement = Constant.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
+    }
+
+    importedModules.push(moduleAssetPath);
+
+    return replacement;
+  }
+
+  /**
+   * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
+   * @param {string[]} importedModules
+   * @returns {string}
+   */
+  _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
+    let inline = metaInfo.inline;
+    let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
+    let assetPaths = this._getAssetNames(assetRegex);
+
+    let replacement = assetPaths
+      .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
+      .map(assetPath => {
+        importedModules.push(assetPath);
+
+        if (inline) {
+          let asset = this._compilation.getAsset(assetPath);
+          return `<script>${asset.source()}</script>`;
+        } else {
+          let url = Constant.BSI_CX_DESIGN_BASE_URL + '/' + assetPath;
+          return `<script src="${url}" defer="defer"></script>`;
+        }
+      }).join('');
+
+    return replacement;
   }
 
   /**

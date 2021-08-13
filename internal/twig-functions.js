@@ -1,9 +1,28 @@
 import fs from 'fs';
 import path from 'path';
 
-import { TwingFunction } from 'twing';
+import { TwingFunction, TwingTemplate } from 'twing';
 
 import Constant from './constant';
+
+/**
+ * 
+ * @param {TwingTemplate} template 
+ * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
+ * @param {boolean} chunks 
+ * @param {boolean} inline 
+ * @returns {Promise<string>}
+ */
+function bsiCxJsModuleImport(template, config, inline) {
+  let templatePath = template.source.getResolvedName();
+  let metaInfo = {
+    ...config,
+    template: templatePath,
+    inline: inline
+  };
+  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
+  return Promise.resolve(placeholder);
+}
 
 /**
  * Resolve static assets.
@@ -30,16 +49,45 @@ export const bsiCxCssInline = new TwingFunction('bsi_cx_css_inline', () => {
 }, [], {});
 
 /**
- * 
+ * Get URL to the requested JS module.
  */
 export const bsiCxJsModuleHref = new TwingFunction('bsi_cx_js_module_href', (template, module) => {
-  let templatePath = template.source.getResolvedName();
-  let metaInfo = {
-    template: templatePath,
+  let config = {
     module: module
   };
-  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
-  return Promise.resolve(placeholder)
+  return bsiCxJsModuleImport(template, config, false);
+}, [], { needs_template: true, is_safe: ['html'] });
+
+/**
+ * Get the content of the requested JS module.
+ */
+export const bsiCxJsModuleInline = new TwingFunction('bsi_cx_js_module_inline', (template, module) => {
+  let config = {
+    module: module
+  };
+  return bsiCxJsModuleImport(template, config, true);
+}, [], { needs_template: true, is_safe: ['html'] });
+
+/**
+ * Import all missing JS module chunks.
+ */
+export const bsiCxJsModuleMissingChunksImport = new TwingFunction('bsi_cx_js_module_missing_chunks_import', (template, attributes) => {
+  let config = {
+    chunks: true,
+    attributes: attributes || {}
+  };
+  return bsiCxJsModuleImport(template, config, false);
+}, [], { needs_template: true, is_safe: ['html'] });
+
+/**
+ * Inline all missing JS module chunks.
+ */
+export const bsiCxJsModuleMissingChunksInline = new TwingFunction('bsi_cx_js_module_missing_chunks_inline', (template, attributes) => {
+  let config = {
+    chunks: true,
+    attributes: attributes || {}
+  };
+  return bsiCxJsModuleImport(template, config, true);
 }, [], { needs_template: true, is_safe: ['html'] });
 
 /**
