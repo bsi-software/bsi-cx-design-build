@@ -29,7 +29,10 @@ export const bsiCxCssInline = new TwingFunction('bsi_cx_css_inline', () => {
   return Promise.resolve(Constant.BSI_CX_CSS_INLINE);
 }, [], {});
 
-export const bsiCxJsModule = new TwingFunction('bsi_cx_js_module', (template, module) => {
+/**
+ * 
+ */
+export const bsiCxJsModuleHref = new TwingFunction('bsi_cx_js_module_href', (template, module) => {
   let templatePath = template.source.getResolvedName();
   let metaInfo = {
     template: templatePath,
@@ -38,3 +41,17 @@ export const bsiCxJsModule = new TwingFunction('bsi_cx_js_module', (template, mo
   let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
   return Promise.resolve(placeholder)
 }, [], { needs_template: true, is_safe: ['html'] });
+
+/**
+ * Get URL to the JS runtime module.
+ */
+export const bsiCxJsModuleRuntimeHref = new TwingFunction('bsi_cx_js_module_runtime_href', () => {
+  return Promise.resolve(Constant.BSI_CX_MODULE_RUNTIME_HREF);
+}, [], {});
+
+/**
+ * Get the contents of the JS runtime module.
+ */
+export const bsiCxJsModuleRuntimeInline = new TwingFunction('bsi_cx_js_module_runtime_inline', () => {
+  return Promise.resolve(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
+}, [], {});

@@ -4,7 +4,7 @@ import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
-import constants from './constant';
+import Constant from './constant';
 import { evaluateEntryTemplate, getJavaScriptModuleEntries, getTwingLoaderOptions, StaticJavaScriptCondition } from './utility';
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
@@ -45,11 +45,7 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
     ...getJavaScriptModuleEntries(modules || {}),
     json: {
       import: path.resolve(rootPath, 'design.js'),
-      filename: 'design.json',
-      library: {
-        type: 'var',
-        name: '[name]'
-      }
+      filename: 'design.json'
     },
     design: evaluateEntryTemplate(rootPath, 'design'),
     preview: evaluateEntryTemplate(rootPath, 'preview')
@@ -142,7 +138,6 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
     hints: false
   },
   optimization: {
-    runtimeChunk: false,
     splitChunks: {
       chunks: 'all',
       name: (module, _, cacheGroupKey) => {
@@ -167,10 +162,11 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
   },
   output: {
     path: path.resolve(__dirname, '..', 'dist', name),
-    publicPath: `${constants.BSI_CX_DESIGN_BASE_URL}/`,
+    publicPath: `${Constant.BSI_CX_DESIGN_BASE_URL}/`,
     clean: true,
-    enabledLibraryTypes: [
-      'var', 'umd', 'commonjs'
-    ]
+    library: {
+      type: 'var',
+      name: '[name]'
+    }
   }
 });

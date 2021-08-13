@@ -14,6 +14,18 @@ export default class Constant {
   /**
    * @type {string}
    */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
   static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
   /**
    * @type {string}

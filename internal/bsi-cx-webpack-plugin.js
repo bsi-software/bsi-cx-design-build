@@ -39,6 +39,18 @@ class _BsiCxWebpackPlugin {
    * @type {RegExp}
    */
   static JS_MODULE = new RegExp(`${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE_RUNTIME_HREF = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_HREF, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE_RUNTIME_INLINE = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE_RUNTIME = new RegExp(`^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
 
   /**
    * @type {number}
@@ -204,7 +216,6 @@ class _BsiCxWebpackPlugin {
 
     script.runInNewContext(context);
 
-
     return context[scope];
   }
 
@@ -278,6 +289,28 @@ class _BsiCxWebpackPlugin {
     for (const match of jsModuleMatches) {
       content = this._handleFoundJavaScriptModule(content, match);
     }
+
+    content = this._injectModuleRuntime(content);
+
+    return content;
+  }
+
+  _injectModuleRuntime(content) {
+    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
+
+    if (filename === undefined) {
+      return content;
+    }
+
+    let url = publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
+    let asset = this._compilation.getAsset(filename);
+    let source = asset.source.source()
+      .trim()
+      .replace(/\n/g, '');
+
+    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
+    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
 
     return content;
   }

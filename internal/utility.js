@@ -16,11 +16,7 @@ export function evaluateEntryTemplate(rootPath, name) {
   let extension = isTwig ? 'html' : 'hbs';
   return {
     import: isTwig ? twigFilePath : hbsFilePath,
-    filename: `${name}.${extension}`,
-    library: {
-      type: 'var',
-      name: '[name]'
-    }
+    filename: `${name}.${extension}`
   };
 }
 
@@ -33,7 +29,8 @@ export function getJavaScriptModuleEntries(modules) {
   for (const [name, filePath] of Object.entries(modules)) {
     entries[name] = {
       import: path.resolve(filePath),
-      filename: 'modules/[name]-[contenthash].js'
+      filename: 'modules/[name]-[contenthash].js',
+      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
     };
   }
   return entries;
