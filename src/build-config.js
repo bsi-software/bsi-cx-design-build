@@ -10,6 +10,10 @@ export default class BuildConfig {
     /**
      * @type {string}
      */
+    this._version = '1.0.0';
+    /**
+     * @type {string}
+     */
     this._rootPath = undefined;
     /**
      * @type {{*}}

@@ -89,3 +89,16 @@ export function performanceAssetFilter(assetFilename) {
 
   return !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename);
 }
+
+/**
+ * 
+ * @param {string} name 
+ * @param {string} version 
+ * @param {string} [suffix='']
+ */
+export function getZipArchiveName(name, version, suffix) {
+  let filename = [name, version, suffix]
+    .filter(value => !!value)
+    .join('-');
+  return `${filename}.zip`;
+}

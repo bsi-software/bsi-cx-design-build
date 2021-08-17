@@ -480,7 +480,11 @@ class _BsiCxWebpackPlugin {
 }
 
 export default class BsiCxWebpackPlugin {
+  /**
+   * @type {string}
+   */
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
+
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
       compilation.hooks.processAssets.tap(

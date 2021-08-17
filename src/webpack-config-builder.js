@@ -6,8 +6,9 @@ import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
+import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
-import { evaluateEntryTemplate, getJavaScriptModuleEntries, getTwingLoaderOptions, performanceAssetFilter, StaticJavaScriptCondition } from './utility';
+import { evaluateEntryTemplate, getJavaScriptModuleEntries, getTwingLoaderOptions, getZipArchiveName, performanceAssetFilter, StaticJavaScriptCondition } from './utility';
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
 
@@ -133,14 +134,6 @@ module.exports = (name, version, rootPath, modules, model, additionalFilesToCopy
     new MiniCssExtractPlugin({
       filename: 'static/styles-[contenthash].css',
     }),
-    new BsiCxWebpackPlugin(),
-    new ZipPlugin({
-      filename: `${name}-${version}.zip`,
-      exclude: [/\.map$/]
-    }),
-    new ZipPlugin({
-      filename: `${name}-${version}-dev.zip`,
-    }),
     new CopyPlugin({
       patterns: [
         {
@@ -156,7 +149,16 @@ module.exports = (name, version, rootPath, modules, model, additionalFilesToCopy
         },
         ...(additionalFilesToCopy || [])
       ]
-    })
+    }),
+    new BsiCxWebpackPlugin(),
+    new ZipPlugin({
+      filename: getZipArchiveName(name, version),
+      exclude: [/\.map$/]
+    }),
+    new ZipPlugin({
+      filename: getZipArchiveName(name, version, 'dev'),
+    }),
+    new BsiCxWebpackZipHashPlugin(name, version, true)
   ],
   devtool: 'source-map',
   devServer: {
