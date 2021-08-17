@@ -1,7 +1,7 @@
 const path = require('path');
 
-const webpackConfigBuilder = require('./internal/webpack-config-builder');
-const BuildConfig = require('./internal/build-config');
+const webpackConfigBuilder = require('./src/webpack-config-builder');
+const BuildConfig = require('./src/build-config');
 
 const webpackConfigs = [
   webpackConfigBuilder('landingpage', '1.0.0', path.resolve(__dirname, 'template', 'landingpage'), {
