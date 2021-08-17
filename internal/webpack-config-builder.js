@@ -36,6 +36,7 @@ const cssLoaderChain = [
 
 /**
  * @param {string} name 
+ * @param {string} version
  * @param {string} rootPath
  * @param {{}} [modules={}]
  * @param {{}} [model={}]
@@ -43,7 +44,7 @@ const cssLoaderChain = [
  * @param {number} [devServerPort=9000]
  * @returns 
  */
-module.exports = (name, rootPath, modules, model, additionalFilesToCopy, devServerPort) => ({
+module.exports = (name, version, rootPath, modules, model, additionalFilesToCopy, devServerPort) => ({
   entry: () => ({
     ...getJavaScriptModuleEntries(modules || {}),
     json: {
@@ -134,7 +135,11 @@ module.exports = (name, rootPath, modules, model, additionalFilesToCopy, devServ
     }),
     new BsiCxWebpackPlugin(),
     new ZipPlugin({
-      filename: `${name}.zip`
+      filename: `${name}-${version}.zip`,
+      exclude: [/\.map$/]
+    }),
+    new ZipPlugin({
+      filename: `${name}-${version}-dev.zip`,
     }),
     new CopyPlugin({
       patterns: [
