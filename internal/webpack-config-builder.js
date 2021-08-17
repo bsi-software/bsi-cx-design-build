@@ -3,10 +3,11 @@ import path from 'path';
 import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
 import Constant from './constant';
-import { evaluateEntryTemplate, getJavaScriptModuleEntries, getTwingLoaderOptions, StaticJavaScriptCondition } from './utility';
+import { evaluateEntryTemplate, getJavaScriptModuleEntries, getTwingLoaderOptions, performanceAssetFilter, StaticJavaScriptCondition } from './utility';
 
 const templateLoader = path.resolve(__dirname, 'template-loader.js');
 
@@ -112,6 +113,18 @@ module.exports = (name, rootPath, modules, model, additionalFilesToCopy, devServ
         generator: {
           filename: 'static/[name]-[contenthash][ext]'
         }
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-transform-runtime'],
+            cacheDirectory: true
+          }
+        }
       }
     ]
   },
@@ -140,7 +153,7 @@ module.exports = (name, rootPath, modules, model, additionalFilesToCopy, devServ
       ]
     })
   ],
-  devtool: false,
+  devtool: 'source-map',
   devServer: {
     port: devServerPort || 9000,
     contentBase: path.resolve(__dirname, '..', 'dist'),
@@ -154,9 +167,16 @@ module.exports = (name, rootPath, modules, model, additionalFilesToCopy, devServ
     errorDetails: true,
   },
   performance: {
-    hints: false
+    assetFilter: performanceAssetFilter,
+    hints: 'warning'
   },
   optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false
+      })
+    ],
     splitChunks: {
       chunks: 'all',
       name: (module, _, cacheGroupKey) => {

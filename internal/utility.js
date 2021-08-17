@@ -62,7 +62,7 @@ export class StaticJavaScriptCondition {
    * @returns {boolean}
    */
   static isInsideStaticFolder(root, file) {
-    const staticFilePath = path.resolve(root, 'static') + path.sep;
+    let staticFilePath = path.resolve(root, 'static') + path.sep;
     return file.startsWith(staticFilePath);
   }
 
@@ -75,4 +75,17 @@ export class StaticJavaScriptCondition {
     return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
       && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
   }
+}
+
+/**
+ * @param {string} assetFilename 
+ * @returns {boolean}
+ */
+export function performanceAssetFilter(assetFilename) {
+  let excludedAssets = [
+    'design.json',
+  ];
+  let excludedExtensions = /\.(map|zip|html|hbs)$/;
+
+  return !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename);
 }
