@@ -108,12 +108,18 @@ class _BsiCxWebpackPlugin {
   _handleDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     let designJsonObj = this._loadAsset(designJsonPath, 'json');
+    let contentElementGroups = designJsonObj.contentElementGroups || [];
+    let website = designJsonObj.website || { includes: {} };
+    let websiteIncludes = website.includes || {};
 
     this._handleDesignPreviewImage(designJsonObj);
 
-    designJsonObj.contentElementGroups
+    contentElementGroups
       .forEach(group => group.contentElements
         .forEach(element => this._handleElement(element)));
+
+    Object.values(websiteIncludes)
+      .forEach(include => this._handleInclude(include));
 
     let jsonStr = JSON.stringify(designJsonObj, null, 4);
     this._updateAsset(designJsonPath, jsonStr);
@@ -126,21 +132,26 @@ class _BsiCxWebpackPlugin {
   }
 
   _handleElement(element) {
-    element.file = this._handleElementFile(element.file);
+    element.file = this._handleTemplateFile(element.file, 'contentElements');
+  }
+
+  _handleInclude(include) {
+    include.file = this._handleTemplateFile(include.file, 'includes');
   }
 
   /**
    * @param {{content:string,path:string}} fileObj
+   * @param {string} baseFolder
    * @returns {string}
    */
-  _handleElementFile(fileObj) {
+  _handleTemplateFile(fileObj, baseFolder) {
     let rawContent = fileObj.content;
     let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
     let originalExtension = path.extname(fileObj.path);
     let fileName = path.basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
     let contentHash = this._createContentHash(content);
-    let extension = this._getElementFileExtension(fileObj.path);
-    let elementFilePath = `contentElements${path.posix.sep}${fileName}-${contentHash}.${extension}`;
+    let extension = this._getTemplateFileExtension(fileObj.path);
+    let elementFilePath = `${baseFolder}${path.posix.sep}${fileName}-${contentHash}.${extension}`;
 
     this._emitAsset(elementFilePath, content);
 
@@ -168,7 +179,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} fileName
    * @returns {string}
    */
-  _getElementFileExtension(fileName) {
+  _getTemplateFileExtension(fileName) {
     if (/\.hbs\.twig$/.test(fileName)) {
       return 'hbs';
     }

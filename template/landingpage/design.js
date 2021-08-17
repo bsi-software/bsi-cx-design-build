@@ -24,5 +24,11 @@ module.exports = {
         require('./content-elements/content/header')
       ]
     }
-  ]
+  ],
+  website: {
+    maxNavigationLevel: 2,
+    includes: {
+      __page__: require('./includes/page')
+    }
+  }
 };
