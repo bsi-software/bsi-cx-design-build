@@ -25,7 +25,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = /^assets\/styles\-[0-9a-z]+\.css$/;
+  static STYLES_CSS = /^static\/styles\-[0-9a-z]+\.css$/;
   /**
    * @type {RegExp}
    */
@@ -284,12 +284,12 @@ class _BsiCxWebpackPlugin {
     }
 
     let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
-    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/assets/` : './assets/';
+    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/static/` : './static/';
     let asset = this._compilation.getAsset(cssStylesFilename);
     let source = asset.source.source()
       .trim()
       .replace(/\n/g, '')
-      .replace(/\.\.\/assets\//g, inlineSourceAssetsUrl);
+      .replace(/\.\.\/static\//g, inlineSourceAssetsUrl);
 
     content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
     content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);

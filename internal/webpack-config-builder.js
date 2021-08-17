@@ -2,6 +2,7 @@ import path from 'path';
 
 import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
 import Constant from './constant';
@@ -37,10 +38,11 @@ const cssLoaderChain = [
  * @param {string} rootPath
  * @param {{}} [modules={}]
  * @param {{}} [model={}]
+ * @param {{}[]} [additionalFilesToCopy=[]]
  * @param {number} [devServerPort=9000]
  * @returns 
  */
-module.exports = (name, rootPath, modules, model, devServerPort) => ({
+module.exports = (name, rootPath, modules, model, additionalFilesToCopy, devServerPort) => ({
   entry: () => ({
     ...getJavaScriptModuleEntries(modules || {}),
     json: {
@@ -51,6 +53,7 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
     preview: evaluateEntryTemplate(rootPath, 'preview')
   }),
   name: name,
+  context: rootPath,
   target: 'web',
   module: {
     rules: [
@@ -100,25 +103,41 @@ module.exports = (name, rootPath, modules, model, devServerPort) => ({
         test: /\.(png|jpg|jpeg|webp|gif)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name]-[contenthash][ext]'
+          filename: 'static/[name]-[contenthash][ext]'
         }
       },
       {
         resource: (file) => StaticJavaScriptCondition.test(rootPath, file),
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name]-[contenthash][ext]'
+          filename: 'static/[name]-[contenthash][ext]'
         }
       }
     ]
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/styles-[contenthash].css',
+      filename: 'static/styles-[contenthash].css',
     }),
     new BsiCxWebpackPlugin(),
     new ZipPlugin({
       filename: `${name}.zip`
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'assets/**/*',
+          globOptions: {
+            dot: true,
+            ignore: ['**/.gitkeep', '**/.gitignore']
+          },
+          noErrorOnMissing: true,
+          info: {
+            minimized: true
+          },
+        },
+        ...(additionalFilesToCopy || [])
+      ]
     })
   ],
   devtool: false,
