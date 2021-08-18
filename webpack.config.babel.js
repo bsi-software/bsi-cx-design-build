@@ -1,22 +1,14 @@
-const path = require('path');
+import path from 'path';
 
-const webpackConfigBuilder = require('./src/webpack-config-builder');
-const BuildConfig = require('./src/build-config');
+import WebpackConfigBuilder from './src/webpack-config-builder';
+import BuildConfig from './src/build-config';
 
-const webpackConfigs = [
-  webpackConfigBuilder('landingpage', '1.0.0', path.resolve(__dirname, 'template', 'landingpage'), {
-    main: path.resolve(__dirname, 'template', 'landingpage', 'modules', 'main.js'),
-    additional: path.resolve(__dirname, 'template', 'landingpage', 'modules', 'additional.js')
-  }),
-];
 
-let devServerPort = undefined;
-
-module.exports = webpackConfigs.map((config, index) => {
-  if (index === 0) {
-    devServerPort = config.devServer.port;
-  } else if (config.devServer.port === devServerPort) {
-    delete config.devServer;
-  }
-  return config;
-});
+export default WebpackConfigBuilder.fromConfigs(
+  new BuildConfig()
+    .withName('landingpage')
+    .withVersion('1.0.0')
+    .withRootPath(path.resolve(__dirname, 'template', 'landingpage'))
+    .withModule('main', path.resolve(__dirname, 'template', 'landingpage', 'modules', 'main.js'))
+    .withModule('additional', path.resolve(__dirname, 'template', 'landingpage', 'modules', 'additional.js'))
+);
