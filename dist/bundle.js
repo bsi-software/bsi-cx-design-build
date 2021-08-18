@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"), require("@bsi-cx/design-build"));
+		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"), require("@bsi-cx/design-build/dist/template-loader"));
 	else if(typeof define === 'function' && define.amd)
-		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack", "twing", "@bsi-cx/design-build"], factory);
+		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack", "twing", "@bsi-cx/design-build/dist/template-loader"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"), require("@bsi-cx/design-build")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"], root["twing"], root["@bsi-cx/design-build"]);
+		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"), require("@bsi-cx/design-build/dist/template-loader")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"], root["twing"], root["@bsi-cx/design-build/dist/template-loader"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__, __WEBPACK_EXTERNAL_MODULE__317__, __WEBPACK_EXTERNAL_MODULE__92__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__, __WEBPACK_EXTERNAL_MODULE__317__, __WEBPACK_EXTERNAL_MODULE__85__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -198,10 +198,10 @@ module.exports = twing;
 
 /***/ }),
 
-/***/ 92:
+/***/ 85:
 /***/ ((module) => {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__92__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__85__;
 
 /***/ }),
 
@@ -379,8 +379,7 @@ __webpack_require__.d(__webpack_exports__, {
   "BsiCxWebpackPlugin": () => (/* reexport */ BsiCxWebpackPlugin),
   "BsiCxWebpackZipHashPlugin": () => (/* reexport */ BsiCxWebpackZipHashPlugin),
   "BuildConfig": () => (/* reexport */ BuildConfig),
-  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
-  "templateLoader": () => (/* reexport */ template_loader)
+  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
 });
 
 ;// CONCATENATED MODULE: ./src/build-config.js
@@ -1620,7 +1619,7 @@ class WebpackConfigBuilder {
    * @returns {string}
    */
   _getTemplateLoader() {
-    return __webpack_require__(92).templateLoader;
+    return /*require.resolve*/(85);
   }
 
   /**
@@ -1874,22 +1873,7 @@ class WebpackConfigBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/template-loader.js
-/* harmony default export */ function template_loader(sourceToConvert) {
-  let source = sourceToConvert.trim().replace(/\;$/, '');
-  let resource = JSON.stringify(this.resource);
-
-  return `
-  ${source};
-  module.exports = {
-    content: module.exports,
-    path: ${resource}
-  };
-  `.trim();
-};
-
 ;// CONCATENATED MODULE: ./index.js
-
 
 
 
@@ -1903,4 +1887,4 @@ class WebpackConfigBuilder {
 /******/ })()
 ;
 });
-//# sourceMappingURL=bundle.min.js.map
+//# sourceMappingURL=bundle.js.map

@@ -303,7 +303,7 @@ export default class WebpackConfigBuilder {
    * @returns {string}
    */
   _getTemplateLoader() {
-    return require.resolve('@bsi-cx/design-build').templateLoader;
+    return require.resolve('@bsi-cx/design-build/dist/template-loader');
   }
 
   /**

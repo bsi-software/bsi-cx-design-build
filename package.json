@@ -1,8 +1,8 @@
 {
   "name": "@bsi-cx/design-build",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.4",
   "description": "A webpack config builder to create a design for BSI CX.",
-  "main": "dist/bundle.min.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --config webpack.config.js --mode=production"
   },
