@@ -1,202 +1,16 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"));
+		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"));
 	else if(typeof define === 'function' && define.amd)
-		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack", "twing"], factory);
+		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"], root["twing"]);
+		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__, __WEBPACK_EXTERNAL_MODULE__317__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 911:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ Constant)
-/* harmony export */ });
-class Constant {
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
-};
-
-
-/***/ }),
-
-/***/ 115:
-/***/ ((module, __unused_webpack___webpack_exports__, __webpack_require__) => {
-
-
-// EXTERNAL MODULE: external {"root":"twing","commonjs":"twing","commonjs2":"twing","amd":"twing"}
-var external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_ = __webpack_require__(317);
-// EXTERNAL MODULE: external {"root":"path","commonjs":"path","commonjs2":"path","amd":"path"}
-var external_root_path_commonjs_path_commonjs2_path_amd_path_ = __webpack_require__(281);
-var external_root_path_commonjs_path_commonjs2_path_amd_path_default = /*#__PURE__*/__webpack_require__.n(external_root_path_commonjs_path_commonjs2_path_amd_path_);
-// EXTERNAL MODULE: ./src/constant.js
-var constant = __webpack_require__(911);
-;// CONCATENATED MODULE: ./src/twig-functions.js
-
-
-
-
-
-
-/**
- * 
- * @param {TwingTemplate} template 
- * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
- * @param {boolean} chunks 
- * @param {boolean} inline 
- * @returns {Promise<string>}
- */
-function bsiCxJsModuleImport(template, config, inline) {
-  let templatePath = template.source.getResolvedName();
-  let metaInfo = {
-    ...config,
-    template: templatePath,
-    inline: inline
-  };
-  let placeholder = constant/* default.BSI_CX_JS_MODULE_START */.Z.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + constant/* default.BSI_CX_JS_MODULE_END */.Z.BSI_CX_JS_MODULE_END;
-  return Promise.resolve(placeholder);
-}
-
-/**
- * Resolve static assets.
- */
-const bsiCxAsset = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_asset', (template, assetPath) => {
-  let templatePath = template.source.getResolvedName();
-  let templateDirPath = external_root_path_commonjs_path_commonjs2_path_amd_path_default().dirname(templatePath);
-  let absoluteAssetPath = external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(templateDirPath, assetPath).replace(/\\/g, (external_root_path_commonjs_path_commonjs2_path_amd_path_default()).posix.sep);
-  return Promise.resolve(`@ref(${absoluteAssetPath})`);
-}, [], { needs_template: true });
-
-/**
- * Get URL to the CSS asset.
- */
-const bsiCxCssHref = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_css_href', () => {
-  return Promise.resolve(constant/* default.BSI_CX_CSS_HREF */.Z.BSI_CX_CSS_HREF);
-}, [], {});
-
-/**
- * Get the contents of the CSS asset.
- */
-const bsiCxCssInline = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_css_inline', () => {
-  return Promise.resolve(constant/* default.BSI_CX_CSS_INLINE */.Z.BSI_CX_CSS_INLINE);
-}, [], {});
-
-/**
- * Get URL to the requested JS module.
- */
-const bsiCxJsModuleHref = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_js_module_href', (template, module) => {
-  let config = {
-    module: module
-  };
-  return bsiCxJsModuleImport(template, config, false);
-}, [], { needs_template: true, is_safe: ['html'] });
-
-/**
- * Get the content of the requested JS module.
- */
-const bsiCxJsModuleInline = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_js_module_inline', (template, module) => {
-  let config = {
-    module: module
-  };
-  return bsiCxJsModuleImport(template, config, true);
-}, [], { needs_template: true, is_safe: ['html'] });
-
-/**
- * Import all missing JS module chunks.
- */
-const bsiCxJsModuleMissingChunksImport = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_js_module_missing_chunks_import', (template, attributes) => {
-  let config = {
-    chunks: true,
-    attributes: attributes || {}
-  };
-  return bsiCxJsModuleImport(template, config, false);
-}, [], { needs_template: true, is_safe: ['html'] });
-
-/**
- * Inline all missing JS module chunks.
- */
-const bsiCxJsModuleMissingChunksInline = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_js_module_missing_chunks_inline', (template, attributes) => {
-  let config = {
-    chunks: true,
-    attributes: attributes || {}
-  };
-  return bsiCxJsModuleImport(template, config, true);
-}, [], { needs_template: true, is_safe: ['html'] });
-
-/**
- * Get URL to the JS runtime module.
- */
-const bsiCxJsModuleRuntimeHref = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_js_module_runtime_href', () => {
-  return Promise.resolve(constant/* default.BSI_CX_MODULE_RUNTIME_HREF */.Z.BSI_CX_MODULE_RUNTIME_HREF);
-}, [], {});
-
-/**
- * Get the contents of the JS runtime module.
- */
-const bsiCxJsModuleRuntimeInline = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingFunction('bsi_cx_js_module_runtime_inline', () => {
-  return Promise.resolve(constant/* default.BSI_CX_MODULE_RUNTIME_INLINE */.Z.BSI_CX_MODULE_RUNTIME_INLINE);
-}, [], {});
-
-;// CONCATENATED MODULE: ./src/twing-environment.js
-/* module decorator */ module = __webpack_require__.hmd(module);
-
-
-
-
-let twing = new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingEnvironment(
-  new external_root_twing_commonjs_twing_commonjs2_twing_amd_twing_.TwingLoaderRelativeFilesystem()
-);
-
-twing.addFunction(bsiCxAsset);
-twing.addFunction(bsiCxCssHref);
-twing.addFunction(bsiCxCssInline);
-twing.addFunction(bsiCxJsModuleHref);
-twing.addFunction(bsiCxJsModuleInline);
-twing.addFunction(bsiCxJsModuleMissingChunksImport);
-twing.addFunction(bsiCxJsModuleMissingChunksInline);
-twing.addFunction(bsiCxJsModuleRuntimeHref);
-twing.addFunction(bsiCxJsModuleRuntimeInline);
-
-module.exports = twing;
-
-
-/***/ }),
 
 /***/ 432:
 /***/ ((module) => {
@@ -247,13 +61,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__239__;
 
 /***/ }),
 
-/***/ 317:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__317__;
-
-/***/ }),
-
 /***/ 714:
 /***/ ((module) => {
 
@@ -289,16 +96,13 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -326,21 +130,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -693,8 +482,42 @@ var external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_ = __we
   'bsi.nls': key => key
 });
 
-// EXTERNAL MODULE: ./src/constant.js
-var constant = __webpack_require__(911);
+;// CONCATENATED MODULE: ./src/constant.js
+class Constant {
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+};
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
 
 
@@ -727,28 +550,28 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static CSS_INLINE = new RegExp(constant/* default.BSI_CX_CSS_INLINE */.Z.BSI_CX_CSS_INLINE, 'g');
+  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, 'g');
   /**
    * @type {RegExp}
    */
-  static CSS_HREF = new RegExp(constant/* default.BSI_CX_CSS_HREF */.Z.BSI_CX_CSS_HREF, 'g');
+  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, 'g');
 
   /**
    * @type {RegExp}
    */
-  static JS_MODULE = new RegExp(`${constant/* default.BSI_CX_JS_MODULE_START */.Z.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${constant/* default.BSI_CX_JS_MODULE_END */.Z.BSI_CX_JS_MODULE_END}`, 'g');
+  static JS_MODULE = new RegExp(`${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`, 'g');
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME_HREF = new RegExp(constant/* default.BSI_CX_MODULE_RUNTIME_HREF */.Z.BSI_CX_MODULE_RUNTIME_HREF, 'g');
+  static JS_MODULE_RUNTIME_HREF = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_HREF, 'g');
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME_INLINE = new RegExp(constant/* default.BSI_CX_MODULE_RUNTIME_INLINE */.Z.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
+  static JS_MODULE_RUNTIME_INLINE = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME = new RegExp(`^${constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
+  static JS_MODULE_RUNTIME = new RegExp(`^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
 
   /**
    * @type {number}
@@ -1080,7 +903,7 @@ class _BsiCxWebpackPlugin {
       let asset = this._compilation.getAsset(moduleAssetPath);
       replacement = asset.source();
     } else {
-      replacement = constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
+      replacement = Constant.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
     }
 
     importedModules.push(moduleAssetPath);
@@ -1099,7 +922,7 @@ class _BsiCxWebpackPlugin {
     let assetPaths = this._getAssetNames(assetRegex);
 
     let replacement = assetPaths
-      .filter(assetPath => !assetPath.startsWith(constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
+      .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
       .map(assetPath => {
         importedModules.push(assetPath);
 
@@ -1107,7 +930,7 @@ class _BsiCxWebpackPlugin {
           let asset = this._compilation.getAsset(assetPath);
           return `<script>${asset.source()}</script>`;
         } else {
-          let url = constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL + '/' + assetPath;
+          let url = Constant.BSI_CX_DESIGN_BASE_URL + '/' + assetPath;
           return `<script src="${url}" defer="defer"></script>`;
         }
       }).join('');
@@ -1173,7 +996,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _removeDesignBaseUrl(url) {
-    return url.replace(`${constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL}/`, '');
+    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
   }
 }
 
@@ -1441,7 +1264,7 @@ class WebpackConfigBuilder {
       entries[name] = {
         import: external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(filePath),
         filename: 'modules/[name]-[contenthash].js',
-        runtime: constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH
+        runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
       };
     }
     return entries;
@@ -1462,10 +1285,10 @@ class WebpackConfigBuilder {
           {
             loader: 'twing-loader',
             options: {
-              environmentModulePath: /*require.resolve*/(115),
+              environmentModulePath: '@bsi-cx/design-build/dist/twing-environment.js',
               renderContext: {
                 properties: this.config.properties,
-                designBaseUrl: constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL
+                designBaseUrl: Constant.BSI_CX_DESIGN_BASE_URL
               }
             }
           }
@@ -1834,7 +1657,7 @@ class WebpackConfigBuilder {
   _getOutputConfig() {
     return {
       path: this._getOutputPath(),
-      publicPath: `${constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL}/`,
+      publicPath: `${Constant.BSI_CX_DESIGN_BASE_URL}/`,
       clean: true,
       library: {
         type: 'var',

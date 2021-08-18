@@ -153,7 +153,7 @@ export default class WebpackConfigBuilder {
           {
             loader: 'twing-loader',
             options: {
-              environmentModulePath: require.resolve('./twing-environment.js'),
+              environmentModulePath: '@bsi-cx/design-build/dist/twing-environment.js',
               renderContext: {
                 properties: this.config.properties,
                 designBaseUrl: Constant.BSI_CX_DESIGN_BASE_URL
