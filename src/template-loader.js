@@ -1,4 +1,4 @@
-module.exports = function (sourceToConvert) {
+export default function (sourceToConvert) {
   let source = sourceToConvert.trim().replace(/\;$/, '');
   let resource = JSON.stringify(this.resource);
 

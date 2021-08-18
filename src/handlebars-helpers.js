@@ -1,3 +1,3 @@
-module.exports = {
+export default handlebarsHelpers = {
   'bsi.nls': key => key
 };
