@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"), require("@bsi-cx/design-build/dist/template-loader"));
+		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"));
 	else if(typeof define === 'function' && define.amd)
-		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack", "twing", "@bsi-cx/design-build/dist/template-loader"], factory);
+		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack", "twing"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing"), require("@bsi-cx/design-build/dist/template-loader")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"], root["twing"], root["@bsi-cx/design-build/dist/template-loader"]);
+		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"), require("twing")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"], root["twing"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__, __WEBPACK_EXTERNAL_MODULE__317__, __WEBPACK_EXTERNAL_MODULE__85__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__, __WEBPACK_EXTERNAL_MODULE__317__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -195,13 +195,6 @@ twing.addFunction(bsiCxJsModuleRuntimeInline);
 
 module.exports = twing;
 
-
-/***/ }),
-
-/***/ 85:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__85__;
 
 /***/ }),
 
@@ -1619,7 +1612,7 @@ class WebpackConfigBuilder {
    * @returns {string}
    */
   _getTemplateLoader() {
-    return /*require.resolve*/(85);
+    return '@bsi-cx/design-build/dist/template-loader';
   }
 
   /**
