@@ -1,3 +1,3 @@
-export default handlebarsHelpers = {
+export default {
   'bsi.nls': key => key
 };
