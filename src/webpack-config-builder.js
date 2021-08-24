@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 
+import packageJson from '../package.json';
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
@@ -153,7 +154,7 @@ export default class WebpackConfigBuilder {
           {
             loader: 'twing-loader',
             options: {
-              environmentModulePath: '@bsi-cx/design-build/dist/twing-environment.js',
+              environmentModulePath: `${packageJson.name}/dist/twing-environment.js`,
               renderContext: {
                 properties: this.config.properties,
                 designBaseUrl: Constant.BSI_CX_DESIGN_BASE_URL
@@ -303,7 +304,7 @@ export default class WebpackConfigBuilder {
    * @returns {string}
    */
   _getTemplateLoader() {
-    return '@bsi-cx/design-build/dist/template-loader';
+    return `${packageJson.name}/dist/template-loader`;
   }
 
   /**
