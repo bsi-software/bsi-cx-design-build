@@ -4,7 +4,9 @@
   "description": "A webpack config builder to create a design for BSI CX.",
   "main": "dist/bundle.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js --mode=production"
+    "build": "webpack --config webpack.config.js --mode=production",
+    "watch": "webpack --config webpack.config.js --mode=production --watch",
+    "test": "cd test && webpack --config webpack.config.js --mode production"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "bugs": {
@@ -43,6 +45,7 @@
     "zip-webpack-plugin": "^4.0.1"
   },
   "devDependencies": {
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "@bsi-cx/design-build": "file:."
   }
 }
