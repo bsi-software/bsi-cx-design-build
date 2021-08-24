@@ -1,3 +1,6 @@
+import DesignType from './design-type';
+import Version from './version';
+
 /**
  * The configuration object for the build of one template.
  */
@@ -11,6 +14,14 @@ export default class BuildConfig {
      * @type {string}
      */
     this._version = '1.0.0';
+    /**
+     * @type {Version}
+     */
+    this._targetVersion = Version.CX_22_0;
+    /**
+     * @type {DesignType}
+     */
+    this._designType = DesignType.LANDINGPAGE;
     /**
      * @type {string}
      */
@@ -57,6 +68,20 @@ export default class BuildConfig {
    */
   get version() {
     return this._version;
+  }
+
+  /**
+   * @returns {Version}
+   */
+  get targetVersion() {
+    return this._targetVersion;
+  }
+
+  /**
+   * @returns {DesignType}
+   */
+  get designType() {
+    return this._designType;
   }
 
   /**
@@ -134,6 +159,30 @@ export default class BuildConfig {
    */
   withVersion(version) {
     this._version = version;
+    return this;
+  }
+
+  /**
+   * The application version of BSI CX (or BSI Studio) this design is built for. 
+   * 
+   * @see Checkout {@link Version} for available versions.
+   * @param {Version} version 
+   * @returns 
+   */
+  withTargetVersion(version) {
+    this._targetVersion = version;
+    return this;
+  }
+
+  /**
+   * The type of this design (e.g. email or landingpage).
+   * 
+   * @see Checkout {@link DesignType} for available types.
+   * @param {DesignType} type 
+   * @returns 
+   */
+  withDesignType(type) {
+    this._designType = type;
     return this;
   }
 
@@ -254,6 +303,8 @@ export default class BuildConfig {
   validate() {
     this._checkInstanceofAndRequired('name', String, true);
     this._checkInstanceofAndRequired('version', String, true);
+    this._checkInstanceofAndRequired('targetVersion', Version, true);
+    this._checkInstanceofAndRequired('designType', DesignType, true);
     this._checkInstanceofAndRequired('rootPath', String, true);
     this._checkInstanceofAndRequired('outputPath', String, false);
     this._checkInstanceofAndRequired('properties', Object, false);
