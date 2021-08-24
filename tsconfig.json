@@ -1,10 +1,15 @@
 {
+    "exclude": [
+        "src/**/*"
+    ],
     "include": [
         "index.ts"
     ],
     "compilerOptions": {
         "allowJs": true,
         "declaration": true,
-        "declarationMap": false
+        "declarationMap": false,
+        "declarationDir": ".",
+        "outDir": "dist"
     }
 }
