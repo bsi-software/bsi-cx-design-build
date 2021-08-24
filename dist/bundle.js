@@ -1,112 +1,7 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack"));
-	else if(typeof define === 'function' && define.amd)
-		define(["fs", "path", "zip-webpack-plugin", "mini-css-extract-plugin", "copy-webpack-plugin", "terser-webpack-plugin", "crypto", "vm", "handlebars", "webpack"], factory);
-	else {
-		var a = typeof exports === 'object' ? factory(require("fs"), require("path"), require("zip-webpack-plugin"), require("mini-css-extract-plugin"), require("copy-webpack-plugin"), require("terser-webpack-plugin"), require("crypto"), require("vm"), require("handlebars"), require("webpack")) : factory(root["fs"], root["path"], root["zip-webpack-plugin"], root["mini-css-extract-plugin"], root["copy-webpack-plugin"], root["terser-webpack-plugin"], root["crypto"], root["vm"], root["handlebars"], root["webpack"]);
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__790__, __WEBPACK_EXTERNAL_MODULE__281__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__432__, __WEBPACK_EXTERNAL_MODULE__239__, __WEBPACK_EXTERNAL_MODULE__703__, __WEBPACK_EXTERNAL_MODULE__714__, __WEBPACK_EXTERNAL_MODULE__350__, __WEBPACK_EXTERNAL_MODULE__373__) {
-return /******/ (() => { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 432:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__432__;
-
-/***/ }),
-
-/***/ 703:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__703__;
-
-/***/ }),
-
-/***/ 790:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__790__;
-
-/***/ }),
-
-/***/ 350:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__350__;
-
-/***/ }),
-
-/***/ 68:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__68__;
-
-/***/ }),
-
-/***/ 281:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__281__;
-
-/***/ }),
-
-/***/ 239:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__239__;
-
-/***/ }),
-
-/***/ 714:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__714__;
-
-/***/ }),
-
-/***/ 373:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__373__;
-
-/***/ }),
-
-/***/ 18:
-/***/ ((module) => {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -151,8 +46,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -164,6 +57,8 @@ __webpack_require__.d(__webpack_exports__, {
   "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
 });
 
+;// CONCATENATED MODULE: external "source-map-support/register"
+const register_namespaceObject = require("source-map-support/register");
 ;// CONCATENATED MODULE: ./src/build-config.js
 /**
  * The configuration object for the build of one template.
@@ -449,34 +344,34 @@ class BuildConfig {
   }
 }
 
-// EXTERNAL MODULE: external {"root":"fs","commonjs":"fs","commonjs2":"fs","amd":"fs"}
-var external_root_fs_commonjs_fs_commonjs2_fs_amd_fs_ = __webpack_require__(790);
-var external_root_fs_commonjs_fs_commonjs2_fs_amd_fs_default = /*#__PURE__*/__webpack_require__.n(external_root_fs_commonjs_fs_commonjs2_fs_amd_fs_);
-// EXTERNAL MODULE: external {"root":"path","commonjs":"path","commonjs2":"path","amd":"path"}
-var external_root_path_commonjs_path_commonjs2_path_amd_path_ = __webpack_require__(281);
-var external_root_path_commonjs_path_commonjs2_path_amd_path_default = /*#__PURE__*/__webpack_require__.n(external_root_path_commonjs_path_commonjs2_path_amd_path_);
-// EXTERNAL MODULE: external {"root":"zip-webpack-plugin","commonjs":"zip-webpack-plugin","commonjs2":"zip-webpack-plugin","amd":"zip-webpack-plugin"}
-var external_root_zip_webpack_plugin_commonjs_zip_webpack_plugin_commonjs2_zip_webpack_plugin_amd_zip_webpack_plugin_ = __webpack_require__(18);
-var external_root_zip_webpack_plugin_commonjs_zip_webpack_plugin_commonjs2_zip_webpack_plugin_amd_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_root_zip_webpack_plugin_commonjs_zip_webpack_plugin_commonjs2_zip_webpack_plugin_amd_zip_webpack_plugin_);
-// EXTERNAL MODULE: external {"root":"mini-css-extract-plugin","commonjs":"mini-css-extract-plugin","commonjs2":"mini-css-extract-plugin","amd":"mini-css-extract-plugin"}
-var external_root_mini_css_extract_plugin_commonjs_mini_css_extract_plugin_commonjs2_mini_css_extract_plugin_amd_mini_css_extract_plugin_ = __webpack_require__(68);
-var external_root_mini_css_extract_plugin_commonjs_mini_css_extract_plugin_commonjs2_mini_css_extract_plugin_amd_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_root_mini_css_extract_plugin_commonjs_mini_css_extract_plugin_commonjs2_mini_css_extract_plugin_amd_mini_css_extract_plugin_);
-// EXTERNAL MODULE: external {"root":"copy-webpack-plugin","commonjs":"copy-webpack-plugin","commonjs2":"copy-webpack-plugin","amd":"copy-webpack-plugin"}
-var external_root_copy_webpack_plugin_commonjs_copy_webpack_plugin_commonjs2_copy_webpack_plugin_amd_copy_webpack_plugin_ = __webpack_require__(432);
-var external_root_copy_webpack_plugin_commonjs_copy_webpack_plugin_commonjs2_copy_webpack_plugin_amd_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_root_copy_webpack_plugin_commonjs_copy_webpack_plugin_commonjs2_copy_webpack_plugin_amd_copy_webpack_plugin_);
-// EXTERNAL MODULE: external {"root":"terser-webpack-plugin","commonjs":"terser-webpack-plugin","commonjs2":"terser-webpack-plugin","amd":"terser-webpack-plugin"}
-var external_root_terser_webpack_plugin_commonjs_terser_webpack_plugin_commonjs2_terser_webpack_plugin_amd_terser_webpack_plugin_ = __webpack_require__(239);
-var external_root_terser_webpack_plugin_commonjs_terser_webpack_plugin_commonjs2_terser_webpack_plugin_amd_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_root_terser_webpack_plugin_commonjs_terser_webpack_plugin_commonjs2_terser_webpack_plugin_amd_terser_webpack_plugin_);
-// EXTERNAL MODULE: external {"root":"crypto","commonjs":"crypto","commonjs2":"crypto","amd":"crypto"}
-var external_root_crypto_commonjs_crypto_commonjs2_crypto_amd_crypto_ = __webpack_require__(703);
-// EXTERNAL MODULE: external {"root":"vm","commonjs":"vm","commonjs2":"vm","amd":"vm"}
-var external_root_vm_commonjs_vm_commonjs2_vm_amd_vm_ = __webpack_require__(714);
-var external_root_vm_commonjs_vm_commonjs2_vm_amd_vm_default = /*#__PURE__*/__webpack_require__.n(external_root_vm_commonjs_vm_commonjs2_vm_amd_vm_);
-// EXTERNAL MODULE: external {"root":"handlebars","commonjs":"handlebars","commonjs2":"handlebars","amd":"handlebars"}
-var external_root_handlebars_commonjs_handlebars_commonjs2_handlebars_amd_handlebars_ = __webpack_require__(350);
-var external_root_handlebars_commonjs_handlebars_commonjs2_handlebars_amd_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_root_handlebars_commonjs_handlebars_commonjs2_handlebars_amd_handlebars_);
-// EXTERNAL MODULE: external {"root":"webpack","commonjs":"webpack","commonjs2":"webpack","amd":"webpack"}
-var external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_ = __webpack_require__(373);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+;// CONCATENATED MODULE: external "zip-webpack-plugin"
+const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
+var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "mini-css-extract-plugin"
+const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
+var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "copy-webpack-plugin"
+const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
+var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "terser-webpack-plugin"
+const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
+var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "crypto"
+const external_crypto_namespaceObject = require("crypto");
+;// CONCATENATED MODULE: external "vm"
+const external_vm_namespaceObject = require("vm");
+var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
+;// CONCATENATED MODULE: external "handlebars"
+const external_handlebars_namespaceObject = require("handlebars");
+var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
+;// CONCATENATED MODULE: external "webpack"
+const external_webpack_namespaceObject = require("webpack");
 ;// CONCATENATED MODULE: ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
@@ -604,7 +499,7 @@ class _BsiCxWebpackPlugin {
       this._exportDesignHtml();
       this._exportPreviewHtml();
     } catch (error) {
-      if (error instanceof external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_.WebpackError) {
+      if (error instanceof external_webpack_namespaceObject.WebpackError) {
         this._compilation.errors.push(error);
       } else {
         this._logger.error(error);
@@ -668,11 +563,11 @@ class _BsiCxWebpackPlugin {
   _handleTemplateFile(fileObj, baseFolder) {
     let rawContent = fileObj.content;
     let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
-    let originalExtension = external_root_path_commonjs_path_commonjs2_path_amd_path_default().extname(fileObj.path);
-    let fileName = external_root_path_commonjs_path_commonjs2_path_amd_path_default().basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
+    let originalExtension = external_path_default().extname(fileObj.path);
+    let fileName = external_path_default().basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
     let contentHash = this._createContentHash(content);
     let extension = this._getTemplateFileExtension(fileObj.path);
-    let elementFilePath = `${baseFolder}${(external_root_path_commonjs_path_commonjs2_path_amd_path_default()).posix.sep}${fileName}-${contentHash}.${extension}`;
+    let elementFilePath = `${baseFolder}${(external_path_default()).posix.sep}${fileName}-${contentHash}.${extension}`;
 
     this._emitAsset(elementFilePath, content);
 
@@ -728,7 +623,7 @@ class _BsiCxWebpackPlugin {
   }
 
   _eval(source) {
-    let script = new (external_root_vm_commonjs_vm_commonjs2_vm_amd_vm_default()).Script(source);
+    let script = new (external_vm_default()).Script(source);
     let context = { module: {} };
     script.runInNewContext(context);
     return context.module.exports;
@@ -739,7 +634,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} content 
    */
   _updateAsset(filePath, content) {
-    let source = new external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_.sources.RawSource(content);
+    let source = new external_webpack_namespaceObject.sources.RawSource(content);
     this._compilation.updateAsset(filePath, source);
   }
 
@@ -750,7 +645,7 @@ class _BsiCxWebpackPlugin {
    */
   _loadAsset(name, scope) {
     let asset = this._compilation.getAsset(name);
-    let script = new (external_root_vm_commonjs_vm_commonjs2_vm_amd_vm_default()).Script(asset.source.source());
+    let script = new (external_vm_default()).Script(asset.source.source());
     let context = { self: {} };
 
     script.runInNewContext(context);
@@ -763,7 +658,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} source 
    */
   _emitAsset(filePath, content) {
-    let source = new external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_.sources.RawSource(content);
+    let source = new external_webpack_namespaceObject.sources.RawSource(content);
     this._compilation.emitAsset(filePath, source);
   }
 
@@ -945,7 +840,7 @@ class _BsiCxWebpackPlugin {
    * @returns 
    */
   _webpackError(message, details, location) {
-    let error = new external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_.WebpackError(message);
+    let error = new external_webpack_namespaceObject.WebpackError(message);
     error.details = details;
     if (!!location) {
       error.loc = {
@@ -957,8 +852,8 @@ class _BsiCxWebpackPlugin {
 
   _getContextRelativePath(absolutePath) {
     let contextPath = this._compiler.context;
-    let relativePath = external_root_path_commonjs_path_commonjs2_path_amd_path_default().relative(contextPath, absolutePath).replace(/\\/g, (external_root_path_commonjs_path_commonjs2_path_amd_path_default()).posix.sep);
-    return '.' + (external_root_path_commonjs_path_commonjs2_path_amd_path_default()).posix.sep + relativePath;
+    let relativePath = external_path_default().relative(contextPath, absolutePath).replace(/\\/g, (external_path_default()).posix.sep);
+    return '.' + (external_path_default()).posix.sep + relativePath;
   }
 
   /**
@@ -966,7 +861,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _createContentHash(content) {
-    return (0,external_root_crypto_commonjs_crypto_commonjs2_crypto_amd_crypto_.createHash)('sha256')
+    return (0,external_crypto_namespaceObject.createHash)('sha256')
       .update(content)
       .digest('hex')
       .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
@@ -976,7 +871,7 @@ class _BsiCxWebpackPlugin {
    * @returns {Handlebars}
    */
   _getHandlebarsParser() {
-    return external_root_handlebars_commonjs_handlebars_commonjs2_handlebars_amd_handlebars_default().create();
+    return external_handlebars_default().create();
   }
 
   /**
@@ -1011,7 +906,7 @@ class BsiCxWebpackPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: BsiCxWebpackPlugin.PLUGIN_NAME,
-          stage: external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+          stage: external_webpack_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
@@ -1037,7 +932,7 @@ class StaticJavaScriptCondition {
    * @returns {boolean}
    */
   static isInsideStaticFolder(root, file) {
-    let staticFilePath = external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(root, 'static') + (external_root_path_commonjs_path_commonjs2_path_amd_path_default()).sep;
+    let staticFilePath = external_path_default().resolve(root, 'static') + (external_path_default()).sep;
     return file.startsWith(staticFilePath);
   }
 
@@ -1098,7 +993,7 @@ class BsiCxWebpackZipHashPlugin {
   _handleZipAsset(compilation, asset) {
     let oldAssetName = asset.name;
     let source = asset.source;
-    let hash = (0,external_root_crypto_commonjs_crypto_commonjs2_crypto_amd_crypto_.createHash)('sha256')
+    let hash = (0,external_crypto_namespaceObject.createHash)('sha256')
       .update(source.source())
       .digest('hex')
       .substr(0, 5);
@@ -1113,7 +1008,7 @@ class BsiCxWebpackZipHashPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: BsiCxWebpackZipHashPlugin.PLUGIN_NAME,
-          stage: external_root_webpack_commonjs_webpack_commonjs2_webpack_amd_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
+          stage: external_webpack_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
         },
         () => {
           if (!this._enabled) {
@@ -1207,7 +1102,7 @@ class WebpackConfigBuilder {
    * @returns {string}
    */
   _getDefaultOutputPath() {
-    return external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(process.cwd(), 'dist', this.config.name);
+    return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
   }
 
   /**
@@ -1228,7 +1123,7 @@ class WebpackConfigBuilder {
     return {
       ...this._getJavaScriptModuleEntries(),
       json: {
-        import: external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(this.config.rootPath, 'design.js'),
+        import: external_path_default().resolve(this.config.rootPath, 'design.js'),
         filename: 'design.json'
       },
       design: this._evaluateEntryTemplate('design'),
@@ -1243,9 +1138,9 @@ class WebpackConfigBuilder {
    * @returns {{}}
    */
   _evaluateEntryTemplate(name) {
-    let twigFilePath = external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(this.config.rootPath, `${name}.twig`);
-    let hbsFilePath = external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
-    let isTwig = external_root_fs_commonjs_fs_commonjs2_fs_amd_fs_default().existsSync(twigFilePath);
+    let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
+    let hbsFilePath = external_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
+    let isTwig = external_fs_default().existsSync(twigFilePath);
     let extension = isTwig ? 'html' : 'hbs';
     return {
       import: isTwig ? twigFilePath : hbsFilePath,
@@ -1262,7 +1157,7 @@ class WebpackConfigBuilder {
     let entries = {};
     for (const [name, filePath] of Object.entries(this.config.modules)) {
       entries[name] = {
-        import: external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(filePath),
+        import: external_path_default().resolve(filePath),
         filename: 'modules/[name]-[contenthash].js',
         runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
       };
@@ -1444,7 +1339,7 @@ class WebpackConfigBuilder {
   _getCssLoaderChain() {
     return [
       {
-        loader: (external_root_mini_css_extract_plugin_commonjs_mini_css_extract_plugin_commonjs2_mini_css_extract_plugin_amd_mini_css_extract_plugin_default()).loader,
+        loader: (external_mini_css_extract_plugin_default()).loader,
         options: {
           publicPath: '../'
         }
@@ -1473,7 +1368,7 @@ class WebpackConfigBuilder {
    */
   _getMiniCssExtractPluginConfig() {
     return [
-      new (external_root_mini_css_extract_plugin_commonjs_mini_css_extract_plugin_commonjs2_mini_css_extract_plugin_amd_mini_css_extract_plugin_default())({
+      new (external_mini_css_extract_plugin_default())({
         filename: 'static/styles-[contenthash].css',
       })
     ];
@@ -1486,7 +1381,7 @@ class WebpackConfigBuilder {
    */
   _getCopyPluginConfig() {
     return [
-      new (external_root_copy_webpack_plugin_commonjs_copy_webpack_plugin_commonjs2_copy_webpack_plugin_amd_copy_webpack_plugin_default())({
+      new (external_copy_webpack_plugin_default())({
         patterns: [
           {
             from: 'assets/**/*',
@@ -1523,7 +1418,7 @@ class WebpackConfigBuilder {
    */
   _getZipPluginConfig() {
     let plugins = [
-      new (external_root_zip_webpack_plugin_commonjs_zip_webpack_plugin_commonjs2_zip_webpack_plugin_amd_zip_webpack_plugin_default())({
+      new (external_zip_webpack_plugin_default())({
         filename: getZipArchiveName(this.config.name, this.config.version),
         exclude: [/\.map$/]
       })
@@ -1531,7 +1426,7 @@ class WebpackConfigBuilder {
 
     if (this.config.sourceMapEnabled) {
       plugins.push(
-        new (external_root_zip_webpack_plugin_commonjs_zip_webpack_plugin_commonjs2_zip_webpack_plugin_amd_zip_webpack_plugin_default())({
+        new (external_zip_webpack_plugin_default())({
           filename: getZipArchiveName(this.config.name, this.config.version, 'dev'),
         })
       );
@@ -1560,7 +1455,7 @@ class WebpackConfigBuilder {
    */
   _getDevServerConfig() {
     let outputPath = this._getOutputPath();
-    let contentBase = outputPath === this._getDefaultOutputPath() ? external_root_path_commonjs_path_commonjs2_path_amd_path_default().resolve(outputPath, '..') : process.cwd();
+    let contentBase = outputPath === this._getDefaultOutputPath() ? external_path_default().resolve(outputPath, '..') : process.cwd();
     let zipRegEx = /\.zip$/i;
 
     return {
@@ -1609,7 +1504,7 @@ class WebpackConfigBuilder {
    */
   _getOptimizationMinimizerConfig() {
     return [
-      new (external_root_terser_webpack_plugin_commonjs_terser_webpack_plugin_commonjs2_terser_webpack_plugin_amd_terser_webpack_plugin_default())({
+      new (external_terser_webpack_plugin_default())({
         extractComments: false
       })
     ];
@@ -1697,10 +1592,11 @@ class WebpackConfigBuilder {
 
 
 
-})();
 
-/******/ 	return __webpack_exports__;
+
+var __webpack_export_target__ = exports;
+for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
-});
 //# sourceMappingURL=bundle.js.map

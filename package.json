@@ -1,6 +1,6 @@
 {
   "name": "@bsi-cx/design-build",
-  "version": "1.0.0-rc.6",
+  "version": "1.0.0-rc.7",
   "description": "A webpack config builder to create a design for BSI CX.",
   "main": "dist/bundle.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "ref-loader": "^1.0.3",
     "sass": "^1.35.1",
     "sass-loader": "^12.1.0",
+    "source-map-support": "^0.5.19",
     "terser-webpack-plugin": "^5.1.4",
     "twing": "^5.0.2",
     "twing-loader": "ofabel/twing-loader#bugfix/issue_25_30",
@@ -36,5 +37,8 @@
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2",
     "zip-webpack-plugin": "^4.0.1"
+  },
+  "devDependencies": {
+    "webpack-node-externals": "^3.0.0"
   }
 }

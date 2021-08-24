@@ -1,3 +1,5 @@
+import 'source-map-support/register';
+
 import { TwingEnvironment, TwingLoaderRelativeFilesystem } from 'twing';
 
 import { bsiCxAsset, bsiCxCssHref, bsiCxCssInline, bsiCxJsModuleHref, bsiCxJsModuleInline, bsiCxJsModuleMissingChunksImport, bsiCxJsModuleMissingChunksInline, bsiCxJsModuleRuntimeHref, bsiCxJsModuleRuntimeInline } from './twig-functions';
@@ -16,4 +18,4 @@ twing.addFunction(bsiCxJsModuleMissingChunksInline);
 twing.addFunction(bsiCxJsModuleRuntimeHref);
 twing.addFunction(bsiCxJsModuleRuntimeInline);
 
-module.exports = twing;
+export default twing;
