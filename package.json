@@ -6,6 +6,10 @@
   "scripts": {
     "build": "webpack --config webpack.config.js --mode=production"
   },
+  "repository": "github:bsi-software/bsi-cx-design-build",
+  "bugs": {
+    "url": "https://github.com/bsi-software/bsi-cx-design-build/issues"
+  },
   "author": "Oliver Fabel <Oliver.Fabel@bsi-software.com>",
   "license": "ISC",
   "dependencies": {
@@ -32,7 +36,7 @@
     "source-map-support": "^0.5.19",
     "terser-webpack-plugin": "^5.1.4",
     "twing": "^5.0.2",
-    "twing-loader": "ofabel/twing-loader#bugfix/issue_25_30",
+    "twing-loader": "github:ofabel/twing-loader#bugfix/issue_25_30",
     "webpack": "^5.40.0",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2",
