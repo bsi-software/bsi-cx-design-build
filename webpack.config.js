@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const nodeExternals = require('webpack-node-externals');
 
-let index = path.resolve(__dirname, 'index.js');
+let index = path.resolve(__dirname, 'index.ts');
 let templateLoader = path.resolve(__dirname, 'src', 'template-loader.js');
 let twingEnvironment = path.resolve(__dirname, 'src', 'twing-environment.js');
 
@@ -28,6 +28,18 @@ module.exports = {
         export: 'default'
       }
     }
+  },
+  module: {
+    rules: [
+      {
+        test: index,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          reportFiles: []
+        }
+      }
+    ]
   },
   externalsPresets: {
     node: true
