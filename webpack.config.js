@@ -3,10 +3,29 @@ const webpack = require('webpack');
 
 const nodeExternals = require('webpack-node-externals');
 
-let index = path.resolve(__dirname, 'export', 'index.js');
-let htmlEditorConfig = path.resolve(__dirname, 'export', 'html-editor-config.js');
+let index = path.resolve(__dirname, 'index.js');
 let templateLoader = path.resolve(__dirname, 'src', 'template-loader.js');
 let twingEnvironment = path.resolve(__dirname, 'src', 'twing-environment.js');
+
+/**
+ * @param {string} modulePath
+ * @param {string|undefined} [output=undefined]
+ * @returns {{}}
+ */
+function addCommonJsEntry(modulePath, output) {
+  let filename = modulePath + '.js';
+  let entryConfig = {};
+
+  entryConfig[modulePath] = {
+    import: path.resolve(__dirname, 'src', filename),
+    filename: output || filename,
+    library: {
+      type: 'commonjs'
+    }
+  };
+
+  return entryConfig;
+}
 
 module.exports = {
   entry: {
@@ -16,12 +35,18 @@ module.exports = {
         type: 'commonjs'
       }
     },
-    'html-editor-config': {
-      import: htmlEditorConfig,
+    'html-editor-config/index': {
+      import: path.resolve(__dirname, 'src', 'html-editor-config', 'html-editor-config-builder.js'),
+      filename: 'html-editor-config/index.js',
       library: {
-        type: 'commonjs'
+        type: 'commonjs2',
+        export: 'default'
       }
     },
+    ...addCommonJsEntry('html-editor-config/enter-mode'),
+    ...addCommonJsEntry('html-editor-config/feature'),
+    ...addCommonJsEntry('html-editor-config/font-size-unit'),
+    ...addCommonJsEntry('html-editor-config/format'),
     'template-loader': {
       import: templateLoader,
       library: {

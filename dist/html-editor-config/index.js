@@ -1,127 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-var __webpack_exports__ = {};
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
+/******/ 	var __webpack_modules__ = ({
 
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
-  "Feature": () => (/* reexport */ feature_namespaceObject),
-  "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
-  "Format": () => (/* reexport */ format_namespaceObject),
-  "HtmlEditorConfigBuilder": () => (/* reexport */ HtmlEditorConfigBuilder)
-});
+/***/ 42:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-// NAMESPACE OBJECT: ./src/html-editor-config/enter-mode.js
-var enter_mode_namespaceObject = {};
-__webpack_require__.r(enter_mode_namespaceObject);
-__webpack_require__.d(enter_mode_namespaceObject, {
-  "BR": () => (BR),
-  "DIV": () => (DIV),
-  "P": () => (P),
-  "default": () => (EnterMode)
-});
-
-// NAMESPACE OBJECT: ./src/html-editor-config/feature.js
-var feature_namespaceObject = {};
-__webpack_require__.r(feature_namespaceObject);
-__webpack_require__.d(feature_namespaceObject, {
-  "ALIGN_CENTER": () => (ALIGN_CENTER),
-  "ALIGN_JUSTIFY": () => (ALIGN_JUSTIFY),
-  "ALIGN_LEFT": () => (ALIGN_LEFT),
-  "ALIGN_RIGHT": () => (ALIGN_RIGHT),
-  "BACKGROUND_COLOR": () => (BACKGROUND_COLOR),
-  "BOLD": () => (BOLD),
-  "CLEAR_FORMATTING": () => (CLEAR_FORMATTING),
-  "EMOTICONS": () => (EMOTICONS),
-  "FONT_SIZE": () => (FONT_SIZE),
-  "FORMAT_OL": () => (FORMAT_OL),
-  "FORMAT_UL": () => (FORMAT_UL),
-  "FULLSCREEN": () => (FULLSCREEN),
-  "HELP": () => (HELP),
-  "HTML": () => (HTML),
-  "INDENT": () => (INDENT),
-  "INSERT_LINK": () => (INSERT_LINK),
-  "ITALIC": () => (ITALIC),
-  "LINE_HEIGHT": () => (LINE_HEIGHT),
-  "OUTDENT": () => (OUTDENT),
-  "PARAGRAPH_FORMAT": () => (PARAGRAPH_FORMAT),
-  "QUOTE": () => (QUOTE),
-  "REDO": () => (REDO),
-  "SELECT_ALL": () => (SELECT_ALL),
-  "SPECIAL_CHARACTERS": () => (SPECIAL_CHARACTERS),
-  "STRIKE_THROUGH": () => (STRIKE_THROUGH),
-  "SUBSCRIPT": () => (SUBSCRIPT),
-  "SUPERSCRIPT": () => (SUPERSCRIPT),
-  "TEXT_COLOR": () => (TEXT_COLOR),
-  "UNDERLINE": () => (UNDERLINE),
-  "UNDO": () => (UNDO),
-  "default": () => (Feature)
-});
-
-// NAMESPACE OBJECT: ./src/html-editor-config/format.js
-var format_namespaceObject = {};
-__webpack_require__.r(format_namespaceObject);
-__webpack_require__.d(format_namespaceObject, {
-  "H1": () => (H1),
-  "H2": () => (H2),
-  "H3": () => (H3),
-  "H4": () => (H4),
-  "H5": () => (H5),
-  "H6": () => (H6),
-  "P": () => (format_P),
-  "PRE": () => (PRE),
-  "default": () => (Format)
-});
-
-// NAMESPACE OBJECT: ./src/html-editor-config/font-size-unit.js
-var font_size_unit_namespaceObject = {};
-__webpack_require__.r(font_size_unit_namespaceObject);
-__webpack_require__.d(font_size_unit_namespaceObject, {
-  "CM": () => (CM),
-  "EM": () => (EM),
-  "MM": () => (MM),
-  "PT": () => (PT),
-  "PX": () => (PX),
-  "REM": () => (REM),
-  "default": () => (FontSizeUnit)
-});
-
-;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
+/* unused harmony exports default, P, BR, DIV */
 class EnterMode {
   /**
    * @param {string} value
@@ -155,7 +39,13 @@ const BR = new EnterMode('br');
  */
 const DIV = new EnterMode('div');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
+
+/***/ }),
+
+/***/ 770:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* unused harmony exports default, BOLD, ITALIC, UNDERLINE, STRIKE_THROUGH, SUBSCRIPT, SUPERSCRIPT, FONT_SIZE, LINE_HEIGHT, TEXT_COLOR, BACKGROUND_COLOR, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_JUSTIFY, FORMAT_OL, FORMAT_UL, OUTDENT, INDENT, PARAGRAPH_FORMAT, QUOTE, SPECIAL_CHARACTERS, EMOTICONS, INSERT_LINK, CLEAR_FORMATTING, UNDO, REDO, FULLSCREEN, SELECT_ALL, HTML, HELP */
 class Feature {
   /**
    * @param {string} value
@@ -297,61 +187,13 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/format.js
-class Format {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
 
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
-}
+/***/ }),
 
-/**
- * @type {Format}
- */
-const format_P = new Format('p');
-/**
- * @type {Format}
- */
-const H1 = new Format('h1');
-/**
- * @type {Format}
- */
-const H2 = new Format('h2');
-/**
- * @type {Format}
- */
-const H3 = new Format('h3');
-/**
- * @type {Format}
- */
-const H4 = new Format('h4');
-/**
- * @type {Format}
- */
-const H5 = new Format('h5');
-/**
- * @type {Format}
- */
-const H6 = new Format('h6');
-/**
- * @type {Format}
- */
-const PRE = new Format('pre');
+/***/ 774:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
+/* unused harmony exports default, PX, EM, REM, PT, CM, MM */
 class FontSizeUnit {
   /**
    * @param {string} value
@@ -397,7 +239,124 @@ const CM = new FontSizeUnit('cm');
  */
 const MM = new FontSizeUnit('mm');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config-builder.js
+
+/***/ }),
+
+/***/ 46:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* unused harmony exports default, P, H1, H2, H3, H4, H5, H6, PRE */
+class Format {
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+}
+
+/**
+ * @type {Format}
+ */
+const P = new Format('p');
+/**
+ * @type {Format}
+ */
+const H1 = new Format('h1');
+/**
+ * @type {Format}
+ */
+const H2 = new Format('h2');
+/**
+ * @type {Format}
+ */
+const H3 = new Format('h3');
+/**
+ * @type {Format}
+ */
+const H4 = new Format('h4');
+/**
+ * @type {Format}
+ */
+const H5 = new Format('h5');
+/**
+ * @type {Format}
+ */
+const H6 = new Format('h6');
+/**
+ * @type {Format}
+ */
+const PRE = new Format('pre');
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HtmlEditorConfigBuilder)
+/* harmony export */ });
+/* harmony import */ var _enter_mode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42);
+/* harmony import */ var _feature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(770);
+/* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(46);
+/* harmony import */ var _font_size_unit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(774);
 
 
 
@@ -658,19 +617,9 @@ class HtmlEditorConfigBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./export/html-editor-config.js
+})();
 
-
-
-
-
-
-
-
-
-var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
-if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
+module.exports = __webpack_exports__.default;
 /******/ })()
 ;
-//# sourceMappingURL=html-editor-config.js.map
+//# sourceMappingURL=index.js.map
