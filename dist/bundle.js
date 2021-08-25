@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 46:
+/***/ 416:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -10,15 +10,71 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ BsiCxWebpackLegacyDesignPlugin)
+  "BsiCxWebpackLegacyDesignPlugin": () => (/* reexport */ BsiCxWebpackLegacyDesignPlugin),
+  "BsiCxWebpackPlugin": () => (/* reexport */ bsi_cx_webpack_plugin/* default */.Z),
+  "BsiCxWebpackZipHashPlugin": () => (/* reexport */ BsiCxWebpackZipHashPlugin),
+  "BuildConfig": () => (/* reexport */ build_config/* default */.Z),
+  "DesignType": () => (/* reexport */ design_type/* default */.Z),
+  "Version": () => (/* reexport */ version/* default */.Z),
+  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
 });
 
-// EXTERNAL MODULE: external "webpack"
-var external_webpack_ = __webpack_require__(78);
+;// CONCATENATED MODULE: external "source-map-support/register"
+const register_namespaceObject = require("source-map-support/register");
+// EXTERNAL MODULE: ./src/version.js
+var version = __webpack_require__(345);
+// EXTERNAL MODULE: ./src/design-type.js
+var design_type = __webpack_require__(24);
 // EXTERNAL MODULE: ./src/build-config.js
 var build_config = __webpack_require__(492);
-// EXTERNAL MODULE: ./src/file.js
-var file = __webpack_require__(810);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __webpack_require__(622);
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
+;// CONCATENATED MODULE: external "zip-webpack-plugin"
+const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
+var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "mini-css-extract-plugin"
+const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
+var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "copy-webpack-plugin"
+const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
+var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "terser-webpack-plugin"
+const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
+var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: ./package.json
+const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
+// EXTERNAL MODULE: ./src/bsi-cx-webpack-plugin.js + 4 modules
+var bsi_cx_webpack_plugin = __webpack_require__(940);
+// EXTERNAL MODULE: external "webpack"
+var external_webpack_ = __webpack_require__(78);
+;// CONCATENATED MODULE: ./src/file.js
+class File {
+  /**
+   * @type {string}
+   */
+  static DESIGN_JSON = 'design.json';
+  /**
+   * @type {string}
+   */
+  static DESIGN_JS = 'design.js';
+  /**
+   * @type {string}
+   */
+  static DESIGN_HTML = 'design.html';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
+  /**
+   * @type {string}
+   */
+  static DESIGN_PROPERTIES = 'design.properties';
+}
+
 ;// CONCATENATED MODULE: ./src/java-property-file-builder.js
 class JavaPropertyFileBuilder {
   constructor() {
@@ -144,10 +200,10 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   _getDesignJsonObject() {
-    let asset = this._compilation.getAsset(file/* default.DESIGN_JSON */.Z.DESIGN_JSON);
+    let asset = this._compilation.getAsset(File.DESIGN_JSON);
 
     if (!asset) {
-      throw new Error(`The asset "${file/* default.DESIGN_JSON */.Z.DESIGN_JSON}" does not exist.`);
+      throw new Error(`The asset "${File.DESIGN_JSON}" does not exist.`);
     }
 
     let source = asset.source.source();
@@ -172,7 +228,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
     let source = new external_webpack_.sources.RawSource(html);
 
-    this._compilation.emitAsset(file/* default.CONTENT_ELEMENTS_HTML */.Z.CONTENT_ELEMENTS_HTML, source);
+    this._compilation.emitAsset(File.CONTENT_ELEMENTS_HTML, source);
   }
 
   /**
@@ -207,7 +263,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
     let source = new external_webpack_.sources.RawSource(properties.build());
 
-    this._compilation.emitAsset(file/* default.DESIGN_PROPERTIES */.Z.DESIGN_PROPERTIES, source);
+    this._compilation.emitAsset(File.DESIGN_PROPERTIES, source);
   }
 
   /**
@@ -275,18 +331,708 @@ class BsiCxWebpackLegacyDesignPlugin {
   }
 };
 
+// EXTERNAL MODULE: external "crypto"
+var external_crypto_ = __webpack_require__(417);
+// EXTERNAL MODULE: ./src/utility.js
+var utility = __webpack_require__(923);
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
+
+
+
+
+
+
+class BsiCxWebpackZipHashPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxWebpackZipHashPlugin';
+
+  /**
+   * @param {string} name 
+   * @param {string} version 
+   * @param {boolean} enabled 
+   */
+  constructor(name, version, enabled) {
+    this._name = name;
+    this._version = version;
+    this._enabled = !!enabled;
+    this._prodZipFileName = (0,utility/* getZipArchiveName */.ur)(name, version);
+    this._devZipFileName = (0,utility/* getZipArchiveName */.ur)(name, version, 'dev');
+  }
+
+  /**
+   * @param {Compilation} compilation
+   * @param {Asset} asset 
+   */
+  _handleZipAsset(compilation, asset) {
+    let oldAssetName = asset.name;
+    let source = asset.source;
+    let hash = (0,external_crypto_.createHash)('sha256')
+      .update(source.source())
+      .digest('hex')
+      .substr(0, 5);
+    let newAssetName = oldAssetName.replace(/\.zip$/, `-${hash}.zip`);
+
+    compilation.deleteAsset(oldAssetName);
+    compilation.emitAsset(newAssetName, source);
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxWebpackZipHashPlugin.PLUGIN_NAME, compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: BsiCxWebpackZipHashPlugin.PLUGIN_NAME,
+          stage: external_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
+        },
+        () => {
+          if (!this._enabled) {
+            return;
+          }
+
+          Object.keys(compilation.assets)
+            .filter(name => name === this._prodZipFileName || name === this._devZipFileName)
+            .map(name => compilation.getAsset(name))
+            .forEach(asset => this._handleZipAsset(compilation, asset));
+        })
+    });
+  }
+};
+
+// EXTERNAL MODULE: ./src/constant.js
+var constant = __webpack_require__(911);
+;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class WebpackConfigBuilder {
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
+  /**
+   * @returns {BuildConfig}
+   */
+  get config() {
+    return this._config;
+  }
+
+  build() {
+    return {
+      entry: this._getEntryConfig(),
+      name: this.config.name,
+      context: this.config.rootPath,
+      target: 'web',
+      module: {
+        rules: [
+          ...this._getTwigRuleConfig(),
+          ...this._getHtmlAndHbsRuleConfig(),
+          ...this._getStyleRulesConfig(),
+          ...this._getStaticAssetsRuleConfig(),
+          ...this._getStaticJavaScriptFileRuleConfig(),
+          ...this._getRegularJavaScriptFileRuleConfig()
+        ]
+      },
+      plugins: [
+        ...this._getMiniCssExtractPluginConfig(),
+        ...this._getCopyPluginConfig(),
+        ...this._getBsiCxWebpackPluginConfig(),
+        ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
+        ...this._getZipPluginConfig(),
+      ],
+      devtool: this._getDevToolConfig(),
+      devServer: this._getDevServerConfig(),
+      stats: this._getStatsConfig(),
+      performance: this._getPerformanceConfig(),
+      optimization: {
+        minimize: true,
+        minimizer: this._getOptimizationMinimizerConfig(),
+        splitChunks: {
+          chunks: 'all',
+          name: this._getOptimizationSplitChunksNameConfig(),
+          cacheGroups: {
+            ...this._getOptimizationCacheGroupsConfig(),
+          }
+        }
+      },
+      output: this._getOutputConfig()
+    };
+  }
+
+  /**
+   * The default output path: dist/{name}
+   *
+   * @returns {string}
+   * @private
+   */
+  _getDefaultOutputPath() {
+    return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
+  }
+
+  /**
+   * The output path to use.
+   *
+   * @returns {string}
+   */
+  _getOutputPath() {
+    return this.config.outputPath || this._getDefaultOutputPath();
+  }
+
+  /**
+   * The default modules path: ./modules
+   *
+   * @returns {string}
+   */
+  _getDefaultModulesRootPath() {
+    return external_path_default().resolve(this.config.rootPath, 'modules');
+  }
+
+  /**
+   * The modules path to use.
+   *
+   * @returns {string}
+   */
+  _getModulesRootPath() {
+    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
+  }
+
+  /**
+   * The entry configuration.
+   *
+   * @returns {{}}
+   */
+  _getEntryConfig() {
+    return {
+      ...this._getJavaScriptModuleEntries(),
+      json: {
+        import: this._getDesignJsFilePath(),
+        filename: File.DESIGN_JSON,
+        library: {
+          type: 'commonjs'
+        }
+      },
+      design: this._evaluateEntryTemplate('design'),
+      preview: this._evaluateEntryTemplate('preview')
+    };
+  }
+
+  /**
+   * Get the entry configuration for a template.
+   *
+   * @param {string} name
+   * @returns {{}}
+   */
+  _evaluateEntryTemplate(name) {
+    let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
+    let hbsFilePath = external_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
+    let isTwig = external_fs_default().existsSync(twigFilePath);
+    let extension = isTwig ? 'html' : 'hbs';
+    return {
+      import: isTwig ? twigFilePath : hbsFilePath,
+      filename: `${name}.${extension}`
+    };
+  }
+
+  _getDesignJsFilePath() {
+    return external_path_default().resolve(this.config.rootPath, File.DESIGN_JS);
+  }
+
+  /**
+   * Get the entry configurations for the Java Script modules.
+   *
+   * @returns {[{}]}
+   */
+  _getJavaScriptModuleEntries() {
+    let entries = {};
+    for (const [name, filePath] of Object.entries(this.config.modules)) {
+      entries[name] = {
+        import: external_path_default().resolve(filePath),
+        filename: 'modules/[name]-[contenthash].js',
+        runtime: constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH
+      };
+    }
+    return entries;
+  }
+
+  /**
+   * Rules for Twig file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getTwigRuleConfig() {
+    return [
+      {
+        test: /\.twig$/i,
+        use: [
+          this._getTemplateLoader(),
+          'ref-loader',
+          {
+            loader: 'twing-loader',
+            options: {
+              environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
+              renderContext: {
+                properties: this.config.properties,
+                designBaseUrl: (0,utility/* buildPublicPath */.YV)(this.config)
+              }
+            }
+          }
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Rule for HTML and Handlebars file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getHtmlAndHbsRuleConfig() {
+    return [
+      {
+        test: /\.(html|hbs)$/i,
+        use: [
+          this._getTemplateLoader(),
+          'ref-loader',
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Rules for LESS, SASS/SCSS and CSS file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getStyleRulesConfig() {
+    return [
+      {
+        test: /\.less$/i,
+        use: [
+          ...this._getCssLoaderChain(),
+          {
+            loader: 'less-loader',
+          }
+        ]
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          ...this._getCssLoaderChain(),
+          {
+            loader: 'sass-loader',
+          }
+        ]
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          ...this._getCssLoaderChain()
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Get all file extensions that should be handled as static assets (e.g. images and fonts).
+   *
+   * @returns {[string]}
+   */
+  _getStaticAssetFileExtensions() {
+    return [
+      'png',
+      'apng',
+      'jpg',
+      'jpeg',
+      'webp',
+      'gif',
+      'bmp',
+      'tiff',
+      'raw',
+      'svg',
+      'eot',
+      'ttf',
+      'woff',
+      'woff2'
+    ];
+  }
+
+  /**
+   * Rule for static assets handling.
+   *
+   * @returns {[{}]}
+   */
+  _getStaticAssetsRuleConfig() {
+    let fileExtensions = this._getStaticAssetFileExtensions().join('|');
+    let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
+
+    return [
+      {
+        test: testRegex,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[name]-[contenthash][ext]'
+        }
+      }
+    ];
+  }
+
+  /**
+   * Rule for static Java Script file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getStaticJavaScriptFileRuleConfig() {
+    return [
+      {
+        resource: (file) => utility/* StaticJavaScriptCondition.test */.BA.test(this.config.rootPath, file),
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[name]-[contenthash][ext]'
+        }
+      }
+    ];
+  }
+
+  /**
+   * Rule for regular Java Script file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getRegularJavaScriptFileRuleConfig() {
+    return [
+      {
+        test: /\.m?js$/i,
+        exclude: /(node_modules|bower_components)/,
+        include: this._getModulesRootPath(),
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-transform-runtime'],
+            cacheDirectory: true
+          }
+        }
+      }
+    ];
+  }
+
+  /**
+   * @returns {string}
+   */
+  _getTemplateLoader() {
+    return `${package_namespaceObject.u2}/dist/template-loader`;
+  }
+
+  /**
+   * @returns {[{}]}
+   */
+  _getCssLoaderChain() {
+    return [
+      {
+        loader: (external_mini_css_extract_plugin_default()).loader,
+        options: {
+          publicPath: '../'
+        }
+      },
+      {
+        loader: 'css-loader'
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          postcssOptions: {
+            plugins: [
+              'postcss-preset-env',
+              'cssnano'
+            ]
+          }
+        }
+      }
+    ];
+  }
+
+  /**
+   * Mini CSS extract plugin configuration.
+   *
+   * @returns {[MiniCssExtractPlugin]}
+   */
+  _getMiniCssExtractPluginConfig() {
+    return [
+      new (external_mini_css_extract_plugin_default())({
+        filename: 'static/styles-[contenthash].css',
+      })
+    ];
+  }
+
+  /**
+   * Copy plugin configuration.
+   *
+   * @returns {[CopyPlugin]}
+   */
+  _getCopyPluginConfig() {
+    return [
+      new (external_copy_webpack_plugin_default())({
+        patterns: [
+          {
+            from: 'assets/**/*',
+            globOptions: {
+              dot: true,
+              ignore: ['**/.gitkeep', '**/.gitignore']
+            },
+            noErrorOnMissing: true,
+            info: {
+              minimized: true
+            },
+          },
+          ...this.config.additionalFilesToCopy
+        ]
+      })
+    ];
+  }
+
+  /**
+   * BSI CX Webpack plugin.
+   *
+   * @returns {[BsiCxWebpackPlugin]}
+   */
+  _getBsiCxWebpackPluginConfig() {
+    return [
+      new bsi_cx_webpack_plugin/* default */.Z(this.config)
+    ];
+  }
+
+  /**
+   * Webpack ZIP plugin configuration.
+   *
+   * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+   */
+  _getZipPluginConfig() {
+    /**
+     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+     */
+    let plugins = [
+      new (external_zip_webpack_plugin_default())({
+        filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version),
+        exclude: [/\.map$/]
+      })
+    ];
+
+    if (this.config.sourceMapEnabled) {
+      plugins.push(
+        new (external_zip_webpack_plugin_default())({
+          filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version, 'dev'),
+        })
+      );
+    }
+
+    plugins.push(
+      new BsiCxWebpackZipHashPlugin(this.config.name, this.config.version, this.config.hashZipFiles)
+    );
+
+    return plugins;
+  }
+
+  /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   */
+  _getBsiCxWebpackLegacyDesignPluginConfig() {
+    let plugins = [];
+    if (this.config.targetVersion.legacyFormat) {
+      plugins.push(
+        new BsiCxWebpackLegacyDesignPlugin(this.config)
+      );
+    }
+    return plugins;
+  }
+
+  /**
+   * The dev tool configuration.
+   *
+   * @returns {string|boolean}
+   */
+  _getDevToolConfig() {
+    return this.config.sourceMapEnabled ? 'source-map' : false;
+  }
+
+  /**
+   * Development server configuration.
+   *
+   * @returns {{}}
+   */
+  _getDevServerConfig() {
+    let outputPath = this._getOutputPath();
+    let contentBase = outputPath === this._getDefaultOutputPath() ? external_path_default().resolve(outputPath, '..') : process.cwd();
+    let zipRegEx = /\.zip$/i;
+
+    return {
+      port: this.config.devServerPort,
+      contentBase: contentBase,
+      publicPath: '/',
+      compress: true,
+      writeToDisk: filePath => zipRegEx.test(filePath),
+      inline: false
+    };
+  }
+
+  /**
+   * The stats configuration.
+   *
+   * @returns {{}}
+   */
+  _getStatsConfig() {
+    return {
+      children: false,
+      errorDetails: true,
+    };
+  }
+
+  /**
+   * The performance configuration.
+   *
+   * @returns {{}}
+   */
+  _getPerformanceConfig() {
+    let excludedAssets = [
+      File.DESIGN_JSON,
+    ];
+    let excludedExtensions = /\.(map|zip|html|hbs)$/;
+
+    return {
+      assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
+      hints: 'warning'
+    };
+  }
+
+  /**
+   * The minimizer configuration.
+   *
+   * @returns {[TerserPlugin]}
+   */
+  _getOptimizationMinimizerConfig() {
+    return [
+      new (external_terser_webpack_plugin_default())({
+        extractComments: false
+      })
+    ];
+  }
+
+  /**
+   * The split chunks name configuration.
+   *
+   * @returns {function}
+   */
+  _getOptimizationSplitChunksNameConfig() {
+    return (module, _, cacheGroupKey) => {
+      return cacheGroupKey !== 'vendors' ? false : (module.rawRequest || false);
+    };
+  }
+
+  /**
+   * The chache groups configuration.
+   *
+   * @returns {{}}
+   */
+  _getOptimizationCacheGroupsConfig() {
+    return {
+      vendors: {
+        test: /[\\/]node_modules[\\/]/,
+        priority: 10,
+        reuseExistingChunk: true,
+        filename: 'vendors/[name]-[chunkhash].js'
+      },
+      styles: {
+        name: 'styles',
+        type: 'css/mini-extract',
+        chunks: 'all',
+        priority: 20,
+        enforce: true,
+      }
+    };
+  }
+
+  /**
+   * The output configuration.
+   *
+   * @returns {{}}
+   */
+  _getOutputConfig() {
+    return {
+      path: this._getOutputPath(),
+      publicPath: (0,utility/* buildPublicPath */.YV)(this.config, '/'),
+      clean: true,
+      library: {
+        type: 'var',
+        name: '[name]'
+      }
+    };
+  }
+
+  /**
+   * Build the configuration for webpack from {@link BuildConfig} objects.
+   *
+   * @param  {...BuildConfig} configs
+   */
+  static fromConfigs(...configs) {
+    let devServerPort = undefined;
+
+    return configs
+      .map(config => config.validate())
+      .map(config => new WebpackConfigBuilder(config))
+      .map(config => config.build())
+      .map((config, index) => {
+        if (index === 0) {
+          devServerPort = config.devServer.port;
+        } else if (config.devServer.port === devServerPort) {
+          delete config.devServer;
+        }
+        return config;
+      });
+  }
+}
+
+;// CONCATENATED MODULE: ./export/index.js
+
+
+
+
+
+
+
+
+
+
+
+
 
 /***/ }),
 
 /***/ 940:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ BsiCxWebpackPlugin)
+  "Z": () => (/* binding */ BsiCxWebpackPlugin)
 });
 
 // EXTERNAL MODULE: external "path"
@@ -853,90 +1599,11 @@ class BsiCxWebpackPlugin {
 
 /***/ }),
 
-/***/ 893:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ BsiCxWebpackZipHashPlugin)
-/* harmony export */ });
-/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(417);
-/* harmony import */ var crypto__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(crypto__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var webpack__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(78);
-/* harmony import */ var webpack__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(webpack__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utility__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(923);
-
-
-
-
-
-
-class BsiCxWebpackZipHashPlugin {
-  /**
-   * @type {string}
-   */
-  static PLUGIN_NAME = 'BsiCxWebpackZipHashPlugin';
-
-  /**
-   * @param {string} name 
-   * @param {string} version 
-   * @param {boolean} enabled 
-   */
-  constructor(name, version, enabled) {
-    this._name = name;
-    this._version = version;
-    this._enabled = !!enabled;
-    this._prodZipFileName = (0,_utility__WEBPACK_IMPORTED_MODULE_2__/* .getZipArchiveName */ .ur)(name, version);
-    this._devZipFileName = (0,_utility__WEBPACK_IMPORTED_MODULE_2__/* .getZipArchiveName */ .ur)(name, version, 'dev');
-  }
-
-  /**
-   * @param {Compilation} compilation
-   * @param {Asset} asset 
-   */
-  _handleZipAsset(compilation, asset) {
-    let oldAssetName = asset.name;
-    let source = asset.source;
-    let hash = (0,crypto__WEBPACK_IMPORTED_MODULE_0__.createHash)('sha256')
-      .update(source.source())
-      .digest('hex')
-      .substr(0, 5);
-    let newAssetName = oldAssetName.replace(/\.zip$/, `-${hash}.zip`);
-
-    compilation.deleteAsset(oldAssetName);
-    compilation.emitAsset(newAssetName, source);
-  }
-
-  apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxWebpackZipHashPlugin.PLUGIN_NAME, compilation => {
-      compilation.hooks.processAssets.tap(
-        {
-          name: BsiCxWebpackZipHashPlugin.PLUGIN_NAME,
-          stage: webpack__WEBPACK_IMPORTED_MODULE_1__.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
-        },
-        () => {
-          if (!this._enabled) {
-            return;
-          }
-
-          Object.keys(compilation.assets)
-            .filter(name => name === this._prodZipFileName || name === this._devZipFileName)
-            .map(name => compilation.getAsset(name))
-            .forEach(asset => this._handleZipAsset(compilation, asset));
-        })
-    });
-  }
-};
-
-
-/***/ }),
-
 /***/ 492:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ BuildConfig)
+/* harmony export */   "Z": () => (/* binding */ BuildConfig)
 /* harmony export */ });
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
 /* harmony import */ var _version__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(345);
@@ -959,11 +1626,11 @@ class BuildConfig {
     /**
      * @type {Version}
      */
-    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_0__.default.CX_22_0;
+    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_0__/* .default.CX_22_0 */ .Z.CX_22_0;
     /**
      * @type {DesignType}
      */
-    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_1__.default.LANDINGPAGE;
+    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_1__/* .default.LANDINGPAGE */ .Z.LANDINGPAGE;
     /**
      * @type {string}
      */
@@ -1267,8 +1934,8 @@ class BuildConfig {
   validate() {
     this._checkInstanceofAndRequired('name', String, true);
     this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_0__.default, true);
-    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_1__.default, true);
+    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z, true);
+    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_1__/* .default */ .Z, true);
     this._checkInstanceofAndRequired('rootPath', String, true);
     this._checkInstanceofAndRequired('outputPath', String, false);
     this._checkInstanceofAndRequired('properties', Object, false);
@@ -1348,9 +2015,8 @@ class Constant {
 /***/ 24:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ DesignType)
+/* harmony export */   "Z": () => (/* binding */ DesignType)
 /* harmony export */ });
 class DesignType {
   /**
@@ -1365,38 +2031,6 @@ class DesignType {
    * @type {string}
    */
   static WEBSITE = 'website';
-}
-
-
-/***/ }),
-
-/***/ 810:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ File)
-/* harmony export */ });
-class File {
-  /**
-   * @type {string}
-   */
-  static DESIGN_JSON = 'design.json';
-  /**
-   * @type {string}
-   */
-  static DESIGN_JS = 'design.js';
-  /**
-   * @type {string}
-   */
-  static DESIGN_HTML = 'design.html';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
-  /**
-   * @type {string}
-   */
-  static DESIGN_PROPERTIES = 'design.properties';
 }
 
 
@@ -1477,7 +2111,7 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && !config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__.default.WEBSITE) {
+  if (config.targetVersion.legacyFormat && !config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__/* .default.WEBSITE */ .Z.WEBSITE) {
     return '.' + pathSuffix;
   } else {
     return _constant__WEBPACK_IMPORTED_MODULE_3__/* .default.BSI_CX_DESIGN_BASE_URL */ .Z.BSI_CX_DESIGN_BASE_URL + pathSuffix;
@@ -1490,22 +2124,21 @@ function buildPublicPath(config, suffix) {
 /***/ 345:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Version)
+/* harmony export */   "Z": () => (/* binding */ Version)
 /* harmony export */ });
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
 
 
 const LEGACY_TYPES = [
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.LANDINGPAGE,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.EMAIL
+  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.LANDINGPAGE */ .Z.LANDINGPAGE,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.EMAIL */ .Z.EMAIL
 ];
 
 const ALL_TYPES = [
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.LANDINGPAGE,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.EMAIL,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.WEBSITE
+  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.LANDINGPAGE */ .Z.LANDINGPAGE,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.EMAIL */ .Z.EMAIL,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.WEBSITE */ .Z.WEBSITE
 ];
 
 class Version {
@@ -1567,663 +2200,6 @@ class Version {
 
 /***/ }),
 
-/***/ 709:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-// ESM COMPAT FLAG
-__webpack_require__.r(__webpack_exports__);
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ WebpackConfigBuilder)
-});
-
-;// CONCATENATED MODULE: external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-// EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(622);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
-;// CONCATENATED MODULE: external "zip-webpack-plugin"
-const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
-var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "mini-css-extract-plugin"
-const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
-var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "copy-webpack-plugin"
-const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
-var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "terser-webpack-plugin"
-const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
-var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
-// EXTERNAL MODULE: ./src/bsi-cx-webpack-plugin.js + 4 modules
-var bsi_cx_webpack_plugin = __webpack_require__(940);
-// EXTERNAL MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js + 1 modules
-var bsi_cx_webpack_legacy_design_plugin = __webpack_require__(46);
-// EXTERNAL MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
-var bsi_cx_webpack_zip_hash_plugin = __webpack_require__(893);
-// EXTERNAL MODULE: ./src/constant.js
-var constant = __webpack_require__(911);
-// EXTERNAL MODULE: ./src/file.js
-var file = __webpack_require__(810);
-// EXTERNAL MODULE: ./src/utility.js
-var utility = __webpack_require__(923);
-// EXTERNAL MODULE: ./src/build-config.js
-var build_config = __webpack_require__(492);
-;// CONCATENATED MODULE: ./src/webpack-config-builder.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class WebpackConfigBuilder {
-  /**
-   * @param {BuildConfig} config
-   */
-  constructor(config) {
-    this._config = config;
-  }
-
-  /**
-   * @returns {BuildConfig}
-   */
-  get config() {
-    return this._config;
-  }
-
-  build() {
-    return {
-      entry: this._getEntryConfig(),
-      name: this.config.name,
-      context: this.config.rootPath,
-      target: 'web',
-      module: {
-        rules: [
-          ...this._getTwigRuleConfig(),
-          ...this._getHtmlAndHbsRuleConfig(),
-          ...this._getStyleRulesConfig(),
-          ...this._getStaticAssetsRuleConfig(),
-          ...this._getStaticJavaScriptFileRuleConfig(),
-          ...this._getRegularJavaScriptFileRuleConfig()
-        ]
-      },
-      plugins: [
-        ...this._getMiniCssExtractPluginConfig(),
-        ...this._getCopyPluginConfig(),
-        ...this._getBsiCxWebpackPluginConfig(),
-        ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
-        ...this._getZipPluginConfig(),
-      ],
-      devtool: this._getDevToolConfig(),
-      devServer: this._getDevServerConfig(),
-      stats: this._getStatsConfig(),
-      performance: this._getPerformanceConfig(),
-      optimization: {
-        minimize: true,
-        minimizer: this._getOptimizationMinimizerConfig(),
-        splitChunks: {
-          chunks: 'all',
-          name: this._getOptimizationSplitChunksNameConfig(),
-          cacheGroups: {
-            ...this._getOptimizationCacheGroupsConfig(),
-          }
-        }
-      },
-      output: this._getOutputConfig()
-    };
-  }
-
-  /**
-   * The default output path: dist/{name}
-   *
-   * @returns {string}
-   * @private
-   */
-  _getDefaultOutputPath() {
-    return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
-  }
-
-  /**
-   * The output path to use.
-   *
-   * @returns {string}
-   */
-  _getOutputPath() {
-    return this.config.outputPath || this._getDefaultOutputPath();
-  }
-
-  /**
-   * The default modules path: ./modules
-   *
-   * @returns {string}
-   */
-  _getDefaultModulesRootPath() {
-    return external_path_default().resolve(this.config.rootPath, 'modules');
-  }
-
-  /**
-   * The modules path to use.
-   *
-   * @returns {string}
-   */
-  _getModulesRootPath() {
-    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
-  }
-
-  /**
-   * The entry configuration.
-   *
-   * @returns {{}}
-   */
-  _getEntryConfig() {
-    return {
-      ...this._getJavaScriptModuleEntries(),
-      json: {
-        import: this._getDesignJsFilePath(),
-        filename: file/* default.DESIGN_JSON */.Z.DESIGN_JSON,
-        library: {
-          type: 'commonjs'
-        }
-      },
-      design: this._evaluateEntryTemplate('design'),
-      preview: this._evaluateEntryTemplate('preview')
-    };
-  }
-
-  /**
-   * Get the entry configuration for a template.
-   *
-   * @param {string} name
-   * @returns {{}}
-   */
-  _evaluateEntryTemplate(name) {
-    let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
-    let hbsFilePath = external_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
-    let isTwig = external_fs_default().existsSync(twigFilePath);
-    let extension = isTwig ? 'html' : 'hbs';
-    return {
-      import: isTwig ? twigFilePath : hbsFilePath,
-      filename: `${name}.${extension}`
-    };
-  }
-
-  _getDesignJsFilePath() {
-    return external_path_default().resolve(this.config.rootPath, file/* default.DESIGN_JS */.Z.DESIGN_JS);
-  }
-
-  /**
-   * Get the entry configurations for the Java Script modules.
-   *
-   * @returns {[{}]}
-   */
-  _getJavaScriptModuleEntries() {
-    let entries = {};
-    for (const [name, filePath] of Object.entries(this.config.modules)) {
-      entries[name] = {
-        import: external_path_default().resolve(filePath),
-        filename: 'modules/[name]-[contenthash].js',
-        runtime: constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH
-      };
-    }
-    return entries;
-  }
-
-  /**
-   * Rules for Twig file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getTwigRuleConfig() {
-    return [
-      {
-        test: /\.twig$/i,
-        use: [
-          this._getTemplateLoader(),
-          'ref-loader',
-          {
-            loader: 'twing-loader',
-            options: {
-              environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
-              renderContext: {
-                properties: this.config.properties,
-                designBaseUrl: (0,utility/* buildPublicPath */.YV)(this.config)
-              }
-            }
-          }
-        ]
-      }
-    ];
-  }
-
-  /**
-   * Rule for HTML and Handlebars file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getHtmlAndHbsRuleConfig() {
-    return [
-      {
-        test: /\.(html|hbs)$/i,
-        use: [
-          this._getTemplateLoader(),
-          'ref-loader',
-        ]
-      }
-    ];
-  }
-
-  /**
-   * Rules for LESS, SASS/SCSS and CSS file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getStyleRulesConfig() {
-    return [
-      {
-        test: /\.less$/i,
-        use: [
-          ...this._getCssLoaderChain(),
-          {
-            loader: 'less-loader',
-          }
-        ]
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          ...this._getCssLoaderChain(),
-          {
-            loader: 'sass-loader',
-          }
-        ]
-      },
-      {
-        test: /\.css$/i,
-        use: [
-          ...this._getCssLoaderChain()
-        ]
-      }
-    ];
-  }
-
-  /**
-   * Get all file extensions that should be handled as static assets (e.g. images and fonts).
-   *
-   * @returns {[string]}
-   */
-  _getStaticAssetFileExtensions() {
-    return [
-      'png',
-      'apng',
-      'jpg',
-      'jpeg',
-      'webp',
-      'gif',
-      'bmp',
-      'tiff',
-      'raw',
-      'svg',
-      'eot',
-      'ttf',
-      'woff',
-      'woff2'
-    ];
-  }
-
-  /**
-   * Rule for static assets handling.
-   *
-   * @returns {[{}]}
-   */
-  _getStaticAssetsRuleConfig() {
-    let fileExtensions = this._getStaticAssetFileExtensions().join('|');
-    let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
-
-    return [
-      {
-        test: testRegex,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[name]-[contenthash][ext]'
-        }
-      }
-    ];
-  }
-
-  /**
-   * Rule for static Java Script file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getStaticJavaScriptFileRuleConfig() {
-    return [
-      {
-        resource: (file) => utility/* StaticJavaScriptCondition.test */.BA.test(this.config.rootPath, file),
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[name]-[contenthash][ext]'
-        }
-      }
-    ];
-  }
-
-  /**
-   * Rule for regular Java Script file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getRegularJavaScriptFileRuleConfig() {
-    return [
-      {
-        test: /\.m?js$/i,
-        exclude: /(node_modules|bower_components)/,
-        include: this._getModulesRootPath(),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-runtime'],
-            cacheDirectory: true
-          }
-        }
-      }
-    ];
-  }
-
-  /**
-   * @returns {string}
-   */
-  _getTemplateLoader() {
-    return `${package_namespaceObject.u2}/dist/template-loader`;
-  }
-
-  /**
-   * @returns {[{}]}
-   */
-  _getCssLoaderChain() {
-    return [
-      {
-        loader: (external_mini_css_extract_plugin_default()).loader,
-        options: {
-          publicPath: '../'
-        }
-      },
-      {
-        loader: 'css-loader'
-      },
-      {
-        loader: 'postcss-loader',
-        options: {
-          postcssOptions: {
-            plugins: [
-              'postcss-preset-env',
-              'cssnano'
-            ]
-          }
-        }
-      }
-    ];
-  }
-
-  /**
-   * Mini CSS extract plugin configuration.
-   *
-   * @returns {[MiniCssExtractPlugin]}
-   */
-  _getMiniCssExtractPluginConfig() {
-    return [
-      new (external_mini_css_extract_plugin_default())({
-        filename: 'static/styles-[contenthash].css',
-      })
-    ];
-  }
-
-  /**
-   * Copy plugin configuration.
-   *
-   * @returns {[CopyPlugin]}
-   */
-  _getCopyPluginConfig() {
-    return [
-      new (external_copy_webpack_plugin_default())({
-        patterns: [
-          {
-            from: 'assets/**/*',
-            globOptions: {
-              dot: true,
-              ignore: ['**/.gitkeep', '**/.gitignore']
-            },
-            noErrorOnMissing: true,
-            info: {
-              minimized: true
-            },
-          },
-          ...this.config.additionalFilesToCopy
-        ]
-      })
-    ];
-  }
-
-  /**
-   * BSI CX Webpack plugin.
-   *
-   * @returns {[BsiCxWebpackPlugin]}
-   */
-  _getBsiCxWebpackPluginConfig() {
-    return [
-      new bsi_cx_webpack_plugin.default(this.config)
-    ];
-  }
-
-  /**
-   * Webpack ZIP plugin configuration.
-   *
-   * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
-   */
-  _getZipPluginConfig() {
-    /**
-     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
-     */
-    let plugins = [
-      new (external_zip_webpack_plugin_default())({
-        filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version),
-        exclude: [/\.map$/]
-      })
-    ];
-
-    if (this.config.sourceMapEnabled) {
-      plugins.push(
-        new (external_zip_webpack_plugin_default())({
-          filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version, 'dev'),
-        })
-      );
-    }
-
-    plugins.push(
-      new bsi_cx_webpack_zip_hash_plugin.default(this.config.name, this.config.version, this.config.hashZipFiles)
-    );
-
-    return plugins;
-  }
-
-  /**
-   * BSI CX legacy design format plugin config.
-   *
-   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
-   */
-  _getBsiCxWebpackLegacyDesignPluginConfig() {
-    let plugins = [];
-    if (this.config.targetVersion.legacyFormat) {
-      plugins.push(
-        new bsi_cx_webpack_legacy_design_plugin.default(this.config)
-      );
-    }
-    return plugins;
-  }
-
-  /**
-   * The dev tool configuration.
-   *
-   * @returns {string|boolean}
-   */
-  _getDevToolConfig() {
-    return this.config.sourceMapEnabled ? 'source-map' : false;
-  }
-
-  /**
-   * Development server configuration.
-   *
-   * @returns {{}}
-   */
-  _getDevServerConfig() {
-    let outputPath = this._getOutputPath();
-    let contentBase = outputPath === this._getDefaultOutputPath() ? external_path_default().resolve(outputPath, '..') : process.cwd();
-    let zipRegEx = /\.zip$/i;
-
-    return {
-      port: this.config.devServerPort,
-      contentBase: contentBase,
-      publicPath: '/',
-      compress: true,
-      writeToDisk: filePath => zipRegEx.test(filePath),
-      inline: false
-    };
-  }
-
-  /**
-   * The stats configuration.
-   *
-   * @returns {{}}
-   */
-  _getStatsConfig() {
-    return {
-      children: false,
-      errorDetails: true,
-    };
-  }
-
-  /**
-   * The performance configuration.
-   *
-   * @returns {{}}
-   */
-  _getPerformanceConfig() {
-    let excludedAssets = [
-      file/* default.DESIGN_JSON */.Z.DESIGN_JSON,
-    ];
-    let excludedExtensions = /\.(map|zip|html|hbs)$/;
-
-    return {
-      assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
-      hints: 'warning'
-    };
-  }
-
-  /**
-   * The minimizer configuration.
-   *
-   * @returns {[TerserPlugin]}
-   */
-  _getOptimizationMinimizerConfig() {
-    return [
-      new (external_terser_webpack_plugin_default())({
-        extractComments: false
-      })
-    ];
-  }
-
-  /**
-   * The split chunks name configuration.
-   *
-   * @returns {function}
-   */
-  _getOptimizationSplitChunksNameConfig() {
-    return (module, _, cacheGroupKey) => {
-      return cacheGroupKey !== 'vendors' ? false : (module.rawRequest || false);
-    };
-  }
-
-  /**
-   * The chache groups configuration.
-   *
-   * @returns {{}}
-   */
-  _getOptimizationCacheGroupsConfig() {
-    return {
-      vendors: {
-        test: /[\\/]node_modules[\\/]/,
-        priority: 10,
-        reuseExistingChunk: true,
-        filename: 'vendors/[name]-[chunkhash].js'
-      },
-      styles: {
-        name: 'styles',
-        type: 'css/mini-extract',
-        chunks: 'all',
-        priority: 20,
-        enforce: true,
-      }
-    };
-  }
-
-  /**
-   * The output configuration.
-   *
-   * @returns {{}}
-   */
-  _getOutputConfig() {
-    return {
-      path: this._getOutputPath(),
-      publicPath: (0,utility/* buildPublicPath */.YV)(this.config, '/'),
-      clean: true,
-      library: {
-        type: 'var',
-        name: '[name]'
-      }
-    };
-  }
-
-  /**
-   * Build the configuration for webpack from {@link BuildConfig} objects.
-   *
-   * @param  {...BuildConfig} configs
-   */
-  static fromConfigs(...configs) {
-    let devServerPort = undefined;
-
-    return configs
-      .map(config => config.validate())
-      .map(config => new WebpackConfigBuilder(config))
-      .map(config => config.build())
-      .map((config, index) => {
-        if (index === 0) {
-          devServerPort = config.devServer.port;
-        } else if (config.devServer.port === devServerPort) {
-          delete config.devServer;
-        }
-        return config;
-      });
-  }
-}
-
-
-/***/ }),
-
 /***/ 417:
 /***/ ((module) => {
 
@@ -2235,13 +2211,6 @@ module.exports = require("crypto");
 /***/ ((module) => {
 
 module.exports = require("path");
-
-/***/ }),
-
-/***/ 43:
-/***/ ((module) => {
-
-module.exports = require("source-map-support/register");
 
 /***/ }),
 
@@ -2338,34 +2307,15 @@ module.exports = require("webpack");
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-var exports = __webpack_exports__;
-
-exports.__esModule = true;
-exports.BsiCxWebpackLegacyDesignPlugin = exports.BsiCxWebpackZipHashPlugin = exports.BsiCxWebpackPlugin = exports.WebpackConfigBuilder = exports.BuildConfig = exports.DesignType = exports.Version = void 0;
-__webpack_require__(43);
-var version_1 = __webpack_require__(345);
-exports.Version = version_1["default"];
-var design_type_1 = __webpack_require__(24);
-exports.DesignType = design_type_1["default"];
-var build_config_1 = __webpack_require__(492);
-exports.BuildConfig = build_config_1["default"];
-var webpack_config_builder_1 = __webpack_require__(709);
-exports.WebpackConfigBuilder = webpack_config_builder_1["default"];
-var bsi_cx_webpack_plugin_1 = __webpack_require__(940);
-exports.BsiCxWebpackPlugin = bsi_cx_webpack_plugin_1["default"];
-var bsi_cx_webpack_zip_hash_plugin_1 = __webpack_require__(893);
-exports.BsiCxWebpackZipHashPlugin = bsi_cx_webpack_zip_hash_plugin_1["default"];
-var bsi_cx_webpack_legacy_design_plugin_1 = __webpack_require__(46);
-exports.BsiCxWebpackLegacyDesignPlugin = bsi_cx_webpack_legacy_design_plugin_1["default"];
-
-})();
-
-var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
-if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__(416);
+/******/ 	var __webpack_export_target__ = exports;
+/******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+/******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=bundle.js.map

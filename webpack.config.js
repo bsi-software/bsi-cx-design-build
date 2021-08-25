@@ -2,10 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 
 const nodeExternals = require('webpack-node-externals');
-const TypescriptDeclarationPlugin = require('typescript-declaration-webpack-plugin');
 
-let index = path.resolve(__dirname, 'export', 'index.ts');
-let htmlEditorConfig = path.resolve(__dirname, 'export', 'html-editor-config.ts');
+let index = path.resolve(__dirname, 'export', 'index.js');
+let htmlEditorConfig = path.resolve(__dirname, 'export', 'html-editor-config.js');
 let templateLoader = path.resolve(__dirname, 'src', 'template-loader.js');
 let twingEnvironment = path.resolve(__dirname, 'src', 'twing-environment.js');
 
@@ -38,16 +37,7 @@ module.exports = {
     }
   },
   module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-        options: {
-          reportFiles: []
-        }
-      }
-    ]
+    rules: []
   },
   externalsPresets: {
     node: true
@@ -59,11 +49,6 @@ module.exports = {
     minimize: false
   },
   plugins: [
-    new TypescriptDeclarationPlugin({
-      out: 'types.d.ts',
-      removeMergedDeclarations: true,
-      removeComments: true
-    }),
     new webpack.SourceMapDevToolPlugin({
       filename: '[name].js.map',
       noSources: true,
