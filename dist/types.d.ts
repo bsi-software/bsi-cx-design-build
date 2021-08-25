@@ -28,21 +28,21 @@ declare module "src/version" {
         /**
          *
          * @param {string} version
-         * @param {string[]} allowedTypes
+         * @param {DesignType[]} allowedTypes
          * @param {boolean} legacyFormat
          */
-        constructor(version: string, allowedTypes: string[], legacyFormat: boolean);
+        constructor(version: string, allowedTypes: (typeof DesignType)[], legacyFormat: boolean);
         _version: string;
-        _allowedTypes: string[];
+        _allowedTypes: (typeof DesignType)[];
         _legacyFormat: boolean;
         /**
          * @returns {string}
          */
         get version(): string;
         /**
-         * @returns {string[]}
+         * @returns {DesignType[]}
          */
-        get allowedTypes(): string[];
+        get allowedTypes(): (typeof DesignType)[];
         /**
          * @returns {boolean}
          */
@@ -68,6 +68,7 @@ declare module "src/version" {
      * @type {Version}
      */
     export const CX_22_0: Version;
+    import * as DesignType from "src/design-type";
 }
 declare module "src/build-config" {
     /**

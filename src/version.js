@@ -1,10 +1,16 @@
 import * as DesignType from './design-type';
 
+/**
+ * @type {DesignType[]}
+ */
 const LEGACY_TYPES = [
   DesignType.LANDINGPAGE,
   DesignType.EMAIL
 ];
 
+/**
+ * @type {DesignType[]}
+ */
 const ALL_TYPES = [
   DesignType.LANDINGPAGE,
   DesignType.EMAIL,
@@ -15,7 +21,7 @@ export default class Version {
   /**
    *
    * @param {string} version
-   * @param {string[]} allowedTypes
+   * @param {DesignType[]} allowedTypes
    * @param {boolean} legacyFormat
    */
   constructor(version, allowedTypes, legacyFormat) {
@@ -32,7 +38,7 @@ export default class Version {
   }
 
   /**
-   * @returns {string[]}
+   * @returns {DesignType[]}
    */
   get allowedTypes() {
     return this._allowedTypes;

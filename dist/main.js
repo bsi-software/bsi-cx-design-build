@@ -2156,11 +2156,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
 
 
+/**
+ * @type {DesignType[]}
+ */
 const LEGACY_TYPES = [
   _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE,
   _design_type__WEBPACK_IMPORTED_MODULE_0__.EMAIL
 ];
 
+/**
+ * @type {DesignType[]}
+ */
 const ALL_TYPES = [
   _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE,
   _design_type__WEBPACK_IMPORTED_MODULE_0__.EMAIL,
@@ -2171,7 +2177,7 @@ class Version {
   /**
    *
    * @param {string} version
-   * @param {string[]} allowedTypes
+   * @param {DesignType[]} allowedTypes
    * @param {boolean} legacyFormat
    */
   constructor(version, allowedTypes, legacyFormat) {
@@ -2188,7 +2194,7 @@ class Version {
   }
 
   /**
-   * @returns {string[]}
+   * @returns {DesignType[]}
    */
   get allowedTypes() {
     return this._allowedTypes;
