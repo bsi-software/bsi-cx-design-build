@@ -349,9 +349,9 @@ class BsiCxWebpackZipHashPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackZipHashPlugin';
 
   /**
-   * @param {string} name 
-   * @param {string} version 
-   * @param {boolean} enabled 
+   * @param {string} name
+   * @param {string} version
+   * @param {boolean} enabled
    */
   constructor(name, version, enabled) {
     this._name = name;
@@ -363,7 +363,7 @@ class BsiCxWebpackZipHashPlugin {
 
   /**
    * @param {Compilation} compilation
-   * @param {Asset} asset 
+   * @param {Asset} asset
    */
   _handleZipAsset(compilation, asset) {
     let oldAssetName = asset.name;
@@ -2083,8 +2083,8 @@ class StaticJavaScriptCondition {
   static FILE_EXTENSION = /\.js/i;
 
   /**
-   * @param {string} root 
-   * @param {string} file 
+   * @param {string} root
+   * @param {string} file
    * @returns {boolean}
    */
   static isInsideStaticFolder(root, file) {
@@ -2093,8 +2093,8 @@ class StaticJavaScriptCondition {
   }
 
   /**
-   * @param {string} root 
-   * @param {string} file 
+   * @param {string} root
+   * @param {string} file
    * @returns {boolean}
    */
   static test(root, file) {

@@ -1,8 +1,18 @@
 import 'source-map-support/register';
 
-import { TwingEnvironment, TwingLoaderRelativeFilesystem } from 'twing';
+import {TwingEnvironment, TwingLoaderRelativeFilesystem} from 'twing';
 
-import { bsiCxAsset, bsiCxCssHref, bsiCxCssInline, bsiCxJsModuleHref, bsiCxJsModuleInline, bsiCxJsModuleMissingChunksImport, bsiCxJsModuleMissingChunksInline, bsiCxJsModuleRuntimeHref, bsiCxJsModuleRuntimeInline } from './twig-functions';
+import {
+  bsiCxAsset,
+  bsiCxCssHref,
+  bsiCxCssInline,
+  bsiCxJsModuleHref,
+  bsiCxJsModuleInline,
+  bsiCxJsModuleMissingChunksImport,
+  bsiCxJsModuleMissingChunksInline,
+  bsiCxJsModuleRuntimeHref,
+  bsiCxJsModuleRuntimeInline
+} from './twig-functions';
 
 let twing = new TwingEnvironment(
   new TwingLoaderRelativeFilesystem()

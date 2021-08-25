@@ -92,11 +92,11 @@ class Constant {
 
 
 /**
- * 
- * @param {TwingTemplate} template 
+ *
+ * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
- * @param {boolean} chunks 
- * @param {boolean} inline 
+ * @param {boolean} chunks
+ * @param {boolean} inline
  * @returns {Promise<string>}
  */
 function bsiCxJsModuleImport(template, config, inline) {
@@ -118,7 +118,7 @@ const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asse
   let templateDirPath = external_path_default().dirname(templatePath);
   let absoluteAssetPath = external_path_default().resolve(templateDirPath, assetPath).replace(/\\/g, (external_path_default()).posix.sep);
   return Promise.resolve(`@ref(${absoluteAssetPath})`);
-}, [], { needs_template: true });
+}, [], {needs_template: true});
 
 /**
  * Get URL to the CSS asset.
@@ -142,7 +142,7 @@ const bsiCxJsModuleHref = new external_twing_namespaceObject.TwingFunction('bsi_
     module: module
   };
   return bsiCxJsModuleImport(template, config, false);
-}, [], { needs_template: true, is_safe: ['html'] });
+}, [], {needs_template: true, is_safe: ['html']});
 
 /**
  * Get the content of the requested JS module.
@@ -152,7 +152,7 @@ const bsiCxJsModuleInline = new external_twing_namespaceObject.TwingFunction('bs
     module: module
   };
   return bsiCxJsModuleImport(template, config, true);
-}, [], { needs_template: true, is_safe: ['html'] });
+}, [], {needs_template: true, is_safe: ['html']});
 
 /**
  * Import all missing JS module chunks.
@@ -163,7 +163,7 @@ const bsiCxJsModuleMissingChunksImport = new external_twing_namespaceObject.Twin
     attributes: attributes || {}
   };
   return bsiCxJsModuleImport(template, config, false);
-}, [], { needs_template: true, is_safe: ['html'] });
+}, [], {needs_template: true, is_safe: ['html']});
 
 /**
  * Inline all missing JS module chunks.
@@ -174,7 +174,7 @@ const bsiCxJsModuleMissingChunksInline = new external_twing_namespaceObject.Twin
     attributes: attributes || {}
   };
   return bsiCxJsModuleImport(template, config, true);
-}, [], { needs_template: true, is_safe: ['html'] });
+}, [], {needs_template: true, is_safe: ['html']});
 
 /**
  * Get URL to the JS runtime module.

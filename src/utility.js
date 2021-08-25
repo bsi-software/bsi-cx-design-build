@@ -12,8 +12,8 @@ export class StaticJavaScriptCondition {
   static FILE_EXTENSION = /\.js/i;
 
   /**
-   * @param {string} root 
-   * @param {string} file 
+   * @param {string} root
+   * @param {string} file
    * @returns {boolean}
    */
   static isInsideStaticFolder(root, file) {
@@ -22,8 +22,8 @@ export class StaticJavaScriptCondition {
   }
 
   /**
-   * @param {string} root 
-   * @param {string} file 
+   * @param {string} root
+   * @param {string} file
    * @returns {boolean}
    */
   static test(root, file) {

@@ -1,8 +1,8 @@
-import { createHash } from 'crypto';
+import {createHash} from 'crypto';
 
-import { Compilation, Asset } from 'webpack';
+import {Asset, Compilation} from 'webpack';
 
-import { getZipArchiveName } from './utility';
+import {getZipArchiveName} from './utility';
 
 export default class BsiCxWebpackZipHashPlugin {
   /**
@@ -11,9 +11,9 @@ export default class BsiCxWebpackZipHashPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackZipHashPlugin';
 
   /**
-   * @param {string} name 
-   * @param {string} version 
-   * @param {boolean} enabled 
+   * @param {string} name
+   * @param {string} version
+   * @param {boolean} enabled
    */
   constructor(name, version, enabled) {
     this._name = name;
@@ -25,7 +25,7 @@ export default class BsiCxWebpackZipHashPlugin {
 
   /**
    * @param {Compilation} compilation
-   * @param {Asset} asset 
+   * @param {Asset} asset
    */
   _handleZipAsset(compilation, asset) {
     let oldAssetName = asset.name;
