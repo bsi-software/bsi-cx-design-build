@@ -3,6 +3,7 @@ const {ITALIC, BOLD, UNDERLINE, STRIKE_THROUGH, TEXT_COLOR, BACKGROUND_COLOR, FO
 const {P, H1, H2, H3, H4, H5, H6, PRE} = require('@bsi-cx/design-build/dist/html-editor-config/format');
 
 module.exports = new HtmlEditorConfigBuilder()
+  .withIdentifier('full')
   .withFeatures(ITALIC, BOLD, UNDERLINE, STRIKE_THROUGH, TEXT_COLOR, BACKGROUND_COLOR, FORMAT_OL, FORMAT_UL, CLEAR_FORMATTING, UNDO, REDO, FULLSCREEN, SELECT_ALL, INSERT_LINK)
   .withTextColors('#0082a1', '#bb9f84', '#fe9915', '#ffffff', '#666666')
   .withBackgroundColors('#0082a1', '#bb9f84', '#fe9915', '#ffffff', '#666666')

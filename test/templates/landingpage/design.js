@@ -22,10 +22,10 @@ module.exports = {
     }
   ],
   styleConfigs: {
-    'background-color': require('./styles/background-color'),
-    'text-color': require('./styles/text-color')
+    ...require('./styles/background-color'),
+    ...require('./styles/text-color')
   },
   htmlEditorConfigs: {
-    full: require('./html-editor-configs/full')
+    ...require('./html-editor-configs/full')
   }
 };

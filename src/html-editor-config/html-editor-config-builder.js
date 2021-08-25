@@ -218,17 +218,19 @@ export default class HtmlEditorConfigBuilder {
   }
 
   build() {
+    let editorConfig = {};
     let config = {};
+    config[this.identifier] = editorConfig;
 
-    this._applyPropertyToConfig('features', config, item => item.value);
-    this._applyPropertyToConfig('textColors', config, item => item);
-    this._applyPropertyToConfig('backgroundColors', config, item => item);
-    this._applyPropertyToConfig('formats', config, item => item.value);
-    this._applyPropertyToConfig('fontSizes', config, item => item);
-    this._applyPropertyToConfig('fontSizeUnit', config, item => item.value);
-    this._applyPropertyToConfig('fontSizeDefault', config, item => item);
-    this._applyPropertyToConfig('lineHeights', config, item => item);
-    this._applyPropertyToConfig('enterMode', config, item => item.value);
+    this._applyPropertyToConfig('features', editorConfig, item => item.value);
+    this._applyPropertyToConfig('textColors', editorConfig, item => item);
+    this._applyPropertyToConfig('backgroundColors', editorConfig, item => item);
+    this._applyPropertyToConfig('formats', editorConfig, item => item.value);
+    this._applyPropertyToConfig('fontSizes', editorConfig, item => item);
+    this._applyPropertyToConfig('fontSizeUnit', editorConfig, item => item.value);
+    this._applyPropertyToConfig('fontSizeDefault', editorConfig, item => item);
+    this._applyPropertyToConfig('lineHeights', editorConfig, item => item);
+    this._applyPropertyToConfig('enterMode', editorConfig, item => item.value);
 
     return config;
   }

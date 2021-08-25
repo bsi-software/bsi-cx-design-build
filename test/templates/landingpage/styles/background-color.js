@@ -1,21 +1,10 @@
-module.exports = {
-  label: 'Hintergrundfarbe',
-  cssClasses: [
-    {
-      cssClass: 'black-background',
-      label: 'Schwarz'
-    },
-    {
-      cssClass: 'blue-background',
-      label: 'Blau'
-    },
-    {
-      cssClass: 'red-background',
-      label: 'Rot'
-    },
-    {
-      cssClass: 'white-background',
-      label: ''
-    }
-  ]
-};
+const StyleBuilder = require('@bsi-cx/design-build/dist/style');
+
+module.exports = new StyleBuilder()
+  .withIdentifier('background-color')
+  .withLabel('Hintergrundfarbe')
+  .withCssClass('Schwarz', 'black-background')
+  .withCssClass('Blau', 'blue-background')
+  .withCssClass('Rot', 'red-background')
+  .withCssClass('', 'white-background')
+  .build();

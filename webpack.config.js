@@ -35,6 +35,14 @@ module.exports = {
         type: 'commonjs'
       }
     },
+    'style': {
+      import: path.resolve(__dirname, 'src', 'style', 'style-builder.js'),
+      filename: 'style.js',
+      library: {
+        type: 'commonjs2',
+        export: 'default'
+      }
+    },
     'html-editor-config/index': {
       import: path.resolve(__dirname, 'src', 'html-editor-config', 'html-editor-config-builder.js'),
       filename: 'html-editor-config/index.js',
