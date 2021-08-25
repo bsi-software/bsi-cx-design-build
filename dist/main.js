@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 104:
+/***/ 846:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -1010,7 +1010,7 @@ class WebpackConfigBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./index.js
+;// CONCATENATED MODULE: ./export/main.js
 
 
 
@@ -1626,11 +1626,11 @@ class BuildConfig {
     /**
      * @type {Version}
      */
-    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_1__.default.CX_22_0;
+    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_1__.CX_22_0;
     /**
      * @type {DesignType}
      */
-    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_0__.default.LANDINGPAGE;
+    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE;
     /**
      * @type {string}
      */
@@ -2341,11 +2341,11 @@ module.exports = require("webpack");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(104);
+/******/ 	var __webpack_exports__ = __webpack_require__(846);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=main.js.map

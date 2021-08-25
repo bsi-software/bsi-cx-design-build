@@ -1,0 +1,13 @@
+{
+  "files": [
+    "@bsi-cx/design-build.js"
+  ],
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowJs": true,
+    "outFile": "dist/types.ts",
+    "module": "system"
+  }
+}

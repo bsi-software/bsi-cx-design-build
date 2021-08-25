@@ -1,4 +1,4 @@
-const StyleBuilder = require('@bsi-cx/design-build/dist/style');
+const {StyleBuilder} = require('@bsi-cx/design-build');
 
 module.exports = new StyleBuilder()
   .withIdentifier('background-color')

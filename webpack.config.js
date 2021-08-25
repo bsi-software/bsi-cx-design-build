@@ -2,67 +2,30 @@ const path = require('path');
 const webpack = require('webpack');
 
 const nodeExternals = require('webpack-node-externals');
-
-let index = path.resolve(__dirname, 'index.js');
-let templateLoader = path.resolve(__dirname, 'src', 'template-loader.js');
-let twingEnvironment = path.resolve(__dirname, 'src', 'twing-environment.js');
-
-/**
- * @param {string} modulePath
- * @param {string|undefined} [output=undefined]
- * @returns {{}}
- */
-function addCommonJsEntry(modulePath, output) {
-  let filename = modulePath + '.js';
-  let entryConfig = {};
-
-  entryConfig[modulePath] = {
-    import: path.resolve(__dirname, 'src', filename),
-    filename: output || filename,
-    library: {
-      type: 'commonjs'
-    }
-  };
-
-  return entryConfig;
-}
+const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 
 module.exports = {
   entry: {
-    bundle: {
-      import: index,
+    'main': {
+      import: path.resolve(__dirname, 'export', 'main.js'),
       library: {
         type: 'commonjs'
       }
     },
-    'style': {
-      import: path.resolve(__dirname, 'src', 'style', 'style-builder.js'),
-      filename: 'style.js',
+    'browser': {
+      import: path.resolve(__dirname, 'export', 'browser.js'),
       library: {
-        type: 'commonjs2',
-        export: 'default'
+        type: 'commonjs'
       }
     },
-    'html-editor-config/index': {
-      import: path.resolve(__dirname, 'src', 'html-editor-config', 'html-editor-config-builder.js'),
-      filename: 'html-editor-config/index.js',
-      library: {
-        type: 'commonjs2',
-        export: 'default'
-      }
-    },
-    ...addCommonJsEntry('html-editor-config/enter-mode'),
-    ...addCommonJsEntry('html-editor-config/feature'),
-    ...addCommonJsEntry('html-editor-config/font-size-unit'),
-    ...addCommonJsEntry('html-editor-config/format'),
     'template-loader': {
-      import: templateLoader,
+      import: path.resolve(__dirname, 'src', 'template-loader.js'),
       library: {
         type: 'commonjs'
       }
     },
     'twing-environment': {
-      import: twingEnvironment,
+      import: path.resolve(__dirname, 'src', 'twing-environment.js'),
       library: {
         type: 'commonjs2',
         export: 'default'
@@ -87,6 +50,13 @@ module.exports = {
       noSources: true,
       sourceRoot: '../',
       moduleFilenameTemplate: '[resource-path]'
+    }),
+    new WebpackShellPluginNext({
+      onBuildEnd: {
+        scripts: ['tsc'],
+        blocking: true,
+        parallel: false
+      }
     })
   ],
   output: {

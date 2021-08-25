@@ -1,6 +1,6 @@
 const path = require('path');
 
-const {BuildConfig, WebpackConfigBuilder, DesignType, Version} = require('@bsi-cx/design-build');
+const {BuildConfig, WebpackConfigBuilder, Version, DesignType} = require('@bsi-cx/design-build');
 
 module.exports = WebpackConfigBuilder.fromConfigs(
   new BuildConfig()

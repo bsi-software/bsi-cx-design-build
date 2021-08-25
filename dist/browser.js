@@ -1,51 +1,128 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
 
-/***/ 42:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
+  "Feature": () => (/* reexport */ feature_namespaceObject),
+  "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
+  "Format": () => (/* reexport */ format_namespaceObject),
+  "HtmlEditorConfigBuilder": () => (/* reexport */ HtmlEditorConfigBuilder),
+  "StyleBuilder": () => (/* reexport */ StyleBuilder)
+});
 
-/* unused harmony exports default, P, BR, DIV */
-class EnterMode {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
+// NAMESPACE OBJECT: ./src/html-editor-config/feature.js
+var feature_namespaceObject = {};
+__webpack_require__.r(feature_namespaceObject);
+__webpack_require__.d(feature_namespaceObject, {
+  "ALIGN_CENTER": () => (ALIGN_CENTER),
+  "ALIGN_JUSTIFY": () => (ALIGN_JUSTIFY),
+  "ALIGN_LEFT": () => (ALIGN_LEFT),
+  "ALIGN_RIGHT": () => (ALIGN_RIGHT),
+  "BACKGROUND_COLOR": () => (BACKGROUND_COLOR),
+  "BOLD": () => (BOLD),
+  "CLEAR_FORMATTING": () => (CLEAR_FORMATTING),
+  "EMOTICONS": () => (EMOTICONS),
+  "FONT_SIZE": () => (FONT_SIZE),
+  "FORMAT_OL": () => (FORMAT_OL),
+  "FORMAT_UL": () => (FORMAT_UL),
+  "FULLSCREEN": () => (FULLSCREEN),
+  "HELP": () => (HELP),
+  "HTML": () => (HTML),
+  "INDENT": () => (INDENT),
+  "INSERT_LINK": () => (INSERT_LINK),
+  "ITALIC": () => (ITALIC),
+  "LINE_HEIGHT": () => (LINE_HEIGHT),
+  "OUTDENT": () => (OUTDENT),
+  "PARAGRAPH_FORMAT": () => (PARAGRAPH_FORMAT),
+  "QUOTE": () => (QUOTE),
+  "REDO": () => (REDO),
+  "SELECT_ALL": () => (SELECT_ALL),
+  "SPECIAL_CHARACTERS": () => (SPECIAL_CHARACTERS),
+  "STRIKE_THROUGH": () => (STRIKE_THROUGH),
+  "SUBSCRIPT": () => (SUBSCRIPT),
+  "SUPERSCRIPT": () => (SUPERSCRIPT),
+  "TEXT_COLOR": () => (TEXT_COLOR),
+  "UNDERLINE": () => (UNDERLINE),
+  "UNDO": () => (UNDO),
+  "default": () => (Feature)
+});
 
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
-}
+// NAMESPACE OBJECT: ./src/html-editor-config/enter-mode.js
+var enter_mode_namespaceObject = {};
+__webpack_require__.r(enter_mode_namespaceObject);
+__webpack_require__.d(enter_mode_namespaceObject, {
+  "BR": () => (BR),
+  "DIV": () => (DIV),
+  "P": () => (P),
+  "default": () => (EnterMode)
+});
 
-/**
- * @type {EnterMode}
- */
-const P = new EnterMode('p');
-/**
- * @type {EnterMode}
- */
-const BR = new EnterMode('br');
-/**
- * @type {EnterMode}
- */
-const DIV = new EnterMode('div');
+// NAMESPACE OBJECT: ./src/html-editor-config/font-size-unit.js
+var font_size_unit_namespaceObject = {};
+__webpack_require__.r(font_size_unit_namespaceObject);
+__webpack_require__.d(font_size_unit_namespaceObject, {
+  "CM": () => (CM),
+  "EM": () => (EM),
+  "MM": () => (MM),
+  "PT": () => (PT),
+  "PX": () => (PX),
+  "REM": () => (REM),
+  "default": () => (FontSizeUnit)
+});
 
+// NAMESPACE OBJECT: ./src/html-editor-config/format.js
+var format_namespaceObject = {};
+__webpack_require__.r(format_namespaceObject);
+__webpack_require__.d(format_namespaceObject, {
+  "H1": () => (H1),
+  "H2": () => (H2),
+  "H3": () => (H3),
+  "H4": () => (H4),
+  "H5": () => (H5),
+  "H6": () => (H6),
+  "P": () => (format_P),
+  "PRE": () => (PRE),
+  "default": () => (Format)
+});
 
-/***/ }),
-
-/***/ 770:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* unused harmony exports default, BOLD, ITALIC, UNDERLINE, STRIKE_THROUGH, SUBSCRIPT, SUPERSCRIPT, FONT_SIZE, LINE_HEIGHT, TEXT_COLOR, BACKGROUND_COLOR, ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_JUSTIFY, FORMAT_OL, FORMAT_UL, OUTDENT, INDENT, PARAGRAPH_FORMAT, QUOTE, SPECIAL_CHARACTERS, EMOTICONS, INSERT_LINK, CLEAR_FORMATTING, UNDO, REDO, FULLSCREEN, SELECT_ALL, HTML, HELP */
+;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 class Feature {
   /**
    * @param {string} value
@@ -187,13 +264,41 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
+;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
+class EnterMode {
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._value = value;
+  }
 
-/***/ }),
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+}
 
-/***/ 774:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/**
+ * @type {EnterMode}
+ */
+const P = new EnterMode('p');
+/**
+ * @type {EnterMode}
+ */
+const BR = new EnterMode('br');
+/**
+ * @type {EnterMode}
+ */
+const DIV = new EnterMode('div');
 
-/* unused harmony exports default, PX, EM, REM, PT, CM, MM */
+;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
 class FontSizeUnit {
   /**
    * @param {string} value
@@ -239,13 +344,7 @@ const CM = new FontSizeUnit('cm');
  */
 const MM = new FontSizeUnit('mm');
 
-
-/***/ }),
-
-/***/ 46:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* unused harmony exports default, P, H1, H2, H3, H4, H5, H6, PRE */
+;// CONCATENATED MODULE: ./src/html-editor-config/format.js
 class Format {
   /**
    * @param {string} value
@@ -269,7 +368,7 @@ class Format {
 /**
  * @type {Format}
  */
-const P = new Format('p');
+const format_P = new Format('p');
 /**
  * @type {Format}
  */
@@ -299,64 +398,7 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ HtmlEditorConfigBuilder)
-/* harmony export */ });
-/* harmony import */ var _enter_mode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42);
-/* harmony import */ var _feature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(770);
-/* harmony import */ var _format__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(46);
-/* harmony import */ var _font_size_unit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(774);
+;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config-builder.js
 
 
 
@@ -619,9 +661,91 @@ class HtmlEditorConfigBuilder {
   }
 }
 
-})();
+;// CONCATENATED MODULE: ./src/style/style-builder.js
+class StyleBuilder {
+  constructor() {
+    this._identifier = undefined;
+    this._label = undefined;
+    this._cssClasses = [];
+  }
 
-module.exports = __webpack_exports__.default;
+  /**
+   * @returns {string|undefined}
+   */
+  get identifier() {
+    return this._identifier;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @returns {[{label:string,cssClass:string}]}
+   */
+  get cssClasses() {
+    return this._cssClasses;
+  }
+
+  /**
+   * @param {string} identifier
+   * @returns {StyleBuilder}
+   */
+  withIdentifier(identifier) {
+    this._identifier = identifier;
+    return this;
+  }
+
+  /**
+   * @param {string} label
+   * @returns {StyleBuilder}
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  /**
+   * @param {string} label
+   * @param {string} cssClass
+   * @returns {StyleBuilder}
+   */
+  withCssClass(label, cssClass) {
+    this._cssClasses.push({
+      label: label,
+      cssClass: cssClass
+    });
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    config[this.identifier] = {
+      label: this.label,
+      cssClasses: this.cssClasses
+    };
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./export/browser.js
+
+
+
+
+
+
+
+
+
+var __webpack_export_target__ = exports;
+for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=browser.js.map

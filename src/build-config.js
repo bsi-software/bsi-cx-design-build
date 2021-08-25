@@ -1,5 +1,5 @@
-import DesignType from './design-type';
-import Version from './version';
+import DesignType, {LANDINGPAGE} from './design-type';
+import Version, {CX_22_0} from './version';
 
 /**
  * The configuration object for the build of one template.
@@ -17,11 +17,11 @@ export default class BuildConfig {
     /**
      * @type {Version}
      */
-    this._targetVersion = Version.CX_22_0;
+    this._targetVersion = CX_22_0;
     /**
      * @type {DesignType}
      */
-    this._designType = DesignType.LANDINGPAGE;
+    this._designType = LANDINGPAGE;
     /**
      * @type {string}
      */
