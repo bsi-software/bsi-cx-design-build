@@ -1,12 +1,17 @@
 import path from 'path';
-import { createHash } from 'crypto';
+import {createHash} from 'crypto';
 import vm from 'vm';
+import Module from 'module';
 
 import Handlebars from 'handlebars';
-import { Compilation, sources, Compiler, WebpackLogger, WebpackError } from 'webpack';
+import {Compilation, Compiler, sources, WebpackError, WebpackLogger} from 'webpack';
 
+import BuildConfig from './build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
+import {buildPublicPath} from './utility';
+
+const parentModule = module;
 
 class _BsiCxWebpackPlugin {
   /**
@@ -25,7 +30,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = /^static\/styles\-[0-9a-z]+\.css$/;
+  static STYLES_CSS = /^static\/styles-[0-9a-z]+\.css$/;
   /**
    * @type {RegExp}
    */
@@ -58,11 +63,16 @@ class _BsiCxWebpackPlugin {
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
   /**
-   * @param {Compiler} compiler 
-   * @param {Compilation} compilation 
-   * @param {WebpackLogger} logger 
+   * @param {BuildConfig} config
+   * @param {Compiler} compiler
+   * @param {Compilation} compilation
+   * @param {WebpackLogger} logger
    */
-  constructor(compiler, compilation, logger) {
+  constructor(config, compiler, compilation, logger) {
+    /**
+     * @type {BuildConfig}
+     */
+    this._config = config;
     /**
      * @type {Compiler}
      */
@@ -79,7 +89,7 @@ class _BsiCxWebpackPlugin {
 
   apply() {
     try {
-      this._handleDesignJson();
+      this._exportDesignJson();
       this._exportDesignHtml();
       this._exportPreviewHtml();
     } catch (error) {
@@ -105,11 +115,11 @@ class _BsiCxWebpackPlugin {
     }
   }
 
-  _handleDesignJson() {
+  _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonObj = this._loadAsset(designJsonPath, 'json');
+    let designJsonObj = this._loadModule(designJsonPath);
     let contentElementGroups = designJsonObj.contentElementGroups || [];
-    let website = designJsonObj.website || { includes: {} };
+    let website = designJsonObj.website || {includes: {}};
     let websiteIncludes = website.includes || {};
 
     this._handleDesignPreviewImage(designJsonObj);
@@ -121,7 +131,7 @@ class _BsiCxWebpackPlugin {
     Object.values(websiteIncludes)
       .forEach(include => this._handleInclude(include));
 
-    let jsonStr = JSON.stringify(designJsonObj, null, 4);
+    let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
   }
 
@@ -159,8 +169,8 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} previewFilePath 
-   * @param {string} previewTemplate 
+   * @param {string} previewFilePath
+   * @param {string} previewTemplate
    */
   _handlePreviewHandlebars(previewFilePath, previewTemplate) {
     let parser = this._getHandlebarsParser();
@@ -190,7 +200,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {RegExp} nameRegEx 
+   * @param {RegExp} nameRegEx
    * @returns {string[]}
    */
   _getAssetNames(nameRegEx) {
@@ -199,7 +209,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {RegExp} nameRegEx 
+   * @param {RegExp} nameRegEx
    * @returns {string}
    */
   _getAssetName(nameRegEx) {
@@ -208,14 +218,14 @@ class _BsiCxWebpackPlugin {
 
   _eval(source) {
     let script = new vm.Script(source);
-    let context = { module: {} };
+    let context = {module: {}};
     script.runInNewContext(context);
     return context.module.exports;
   }
 
   /**
-   * @param {string} name 
-   * @param {string} content 
+   * @param {string} filePath
+   * @param {string} content
    */
   _updateAsset(filePath, content) {
     let source = new sources.RawSource(content);
@@ -223,23 +233,38 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} name 
-   * @param {string} scope 
+   * @param {string} name
+   * @param {string} scope
    * @returns {*}
    */
   _loadAsset(name, scope) {
     let asset = this._compilation.getAsset(name);
     let script = new vm.Script(asset.source.source());
-    let context = { self: {} };
+    let context = {self: {}};
 
     script.runInNewContext(context);
 
     return context[scope];
   }
 
+  _loadModule(name) {
+    let asset = this._compilation.getAsset(name);
+    let modulePath = path.resolve(this._compiler.outputPath, name);
+    let moduleFolder = path.dirname(modulePath);
+    let code = asset.source.source();
+
+    let module = new Module(modulePath, parentModule);
+    module.paths = Module._nodeModulePaths(moduleFolder);
+    module.filename = modulePath;
+
+    module._compile(`var self = {}; ${code}`, modulePath);
+
+    return module.exports;
+  }
+
   /**
-   * @param {string} filePath 
-   * @param {string} source 
+   * @param {string} filePath
+   * @param {string} content
    */
   _emitAsset(filePath, content) {
     let source = new sources.RawSource(content);
@@ -247,14 +272,14 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} filePath 
+   * @param {string} filePath
    */
   _deleteAsset(filePath) {
     this._compilation.deleteAsset(filePath);
   }
 
   /**
-   * @param {string} filePath 
+   * @param {string} filePath
    * @param {string} name
    * @returns {string}
    */
@@ -272,7 +297,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} content
    * @returns {string}
    */
   _handleStylesheets(content) {
@@ -298,7 +323,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} content
    * @returns {string}
    */
   _handleJavaScriptModules(content) {
@@ -335,8 +360,8 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
-   * @param {RegExpMatchArray} match 
+   * @param {string} content
+   * @param {RegExpMatchArray} match
    * @param {string[]} importedModules
    * @returns {string}
    */
@@ -382,7 +407,7 @@ class _BsiCxWebpackPlugin {
       let asset = this._compilation.getAsset(moduleAssetPath);
       replacement = asset.source();
     } else {
-      replacement = Constant.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
+      replacement = buildPublicPath(this._config, moduleAssetPath);
     }
 
     importedModules.push(moduleAssetPath);
@@ -400,7 +425,7 @@ class _BsiCxWebpackPlugin {
     let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
     let assetPaths = this._getAssetNames(assetRegex);
 
-    let replacement = assetPaths
+    return assetPaths
       .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
       .map(assetPath => {
         importedModules.push(assetPath);
@@ -409,19 +434,17 @@ class _BsiCxWebpackPlugin {
           let asset = this._compilation.getAsset(assetPath);
           return `<script>${asset.source()}</script>`;
         } else {
-          let url = Constant.BSI_CX_DESIGN_BASE_URL + '/' + assetPath;
+          let url = buildPublicPath(this._config, assetPath);
           return `<script src="${url}" defer="defer"></script>`;
         }
       }).join('');
-
-    return replacement;
   }
 
   /**
-   * @param {string} message 
-   * @param {string} details 
+   * @param {string} message
+   * @param {string} details
    * @param {string|undefined} [location=undefined]
-   * @returns 
+   * @returns
    */
   _webpackError(message, details, location) {
     let error = new WebpackError(message);
@@ -441,7 +464,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} content
    * @returns {string}
    */
   _createContentHash(content) {
@@ -459,7 +482,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @returns {{}} 
+   * @returns {{}}
    */
   _getHandlebarsHelpers() {
     let helpersObj = {};
@@ -471,7 +494,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} url 
+   * @param {string} url
    * @returns {string}
    */
   _removeDesignBaseUrl(url) {
@@ -485,6 +508,13 @@ export default class BsiCxWebpackPlugin {
    */
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
       compilation.hooks.processAssets.tap(
@@ -494,7 +524,7 @@ export default class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
         })
     });
   }

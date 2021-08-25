@@ -13,23 +13,23 @@ const ALL_TYPES = [
 
 export default class Version {
   /**
-   * @type {string}
+   * @type {Version}
    */
   static STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
   /**
-   * @type {string}
+   * @type {Version}
    */
   static STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
   /**
-   * @type {string}
+   * @type {Version}
    */
   static STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
   /**
-   * @type {string}
+   * @type {Version}
    */
   static CX_1_3 = new Version('1.3', ALL_TYPES, true);
   /**
-   * @type {string}
+   * @type {Version}
    */
   static CX_22_0 = new Version('22.0', ALL_TYPES, false);
 

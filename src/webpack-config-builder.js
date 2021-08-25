@@ -8,15 +8,17 @@ import TerserPlugin from 'terser-webpack-plugin';
 
 import packageJson from '../package.json';
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
+import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugin';
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
-import { getZipArchiveName, StaticJavaScriptCondition } from './utility';
+import File from './file';
+import {buildPublicPath, getZipArchiveName, StaticJavaScriptCondition} from './utility';
 import BuildConfig from './build-config';
 
 
 export default class WebpackConfigBuilder {
   /**
-   * @param {BuildConfig} config 
+   * @param {BuildConfig} config
    */
   constructor(config) {
     this._config = config;
@@ -49,6 +51,7 @@ export default class WebpackConfigBuilder {
         ...this._getMiniCssExtractPluginConfig(),
         ...this._getCopyPluginConfig(),
         ...this._getBsiCxWebpackPluginConfig(),
+        ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
       ],
       devtool: this._getDevToolConfig(),
@@ -72,8 +75,9 @@ export default class WebpackConfigBuilder {
 
   /**
    * The default output path: dist/{name}
-   * 
+   *
    * @returns {string}
+   * @private
    */
   _getDefaultOutputPath() {
     return path.resolve(process.cwd(), 'dist', this.config.name);
@@ -81,7 +85,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * The output path to use.
-   * 
+   *
    * @returns {string}
    */
   _getOutputPath() {
@@ -89,16 +93,37 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * The default modules path: ./modules
+   *
+   * @returns {string}
+   */
+  _getDefaultModulesRootPath() {
+    return path.resolve(this.config.rootPath, 'modules');
+  }
+
+  /**
+   * The modules path to use.
+   *
+   * @returns {string}
+   */
+  _getModulesRootPath() {
+    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
+  }
+
+  /**
    * The entry configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getEntryConfig() {
     return {
       ...this._getJavaScriptModuleEntries(),
       json: {
-        import: path.resolve(this.config.rootPath, 'design.js'),
-        filename: 'design.json'
+        import: this._getDesignJsFilePath(),
+        filename: File.DESIGN_JSON,
+        library: {
+          type: 'commonjs'
+        }
       },
       design: this._evaluateEntryTemplate('design'),
       preview: this._evaluateEntryTemplate('preview')
@@ -107,8 +132,8 @@ export default class WebpackConfigBuilder {
 
   /**
    * Get the entry configuration for a template.
-   * 
-   * @param {string} name 
+   *
+   * @param {string} name
    * @returns {{}}
    */
   _evaluateEntryTemplate(name) {
@@ -122,9 +147,13 @@ export default class WebpackConfigBuilder {
     };
   }
 
+  _getDesignJsFilePath() {
+    return path.resolve(this.config.rootPath, File.DESIGN_JS);
+  }
+
   /**
    * Get the entry configurations for the Java Script modules.
-   * 
+   *
    * @returns {[{}]}
    */
   _getJavaScriptModuleEntries() {
@@ -141,7 +170,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Rules for Twig file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getTwigRuleConfig() {
@@ -157,7 +186,7 @@ export default class WebpackConfigBuilder {
               environmentModulePath: `${packageJson.name}/dist/twing-environment.js`,
               renderContext: {
                 properties: this.config.properties,
-                designBaseUrl: Constant.BSI_CX_DESIGN_BASE_URL
+                designBaseUrl: buildPublicPath(this.config)
               }
             }
           }
@@ -168,7 +197,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Rule for HTML and Handlebars file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getHtmlAndHbsRuleConfig() {
@@ -185,7 +214,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getStyleRulesConfig() {
@@ -219,7 +248,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
-   * 
+   *
    * @returns {[string]}
    */
   _getStaticAssetFileExtensions() {
@@ -243,7 +272,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Rule for static assets handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getStaticAssetsRuleConfig() {
@@ -263,7 +292,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Rule for static Java Script file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getStaticJavaScriptFileRuleConfig() {
@@ -280,7 +309,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Rule for regular Java Script file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getRegularJavaScriptFileRuleConfig() {
@@ -288,6 +317,7 @@ export default class WebpackConfigBuilder {
       {
         test: /\.m?js$/i,
         exclude: /(node_modules|bower_components)/,
+        include: this._getModulesRootPath(),
         use: {
           loader: 'babel-loader',
           options: {
@@ -337,7 +367,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Mini CSS extract plugin configuration.
-   * 
+   *
    * @returns {[MiniCssExtractPlugin]}
    */
   _getMiniCssExtractPluginConfig() {
@@ -350,7 +380,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Copy plugin configuration.
-   * 
+   *
    * @returns {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
@@ -376,21 +406,24 @@ export default class WebpackConfigBuilder {
 
   /**
    * BSI CX Webpack plugin.
-   * 
+   *
    * @returns {[BsiCxWebpackPlugin]}
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin()
+      new BsiCxWebpackPlugin(this.config)
     ];
   }
 
   /**
    * Webpack ZIP plugin configuration.
-   * 
+   *
    * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
    */
   _getZipPluginConfig() {
+    /**
+     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+     */
     let plugins = [
       new ZipPlugin({
         filename: getZipArchiveName(this.config.name, this.config.version),
@@ -414,8 +447,23 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   */
+  _getBsiCxWebpackLegacyDesignPluginConfig() {
+    let plugins = [];
+    if (this.config.targetVersion.legacyFormat) {
+      plugins.push(
+        new BsiCxWebpackLegacyDesignPlugin(this.config)
+      );
+    }
+    return plugins;
+  }
+
+  /**
    * The dev tool configuration.
-   * 
+   *
    * @returns {string|boolean}
    */
   _getDevToolConfig() {
@@ -424,7 +472,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * Development server configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getDevServerConfig() {
@@ -444,7 +492,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * The stats configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getStatsConfig() {
@@ -456,12 +504,12 @@ export default class WebpackConfigBuilder {
 
   /**
    * The performance configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getPerformanceConfig() {
     let excludedAssets = [
-      'design.json',
+      File.DESIGN_JSON,
     ];
     let excludedExtensions = /\.(map|zip|html|hbs)$/;
 
@@ -473,7 +521,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * The minimizer configuration.
-   * 
+   *
    * @returns {[TerserPlugin]}
    */
   _getOptimizationMinimizerConfig() {
@@ -486,7 +534,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * The split chunks name configuration.
-   * 
+   *
    * @returns {function}
    */
   _getOptimizationSplitChunksNameConfig() {
@@ -497,7 +545,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * The chache groups configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getOptimizationCacheGroupsConfig() {
@@ -520,13 +568,13 @@ export default class WebpackConfigBuilder {
 
   /**
    * The output configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getOutputConfig() {
     return {
       path: this._getOutputPath(),
-      publicPath: `${Constant.BSI_CX_DESIGN_BASE_URL}/`,
+      publicPath: buildPublicPath(this.config, '/'),
       clean: true,
       library: {
         type: 'var',
@@ -537,8 +585,8 @@ export default class WebpackConfigBuilder {
 
   /**
    * Build the configuration for webpack from {@link BuildConfig} objects.
-   * 
-   * @param  {...BuildConfig} configs 
+   *
+   * @param  {...BuildConfig} configs
    */
   static fromConfigs(...configs) {
     let devServerPort = undefined;

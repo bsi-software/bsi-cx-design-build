@@ -2,8 +2,284 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 638:
+/***/ 46:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "default": () => (/* binding */ BsiCxWebpackLegacyDesignPlugin)
+});
+
+// EXTERNAL MODULE: external "webpack"
+var external_webpack_ = __webpack_require__(78);
+// EXTERNAL MODULE: ./src/build-config.js
+var build_config = __webpack_require__(492);
+// EXTERNAL MODULE: ./src/file.js
+var file = __webpack_require__(810);
+;// CONCATENATED MODULE: ./src/java-property-file-builder.js
+class JavaPropertyFileBuilder {
+  constructor() {
+    this._properties = [];
+  }
+
+  /**
+   * @param {string} key
+   * @param {string} value
+   * @returns {JavaPropertyFileBuilder}
+   */
+  append(key, value) {
+    this._properties.push([key, value]);
+    return this;
+  }
+
+  /**
+   * @param {string} comment
+   * @returns {JavaPropertyFileBuilder}
+   */
+  appendComment(comment) {
+    this._properties.push(comment);
+    return this;
+  }
+
+  /**
+   * @returns {JavaPropertyFileBuilder}
+   */
+  appendBlank() {
+    this._properties.push('');
+    return this;
+  }
+
+  /**
+   * @returns {string}
+   */
+  build() {
+    return this._properties
+      .map(line => this._printLine(line))
+      .join('\n');
+  }
+
+  /**
+   * @param {string} line
+   * @returns {string}
+   */
+  _printLine(line) {
+    if (line instanceof Array) {
+      let [key, value] = line;
+      return this._escapeKey(key) + '=' + this._escapeValue(value);
+    } else {
+      return line;
+    }
+  }
+
+  /**
+   * @param {string} key
+   * @returns {string}
+   */
+  _escapeKey(key) {
+    return key;
+  }
+
+  /**
+   * @param {string} value
+   * @returns {string}
+   */
+  _escapeValue(value) {
+    return value;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
+
+
+
+
+
+
+class _BsiCxWebpackLegacyDesignPlugin {
+  /**
+   * @param {BuildConfig} config
+   * @param {Compiler} compiler
+   * @param {Compilation} compilation
+   * @param {WebpackLogger} logger
+   */
+  constructor(config, compiler, compilation, logger) {
+    /**
+     * @type {BuildConfig}
+     */
+    this._config = config;
+    /**
+     * @type {Compiler}
+     */
+    this._compiler = compiler;
+    /**
+     * @type {Compilation}
+     */
+    this._compilation = compilation;
+    /**
+     * @type {WebpackLogger}
+     */
+    this._logger = logger;
+  }
+
+  apply() {
+    try {
+      this._convertToLegacyFormat();
+    } catch (error) {
+      if (error instanceof external_webpack_.WebpackError) {
+        this._compilation.errors.push(error);
+      } else {
+        this._logger.error(error);
+      }
+    }
+  }
+
+  _convertToLegacyFormat() {
+    let designJson = this._getDesignJsonObject();
+
+    this._createAndEmitContentElementsHtml(designJson);
+    this._createAndEmitDesignProperties(designJson);
+  }
+
+  _getDesignJsonObject() {
+    let asset = this._compilation.getAsset(file/* default.DESIGN_JSON */.Z.DESIGN_JSON);
+
+    if (!asset) {
+      throw new Error(`The asset "${file/* default.DESIGN_JSON */.Z.DESIGN_JSON}" does not exist.`);
+    }
+
+    let source = asset.source.source();
+    let json = JSON.parse(source);
+
+    if (!json) {
+      throw new Error('Unable to parse JSON.');
+    }
+
+    return json;
+  }
+
+  /**
+   * @param {{}} designJson
+   * @returns {string}
+   */
+  _createAndEmitContentElementsHtml(designJson) {
+    let html = designJson
+      .contentElementGroups
+      .map(group => this._renderContentElementsGroup(group))
+      .join('\n');
+
+    let source = new external_webpack_.sources.RawSource(html);
+
+    this._compilation.emitAsset(file/* default.CONTENT_ELEMENTS_HTML */.Z.CONTENT_ELEMENTS_HTML, source);
+  }
+
+  /**
+   * @param {{}} group
+   * @returns {string}
+   */
+  _renderContentElementsGroup(group) {
+    let elements = group
+      .contentElements
+      .map(element => this._renderContentElement(element))
+      .join('\n');
+
+    return `<div data-bsi-group="${group.groupId}">\n${elements}\n</div>`;
+  }
+
+  /**
+   * @param {{}} element
+   * @returns {string}
+   */
+  _renderContentElement(element) {
+    let asset = this._compilation.getAsset(element.file);
+    let source = asset.source.source();
+
+    return source.trim();
+  }
+
+  _createAndEmitDesignProperties(designJson) {
+    let properties = new JavaPropertyFileBuilder();
+
+    this._appendMetaInfo(designJson, properties);
+    this._appendStyles(designJson, properties);
+
+    let source = new external_webpack_.sources.RawSource(properties.build());
+
+    this._compilation.emitAsset(file/* default.DESIGN_PROPERTIES */.Z.DESIGN_PROPERTIES, source);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   */
+  _appendMetaInfo(designJson, properties) {
+    properties.append('template.name', designJson.title);
+    properties.append('template.author', designJson.author);
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   */
+  _appendStyles(designJson, properties) {
+    let styleConfigs = designJson.styleConfigs || {};
+    for (let [style, config] of Object.entries(styleConfigs)) {
+      this._appendStyleConfig(style, config, properties);
+    }
+  }
+
+  /**
+   * @param {string} style
+   * @param {{}} config
+   * @param {JavaPropertyFileBuilder} properties
+   */
+  _appendStyleConfig(style, config, properties) {
+    let prefix = `style.${style}`;
+    properties.append(`${prefix}.label`, config.label);
+
+    let cssClasses = config.cssClasses || [];
+    cssClasses.forEach(cssClass => properties.append(`${prefix}.class.${cssClass.cssClass}.label`, cssClass.label));
+
+    properties.appendBlank();
+  }
+}
+
+class BsiCxWebpackLegacyDesignPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxWebpackLegacyDesignPlugin';
+
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME, compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME,
+          stage: external_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+        },
+        () => {
+          const logger = compilation.getLogger(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME);
+          new _BsiCxWebpackLegacyDesignPlugin(this._config, compiler, compilation, logger).apply();
+        })
+    });
+  }
+};
+
+
+/***/ }),
+
+/***/ 940:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
@@ -21,11 +297,16 @@ var external_crypto_ = __webpack_require__(417);
 ;// CONCATENATED MODULE: external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
+;// CONCATENATED MODULE: external "module"
+const external_module_namespaceObject = require("module");
+var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
 ;// CONCATENATED MODULE: external "handlebars"
 const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
 // EXTERNAL MODULE: external "webpack"
 var external_webpack_ = __webpack_require__(78);
+// EXTERNAL MODULE: ./src/build-config.js
+var build_config = __webpack_require__(492);
 ;// CONCATENATED MODULE: ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
@@ -33,7 +314,10 @@ var external_webpack_ = __webpack_require__(78);
 
 // EXTERNAL MODULE: ./src/constant.js
 var constant = __webpack_require__(911);
+// EXTERNAL MODULE: ./src/utility.js
+var utility = __webpack_require__(923);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+/* module decorator */ module = __webpack_require__.hmd(module);
 
 
 
@@ -43,6 +327,11 @@ var constant = __webpack_require__(911);
 
 
 
+
+
+
+
+const parentModule = module;
 
 class _BsiCxWebpackPlugin {
   /**
@@ -61,7 +350,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = /^static\/styles\-[0-9a-z]+\.css$/;
+  static STYLES_CSS = /^static\/styles-[0-9a-z]+\.css$/;
   /**
    * @type {RegExp}
    */
@@ -94,11 +383,16 @@ class _BsiCxWebpackPlugin {
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
   /**
-   * @param {Compiler} compiler 
-   * @param {Compilation} compilation 
-   * @param {WebpackLogger} logger 
+   * @param {BuildConfig} config
+   * @param {Compiler} compiler
+   * @param {Compilation} compilation
+   * @param {WebpackLogger} logger
    */
-  constructor(compiler, compilation, logger) {
+  constructor(config, compiler, compilation, logger) {
+    /**
+     * @type {BuildConfig}
+     */
+    this._config = config;
     /**
      * @type {Compiler}
      */
@@ -115,7 +409,7 @@ class _BsiCxWebpackPlugin {
 
   apply() {
     try {
-      this._handleDesignJson();
+      this._exportDesignJson();
       this._exportDesignHtml();
       this._exportPreviewHtml();
     } catch (error) {
@@ -141,11 +435,11 @@ class _BsiCxWebpackPlugin {
     }
   }
 
-  _handleDesignJson() {
+  _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonObj = this._loadAsset(designJsonPath, 'json');
+    let designJsonObj = this._loadModule(designJsonPath);
     let contentElementGroups = designJsonObj.contentElementGroups || [];
-    let website = designJsonObj.website || { includes: {} };
+    let website = designJsonObj.website || {includes: {}};
     let websiteIncludes = website.includes || {};
 
     this._handleDesignPreviewImage(designJsonObj);
@@ -157,7 +451,7 @@ class _BsiCxWebpackPlugin {
     Object.values(websiteIncludes)
       .forEach(include => this._handleInclude(include));
 
-    let jsonStr = JSON.stringify(designJsonObj, null, 4);
+    let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
   }
 
@@ -195,8 +489,8 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} previewFilePath 
-   * @param {string} previewTemplate 
+   * @param {string} previewFilePath
+   * @param {string} previewTemplate
    */
   _handlePreviewHandlebars(previewFilePath, previewTemplate) {
     let parser = this._getHandlebarsParser();
@@ -226,7 +520,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {RegExp} nameRegEx 
+   * @param {RegExp} nameRegEx
    * @returns {string[]}
    */
   _getAssetNames(nameRegEx) {
@@ -235,7 +529,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {RegExp} nameRegEx 
+   * @param {RegExp} nameRegEx
    * @returns {string}
    */
   _getAssetName(nameRegEx) {
@@ -244,14 +538,14 @@ class _BsiCxWebpackPlugin {
 
   _eval(source) {
     let script = new (external_vm_default()).Script(source);
-    let context = { module: {} };
+    let context = {module: {}};
     script.runInNewContext(context);
     return context.module.exports;
   }
 
   /**
-   * @param {string} name 
-   * @param {string} content 
+   * @param {string} filePath
+   * @param {string} content
    */
   _updateAsset(filePath, content) {
     let source = new external_webpack_.sources.RawSource(content);
@@ -259,23 +553,38 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} name 
-   * @param {string} scope 
+   * @param {string} name
+   * @param {string} scope
    * @returns {*}
    */
   _loadAsset(name, scope) {
     let asset = this._compilation.getAsset(name);
     let script = new (external_vm_default()).Script(asset.source.source());
-    let context = { self: {} };
+    let context = {self: {}};
 
     script.runInNewContext(context);
 
     return context[scope];
   }
 
+  _loadModule(name) {
+    let asset = this._compilation.getAsset(name);
+    let modulePath = external_path_default().resolve(this._compiler.outputPath, name);
+    let moduleFolder = external_path_default().dirname(modulePath);
+    let code = asset.source.source();
+
+    let module = new (external_module_default())(modulePath, parentModule);
+    module.paths = external_module_default()._nodeModulePaths(moduleFolder);
+    module.filename = modulePath;
+
+    module._compile(`var self = {}; ${code}`, modulePath);
+
+    return module.exports;
+  }
+
   /**
-   * @param {string} filePath 
-   * @param {string} source 
+   * @param {string} filePath
+   * @param {string} content
    */
   _emitAsset(filePath, content) {
     let source = new external_webpack_.sources.RawSource(content);
@@ -283,14 +592,14 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} filePath 
+   * @param {string} filePath
    */
   _deleteAsset(filePath) {
     this._compilation.deleteAsset(filePath);
   }
 
   /**
-   * @param {string} filePath 
+   * @param {string} filePath
    * @param {string} name
    * @returns {string}
    */
@@ -308,7 +617,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} content
    * @returns {string}
    */
   _handleStylesheets(content) {
@@ -334,7 +643,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} content
    * @returns {string}
    */
   _handleJavaScriptModules(content) {
@@ -371,8 +680,8 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
-   * @param {RegExpMatchArray} match 
+   * @param {string} content
+   * @param {RegExpMatchArray} match
    * @param {string[]} importedModules
    * @returns {string}
    */
@@ -418,7 +727,7 @@ class _BsiCxWebpackPlugin {
       let asset = this._compilation.getAsset(moduleAssetPath);
       replacement = asset.source();
     } else {
-      replacement = constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL + '/' + moduleAssetPath;
+      replacement = (0,utility/* buildPublicPath */.YV)(this._config, moduleAssetPath);
     }
 
     importedModules.push(moduleAssetPath);
@@ -436,7 +745,7 @@ class _BsiCxWebpackPlugin {
     let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
     let assetPaths = this._getAssetNames(assetRegex);
 
-    let replacement = assetPaths
+    return assetPaths
       .filter(assetPath => !assetPath.startsWith(constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
       .map(assetPath => {
         importedModules.push(assetPath);
@@ -445,19 +754,17 @@ class _BsiCxWebpackPlugin {
           let asset = this._compilation.getAsset(assetPath);
           return `<script>${asset.source()}</script>`;
         } else {
-          let url = constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL + '/' + assetPath;
+          let url = (0,utility/* buildPublicPath */.YV)(this._config, assetPath);
           return `<script src="${url}" defer="defer"></script>`;
         }
       }).join('');
-
-    return replacement;
   }
 
   /**
-   * @param {string} message 
-   * @param {string} details 
+   * @param {string} message
+   * @param {string} details
    * @param {string|undefined} [location=undefined]
-   * @returns 
+   * @returns
    */
   _webpackError(message, details, location) {
     let error = new external_webpack_.WebpackError(message);
@@ -477,7 +784,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} content 
+   * @param {string} content
    * @returns {string}
    */
   _createContentHash(content) {
@@ -495,7 +802,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @returns {{}} 
+   * @returns {{}}
    */
   _getHandlebarsHelpers() {
     let helpersObj = {};
@@ -507,7 +814,7 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} url 
+   * @param {string} url
    * @returns {string}
    */
   _removeDesignBaseUrl(url) {
@@ -521,6 +828,13 @@ class BsiCxWebpackPlugin {
    */
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
       compilation.hooks.processAssets.tap(
@@ -530,7 +844,7 @@ class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
         })
     });
   }
@@ -572,8 +886,8 @@ class BsiCxWebpackZipHashPlugin {
     this._name = name;
     this._version = version;
     this._enabled = !!enabled;
-    this._prodZipFileName = (0,_utility__WEBPACK_IMPORTED_MODULE_2__/* .getZipArchiveName */ .u)(name, version);
-    this._devZipFileName = (0,_utility__WEBPACK_IMPORTED_MODULE_2__/* .getZipArchiveName */ .u)(name, version, 'dev');
+    this._prodZipFileName = (0,_utility__WEBPACK_IMPORTED_MODULE_2__/* .getZipArchiveName */ .ur)(name, version);
+    this._devZipFileName = (0,_utility__WEBPACK_IMPORTED_MODULE_2__/* .getZipArchiveName */ .ur)(name, version, 'dev');
   }
 
   /**
@@ -624,6 +938,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ BuildConfig)
 /* harmony export */ });
+/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
+/* harmony import */ var _version__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(345);
+
+
+
 /**
  * The configuration object for the build of one template.
  */
@@ -637,6 +956,14 @@ class BuildConfig {
      * @type {string}
      */
     this._version = '1.0.0';
+    /**
+     * @type {Version}
+     */
+    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_0__.default.CX_22_0;
+    /**
+     * @type {DesignType}
+     */
+    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_1__.default.LANDINGPAGE;
     /**
      * @type {string}
      */
@@ -662,6 +989,10 @@ class BuildConfig {
      */
     this._modules = {};
     /**
+     * @type {string}
+     */
+    this._modulesRootPath = undefined;
+    /**
      * @type {[{}]}
      */
     this._additionalFilesToCopy = [];
@@ -683,6 +1014,20 @@ class BuildConfig {
    */
   get version() {
     return this._version;
+  }
+
+  /**
+   * @returns {Version}
+   */
+  get targetVersion() {
+    return this._targetVersion;
+  }
+
+  /**
+   * @returns {DesignType}
+   */
+  get designType() {
+    return this._designType;
   }
 
   /**
@@ -728,6 +1073,13 @@ class BuildConfig {
   }
 
   /**
+   * @returns {string}
+   */
+  get modulesRootPath() {
+    return this._modulesRootPath;
+  }
+
+  /**
    * @returns {[{}]}
    */
   get additionalFilesToCopy() {
@@ -743,8 +1095,8 @@ class BuildConfig {
 
   /**
    * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
-   * 
-   * @param {string} name 
+   *
+   * @param {string} name
    * @returns {BuildConfig}
    */
   withName(name) {
@@ -754,8 +1106,8 @@ class BuildConfig {
 
   /**
    * The version of this template, e.g. 1.0.1. This will be included in the name of the resulting ZIP file in the dist folder.
-   * 
-   * @param {string} version 
+   *
+   * @param {string} version
    * @returns {BuildConfig}
    */
   withVersion(version) {
@@ -764,9 +1116,33 @@ class BuildConfig {
   }
 
   /**
+   * The application version of BSI CX (or BSI Studio) this design is built for.
+   *
+   * @see Checkout {@link Version} for available versions.
+   * @param {Version} version
+   * @returns
+   */
+  withTargetVersion(version) {
+    this._targetVersion = version;
+    return this;
+  }
+
+  /**
+   * The type of this design (e.g. email or landingpage).
+   *
+   * @see Checkout {@link DesignType} for available types.
+   * @param {DesignType} type
+   * @returns
+   */
+  withDesignType(type) {
+    this._designType = type;
+    return this;
+  }
+
+  /**
    * The path to the root folder of this template. This folder contains the source code of your template.
-   * 
-   * @param {string} rootPath 
+   *
+   * @param {string} rootPath
    * @returns {BuildConfig}
    */
   withRootPath(rootPath) {
@@ -776,8 +1152,8 @@ class BuildConfig {
 
   /**
    * A custom output path to use. Default: dist/{name}.
-   * 
-   * @param {string} outputPath 
+   *
+   * @param {string} outputPath
    * @returns {BuildConfig}
    */
   withOutputPath(outputPath) {
@@ -787,8 +1163,8 @@ class BuildConfig {
 
   /**
    * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
-   * 
-   * @param {{}} properties 
+   *
+   * @param {{}} properties
    * @returns {BuildConfig}
    */
   withProperties(properties) {
@@ -798,8 +1174,8 @@ class BuildConfig {
 
   /**
    * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a seperate port for each template.
-   * 
-   * @param {number} devServerPort 
+   *
+   * @param {number} devServerPort
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
@@ -809,8 +1185,8 @@ class BuildConfig {
 
   /**
    * Add a unique hash value to the name of the resulting ZIP file.
-   * 
-   * @param {boolean} hashZipFiles 
+   *
+   * @param {boolean} hashZipFiles
    * @returns {BuildConfig}
    */
   withHashZipFiles(hashZipFiles) {
@@ -820,8 +1196,8 @@ class BuildConfig {
 
   /**
    * Add additional Java Script modules.
-   * 
-   * @param {{}} modules 
+   *
+   * @param {{}} modules
    * @returns {BuildConfig}
    */
   withModules(modules) {
@@ -831,9 +1207,9 @@ class BuildConfig {
 
   /**
    * Add one additional Java Script module.
-   * 
-   * @param {string} name 
-   * @param {string} path 
+   *
+   * @param {string} name
+   * @param {string} path
    * @returns {BuildConfig}
    */
   withModule(name, path) {
@@ -842,9 +1218,20 @@ class BuildConfig {
   }
 
   /**
+   * Absolute path to the modules folder.
+   *
+   * @param {string} modulesRootPath
+   * @returns {BuildConfig}
+   */
+  withModulesRootPath(modulesRootPath) {
+    this._modulesRootPath = modulesRootPath;
+    return this;
+  }
+
+  /**
    * Add additional files to copy to the output folder.
-   * 
-   * @param {[{}]} additionalFilesToCopy 
+   *
+   * @param {[{}]} additionalFilesToCopy
    * @returns {BuildConfig}
    */
   withAdditionalFilesToCopy(additionalFilesToCopy) {
@@ -854,8 +1241,8 @@ class BuildConfig {
 
   /**
    * Add a single configuration for additional files to copy to the output folder.
-   * 
-   * @param {{}} additionalFileToCopy 
+   *
+   * @param {{}} additionalFileToCopy
    * @returns {BuildConfig}
    */
   withAdditionalFileToCopy(additionalFileToCopy) {
@@ -865,8 +1252,8 @@ class BuildConfig {
 
   /**
    * Enable or disable source maps.
-   * 
-   * @param {boolean} sourceMapEnabled 
+   *
+   * @param {boolean} sourceMapEnabled
    * @returns {BuildConfig}
    */
   withSourceMapEnabled(sourceMapEnabled) {
@@ -880,12 +1267,15 @@ class BuildConfig {
   validate() {
     this._checkInstanceofAndRequired('name', String, true);
     this._checkInstanceofAndRequired('version', String, true);
+    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_0__.default, true);
+    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_1__.default, true);
     this._checkInstanceofAndRequired('rootPath', String, true);
     this._checkInstanceofAndRequired('outputPath', String, false);
     this._checkInstanceofAndRequired('properties', Object, false);
     this._checkInstanceofAndRequired('devServerPort', Number, false);
     this._checkInstanceofAndRequired('hashZipFiles', Boolean, false);
     this._checkInstanceofAndRequired('modules', Object, false);
+    this._checkInstanceofAndRequired('modulesRootPath', String, false);
     this._checkInstanceofAndRequired('additionalFilesToCopy', Array, false);
     this._checkInstanceofAndRequired('sourceMapEnabled', Boolean, false);
 
@@ -893,9 +1283,9 @@ class BuildConfig {
   }
 
   /**
-   * @param {string} name 
-   * @param {object} type 
-   * @param {boolean} required 
+   * @param {string} name
+   * @param {object} type
+   * @param {boolean} required
    */
   _checkInstanceofAndRequired(name, type, required) {
     const property = this[`_${name}`];
@@ -955,15 +1345,80 @@ class Constant {
 
 /***/ }),
 
+/***/ 24:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DesignType)
+/* harmony export */ });
+class DesignType {
+  /**
+   * @type {string}
+   */
+  static LANDINGPAGE = 'landingpage';
+  /**
+   * @type {string}
+   */
+  static EMAIL = 'email';
+  /**
+   * @type {string}
+   */
+  static WEBSITE = 'website';
+}
+
+
+/***/ }),
+
+/***/ 810:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (/* binding */ File)
+/* harmony export */ });
+class File {
+  /**
+   * @type {string}
+   */
+  static DESIGN_JSON = 'design.json';
+  /**
+   * @type {string}
+   */
+  static DESIGN_JS = 'design.js';
+  /**
+   * @type {string}
+   */
+  static DESIGN_HTML = 'design.html';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
+  /**
+   * @type {string}
+   */
+  static DESIGN_PROPERTIES = 'design.properties';
+}
+
+
+/***/ }),
+
 /***/ 923:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "B": () => (/* binding */ StaticJavaScriptCondition),
-/* harmony export */   "u": () => (/* binding */ getZipArchiveName)
+/* harmony export */   "BA": () => (/* binding */ StaticJavaScriptCondition),
+/* harmony export */   "ur": () => (/* binding */ getZipArchiveName),
+/* harmony export */   "YV": () => (/* binding */ buildPublicPath)
 /* harmony export */ });
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(622);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _build_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(492);
+/* harmony import */ var _constant__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(911);
+/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
+
+
+
+
 
 
 
@@ -995,9 +1450,9 @@ class StaticJavaScriptCondition {
 }
 
 /**
- * 
- * @param {string} name 
- * @param {string} version 
+ *
+ * @param {string} name
+ * @param {string} version
  * @param {string} [suffix='']
  */
 function getZipArchiveName(name, version, suffix) {
@@ -1005,6 +1460,108 @@ function getZipArchiveName(name, version, suffix) {
     .filter(value => !!value)
     .join('-');
   return `${filename}.zip`;
+}
+
+/**
+ * @param {BuildConfig} config
+ * @param {string} suffix
+ */
+function buildPublicPath(config, suffix) {
+  let path = '/';
+
+  if (suffix) {
+    path += suffix
+      .trim()
+      .replace(/^\//, '');
+  }
+
+  let pathSuffix = suffix ? path : '';
+
+  if (config.targetVersion.legacyFormat && !config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__.default.WEBSITE) {
+    return '.' + pathSuffix;
+  } else {
+    return _constant__WEBPACK_IMPORTED_MODULE_3__/* .default.BSI_CX_DESIGN_BASE_URL */ .Z.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+  }
+}
+
+
+/***/ }),
+
+/***/ 345:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Version)
+/* harmony export */ });
+/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
+
+
+const LEGACY_TYPES = [
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.LANDINGPAGE,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.EMAIL
+];
+
+const ALL_TYPES = [
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.LANDINGPAGE,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.EMAIL,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.default.WEBSITE
+];
+
+class Version {
+  /**
+   * @type {Version}
+   */
+  static STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+  /**
+   * @type {Version}
+   */
+  static STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+  /**
+   * @type {Version}
+   */
+  static STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+  /**
+   * @type {Version}
+   */
+  static CX_1_3 = new Version('1.3', ALL_TYPES, true);
+  /**
+   * @type {Version}
+   */
+  static CX_22_0 = new Version('22.0', ALL_TYPES, false);
+
+  /**
+   * 
+   * @param {string} version 
+   * @param {string[]} allowedTypes 
+   * @param {boolean} legacyFormat
+   */
+  constructor(version, allowedTypes, legacyFormat) {
+    this._version = version;
+    this._allowedTypes = allowedTypes;
+    this._legacyFormat = legacyFormat;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get version() {
+    return this._version;
+  }
+
+  /**
+   * @returns {string[]}
+   */
+  get allowedTypes() {
+    return this._allowedTypes;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get legacyFormat() {
+    return this._legacyFormat;
+  }
 }
 
 
@@ -1041,15 +1598,23 @@ const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-p
 var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
 ;// CONCATENATED MODULE: ./package.json
 const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
-// EXTERNAL MODULE: ./src/bsi-cx-webpack-plugin.js + 3 modules
-var bsi_cx_webpack_plugin = __webpack_require__(638);
+// EXTERNAL MODULE: ./src/bsi-cx-webpack-plugin.js + 4 modules
+var bsi_cx_webpack_plugin = __webpack_require__(940);
+// EXTERNAL MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js + 1 modules
+var bsi_cx_webpack_legacy_design_plugin = __webpack_require__(46);
 // EXTERNAL MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
 var bsi_cx_webpack_zip_hash_plugin = __webpack_require__(893);
 // EXTERNAL MODULE: ./src/constant.js
 var constant = __webpack_require__(911);
+// EXTERNAL MODULE: ./src/file.js
+var file = __webpack_require__(810);
 // EXTERNAL MODULE: ./src/utility.js
 var utility = __webpack_require__(923);
+// EXTERNAL MODULE: ./src/build-config.js
+var build_config = __webpack_require__(492);
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
+
 
 
 
@@ -1068,7 +1633,7 @@ var utility = __webpack_require__(923);
 
 class WebpackConfigBuilder {
   /**
-   * @param {BuildConfig} config 
+   * @param {BuildConfig} config
    */
   constructor(config) {
     this._config = config;
@@ -1101,6 +1666,7 @@ class WebpackConfigBuilder {
         ...this._getMiniCssExtractPluginConfig(),
         ...this._getCopyPluginConfig(),
         ...this._getBsiCxWebpackPluginConfig(),
+        ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
       ],
       devtool: this._getDevToolConfig(),
@@ -1124,8 +1690,9 @@ class WebpackConfigBuilder {
 
   /**
    * The default output path: dist/{name}
-   * 
+   *
    * @returns {string}
+   * @private
    */
   _getDefaultOutputPath() {
     return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
@@ -1133,7 +1700,7 @@ class WebpackConfigBuilder {
 
   /**
    * The output path to use.
-   * 
+   *
    * @returns {string}
    */
   _getOutputPath() {
@@ -1141,16 +1708,37 @@ class WebpackConfigBuilder {
   }
 
   /**
+   * The default modules path: ./modules
+   *
+   * @returns {string}
+   */
+  _getDefaultModulesRootPath() {
+    return external_path_default().resolve(this.config.rootPath, 'modules');
+  }
+
+  /**
+   * The modules path to use.
+   *
+   * @returns {string}
+   */
+  _getModulesRootPath() {
+    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
+  }
+
+  /**
    * The entry configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getEntryConfig() {
     return {
       ...this._getJavaScriptModuleEntries(),
       json: {
-        import: external_path_default().resolve(this.config.rootPath, 'design.js'),
-        filename: 'design.json'
+        import: this._getDesignJsFilePath(),
+        filename: file/* default.DESIGN_JSON */.Z.DESIGN_JSON,
+        library: {
+          type: 'commonjs'
+        }
       },
       design: this._evaluateEntryTemplate('design'),
       preview: this._evaluateEntryTemplate('preview')
@@ -1159,8 +1747,8 @@ class WebpackConfigBuilder {
 
   /**
    * Get the entry configuration for a template.
-   * 
-   * @param {string} name 
+   *
+   * @param {string} name
    * @returns {{}}
    */
   _evaluateEntryTemplate(name) {
@@ -1174,9 +1762,13 @@ class WebpackConfigBuilder {
     };
   }
 
+  _getDesignJsFilePath() {
+    return external_path_default().resolve(this.config.rootPath, file/* default.DESIGN_JS */.Z.DESIGN_JS);
+  }
+
   /**
    * Get the entry configurations for the Java Script modules.
-   * 
+   *
    * @returns {[{}]}
    */
   _getJavaScriptModuleEntries() {
@@ -1193,7 +1785,7 @@ class WebpackConfigBuilder {
 
   /**
    * Rules for Twig file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getTwigRuleConfig() {
@@ -1209,7 +1801,7 @@ class WebpackConfigBuilder {
               environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
               renderContext: {
                 properties: this.config.properties,
-                designBaseUrl: constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL
+                designBaseUrl: (0,utility/* buildPublicPath */.YV)(this.config)
               }
             }
           }
@@ -1220,7 +1812,7 @@ class WebpackConfigBuilder {
 
   /**
    * Rule for HTML and Handlebars file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getHtmlAndHbsRuleConfig() {
@@ -1237,7 +1829,7 @@ class WebpackConfigBuilder {
 
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getStyleRulesConfig() {
@@ -1271,7 +1863,7 @@ class WebpackConfigBuilder {
 
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
-   * 
+   *
    * @returns {[string]}
    */
   _getStaticAssetFileExtensions() {
@@ -1295,7 +1887,7 @@ class WebpackConfigBuilder {
 
   /**
    * Rule for static assets handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getStaticAssetsRuleConfig() {
@@ -1315,13 +1907,13 @@ class WebpackConfigBuilder {
 
   /**
    * Rule for static Java Script file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getStaticJavaScriptFileRuleConfig() {
     return [
       {
-        resource: (file) => utility/* StaticJavaScriptCondition.test */.B.test(this.config.rootPath, file),
+        resource: (file) => utility/* StaticJavaScriptCondition.test */.BA.test(this.config.rootPath, file),
         type: 'asset/resource',
         generator: {
           filename: 'static/[name]-[contenthash][ext]'
@@ -1332,7 +1924,7 @@ class WebpackConfigBuilder {
 
   /**
    * Rule for regular Java Script file handling.
-   * 
+   *
    * @returns {[{}]}
    */
   _getRegularJavaScriptFileRuleConfig() {
@@ -1340,6 +1932,7 @@ class WebpackConfigBuilder {
       {
         test: /\.m?js$/i,
         exclude: /(node_modules|bower_components)/,
+        include: this._getModulesRootPath(),
         use: {
           loader: 'babel-loader',
           options: {
@@ -1389,7 +1982,7 @@ class WebpackConfigBuilder {
 
   /**
    * Mini CSS extract plugin configuration.
-   * 
+   *
    * @returns {[MiniCssExtractPlugin]}
    */
   _getMiniCssExtractPluginConfig() {
@@ -1402,7 +1995,7 @@ class WebpackConfigBuilder {
 
   /**
    * Copy plugin configuration.
-   * 
+   *
    * @returns {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
@@ -1428,24 +2021,27 @@ class WebpackConfigBuilder {
 
   /**
    * BSI CX Webpack plugin.
-   * 
+   *
    * @returns {[BsiCxWebpackPlugin]}
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new bsi_cx_webpack_plugin.default()
+      new bsi_cx_webpack_plugin.default(this.config)
     ];
   }
 
   /**
    * Webpack ZIP plugin configuration.
-   * 
+   *
    * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
    */
   _getZipPluginConfig() {
+    /**
+     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+     */
     let plugins = [
       new (external_zip_webpack_plugin_default())({
-        filename: (0,utility/* getZipArchiveName */.u)(this.config.name, this.config.version),
+        filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version),
         exclude: [/\.map$/]
       })
     ];
@@ -1453,7 +2049,7 @@ class WebpackConfigBuilder {
     if (this.config.sourceMapEnabled) {
       plugins.push(
         new (external_zip_webpack_plugin_default())({
-          filename: (0,utility/* getZipArchiveName */.u)(this.config.name, this.config.version, 'dev'),
+          filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version, 'dev'),
         })
       );
     }
@@ -1466,8 +2062,23 @@ class WebpackConfigBuilder {
   }
 
   /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   */
+  _getBsiCxWebpackLegacyDesignPluginConfig() {
+    let plugins = [];
+    if (this.config.targetVersion.legacyFormat) {
+      plugins.push(
+        new bsi_cx_webpack_legacy_design_plugin.default(this.config)
+      );
+    }
+    return plugins;
+  }
+
+  /**
    * The dev tool configuration.
-   * 
+   *
    * @returns {string|boolean}
    */
   _getDevToolConfig() {
@@ -1476,7 +2087,7 @@ class WebpackConfigBuilder {
 
   /**
    * Development server configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getDevServerConfig() {
@@ -1496,7 +2107,7 @@ class WebpackConfigBuilder {
 
   /**
    * The stats configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getStatsConfig() {
@@ -1508,12 +2119,12 @@ class WebpackConfigBuilder {
 
   /**
    * The performance configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getPerformanceConfig() {
     let excludedAssets = [
-      'design.json',
+      file/* default.DESIGN_JSON */.Z.DESIGN_JSON,
     ];
     let excludedExtensions = /\.(map|zip|html|hbs)$/;
 
@@ -1525,7 +2136,7 @@ class WebpackConfigBuilder {
 
   /**
    * The minimizer configuration.
-   * 
+   *
    * @returns {[TerserPlugin]}
    */
   _getOptimizationMinimizerConfig() {
@@ -1538,7 +2149,7 @@ class WebpackConfigBuilder {
 
   /**
    * The split chunks name configuration.
-   * 
+   *
    * @returns {function}
    */
   _getOptimizationSplitChunksNameConfig() {
@@ -1549,7 +2160,7 @@ class WebpackConfigBuilder {
 
   /**
    * The chache groups configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getOptimizationCacheGroupsConfig() {
@@ -1572,13 +2183,13 @@ class WebpackConfigBuilder {
 
   /**
    * The output configuration.
-   * 
+   *
    * @returns {{}}
    */
   _getOutputConfig() {
     return {
       path: this._getOutputPath(),
-      publicPath: `${constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL}/`,
+      publicPath: (0,utility/* buildPublicPath */.YV)(this.config, '/'),
       clean: true,
       library: {
         type: 'var',
@@ -1589,8 +2200,8 @@ class WebpackConfigBuilder {
 
   /**
    * Build the configuration for webpack from {@link BuildConfig} objects.
-   * 
-   * @param  {...BuildConfig} configs 
+   *
+   * @param  {...BuildConfig} configs
    */
   static fromConfigs(...configs) {
     let devServerPort = undefined;
@@ -1655,13 +2266,16 @@ module.exports = require("webpack");
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -1692,6 +2306,21 @@ module.exports = require("webpack");
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/harmony module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.hmd = (module) => {
+/******/ 			module = Object.create(module);
+/******/ 			if (!module.children) module.children = [];
+/******/ 			Object.defineProperty(module, 'exports', {
+/******/ 				enumerable: true,
+/******/ 				set: () => {
+/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
+/******/ 				}
+/******/ 			});
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -1715,16 +2344,22 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 exports.__esModule = true;
-exports.BsiCxWebpackZipHashPlugin = exports.BsiCxWebpackPlugin = exports.WebpackConfigBuilder = exports.BuildConfig = void 0;
+exports.BsiCxWebpackLegacyDesignPlugin = exports.BsiCxWebpackZipHashPlugin = exports.BsiCxWebpackPlugin = exports.WebpackConfigBuilder = exports.BuildConfig = exports.DesignType = exports.Version = void 0;
 __webpack_require__(43);
+var version_1 = __webpack_require__(345);
+exports.Version = version_1["default"];
+var design_type_1 = __webpack_require__(24);
+exports.DesignType = design_type_1["default"];
 var build_config_1 = __webpack_require__(492);
 exports.BuildConfig = build_config_1["default"];
 var webpack_config_builder_1 = __webpack_require__(709);
 exports.WebpackConfigBuilder = webpack_config_builder_1["default"];
-var bsi_cx_webpack_plugin_1 = __webpack_require__(638);
+var bsi_cx_webpack_plugin_1 = __webpack_require__(940);
 exports.BsiCxWebpackPlugin = bsi_cx_webpack_plugin_1["default"];
 var bsi_cx_webpack_zip_hash_plugin_1 = __webpack_require__(893);
 exports.BsiCxWebpackZipHashPlugin = bsi_cx_webpack_zip_hash_plugin_1["default"];
+var bsi_cx_webpack_legacy_design_plugin_1 = __webpack_require__(46);
+exports.BsiCxWebpackLegacyDesignPlugin = bsi_cx_webpack_legacy_design_plugin_1["default"];
 
 })();
 

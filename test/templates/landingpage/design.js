@@ -17,7 +17,15 @@ module.exports = {
       groupId: 'content',
       label: 'Inhalt',
       contentElements: [
+        require('./content-elements/content/title')
       ]
     }
-  ]
+  ],
+  styleConfigs: {
+    'background-color': require('./styles/background-color'),
+    'text-color': require('./styles/text-color')
+  },
+  htmlEditorConfigs: {
+    full: require('./html-editor-configs/full')
+  }
 };

@@ -47,6 +47,10 @@ export default class BuildConfig {
      */
     this._modules = {};
     /**
+     * @type {string}
+     */
+    this._modulesRootPath = undefined;
+    /**
      * @type {[{}]}
      */
     this._additionalFilesToCopy = [];
@@ -127,6 +131,13 @@ export default class BuildConfig {
   }
 
   /**
+   * @returns {string}
+   */
+  get modulesRootPath() {
+    return this._modulesRootPath;
+  }
+
+  /**
    * @returns {[{}]}
    */
   get additionalFilesToCopy() {
@@ -142,8 +153,8 @@ export default class BuildConfig {
 
   /**
    * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
-   * 
-   * @param {string} name 
+   *
+   * @param {string} name
    * @returns {BuildConfig}
    */
   withName(name) {
@@ -153,8 +164,8 @@ export default class BuildConfig {
 
   /**
    * The version of this template, e.g. 1.0.1. This will be included in the name of the resulting ZIP file in the dist folder.
-   * 
-   * @param {string} version 
+   *
+   * @param {string} version
    * @returns {BuildConfig}
    */
   withVersion(version) {
@@ -163,11 +174,11 @@ export default class BuildConfig {
   }
 
   /**
-   * The application version of BSI CX (or BSI Studio) this design is built for. 
-   * 
+   * The application version of BSI CX (or BSI Studio) this design is built for.
+   *
    * @see Checkout {@link Version} for available versions.
-   * @param {Version} version 
-   * @returns 
+   * @param {Version} version
+   * @returns
    */
   withTargetVersion(version) {
     this._targetVersion = version;
@@ -176,10 +187,10 @@ export default class BuildConfig {
 
   /**
    * The type of this design (e.g. email or landingpage).
-   * 
+   *
    * @see Checkout {@link DesignType} for available types.
-   * @param {DesignType} type 
-   * @returns 
+   * @param {DesignType} type
+   * @returns
    */
   withDesignType(type) {
     this._designType = type;
@@ -188,8 +199,8 @@ export default class BuildConfig {
 
   /**
    * The path to the root folder of this template. This folder contains the source code of your template.
-   * 
-   * @param {string} rootPath 
+   *
+   * @param {string} rootPath
    * @returns {BuildConfig}
    */
   withRootPath(rootPath) {
@@ -199,8 +210,8 @@ export default class BuildConfig {
 
   /**
    * A custom output path to use. Default: dist/{name}.
-   * 
-   * @param {string} outputPath 
+   *
+   * @param {string} outputPath
    * @returns {BuildConfig}
    */
   withOutputPath(outputPath) {
@@ -210,8 +221,8 @@ export default class BuildConfig {
 
   /**
    * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
-   * 
-   * @param {{}} properties 
+   *
+   * @param {{}} properties
    * @returns {BuildConfig}
    */
   withProperties(properties) {
@@ -221,8 +232,8 @@ export default class BuildConfig {
 
   /**
    * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a seperate port for each template.
-   * 
-   * @param {number} devServerPort 
+   *
+   * @param {number} devServerPort
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
@@ -232,8 +243,8 @@ export default class BuildConfig {
 
   /**
    * Add a unique hash value to the name of the resulting ZIP file.
-   * 
-   * @param {boolean} hashZipFiles 
+   *
+   * @param {boolean} hashZipFiles
    * @returns {BuildConfig}
    */
   withHashZipFiles(hashZipFiles) {
@@ -243,8 +254,8 @@ export default class BuildConfig {
 
   /**
    * Add additional Java Script modules.
-   * 
-   * @param {{}} modules 
+   *
+   * @param {{}} modules
    * @returns {BuildConfig}
    */
   withModules(modules) {
@@ -254,9 +265,9 @@ export default class BuildConfig {
 
   /**
    * Add one additional Java Script module.
-   * 
-   * @param {string} name 
-   * @param {string} path 
+   *
+   * @param {string} name
+   * @param {string} path
    * @returns {BuildConfig}
    */
   withModule(name, path) {
@@ -265,9 +276,20 @@ export default class BuildConfig {
   }
 
   /**
+   * Absolute path to the modules folder.
+   *
+   * @param {string} modulesRootPath
+   * @returns {BuildConfig}
+   */
+  withModulesRootPath(modulesRootPath) {
+    this._modulesRootPath = modulesRootPath;
+    return this;
+  }
+
+  /**
    * Add additional files to copy to the output folder.
-   * 
-   * @param {[{}]} additionalFilesToCopy 
+   *
+   * @param {[{}]} additionalFilesToCopy
    * @returns {BuildConfig}
    */
   withAdditionalFilesToCopy(additionalFilesToCopy) {
@@ -277,8 +299,8 @@ export default class BuildConfig {
 
   /**
    * Add a single configuration for additional files to copy to the output folder.
-   * 
-   * @param {{}} additionalFileToCopy 
+   *
+   * @param {{}} additionalFileToCopy
    * @returns {BuildConfig}
    */
   withAdditionalFileToCopy(additionalFileToCopy) {
@@ -288,8 +310,8 @@ export default class BuildConfig {
 
   /**
    * Enable or disable source maps.
-   * 
-   * @param {boolean} sourceMapEnabled 
+   *
+   * @param {boolean} sourceMapEnabled
    * @returns {BuildConfig}
    */
   withSourceMapEnabled(sourceMapEnabled) {
@@ -311,6 +333,7 @@ export default class BuildConfig {
     this._checkInstanceofAndRequired('devServerPort', Number, false);
     this._checkInstanceofAndRequired('hashZipFiles', Boolean, false);
     this._checkInstanceofAndRequired('modules', Object, false);
+    this._checkInstanceofAndRequired('modulesRootPath', String, false);
     this._checkInstanceofAndRequired('additionalFilesToCopy', Array, false);
     this._checkInstanceofAndRequired('sourceMapEnabled', Boolean, false);
 
@@ -318,9 +341,9 @@ export default class BuildConfig {
   }
 
   /**
-   * @param {string} name 
-   * @param {object} type 
-   * @param {boolean} required 
+   * @param {string} name
+   * @param {object} type
+   * @param {boolean} required
    */
   _checkInstanceofAndRequired(name, type, required) {
     const property = this[`_${name}`];
