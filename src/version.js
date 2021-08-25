@@ -1,4 +1,4 @@
-import DesignType from './design-type';
+import * as DesignType from './design-type';
 
 const LEGACY_TYPES = [
   DesignType.LANDINGPAGE,
@@ -13,30 +13,9 @@ const ALL_TYPES = [
 
 export default class Version {
   /**
-   * @type {Version}
-   */
-  static STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static CX_1_3 = new Version('1.3', ALL_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static CX_22_0 = new Version('22.0', ALL_TYPES, false);
-
-  /**
-   * 
-   * @param {string} version 
-   * @param {string[]} allowedTypes 
+   *
+   * @param {string} version
+   * @param {string[]} allowedTypes
    * @param {boolean} legacyFormat
    */
   constructor(version, allowedTypes, legacyFormat) {
@@ -66,3 +45,28 @@ export default class Version {
     return this._legacyFormat;
   }
 }
+
+/**
+ * @type {Version}
+ */
+export const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+export const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+export const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+export const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+export const CX_22_0 = new Version('22.0', ALL_TYPES, false);

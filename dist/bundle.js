@@ -14,8 +14,8 @@ __webpack_require__.d(__webpack_exports__, {
   "BsiCxWebpackPlugin": () => (/* reexport */ bsi_cx_webpack_plugin/* default */.Z),
   "BsiCxWebpackZipHashPlugin": () => (/* reexport */ BsiCxWebpackZipHashPlugin),
   "BuildConfig": () => (/* reexport */ build_config/* default */.Z),
-  "DesignType": () => (/* reexport */ design_type/* default */.Z),
-  "Version": () => (/* reexport */ version/* default */.Z),
+  "DesignType": () => (/* reexport */ design_type),
+  "Version": () => (/* reexport */ version),
   "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
 });
 
@@ -1605,8 +1605,8 @@ class BsiCxWebpackPlugin {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (/* binding */ BuildConfig)
 /* harmony export */ });
-/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
-/* harmony import */ var _version__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(345);
+/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
+/* harmony import */ var _version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(345);
 
 
 
@@ -1626,11 +1626,11 @@ class BuildConfig {
     /**
      * @type {Version}
      */
-    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_0__/* .default.CX_22_0 */ .Z.CX_22_0;
+    this._targetVersion = _version__WEBPACK_IMPORTED_MODULE_1__.default.CX_22_0;
     /**
      * @type {DesignType}
      */
-    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_1__/* .default.LANDINGPAGE */ .Z.LANDINGPAGE;
+    this._designType = _design_type__WEBPACK_IMPORTED_MODULE_0__.default.LANDINGPAGE;
     /**
      * @type {string}
      */
@@ -1934,8 +1934,8 @@ class BuildConfig {
   validate() {
     this._checkInstanceofAndRequired('name', String, true);
     this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z, true);
-    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_1__/* .default */ .Z, true);
+    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_1__.default, true);
+    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_0__.default, true);
     this._checkInstanceofAndRequired('rootPath', String, true);
     this._checkInstanceofAndRequired('outputPath', String, false);
     this._checkInstanceofAndRequired('properties', Object, false);
@@ -2015,23 +2015,43 @@ class Constant {
 /***/ 24:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ DesignType)
+/* harmony export */   "default": () => (/* binding */ DesignType),
+/* harmony export */   "LANDINGPAGE": () => (/* binding */ LANDINGPAGE),
+/* harmony export */   "EMAIL": () => (/* binding */ EMAIL),
+/* harmony export */   "WEBSITE": () => (/* binding */ WEBSITE)
 /* harmony export */ });
 class DesignType {
   /**
-   * @type {string}
+   * @param {string} type
    */
-  static LANDINGPAGE = 'landingpage';
+  constructor(type) {
+    this._type = type;
+  }
+
   /**
-   * @type {string}
+   * @returns {string}
    */
-  static EMAIL = 'email';
-  /**
-   * @type {string}
-   */
-  static WEBSITE = 'website';
+  get type() {
+    return this._type;
+  }
 }
+
+/**
+ * @type {DesignType}
+ */
+const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ */
+const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ */
+const WEBSITE = new DesignType('website');
 
 
 /***/ }),
@@ -2111,7 +2131,7 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && !config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__/* .default.WEBSITE */ .Z.WEBSITE) {
+  if (config.targetVersion.legacyFormat && !config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__.default.WEBSITE) {
     return '.' + pathSuffix;
   } else {
     return _constant__WEBPACK_IMPORTED_MODULE_3__/* .default.BSI_CX_DESIGN_BASE_URL */ .Z.BSI_CX_DESIGN_BASE_URL + pathSuffix;
@@ -2124,49 +2144,34 @@ function buildPublicPath(config, suffix) {
 /***/ 345:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ Version)
+/* harmony export */   "default": () => (/* binding */ Version),
+/* harmony export */   "STUDIO_1_0": () => (/* binding */ STUDIO_1_0),
+/* harmony export */   "STUDIO_1_1": () => (/* binding */ STUDIO_1_1),
+/* harmony export */   "STUDIO_1_2": () => (/* binding */ STUDIO_1_2),
+/* harmony export */   "CX_1_3": () => (/* binding */ CX_1_3),
+/* harmony export */   "CX_22_0": () => (/* binding */ CX_22_0)
 /* harmony export */ });
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
 
 
 const LEGACY_TYPES = [
-  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.LANDINGPAGE */ .Z.LANDINGPAGE,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.EMAIL */ .Z.EMAIL
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.EMAIL
 ];
 
 const ALL_TYPES = [
-  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.LANDINGPAGE */ .Z.LANDINGPAGE,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.EMAIL */ .Z.EMAIL,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__/* .default.WEBSITE */ .Z.WEBSITE
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.EMAIL,
+  _design_type__WEBPACK_IMPORTED_MODULE_0__.WEBSITE
 ];
 
 class Version {
   /**
-   * @type {Version}
-   */
-  static STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static CX_1_3 = new Version('1.3', ALL_TYPES, true);
-  /**
-   * @type {Version}
-   */
-  static CX_22_0 = new Version('22.0', ALL_TYPES, false);
-
-  /**
-   * 
-   * @param {string} version 
-   * @param {string[]} allowedTypes 
+   *
+   * @param {string} version
+   * @param {string[]} allowedTypes
    * @param {boolean} legacyFormat
    */
   constructor(version, allowedTypes, legacyFormat) {
@@ -2196,6 +2201,31 @@ class Version {
     return this._legacyFormat;
   }
 }
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 
 /***/ }),

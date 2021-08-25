@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 
-import Version from './src/version';
-import DesignType from './src/design-type';
+import * as Version from './src/version';
+import * as DesignType from './src/design-type';
 import BuildConfig from './src/build-config';
 import WebpackConfigBuilder from './src/webpack-config-builder';
 import BsiCxWebpackPlugin from './src/bsi-cx-webpack-plugin';

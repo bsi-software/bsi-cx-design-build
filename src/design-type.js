@@ -1,14 +1,30 @@
 export default class DesignType {
   /**
-   * @type {string}
+   * @param {string} type
    */
-  static LANDINGPAGE = 'landingpage';
+  constructor(type) {
+    this._type = type;
+  }
+
   /**
-   * @type {string}
+   * @returns {string}
    */
-  static EMAIL = 'email';
-  /**
-   * @type {string}
-   */
-  static WEBSITE = 'website';
+  get type() {
+    return this._type;
+  }
 }
+
+/**
+ * @type {DesignType}
+ */
+export const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ */
+export const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ */
+export const WEBSITE = new DesignType('website');
