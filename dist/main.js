@@ -2737,16 +2737,19 @@ class DesignType extends _abstract_constant__WEBPACK_IMPORTED_MODULE_0__/* .defa
 
 /**
  * @type {DesignType}
+ * @since 1.0
  */
 const LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
+ * @since 1.0
  */
 const EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
+ * @since 1.3
  */
 const WEBSITE = new DesignType('website');
 

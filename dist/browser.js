@@ -1,7 +1,46 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 927:
+/***/ ((module) => {
+
+function webpackEmptyContext(req) {
+	var e = new Error("Cannot find module '" + req + "'");
+	e.code = 'MODULE_NOT_FOUND';
+	throw e;
+}
+webpackEmptyContext.keys = () => ([]);
+webpackEmptyContext.resolve = webpackEmptyContext;
+webpackEmptyContext.id = 927;
+module.exports = webpackEmptyContext;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
@@ -34,17 +73,47 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
+  "ContentElement": () => (/* reexport */ ContentElement),
+  "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
   "Feature": () => (/* reexport */ feature_namespaceObject),
   "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
   "Format": () => (/* reexport */ format_namespaceObject),
   "HtmlEditorConfigBuilder": () => (/* reexport */ HtmlEditorConfigBuilder),
-  "StyleBuilder": () => (/* reexport */ StyleBuilder)
+  "Icon": () => (/* reexport */ icon_namespaceObject),
+  "Part": () => (/* reexport */ part_namespaceObject),
+  "StyleBuilder": () => (/* reexport */ StyleBuilder),
+  "Version": () => (/* reexport */ version_namespaceObject)
+});
+
+// NAMESPACE OBJECT: ./src/design-type.js
+var design_type_namespaceObject = {};
+__webpack_require__.r(design_type_namespaceObject);
+__webpack_require__.d(design_type_namespaceObject, {
+  "DesignType": () => (DesignType),
+  "EMAIL": () => (EMAIL),
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "WEBSITE": () => (WEBSITE)
+});
+
+// NAMESPACE OBJECT: ./src/version.js
+var version_namespaceObject = {};
+__webpack_require__.r(version_namespaceObject);
+__webpack_require__.d(version_namespaceObject, {
+  "CX_1_3": () => (CX_1_3),
+  "CX_22_0": () => (CX_22_0),
+  "STUDIO_1_0": () => (STUDIO_1_0),
+  "STUDIO_1_1": () => (STUDIO_1_1),
+  "STUDIO_1_2": () => (STUDIO_1_2),
+  "Version": () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -122,6 +191,85 @@ __webpack_require__.d(format_namespaceObject, {
   "PRE": () => (PRE)
 });
 
+// NAMESPACE OBJECT: ./src/content-element/part.js
+var part_namespaceObject = {};
+__webpack_require__.r(part_namespaceObject);
+__webpack_require__.d(part_namespaceObject, {
+  "BACKGROUND_IMAGE": () => (BACKGROUND_IMAGE),
+  "FORM": () => (FORM),
+  "FORMATTED_TEXT": () => (FORMATTED_TEXT),
+  "FORM_CHECKBOX": () => (FORM_CHECKBOX),
+  "FORM_FIELD": () => (FORM_FIELD),
+  "FORM_RADIO": () => (FORM_RADIO),
+  "FORM_SELECT": () => (FORM_SELECT),
+  "FORM_TEXTAREA": () => (FORM_TEXTAREA),
+  "HTML": () => (part_HTML),
+  "IMAGE": () => (IMAGE),
+  "ITERATOR": () => (ITERATOR),
+  "LINK": () => (LINK),
+  "NEWS_SNIPPETS": () => (NEWS_SNIPPETS),
+  "PLAIN_TEXT": () => (PLAIN_TEXT),
+  "Part": () => (Part),
+  "SOCIAL_FOLLOW": () => (SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (SOCIAL_SHARE),
+  "TABLE": () => (TABLE),
+  "URL_PROVIDER": () => (URL_PROVIDER),
+  "VIDEO": () => (VIDEO)
+});
+
+// NAMESPACE OBJECT: ./src/content-element/icon.js
+var icon_namespaceObject = {};
+__webpack_require__.r(icon_namespaceObject);
+__webpack_require__.d(icon_namespaceObject, {
+  "ASTERISK": () => (ASTERISK),
+  "CHAIN": () => (CHAIN),
+  "CHECKBOX": () => (CHECKBOX),
+  "COMMUNICATION": () => (COMMUNICATION),
+  "COMPASS": () => (COMPASS),
+  "DIAGRAM_AREA": () => (DIAGRAM_AREA),
+  "DIAGRAM_BAR": () => (DIAGRAM_BAR),
+  "DIAGRAM_LINE": () => (DIAGRAM_LINE),
+  "DIVIDER": () => (DIVIDER),
+  "DOCUMENT": () => (DOCUMENT),
+  "DROPDOWN": () => (DROPDOWN),
+  "ENVELOPE": () => (ENVELOPE),
+  "FACEBOOK": () => (FACEBOOK),
+  "FORMFIELD": () => (FORMFIELD),
+  "HANDSHAKE": () => (HANDSHAKE),
+  "HEADING": () => (HEADING),
+  "HEADSET": () => (HEADSET),
+  "HEART": () => (HEART),
+  "IMAGE": () => (icon_IMAGE),
+  "INFO": () => (INFO),
+  "Icon": () => (Icon),
+  "LIST": () => (LIST),
+  "MEGAPHONE": () => (MEGAPHONE),
+  "METADATA": () => (METADATA),
+  "ONE_COLUMN": () => (ONE_COLUMN),
+  "PAPERCLIP": () => (PAPERCLIP),
+  "PARAMETER": () => (PARAMETER),
+  "PERSON_FEMALE": () => (PERSON_FEMALE),
+  "PERSON_MALE": () => (PERSON_MALE),
+  "PHONE": () => (PHONE),
+  "PILE": () => (PILE),
+  "QRCODE": () => (QRCODE),
+  "RADIOBUTTON": () => (RADIOBUTTON),
+  "SIGNPOST": () => (SIGNPOST),
+  "SMILEY": () => (SMILEY),
+  "SNIPPET": () => (SNIPPET),
+  "SOCIAL_FOLLOW": () => (icon_SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (icon_SOCIAL_SHARE),
+  "TABLE": () => (icon_TABLE),
+  "TEXT": () => (TEXT),
+  "TEXTAREA": () => (TEXTAREA),
+  "TEXT_WITH_IMAGE": () => (TEXT_WITH_IMAGE),
+  "THREE_COLUMNS": () => (THREE_COLUMNS),
+  "TWITTER": () => (TWITTER),
+  "TWO_COLUMNS": () => (TWO_COLUMNS),
+  "VIDEO": () => (icon_VIDEO),
+  "YOUTUBE": () => (YOUTUBE)
+});
+
 ;// CONCATENATED MODULE: ./src/abstract-constant.js
 class AbstractConstant {
   /**
@@ -142,6 +290,104 @@ class AbstractConstant {
     return this._value;
   }
 }
+
+;// CONCATENATED MODULE: ./src/design-type.js
+
+
+class DesignType extends AbstractConstant {
+}
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ * @since 1.3
+ */
+const WEBSITE = new DesignType('website');
+
+;// CONCATENATED MODULE: ./src/version.js
+
+
+
+/**
+ * @type {DesignType[]}
+ */
+const LEGACY_TYPES = [
+  LANDINGPAGE,
+  EMAIL
+];
+
+/**
+ * @type {DesignType[]}
+ */
+const ALL_TYPES = [
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
+];
+
+class Version extends AbstractConstant {
+  /**
+   *
+   * @param {string} version
+   * @param {DesignType[]} allowedTypes
+   * @param {boolean} legacyFormat
+   */
+  constructor(version, allowedTypes, legacyFormat) {
+    super(version);
+    this._allowedTypes = allowedTypes;
+    this._legacyFormat = legacyFormat;
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return this._allowedTypes;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get legacyFormat() {
+    return this._legacyFormat;
+  }
+}
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
@@ -826,6 +1072,461 @@ class StyleBuilder extends AbstractBuilder {
   }
 }
 
+;// CONCATENATED MODULE: ./src/content-element/part.js
+
+
+class Part extends AbstractConstant {
+}
+
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const PLAIN_TEXT = new Part('plain-text');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORMATTED_TEXT = new Part('formatted-text');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const part_HTML = new Part('html');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const VIDEO = new Part('video');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const IMAGE = new Part('image');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const BACKGROUND_IMAGE = new Part('background-image');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const TABLE = new Part('table');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const ITERATOR = new Part('iterator');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const NEWS_SNIPPETS = new Part('news-snippets');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM = new Part('form');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_FIELD = new Part('form-field');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_CHECKBOX = new Part('form-checkbox');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_TEXTAREA = new Part('form-textarea');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_SELECT = new Part('form-select');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_RADIO = new Part('form-radio');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const LINK = new Part('link');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const SOCIAL_FOLLOW = new Part('social-follow');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const SOCIAL_SHARE = new Part('social-share');
+/**
+ * @type {Part}
+ * @since 22.0
+ */
+const URL_PROVIDER = new Part('url-provider');
+
+;// CONCATENATED MODULE: ./src/content-element/icon.js
+
+
+class Icon extends AbstractConstant {
+}
+
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HEADING = new Icon('heading');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TEXT = new Icon('text');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TEXT_WITH_IMAGE = new Icon('text-with-image');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_IMAGE = new Icon('image');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_TABLE = new Icon('table');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const LIST = new Icon('list');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_VIDEO = new Icon('video');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const MEGAPHONE = new Icon('megaphone');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_SOCIAL_FOLLOW = new Icon('social-follow');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_SOCIAL_SHARE = new Icon('social-share');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const SNIPPET = new Icon('snippet');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const QRCODE = new Icon('qrcode');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PAPERCLIP = new Icon('paperclip');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const DOCUMENT = new Icon('document');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PHONE = new Icon('phone');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const COMMUNICATION = new Icon('communication');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HANDSHAKE = new Icon('handshake');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HEART = new Icon('heart');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const INFO = new Icon('info');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const ENVELOPE = new Icon('envelope');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const FACEBOOK = new Icon('facebook');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const YOUTUBE = new Icon('youtube');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PERSON_MALE = new Icon('person-male');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PERSON_FEMALE = new Icon('person-female');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const ASTERISK = new Icon('asterisk');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const SMILEY = new Icon('smiley');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const DIVIDER = new Icon('divider');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PARAMETER = new Icon('parameter');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TWITTER = new Icon('twitter');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HEADSET = new Icon('headset');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const METADATA = new Icon('metadata');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PILE = new Icon('pile');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const CHAIN = new Icon('chain');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const SIGNPOST = new Icon('signpost');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const COMPASS = new Icon('compass');
+/**
+ * @type {Icon}
+ * @since 22.0
+ */
+const DIAGRAM_LINE = new Icon('diagram-line');
+/**
+ * @type {Icon}
+ * @since 22.0
+ */
+const DIAGRAM_AREA = new Icon('diagram-area');
+/**
+ * @type {Icon}
+ * @since 22.0
+ */
+const DIAGRAM_BAR = new Icon('diagram-bar');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const RADIOBUTTON = new Icon('radiobutton');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const CHECKBOX = new Icon('checkbox');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TEXTAREA = new Icon('textarea');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const FORMFIELD = new Icon('formfield');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const DROPDOWN = new Icon('dropdown');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const ONE_COLUMN = new Icon('one-column');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TWO_COLUMNS = new Icon('two-columns');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const THREE_COLUMNS = new Icon('three-columns');
+
+;// CONCATENATED MODULE: ./src/content-element/content-element.js
+
+
+
+
+class ContentElement extends AbstractBuilder {
+  constructor() {
+    super();
+    this._elementId = undefined;
+    this._label = undefined;
+    this._file = undefined;
+    this._icon = undefined;
+    this._hidden = undefined;
+    this._styleConfigs = undefined;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get elementId() {
+    return this._elementId;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @return {{}|undefined}
+   */
+  get file() {
+    return this._file;
+  }
+
+  /**
+   * @return {Icon|undefined}
+   */
+  get icon() {
+    return this._icon;
+  }
+
+  /**
+   * @return {StyleBuilder[]|undefined}
+   */
+  get styleConfigs() {
+    return this._styleConfigs;
+  }
+
+  /**
+   * @param {string} elementId
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withElementId(elementId) {
+    this._elementId = elementId;
+    return this;
+  }
+
+  /**
+   * @param {string} label
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  /**
+   * @param {string} file
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withFile(file) {
+    this._file = __webpack_require__(927)(file);
+    return this;
+  }
+
+  /**
+   * @param {Icon} icon
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withIcon(icon) {
+    this._icon = icon;
+    return this;
+  }
+
+  /**
+   * @param {boolean} hidden
+   * @return {ContentElement}
+   * @since 1.3
+   */
+  withHidden(hidden) {
+    this._hidden = hidden;
+    return this;
+  }
+
+  /**
+   * @param {StyleBuilder} styleConfigs
+   * @return {ContentElement}
+   * @since 1.1
+   */
+  withStyleConfig(...styleConfigs) {
+    this._styleConfigs = styleConfigs;
+    return this;
+  }
+
+  build() {
+    super.build();
+  }
+}
+
 ;// CONCATENATED MODULE: ./export/browser.js
 
 
@@ -835,6 +1536,13 @@ class StyleBuilder extends AbstractBuilder {
 
 
 
+
+
+
+
+
+
+})();
 
 var __webpack_export_target__ = exports;
 for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];

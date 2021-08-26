@@ -20,14 +20,17 @@ declare module "src/design-type" {
     }
     /**
      * @type {DesignType}
+     * @since 1.0
      */
     export const LANDINGPAGE: DesignType;
     /**
      * @type {DesignType}
+     * @since 1.0
      */
     export const EMAIL: DesignType;
     /**
      * @type {DesignType}
+     * @since 1.3
      */
     export const WEBSITE: DesignType;
     import AbstractConstant from "src/abstract-constant";
@@ -1504,14 +1507,423 @@ declare module "src/style/style-builder" {
     }
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/content-element/part" {
+    export class Part extends AbstractConstant {
+    }
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const PLAIN_TEXT: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORMATTED_TEXT: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const HTML: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const VIDEO: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const IMAGE: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const BACKGROUND_IMAGE: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const TABLE: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const ITERATOR: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const NEWS_SNIPPETS: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_FIELD: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_CHECKBOX: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_TEXTAREA: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_SELECT: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_RADIO: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const LINK: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const SOCIAL_FOLLOW: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const SOCIAL_SHARE: Part;
+    /**
+     * @type {Part}
+     * @since 22.0
+     */
+    export const URL_PROVIDER: Part;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/content-element/icon" {
+    export class Icon extends AbstractConstant {
+    }
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const HEADING: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const TEXT: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const TEXT_WITH_IMAGE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const IMAGE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const TABLE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const LIST: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const VIDEO: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const MEGAPHONE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const SOCIAL_FOLLOW: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const SOCIAL_SHARE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const SNIPPET: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const QRCODE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const PAPERCLIP: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const DOCUMENT: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const PHONE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const COMMUNICATION: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const HANDSHAKE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const HEART: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const INFO: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const ENVELOPE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const FACEBOOK: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const YOUTUBE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const PERSON_MALE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const PERSON_FEMALE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const ASTERISK: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const SMILEY: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const DIVIDER: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const PARAMETER: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const TWITTER: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const HEADSET: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const METADATA: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const PILE: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const CHAIN: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const SIGNPOST: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const COMPASS: Icon;
+    /**
+     * @type {Icon}
+     * @since 22.0
+     */
+    export const DIAGRAM_LINE: Icon;
+    /**
+     * @type {Icon}
+     * @since 22.0
+     */
+    export const DIAGRAM_AREA: Icon;
+    /**
+     * @type {Icon}
+     * @since 22.0
+     */
+    export const DIAGRAM_BAR: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const RADIOBUTTON: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const CHECKBOX: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const TEXTAREA: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const FORMFIELD: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const DROPDOWN: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const ONE_COLUMN: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const TWO_COLUMNS: Icon;
+    /**
+     * @type {Icon}
+     * @since 1.0
+     */
+    export const THREE_COLUMNS: Icon;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/content-element/content-element" {
+    export default class ContentElement extends AbstractBuilder {
+        _elementId: string;
+        _label: string;
+        _file: any;
+        _icon: Icon;
+        _hidden: boolean;
+        _styleConfigs: StyleBuilder;
+        /**
+         * @return {string|undefined}
+         */
+        get elementId(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @return {{}|undefined}
+         */
+        get file(): {};
+        /**
+         * @return {Icon|undefined}
+         */
+        get icon(): Icon;
+        /**
+         * @return {StyleBuilder[]|undefined}
+         */
+        get styleConfigs(): StyleBuilder[];
+        /**
+         * @param {string} elementId
+         * @return {ContentElement}
+         * @since 1.0
+         */
+        withElementId(elementId: string): ContentElement;
+        /**
+         * @param {string} label
+         * @return {ContentElement}
+         * @since 1.0
+         */
+        withLabel(label: string): ContentElement;
+        /**
+         * @param {string} file
+         * @return {ContentElement}
+         * @since 1.0
+         */
+        withFile(file: string): ContentElement;
+        /**
+         * @param {Icon} icon
+         * @return {ContentElement}
+         * @since 1.0
+         */
+        withIcon(icon: Icon): ContentElement;
+        /**
+         * @param {boolean} hidden
+         * @return {ContentElement}
+         * @since 1.3
+         */
+        withHidden(hidden: boolean): ContentElement;
+        /**
+         * @param {StyleBuilder} styleConfigs
+         * @return {ContentElement}
+         * @since 1.1
+         */
+        withStyleConfig(...styleConfigs: StyleBuilder): ContentElement;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import { Icon } from "src/content-element/icon";
+    import StyleBuilder from "src/style/style-builder";
+}
 declare module "export/browser" {
+    import * as Version from "src/version";
+    import * as DesignType from "src/design-type";
     import * as Feature from "src/html-editor-config/feature";
     import * as EnterMode from "src/html-editor-config/enter-mode";
     import * as FontSizeUnit from "src/html-editor-config/font-size-unit";
     import * as Format from "src/html-editor-config/format";
     import HtmlEditorConfigBuilder from "src/html-editor-config/html-editor-config-builder";
     import StyleBuilder from "src/style/style-builder";
-    export { Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfigBuilder, StyleBuilder };
+    import * as Part from "src/content-element/part";
+    import * as Icon from "src/content-element/icon";
+    import ContentElement from "src/content-element/content-element";
+    export { Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfigBuilder, StyleBuilder, Part, Icon, ContentElement };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";
