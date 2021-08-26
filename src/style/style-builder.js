@@ -1,3 +1,5 @@
+import DesignJsonProperty from '../design-json-property';
+
 export default class StyleBuilder {
   constructor() {
     this._identifier = undefined;
@@ -50,20 +52,24 @@ export default class StyleBuilder {
    * @returns {StyleBuilder}
    */
   withCssClass(label, cssClass) {
-    this._cssClasses.push({
-      label: label,
-      cssClass: cssClass
-    });
+    let style = {};
+
+    style[DesignJsonProperty.LABEL] = label;
+    style[DesignJsonProperty.CSS_CLASS] = cssClass;
+
+    this._cssClasses.push(style);
+
     return this;
   }
 
   build() {
     let config = {};
+    let style = {};
 
-    config[this.identifier] = {
-      label: this.label,
-      cssClasses: this.cssClasses
-    };
+    style[DesignJsonProperty.LABEL] = this.label;
+    style[DesignJsonProperty.CSS_CLASSES] = this.cssClasses;
+
+    config[this.identifier] = style;
 
     return config;
   }

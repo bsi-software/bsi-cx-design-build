@@ -459,6 +459,41 @@ declare module "src/java-property-file-builder" {
         _escapeValue(value: string): string;
     }
 }
+declare module "src/legacy-design-property" {
+    export default class LegacyDesignProperty {
+        /**
+         * @type {string}
+         */
+        static TEMPLATE_NAME: string;
+        /**
+         * @type {string}
+         */
+        static TEMPLATE_AUTHOR: string;
+        /**
+         * @type {string}
+         */
+        static LABEL: string;
+        /**
+         * @type {string}
+         */
+        static STYLE: string;
+        /**
+         * @type {string}
+         */
+        static CLASS: string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getStyleLabel(name: string): string;
+        /**
+         * @param {string} name
+         * @param {string} cssClass
+         * @return {string}
+         */
+        static getStyleClassLabel(name: string, cssClass: string): string;
+    }
+}
 declare module "src/bsi-cx-webpack-legacy-design-plugin" {
     export default class BsiCxWebpackLegacyDesignPlugin {
         /**

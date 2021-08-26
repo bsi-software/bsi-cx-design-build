@@ -398,7 +398,60 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
+;// CONCATENATED MODULE: ./src/design-json-property.js
+class DesignJsonProperty {
+  /**
+   * @type {string}
+   */
+  static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASSES = 'cssClasses';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static FEATURES = 'features';
+  /**
+   * @type {string}
+   */
+  static TEXT_COLORS = 'textColors';
+  /**
+   * @type {string}
+   */
+  static BACKGROUND_COLORS = 'backgroundColors';
+  /**
+   * @type {string}
+   */
+  static FORMATS = 'formats';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZES = 'fontSizes';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_UNIT = 'fontSizeUnit';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
+  /**
+   * @type {string}
+   */
+  static LINE_HEIGHTS = 'lineHeights';
+  /**
+   * @type {string}
+   */
+  static ENTER_MODE = 'enterMode';
+}
+
 ;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config-builder.js
+
 
 
 
@@ -623,15 +676,15 @@ class HtmlEditorConfigBuilder {
     let config = {};
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyToConfig('features', editorConfig, item => item.value);
-    this._applyPropertyToConfig('textColors', editorConfig, item => item);
-    this._applyPropertyToConfig('backgroundColors', editorConfig, item => item);
-    this._applyPropertyToConfig('formats', editorConfig, item => item.value);
-    this._applyPropertyToConfig('fontSizes', editorConfig, item => item);
-    this._applyPropertyToConfig('fontSizeUnit', editorConfig, item => item.value);
-    this._applyPropertyToConfig('fontSizeDefault', editorConfig, item => item);
-    this._applyPropertyToConfig('lineHeights', editorConfig, item => item);
-    this._applyPropertyToConfig('enterMode', editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
 
     return config;
   }
@@ -662,6 +715,8 @@ class HtmlEditorConfigBuilder {
 }
 
 ;// CONCATENATED MODULE: ./src/style/style-builder.js
+
+
 class StyleBuilder {
   constructor() {
     this._identifier = undefined;
@@ -714,20 +769,24 @@ class StyleBuilder {
    * @returns {StyleBuilder}
    */
   withCssClass(label, cssClass) {
-    this._cssClasses.push({
-      label: label,
-      cssClass: cssClass
-    });
+    let style = {};
+
+    style[DesignJsonProperty.LABEL] = label;
+    style[DesignJsonProperty.CSS_CLASS] = cssClass;
+
+    this._cssClasses.push(style);
+
     return this;
   }
 
   build() {
     let config = {};
+    let style = {};
 
-    config[this.identifier] = {
-      label: this.label,
-      cssClasses: this.cssClasses
-    };
+    style[DesignJsonProperty.LABEL] = this.label;
+    style[DesignJsonProperty.CSS_CLASSES] = this.cssClasses;
+
+    config[this.identifier] = style;
 
     return config;
   }

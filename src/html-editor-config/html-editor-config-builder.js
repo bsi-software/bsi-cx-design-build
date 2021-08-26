@@ -2,6 +2,7 @@ import {EnterMode} from './enter-mode';
 import {Feature} from './feature';
 import {Format} from './format';
 import {FontSizeUnit} from './font-size-unit';
+import DesignJsonProperty from '../design-json-property';
 
 export default class HtmlEditorConfigBuilder {
   constructor() {
@@ -222,15 +223,15 @@ export default class HtmlEditorConfigBuilder {
     let config = {};
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyToConfig('features', editorConfig, item => item.value);
-    this._applyPropertyToConfig('textColors', editorConfig, item => item);
-    this._applyPropertyToConfig('backgroundColors', editorConfig, item => item);
-    this._applyPropertyToConfig('formats', editorConfig, item => item.value);
-    this._applyPropertyToConfig('fontSizes', editorConfig, item => item);
-    this._applyPropertyToConfig('fontSizeUnit', editorConfig, item => item.value);
-    this._applyPropertyToConfig('fontSizeDefault', editorConfig, item => item);
-    this._applyPropertyToConfig('lineHeights', editorConfig, item => item);
-    this._applyPropertyToConfig('enterMode', editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
+    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
+    this._applyPropertyToConfig(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
 
     return config;
   }

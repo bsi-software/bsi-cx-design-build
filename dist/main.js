@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 846:
+/***/ 533:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -151,7 +151,227 @@ class JavaPropertyFileBuilder {
 
 // EXTERNAL MODULE: ./src/utility.js
 var utility = __webpack_require__(923);
+;// CONCATENATED MODULE: ./src/legacy-design-property.js
+class LegacyDesignProperty {
+  /**
+   * @type {string}
+   */
+  static TEMPLATE_NAME = 'template.name';
+  /**
+   * @type {string}
+   */
+  static TEMPLATE_AUTHOR = 'template.author';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _LABEL = 'label';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _STYLE = 'style';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _CLASS = 'class';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _HTML_EDITOR_CONFIG = 'html-editor-config';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FEATURES = 'features';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _TEXT_COLORS = 'text-colors';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _BACKGROUND_COLORS = 'background-colors';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FORMATS = 'formats';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FONT_SIZES = 'font-sizes';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FONT_SIZE_UNIT = 'font-size-unit';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FONT_SIZE_DEFAULT = 'font-size-default';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _LINE_HEIGHTS = 'line-heights';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ENTER = 'enter';
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getStyleLabel(name) {
+    return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} cssClass
+   * @return {string}
+   */
+  static getStyleClassLabel(name, cssClass) {
+    return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._CLASS + '.' + cssClass + '.' + LegacyDesignProperty._LABEL
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFeatures(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FEATURES;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigTextColors(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._TEXT_COLORS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigBackgroundColors(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._BACKGROUND_COLORS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFormats(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FORMATS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFontSizes(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZES;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFontSizeUnit(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_UNIT;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFontSizeDefault(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_DEFAULT;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigLineHeights(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._LINE_HEIGHTS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigEnter(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._ENTER;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/design-json-property.js
+class DesignJsonProperty {
+  /**
+   * @type {string}
+   */
+  static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASSES = 'cssClasses';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static FEATURES = 'features';
+  /**
+   * @type {string}
+   */
+  static TEXT_COLORS = 'textColors';
+  /**
+   * @type {string}
+   */
+  static BACKGROUND_COLORS = 'backgroundColors';
+  /**
+   * @type {string}
+   */
+  static FORMATS = 'formats';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZES = 'fontSizes';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_UNIT = 'fontSizeUnit';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
+  /**
+   * @type {string}
+   */
+  static LINE_HEIGHTS = 'lineHeights';
+  /**
+   * @type {string}
+   */
+  static ENTER_MODE = 'enterMode';
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
+
+
 
 
 
@@ -170,18 +390,22 @@ class _BsiCxWebpackLegacyDesignPlugin {
   constructor(config, compiler, compilation, logger) {
     /**
      * @type {BuildConfig}
+     * @private
      */
     this._config = config;
     /**
      * @type {Compiler}
+     * @private
      */
     this._compiler = compiler;
     /**
      * @type {Compilation}
+     * @private
      */
     this._compilation = compilation;
     /**
      * @type {WebpackLogger}
+     * @private
      */
     this._logger = logger;
   }
@@ -198,6 +422,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
     }
   }
 
+  /**
+   * @private
+   */
   _convertToLegacyFormat() {
     let designJson = this._getDesignJsonObject();
 
@@ -205,6 +432,10 @@ class _BsiCxWebpackLegacyDesignPlugin {
     this._createAndEmitDesignProperties(designJson);
   }
 
+  /**
+   * @return {string}
+   * @private
+   */
   _getDesignJsonObject() {
     let asset = this._compilation.getAsset(File.DESIGN_JSON);
 
@@ -224,8 +455,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{}} designJson
+   * @param {{contentElementGroups:[{}]}} designJson
    * @returns {string}
+   * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
     let html = designJson
@@ -239,8 +471,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{}} group
+   * @param {{contentElements:[{}]}} group
    * @returns {string}
+   * @private
    */
   _renderContentElementsGroup(group) {
     let elements = group
@@ -254,6 +487,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   /**
    * @param {{}} element
    * @returns {string}
+   * @private
    */
   _renderContentElement(element) {
     let asset = this._compilation.getAsset(element.file);
@@ -262,30 +496,38 @@ class _BsiCxWebpackLegacyDesignPlugin {
     return source.trim();
   }
 
+  /**
+   * @param {{}} designJson
+   * @private
+   */
   _createAndEmitDesignProperties(designJson) {
     let properties = new JavaPropertyFileBuilder();
 
     this._appendMetaInfo(designJson, properties);
     this._appendStyles(designJson, properties);
+    this._appendHtmlEditorConfigs(designJson, properties);
 
-    let source = new external_webpack_.sources.RawSource(properties.build());
+    let code = properties.build();
+    let source = new external_webpack_.sources.RawSource(code);
 
     this._compilation.emitAsset(File.DESIGN_PROPERTIES, source);
   }
 
   /**
-   * @param {{}} designJson
+   * @param {{title:string,author:string}} designJson
    * @param {JavaPropertyFileBuilder} properties
+   * @private
    */
   _appendMetaInfo(designJson, properties) {
-    properties.append('template.name', designJson.title);
-    properties.append('template.author', designJson.author);
+    properties.append(LegacyDesignProperty.TEMPLATE_NAME, designJson.title);
+    properties.append(LegacyDesignProperty.TEMPLATE_AUTHOR, designJson.author);
     properties.appendBlank();
   }
 
   /**
-   * @param {{}} designJson
+   * @param {{styleConfigs:{}|undefined}} designJson
    * @param {JavaPropertyFileBuilder} properties
+   * @private
    */
   _appendStyles(designJson, properties) {
     let styleConfigs = designJson.styleConfigs || {};
@@ -296,17 +538,108 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {string} style
-   * @param {{}} config
+   * @param {{cssClasses:[]|undefined}} config
    * @param {JavaPropertyFileBuilder} properties
+   * @private
    */
   _appendStyleConfig(style, config, properties) {
-    let prefix = `style.${style}`;
-    properties.append(`${prefix}.label`, config.label);
-
+    /**
+     * @type {{label: string, cssClass: string}[]}
+     */
     let cssClasses = config.cssClasses || [];
-    cssClasses.forEach(cssClass => properties.append(`${prefix}.class.${cssClass.cssClass}.label`, cssClass.label));
+
+    this._appendStyleConfigLabel(style, config, properties);
+    cssClasses.forEach(cssClass => this._appendStyleConfigCssClass(style, cssClass, properties));
 
     properties.appendBlank();
+  }
+
+  /**
+   * @param {string} style
+   * @param {{label:string}} config
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendStyleConfigLabel(style, config, properties) {
+    let key = LegacyDesignProperty.getStyleLabel(style);
+    let value = config.label;
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {string} style
+   * @param {{cssClass:string,label:string}} cssClass
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendStyleConfigCssClass(style, cssClass, properties) {
+    let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass.cssClass);
+    let value = cssClass.label;
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendHtmlEditorConfigs(designJson, properties) {
+    let editorConfigs = designJson.htmlEditorConfigs || {};
+    for (let [name, config] of Object.entries(editorConfigs)) {
+      this._appendHtmlEditorConfig(name, config, properties);
+    }
+  }
+
+  /**
+   * @param {string} name
+   * @param {{features:[]|undefined}} config
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendHtmlEditorConfig(name, config, properties) {
+    /**
+     * @param {[string|number]} arr
+     * @return {string}
+     */
+    let arrayValueExtractor = arr => arr.join(',');
+    /**
+     * @param {string|number} v
+     * @return {string|number}
+     */
+    let scalarValueExtractor = v => v;
+
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, arrayValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, arrayValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, arrayValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, arrayValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, arrayValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, scalarValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, scalarValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, arrayValueExtractor, properties);
+    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, scalarValueExtractor, properties);
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {string} configName
+   * @param {{}} config
+   * @param {string} property
+   * @param {function(string):string} labelGenerator
+   * @param {function(*):string} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendHtmlEditorConfigIfNotUndefined(configName, config, property, labelGenerator, valueExtractor, properties) {
+    if (typeof config[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(configName);
+    let rawValue = config[property];
+    let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
   }
 }
 
@@ -2395,7 +2728,7 @@ module.exports = require("webpack/lib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(846);
+/******/ 	var __webpack_exports__ = __webpack_require__(533);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
