@@ -170,6 +170,31 @@ class LegacyDesignProperty {
    * @type {string}
    * @private
    */
+  static _description = 'description';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _GROUP = 'group';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ELEMENT = 'element';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _PARTS = 'parts';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ICON = 'icon';
+  /**
+   * @type {string}
+   * @private
+   */
   static _STYLE = 'style';
   /**
    * @type {string}
@@ -226,6 +251,14 @@ class LegacyDesignProperty {
    * @private
    */
   static _ENTER = 'enter';
+
+  /**
+   * @param {string} group
+   * @return {string}
+   */
+  static getContentElementGroupLabel(group) {
+    return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
+  }
 
   /**
    * @param {string} name
@@ -322,7 +355,35 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static TITLE = 'title';
+  /**
+   * @type {string}
+   */
+  static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
+  /**
+   * @type {string}
+   */
+  static GROUP_ID = 'groupId';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'contentElements';
+  /**
+   * @type {string}
+   */
+  static FILE = 'file';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static STYLE_CONFIGS = 'styleConfigs';
   /**
    * @type {string}
    */
@@ -331,6 +392,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
   /**
    * @type {string}
    */
@@ -433,7 +498,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @return {string}
+   * @return {{title:string,author:string,contentElementGroups:[{}]}}
    * @private
    */
   _getDesignJsonObject() {
@@ -460,8 +525,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
-    let html = designJson
-      .contentElementGroups
+    let contentElementGroups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+    let html = contentElementGroups
       .map(group => this._renderContentElementsGroup(group))
       .join('\n');
 
@@ -476,12 +541,13 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _renderContentElementsGroup(group) {
-    let elements = group
-      .contentElements
+    let contentElements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+    let elements = contentElements
       .map(element => this._renderContentElement(element))
       .join('\n');
+    let groupId = group[DesignJsonProperty.GROUP_ID];
 
-    return `<div data-bsi-group="${group.groupId}">\n${elements}\n</div>`;
+    return `<div data-bsi-group="${groupId}">\n${elements}\n</div>`;
   }
 
   /**
@@ -490,14 +556,14 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _renderContentElement(element) {
-    let asset = this._compilation.getAsset(element.file);
+    let asset = this._compilation.getAsset(element[DesignJsonProperty.FILE]);
     let source = asset.source.source();
 
     return source.trim();
   }
 
   /**
-   * @param {{}} designJson
+   * @param {{title:string,author:string,contentElementGroups:[{}]}} designJson
    * @private
    */
   _createAndEmitDesignProperties(designJson) {
@@ -506,6 +572,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
     this._appendMetaInfo(designJson, properties);
     this._appendStyles(designJson, properties);
     this._appendHtmlEditorConfigs(designJson, properties);
+    this._appendContentElementGroups(designJson, properties);
 
     let code = properties.build();
     let source = new external_webpack_.sources.RawSource(code);
@@ -519,8 +586,12 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendMetaInfo(designJson, properties) {
-    properties.append(LegacyDesignProperty.TEMPLATE_NAME, designJson.title);
-    properties.append(LegacyDesignProperty.TEMPLATE_AUTHOR, designJson.author);
+    let title = designJson[DesignJsonProperty.TITLE];
+    let author = designJson[DesignJsonProperty.AUTHOR];
+
+    properties.append(LegacyDesignProperty.TEMPLATE_NAME, title);
+    properties.append(LegacyDesignProperty.TEMPLATE_AUTHOR, author);
+
     properties.appendBlank();
   }
 
@@ -530,7 +601,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendStyles(designJson, properties) {
-    let styleConfigs = designJson.styleConfigs || {};
+    let styleConfigs = designJson[DesignJsonProperty.STYLE_CONFIGS] || {};
     for (let [style, config] of Object.entries(styleConfigs)) {
       this._appendStyleConfig(style, config, properties);
     }
@@ -562,7 +633,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendStyleConfigLabel(style, config, properties) {
     let key = LegacyDesignProperty.getStyleLabel(style);
-    let value = config.label;
+    let value = config[DesignJsonProperty.LABEL];
     properties.append(key, value);
   }
 
@@ -574,7 +645,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendStyleConfigCssClass(style, cssClass, properties) {
     let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass.cssClass);
-    let value = cssClass.label;
+    let value = cssClass[DesignJsonProperty.LABEL];
     properties.append(key, value);
   }
 
@@ -584,7 +655,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendHtmlEditorConfigs(designJson, properties) {
-    let editorConfigs = designJson.htmlEditorConfigs || {};
+    let editorConfigs = designJson[DesignJsonProperty.HTML_EDITOR_CONFIGS] || {};
     for (let [name, config] of Object.entries(editorConfigs)) {
       this._appendHtmlEditorConfig(name, config, properties);
     }
@@ -638,6 +709,32 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let key = labelGenerator(configName);
     let rawValue = config[property];
     let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementGroups(designJson, properties) {
+    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+
+    groups.forEach(group => this._appendContentElementGroup(group, properties));
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} group
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementGroup(group, properties) {
+    let groupId = group[DesignJsonProperty.GROUP_ID];
+    let key = LegacyDesignProperty.getContentElementGroupLabel(groupId);
+    let value = group[DesignJsonProperty.LABEL];
 
     properties.append(key, value);
   }

@@ -16,6 +16,31 @@ export default class LegacyDesignProperty {
    * @type {string}
    * @private
    */
+  static _description = 'description';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _GROUP = 'group';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ELEMENT = 'element';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _PARTS = 'parts';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ICON = 'icon';
+  /**
+   * @type {string}
+   * @private
+   */
   static _STYLE = 'style';
   /**
    * @type {string}
@@ -72,6 +97,14 @@ export default class LegacyDesignProperty {
    * @private
    */
   static _ENTER = 'enter';
+
+  /**
+   * @param {string} group
+   * @return {string}
+   */
+  static getContentElementGroupLabel(group) {
+    return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
+  }
 
   /**
    * @param {string} name

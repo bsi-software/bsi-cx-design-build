@@ -2,7 +2,35 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static TITLE = 'title';
+  /**
+   * @type {string}
+   */
+  static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
+  /**
+   * @type {string}
+   */
+  static GROUP_ID = 'groupId';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'contentElements';
+  /**
+   * @type {string}
+   */
+  static FILE = 'file';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static STYLE_CONFIGS = 'styleConfigs';
   /**
    * @type {string}
    */
@@ -11,6 +39,10 @@ export default class DesignJsonProperty {
    * @type {string}
    */
   static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
   /**
    * @type {string}
    */
