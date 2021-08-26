@@ -2,24 +2,22 @@ import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity} from '../extractor';
 import AbstractInclude from './abstract-include';
+import RawValue from '../raw-value';
 
 /**
  * @since 1.3
  */
 export default class Website extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {number|undefined}
-     * @private
-     */
-    this._maxNavigationLevel = undefined;
-    /**
-     * @type {[AbstractInclude]|undefined}
-     * @private
-     */
-    this._includes = undefined;
-  }
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _maxNavigationLevel = undefined;
+  /**
+   * @type {RawValue|AbstractInclude[]|undefined}
+   * @private
+   */
+  _includes = undefined;
 
   /**
    * @return {number|undefined}
@@ -29,7 +27,7 @@ export default class Website extends AbstractBuilder {
   }
 
   /**
-   * @return {[AbstractInclude]|undefined}
+   * @return {RawValue|AbstractInclude[]|undefined}
    */
   get includes() {
     return this._includes;
@@ -50,6 +48,15 @@ export default class Website extends AbstractBuilder {
    */
   withIncludes(...includes) {
     this._includes = includes;
+    return this;
+  }
+
+  /**
+   * @param {{}} includes
+   * @return {Website}
+   */
+  withRawIncludes(includes) {
+    this._includes = new RawValue(includes);
     return this;
   }
 

@@ -7,13 +7,14 @@ import DesignJsonProperty from '../../design-json-property';
  * @since 1.0
  */
 export default class FormattedTextPart extends AbstractPart {
+  /**
+   * @type {HtmlEditorConfig|undefined}
+   * @private
+   */
+  _htmlEditorConfig = undefined;
+
   constructor() {
     super(FORMATTED_TEXT);
-    /**
-     * @type {HtmlEditorConfig|undefined}
-     * @private
-     */
-    this._htmlEditorConfig = undefined;
   }
 
   /**

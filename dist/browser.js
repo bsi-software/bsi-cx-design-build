@@ -529,6 +529,12 @@ class AbstractBuilder {
 ;// CONCATENATED MODULE: ./src/abstract-constant.js
 class AbstractConstant {
   /**
+   * @type {string}
+   * @private
+   */
+  _value = undefined;
+
+  /**
    * @param {string} value
    */
   constructor(value) {
@@ -694,6 +700,17 @@ function builderObjectValue(builder) {
 
 class AbstractPart extends AbstractBuilder {
   /**
+   * @type {Part}
+   * @private
+   */
+  _partId = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+
+  /**
    * @param {Part} partId
    */
   constructor(partId) {
@@ -703,11 +720,6 @@ class AbstractPart extends AbstractBuilder {
      * @private
      */
     this._partId = partId;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
   }
 
   /**
@@ -1057,50 +1069,48 @@ const THREE_COLUMNS = new Icon('three-columns');
 
 
 
+
 class ContentElement extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._elementId = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._description = undefined;
-    /**
-     * @type {{}|undefined}
-     * @private
-     */
-    this._file = undefined;
-    /**
-     * @type {Icon|undefined}
-     * @private
-     */
-    this._icon = undefined;
-    /**
-     * @type {boolean|undefined}
-     * @private
-     */
-    this._hidden = undefined;
-    /**
-     * @type {[Style]|undefined}
-     * @private
-     */
-    this._styleConfigs = undefined;
-    /**
-     * @type {[AbstractPart]|undefined}
-     * @private
-     */
-    this._parts = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _elementId = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _description = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _file = undefined;
+  /**
+   * @type {Icon|undefined}
+   * @private
+   */
+  _icon = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _hidden = undefined;
+  /**
+   * @type {RawValue|[Style]|undefined}
+   * @private
+   */
+  _styleConfigs = undefined;
+  /**
+   * @type {RawValue|[AbstractPart]|undefined}
+   * @private
+   */
+  _parts = undefined;
 
   /**
    * @return {string|undefined}
@@ -1145,14 +1155,14 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @return {Style[]|undefined}
+   * @return {RawValue|Style[]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
   }
 
   /**
-   * @return {AbstractPart[]|undefined}
+   * @return {RawValue|AbstractPart[]|undefined}
    */
   get parts() {
     return this._parts;
@@ -1219,12 +1229,32 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * @param {string} styleConfigs
+   * @return {ContentElement}
+   * @since 1.1
+   */
+  withRawStyleConfigs(...styleConfigs) {
+    this._styleConfigs = new RawValue(styleConfigs);
+    return this;
+  }
+
+  /**
    * @param {AbstractPart} parts
    * @return {ContentElement}
    * @since 1.0
    */
   withParts(...parts) {
     this._parts = parts;
+    return this;
+  }
+
+  /**
+   * @param {{}} parts
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withRawParts(...parts) {
+    this._parts = new RawValue(parts);
     return this;
   }
 
@@ -1238,7 +1268,7 @@ class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier);
 
     return config;
   }
@@ -1250,30 +1280,28 @@ class ContentElement extends AbstractBuilder {
 
 
 
+
 class ContentElementGroup extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._groupId = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-    /**
-     * @type {boolean|undefined}
-     * @private
-     */
-    this._hidden = undefined;
-    /**
-     * @type {[ContentElement]|undefined}
-     * @private
-     */
-    this._contentElements = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _groupId = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _hidden = undefined;
+  /**
+   * @type {RawValue|[ContentElement]|undefined}
+   * @private
+   */
+  _contentElements = undefined;
 
   /**
    * @return {string|undefined}
@@ -1297,7 +1325,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @return {[ContentElement]|undefined}
+   * @return {RawValue|[ContentElement]|undefined}
    */
   get contentElements() {
     return this._contentElements;
@@ -1336,6 +1364,15 @@ class ContentElementGroup extends AbstractBuilder {
    */
   withContentElements(...contentElements) {
     this._contentElements = contentElements;
+    return this;
+  }
+
+  /**
+   * @param {{}} contentElements
+   * @return {ContentElementGroup}
+   */
+  withRawContentElements(...contentElements) {
+    this._contentElements = new RawValue(contentElements);
     return this;
   }
 
@@ -1576,60 +1613,58 @@ const MM = new FontSizeUnit('mm');
 
 
 
+
 class HtmlEditorConfig extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._identifier = undefined;
-    /**
-     * @type {Feature[]|undefined}
-     * @private
-     */
-    this._features = undefined;
-    /**
-     * @type {string[]|undefined}
-     * @private
-     */
-    this._textColors = undefined;
-    /**
-     * @type {string[]|undefined}
-     * @private
-     */
-    this._backgroundColors = undefined;
-    /**
-     * @type {Format[]|undefined}
-     * @private
-     */
-    this._formats = undefined;
-    /**
-     * @type {number[]|undefined}
-     * @private
-     */
-    this._fontSizes = undefined;
-    /**
-     * @type {FontSizeUnit|undefined}
-     * @private
-     */
-    this._fontSizeUnit = undefined;
-    /**
-     * @type {number|undefined}
-     * @private
-     */
-    this._fontSizeDefault = undefined;
-    /**
-     * @type {number[]|undefined}
-     * @private
-     */
-    this._lineHeights = undefined;
-    /**
-     * @type {EnterMode|undefined}
-     * @private
-     */
-    this._enterMode = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _identifier = undefined;
+  /**
+   * @type {RawValue|Feature[]|undefined}
+   * @private
+   */
+  _features = undefined;
+  /**
+   * @type {string[]|undefined}
+   * @private
+   */
+  _textColors = undefined;
+  /**
+   * @type {string[]|undefined}
+   * @private
+   */
+  _backgroundColors = undefined;
+  /**
+   * @type {RawValue|Format[]|undefined}
+   * @private
+   */
+  _formats = undefined;
+  /**
+   * @type {number[]|undefined}
+   * @private
+   */
+  _fontSizes = undefined;
+  /**
+   * @type {RawValue|FontSizeUnit|undefined}
+   * @private
+   */
+  _fontSizeUnit = undefined;
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _fontSizeDefault = undefined;
+  /**
+   * @type {number[]|undefined}
+   * @private
+   */
+  _lineHeights = undefined;
+  /**
+   * @type {RawValue|EnterMode|undefined}
+   * @private
+   */
+  _enterMode = undefined;
 
   /**
    * @returns {string|undefined}
@@ -1639,7 +1674,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {Feature[]|undefined}
+   * @returns {RawValue|Feature[]|undefined}
    */
   get features() {
     return this._features;
@@ -1660,7 +1695,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {Format[]|undefined}
+   * @returns {RawValue|Format[]|undefined}
    */
   get formats() {
     return this._formats;
@@ -1674,7 +1709,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {FontSizeUnit|undefined}
+   * @returns {RawValue|FontSizeUnit|undefined}
    */
   get fontSizeUnit() {
     return this._fontSizeUnit;
@@ -1695,7 +1730,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {EnterMode|undefined}
+   * @returns {RawValue|EnterMode|undefined}
    */
   get enterMode() {
     return this._enterMode;
@@ -1716,6 +1751,15 @@ class HtmlEditorConfig extends AbstractBuilder {
    */
   withFeatures(...features) {
     this._features = features;
+    return this;
+  }
+
+  /**
+   * @param {string} features
+   * @returns {HtmlEditorConfig}
+   */
+  withRawFeatures(...features) {
+    this._features = new RawValue(features);
     return this;
   }
 
@@ -1747,6 +1791,15 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
+   * @param {string} formats
+   * @returns {HtmlEditorConfig}
+   */
+  withRawFormats(...formats) {
+    this._formats = new RawValue(formats);
+    return this;
+  }
+
+  /**
    * @param {number} fontSizes
    * @returns {HtmlEditorConfig}
    */
@@ -1761,6 +1814,15 @@ class HtmlEditorConfig extends AbstractBuilder {
    */
   withFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = fontSizeUnit;
+    return this;
+  }
+
+  /**
+   * @param {string} fontSizeUnit
+   * @returns {HtmlEditorConfig}
+   */
+  withRawFontSizeUnit(fontSizeUnit) {
+    this._fontSizeUnit = new RawValue(fontSizeUnit);
     return this;
   }
 
@@ -1788,6 +1850,15 @@ class HtmlEditorConfig extends AbstractBuilder {
    */
   withEnterMode(enterMode) {
     this._enterMode = enterMode;
+    return this;
+  }
+
+  /**
+   * @param {string} enterMode
+   * @returns {HtmlEditorConfig}
+   */
+  withRawEnterMode(enterMode) {
+    this._enterMode = new RawValue(enterMode);
     return this;
   }
 
@@ -1897,19 +1968,16 @@ class Translation extends AbstractBuilder {
 
 
 class NLS extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._identifier = undefined;
-    /**
-     * @type {[Translation]|undefined}
-     * @private
-     */
-    this._translations = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _identifier = undefined;
+  /**
+   * @type {[Translation]|undefined}
+   * @private
+   */
+  _translations = undefined;
 
   /**
    * @return {string|undefined}
@@ -1976,7 +2044,7 @@ class NLS extends AbstractBuilder {
    */
   static fromMap(identifier, map) {
     let translations = [];
-    
+
     for (let [locale, translation] of map.entries()) {
       translations.push(
         new Translation()
@@ -2270,7 +2338,7 @@ class Design extends AbstractBuilder {
    * @param {{}} styleConfigs
    * @return {Design}
    */
-  withRawStyleConfigs(...styleConfigs) {
+  withRawStyleConfigs(styleConfigs) {
     this._styleConfigs = new RawValue(styleConfigs);
     return this;
   }
@@ -2288,7 +2356,7 @@ class Design extends AbstractBuilder {
    * @param {{}} htmlEditorConfigs
    * @return {Design}
    */
-  withRawHtmlEditorConfigs(...htmlEditorConfigs) {
+  withRawHtmlEditorConfigs(htmlEditorConfigs) {
     this._htmlEditorConfigs = new RawValue(htmlEditorConfigs);
     return this;
   }
@@ -2455,28 +2523,26 @@ const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 
 
+
 /**
  * @since 1.1
  */
 class Style extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._identifier = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-    /**
-     * @type {CssClass[]|undefined}
-     * @private
-     */
-    this._cssClasses = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _identifier = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {RawValue|CssClass[]|undefined}
+   * @private
+   */
+  _cssClasses = undefined;
 
   /**
    * @return {string|undefined}
@@ -2493,7 +2559,7 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @return {[CssClass]|undefined}
+   * @return {RawValue|[CssClass]|undefined}
    */
   get cssClasses() {
     return this._cssClasses;
@@ -2526,6 +2592,15 @@ class Style extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @param {{}} cssClasses
+   * @returns {Style}
+   */
+  withRawCssClasses(...cssClasses) {
+    this._cssClasses = new RawValue(cssClasses);
+    return this;
+  }
+
   build() {
     let config = {};
     let style = {};
@@ -2545,19 +2620,16 @@ class Style extends AbstractBuilder {
 
 
 class CssClass extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._cssClass = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _cssClass = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
 
   /**
    * @return {string|undefined}
@@ -2643,13 +2715,14 @@ class PlainTextPart extends AbstractPart {
  * @since 1.0
  */
 class FormattedTextPart extends AbstractPart {
+  /**
+   * @type {HtmlEditorConfig|undefined}
+   * @private
+   */
+  _htmlEditorConfig = undefined;
+
   constructor() {
     super(FORMATTED_TEXT);
-    /**
-     * @type {HtmlEditorConfig|undefined}
-     * @private
-     */
-    this._htmlEditorConfig = undefined;
   }
 
   /**
@@ -3048,23 +3121,21 @@ class UrlProviderPart extends AbstractPart {
 
 
 
+
 /**
  * @since 1.3
  */
 class Website extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {number|undefined}
-     * @private
-     */
-    this._maxNavigationLevel = undefined;
-    /**
-     * @type {[AbstractInclude]|undefined}
-     * @private
-     */
-    this._includes = undefined;
-  }
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _maxNavigationLevel = undefined;
+  /**
+   * @type {RawValue|AbstractInclude[]|undefined}
+   * @private
+   */
+  _includes = undefined;
 
   /**
    * @return {number|undefined}
@@ -3074,7 +3145,7 @@ class Website extends AbstractBuilder {
   }
 
   /**
-   * @return {[AbstractInclude]|undefined}
+   * @return {RawValue|AbstractInclude[]|undefined}
    */
   get includes() {
     return this._includes;
@@ -3098,6 +3169,15 @@ class Website extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @param {{}} includes
+   * @return {Website}
+   */
+  withRawIncludes(includes) {
+    this._includes = new RawValue(includes);
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -3118,6 +3198,27 @@ class Website extends AbstractBuilder {
  */
 class AbstractInclude extends AbstractBuilder {
   /**
+   * @type {string|undefined}
+   * @protected
+   */
+  _identifier = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @protected
+   */
+  _editable = undefined;
+  /**
+   * @type {{}|undefined}
+   * @protected
+   */
+  _file = undefined;
+  /**
+   * @type {string|undefined}
+   * @protected
+   */
+  _name = undefined;
+
+  /**
    * @param {string|undefined} identifier
    */
   constructor(identifier) {
@@ -3127,21 +3228,6 @@ class AbstractInclude extends AbstractBuilder {
      * @protected
      */
     this._identifier = identifier;
-    /**
-     * @type {boolean|undefined}
-     * @protected
-     */
-    this._editable = undefined;
-    /**
-     * @type {{}|undefined}
-     * @protected
-     */
-    this._file = undefined;
-    /**
-     * @type {string|undefined}
-     * @protected
-     */
-    this._name = undefined;
   }
 
   /**

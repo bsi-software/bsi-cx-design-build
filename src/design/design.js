@@ -277,7 +277,7 @@ export default class Design extends AbstractBuilder {
    * @param {{}} styleConfigs
    * @return {Design}
    */
-  withRawStyleConfigs(...styleConfigs) {
+  withRawStyleConfigs(styleConfigs) {
     this._styleConfigs = new RawValue(styleConfigs);
     return this;
   }
@@ -295,7 +295,7 @@ export default class Design extends AbstractBuilder {
    * @param {{}} htmlEditorConfigs
    * @return {Design}
    */
-  withRawHtmlEditorConfigs(...htmlEditorConfigs) {
+  withRawHtmlEditorConfigs(htmlEditorConfigs) {
     this._htmlEditorConfigs = new RawValue(htmlEditorConfigs);
     return this;
   }

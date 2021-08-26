@@ -7,6 +7,27 @@ import {identity} from '../extractor';
  */
 export default class AbstractInclude extends AbstractBuilder {
   /**
+   * @type {string|undefined}
+   * @protected
+   */
+  _identifier = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @protected
+   */
+  _editable = undefined;
+  /**
+   * @type {{}|undefined}
+   * @protected
+   */
+  _file = undefined;
+  /**
+   * @type {string|undefined}
+   * @protected
+   */
+  _name = undefined;
+
+  /**
    * @param {string|undefined} identifier
    */
   constructor(identifier) {
@@ -16,21 +37,6 @@ export default class AbstractInclude extends AbstractBuilder {
      * @protected
      */
     this._identifier = identifier;
-    /**
-     * @type {boolean|undefined}
-     * @protected
-     */
-    this._editable = undefined;
-    /**
-     * @type {{}|undefined}
-     * @protected
-     */
-    this._file = undefined;
-    /**
-     * @type {string|undefined}
-     * @protected
-     */
-    this._name = undefined;
   }
 
   /**

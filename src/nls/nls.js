@@ -2,19 +2,16 @@ import AbstractBuilder from '../abstract-builder';
 import Translation from './translation';
 
 export default class NLS extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._identifier = undefined;
-    /**
-     * @type {[Translation]|undefined}
-     * @private
-     */
-    this._translations = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _identifier = undefined;
+  /**
+   * @type {[Translation]|undefined}
+   * @private
+   */
+  _translations = undefined;
 
   /**
    * @return {string|undefined}
@@ -81,7 +78,7 @@ export default class NLS extends AbstractBuilder {
    */
   static fromMap(identifier, map) {
     let translations = [];
-    
+
     for (let [locale, translation] of map.entries()) {
       translations.push(
         new Translation()

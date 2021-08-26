@@ -2,29 +2,27 @@ import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 import CssClass from './css-class';
 import {builderObjectValue, identity} from '../extractor';
+import RawValue from '../raw-value';
 
 /**
  * @since 1.1
  */
 export default class Style extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._identifier = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-    /**
-     * @type {CssClass[]|undefined}
-     * @private
-     */
-    this._cssClasses = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _identifier = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {RawValue|CssClass[]|undefined}
+   * @private
+   */
+  _cssClasses = undefined;
 
   /**
    * @return {string|undefined}
@@ -41,7 +39,7 @@ export default class Style extends AbstractBuilder {
   }
 
   /**
-   * @return {[CssClass]|undefined}
+   * @return {RawValue|[CssClass]|undefined}
    */
   get cssClasses() {
     return this._cssClasses;
@@ -71,6 +69,15 @@ export default class Style extends AbstractBuilder {
    */
   withCssClasses(...cssClasses) {
     this._cssClasses = cssClasses;
+    return this;
+  }
+
+  /**
+   * @param {{}} cssClasses
+   * @returns {Style}
+   */
+  withRawCssClasses(...cssClasses) {
+    this._cssClasses = new RawValue(cssClasses);
     return this;
   }
 

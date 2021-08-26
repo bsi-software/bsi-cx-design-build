@@ -5,6 +5,17 @@ import {constantObjectValue, identity} from '../../extractor';
 
 export default class AbstractPart extends AbstractBuilder {
   /**
+   * @type {Part}
+   * @private
+   */
+  _partId = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+
+  /**
    * @param {Part} partId
    */
   constructor(partId) {
@@ -14,11 +25,6 @@ export default class AbstractPart extends AbstractBuilder {
      * @private
      */
     this._partId = partId;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
   }
 
   /**

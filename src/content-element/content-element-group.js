@@ -2,31 +2,29 @@ import AbstractBuilder from '../abstract-builder';
 import ContentElement from './content-element';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity} from '../extractor';
+import RawValue from '../raw-value';
 
 export default class ContentElementGroup extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._groupId = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-    /**
-     * @type {boolean|undefined}
-     * @private
-     */
-    this._hidden = undefined;
-    /**
-     * @type {[ContentElement]|undefined}
-     * @private
-     */
-    this._contentElements = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _groupId = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _hidden = undefined;
+  /**
+   * @type {RawValue|[ContentElement]|undefined}
+   * @private
+   */
+  _contentElements = undefined;
 
   /**
    * @return {string|undefined}
@@ -50,7 +48,7 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @return {[ContentElement]|undefined}
+   * @return {RawValue|[ContentElement]|undefined}
    */
   get contentElements() {
     return this._contentElements;
@@ -89,6 +87,15 @@ export default class ContentElementGroup extends AbstractBuilder {
    */
   withContentElements(...contentElements) {
     this._contentElements = contentElements;
+    return this;
+  }
+
+  /**
+   * @param {{}} contentElements
+   * @return {ContentElementGroup}
+   */
+  withRawContentElements(...contentElements) {
+    this._contentElements = new RawValue(contentElements);
     return this;
   }
 

@@ -5,61 +5,59 @@ import {FontSizeUnit} from './font-size-unit';
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 import {constantObjectValue, identity} from '../extractor';
+import RawValue from '../raw-value';
 
 export default class HtmlEditorConfig extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._identifier = undefined;
-    /**
-     * @type {Feature[]|undefined}
-     * @private
-     */
-    this._features = undefined;
-    /**
-     * @type {string[]|undefined}
-     * @private
-     */
-    this._textColors = undefined;
-    /**
-     * @type {string[]|undefined}
-     * @private
-     */
-    this._backgroundColors = undefined;
-    /**
-     * @type {Format[]|undefined}
-     * @private
-     */
-    this._formats = undefined;
-    /**
-     * @type {number[]|undefined}
-     * @private
-     */
-    this._fontSizes = undefined;
-    /**
-     * @type {FontSizeUnit|undefined}
-     * @private
-     */
-    this._fontSizeUnit = undefined;
-    /**
-     * @type {number|undefined}
-     * @private
-     */
-    this._fontSizeDefault = undefined;
-    /**
-     * @type {number[]|undefined}
-     * @private
-     */
-    this._lineHeights = undefined;
-    /**
-     * @type {EnterMode|undefined}
-     * @private
-     */
-    this._enterMode = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _identifier = undefined;
+  /**
+   * @type {RawValue|Feature[]|undefined}
+   * @private
+   */
+  _features = undefined;
+  /**
+   * @type {string[]|undefined}
+   * @private
+   */
+  _textColors = undefined;
+  /**
+   * @type {string[]|undefined}
+   * @private
+   */
+  _backgroundColors = undefined;
+  /**
+   * @type {RawValue|Format[]|undefined}
+   * @private
+   */
+  _formats = undefined;
+  /**
+   * @type {number[]|undefined}
+   * @private
+   */
+  _fontSizes = undefined;
+  /**
+   * @type {RawValue|FontSizeUnit|undefined}
+   * @private
+   */
+  _fontSizeUnit = undefined;
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _fontSizeDefault = undefined;
+  /**
+   * @type {number[]|undefined}
+   * @private
+   */
+  _lineHeights = undefined;
+  /**
+   * @type {RawValue|EnterMode|undefined}
+   * @private
+   */
+  _enterMode = undefined;
 
   /**
    * @returns {string|undefined}
@@ -69,7 +67,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {Feature[]|undefined}
+   * @returns {RawValue|Feature[]|undefined}
    */
   get features() {
     return this._features;
@@ -90,7 +88,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {Format[]|undefined}
+   * @returns {RawValue|Format[]|undefined}
    */
   get formats() {
     return this._formats;
@@ -104,7 +102,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {FontSizeUnit|undefined}
+   * @returns {RawValue|FontSizeUnit|undefined}
    */
   get fontSizeUnit() {
     return this._fontSizeUnit;
@@ -125,7 +123,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @returns {EnterMode|undefined}
+   * @returns {RawValue|EnterMode|undefined}
    */
   get enterMode() {
     return this._enterMode;
@@ -146,6 +144,15 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    */
   withFeatures(...features) {
     this._features = features;
+    return this;
+  }
+
+  /**
+   * @param {string} features
+   * @returns {HtmlEditorConfig}
+   */
+  withRawFeatures(...features) {
+    this._features = new RawValue(features);
     return this;
   }
 
@@ -177,6 +184,15 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
+   * @param {string} formats
+   * @returns {HtmlEditorConfig}
+   */
+  withRawFormats(...formats) {
+    this._formats = new RawValue(formats);
+    return this;
+  }
+
+  /**
    * @param {number} fontSizes
    * @returns {HtmlEditorConfig}
    */
@@ -191,6 +207,15 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    */
   withFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = fontSizeUnit;
+    return this;
+  }
+
+  /**
+   * @param {string} fontSizeUnit
+   * @returns {HtmlEditorConfig}
+   */
+  withRawFontSizeUnit(fontSizeUnit) {
+    this._fontSizeUnit = new RawValue(fontSizeUnit);
     return this;
   }
 
@@ -218,6 +243,15 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    */
   withEnterMode(enterMode) {
     this._enterMode = enterMode;
+    return this;
+  }
+
+  /**
+   * @param {string} enterMode
+   * @returns {HtmlEditorConfig}
+   */
+  withRawEnterMode(enterMode) {
+    this._enterMode = new RawValue(enterMode);
     return this;
   }
 

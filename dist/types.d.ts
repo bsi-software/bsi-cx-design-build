@@ -1446,7 +1446,7 @@ declare module "src/style/style" {
          */
         private _label;
         /**
-         * @type {CssClass[]|undefined}
+         * @type {RawValue|CssClass[]|undefined}
          * @private
          */
         private _cssClasses;
@@ -1459,9 +1459,9 @@ declare module "src/style/style" {
          */
         get label(): string;
         /**
-         * @return {[CssClass]|undefined}
+         * @return {RawValue|[CssClass]|undefined}
          */
-        get cssClasses(): [CssClass];
+        get cssClasses(): RawValue | [CssClass];
         /**
          * @param {string} identifier
          * @returns {Style}
@@ -1477,8 +1477,14 @@ declare module "src/style/style" {
          * @returns {Style}
          */
         withCssClasses(...cssClasses: CssClass): Style;
+        /**
+         * @param {{}} cssClasses
+         * @returns {Style}
+         */
+        withRawCssClasses(...cssClasses: {}): Style;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import CssClass from "src/style/css-class";
 }
 declare module "src/content-element/icon" {
@@ -1749,12 +1755,12 @@ declare module "src/content-element/content-element" {
          */
         private _hidden;
         /**
-         * @type {[Style]|undefined}
+         * @type {RawValue|[Style]|undefined}
          * @private
          */
         private _styleConfigs;
         /**
-         * @type {[AbstractPart]|undefined}
+         * @type {RawValue|[AbstractPart]|undefined}
          * @private
          */
         private _parts;
@@ -1783,13 +1789,13 @@ declare module "src/content-element/content-element" {
          */
         get hidden(): boolean;
         /**
-         * @return {Style[]|undefined}
+         * @return {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): Style[];
+        get styleConfigs(): RawValue | Style[];
         /**
-         * @return {AbstractPart[]|undefined}
+         * @return {RawValue|AbstractPart[]|undefined}
          */
-        get parts(): AbstractPart[];
+        get parts(): RawValue | AbstractPart[];
         /**
          * @param {string} elementId
          * @return {ContentElement}
@@ -1827,14 +1833,27 @@ declare module "src/content-element/content-element" {
          */
         withStyleConfigs(...styleConfigs: Style): ContentElement;
         /**
+         * @param {string} styleConfigs
+         * @return {ContentElement}
+         * @since 1.1
+         */
+        withRawStyleConfigs(...styleConfigs: string): ContentElement;
+        /**
          * @param {AbstractPart} parts
          * @return {ContentElement}
          * @since 1.0
          */
         withParts(...parts: AbstractPart): ContentElement;
+        /**
+         * @param {{}} parts
+         * @return {ContentElement}
+         * @since 1.0
+         */
+        withRawParts(...parts: {}): ContentElement;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Icon } from "src/content-element/icon";
+    import RawValue from "src/raw-value";
     import Style from "src/style/style";
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -1856,7 +1875,7 @@ declare module "src/content-element/content-element-group" {
          */
         private _hidden;
         /**
-         * @type {[ContentElement]|undefined}
+         * @type {RawValue|[ContentElement]|undefined}
          * @private
          */
         private _contentElements;
@@ -1873,9 +1892,9 @@ declare module "src/content-element/content-element-group" {
          */
         get hidden(): boolean;
         /**
-         * @return {[ContentElement]|undefined}
+         * @return {RawValue|[ContentElement]|undefined}
          */
-        get contentElements(): [ContentElement];
+        get contentElements(): RawValue | [ContentElement];
         /**
          * @param {string} groupId
          * @return {ContentElementGroup}
@@ -1896,8 +1915,14 @@ declare module "src/content-element/content-element-group" {
          * @return {ContentElementGroup}
          */
         withContentElements(...contentElements: ContentElement): ContentElementGroup;
+        /**
+         * @param {{}} contentElements
+         * @return {ContentElementGroup}
+         */
+        withRawContentElements(...contentElements: {}): ContentElementGroup;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import ContentElement from "src/content-element/content-element";
 }
 declare module "src/html-editor-config/enter-mode" {
@@ -2116,7 +2141,7 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         private _identifier;
         /**
-         * @type {Feature[]|undefined}
+         * @type {RawValue|Feature[]|undefined}
          * @private
          */
         private _features;
@@ -2131,7 +2156,7 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         private _backgroundColors;
         /**
-         * @type {Format[]|undefined}
+         * @type {RawValue|Format[]|undefined}
          * @private
          */
         private _formats;
@@ -2141,7 +2166,7 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         private _fontSizes;
         /**
-         * @type {FontSizeUnit|undefined}
+         * @type {RawValue|FontSizeUnit|undefined}
          * @private
          */
         private _fontSizeUnit;
@@ -2156,7 +2181,7 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         private _lineHeights;
         /**
-         * @type {EnterMode|undefined}
+         * @type {RawValue|EnterMode|undefined}
          * @private
          */
         private _enterMode;
@@ -2165,9 +2190,9 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         get identifier(): string;
         /**
-         * @returns {Feature[]|undefined}
+         * @returns {RawValue|Feature[]|undefined}
          */
-        get features(): Feature[];
+        get features(): RawValue | Feature[];
         /**
          * @returns {string[]|undefined}
          */
@@ -2177,17 +2202,17 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         get backgroundColors(): string[];
         /**
-         * @returns {Format[]|undefined}
+         * @returns {RawValue|Format[]|undefined}
          */
-        get formats(): Format[];
+        get formats(): RawValue | Format[];
         /**
          * @returns {number[]|undefined}
          */
         get fontSizes(): number[];
         /**
-         * @returns {FontSizeUnit|undefined}
+         * @returns {RawValue|FontSizeUnit|undefined}
          */
-        get fontSizeUnit(): FontSizeUnit;
+        get fontSizeUnit(): RawValue | FontSizeUnit;
         /**
          * @returns {number|undefined}
          */
@@ -2197,9 +2222,9 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         get lineHeights(): number[];
         /**
-         * @returns {EnterMode|undefined}
+         * @returns {RawValue|EnterMode|undefined}
          */
-        get enterMode(): EnterMode;
+        get enterMode(): RawValue | EnterMode;
         /**
          * @param {string} identifier
          * @returns {HtmlEditorConfig}
@@ -2210,6 +2235,11 @@ declare module "src/html-editor-config/html-editor-config" {
          * @returns {HtmlEditorConfig}
          */
         withFeatures(...features: Feature): HtmlEditorConfig;
+        /**
+         * @param {string} features
+         * @returns {HtmlEditorConfig}
+         */
+        withRawFeatures(...features: string): HtmlEditorConfig;
         /**
          * @param {string} textColors
          * @returns {HtmlEditorConfig}
@@ -2226,6 +2256,11 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         withFormats(...formats: Format): HtmlEditorConfig;
         /**
+         * @param {string} formats
+         * @returns {HtmlEditorConfig}
+         */
+        withRawFormats(...formats: string): HtmlEditorConfig;
+        /**
          * @param {number} fontSizes
          * @returns {HtmlEditorConfig}
          */
@@ -2235,6 +2270,11 @@ declare module "src/html-editor-config/html-editor-config" {
          * @returns {HtmlEditorConfig}
          */
         withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
+        /**
+         * @param {string} fontSizeUnit
+         * @returns {HtmlEditorConfig}
+         */
+        withRawFontSizeUnit(fontSizeUnit: string): HtmlEditorConfig;
         /**
          * @param {number} fontSizeDefault
          * @returns {HtmlEditorConfig}
@@ -2250,8 +2290,14 @@ declare module "src/html-editor-config/html-editor-config" {
          * @returns {HtmlEditorConfig}
          */
         withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
+        /**
+         * @param {string} enterMode
+         * @returns {HtmlEditorConfig}
+         */
+        withRawEnterMode(enterMode: string): HtmlEditorConfig;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import { Feature } from "src/html-editor-config/feature";
     import { Format } from "src/html-editor-config/format";
     import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
@@ -2336,7 +2382,7 @@ declare module "src/website/website" {
          */
         private _maxNavigationLevel;
         /**
-         * @type {[AbstractInclude]|undefined}
+         * @type {RawValue|AbstractInclude[]|undefined}
          * @private
          */
         private _includes;
@@ -2345,9 +2391,9 @@ declare module "src/website/website" {
          */
         get maxNavigationLevel(): number;
         /**
-         * @return {[AbstractInclude]|undefined}
+         * @return {RawValue|AbstractInclude[]|undefined}
          */
-        get includes(): [AbstractInclude];
+        get includes(): RawValue | AbstractInclude[];
         /**
          * @param {number} maxNavigationLevel
          * @return {Website}
@@ -2358,8 +2404,14 @@ declare module "src/website/website" {
          * @return {Website}
          */
         withIncludes(...includes: AbstractInclude): Website;
+        /**
+         * @param {{}} includes
+         * @return {Website}
+         */
+        withRawIncludes(includes: {}): Website;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "src/nls/translation" {
@@ -2631,7 +2683,7 @@ declare module "src/design/design" {
          * @param {{}} styleConfigs
          * @return {Design}
          */
-        withRawStyleConfigs(...styleConfigs: {}): Design;
+        withRawStyleConfigs(styleConfigs: {}): Design;
         /**
          * @param {HtmlEditorConfig} htmlEditorConfigs
          * @return {Design}
@@ -2641,7 +2693,7 @@ declare module "src/design/design" {
          * @param {{}} htmlEditorConfigs
          * @return {Design}
          */
-        withRawHtmlEditorConfigs(...htmlEditorConfigs: {}): Design;
+        withRawHtmlEditorConfigs(htmlEditorConfigs: {}): Design;
         /**
          * @param {Website} website
          * @return {Design}

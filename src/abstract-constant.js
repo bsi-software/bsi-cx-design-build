@@ -1,5 +1,11 @@
 export default class AbstractConstant {
   /**
+   * @type {string}
+   * @private
+   */
+  _value = undefined;
+
+  /**
    * @param {string} value
    */
   constructor(value) {

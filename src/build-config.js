@@ -5,60 +5,58 @@ import {CX_22_0, Version} from './version';
  * The configuration object for the build of one template.
  */
 export default class BuildConfig {
-  constructor() {
-    /**
-     * @type {string}
-     */
-    this._name = undefined;
-    /**
-     * @type {string}
-     */
-    this._version = '1.0.0';
-    /**
-     * @type {Version}
-     */
-    this._targetVersion = CX_22_0;
-    /**
-     * @type {DesignType}
-     */
-    this._designType = LANDINGPAGE;
-    /**
-     * @type {string}
-     */
-    this._rootPath = undefined;
-    /**
-     * @type {string}
-     */
-    this._outputPath = undefined;
-    /**
-     * @type {{}}
-     */
-    this._properties = {};
-    /**
-     * @type {number}
-     */
-    this._devServerPort = 9000;
-    /**
-     * @type {boolean}
-     */
-    this._hashZipFiles = true;
-    /**
-     * @type {{}}
-     */
-    this._modules = {};
-    /**
-     * @type {string}
-     */
-    this._modulesRootPath = undefined;
-    /**
-     * @type {[{}]}
-     */
-    this._additionalFilesToCopy = [];
-    /**
-     * @type {boolean}
-     */
-    this._sourceMapEnabled = true;
-  }
+  /**
+   * @type {string}
+   */
+  _name = undefined;
+  /**
+   * @type {string}
+   */
+  _version = '1.0.0';
+  /**
+   * @type {Version}
+   */
+  _targetVersion = CX_22_0;
+  /**
+   * @type {DesignType}
+   */
+  _designType = LANDINGPAGE;
+  /**
+   * @type {string}
+   */
+  _rootPath = undefined;
+  /**
+   * @type {string}
+   */
+  _outputPath = undefined;
+  /**
+   * @type {{}}
+   */
+  _properties = {};
+  /**
+   * @type {number}
+   */
+  _devServerPort = 9000;
+  /**
+   * @type {boolean}
+   */
+  _hashZipFiles = true;
+  /**
+   * @type {{}}
+   */
+  _modules = {};
+  /**
+   * @type {string}
+   */
+  _modulesRootPath = undefined;
+  /**
+   * @type {[{}]}
+   */
+  _additionalFilesToCopy = [];
+  /**
+   * @type {boolean}
+   */
+  _sourceMapEnabled = true;
 
   /**
    * @returns {string}

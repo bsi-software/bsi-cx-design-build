@@ -3,19 +3,16 @@ import DesignJsonProperty from '../design-json-property';
 import {identity} from '../extractor';
 
 export default class CssClass extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._cssClass = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-  }
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _cssClass = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _label = undefined;
 
   /**
    * @return {string|undefined}
