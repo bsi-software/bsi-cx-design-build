@@ -4,7 +4,7 @@ import {Format} from './format';
 import {FontSizeUnit} from './font-size-unit';
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
-import {constantObjectValue, scalarIdentity} from '../utility';
+import {constantObjectValue, scalarIdentity} from '../extractor';
 
 export default class HtmlEditorConfig extends AbstractBuilder {
   constructor() {

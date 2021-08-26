@@ -40,5 +40,4 @@ module.exports = new HtmlEditorConfig()
   .withFontSizeUnit(FontSizeUnit.PX)
   .withFontSizeDefault(16)
   .withLineHeights(1, 1.15, 1.5, 2)
-  .withEnterMode(EnterMode.P)
-  .build();
+  .withEnterMode(EnterMode.P);

@@ -25,5 +25,4 @@ module.exports = new HtmlEditorConfig()
     Feature.HELP)
   .withFontSizeUnit(FontSizeUnit.PX)
   .withFontSizeDefault(13)
-  .withEnterMode(EnterMode.P)
-  .build();
+  .withEnterMode(EnterMode.P);

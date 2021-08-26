@@ -1,46 +1,7 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 927:
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = 927;
-module.exports = webpackEmptyContext;
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
@@ -73,9 +34,6 @@ module.exports = webpackEmptyContext;
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -145,10 +103,10 @@ __webpack_require__.d(part_namespaceObject, {
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  "DesignType": () => (design_type_DesignType),
+  "DesignType": () => (DesignType),
   "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (design_type_LANDINGPAGE),
-  "WEBSITE": () => (design_type_WEBSITE)
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "WEBSITE": () => (WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
@@ -156,11 +114,11 @@ var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
   "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (version_CX_22_0),
+  "CX_22_0": () => (CX_22_0),
   "STUDIO_1_0": () => (STUDIO_1_0),
   "STUDIO_1_1": () => (STUDIO_1_1),
   "STUDIO_1_2": () => (STUDIO_1_2),
-  "Version": () => (version_Version)
+  "Version": () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -559,544 +517,7 @@ class DesignJsonProperty {
   static ENTER_MODE = 'enterMode';
 }
 
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-;// CONCATENATED MODULE: ./src/design-type.js
-
-
-class design_type_DesignType extends AbstractConstant {
-}
-
-/**
- * @type {DesignType}
- * @since 1.0
- */
-const design_type_LANDINGPAGE = new design_type_DesignType('landingpage');
-
-/**
- * @type {DesignType}
- * @since 1.0
- */
-const EMAIL = new design_type_DesignType('email');
-
-/**
- * @type {DesignType}
- * @since 1.3
- */
-const design_type_WEBSITE = new design_type_DesignType('website');
-
-;// CONCATENATED MODULE: ./src/version.js
-
-
-
-/**
- * @type {DesignType[]}
- */
-const LEGACY_TYPES = [
-  design_type_LANDINGPAGE,
-  EMAIL
-];
-
-/**
- * @type {DesignType[]}
- */
-const ALL_TYPES = [
-  design_type_LANDINGPAGE,
-  EMAIL,
-  design_type_WEBSITE
-];
-
-class version_Version extends AbstractConstant {
-  /**
-   *
-   * @param {string} version
-   * @param {DesignType[]} allowedTypes
-   * @param {boolean} legacyFormat
-   */
-  constructor(version, allowedTypes, legacyFormat) {
-    super(version);
-    this._allowedTypes = allowedTypes;
-    this._legacyFormat = legacyFormat;
-  }
-
-  /**
-   * @returns {DesignType[]}
-   */
-  get allowedTypes() {
-    return this._allowedTypes;
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  get legacyFormat() {
-    return this._legacyFormat;
-  }
-}
-
-/**
- * @type {Version}
- */
-const STUDIO_1_0 = new version_Version('1.0', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_1 = new version_Version('1.1', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_2 = new version_Version('1.2', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_1_3 = new version_Version('1.3', ALL_TYPES, true);
-
-/**
- * @type {Version}
- */
-const version_CX_22_0 = new version_Version('22.0', ALL_TYPES, false);
-
-;// CONCATENATED MODULE: ./src/build-config.js
-
-
-
-/**
- * The configuration object for the build of one template.
- */
-class BuildConfig {
-  constructor() {
-    /**
-     * @type {string}
-     */
-    this._name = undefined;
-    /**
-     * @type {string}
-     */
-    this._version = '1.0.0';
-    /**
-     * @type {Version}
-     */
-    this._targetVersion = CX_22_0;
-    /**
-     * @type {DesignType}
-     */
-    this._designType = LANDINGPAGE;
-    /**
-     * @type {string}
-     */
-    this._rootPath = undefined;
-    /**
-     * @type {string}
-     */
-    this._outputPath = undefined;
-    /**
-     * @type {{}}
-     */
-    this._properties = {};
-    /**
-     * @type {number}
-     */
-    this._devServerPort = 9000;
-    /**
-     * @type {boolean}
-     */
-    this._hashZipFiles = true;
-    /**
-     * @type {{}}
-     */
-    this._modules = {};
-    /**
-     * @type {string}
-     */
-    this._modulesRootPath = undefined;
-    /**
-     * @type {[{}]}
-     */
-    this._additionalFilesToCopy = [];
-    /**
-     * @type {boolean}
-     */
-    this._sourceMapEnabled = true;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get name() {
-    return this._name;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get version() {
-    return this._version;
-  }
-
-  /**
-   * @returns {Version}
-   */
-  get targetVersion() {
-    return this._targetVersion;
-  }
-
-  /**
-   * @returns {DesignType}
-   */
-  get designType() {
-    return this._designType;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get rootPath() {
-    return this._rootPath;
-  }
-
-  /**
-   * @returns {string|undefined}
-   */
-  get outputPath() {
-    return this._outputPath;
-  }
-
-  /**
-   * @returns {{}}
-   */
-  get properties() {
-    return this._properties;
-  }
-
-  /**
-   * @returns {number}
-   */
-  get devServerPort() {
-    return this._devServerPort;
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  get hashZipFiles() {
-    return this._hashZipFiles;
-  }
-
-  /**
-   * @returns {{}}
-   */
-  get modules() {
-    return this._modules;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get modulesRootPath() {
-    return this._modulesRootPath;
-  }
-
-  /**
-   * @returns {[{}]}
-   */
-  get additionalFilesToCopy() {
-    return this._additionalFilesToCopy;
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  get sourceMapEnabled() {
-    return this._sourceMapEnabled;
-  }
-
-  /**
-   * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
-   *
-   * @param {string} name
-   * @returns {BuildConfig}
-   */
-  withName(name) {
-    this._name = name;
-    return this;
-  }
-
-  /**
-   * The version of this template, e.g. 1.0.1. This will be included in the name of the resulting ZIP file in the dist folder.
-   *
-   * @param {string} version
-   * @returns {BuildConfig}
-   */
-  withVersion(version) {
-    this._version = version;
-    return this;
-  }
-
-  /**
-   * The application version of BSI CX (or BSI Studio) this design is built for.
-   *
-   * @see Checkout {@link Version} for available versions.
-   * @param {Version} version
-   * @returns
-   */
-  withTargetVersion(version) {
-    this._targetVersion = version;
-    return this;
-  }
-
-  /**
-   * The type of this design (e.g. email or landingpage).
-   *
-   * @see Checkout {@link DesignType} for available types.
-   * @param {DesignType} type
-   * @returns
-   */
-  withDesignType(type) {
-    this._designType = type;
-    return this;
-  }
-
-  /**
-   * The path to the root folder of this template. This folder contains the source code of your template.
-   *
-   * @param {string} rootPath
-   * @returns {BuildConfig}
-   */
-  withRootPath(rootPath) {
-    this._rootPath = rootPath;
-    return this;
-  }
-
-  /**
-   * A custom output path to use. Default: dist/{name}.
-   *
-   * @param {string} outputPath
-   * @returns {BuildConfig}
-   */
-  withOutputPath(outputPath) {
-    this._outputPath = outputPath;
-    return this;
-  }
-
-  /**
-   * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
-   *
-   * @param {{}} properties
-   * @returns {BuildConfig}
-   */
-  withProperties(properties) {
-    this._properties = properties;
-    return this;
-  }
-
-  /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
-   *
-   * @param {number} devServerPort
-   * @returns {BuildConfig}
-   */
-  withDevServerPort(devServerPort) {
-    this._devServerPort = devServerPort;
-    return this;
-  }
-
-  /**
-   * Add a unique hash value to the name of the resulting ZIP file.
-   *
-   * @param {boolean} hashZipFiles
-   * @returns {BuildConfig}
-   */
-  withHashZipFiles(hashZipFiles) {
-    this._hashZipFiles = !!hashZipFiles;
-    return this;
-  }
-
-  /**
-   * Add additional Java Script modules.
-   *
-   * @param {{}} modules
-   * @returns {BuildConfig}
-   */
-  withModules(modules) {
-    this._modules = modules;
-    return this;
-  }
-
-  /**
-   * Add one additional Java Script module.
-   *
-   * @param {string} name
-   * @param {string} path
-   * @returns {BuildConfig}
-   */
-  withModule(name, path) {
-    this._modules[name] = path;
-    return this;
-  }
-
-  /**
-   * Absolute path to the modules folder.
-   *
-   * @param {string} modulesRootPath
-   * @returns {BuildConfig}
-   */
-  withModulesRootPath(modulesRootPath) {
-    this._modulesRootPath = modulesRootPath;
-    return this;
-  }
-
-  /**
-   * Add additional files to copy to the output folder.
-   *
-   * @param {[{}]} additionalFilesToCopy
-   * @returns {BuildConfig}
-   */
-  withAdditionalFilesToCopy(additionalFilesToCopy) {
-    this._additionalFilesToCopy = additionalFilesToCopy;
-    return this;
-  }
-
-  /**
-   * Add a single configuration for additional files to copy to the output folder.
-   *
-   * @param {{}} additionalFileToCopy
-   * @returns {BuildConfig}
-   */
-  withAdditionalFileToCopy(additionalFileToCopy) {
-    this._additionalFilesToCopy.push(additionalFileToCopy);
-    return this;
-  }
-
-  /**
-   * Enable or disable source maps.
-   *
-   * @param {boolean} sourceMapEnabled
-   * @returns {BuildConfig}
-   */
-  withSourceMapEnabled(sourceMapEnabled) {
-    this._sourceMapEnabled = sourceMapEnabled;
-    return this;
-  }
-
-  /**
-   * @returns {BuildConfig}
-   */
-  validate() {
-    this._checkInstanceofAndRequired('name', String, true);
-    this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', Version, true);
-    this._checkInstanceofAndRequired('designType', DesignType, true);
-    this._checkInstanceofAndRequired('rootPath', String, true);
-    this._checkInstanceofAndRequired('outputPath', String, false);
-    this._checkInstanceofAndRequired('properties', Object, false);
-    this._checkInstanceofAndRequired('devServerPort', Number, false);
-    this._checkInstanceofAndRequired('hashZipFiles', Boolean, false);
-    this._checkInstanceofAndRequired('modules', Object, false);
-    this._checkInstanceofAndRequired('modulesRootPath', String, false);
-    this._checkInstanceofAndRequired('additionalFilesToCopy', Array, false);
-    this._checkInstanceofAndRequired('sourceMapEnabled', Boolean, false);
-
-    return this;
-  }
-
-  /**
-   * @param {string} name
-   * @param {object} type
-   * @param {boolean} required
-   */
-  _checkInstanceofAndRequired(name, type, required) {
-    const property = this[`_${name}`];
-    if (property !== undefined && !property instanceof type) {
-      throw new Error(`${name} must be ${type.constructor.name}`);
-    }
-    if (required && !property) {
-      throw new Error(`${name} is required and can not be empty`);
-    }
-  }
-}
-
-;// CONCATENATED MODULE: ./src/utility.js
-
-
-
-
-
-
-
-
-class StaticJavaScriptCondition {
-  /**
-   * @type {RegExp}
-   */
-  static FILE_EXTENSION = (/* unused pure expression or super */ null && (/\.js/i));
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static isInsideStaticFolder(root, file) {
-    let staticFilePath = path.resolve(root, 'static') + path.sep;
-    return file.startsWith(staticFilePath);
-  }
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static test(root, file) {
-    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
-      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
-  }
-}
-
-/**
- *
- * @param {string} name
- * @param {string} version
- * @param {string} [suffix='']
- */
-function getZipArchiveName(name, version, suffix) {
-  let filename = [name, version, suffix]
-    .filter(value => !!value)
-    .join('-');
-  return `${filename}.zip`;
-}
-
-/**
- * @param {BuildConfig} config
- * @param {string|undefined} [suffix=undefined]
- */
-function buildPublicPath(config, suffix) {
-  let path = '/';
-
-  if (suffix) {
-    path += suffix
-      .trim()
-      .replace(/^\//, '');
-  }
-
-  let pathSuffix = suffix ? path : '';
-
-  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
-    return '.' + pathSuffix;
-  } else {
-    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
-  }
-}
-
-/**
- * @param {*} obj
- * @return {string}
- */
-function utility_toString(obj) {
-  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
-}
-
+;// CONCATENATED MODULE: ./src/extractor.js
 /**
  * @param {[string|number]} arr
  * @return {string}
@@ -1186,6 +607,104 @@ class AbstractPart extends AbstractBuilder {
     return config;
   }
 }
+
+;// CONCATENATED MODULE: ./src/design-type.js
+
+
+class DesignType extends AbstractConstant {
+}
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ * @since 1.3
+ */
+const WEBSITE = new DesignType('website');
+
+;// CONCATENATED MODULE: ./src/version.js
+
+
+
+/**
+ * @type {DesignType[]}
+ */
+const LEGACY_TYPES = [
+  LANDINGPAGE,
+  EMAIL
+];
+
+/**
+ * @type {DesignType[]}
+ */
+const ALL_TYPES = [
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
+];
+
+class Version extends AbstractConstant {
+  /**
+   *
+   * @param {string} version
+   * @param {DesignType[]} allowedTypes
+   * @param {boolean} legacyFormat
+   */
+  constructor(version, allowedTypes, legacyFormat) {
+    super(version);
+    this._allowedTypes = allowedTypes;
+    this._legacyFormat = legacyFormat;
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return this._allowedTypes;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get legacyFormat() {
+    return this._legacyFormat;
+  }
+}
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
@@ -2102,7 +1621,7 @@ class ContentElement extends AbstractBuilder {
    * @since 1.0
    */
   withFile(file) {
-    this._file = __webpack_require__(927)(file);
+    this._file = file;
     return this;
   }
 
@@ -2152,10 +1671,10 @@ class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, scalarIdentity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
     this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, scalarIdentity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, parts => parts.map(part => part.build()));
+    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, part => part.build());
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, style => constantObjectValue(style));
 
     return config;
@@ -2475,8 +1994,6 @@ class UrlProviderPart extends AbstractPart {
 
 
 
-
-})();
 
 var __webpack_export_target__ = exports;
 for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];

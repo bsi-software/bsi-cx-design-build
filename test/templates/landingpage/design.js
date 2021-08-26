@@ -22,11 +22,11 @@ module.exports = {
     }
   ],
   styleConfigs: {
-    ...require('./styles/background-color'),
-    ...require('./styles/text-color')
+    ...require('./styles/background-color').build(),
+    ...require('./styles/text-color').build()
   },
   htmlEditorConfigs: {
-    ...require('./html-editor-configs/full'),
-    ...require('./html-editor-configs/normal')
+    ...require('./html-editor-configs/full').build(),
+    ...require('./html-editor-configs/normal').build()
   }
 };

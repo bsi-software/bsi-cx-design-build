@@ -6,5 +6,4 @@ module.exports = new Style()
   .withCssClass('Schwarz', 'black-background')
   .withCssClass('Blau', 'blue-background')
   .withCssClass('Rot', 'red-background')
-  .withCssClass('', 'white-background')
-  .build();
+  .withCssClass('', 'white-background');

@@ -369,26 +369,6 @@ declare module "src/utility" {
      * @return {string}
      */
     export function toString(obj: any): string;
-    /**
-     * @param {[string|number]} arr
-     * @return {string}
-     */
-    export function scalarArrayToList(arr: [string | number]): string;
-    /**
-     * @param {*} v
-     * @return {*}
-     */
-    export function identity(v: any): any;
-    /**
-     * @param {string|number|boolean} v
-     * @return {string|number|boolean}
-     */
-    export function scalarIdentity(v: string | number | boolean): string | number | boolean;
-    /**
-     * @param {AbstractConstant} constant
-     * @return {string}
-     */
-    export function constantObjectValue(constant: AbstractConstant): string;
     export class StaticJavaScriptCondition {
         /**
          * @type {RegExp}
@@ -408,7 +388,6 @@ declare module "src/utility" {
         static test(root: string, file: string): boolean;
     }
     import BuildConfig from "src/build-config";
-    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
@@ -492,6 +471,28 @@ declare module "src/java-property-file-builder" {
          */
         _escapeValue(value: string): string;
     }
+}
+declare module "src/extractor" {
+    /**
+     * @param {[string|number]} arr
+     * @return {string}
+     */
+    export function scalarArrayToList(arr: [string | number]): string;
+    /**
+     * @param {*} v
+     * @return {*}
+     */
+    export function identity(v: any): any;
+    /**
+     * @param {string|number|boolean} v
+     * @return {string|number|boolean}
+     */
+    export function scalarIdentity(v: string | number | boolean): string | number | boolean;
+    /**
+     * @param {AbstractConstant} constant
+     * @return {string}
+     */
+    export function constantObjectValue(constant: any): string;
 }
 declare module "src/legacy-design-property" {
     export default class LegacyDesignProperty {

@@ -4,7 +4,8 @@ import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 import BuildConfig from './build-config';
 import File from './file';
 import JavaPropertyFileBuilder from './java-property-file-builder';
-import {scalarArrayToList, scalarIdentity, toString} from './utility';
+import {scalarArrayToList, scalarIdentity} from './extractor';
+import {toString} from './utility';
 import LegacyDesignProperty from './legacy-design-property';
 import DesignJsonProperty from './design-json-property';
 

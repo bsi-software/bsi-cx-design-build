@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 533:
+/***/ 681:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -162,6 +162,39 @@ class JavaPropertyFileBuilder {
   _escapeValue(value) {
     return value;
   }
+}
+
+;// CONCATENATED MODULE: ./src/extractor.js
+/**
+ * @param {[string|number]} arr
+ * @return {string}
+ */
+function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @param {*} v
+ * @return {*}
+ */
+function identity(v) {
+  return v;
+}
+
+/**
+ * @param {string|number|boolean} v
+ * @return {string|number|boolean}
+ */
+function scalarIdentity(v) {
+  return v;
+}
+
+/**
+ * @param {AbstractConstant} constant
+ * @return {string}
+ */
+function constantObjectValue(constant) {
+  return constant.value;
 }
 
 // EXTERNAL MODULE: ./src/utility.js
@@ -555,6 +588,7 @@ class DesignJsonProperty {
 
 
 
+
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
    * @param {BuildConfig} config
@@ -788,15 +822,15 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendHtmlEditorConfig(name, config, properties) {
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, utility/* scalarArrayToList */.Ot, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, utility/* scalarArrayToList */.Ot, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, utility/* scalarArrayToList */.Ot, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, utility/* scalarArrayToList */.Ot, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, utility/* scalarArrayToList */.Ot, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, utility/* scalarIdentity */.n6, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, utility/* scalarIdentity */.n6, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, utility/* scalarArrayToList */.Ot, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, utility/* scalarIdentity */.n6, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, scalarIdentity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, scalarIdentity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, scalarIdentity, properties);
 
     properties.appendBlank();
   }
@@ -884,10 +918,10 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let parts = element[DesignJsonProperty.PARTS];
     let indexMap = new Map();
 
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, utility/* scalarIdentity */.n6, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, utility/* scalarIdentity */.n6, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, utility/* scalarIdentity */.n6, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, utility/* scalarArrayToList */.Ot, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
 
     parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
 
@@ -926,8 +960,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let type = part[DesignJsonProperty.PART_ID];
     let index = indexMap.get(type) || 0;
 
-    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, utility/* scalarIdentity */.n6, properties);
-    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, utility/* scalarIdentity */.n6, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, scalarIdentity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, scalarIdentity, properties);
 
     indexMap.set(type, index + 1);
   }
@@ -2763,18 +2797,13 @@ const WEBSITE = new DesignType('website');
 /* harmony export */   "BA": () => (/* binding */ StaticJavaScriptCondition),
 /* harmony export */   "ur": () => (/* binding */ getZipArchiveName),
 /* harmony export */   "YV": () => (/* binding */ buildPublicPath),
-/* harmony export */   "BB": () => (/* binding */ toString),
-/* harmony export */   "Ot": () => (/* binding */ scalarArrayToList),
-/* harmony export */   "n6": () => (/* binding */ scalarIdentity)
+/* harmony export */   "BB": () => (/* binding */ toString)
 /* harmony export */ });
-/* unused harmony exports identity, constantObjectValue */
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(622);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _build_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(492);
 /* harmony import */ var _constant__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(911);
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
-
-
 
 
 
@@ -2849,38 +2878,6 @@ function buildPublicPath(config, suffix) {
  */
 function toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
-}
-
-/**
- * @param {[string|number]} arr
- * @return {string}
- */
-function scalarArrayToList(arr) {
-  return arr.join(',');
-}
-
-/**
- * @param {*} v
- * @return {*}
- */
-function identity(v) {
-  return v;
-}
-
-/**
- * @param {string|number|boolean} v
- * @return {string|number|boolean}
- */
-function scalarIdentity(v) {
-  return v;
-}
-
-/**
- * @param {AbstractConstant} constant
- * @return {string}
- */
-function constantObjectValue(constant) {
-  return constant.value;
 }
 
 
@@ -3094,7 +3091,7 @@ module.exports = require("webpack/lib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(533);
+/******/ 	var __webpack_exports__ = __webpack_require__(681);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
