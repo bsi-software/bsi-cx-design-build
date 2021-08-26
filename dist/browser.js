@@ -44,6 +44,7 @@ __webpack_require__.d(__webpack_exports__, {
   "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
   "ContentElement": () => (/* reexport */ ContentElement),
   "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
+  "Design": () => (/* reexport */ Design),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
   "Feature": () => (/* reexport */ feature_namespaceObject),
@@ -62,9 +63,11 @@ __webpack_require__.d(__webpack_exports__, {
   "ImagePart": () => (/* reexport */ ImagePart),
   "IteratorPart": () => (/* reexport */ IteratorPart),
   "LinkPart": () => (/* reexport */ LinkPart),
+  "Locale": () => (/* reexport */ locale_namespaceObject),
   "NewsSnippetsPart": () => (/* reexport */ NewsSnippetsPart),
   "Part": () => (/* reexport */ part_namespaceObject),
   "PlainTextPart": () => (/* reexport */ PlainTextPart),
+  "SchemaVersion": () => (/* reexport */ schema_version_namespaceObject),
   "SocialFollowPart": () => (/* reexport */ SocialFollowPart),
   "SocialSharePart": () => (/* reexport */ SocialSharePart),
   "Style": () => (/* reexport */ Style),
@@ -98,6 +101,32 @@ __webpack_require__.d(part_namespaceObject, {
   "TABLE": () => (TABLE),
   "URL_PROVIDER": () => (URL_PROVIDER),
   "VIDEO": () => (VIDEO)
+});
+
+// NAMESPACE OBJECT: ./src/design/locale.js
+var locale_namespaceObject = {};
+__webpack_require__.r(locale_namespaceObject);
+__webpack_require__.d(locale_namespaceObject, {
+  "DE": () => (DE),
+  "DE_CH": () => (DE_CH),
+  "DE_DE": () => (DE_DE),
+  "EN": () => (EN),
+  "EN_GB": () => (EN_GB),
+  "EN_US": () => (EN_US),
+  "FR": () => (FR),
+  "FR_CH": () => (FR_CH),
+  "IT": () => (IT),
+  "IT_CH": () => (IT_CH),
+  "Locale": () => (Locale)
+});
+
+// NAMESPACE OBJECT: ./src/design/schema-version.js
+var schema_version_namespaceObject = {};
+__webpack_require__.r(schema_version_namespaceObject);
+__webpack_require__.d(schema_version_namespaceObject, {
+  "SchemaVersion": () => (SchemaVersion),
+  "V_1_0": () => (V_1_0),
+  "V_22_0": () => (V_22_0)
 });
 
 // NAMESPACE OBJECT: ./src/content-element/icon.js
@@ -153,26 +182,14 @@ __webpack_require__.d(icon_namespaceObject, {
   "YOUTUBE": () => (YOUTUBE)
 });
 
-// NAMESPACE OBJECT: ./src/design-type.js
-var design_type_namespaceObject = {};
-__webpack_require__.r(design_type_namespaceObject);
-__webpack_require__.d(design_type_namespaceObject, {
-  "DesignType": () => (DesignType),
-  "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (LANDINGPAGE),
-  "WEBSITE": () => (WEBSITE)
-});
-
-// NAMESPACE OBJECT: ./src/version.js
-var version_namespaceObject = {};
-__webpack_require__.r(version_namespaceObject);
-__webpack_require__.d(version_namespaceObject, {
-  "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (CX_22_0),
-  "STUDIO_1_0": () => (STUDIO_1_0),
-  "STUDIO_1_1": () => (STUDIO_1_1),
-  "STUDIO_1_2": () => (STUDIO_1_2),
-  "Version": () => (Version)
+// NAMESPACE OBJECT: ./src/html-editor-config/enter-mode.js
+var enter_mode_namespaceObject = {};
+__webpack_require__.r(enter_mode_namespaceObject);
+__webpack_require__.d(enter_mode_namespaceObject, {
+  "BR": () => (BR),
+  "DIV": () => (DIV),
+  "EnterMode": () => (EnterMode),
+  "P": () => (P)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -212,29 +229,6 @@ __webpack_require__.d(feature_namespaceObject, {
   "UNDO": () => (UNDO)
 });
 
-// NAMESPACE OBJECT: ./src/html-editor-config/enter-mode.js
-var enter_mode_namespaceObject = {};
-__webpack_require__.r(enter_mode_namespaceObject);
-__webpack_require__.d(enter_mode_namespaceObject, {
-  "BR": () => (BR),
-  "DIV": () => (DIV),
-  "EnterMode": () => (EnterMode),
-  "P": () => (P)
-});
-
-// NAMESPACE OBJECT: ./src/html-editor-config/font-size-unit.js
-var font_size_unit_namespaceObject = {};
-__webpack_require__.r(font_size_unit_namespaceObject);
-__webpack_require__.d(font_size_unit_namespaceObject, {
-  "CM": () => (CM),
-  "EM": () => (EM),
-  "FontSizeUnit": () => (FontSizeUnit),
-  "MM": () => (MM),
-  "PT": () => (PT),
-  "PX": () => (PX),
-  "REM": () => (REM)
-});
-
 // NAMESPACE OBJECT: ./src/html-editor-config/format.js
 var format_namespaceObject = {};
 __webpack_require__.r(format_namespaceObject);
@@ -250,6 +244,41 @@ __webpack_require__.d(format_namespaceObject, {
   "PRE": () => (PRE)
 });
 
+// NAMESPACE OBJECT: ./src/html-editor-config/font-size-unit.js
+var font_size_unit_namespaceObject = {};
+__webpack_require__.r(font_size_unit_namespaceObject);
+__webpack_require__.d(font_size_unit_namespaceObject, {
+  "CM": () => (CM),
+  "EM": () => (EM),
+  "FontSizeUnit": () => (FontSizeUnit),
+  "MM": () => (MM),
+  "PT": () => (PT),
+  "PX": () => (PX),
+  "REM": () => (REM)
+});
+
+// NAMESPACE OBJECT: ./src/design-type.js
+var design_type_namespaceObject = {};
+__webpack_require__.r(design_type_namespaceObject);
+__webpack_require__.d(design_type_namespaceObject, {
+  "DesignType": () => (DesignType),
+  "EMAIL": () => (EMAIL),
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "WEBSITE": () => (WEBSITE)
+});
+
+// NAMESPACE OBJECT: ./src/version.js
+var version_namespaceObject = {};
+__webpack_require__.r(version_namespaceObject);
+__webpack_require__.d(version_namespaceObject, {
+  "CX_1_3": () => (CX_1_3),
+  "CX_22_0": () => (CX_22_0),
+  "STUDIO_1_0": () => (STUDIO_1_0),
+  "STUDIO_1_1": () => (STUDIO_1_1),
+  "STUDIO_1_2": () => (STUDIO_1_2),
+  "Version": () => (Version)
+});
+
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
 class AbstractBuilder {
   /**
@@ -263,9 +292,10 @@ class AbstractBuilder {
    * @param {string} property
    * @param {{}} targetObj
    * @param {function} extractFunc
+   * @param {boolean} [arrayToObject=false]
    * @protected
    */
-  _applyPropertyIfDefined(property, targetObj, extractFunc) {
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
     if (typeof this[property] === 'undefined') {
       return;
     }
@@ -279,7 +309,26 @@ class AbstractBuilder {
       computedValue = extractFunc(value);
     }
 
+    if (!!arrayToObject) {
+      computedValue = this._applyArrayToObject(computedValue);
+    }
+
     targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {[{}]} arr
+   * @private
+   */
+  _applyArrayToObject(arr) {
+    let obj = {};
+    for (let item of arr) {
+      obj = {
+        ...obj,
+        ...item
+      };
+    }
+    return obj;
   }
 }
 
@@ -411,11 +460,31 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static SCHEMA_VERSION = 'schemaVersion';
+  /**
+   * @type {string}
+   */
   static TITLE = 'title';
   /**
    * @type {string}
    */
   static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static DATE = 'date';
+  /**
+   * @type {string}
+   */
+  static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static DEFAULT_LOCALE = 'defaultLocale';
+  /**
+   * @type {string}
+   */
+  static LOCALES = 'locales';
   /**
    * @type {string}
    */
@@ -612,6 +681,70 @@ class AbstractPart extends AbstractBuilder {
     return config;
   }
 }
+
+;// CONCATENATED MODULE: ./src/design/locale.js
+
+
+class Locale extends AbstractConstant {
+}
+
+/**
+ * @type {Locale}
+ */
+const EN = new Locale('en');
+/**
+ * @type {Locale}
+ */
+const EN_GB = new Locale('en-GB');
+/**
+ * @type {Locale}
+ */
+const EN_US = new Locale('en-US');
+/**
+ * @type {Locale}
+ */
+const DE = new Locale('de');
+/**
+ * @type {Locale}
+ */
+const DE_DE = new Locale('de-DE');
+/**
+ * @type {Locale}
+ */
+const DE_CH = new Locale('de-CH');
+/**
+ * @type {Locale}
+ */
+const FR = new Locale('fr');
+/**
+ * @type {Locale}
+ */
+const FR_CH = new Locale('fr-CH');
+/**
+ * @type {Locale}
+ */
+const IT = new Locale('it');
+/**
+ * @type {Locale}
+ */
+const IT_CH = new Locale('it-CH');
+
+;// CONCATENATED MODULE: ./src/design/schema-version.js
+
+
+class SchemaVersion extends AbstractConstant {
+}
+
+/**
+ * @type {SchemaVersion}
+ * @since 1.3
+ */
+const V_1_0 = new SchemaVersion('1.0');
+/**
+ * @type {SchemaVersion}
+ * @since 22.0
+ */
+const V_22_0 = new SchemaVersion('22.0');
 
 ;// CONCATENATED MODULE: ./src/content-element/icon.js
 
@@ -1152,103 +1285,24 @@ class ContentElementGroup extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design-type.js
+;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
 
 
-class DesignType extends AbstractConstant {
+class EnterMode extends AbstractConstant {
 }
 
 /**
- * @type {DesignType}
- * @since 1.0
+ * @type {EnterMode}
  */
-const LANDINGPAGE = new DesignType('landingpage');
-
+const P = new EnterMode('p');
 /**
- * @type {DesignType}
- * @since 1.0
+ * @type {EnterMode}
  */
-const EMAIL = new DesignType('email');
-
+const BR = new EnterMode('br');
 /**
- * @type {DesignType}
- * @since 1.3
+ * @type {EnterMode}
  */
-const WEBSITE = new DesignType('website');
-
-;// CONCATENATED MODULE: ./src/version.js
-
-
-
-/**
- * @type {DesignType[]}
- */
-const LEGACY_TYPES = [
-  LANDINGPAGE,
-  EMAIL
-];
-
-/**
- * @type {DesignType[]}
- */
-const ALL_TYPES = [
-  LANDINGPAGE,
-  EMAIL,
-  WEBSITE
-];
-
-class Version extends AbstractConstant {
-  /**
-   *
-   * @param {string} version
-   * @param {DesignType[]} allowedTypes
-   * @param {boolean} legacyFormat
-   */
-  constructor(version, allowedTypes, legacyFormat) {
-    super(version);
-    this._allowedTypes = allowedTypes;
-    this._legacyFormat = legacyFormat;
-  }
-
-  /**
-   * @returns {DesignType[]}
-   */
-  get allowedTypes() {
-    return this._allowedTypes;
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  get legacyFormat() {
-    return this._legacyFormat;
-  }
-}
-
-/**
- * @type {Version}
- */
-const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_1_3 = new Version('1.3', ALL_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_22_0 = new Version('22.0', ALL_TYPES, false);
+const DIV = new EnterMode('div');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
@@ -1377,56 +1431,6 @@ const feature_HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
-
-
-class EnterMode extends AbstractConstant {
-}
-
-/**
- * @type {EnterMode}
- */
-const P = new EnterMode('p');
-/**
- * @type {EnterMode}
- */
-const BR = new EnterMode('br');
-/**
- * @type {EnterMode}
- */
-const DIV = new EnterMode('div');
-
-;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
-
-
-class FontSizeUnit extends AbstractConstant {
-}
-
-/**
- * @type {FontSizeUnit}
- */
-const PX = new FontSizeUnit('px');
-/**
- * @type {FontSizeUnit}
- */
-const EM = new FontSizeUnit('em');
-/**
- * @type {FontSizeUnit}
- */
-const REM = new FontSizeUnit('rem');
-/**
- * @type {FontSizeUnit}
- */
-const PT = new FontSizeUnit('pt');
-/**
- * @type {FontSizeUnit}
- */
-const CM = new FontSizeUnit('cm');
-/**
- * @type {FontSizeUnit}
- */
-const MM = new FontSizeUnit('mm');
-
 ;// CONCATENATED MODULE: ./src/html-editor-config/format.js
 
 
@@ -1465,6 +1469,37 @@ const H6 = new Format('h6');
  * @type {Format}
  */
 const PRE = new Format('pre');
+
+;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
+
+
+class FontSizeUnit extends AbstractConstant {
+}
+
+/**
+ * @type {FontSizeUnit}
+ */
+const PX = new FontSizeUnit('px');
+/**
+ * @type {FontSizeUnit}
+ */
+const EM = new FontSizeUnit('em');
+/**
+ * @type {FontSizeUnit}
+ */
+const REM = new FontSizeUnit('rem');
+/**
+ * @type {FontSizeUnit}
+ */
+const PT = new FontSizeUnit('pt');
+/**
+ * @type {FontSizeUnit}
+ */
+const CM = new FontSizeUnit('cm');
+/**
+ * @type {FontSizeUnit}
+ */
+const MM = new FontSizeUnit('mm');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
 
@@ -1709,6 +1744,347 @@ class HtmlEditorConfig extends AbstractBuilder {
     return config;
   }
 }
+
+;// CONCATENATED MODULE: ./src/design/design.js
+
+
+
+
+
+
+
+
+
+class Design extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {SchemaVersion|undefined}
+     * @private
+     */
+    this._schemaVersion = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._title = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._author = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._date = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._previewImage = undefined;
+    /**
+     * @type {Locale|undefined}
+     * @private
+     */
+    this._defaultLocale = undefined;
+    /**
+     * @type {[Locale]|undefined}
+     * @private
+     */
+    this._locales = undefined;
+    /**
+     * @type {[ContentElementGroup]|undefined}
+     * @private
+     */
+    this._contentElementGroups = undefined;
+    /**
+     * @type {[Style]|undefined}
+     * @private
+     */
+    this._styleConfigs = undefined;
+    /**
+     * @type {[HtmlEditorConfig]|undefined}
+     * @private
+     */
+    this._htmlEditorConfigs = undefined;
+  }
+
+  /**
+   * @return {SchemaVersion|undefined}
+   */
+  get schemaVersion() {
+    return this._schemaVersion;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get title() {
+    return this._title;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get author() {
+    return this._author;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get date() {
+    return this._date;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get previewImage() {
+    return this._previewImage;
+  }
+
+  /**
+   * @return {Locale|undefined}
+   */
+  get defaultLocale() {
+    return this._defaultLocale;
+  }
+
+  /**
+   * @return {[Locale]|undefined}
+   */
+  get locales() {
+    return this._locales;
+  }
+
+  /**
+   * @return {ContentElementGroup[]|undefined}
+   */
+  get contentElementGroups() {
+    return this._contentElementGroups;
+  }
+
+  /**
+   * @return {{}|undefined}
+   */
+  get styleConfigs() {
+    return this._styleConfigs;
+  }
+
+  /**
+   * @return {{}|undefined}
+   */
+  get htmlEditorConfigs() {
+    return this._htmlEditorConfigs;
+  }
+
+  /**
+   * @param {SchemaVersion} schemaVersion
+   * @return {Design}
+   */
+  withSchemaVersion(schemaVersion) {
+    this._schemaVersion = schemaVersion;
+    return this;
+  }
+
+  /**
+   * @param {string} title
+   * @return {Design}
+   */
+  withTitle(title) {
+    this._title = title;
+    return this;
+  }
+
+  /**
+   * @param {string} author
+   * @return {Design}
+   */
+  withAuthor(author) {
+    this._author = author;
+    return this;
+  }
+
+  /**
+   * @param {string} date
+   * @return {Design}
+   */
+  withDate(date) {
+    this._date = date;
+    return this;
+  }
+
+  /**
+   * @param {string} previewImage
+   * @return {Design}
+   */
+  withPreviewImage(previewImage) {
+    this._previewImage = previewImage;
+    return this;
+  }
+
+  /**
+   * @param {Locale} defaultLocale
+   * @return {Design}
+   */
+  withDefaultLocale(defaultLocale) {
+    this._defaultLocale = defaultLocale;
+    return this;
+  }
+
+  /**
+   * @param {Locale} locales
+   * @return {Design}
+   */
+  withLocales(...locales) {
+    this._locales = locales;
+    return this;
+  }
+
+  /**
+   * @param {ContentElementGroup} contentElementGroups
+   * @return {Design}
+   */
+  withContentElementGroups(...contentElementGroups) {
+    this._contentElementGroups = contentElementGroups;
+    return this;
+  }
+
+  /**
+   * @param {Style} styleConfigs
+   * @return {Design}
+   */
+  withStyleConfigs(...styleConfigs) {
+    this._styleConfigs = styleConfigs;
+    return this;
+  }
+
+  /**
+   * @param {HtmlEditorConfig} htmlEditorConfigs
+   * @return {Design}
+   */
+  withHtmlEditorConfigs(...htmlEditorConfigs) {
+    this._htmlEditorConfigs = htmlEditorConfigs;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.SCHEMA_VERSION, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.TITLE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.AUTHOR, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DATE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PREVIEW_IMAGE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DEFAULT_LOCALE, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.LOCALES, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/design-type.js
+
+
+class DesignType extends AbstractConstant {
+}
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ * @since 1.3
+ */
+const WEBSITE = new DesignType('website');
+
+;// CONCATENATED MODULE: ./src/version.js
+
+
+
+/**
+ * @type {DesignType[]}
+ */
+const LEGACY_TYPES = [
+  LANDINGPAGE,
+  EMAIL
+];
+
+/**
+ * @type {DesignType[]}
+ */
+const ALL_TYPES = [
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
+];
+
+class Version extends AbstractConstant {
+  /**
+   *
+   * @param {string} version
+   * @param {DesignType[]} allowedTypes
+   * @param {boolean} legacyFormat
+   */
+  constructor(version, allowedTypes, legacyFormat) {
+    super(version);
+    this._allowedTypes = allowedTypes;
+    this._legacyFormat = legacyFormat;
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return this._allowedTypes;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get legacyFormat() {
+    return this._legacyFormat;
+  }
+}
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 ;// CONCATENATED MODULE: ./src/style/style.js
 
@@ -2224,6 +2600,9 @@ class UrlProviderPart extends AbstractPart {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
+
 
 
 

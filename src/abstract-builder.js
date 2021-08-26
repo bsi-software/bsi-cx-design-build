@@ -10,9 +10,10 @@ export default class AbstractBuilder {
    * @param {string} property
    * @param {{}} targetObj
    * @param {function} extractFunc
+   * @param {boolean} [arrayToObject=false]
    * @protected
    */
-  _applyPropertyIfDefined(property, targetObj, extractFunc) {
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
     if (typeof this[property] === 'undefined') {
       return;
     }
@@ -26,6 +27,25 @@ export default class AbstractBuilder {
       computedValue = extractFunc(value);
     }
 
+    if (!!arrayToObject) {
+      computedValue = this._applyArrayToObject(computedValue);
+    }
+
     targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {[{}]} arr
+   * @private
+   */
+  _applyArrayToObject(arr) {
+    let obj = {};
+    for (let item of arr) {
+      obj = {
+        ...obj,
+        ...item
+      };
+    }
+    return obj;
   }
 }

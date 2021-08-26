@@ -2,11 +2,31 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static SCHEMA_VERSION = 'schemaVersion';
+  /**
+   * @type {string}
+   */
   static TITLE = 'title';
   /**
    * @type {string}
    */
   static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static DATE = 'date';
+  /**
+   * @type {string}
+   */
+  static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static DEFAULT_LOCALE = 'defaultLocale';
+  /**
+   * @type {string}
+   */
+  static LOCALES = 'locales';
   /**
    * @type {string}
    */

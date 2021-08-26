@@ -482,9 +482,15 @@ declare module "src/abstract-builder" {
          * @param {string} property
          * @param {{}} targetObj
          * @param {function} extractFunc
+         * @param {boolean} [arrayToObject=false]
          * @protected
          */
-        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
+        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean): void;
+        /**
+         * @param {[{}]} arr
+         * @private
+         */
+        private _applyArrayToObject;
     }
 }
 declare module "src/extractor" {
@@ -726,11 +732,31 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static SCHEMA_VERSION: string;
+        /**
+         * @type {string}
+         */
         static TITLE: string;
         /**
          * @type {string}
          */
         static AUTHOR: string;
+        /**
+         * @type {string}
+         */
+        static DATE: string;
+        /**
+         * @type {string}
+         */
+        static PREVIEW_IMAGE: string;
+        /**
+         * @type {string}
+         */
+        static DEFAULT_LOCALE: string;
+        /**
+         * @type {string}
+         */
+        static LOCALES: string;
         /**
          * @type {string}
          */
@@ -1260,6 +1286,66 @@ declare module "src/content-element/part/abstract-part" {
     import AbstractBuilder from "src/abstract-builder";
     import { Part } from "src/content-element/part/part";
 }
+declare module "src/design/locale" {
+    export class Locale extends AbstractConstant {
+    }
+    /**
+     * @type {Locale}
+     */
+    export const EN: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const EN_GB: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const EN_US: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const DE: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const DE_DE: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const DE_CH: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const FR: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const FR_CH: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const IT: Locale;
+    /**
+     * @type {Locale}
+     */
+    export const IT_CH: Locale;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/design/schema-version" {
+    export class SchemaVersion extends AbstractConstant {
+    }
+    /**
+     * @type {SchemaVersion}
+     * @since 1.3
+     */
+    export const V_1_0: SchemaVersion;
+    /**
+     * @type {SchemaVersion}
+     * @since 22.0
+     */
+    export const V_22_0: SchemaVersion;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/style/style" {
     /**
      * @since 1.1
@@ -1721,6 +1807,23 @@ declare module "src/content-element/content-element-group" {
     import AbstractBuilder from "src/abstract-builder";
     import ContentElement from "src/content-element/content-element";
 }
+declare module "src/html-editor-config/enter-mode" {
+    export class EnterMode extends AbstractConstant {
+    }
+    /**
+     * @type {EnterMode}
+     */
+    export const P: EnterMode;
+    /**
+     * @type {EnterMode}
+     */
+    export const BR: EnterMode;
+    /**
+     * @type {EnterMode}
+     */
+    export const DIV: EnterMode;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/html-editor-config/feature" {
     export class Feature extends AbstractConstant {
     }
@@ -1846,52 +1949,6 @@ declare module "src/html-editor-config/feature" {
     export const HELP: Feature;
     import AbstractConstant from "src/abstract-constant";
 }
-declare module "src/html-editor-config/enter-mode" {
-    export class EnterMode extends AbstractConstant {
-    }
-    /**
-     * @type {EnterMode}
-     */
-    export const P: EnterMode;
-    /**
-     * @type {EnterMode}
-     */
-    export const BR: EnterMode;
-    /**
-     * @type {EnterMode}
-     */
-    export const DIV: EnterMode;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/font-size-unit" {
-    export class FontSizeUnit extends AbstractConstant {
-    }
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const PX: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const EM: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const REM: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const PT: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const CM: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const MM: FontSizeUnit;
-    import AbstractConstant from "src/abstract-constant";
-}
 declare module "src/html-editor-config/format" {
     export class Format extends AbstractConstant {
     }
@@ -1927,6 +1984,35 @@ declare module "src/html-editor-config/format" {
      * @type {Format}
      */
     export const PRE: Format;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/font-size-unit" {
+    export class FontSizeUnit extends AbstractConstant {
+    }
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const PX: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const EM: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const REM: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const PT: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const CM: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const MM: FontSizeUnit;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/html-editor-config" {
@@ -2077,6 +2163,156 @@ declare module "src/html-editor-config/html-editor-config" {
     import { Format } from "src/html-editor-config/format";
     import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
     import { EnterMode } from "src/html-editor-config/enter-mode";
+}
+declare module "src/design/design" {
+    export default class Design extends AbstractBuilder {
+        /**
+         * @type {SchemaVersion|undefined}
+         * @private
+         */
+        private _schemaVersion;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _title;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _author;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _date;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _previewImage;
+        /**
+         * @type {Locale|undefined}
+         * @private
+         */
+        private _defaultLocale;
+        /**
+         * @type {[Locale]|undefined}
+         * @private
+         */
+        private _locales;
+        /**
+         * @type {[ContentElementGroup]|undefined}
+         * @private
+         */
+        private _contentElementGroups;
+        /**
+         * @type {[Style]|undefined}
+         * @private
+         */
+        private _styleConfigs;
+        /**
+         * @type {[HtmlEditorConfig]|undefined}
+         * @private
+         */
+        private _htmlEditorConfigs;
+        /**
+         * @return {SchemaVersion|undefined}
+         */
+        get schemaVersion(): SchemaVersion;
+        /**
+         * @return {string|undefined}
+         */
+        get title(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get author(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get date(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get previewImage(): string;
+        /**
+         * @return {Locale|undefined}
+         */
+        get defaultLocale(): Locale;
+        /**
+         * @return {[Locale]|undefined}
+         */
+        get locales(): [Locale];
+        /**
+         * @return {ContentElementGroup[]|undefined}
+         */
+        get contentElementGroups(): ContentElementGroup[];
+        /**
+         * @return {{}|undefined}
+         */
+        get styleConfigs(): {};
+        /**
+         * @return {{}|undefined}
+         */
+        get htmlEditorConfigs(): {};
+        /**
+         * @param {SchemaVersion} schemaVersion
+         * @return {Design}
+         */
+        withSchemaVersion(schemaVersion: SchemaVersion): Design;
+        /**
+         * @param {string} title
+         * @return {Design}
+         */
+        withTitle(title: string): Design;
+        /**
+         * @param {string} author
+         * @return {Design}
+         */
+        withAuthor(author: string): Design;
+        /**
+         * @param {string} date
+         * @return {Design}
+         */
+        withDate(date: string): Design;
+        /**
+         * @param {string} previewImage
+         * @return {Design}
+         */
+        withPreviewImage(previewImage: string): Design;
+        /**
+         * @param {Locale} defaultLocale
+         * @return {Design}
+         */
+        withDefaultLocale(defaultLocale: Locale): Design;
+        /**
+         * @param {Locale} locales
+         * @return {Design}
+         */
+        withLocales(...locales: Locale): Design;
+        /**
+         * @param {ContentElementGroup} contentElementGroups
+         * @return {Design}
+         */
+        withContentElementGroups(...contentElementGroups: ContentElementGroup): Design;
+        /**
+         * @param {Style} styleConfigs
+         * @return {Design}
+         */
+        withStyleConfigs(...styleConfigs: Style): Design;
+        /**
+         * @param {HtmlEditorConfig} htmlEditorConfigs
+         * @return {Design}
+         */
+        withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig): Design;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import { SchemaVersion } from "src/design/schema-version";
+    import { Locale } from "src/design/locale";
+    import ContentElementGroup from "src/content-element/content-element-group";
+    import Style from "src/style/style";
+    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
 declare module "src/content-element/part/plain-text-part" {
     /**
@@ -2267,6 +2503,9 @@ declare module "src/content-element/part/url-provider-part" {
 declare module "export/browser" {
     import AbstractBuilder from "src/abstract-builder";
     import AbstractPart from "src/content-element/part/abstract-part";
+    import * as Locale from "src/design/locale";
+    import * as SchemaVersion from "src/design/schema-version";
+    import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
     import * as Version from "src/version";
     import * as DesignType from "src/design-type";
@@ -2298,7 +2537,7 @@ declare module "export/browser" {
     import SocialFollowPart from "src/content-element/part/social-follow-part";
     import SocialSharePart from "src/content-element/part/social-share-part";
     import UrlProviderPart from "src/content-element/part/url-provider-part";
-    export { AbstractBuilder, AbstractPart, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart };
+    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

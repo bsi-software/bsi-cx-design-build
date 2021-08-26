@@ -1,5 +1,8 @@
 import AbstractBuilder from '../src/abstract-builder';
 import AbstractPart from '../src/content-element/part/abstract-part';
+import * as Locale from '../src/design/locale';
+import * as SchemaVersion from '../src/design/schema-version';
+import Design from '../src/design/design';
 import ContentElementGroup from '../src/content-element/content-element-group';
 import * as Version from '../src/version';
 import * as DesignType from '../src/design-type';
@@ -35,6 +38,9 @@ import UrlProviderPart from '../src/content-element/part/url-provider-part';
 export {
   AbstractBuilder,
   AbstractPart,
+  Locale,
+  SchemaVersion,
+  Design,
   ContentElementGroup,
   Version,
   DesignType,
