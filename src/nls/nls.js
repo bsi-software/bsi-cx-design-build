@@ -74,4 +74,23 @@ export default class NLS extends AbstractBuilder {
       .withIdentifier(identifier)
       .withTranslations(...translations);
   }
+
+  /**
+   * @param {string} identifier
+   * @param {Map<Locale,string>} map
+   */
+  static fromMap(identifier, map) {
+    let translations = [];
+    
+    for (let [locale, translation] of map.entries()) {
+      translations.push(
+        new Translation()
+          .withLocale(locale)
+          .withTranslation(translation));
+    }
+
+    return new NLS()
+      .withIdentifier(identifier)
+      .withTranslations(...translations);
+  }
 }

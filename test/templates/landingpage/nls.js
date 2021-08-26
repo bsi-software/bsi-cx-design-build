@@ -26,5 +26,11 @@ module.exports = [
   NLS.create(
     'enumeration',
     Translation.wildcard('Enumeration:'),
-    Translation.create(Locale.DE, 'Aufzählung:'))
+    Translation.create(Locale.DE, 'Aufzählung:')),
+  NLS.fromMap(
+    'reset',
+    new Map([
+      [Locale.WILDCARD, 'Reset'],
+      [Locale.DE, 'Zurücksetzen']
+    ]))
 ];

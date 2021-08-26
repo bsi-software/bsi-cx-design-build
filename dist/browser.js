@@ -46,6 +46,7 @@ __webpack_require__.d(__webpack_exports__, {
   "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
   "CssClass": () => (/* reexport */ CssClass),
   "Design": () => (/* reexport */ Design),
+  "DesignJsonProperty": () => (/* reexport */ DesignJsonProperty),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
   "Feature": () => (/* reexport */ feature_namespaceObject),
@@ -71,6 +72,7 @@ __webpack_require__.d(__webpack_exports__, {
   "PageInclude": () => (/* reexport */ PageInclude),
   "Part": () => (/* reexport */ part_namespaceObject),
   "PlainTextPart": () => (/* reexport */ PlainTextPart),
+  "RawValue": () => (/* reexport */ RawValue),
   "SchemaVersion": () => (/* reexport */ schema_version_namespaceObject),
   "SocialFollowPart": () => (/* reexport */ SocialFollowPart),
   "SocialSharePart": () => (/* reexport */ SocialSharePart),
@@ -286,182 +288,6 @@ __webpack_require__.d(version_namespaceObject, {
   "Version": () => (Version)
 });
 
-;// CONCATENATED MODULE: ./src/abstract-builder.js
-class AbstractBuilder {
-  /**
-   * @return {{}}
-   */
-  build() {
-    throw new Error('not implemented');
-  }
-
-  /**
-   * @param {string} property
-   * @param {{}} targetObj
-   * @param {function} extractFunc
-   * @param {boolean} [arrayToObject=false]
-   * @protected
-   */
-  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
-    if (typeof this[property] === 'undefined') {
-      return;
-    }
-
-    let value = this[property];
-    let computedValue;
-
-    if (value instanceof Array) {
-      computedValue = value.map(item => extractFunc(item));
-    } else {
-      computedValue = extractFunc(value);
-    }
-
-    if (!!arrayToObject) {
-      computedValue = this._applyArrayToObject(computedValue);
-    }
-
-    targetObj[property] = computedValue;
-  }
-
-  /**
-   * @param {[{}]} arr
-   * @private
-   */
-  _applyArrayToObject(arr) {
-    let obj = {};
-    for (let item of arr) {
-      obj = {
-        ...obj,
-        ...item
-      };
-    }
-    return obj;
-  }
-}
-
-;// CONCATENATED MODULE: ./src/abstract-constant.js
-class AbstractConstant {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/part.js
-
-
-class Part extends AbstractConstant {
-}
-
-/**
- * @type {Part}
- * @since 1.0
- */
-const PLAIN_TEXT = new Part('plain-text');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORMATTED_TEXT = new Part('formatted-text');
-/**
- * @type {Part}
- * @since 1.0
- */
-const HTML = new Part('html');
-/**
- * @type {Part}
- * @since 1.0
- */
-const VIDEO = new Part('video');
-/**
- * @type {Part}
- * @since 1.0
- */
-const IMAGE = new Part('image');
-/**
- * @type {Part}
- * @since 1.0
- */
-const BACKGROUND_IMAGE = new Part('background-image');
-/**
- * @type {Part}
- * @since 1.0
- */
-const TABLE = new Part('table');
-/**
- * @type {Part}
- * @since 1.0
- */
-const ITERATOR = new Part('iterator');
-/**
- * @type {Part}
- * @since 1.0
- */
-const NEWS_SNIPPETS = new Part('news-snippets');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM = new Part('form');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_FIELD = new Part('form-field');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_CHECKBOX = new Part('form-checkbox');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_TEXTAREA = new Part('form-textarea');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_SELECT = new Part('form-select');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_RADIO = new Part('form-radio');
-/**
- * @type {Part}
- * @since 1.0
- */
-const LINK = new Part('link');
-/**
- * @type {Part}
- * @since 1.0
- */
-const SOCIAL_FOLLOW = new Part('social-follow');
-/**
- * @type {Part}
- * @since 1.0
- */
-const SOCIAL_SHARE = new Part('social-share');
-/**
- * @type {Part}
- * @since 22.0
- */
-const URL_PROVIDER = new Part('url-provider');
-
 ;// CONCATENATED MODULE: ./src/design-json-property.js
 class DesignJsonProperty {
   /**
@@ -617,6 +443,211 @@ class DesignJsonProperty {
    */
   static PAGE_INCLUDE = '__page__';
 }
+
+;// CONCATENATED MODULE: ./src/raw-value.js
+class RawValue {
+  /**
+   * @param {*} value
+   */
+  constructor(value) {
+    /**
+     * @type {*}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @return {*}
+   */
+  get value() {
+    return this._value;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/abstract-builder.js
+
+
+class AbstractBuilder {
+  /**
+   * @return {{}}
+   */
+  build() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {function} extractFunc
+   * @param {boolean} [arrayToObject=false]
+   * @protected
+   */
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
+    if (typeof this[property] === 'undefined') {
+      return;
+    }
+
+    let value = this[property];
+    let computedValue;
+
+    switch (true) {
+      case value instanceof RawValue:
+        computedValue = value.value;
+        break;
+      case value instanceof Array:
+        computedValue = value.map(item => extractFunc(item));
+        break;
+      default:
+        computedValue = extractFunc(value);
+        break;
+    }
+
+    if (!!arrayToObject && !(value instanceof RawValue)) {
+      computedValue = this._applyArrayToObject(computedValue);
+    }
+
+    targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {[{}]} arr
+   * @private
+   */
+  _applyArrayToObject(arr) {
+    let obj = {};
+    for (let item of arr) {
+      obj = {
+        ...obj,
+        ...item
+      };
+    }
+    return obj;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/abstract-constant.js
+class AbstractConstant {
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/part.js
+
+
+class Part extends AbstractConstant {
+}
+
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const PLAIN_TEXT = new Part('plain-text');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORMATTED_TEXT = new Part('formatted-text');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const HTML = new Part('html');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const VIDEO = new Part('video');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const IMAGE = new Part('image');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const BACKGROUND_IMAGE = new Part('background-image');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const TABLE = new Part('table');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const ITERATOR = new Part('iterator');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const NEWS_SNIPPETS = new Part('news-snippets');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM = new Part('form');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_FIELD = new Part('form-field');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_CHECKBOX = new Part('form-checkbox');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_TEXTAREA = new Part('form-textarea');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_SELECT = new Part('form-select');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_RADIO = new Part('form-radio');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const LINK = new Part('link');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const SOCIAL_FOLLOW = new Part('social-follow');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const SOCIAL_SHARE = new Part('social-share');
+/**
+ * @type {Part}
+ * @since 22.0
+ */
+const URL_PROVIDER = new Part('url-provider');
 
 ;// CONCATENATED MODULE: ./src/extractor.js
 
@@ -1938,6 +1969,25 @@ class NLS extends AbstractBuilder {
       .withIdentifier(identifier)
       .withTranslations(...translations);
   }
+
+  /**
+   * @param {string} identifier
+   * @param {Map<Locale,string>} map
+   */
+  static fromMap(identifier, map) {
+    let translations = [];
+    
+    for (let [locale, translation] of map.entries()) {
+      translations.push(
+        new Translation()
+          .withLocale(locale)
+          .withTranslation(translation));
+    }
+
+    return new NLS()
+      .withIdentifier(identifier)
+      .withTranslations(...translations);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/design/design.js
@@ -1952,73 +2002,71 @@ class NLS extends AbstractBuilder {
 
 
 
+
 class Design extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {SchemaVersion|undefined}
-     * @private
-     */
-    this._schemaVersion = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._title = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._author = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._date = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._previewImage = undefined;
-    /**
-     * @type {Locale|undefined}
-     * @private
-     */
-    this._defaultLocale = undefined;
-    /**
-     * @type {[Locale]|undefined}
-     * @private
-     */
-    this._locales = undefined;
-    /**
-     * @type {[ContentElementGroup]|undefined}
-     * @private
-     */
-    this._contentElementGroups = undefined;
-    /**
-     * @type {[Style]|undefined}
-     * @private
-     */
-    this._styleConfigs = undefined;
-    /**
-     * @type {[HtmlEditorConfig]|undefined}
-     * @private
-     */
-    this._htmlEditorConfigs = undefined;
-    /**
-     * @type {Website|undefined}
-     * @private
-     */
-    this._website = undefined;
-    /**
-     * @type {NLS[]|undefined}
-     * @private
-     */
-    this._nls = undefined;
-  }
+  /**
+   * @type {RawValue|SchemaVersion|undefined}
+   * @private
+   */
+  _schemaVersion = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _title = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _author = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _date = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _previewImage = undefined;
+  /**
+   * @type {RawValue|Locale|undefined}
+   * @private
+   */
+  _defaultLocale = undefined;
+  /**
+   * @type {RawValue|[Locale]|undefined}
+   * @private
+   */
+  _locales = undefined;
+  /**
+   * @type {RawValue|[ContentElementGroup]|undefined}
+   * @private
+   */
+  _contentElementGroups = undefined;
+  /**
+   * @type {RawValue|[Style]|undefined}
+   * @private
+   */
+  _styleConfigs = undefined;
+  /**
+   * @type {RawValue|[HtmlEditorConfig]|undefined}
+   * @private
+   */
+  _htmlEditorConfigs = undefined;
+  /**
+   * @type {RawValue|Website|undefined}
+   * @private
+   */
+  _website = undefined;
+  /**
+   * @type {RawValue|NLS[]|undefined}
+   * @private
+   */
+  _nls = undefined;
 
   /**
-   * @return {SchemaVersion|undefined}
+   * @return {RawValue|SchemaVersion|undefined}
    */
   get schemaVersion() {
     return this._schemaVersion;
@@ -2046,56 +2094,56 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @return {string|undefined}
+   * @return {{}|undefined}
    */
   get previewImage() {
     return this._previewImage;
   }
 
   /**
-   * @return {Locale|undefined}
+   * @return {RawValue|Locale|undefined}
    */
   get defaultLocale() {
     return this._defaultLocale;
   }
 
   /**
-   * @return {[Locale]|undefined}
+   * @return {RawValue|[Locale]|undefined}
    */
   get locales() {
     return this._locales;
   }
 
   /**
-   * @return {ContentElementGroup[]|undefined}
+   * @return {RawValue|ContentElementGroup[]|undefined}
    */
   get contentElementGroups() {
     return this._contentElementGroups;
   }
 
   /**
-   * @return {{}|undefined}
+   * @return {RawValue|[Style]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
   }
 
   /**
-   * @return {{}|undefined}
+   * @return {RawValue|[HtmlEditorConfig]|undefined}
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
   }
 
   /**
-   * @return {Website|undefined}
+   * @return {RawValue|Website|undefined}
    */
   get website() {
     return this._website;
   }
 
   /**
-   * @return {NLS[]|undefined}
+   * @return {RawValue|NLS[]|undefined}
    */
   get nls() {
     return this._nls;
@@ -2107,6 +2155,15 @@ class Design extends AbstractBuilder {
    */
   withSchemaVersion(schemaVersion) {
     this._schemaVersion = schemaVersion;
+    return this;
+  }
+
+  /**
+   * @param {string} schemaVersion
+   * @return {Design}
+   */
+  withRawSchemaVersion(schemaVersion) {
+    this._schemaVersion = new RawValue(schemaVersion);
     return this;
   }
 
@@ -2138,7 +2195,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} previewImage
+   * @param {{}} previewImage
    * @return {Design}
    */
   withPreviewImage(previewImage) {
@@ -2156,11 +2213,29 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {string} defaultLocale
+   * @return {Design}
+   */
+  withRawDefaultLocale(defaultLocale) {
+    this._defaultLocale = new RawValue(defaultLocale);
+    return this;
+  }
+
+  /**
    * @param {Locale} locales
    * @return {Design}
    */
   withLocales(...locales) {
     this._locales = locales;
+    return this;
+  }
+
+  /**
+   * @param {string} locales
+   * @return {Design}
+   */
+  withRawLocales(...locales) {
+    this._locales = new RawValue(locales);
     return this;
   }
 
@@ -2174,6 +2249,15 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {{}} contentElementGroups
+   * @return {Design}
+   */
+  withRawContentElementGroups(...contentElementGroups) {
+    this._contentElementGroups = new RawValue(contentElementGroups);
+    return this;
+  }
+
+  /**
    * @param {Style} styleConfigs
    * @return {Design}
    */
@@ -2183,11 +2267,29 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {{}} styleConfigs
+   * @return {Design}
+   */
+  withRawStyleConfigs(...styleConfigs) {
+    this._styleConfigs = new RawValue(styleConfigs);
+    return this;
+  }
+
+  /**
    * @param {HtmlEditorConfig} htmlEditorConfigs
    * @return {Design}
    */
   withHtmlEditorConfigs(...htmlEditorConfigs) {
     this._htmlEditorConfigs = htmlEditorConfigs;
+    return this;
+  }
+
+  /**
+   * @param {{}} htmlEditorConfigs
+   * @return {Design}
+   */
+  withRawHtmlEditorConfigs(...htmlEditorConfigs) {
+    this._htmlEditorConfigs = new RawValue(htmlEditorConfigs);
     return this;
   }
 
@@ -2202,11 +2304,30 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {{}} website
+   * @return {Design}
+   * @since 1.3
+   */
+  withRawWebsite(website) {
+    this._website = new RawValue(website);
+    return this;
+  }
+
+  /**
    * @param {NLS} nls
    * @return {Design}
    */
   withNLS(...nls) {
     this._nls = nls;
+    return this;
+  }
+
+  /**
+   * @param {{}} nls
+   * @return {Design}
+   */
+  withRawNLS(nls) {
+    this._nls = new RawValue(nls);
     return this;
   }
 
@@ -3184,6 +3305,8 @@ class Include extends AbstractInclude {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
 
 
 

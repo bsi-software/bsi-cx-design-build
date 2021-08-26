@@ -8,74 +8,72 @@ import Website from '../website/website';
 import NLS from '../nls/nls';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity} from '../extractor';
+import RawValue from '../raw-value';
 
 export default class Design extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {SchemaVersion|undefined}
-     * @private
-     */
-    this._schemaVersion = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._title = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._author = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._date = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._previewImage = undefined;
-    /**
-     * @type {Locale|undefined}
-     * @private
-     */
-    this._defaultLocale = undefined;
-    /**
-     * @type {[Locale]|undefined}
-     * @private
-     */
-    this._locales = undefined;
-    /**
-     * @type {[ContentElementGroup]|undefined}
-     * @private
-     */
-    this._contentElementGroups = undefined;
-    /**
-     * @type {[Style]|undefined}
-     * @private
-     */
-    this._styleConfigs = undefined;
-    /**
-     * @type {[HtmlEditorConfig]|undefined}
-     * @private
-     */
-    this._htmlEditorConfigs = undefined;
-    /**
-     * @type {Website|undefined}
-     * @private
-     */
-    this._website = undefined;
-    /**
-     * @type {NLS[]|undefined}
-     * @private
-     */
-    this._nls = undefined;
-  }
+  /**
+   * @type {RawValue|SchemaVersion|undefined}
+   * @private
+   */
+  _schemaVersion = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _title = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _author = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _date = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _previewImage = undefined;
+  /**
+   * @type {RawValue|Locale|undefined}
+   * @private
+   */
+  _defaultLocale = undefined;
+  /**
+   * @type {RawValue|[Locale]|undefined}
+   * @private
+   */
+  _locales = undefined;
+  /**
+   * @type {RawValue|[ContentElementGroup]|undefined}
+   * @private
+   */
+  _contentElementGroups = undefined;
+  /**
+   * @type {RawValue|[Style]|undefined}
+   * @private
+   */
+  _styleConfigs = undefined;
+  /**
+   * @type {RawValue|[HtmlEditorConfig]|undefined}
+   * @private
+   */
+  _htmlEditorConfigs = undefined;
+  /**
+   * @type {RawValue|Website|undefined}
+   * @private
+   */
+  _website = undefined;
+  /**
+   * @type {RawValue|NLS[]|undefined}
+   * @private
+   */
+  _nls = undefined;
 
   /**
-   * @return {SchemaVersion|undefined}
+   * @return {RawValue|SchemaVersion|undefined}
    */
   get schemaVersion() {
     return this._schemaVersion;
@@ -103,56 +101,56 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @return {string|undefined}
+   * @return {{}|undefined}
    */
   get previewImage() {
     return this._previewImage;
   }
 
   /**
-   * @return {Locale|undefined}
+   * @return {RawValue|Locale|undefined}
    */
   get defaultLocale() {
     return this._defaultLocale;
   }
 
   /**
-   * @return {[Locale]|undefined}
+   * @return {RawValue|[Locale]|undefined}
    */
   get locales() {
     return this._locales;
   }
 
   /**
-   * @return {ContentElementGroup[]|undefined}
+   * @return {RawValue|ContentElementGroup[]|undefined}
    */
   get contentElementGroups() {
     return this._contentElementGroups;
   }
 
   /**
-   * @return {{}|undefined}
+   * @return {RawValue|[Style]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
   }
 
   /**
-   * @return {{}|undefined}
+   * @return {RawValue|[HtmlEditorConfig]|undefined}
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
   }
 
   /**
-   * @return {Website|undefined}
+   * @return {RawValue|Website|undefined}
    */
   get website() {
     return this._website;
   }
 
   /**
-   * @return {NLS[]|undefined}
+   * @return {RawValue|NLS[]|undefined}
    */
   get nls() {
     return this._nls;
@@ -164,6 +162,15 @@ export default class Design extends AbstractBuilder {
    */
   withSchemaVersion(schemaVersion) {
     this._schemaVersion = schemaVersion;
+    return this;
+  }
+
+  /**
+   * @param {string} schemaVersion
+   * @return {Design}
+   */
+  withRawSchemaVersion(schemaVersion) {
+    this._schemaVersion = new RawValue(schemaVersion);
     return this;
   }
 
@@ -195,7 +202,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} previewImage
+   * @param {{}} previewImage
    * @return {Design}
    */
   withPreviewImage(previewImage) {
@@ -213,11 +220,29 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {string} defaultLocale
+   * @return {Design}
+   */
+  withRawDefaultLocale(defaultLocale) {
+    this._defaultLocale = new RawValue(defaultLocale);
+    return this;
+  }
+
+  /**
    * @param {Locale} locales
    * @return {Design}
    */
   withLocales(...locales) {
     this._locales = locales;
+    return this;
+  }
+
+  /**
+   * @param {string} locales
+   * @return {Design}
+   */
+  withRawLocales(...locales) {
+    this._locales = new RawValue(locales);
     return this;
   }
 
@@ -231,6 +256,15 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {{}} contentElementGroups
+   * @return {Design}
+   */
+  withRawContentElementGroups(...contentElementGroups) {
+    this._contentElementGroups = new RawValue(contentElementGroups);
+    return this;
+  }
+
+  /**
    * @param {Style} styleConfigs
    * @return {Design}
    */
@@ -240,11 +274,29 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {{}} styleConfigs
+   * @return {Design}
+   */
+  withRawStyleConfigs(...styleConfigs) {
+    this._styleConfigs = new RawValue(styleConfigs);
+    return this;
+  }
+
+  /**
    * @param {HtmlEditorConfig} htmlEditorConfigs
    * @return {Design}
    */
   withHtmlEditorConfigs(...htmlEditorConfigs) {
     this._htmlEditorConfigs = htmlEditorConfigs;
+    return this;
+  }
+
+  /**
+   * @param {{}} htmlEditorConfigs
+   * @return {Design}
+   */
+  withRawHtmlEditorConfigs(...htmlEditorConfigs) {
+    this._htmlEditorConfigs = new RawValue(htmlEditorConfigs);
     return this;
   }
 
@@ -259,11 +311,30 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * @param {{}} website
+   * @return {Design}
+   * @since 1.3
+   */
+  withRawWebsite(website) {
+    this._website = new RawValue(website);
+    return this;
+  }
+
+  /**
    * @param {NLS} nls
    * @return {Design}
    */
   withNLS(...nls) {
     this._nls = nls;
+    return this;
+  }
+
+  /**
+   * @param {{}} nls
+   * @return {Design}
+   */
+  withRawNLS(nls) {
+    this._nls = new RawValue(nls);
     return this;
   }
 

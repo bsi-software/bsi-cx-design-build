@@ -1,4 +1,6 @@
+import DesignJsonProperty from '../src/design-json-property';
 import AbstractBuilder from '../src/abstract-builder';
+import RawValue from '../src/raw-value';
 import AbstractPart from '../src/content-element/part/abstract-part';
 import * as Locale from '../src/design/locale';
 import * as SchemaVersion from '../src/design/schema-version';
@@ -42,7 +44,9 @@ import NLS from '../src/nls/nls';
 import Translation from '../src/nls/translation';
 
 export {
+  DesignJsonProperty,
   AbstractBuilder,
+  RawValue,
   AbstractPart,
   Locale,
   SchemaVersion,

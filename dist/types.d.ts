@@ -472,6 +472,23 @@ declare module "src/java-property-file-builder" {
         _escapeValue(value: string): string;
     }
 }
+declare module "src/raw-value" {
+    export default class RawValue {
+        /**
+         * @param {*} value
+         */
+        constructor(value: any);
+        /**
+         * @type {*}
+         * @private
+         */
+        private _value;
+        /**
+         * @return {*}
+         */
+        get value(): any;
+    }
+}
 declare module "src/abstract-builder" {
     export default class AbstractBuilder {
         /**
@@ -2399,6 +2416,11 @@ declare module "src/nls/nls" {
          */
         static create(identifier: string, ...translations: Translation): NLS;
         /**
+         * @param {string} identifier
+         * @param {Map<Locale,string>} map
+         */
+        static fromMap(identifier: string, map: Map<any, string>): NLS;
+        /**
          * @type {string|undefined}
          * @private
          */
@@ -2433,7 +2455,7 @@ declare module "src/nls/nls" {
 declare module "src/design/design" {
     export default class Design extends AbstractBuilder {
         /**
-         * @type {SchemaVersion|undefined}
+         * @type {RawValue|SchemaVersion|undefined}
          * @private
          */
         private _schemaVersion;
@@ -2453,49 +2475,49 @@ declare module "src/design/design" {
          */
         private _date;
         /**
-         * @type {string|undefined}
+         * @type {{}|undefined}
          * @private
          */
         private _previewImage;
         /**
-         * @type {Locale|undefined}
+         * @type {RawValue|Locale|undefined}
          * @private
          */
         private _defaultLocale;
         /**
-         * @type {[Locale]|undefined}
+         * @type {RawValue|[Locale]|undefined}
          * @private
          */
         private _locales;
         /**
-         * @type {[ContentElementGroup]|undefined}
+         * @type {RawValue|[ContentElementGroup]|undefined}
          * @private
          */
         private _contentElementGroups;
         /**
-         * @type {[Style]|undefined}
+         * @type {RawValue|[Style]|undefined}
          * @private
          */
         private _styleConfigs;
         /**
-         * @type {[HtmlEditorConfig]|undefined}
+         * @type {RawValue|[HtmlEditorConfig]|undefined}
          * @private
          */
         private _htmlEditorConfigs;
         /**
-         * @type {Website|undefined}
+         * @type {RawValue|Website|undefined}
          * @private
          */
         private _website;
         /**
-         * @type {NLS[]|undefined}
+         * @type {RawValue|NLS[]|undefined}
          * @private
          */
         private _nls;
         /**
-         * @return {SchemaVersion|undefined}
+         * @return {RawValue|SchemaVersion|undefined}
          */
-        get schemaVersion(): SchemaVersion;
+        get schemaVersion(): RawValue | SchemaVersion;
         /**
          * @return {string|undefined}
          */
@@ -2509,42 +2531,47 @@ declare module "src/design/design" {
          */
         get date(): string;
         /**
-         * @return {string|undefined}
-         */
-        get previewImage(): string;
-        /**
-         * @return {Locale|undefined}
-         */
-        get defaultLocale(): Locale;
-        /**
-         * @return {[Locale]|undefined}
-         */
-        get locales(): [Locale];
-        /**
-         * @return {ContentElementGroup[]|undefined}
-         */
-        get contentElementGroups(): ContentElementGroup[];
-        /**
          * @return {{}|undefined}
          */
-        get styleConfigs(): {};
+        get previewImage(): {};
         /**
-         * @return {{}|undefined}
+         * @return {RawValue|Locale|undefined}
          */
-        get htmlEditorConfigs(): {};
+        get defaultLocale(): RawValue | Locale;
         /**
-         * @return {Website|undefined}
+         * @return {RawValue|[Locale]|undefined}
          */
-        get website(): Website;
+        get locales(): RawValue | [Locale];
         /**
-         * @return {NLS[]|undefined}
+         * @return {RawValue|ContentElementGroup[]|undefined}
          */
-        get nls(): NLS[];
+        get contentElementGroups(): RawValue | ContentElementGroup[];
+        /**
+         * @return {RawValue|[Style]|undefined}
+         */
+        get styleConfigs(): RawValue | [Style];
+        /**
+         * @return {RawValue|[HtmlEditorConfig]|undefined}
+         */
+        get htmlEditorConfigs(): RawValue | [HtmlEditorConfig];
+        /**
+         * @return {RawValue|Website|undefined}
+         */
+        get website(): RawValue | Website;
+        /**
+         * @return {RawValue|NLS[]|undefined}
+         */
+        get nls(): RawValue | NLS[];
         /**
          * @param {SchemaVersion} schemaVersion
          * @return {Design}
          */
         withSchemaVersion(schemaVersion: SchemaVersion): Design;
+        /**
+         * @param {string} schemaVersion
+         * @return {Design}
+         */
+        withRawSchemaVersion(schemaVersion: string): Design;
         /**
          * @param {string} title
          * @return {Design}
@@ -2561,35 +2588,60 @@ declare module "src/design/design" {
          */
         withDate(date: string): Design;
         /**
-         * @param {string} previewImage
+         * @param {{}} previewImage
          * @return {Design}
          */
-        withPreviewImage(previewImage: string): Design;
+        withPreviewImage(previewImage: {}): Design;
         /**
          * @param {Locale} defaultLocale
          * @return {Design}
          */
         withDefaultLocale(defaultLocale: Locale): Design;
         /**
+         * @param {string} defaultLocale
+         * @return {Design}
+         */
+        withRawDefaultLocale(defaultLocale: string): Design;
+        /**
          * @param {Locale} locales
          * @return {Design}
          */
         withLocales(...locales: Locale): Design;
+        /**
+         * @param {string} locales
+         * @return {Design}
+         */
+        withRawLocales(...locales: string): Design;
         /**
          * @param {ContentElementGroup} contentElementGroups
          * @return {Design}
          */
         withContentElementGroups(...contentElementGroups: ContentElementGroup): Design;
         /**
+         * @param {{}} contentElementGroups
+         * @return {Design}
+         */
+        withRawContentElementGroups(...contentElementGroups: {}): Design;
+        /**
          * @param {Style} styleConfigs
          * @return {Design}
          */
         withStyleConfigs(...styleConfigs: Style): Design;
         /**
+         * @param {{}} styleConfigs
+         * @return {Design}
+         */
+        withRawStyleConfigs(...styleConfigs: {}): Design;
+        /**
          * @param {HtmlEditorConfig} htmlEditorConfigs
          * @return {Design}
          */
         withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig): Design;
+        /**
+         * @param {{}} htmlEditorConfigs
+         * @return {Design}
+         */
+        withRawHtmlEditorConfigs(...htmlEditorConfigs: {}): Design;
         /**
          * @param {Website} website
          * @return {Design}
@@ -2597,19 +2649,31 @@ declare module "src/design/design" {
          */
         withWebsite(website: Website): Design;
         /**
+         * @param {{}} website
+         * @return {Design}
+         * @since 1.3
+         */
+        withRawWebsite(website: {}): Design;
+        /**
          * @param {NLS} nls
          * @return {Design}
          */
         withNLS(...nls: NLS): Design;
+        /**
+         * @param {{}} nls
+         * @return {Design}
+         */
+        withRawNLS(nls: {}): Design;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import { SchemaVersion } from "src/design/schema-version";
     import { Locale } from "src/design/locale";
     import ContentElementGroup from "src/content-element/content-element-group";
-    import Website from "src/website/website";
-    import NLS from "src/nls/nls";
     import Style from "src/style/style";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
+    import Website from "src/website/website";
+    import NLS from "src/nls/nls";
 }
 declare module "src/content-element/part/plain-text-part" {
     /**
@@ -2816,7 +2880,9 @@ declare module "src/website/include" {
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "export/browser" {
+    import DesignJsonProperty from "src/design-json-property";
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import AbstractPart from "src/content-element/part/abstract-part";
     import * as Locale from "src/design/locale";
     import * as SchemaVersion from "src/design/schema-version";
@@ -2858,7 +2924,7 @@ declare module "export/browser" {
     import Include from "src/website/include";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
-    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
+    export { DesignJsonProperty, AbstractBuilder, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

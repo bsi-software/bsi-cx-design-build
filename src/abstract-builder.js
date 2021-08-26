@@ -1,3 +1,5 @@
+import RawValue from './raw-value';
+
 export default class AbstractBuilder {
   /**
    * @return {{}}
@@ -21,13 +23,19 @@ export default class AbstractBuilder {
     let value = this[property];
     let computedValue;
 
-    if (value instanceof Array) {
-      computedValue = value.map(item => extractFunc(item));
-    } else {
-      computedValue = extractFunc(value);
+    switch (true) {
+      case value instanceof RawValue:
+        computedValue = value.value;
+        break;
+      case value instanceof Array:
+        computedValue = value.map(item => extractFunc(item));
+        break;
+      default:
+        computedValue = extractFunc(value);
+        break;
     }
 
-    if (!!arrayToObject) {
+    if (!!arrayToObject && !(value instanceof RawValue)) {
       computedValue = this._applyArrayToObject(computedValue);
     }
 
