@@ -1,6 +1,6 @@
 import {createHash} from 'crypto';
 
-import {Asset, Compilation} from 'webpack';
+import {Asset, Compilation} from 'webpack/lib';
 
 import {getZipArchiveName} from './utility';
 
@@ -30,8 +30,12 @@ export default class BsiCxWebpackZipHashPlugin {
   _handleZipAsset(compilation, asset) {
     let oldAssetName = asset.name;
     let source = asset.source;
+    /**
+     * @type {Buffer}
+     */
+    let sourceBuffer = source.buffer();
     let hash = createHash('sha256')
-      .update(source.source())
+      .update(sourceBuffer)
       .digest('hex')
       .substr(0, 5);
     let newAssetName = oldAssetName.replace(/\.zip$/, `-${hash}.zip`);

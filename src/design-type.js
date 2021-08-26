@@ -1,4 +1,4 @@
-export default class DesignType {
+export class DesignType {
   /**
    * @param {string} type
    */

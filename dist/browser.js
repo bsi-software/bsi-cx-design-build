@@ -63,6 +63,7 @@ __webpack_require__.d(feature_namespaceObject, {
   "FORMAT_OL": () => (FORMAT_OL),
   "FORMAT_UL": () => (FORMAT_UL),
   "FULLSCREEN": () => (FULLSCREEN),
+  "Feature": () => (Feature),
   "HELP": () => (HELP),
   "HTML": () => (HTML),
   "INDENT": () => (INDENT),
@@ -80,8 +81,7 @@ __webpack_require__.d(feature_namespaceObject, {
   "SUPERSCRIPT": () => (SUPERSCRIPT),
   "TEXT_COLOR": () => (TEXT_COLOR),
   "UNDERLINE": () => (UNDERLINE),
-  "UNDO": () => (UNDO),
-  "default": () => (Feature)
+  "UNDO": () => (UNDO)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/enter-mode.js
@@ -90,8 +90,8 @@ __webpack_require__.r(enter_mode_namespaceObject);
 __webpack_require__.d(enter_mode_namespaceObject, {
   "BR": () => (BR),
   "DIV": () => (DIV),
-  "P": () => (P),
-  "default": () => (EnterMode)
+  "EnterMode": () => (EnterMode),
+  "P": () => (P)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/font-size-unit.js
@@ -100,17 +100,18 @@ __webpack_require__.r(font_size_unit_namespaceObject);
 __webpack_require__.d(font_size_unit_namespaceObject, {
   "CM": () => (CM),
   "EM": () => (EM),
+  "FontSizeUnit": () => (FontSizeUnit),
   "MM": () => (MM),
   "PT": () => (PT),
   "PX": () => (PX),
-  "REM": () => (REM),
-  "default": () => (FontSizeUnit)
+  "REM": () => (REM)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/format.js
 var format_namespaceObject = {};
 __webpack_require__.r(format_namespaceObject);
 __webpack_require__.d(format_namespaceObject, {
+  "Format": () => (Format),
   "H1": () => (H1),
   "H2": () => (H2),
   "H3": () => (H3),
@@ -118,8 +119,7 @@ __webpack_require__.d(format_namespaceObject, {
   "H5": () => (H5),
   "H6": () => (H6),
   "P": () => (format_P),
-  "PRE": () => (PRE),
-  "default": () => (Format)
+  "PRE": () => (PRE)
 });
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
@@ -649,7 +649,7 @@ class HtmlEditorConfigBuilder {
       return;
     }
 
-    let computedValue = undefined;
+    let computedValue;
 
     if (value instanceof Array) {
       computedValue = value.map(item => extractFunc(item));

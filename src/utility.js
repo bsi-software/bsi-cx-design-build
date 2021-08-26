@@ -2,7 +2,7 @@ import path from 'path';
 
 import BuildConfig from './build-config';
 import Constant from './constant';
-import DesignType from './design-type';
+import {WEBSITE} from './design-type';
 
 
 export class StaticJavaScriptCondition {
@@ -47,7 +47,7 @@ export function getZipArchiveName(name, version, suffix) {
 
 /**
  * @param {BuildConfig} config
- * @param {string} suffix
+ * @param {string|undefined} [suffix=undefined]
  */
 export function buildPublicPath(config, suffix) {
   let path = '/';
@@ -60,9 +60,17 @@ export function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && !config.designType !== DesignType.WEBSITE) {
+  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
     return '.' + pathSuffix;
   } else {
     return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
   }
+}
+
+/**
+ * @param {*} obj
+ * @return {string}
+ */
+export function toString(obj) {
+  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
 }

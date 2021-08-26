@@ -1,23 +1,23 @@
-import * as DesignType from './design-type';
+import {DesignType, EMAIL, LANDINGPAGE, WEBSITE} from './design-type';
 
 /**
  * @type {DesignType[]}
  */
 const LEGACY_TYPES = [
-  DesignType.LANDINGPAGE,
-  DesignType.EMAIL
+  LANDINGPAGE,
+  EMAIL
 ];
 
 /**
  * @type {DesignType[]}
  */
 const ALL_TYPES = [
-  DesignType.LANDINGPAGE,
-  DesignType.EMAIL,
-  DesignType.WEBSITE
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
 ];
 
-export default class Version {
+export class Version {
   /**
    *
    * @param {string} version

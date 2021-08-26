@@ -1,5 +1,5 @@
 declare module "src/design-type" {
-    export default class DesignType {
+    export class DesignType {
         /**
          * @param {string} type
          */
@@ -24,16 +24,16 @@ declare module "src/design-type" {
     export const WEBSITE: DesignType;
 }
 declare module "src/version" {
-    export default class Version {
+    export class Version {
         /**
          *
          * @param {string} version
          * @param {DesignType[]} allowedTypes
          * @param {boolean} legacyFormat
          */
-        constructor(version: string, allowedTypes: (typeof DesignType)[], legacyFormat: boolean);
+        constructor(version: string, allowedTypes: DesignType[], legacyFormat: boolean);
         _version: string;
-        _allowedTypes: (typeof DesignType)[];
+        _allowedTypes: DesignType[];
         _legacyFormat: boolean;
         /**
          * @returns {string}
@@ -42,7 +42,7 @@ declare module "src/version" {
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): (typeof DesignType)[];
+        get allowedTypes(): DesignType[];
         /**
          * @returns {boolean}
          */
@@ -68,7 +68,7 @@ declare module "src/version" {
      * @type {Version}
      */
     export const CX_22_0: Version;
-    import * as DesignType from "src/design-type";
+    import { DesignType } from "src/design-type";
 }
 declare module "src/build-config" {
     /**
@@ -231,7 +231,7 @@ declare module "src/build-config" {
          */
         withProperties(properties: {}): BuildConfig;
         /**
-         * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a seperate port for each template.
+         * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
          *
          * @param {number} devServerPort
          * @returns {BuildConfig}
@@ -298,8 +298,8 @@ declare module "src/build-config" {
          */
         _checkInstanceofAndRequired(name: string, type: object, required: boolean): void;
     }
-    import Version from "src/version";
-    import DesignType from "src/design-type";
+    import { Version } from "src/version";
+    import { DesignType } from "src/design-type";
 }
 declare module "src/handlebars-helpers" {
     var _default: {
@@ -353,9 +353,14 @@ declare module "src/utility" {
     export function getZipArchiveName(name: string, version: string, suffix?: string): string;
     /**
      * @param {BuildConfig} config
-     * @param {string} suffix
+     * @param {string|undefined} [suffix=undefined]
      */
-    export function buildPublicPath(config: BuildConfig, suffix: string): string;
+    export function buildPublicPath(config: BuildConfig, suffix?: string | undefined): string;
+    /**
+     * @param {*} obj
+     * @return {string}
+     */
+    export function toString(obj: any): string;
     export class StaticJavaScriptCondition {
         /**
          * @type {RegExp}
@@ -748,7 +753,7 @@ declare module "export/main" {
     export { Version, DesignType, BuildConfig, WebpackConfigBuilder, BsiCxWebpackPlugin, BsiCxWebpackZipHashPlugin, BsiCxWebpackLegacyDesignPlugin };
 }
 declare module "src/html-editor-config/feature" {
-    export default class Feature {
+    export class Feature {
         /**
          * @param {string} value
          */
@@ -885,7 +890,7 @@ declare module "src/html-editor-config/feature" {
     export const HELP: Feature;
 }
 declare module "src/html-editor-config/enter-mode" {
-    export default class EnterMode {
+    export class EnterMode {
         /**
          * @param {string} value
          */
@@ -914,7 +919,7 @@ declare module "src/html-editor-config/enter-mode" {
     export const DIV: EnterMode;
 }
 declare module "src/html-editor-config/font-size-unit" {
-    export default class FontSizeUnit {
+    export class FontSizeUnit {
         /**
          * @param {string} value
          */
@@ -955,7 +960,7 @@ declare module "src/html-editor-config/font-size-unit" {
     export const MM: FontSizeUnit;
 }
 declare module "src/html-editor-config/format" {
-    export default class Format {
+    export class Format {
         /**
          * @param {string} value
          */
@@ -1154,10 +1159,10 @@ declare module "src/html-editor-config/html-editor-config-builder" {
          */
         private _applyPropertyToConfig;
     }
-    import Feature from "src/html-editor-config/feature";
-    import Format from "src/html-editor-config/format";
-    import FontSizeUnit from "src/html-editor-config/font-size-unit";
-    import EnterMode from "src/html-editor-config/enter-mode";
+    import { Feature } from "src/html-editor-config/feature";
+    import { Format } from "src/html-editor-config/format";
+    import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
+    import { EnterMode } from "src/html-editor-config/enter-mode";
 }
 declare module "src/style/style-builder" {
     export default class StyleBuilder {

@@ -5,10 +5,16 @@ import {TwingFunction, TwingTemplate} from 'twing';
 import Constant from './constant';
 
 /**
- *
+ * @param {string} resolve
+ * @return {Promise<string>}
+ */
+function strToPromise(resolve) {
+  return Promise.resolve(resolve);
+}
+
+/**
  * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
- * @param {boolean} chunks
  * @param {boolean} inline
  * @returns {Promise<string>}
  */
@@ -20,7 +26,7 @@ function bsiCxJsModuleImport(template, config, inline) {
     inline: inline
   };
   let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
-  return Promise.resolve(placeholder);
+  return strToPromise(placeholder);
 }
 
 /**
@@ -30,21 +36,21 @@ export const bsiCxAsset = new TwingFunction('bsi_cx_asset', (template, assetPath
   let templatePath = template.source.getResolvedName();
   let templateDirPath = path.dirname(templatePath);
   let absoluteAssetPath = path.resolve(templateDirPath, assetPath).replace(/\\/g, path.posix.sep);
-  return Promise.resolve(`@ref(${absoluteAssetPath})`);
+  return strToPromise(`@ref(${absoluteAssetPath})`);
 }, [], {needs_template: true});
 
 /**
  * Get URL to the CSS asset.
  */
 export const bsiCxCssHref = new TwingFunction('bsi_cx_css_href', () => {
-  return Promise.resolve(Constant.BSI_CX_CSS_HREF);
+  return strToPromise(Constant.BSI_CX_CSS_HREF);
 }, [], {});
 
 /**
  * Get the contents of the CSS asset.
  */
 export const bsiCxCssInline = new TwingFunction('bsi_cx_css_inline', () => {
-  return Promise.resolve(Constant.BSI_CX_CSS_INLINE);
+  return strToPromise(Constant.BSI_CX_CSS_INLINE);
 }, [], {});
 
 /**
@@ -93,12 +99,12 @@ export const bsiCxJsModuleMissingChunksInline = new TwingFunction('bsi_cx_js_mod
  * Get URL to the JS runtime module.
  */
 export const bsiCxJsModuleRuntimeHref = new TwingFunction('bsi_cx_js_module_runtime_href', () => {
-  return Promise.resolve(Constant.BSI_CX_MODULE_RUNTIME_HREF);
+  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_HREF);
 }, [], {});
 
 /**
  * Get the contents of the JS runtime module.
  */
 export const bsiCxJsModuleRuntimeInline = new TwingFunction('bsi_cx_js_module_runtime_inline', () => {
-  return Promise.resolve(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
+  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
 }, [], {});

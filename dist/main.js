@@ -51,6 +51,8 @@ const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
 var bsi_cx_webpack_plugin = __webpack_require__(940);
 // EXTERNAL MODULE: external "webpack"
 var external_webpack_ = __webpack_require__(78);
+// EXTERNAL MODULE: external "webpack/lib"
+var lib_ = __webpack_require__(73);
 ;// CONCATENATED MODULE: ./src/file.js
 class File {
   /**
@@ -147,7 +149,11 @@ class JavaPropertyFileBuilder {
   }
 }
 
+// EXTERNAL MODULE: ./src/utility.js
+var utility = __webpack_require__(923);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
+
+
 
 
 
@@ -184,7 +190,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
     try {
       this._convertToLegacyFormat();
     } catch (error) {
-      if (error instanceof external_webpack_.WebpackError) {
+      if (error instanceof lib_.WebpackError) {
         this._compilation.errors.push(error);
       } else {
         this._logger.error(error);
@@ -207,7 +213,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
     }
 
     let source = asset.source.source();
-    let json = JSON.parse(source);
+    let sourceStr = (0,utility/* toString */.BB)(source);
+    let json = JSON.parse(sourceStr);
 
     if (!json) {
       throw new Error('Unable to parse JSON.');
@@ -321,7 +328,7 @@ class BsiCxWebpackLegacyDesignPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME,
-          stage: external_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+          stage: lib_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME);
@@ -333,8 +340,6 @@ class BsiCxWebpackLegacyDesignPlugin {
 
 // EXTERNAL MODULE: external "crypto"
 var external_crypto_ = __webpack_require__(417);
-// EXTERNAL MODULE: ./src/utility.js
-var utility = __webpack_require__(923);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
 
 
@@ -368,8 +373,12 @@ class BsiCxWebpackZipHashPlugin {
   _handleZipAsset(compilation, asset) {
     let oldAssetName = asset.name;
     let source = asset.source;
+    /**
+     * @type {Buffer}
+     */
+    let sourceBuffer = source.buffer();
     let hash = (0,external_crypto_.createHash)('sha256')
-      .update(source.source())
+      .update(sourceBuffer)
       .digest('hex')
       .substr(0, 5);
     let newAssetName = oldAssetName.replace(/\.zip$/, `-${hash}.zip`);
@@ -383,7 +392,7 @@ class BsiCxWebpackZipHashPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: BsiCxWebpackZipHashPlugin.PLUGIN_NAME,
-          stage: external_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
+          stage: lib_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
         },
         () => {
           if (!this._enabled) {
@@ -1051,6 +1060,8 @@ const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
 // EXTERNAL MODULE: external "webpack"
 var external_webpack_ = __webpack_require__(78);
+// EXTERNAL MODULE: external "webpack/lib"
+var lib_ = __webpack_require__(73);
 // EXTERNAL MODULE: ./src/build-config.js
 var build_config = __webpack_require__(492);
 ;// CONCATENATED MODULE: ./src/handlebars-helpers.js
@@ -1064,6 +1075,7 @@ var constant = __webpack_require__(911);
 var utility = __webpack_require__(923);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
 /* module decorator */ module = __webpack_require__.hmd(module);
+
 
 
 
@@ -1159,7 +1171,7 @@ class _BsiCxWebpackPlugin {
       this._exportDesignHtml();
       this._exportPreviewHtml();
     } catch (error) {
-      if (error instanceof external_webpack_.WebpackError) {
+      if (error instanceof lib_.WebpackError) {
         this._compilation.errors.push(error);
       } else {
         this._logger.error(error);
@@ -1183,6 +1195,9 @@ class _BsiCxWebpackPlugin {
 
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    /**
+     * @type {{contentElementGroups:[{}]|undefined,website:{}|undefined}}
+     */
     let designJsonObj = this._loadModule(designJsonPath);
     let contentElementGroups = designJsonObj.contentElementGroups || [];
     let website = designJsonObj.website || {includes: {}};
@@ -1207,10 +1222,18 @@ class _BsiCxWebpackPlugin {
     }
   }
 
+  /**
+   * @param {{file:*}} element
+   * @private
+   */
   _handleElement(element) {
     element.file = this._handleTemplateFile(element.file, 'contentElements');
   }
 
+  /**
+   * @param {{file:*}} include
+   * @private
+   */
   _handleInclude(include) {
     include.file = this._handleTemplateFile(include.file, 'includes');
   }
@@ -1270,8 +1293,11 @@ class _BsiCxWebpackPlugin {
    * @returns {string[]}
    */
   _getAssetNames(nameRegEx) {
-    return Object.keys(this._compilation.assets)
-      .filter(name => nameRegEx.test(name));
+    /**
+     * @type {string[]}
+     */
+    let assetNames = Object.keys(this._compilation.assets);
+    return assetNames.filter(name => nameRegEx.test(name));
   }
 
   /**
@@ -1305,7 +1331,9 @@ class _BsiCxWebpackPlugin {
    */
   _loadAsset(name, scope) {
     let asset = this._compilation.getAsset(name);
-    let script = new (external_vm_default()).Script(asset.source.source());
+    let source = asset.source.source();
+    let sourceStr = (0,utility/* toString */.BB)(source);
+    let script = new (external_vm_default()).Script(sourceStr);
     let context = {self: {}};
 
     script.runInNewContext(context);
@@ -1320,6 +1348,7 @@ class _BsiCxWebpackPlugin {
     let code = asset.source.source();
 
     let module = new (external_module_default())(modulePath, parentModule);
+    // noinspection JSUnresolvedFunction
     module.paths = external_module_default()._nodeModulePaths(moduleFolder);
     module.filename = modulePath;
 
@@ -1467,11 +1496,12 @@ class _BsiCxWebpackPlugin {
       );
     }
 
-    let replacement = '';
+    let replacement;
 
     if (inline) {
       let asset = this._compilation.getAsset(moduleAssetPath);
-      replacement = asset.source();
+      let source = asset.source.source();
+      replacement = (0,utility/* toString */.BB)(source);
     } else {
       replacement = (0,utility/* buildPublicPath */.YV)(this._config, moduleAssetPath);
     }
@@ -1495,10 +1525,12 @@ class _BsiCxWebpackPlugin {
       .filter(assetPath => !assetPath.startsWith(constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
       .map(assetPath => {
         importedModules.push(assetPath);
-
         if (inline) {
           let asset = this._compilation.getAsset(assetPath);
-          return `<script>${asset.source()}</script>`;
+          let source = asset.source.source();
+          let strSource = (0,utility/* toString */.BB)(source);
+          // noinspection JSUnresolvedVariable
+          return `<script>${strSource}</script>`;
         } else {
           let url = (0,utility/* buildPublicPath */.YV)(this._config, assetPath);
           return `<script src="${url}" defer="defer"></script>`;
@@ -1513,7 +1545,7 @@ class _BsiCxWebpackPlugin {
    * @returns
    */
   _webpackError(message, details, location) {
-    let error = new external_webpack_.WebpackError(message);
+    let error = new lib_.WebpackError(message);
     error.details = details;
     if (!!location) {
       error.loc = {
@@ -1586,7 +1618,7 @@ class BsiCxWebpackPlugin {
       compilation.hooks.processAssets.tap(
         {
           name: BsiCxWebpackPlugin.PLUGIN_NAME,
-          stage: external_webpack_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+          stage: lib_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
@@ -1840,7 +1872,7 @@ class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a seperate port for each template.
+   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
    *
    * @param {number} devServerPort
    * @returns {BuildConfig}
@@ -1934,8 +1966,8 @@ class BuildConfig {
   validate() {
     this._checkInstanceofAndRequired('name', String, true);
     this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_1__.default, true);
-    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_0__.default, true);
+    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_1__.Version, true);
+    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_0__.DesignType, true);
     this._checkInstanceofAndRequired('rootPath', String, true);
     this._checkInstanceofAndRequired('outputPath', String, false);
     this._checkInstanceofAndRequired('properties', Object, false);
@@ -2017,7 +2049,7 @@ class Constant {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ DesignType),
+/* harmony export */   "DesignType": () => (/* binding */ DesignType),
 /* harmony export */   "LANDINGPAGE": () => (/* binding */ LANDINGPAGE),
 /* harmony export */   "EMAIL": () => (/* binding */ EMAIL),
 /* harmony export */   "WEBSITE": () => (/* binding */ WEBSITE)
@@ -2062,7 +2094,8 @@ const WEBSITE = new DesignType('website');
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "BA": () => (/* binding */ StaticJavaScriptCondition),
 /* harmony export */   "ur": () => (/* binding */ getZipArchiveName),
-/* harmony export */   "YV": () => (/* binding */ buildPublicPath)
+/* harmony export */   "YV": () => (/* binding */ buildPublicPath),
+/* harmony export */   "BB": () => (/* binding */ toString)
 /* harmony export */ });
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(622);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
@@ -2118,7 +2151,7 @@ function getZipArchiveName(name, version, suffix) {
 
 /**
  * @param {BuildConfig} config
- * @param {string} suffix
+ * @param {string|undefined} [suffix=undefined]
  */
 function buildPublicPath(config, suffix) {
   let path = '/';
@@ -2131,11 +2164,19 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && !config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__.default.WEBSITE) {
+  if (config.targetVersion.legacyFormat && config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__.WEBSITE) {
     return '.' + pathSuffix;
   } else {
     return _constant__WEBPACK_IMPORTED_MODULE_3__/* .default.BSI_CX_DESIGN_BASE_URL */ .Z.BSI_CX_DESIGN_BASE_URL + pathSuffix;
   }
+}
+
+/**
+ * @param {*} obj
+ * @return {string}
+ */
+function toString(obj) {
+  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
 }
 
 
@@ -2146,7 +2187,7 @@ function buildPublicPath(config, suffix) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Version),
+/* harmony export */   "Version": () => (/* binding */ Version),
 /* harmony export */   "STUDIO_1_0": () => (/* binding */ STUDIO_1_0),
 /* harmony export */   "STUDIO_1_1": () => (/* binding */ STUDIO_1_1),
 /* harmony export */   "STUDIO_1_2": () => (/* binding */ STUDIO_1_2),
@@ -2254,6 +2295,13 @@ module.exports = require("path");
 /***/ ((module) => {
 
 module.exports = require("webpack");
+
+/***/ }),
+
+/***/ 73:
+/***/ ((module) => {
+
+module.exports = require("webpack/lib");
 
 /***/ })
 

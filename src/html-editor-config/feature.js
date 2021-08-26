@@ -1,4 +1,4 @@
-export default class Feature {
+export class Feature {
   /**
    * @param {string} value
    */

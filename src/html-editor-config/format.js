@@ -1,4 +1,4 @@
-export default class Format {
+export class Format {
   /**
    * @param {string} value
    */

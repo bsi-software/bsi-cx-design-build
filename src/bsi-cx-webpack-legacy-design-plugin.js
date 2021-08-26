@@ -1,8 +1,10 @@
-import {Compilation, Compiler, sources, WebpackError, WebpackLogger} from 'webpack';
+import {sources} from 'webpack';
+import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 
 import BuildConfig from './build-config';
 import File from './file';
 import JavaPropertyFileBuilder from './java-property-file-builder';
+import {toString} from './utility';
 
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
@@ -57,7 +59,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
     }
 
     let source = asset.source.source();
-    let json = JSON.parse(source);
+    let sourceStr = toString(source);
+    let json = JSON.parse(sourceStr);
 
     if (!json) {
       throw new Error('Unable to parse JSON.');

@@ -1,4 +1,4 @@
-export default class EnterMode {
+export class EnterMode {
   /**
    * @param {string} value
    */

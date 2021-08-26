@@ -1,4 +1,4 @@
-export default class FontSizeUnit {
+export class FontSizeUnit {
   /**
    * @param {string} value
    */

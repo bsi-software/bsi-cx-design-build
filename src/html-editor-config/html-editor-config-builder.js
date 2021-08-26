@@ -1,7 +1,7 @@
-import EnterMode from './enter-mode';
-import Feature from './feature';
-import Format from './format';
-import FontSizeUnit from './font-size-unit';
+import {EnterMode} from './enter-mode';
+import {Feature} from './feature';
+import {Format} from './format';
+import {FontSizeUnit} from './font-size-unit';
 
 export default class HtmlEditorConfigBuilder {
   constructor() {
@@ -248,7 +248,7 @@ export default class HtmlEditorConfigBuilder {
       return;
     }
 
-    let computedValue = undefined;
+    let computedValue;
 
     if (value instanceof Array) {
       computedValue = value.map(item => extractFunc(item));

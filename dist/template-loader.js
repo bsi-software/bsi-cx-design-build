@@ -49,6 +49,7 @@ const register_namespaceObject = require("source-map-support/register");
 
 /* harmony default export */ function template_loader(sourceToConvert) {
   let source = sourceToConvert.trim().replace(/;$/, '');
+  // noinspection JSUnresolvedVariable
   let resource = JSON.stringify(this.resource);
 
   return `

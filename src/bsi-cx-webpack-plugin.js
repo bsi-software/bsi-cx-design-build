@@ -4,12 +4,13 @@ import vm from 'vm';
 import Module from 'module';
 
 import Handlebars from 'handlebars';
-import {Compilation, Compiler, sources, WebpackError, WebpackLogger} from 'webpack';
+import {sources} from 'webpack';
+import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 
 import BuildConfig from './build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
-import {buildPublicPath} from './utility';
+import {buildPublicPath, toString} from './utility';
 
 const parentModule = module;
 
@@ -117,6 +118,9 @@ class _BsiCxWebpackPlugin {
 
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    /**
+     * @type {{contentElementGroups:[{}]|undefined,website:{}|undefined}}
+     */
     let designJsonObj = this._loadModule(designJsonPath);
     let contentElementGroups = designJsonObj.contentElementGroups || [];
     let website = designJsonObj.website || {includes: {}};
@@ -141,10 +145,18 @@ class _BsiCxWebpackPlugin {
     }
   }
 
+  /**
+   * @param {{file:*}} element
+   * @private
+   */
   _handleElement(element) {
     element.file = this._handleTemplateFile(element.file, 'contentElements');
   }
 
+  /**
+   * @param {{file:*}} include
+   * @private
+   */
   _handleInclude(include) {
     include.file = this._handleTemplateFile(include.file, 'includes');
   }
@@ -204,8 +216,11 @@ class _BsiCxWebpackPlugin {
    * @returns {string[]}
    */
   _getAssetNames(nameRegEx) {
-    return Object.keys(this._compilation.assets)
-      .filter(name => nameRegEx.test(name));
+    /**
+     * @type {string[]}
+     */
+    let assetNames = Object.keys(this._compilation.assets);
+    return assetNames.filter(name => nameRegEx.test(name));
   }
 
   /**
@@ -239,7 +254,9 @@ class _BsiCxWebpackPlugin {
    */
   _loadAsset(name, scope) {
     let asset = this._compilation.getAsset(name);
-    let script = new vm.Script(asset.source.source());
+    let source = asset.source.source();
+    let sourceStr = toString(source);
+    let script = new vm.Script(sourceStr);
     let context = {self: {}};
 
     script.runInNewContext(context);
@@ -254,6 +271,7 @@ class _BsiCxWebpackPlugin {
     let code = asset.source.source();
 
     let module = new Module(modulePath, parentModule);
+    // noinspection JSUnresolvedFunction
     module.paths = Module._nodeModulePaths(moduleFolder);
     module.filename = modulePath;
 
@@ -401,11 +419,12 @@ class _BsiCxWebpackPlugin {
       );
     }
 
-    let replacement = '';
+    let replacement;
 
     if (inline) {
       let asset = this._compilation.getAsset(moduleAssetPath);
-      replacement = asset.source();
+      let source = asset.source.source();
+      replacement = toString(source);
     } else {
       replacement = buildPublicPath(this._config, moduleAssetPath);
     }
@@ -429,10 +448,12 @@ class _BsiCxWebpackPlugin {
       .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
       .map(assetPath => {
         importedModules.push(assetPath);
-
         if (inline) {
           let asset = this._compilation.getAsset(assetPath);
-          return `<script>${asset.source()}</script>`;
+          let source = asset.source.source();
+          let strSource = toString(source);
+          // noinspection JSUnresolvedVariable
+          return `<script>${strSource}</script>`;
         } else {
           let url = buildPublicPath(this._config, assetPath);
           return `<script src="${url}" defer="defer"></script>`;

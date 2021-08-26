@@ -1,5 +1,5 @@
-import DesignType, {LANDINGPAGE} from './design-type';
-import Version, {CX_22_0} from './version';
+import {DesignType, LANDINGPAGE} from './design-type';
+import {CX_22_0, Version} from './version';
 
 /**
  * The configuration object for the build of one template.
@@ -231,7 +231,7 @@ export default class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a seperate port for each template.
+   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
    *
    * @param {number} devServerPort
    * @returns {BuildConfig}
