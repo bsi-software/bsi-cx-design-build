@@ -24,6 +24,14 @@ export default class FormattedTextPart extends AbstractPart {
   }
 
   /**
+   * @param {String} label
+   * @return {FormattedTextPart}
+   */
+  withLabel(label) {
+    return /** @type {FormattedTextPart} */ super.withLabel(label);
+  }
+
+  /**
    * @param {HtmlEditorConfig} htmlEditorConfig
    * @return {FormattedTextPart}
    */

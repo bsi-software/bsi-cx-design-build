@@ -17,7 +17,8 @@ module.exports = {
       groupId: 'content',
       label: 'Inhalt',
       contentElements: [
-        require('./content-elements/content/title')
+        require('./content-elements/content/title').build(),
+        require('./content-elements/content/text').build()
       ]
     }
   ],

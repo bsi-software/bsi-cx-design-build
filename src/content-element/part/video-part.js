@@ -8,4 +8,12 @@ export default class VideoPart extends AbstractPart {
   constructor() {
     super(VIDEO);
   }
+
+  /**
+   * @param {String} label
+   * @return {VideoPart}
+   */
+  withLabel(label) {
+    return /** @type {VideoPart} */ super.withLabel(label);
+  }
 }

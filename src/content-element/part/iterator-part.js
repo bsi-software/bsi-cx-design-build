@@ -8,4 +8,12 @@ export default class IteratorPart extends AbstractPart {
   constructor() {
     super(ITERATOR);
   }
+
+  /**
+   * @param {String} label
+   * @return {IteratorPart}
+   */
+  withLabel(label) {
+    return /** @type {IteratorPart} */ super.withLabel(label);
+  }
 }

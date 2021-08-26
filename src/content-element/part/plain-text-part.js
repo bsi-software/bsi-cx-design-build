@@ -8,4 +8,12 @@ export default class PlainTextPart extends AbstractPart {
   constructor() {
     super(PLAIN_TEXT);
   }
+
+  /**
+   * @param {String} label
+   * @return {PlainTextPart}
+   */
+  withLabel(label) {
+    return /** @type {PlainTextPart} */ super.withLabel(label);
+  }
 }

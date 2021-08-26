@@ -8,4 +8,12 @@ export default class NewsSnippetsPart extends AbstractPart {
   constructor() {
     super(NEWS_SNIPPETS);
   }
+
+  /**
+   * @param {String} label
+   * @return {NewsSnippetsPart}
+   */
+  withLabel(label) {
+    return /** @type {NewsSnippetsPart} */ super.withLabel(label);
+  }
 }

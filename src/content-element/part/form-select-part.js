@@ -8,4 +8,12 @@ export default class FormSelectPart extends AbstractPart {
   constructor() {
     super(FORM_SELECT);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormSelectPart}
+   */
+  withLabel(label) {
+    return /** @type {FormSelectPart} */ super.withLabel(label);
+  }
 }

@@ -1692,6 +1692,14 @@ class PlainTextPart extends AbstractPart {
   constructor() {
     super(PLAIN_TEXT);
   }
+
+  /**
+   * @param {String} label
+   * @return {PlainTextPart}
+   */
+  withLabel(label) {
+    return /** @type {PlainTextPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/formatted-text-part.js
@@ -1718,6 +1726,14 @@ class FormattedTextPart extends AbstractPart {
    */
   get htmlEditorConfig() {
     return this._htmlEditorConfig;
+  }
+
+  /**
+   * @param {String} label
+   * @return {FormattedTextPart}
+   */
+  withLabel(label) {
+    return /** @type {FormattedTextPart} */ super.withLabel(label);
   }
 
   /**
@@ -1749,6 +1765,14 @@ class HtmlPart extends AbstractPart {
   constructor() {
     super(HTML);
   }
+
+  /**
+   * @param {String} label
+   * @return {HtmlPart}
+   */
+  withLabel(label) {
+    return /** @type {HtmlPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/video-part.js
@@ -1761,6 +1785,14 @@ class HtmlPart extends AbstractPart {
 class VideoPart extends AbstractPart {
   constructor() {
     super(VIDEO);
+  }
+
+  /**
+   * @param {String} label
+   * @return {VideoPart}
+   */
+  withLabel(label) {
+    return /** @type {VideoPart} */ super.withLabel(label);
   }
 }
 
@@ -1775,6 +1807,14 @@ class ImagePart extends AbstractPart {
   constructor() {
     super(IMAGE);
   }
+
+  /**
+   * @param {String} label
+   * @return {ImagePart}
+   */
+  withLabel(label) {
+    return /** @type {ImagePart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/background-image-part.js
@@ -1787,6 +1827,14 @@ class ImagePart extends AbstractPart {
 class BackgroundImagePart extends AbstractPart {
   constructor() {
     super(BACKGROUND_IMAGE);
+  }
+
+  /**
+   * @param {String} label
+   * @return {BackgroundImagePart}
+   */
+  withLabel(label) {
+    return /** @type {BackgroundImagePart} */ super.withLabel(label);
   }
 }
 
@@ -1801,6 +1849,14 @@ class TablePart extends AbstractPart {
   constructor() {
     super(TABLE);
   }
+
+  /**
+   * @param {String} label
+   * @return {TablePart}
+   */
+  withLabel(label) {
+    return /** @type {TablePart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/iterator-part.js
@@ -1813,6 +1869,14 @@ class TablePart extends AbstractPart {
 class IteratorPart extends AbstractPart {
   constructor() {
     super(ITERATOR);
+  }
+
+  /**
+   * @param {String} label
+   * @return {IteratorPart}
+   */
+  withLabel(label) {
+    return /** @type {IteratorPart} */ super.withLabel(label);
   }
 }
 
@@ -1827,6 +1891,14 @@ class NewsSnippetsPart extends AbstractPart {
   constructor() {
     super(NEWS_SNIPPETS);
   }
+
+  /**
+   * @param {String} label
+   * @return {NewsSnippetsPart}
+   */
+  withLabel(label) {
+    return /** @type {NewsSnippetsPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/form-part.js
@@ -1839,6 +1911,14 @@ class NewsSnippetsPart extends AbstractPart {
 class FormPart extends AbstractPart {
   constructor() {
     super(FORM);
+  }
+
+  /**
+   * @param {String} label
+   * @return {FormPart}
+   */
+  withLabel(label) {
+    return /** @type {FormPart} */ super.withLabel(label);
   }
 }
 
@@ -1853,6 +1933,14 @@ class FormFieldPart extends AbstractPart {
   constructor() {
     super(FORM_FIELD);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormFieldPart}
+   */
+  withLabel(label) {
+    return /** @type {FormFieldPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/form-checkbox-part.js
@@ -1865,6 +1953,14 @@ class FormFieldPart extends AbstractPart {
 class FormCheckboxPart extends AbstractPart {
   constructor() {
     super(FORM_CHECKBOX);
+  }
+
+  /**
+   * @param {String} label
+   * @return {FormCheckboxPart}
+   */
+  withLabel(label) {
+    return /** @type {FormCheckboxPart} */ super.withLabel(label);
   }
 }
 
@@ -1879,6 +1975,14 @@ class FormTextareaPart extends AbstractPart {
   constructor() {
     super(FORM_TEXTAREA);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormTextareaPart}
+   */
+  withLabel(label) {
+    return /** @type {FormTextareaPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/form-select-part.js
@@ -1891,6 +1995,14 @@ class FormTextareaPart extends AbstractPart {
 class FormSelectPart extends AbstractPart {
   constructor() {
     super(FORM_SELECT);
+  }
+
+  /**
+   * @param {String} label
+   * @return {FormSelectPart}
+   */
+  withLabel(label) {
+    return /** @type {FormSelectPart} */ super.withLabel(label);
   }
 }
 
@@ -1905,6 +2017,14 @@ class FormRadioPart extends AbstractPart {
   constructor() {
     super(FORM_RADIO);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormRadioPart}
+   */
+  withLabel(label) {
+    return /** @type {FormRadioPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/link-part.js
@@ -1917,6 +2037,14 @@ class FormRadioPart extends AbstractPart {
 class LinkPart extends AbstractPart {
   constructor() {
     super(LINK);
+  }
+
+  /**
+   * @param {String} label
+   * @return {LinkPart}
+   */
+  withLabel(label) {
+    return /** @type {LinkPart} */ super.withLabel(label);
   }
 }
 
@@ -1931,6 +2059,14 @@ class SocialFollowPart extends AbstractPart {
   constructor() {
     super(SOCIAL_FOLLOW);
   }
+
+  /**
+   * @param {String} label
+   * @return {SocialFollowPart}
+   */
+  withLabel(label) {
+    return /** @type {SocialFollowPart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/social-share-part.js
@@ -1944,6 +2080,14 @@ class SocialSharePart extends AbstractPart {
   constructor() {
     super(SOCIAL_SHARE);
   }
+
+  /**
+   * @param {String} label
+   * @return {SocialSharePart}
+   */
+  withLabel(label) {
+    return /** @type {SocialSharePart} */ super.withLabel(label);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/url-provider-part.js
@@ -1956,6 +2100,14 @@ class SocialSharePart extends AbstractPart {
 class UrlProviderPart extends AbstractPart {
   constructor() {
     super(URL_PROVIDER);
+  }
+
+  /**
+   * @param {String} label
+   * @return {UrlProviderPart}
+   */
+  withLabel(label) {
+    return /** @type {UrlProviderPart} */ super.withLabel(label);
   }
 }
 

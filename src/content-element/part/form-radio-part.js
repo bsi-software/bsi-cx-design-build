@@ -8,4 +8,12 @@ export default class FormRadioPart extends AbstractPart {
   constructor() {
     super(FORM_RADIO);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormRadioPart}
+   */
+  withLabel(label) {
+    return /** @type {FormRadioPart} */ super.withLabel(label);
+  }
 }

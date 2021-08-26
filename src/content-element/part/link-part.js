@@ -8,4 +8,12 @@ export default class LinkPart extends AbstractPart {
   constructor() {
     super(LINK);
   }
+
+  /**
+   * @param {String} label
+   * @return {LinkPart}
+   */
+  withLabel(label) {
+    return /** @type {LinkPart} */ super.withLabel(label);
+  }
 }

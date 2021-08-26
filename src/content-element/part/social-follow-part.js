@@ -8,4 +8,12 @@ export default class SocialFollowPart extends AbstractPart {
   constructor() {
     super(SOCIAL_FOLLOW);
   }
+
+  /**
+   * @param {String} label
+   * @return {SocialFollowPart}
+   */
+  withLabel(label) {
+    return /** @type {SocialFollowPart} */ super.withLabel(label);
+  }
 }

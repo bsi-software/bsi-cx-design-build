@@ -8,4 +8,12 @@ export default class TablePart extends AbstractPart {
   constructor() {
     super(TABLE);
   }
+
+  /**
+   * @param {String} label
+   * @return {TablePart}
+   */
+  withLabel(label) {
+    return /** @type {TablePart} */ super.withLabel(label);
+  }
 }

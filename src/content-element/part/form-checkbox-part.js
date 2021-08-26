@@ -8,4 +8,12 @@ export default class FormCheckboxPart extends AbstractPart {
   constructor() {
     super(FORM_CHECKBOX);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormCheckboxPart}
+   */
+  withLabel(label) {
+    return /** @type {FormCheckboxPart} */ super.withLabel(label);
+  }
 }

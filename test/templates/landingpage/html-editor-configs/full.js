@@ -1,5 +1,8 @@
 const {HtmlEditorConfig, EnterMode, Feature, Format, FontSizeUnit} = require('@bsi-cx/design-build');
 
+/**
+ * @type {HtmlEditorConfig}
+ */
 module.exports = new HtmlEditorConfig()
   .withIdentifier('full')
   .withFeatures(

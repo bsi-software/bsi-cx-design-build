@@ -1,5 +1,8 @@
 const {Style} = require('@bsi-cx/design-build');
 
+/**
+ * @type {Style}
+ */
 module.exports = new Style()
   .withIdentifier('background-color')
   .withLabel('Hintergrundfarbe')

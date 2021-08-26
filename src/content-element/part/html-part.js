@@ -8,4 +8,12 @@ export default class HtmlPart extends AbstractPart {
   constructor() {
     super(HTML);
   }
+
+  /**
+   * @param {String} label
+   * @return {HtmlPart}
+   */
+  withLabel(label) {
+    return /** @type {HtmlPart} */ super.withLabel(label);
+  }
 }

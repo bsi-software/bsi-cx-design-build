@@ -8,4 +8,12 @@ export default class FormFieldPart extends AbstractPart {
   constructor() {
     super(FORM_FIELD);
   }
+
+  /**
+   * @param {String} label
+   * @return {FormFieldPart}
+   */
+  withLabel(label) {
+    return /** @type {FormFieldPart} */ super.withLabel(label);
+  }
 }
