@@ -26,6 +26,7 @@ module.exports = {
     ...require('./styles/text-color')
   },
   htmlEditorConfigs: {
-    ...require('./html-editor-configs/full')
+    ...require('./html-editor-configs/full'),
+    ...require('./html-editor-configs/normal')
   }
 };

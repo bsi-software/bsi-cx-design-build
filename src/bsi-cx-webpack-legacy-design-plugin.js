@@ -153,6 +153,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let title = designJson[DesignJsonProperty.TITLE];
     let author = designJson[DesignJsonProperty.AUTHOR];
 
+    properties.appendCommentSection('Template');
+
     properties.append(LegacyDesignProperty.TEMPLATE_NAME, title);
     properties.append(LegacyDesignProperty.TEMPLATE_AUTHOR, author);
 
@@ -166,6 +168,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendStyles(designJson, properties) {
     let styleConfigs = designJson[DesignJsonProperty.STYLE_CONFIGS] || {};
+
+    properties.appendCommentSection('Content Element Styles');
+
     for (let [style, config] of Object.entries(styleConfigs)) {
       this._appendStyleConfig(style, config, properties);
     }
@@ -220,6 +225,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendHtmlEditorConfigs(designJson, properties) {
     let editorConfigs = designJson[DesignJsonProperty.HTML_EDITOR_CONFIGS] || {};
+
+    properties.appendCommentSection('HTML Editor Configs');
+
     for (let [name, config] of Object.entries(editorConfigs)) {
       this._appendHtmlEditorConfig(name, config, properties);
     }
@@ -274,6 +282,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
   _appendContentElementGroups(designJson, properties) {
     let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
 
+    properties.appendCommentSection('Content Element Groups');
+
     groups.forEach(group => this._appendContentElementGroup(group, properties));
 
     properties.appendBlank();
@@ -299,6 +309,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendContentElements(designJson, properties) {
     let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+
+    properties.appendCommentSection('Content Elements');
 
     groups.forEach(group => this._appendContentElementsFromGroup(group, properties));
   }

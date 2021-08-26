@@ -23,6 +23,21 @@ export default class JavaPropertyFileBuilder {
   }
 
   /**
+   * @param {string} section
+   * @return {JavaPropertyFileBuilder}
+   */
+  appendCommentSection(section) {
+    let border = '#'.repeat(section.length + 4);
+    let sectionComment = `# ${section} #`;
+
+    this.appendComment(border);
+    this.appendComment(sectionComment);
+    this.appendComment(border);
+
+    return this;
+  }
+
+  /**
    * @returns {JavaPropertyFileBuilder}
    */
   appendBlank() {
