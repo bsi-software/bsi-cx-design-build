@@ -1,6 +1,6 @@
-const {HtmlEditorConfigBuilder, EnterMode, Feature, FontSizeUnit} = require('@bsi-cx/design-build');
+const {HtmlEditorConfig, EnterMode, Feature, FontSizeUnit} = require('@bsi-cx/design-build');
 
-module.exports = new HtmlEditorConfigBuilder()
+module.exports = new HtmlEditorConfig()
   .withIdentifier('normal')
   .withFeatures(
     Feature.BOLD,

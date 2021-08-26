@@ -1,6 +1,6 @@
-const {StyleBuilder} = require('@bsi-cx/design-build');
+const {Style} = require('@bsi-cx/design-build');
 
-module.exports = new StyleBuilder()
+module.exports = new Style()
   .withIdentifier('text-color')
   .withLabel('Textfarbe')
   .withCssClass('Schwarz', 'black-text')

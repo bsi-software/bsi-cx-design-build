@@ -87,10 +87,10 @@ __webpack_require__.d(__webpack_exports__, {
   "Feature": () => (/* reexport */ feature_namespaceObject),
   "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
   "Format": () => (/* reexport */ format_namespaceObject),
-  "HtmlEditorConfigBuilder": () => (/* reexport */ HtmlEditorConfigBuilder),
+  "HtmlEditorConfig": () => (/* reexport */ HtmlEditorConfig),
   "Icon": () => (/* reexport */ icon_namespaceObject),
   "Part": () => (/* reexport */ part_namespaceObject),
-  "StyleBuilder": () => (/* reexport */ StyleBuilder),
+  "Style": () => (/* reexport */ Style),
   "Version": () => (/* reexport */ version_namespaceObject)
 });
 
@@ -750,7 +750,7 @@ class AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config-builder.js
+;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
 
 
 
@@ -758,7 +758,7 @@ class AbstractBuilder {
 
 
 
-class HtmlEditorConfigBuilder extends AbstractBuilder {
+class HtmlEditorConfig extends AbstractBuilder {
   constructor() {
     super();
     /**
@@ -885,7 +885,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -894,7 +894,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {Feature} features
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFeatures(...features) {
     this._features = features;
@@ -903,7 +903,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {string} textColors
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withTextColors(...textColors) {
     this._textColors = textColors;
@@ -912,7 +912,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {string} backgroundColors
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withBackgroundColors(...backgroundColors) {
     this._backgroundColors = backgroundColors;
@@ -921,7 +921,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {Format} formats
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFormats(...formats) {
     this._formats = formats;
@@ -930,7 +930,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {number} fontSizes
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizes(...fontSizes) {
     this._fontSizes = fontSizes;
@@ -939,7 +939,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {FontSizeUnit} fontSizeUnit
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = fontSizeUnit;
@@ -948,7 +948,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {number} fontSizeDefault
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizeDefault(fontSizeDefault) {
     this._fontSizeDefault = fontSizeDefault;
@@ -957,7 +957,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {number} lineHeights
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withLineHeights(...lineHeights) {
     this._lineHeights = lineHeights;
@@ -966,7 +966,7 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {EnterMode} enterMode
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withEnterMode(enterMode) {
     this._enterMode = enterMode;
@@ -992,11 +992,11 @@ class HtmlEditorConfigBuilder extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style-builder.js
+;// CONCATENATED MODULE: ./src/style/style.js
 
 
 
-class StyleBuilder extends AbstractBuilder {
+class Style extends AbstractBuilder {
   constructor() {
     super();
     this._identifier = undefined;
@@ -1027,7 +1027,7 @@ class StyleBuilder extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @returns {StyleBuilder}
+   * @returns {Style}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -1036,7 +1036,7 @@ class StyleBuilder extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @returns {StyleBuilder}
+   * @returns {Style}
    */
   withLabel(label) {
     this._label = label;
@@ -1046,7 +1046,7 @@ class StyleBuilder extends AbstractBuilder {
   /**
    * @param {string} label
    * @param {string} cssClass
-   * @returns {StyleBuilder}
+   * @returns {Style}
    */
   withCssClass(label, cssClass) {
     let style = {};
@@ -1456,7 +1456,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @return {StyleBuilder[]|undefined}
+   * @return {Style[]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
@@ -1513,7 +1513,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {StyleBuilder} styleConfigs
+   * @param {Style} styleConfigs
    * @return {ContentElement}
    * @since 1.1
    */

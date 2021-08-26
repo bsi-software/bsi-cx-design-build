@@ -1,7 +1,7 @@
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 
-export default class StyleBuilder extends AbstractBuilder {
+export default class Style extends AbstractBuilder {
   constructor() {
     super();
     this._identifier = undefined;
@@ -32,7 +32,7 @@ export default class StyleBuilder extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @returns {StyleBuilder}
+   * @returns {Style}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -41,7 +41,7 @@ export default class StyleBuilder extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @returns {StyleBuilder}
+   * @returns {Style}
    */
   withLabel(label) {
     this._label = label;
@@ -51,7 +51,7 @@ export default class StyleBuilder extends AbstractBuilder {
   /**
    * @param {string} label
    * @param {string} cssClass
-   * @returns {StyleBuilder}
+   * @returns {Style}
    */
   withCssClass(label, cssClass) {
     let style = {};

@@ -1319,8 +1319,8 @@ declare module "src/abstract-builder" {
         protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
     }
 }
-declare module "src/html-editor-config/html-editor-config-builder" {
-    export default class HtmlEditorConfigBuilder extends AbstractBuilder {
+declare module "src/html-editor-config/html-editor-config" {
+    export default class HtmlEditorConfig extends AbstractBuilder {
         /**
          * @type {string|undefined}
          * @private
@@ -1413,54 +1413,54 @@ declare module "src/html-editor-config/html-editor-config-builder" {
         get enterMode(): EnterMode;
         /**
          * @param {string} identifier
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withIdentifier(identifier: string): HtmlEditorConfigBuilder;
+        withIdentifier(identifier: string): HtmlEditorConfig;
         /**
          * @param {Feature} features
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withFeatures(...features: Feature): HtmlEditorConfigBuilder;
+        withFeatures(...features: Feature): HtmlEditorConfig;
         /**
          * @param {string} textColors
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withTextColors(...textColors: string): HtmlEditorConfigBuilder;
+        withTextColors(...textColors: string): HtmlEditorConfig;
         /**
          * @param {string} backgroundColors
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withBackgroundColors(...backgroundColors: string): HtmlEditorConfigBuilder;
+        withBackgroundColors(...backgroundColors: string): HtmlEditorConfig;
         /**
          * @param {Format} formats
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withFormats(...formats: Format): HtmlEditorConfigBuilder;
+        withFormats(...formats: Format): HtmlEditorConfig;
         /**
          * @param {number} fontSizes
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withFontSizes(...fontSizes: number): HtmlEditorConfigBuilder;
+        withFontSizes(...fontSizes: number): HtmlEditorConfig;
         /**
          * @param {FontSizeUnit} fontSizeUnit
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfigBuilder;
+        withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
         /**
          * @param {number} fontSizeDefault
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfigBuilder;
+        withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
         /**
          * @param {number} lineHeights
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withLineHeights(...lineHeights: number): HtmlEditorConfigBuilder;
+        withLineHeights(...lineHeights: number): HtmlEditorConfig;
         /**
          * @param {EnterMode} enterMode
-         * @returns {HtmlEditorConfigBuilder}
+         * @returns {HtmlEditorConfig}
          */
-        withEnterMode(enterMode: EnterMode): HtmlEditorConfigBuilder;
+        withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Feature } from "src/html-editor-config/feature";
@@ -1468,8 +1468,8 @@ declare module "src/html-editor-config/html-editor-config-builder" {
     import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
     import { EnterMode } from "src/html-editor-config/enter-mode";
 }
-declare module "src/style/style-builder" {
-    export default class StyleBuilder extends AbstractBuilder {
+declare module "src/style/style" {
+    export default class Style extends AbstractBuilder {
         _identifier: string;
         _label: string;
         _cssClasses: any[];
@@ -1490,20 +1490,20 @@ declare module "src/style/style-builder" {
         }];
         /**
          * @param {string} identifier
-         * @returns {StyleBuilder}
+         * @returns {Style}
          */
-        withIdentifier(identifier: string): StyleBuilder;
+        withIdentifier(identifier: string): Style;
         /**
          * @param {string} label
-         * @returns {StyleBuilder}
+         * @returns {Style}
          */
-        withLabel(label: string): StyleBuilder;
+        withLabel(label: string): Style;
         /**
          * @param {string} label
          * @param {string} cssClass
-         * @returns {StyleBuilder}
+         * @returns {Style}
          */
-        withCssClass(label: string, cssClass: string): StyleBuilder;
+        withCssClass(label: string, cssClass: string): Style;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -1849,7 +1849,7 @@ declare module "src/content-element/content-element" {
         _file: any;
         _icon: Icon;
         _hidden: boolean;
-        _styleConfigs: StyleBuilder;
+        _styleConfigs: Style;
         /**
          * @return {string|undefined}
          */
@@ -1867,9 +1867,9 @@ declare module "src/content-element/content-element" {
          */
         get icon(): Icon;
         /**
-         * @return {StyleBuilder[]|undefined}
+         * @return {Style[]|undefined}
          */
-        get styleConfigs(): StyleBuilder[];
+        get styleConfigs(): Style[];
         /**
          * @param {string} elementId
          * @return {ContentElement}
@@ -1901,15 +1901,15 @@ declare module "src/content-element/content-element" {
          */
         withHidden(hidden: boolean): ContentElement;
         /**
-         * @param {StyleBuilder} styleConfigs
+         * @param {Style} styleConfigs
          * @return {ContentElement}
          * @since 1.1
          */
-        withStyleConfig(...styleConfigs: StyleBuilder): ContentElement;
+        withStyleConfig(...styleConfigs: Style): ContentElement;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Icon } from "src/content-element/icon";
-    import StyleBuilder from "src/style/style-builder";
+    import Style from "src/style/style";
 }
 declare module "export/browser" {
     import * as Version from "src/version";
@@ -1918,12 +1918,12 @@ declare module "export/browser" {
     import * as EnterMode from "src/html-editor-config/enter-mode";
     import * as FontSizeUnit from "src/html-editor-config/font-size-unit";
     import * as Format from "src/html-editor-config/format";
-    import HtmlEditorConfigBuilder from "src/html-editor-config/html-editor-config-builder";
-    import StyleBuilder from "src/style/style-builder";
+    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
+    import Style from "src/style/style";
     import * as Part from "src/content-element/part";
     import * as Icon from "src/content-element/icon";
     import ContentElement from "src/content-element/content-element";
-    export { Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfigBuilder, StyleBuilder, Part, Icon, ContentElement };
+    export { Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Part, Icon, ContentElement };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

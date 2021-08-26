@@ -1,5 +1,5 @@
 import AbstractBuilder from '../abstract-builder';
-import StyleBuilder from '../style/style-builder';
+import Style from '../style/style';
 import {Icon} from './icon';
 
 export default class ContentElement extends AbstractBuilder {
@@ -42,7 +42,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @return {StyleBuilder[]|undefined}
+   * @return {Style[]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
@@ -99,7 +99,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {StyleBuilder} styleConfigs
+   * @param {Style} styleConfigs
    * @return {ContentElement}
    * @since 1.1
    */

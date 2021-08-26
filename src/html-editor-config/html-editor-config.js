@@ -5,7 +5,7 @@ import {FontSizeUnit} from './font-size-unit';
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 
-export default class HtmlEditorConfigBuilder extends AbstractBuilder {
+export default class HtmlEditorConfig extends AbstractBuilder {
   constructor() {
     super();
     /**
@@ -132,7 +132,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -141,7 +141,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {Feature} features
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFeatures(...features) {
     this._features = features;
@@ -150,7 +150,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {string} textColors
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withTextColors(...textColors) {
     this._textColors = textColors;
@@ -159,7 +159,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {string} backgroundColors
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withBackgroundColors(...backgroundColors) {
     this._backgroundColors = backgroundColors;
@@ -168,7 +168,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {Format} formats
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFormats(...formats) {
     this._formats = formats;
@@ -177,7 +177,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {number} fontSizes
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizes(...fontSizes) {
     this._fontSizes = fontSizes;
@@ -186,7 +186,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {FontSizeUnit} fontSizeUnit
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = fontSizeUnit;
@@ -195,7 +195,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {number} fontSizeDefault
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizeDefault(fontSizeDefault) {
     this._fontSizeDefault = fontSizeDefault;
@@ -204,7 +204,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {number} lineHeights
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withLineHeights(...lineHeights) {
     this._lineHeights = lineHeights;
@@ -213,7 +213,7 @@ export default class HtmlEditorConfigBuilder extends AbstractBuilder {
 
   /**
    * @param {EnterMode} enterMode
-   * @returns {HtmlEditorConfigBuilder}
+   * @returns {HtmlEditorConfig}
    */
   withEnterMode(enterMode) {
     this._enterMode = enterMode;
