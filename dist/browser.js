@@ -423,11 +423,39 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ELEMENT_ID = 'elementId';
+  /**
+   * @type {string}
+   */
   static FILE = 'file';
   /**
    * @type {string}
    */
+  static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static PARTS = 'parts';
+  /**
+   * @type {string}
+   */
+  static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static DESCRIPTION = 'description';
+  /**
+   * @type {string}
+   */
+  static HIDDEN = 'hidden';
   /**
    * @type {string}
    */

@@ -16,7 +16,7 @@ export default class LegacyDesignProperty {
    * @type {string}
    * @private
    */
-  static _description = 'description';
+  static _DESCRIPTION = 'description';
   /**
    * @type {string}
    * @private
@@ -37,6 +37,11 @@ export default class LegacyDesignProperty {
    * @private
    */
   static _ICON = 'icon';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _STYLES = 'styles';
   /**
    * @type {string}
    * @private
@@ -104,6 +109,68 @@ export default class LegacyDesignProperty {
    */
   static getContentElementGroupLabel(group) {
     return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementLabel(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementDescription(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._DESCRIPTION;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementIcon(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._ICON;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementStyles(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._STYLES;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static getContentElementPartLabel(element, part, index) {
+    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static getContentElementPartHtmlEditorConfig(element, part, index) {
+    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._HTML_EDITOR_CONFIG;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static _getContentElementPart(element, part, index) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._PARTS + '.' + part + '[' + index + ']';
   }
 
   /**

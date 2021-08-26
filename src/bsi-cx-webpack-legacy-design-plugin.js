@@ -4,7 +4,7 @@ import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 import BuildConfig from './build-config';
 import File from './file';
 import JavaPropertyFileBuilder from './java-property-file-builder';
-import {toString} from './utility';
+import {scalarArrayToList, scalarIdentity, toString} from './utility';
 import LegacyDesignProperty from './legacy-design-property';
 import DesignJsonProperty from './design-json-property';
 
@@ -136,6 +136,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
     this._appendStyles(designJson, properties);
     this._appendHtmlEditorConfigs(designJson, properties);
     this._appendContentElementGroups(designJson, properties);
+    this._appendContentElements(designJson, properties);
 
     let code = properties.build();
     let source = new sources.RawSource(code);
@@ -231,26 +232,15 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendHtmlEditorConfig(name, config, properties) {
-    /**
-     * @param {[string|number]} arr
-     * @return {string}
-     */
-    let arrayValueExtractor = arr => arr.join(',');
-    /**
-     * @param {string|number} v
-     * @return {string|number}
-     */
-    let scalarValueExtractor = v => v;
-
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, scalarValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, scalarValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, scalarValueExtractor, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, scalarIdentity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, scalarIdentity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, scalarIdentity, properties);
 
     properties.appendBlank();
   }
@@ -260,11 +250,11 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @param {{}} config
    * @param {string} property
    * @param {function(string):string} labelGenerator
-   * @param {function(*):string} valueExtractor
+   * @param {function(*):string|number} valueExtractor
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
-  _appendHtmlEditorConfigIfNotUndefined(configName, config, property, labelGenerator, valueExtractor, properties) {
+  _appendHtmlEditorConfigIfDefined(configName, config, property, labelGenerator, valueExtractor, properties) {
     if (typeof config[property] === 'undefined') {
       return;
     }
@@ -298,6 +288,109 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let groupId = group[DesignJsonProperty.GROUP_ID];
     let key = LegacyDesignProperty.getContentElementGroupLabel(groupId);
     let value = group[DesignJsonProperty.LABEL];
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElements(designJson, properties) {
+    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+
+    groups.forEach(group => this._appendContentElementsFromGroup(group, properties));
+  }
+
+  /**
+   * @param {{}} group
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementsFromGroup(group, properties) {
+    let elements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+
+    elements.forEach(element => this._appendContentElement(element, properties));
+  }
+
+  /**
+   * @param {{}} element
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElement(element, properties) {
+    let elementId = element[DesignJsonProperty.ELEMENT_ID];
+    let parts = element[DesignJsonProperty.PARTS];
+    let indexMap = new Map();
+
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
+
+    parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} element
+   * @param {string} elementId
+   * @param {string} property
+   * @param {function(string):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPropertyIfDefined(element, elementId, property, labelGenerator, valueExtractor, properties) {
+    if (typeof element[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(elementId);
+    let rawValue = element[property];
+    let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} part
+   * @param {Map<string,number>} indexMap
+   * @param {string} elementId
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPart(part, indexMap, elementId, properties) {
+    let type = part[DesignJsonProperty.PART_ID];
+    let index = indexMap.get(type) || 0;
+
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, scalarIdentity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, scalarIdentity, properties);
+
+    indexMap.set(type, index + 1);
+  }
+
+  /**
+   * @param {{}} part
+   * @param {string} property
+   * @param {string} elementId
+   * @param {string} type
+   * @param {number} index
+   * @param {function(string,string,number):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPartPropertyIfDefined(part, property, elementId, type, index, labelGenerator, valueExtractor, properties) {
+    if (typeof part[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(elementId, type, index);
+    let rawValue = part[property];
+    let value = valueExtractor(rawValue);
 
     properties.append(key, value);
   }

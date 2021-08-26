@@ -170,7 +170,7 @@ class LegacyDesignProperty {
    * @type {string}
    * @private
    */
-  static _description = 'description';
+  static _DESCRIPTION = 'description';
   /**
    * @type {string}
    * @private
@@ -191,6 +191,11 @@ class LegacyDesignProperty {
    * @private
    */
   static _ICON = 'icon';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _STYLES = 'styles';
   /**
    * @type {string}
    * @private
@@ -258,6 +263,68 @@ class LegacyDesignProperty {
    */
   static getContentElementGroupLabel(group) {
     return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementLabel(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementDescription(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._DESCRIPTION;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementIcon(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._ICON;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementStyles(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._STYLES;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static getContentElementPartLabel(element, part, index) {
+    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static getContentElementPartHtmlEditorConfig(element, part, index) {
+    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._HTML_EDITOR_CONFIG;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static _getContentElementPart(element, part, index) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._PARTS + '.' + part + '[' + index + ']';
   }
 
   /**
@@ -375,11 +442,39 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ELEMENT_ID = 'elementId';
+  /**
+   * @type {string}
+   */
   static FILE = 'file';
   /**
    * @type {string}
    */
+  static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static PARTS = 'parts';
+  /**
+   * @type {string}
+   */
+  static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static DESCRIPTION = 'description';
+  /**
+   * @type {string}
+   */
+  static HIDDEN = 'hidden';
   /**
    * @type {string}
    */
@@ -573,6 +668,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
     this._appendStyles(designJson, properties);
     this._appendHtmlEditorConfigs(designJson, properties);
     this._appendContentElementGroups(designJson, properties);
+    this._appendContentElements(designJson, properties);
 
     let code = properties.build();
     let source = new external_webpack_.sources.RawSource(code);
@@ -668,26 +764,15 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendHtmlEditorConfig(name, config, properties) {
-    /**
-     * @param {[string|number]} arr
-     * @return {string}
-     */
-    let arrayValueExtractor = arr => arr.join(',');
-    /**
-     * @param {string|number} v
-     * @return {string|number}
-     */
-    let scalarValueExtractor = v => v;
-
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, scalarValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, scalarValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, arrayValueExtractor, properties);
-    this._appendHtmlEditorConfigIfNotUndefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, scalarValueExtractor, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, utility/* scalarArrayToList */.Ot, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, utility/* scalarArrayToList */.Ot, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, utility/* scalarArrayToList */.Ot, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, utility/* scalarArrayToList */.Ot, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, utility/* scalarArrayToList */.Ot, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, utility/* scalarIdentity */.n6, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, utility/* scalarIdentity */.n6, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, utility/* scalarArrayToList */.Ot, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, utility/* scalarIdentity */.n6, properties);
 
     properties.appendBlank();
   }
@@ -697,11 +782,11 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @param {{}} config
    * @param {string} property
    * @param {function(string):string} labelGenerator
-   * @param {function(*):string} valueExtractor
+   * @param {function(*):string|number} valueExtractor
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
-  _appendHtmlEditorConfigIfNotUndefined(configName, config, property, labelGenerator, valueExtractor, properties) {
+  _appendHtmlEditorConfigIfDefined(configName, config, property, labelGenerator, valueExtractor, properties) {
     if (typeof config[property] === 'undefined') {
       return;
     }
@@ -735,6 +820,109 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let groupId = group[DesignJsonProperty.GROUP_ID];
     let key = LegacyDesignProperty.getContentElementGroupLabel(groupId);
     let value = group[DesignJsonProperty.LABEL];
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElements(designJson, properties) {
+    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+
+    groups.forEach(group => this._appendContentElementsFromGroup(group, properties));
+  }
+
+  /**
+   * @param {{}} group
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementsFromGroup(group, properties) {
+    let elements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+
+    elements.forEach(element => this._appendContentElement(element, properties));
+  }
+
+  /**
+   * @param {{}} element
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElement(element, properties) {
+    let elementId = element[DesignJsonProperty.ELEMENT_ID];
+    let parts = element[DesignJsonProperty.PARTS];
+    let indexMap = new Map();
+
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, utility/* scalarIdentity */.n6, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, utility/* scalarIdentity */.n6, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, utility/* scalarIdentity */.n6, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, utility/* scalarArrayToList */.Ot, properties);
+
+    parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} element
+   * @param {string} elementId
+   * @param {string} property
+   * @param {function(string):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPropertyIfDefined(element, elementId, property, labelGenerator, valueExtractor, properties) {
+    if (typeof element[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(elementId);
+    let rawValue = element[property];
+    let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} part
+   * @param {Map<string,number>} indexMap
+   * @param {string} elementId
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPart(part, indexMap, elementId, properties) {
+    let type = part[DesignJsonProperty.PART_ID];
+    let index = indexMap.get(type) || 0;
+
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, utility/* scalarIdentity */.n6, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, utility/* scalarIdentity */.n6, properties);
+
+    indexMap.set(type, index + 1);
+  }
+
+  /**
+   * @param {{}} part
+   * @param {string} property
+   * @param {string} elementId
+   * @param {string} type
+   * @param {number} index
+   * @param {function(string,string,number):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPartPropertyIfDefined(part, property, elementId, type, index, labelGenerator, valueExtractor, properties) {
+    if (typeof part[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(elementId, type, index);
+    let rawValue = part[property];
+    let value = valueExtractor(rawValue);
 
     properties.append(key, value);
   }
@@ -2525,7 +2713,9 @@ const WEBSITE = new DesignType('website');
 /* harmony export */   "BA": () => (/* binding */ StaticJavaScriptCondition),
 /* harmony export */   "ur": () => (/* binding */ getZipArchiveName),
 /* harmony export */   "YV": () => (/* binding */ buildPublicPath),
-/* harmony export */   "BB": () => (/* binding */ toString)
+/* harmony export */   "BB": () => (/* binding */ toString),
+/* harmony export */   "Ot": () => (/* binding */ scalarArrayToList),
+/* harmony export */   "n6": () => (/* binding */ scalarIdentity)
 /* harmony export */ });
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(622);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
@@ -2607,6 +2797,22 @@ function buildPublicPath(config, suffix) {
  */
 function toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
+}
+
+/**
+ * @param {[string|number]} arr
+ * @return {string}
+ */
+function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @param {string|number} v
+ * @return {string|number}
+ */
+function scalarIdentity(v) {
+  return v;
 }
 
 

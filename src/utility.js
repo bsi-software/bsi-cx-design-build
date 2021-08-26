@@ -74,3 +74,19 @@ export function buildPublicPath(config, suffix) {
 export function toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
 }
+
+/**
+ * @param {[string|number]} arr
+ * @return {string}
+ */
+export function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @param {string|number} v
+ * @return {string|number}
+ */
+export function scalarIdentity(v) {
+  return v;
+}
