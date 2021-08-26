@@ -1914,7 +1914,7 @@ declare module "src/content-element/content-element" {
          */
         private _file;
         /**
-         * @type {string|undefined}
+         * @type {Icon|undefined}
          * @private
          */
         private _icon;

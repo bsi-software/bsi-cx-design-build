@@ -1518,7 +1518,7 @@ class ContentElement extends AbstractBuilder {
      */
     this._file = undefined;
     /**
-     * @type {string|undefined}
+     * @type {Icon|undefined}
      * @private
      */
     this._icon = undefined;
