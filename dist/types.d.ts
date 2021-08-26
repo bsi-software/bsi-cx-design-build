@@ -375,10 +375,20 @@ declare module "src/utility" {
      */
     export function scalarArrayToList(arr: [string | number]): string;
     /**
-     * @param {string|number} v
-     * @return {string|number}
+     * @param {*} v
+     * @return {*}
      */
-    export function scalarIdentity(v: string | number): string | number;
+    export function identity(v: any): any;
+    /**
+     * @param {string|number|boolean} v
+     * @return {string|number|boolean}
+     */
+    export function scalarIdentity(v: string | number | boolean): string | number | boolean;
+    /**
+     * @param {AbstractConstant} constant
+     * @return {string}
+     */
+    export function constantObjectValue(constant: AbstractConstant): string;
     export class StaticJavaScriptCondition {
         /**
          * @type {RegExp}
@@ -398,6 +408,7 @@ declare module "src/utility" {
         static test(root: string, file: string): boolean;
     }
     import BuildConfig from "src/build-config";
+    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
@@ -1096,6 +1107,155 @@ declare module "export/main" {
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
     export { Version, DesignType, BuildConfig, WebpackConfigBuilder, BsiCxWebpackPlugin, BsiCxWebpackZipHashPlugin, BsiCxWebpackLegacyDesignPlugin };
 }
+declare module "src/abstract-builder" {
+    export default class AbstractBuilder {
+        /**
+         * @return {{}}
+         */
+        build(): {};
+        /**
+         * @param {string} property
+         * @param {{}} targetObj
+         * @param {function} extractFunc
+         * @protected
+         */
+        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
+    }
+}
+declare module "src/content-element/part/part" {
+    export class Part extends AbstractConstant {
+    }
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const PLAIN_TEXT: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORMATTED_TEXT: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const HTML: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const VIDEO: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const IMAGE: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const BACKGROUND_IMAGE: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const TABLE: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const ITERATOR: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const NEWS_SNIPPETS: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_FIELD: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_CHECKBOX: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_TEXTAREA: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_SELECT: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const FORM_RADIO: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const LINK: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const SOCIAL_FOLLOW: Part;
+    /**
+     * @type {Part}
+     * @since 1.0
+     */
+    export const SOCIAL_SHARE: Part;
+    /**
+     * @type {Part}
+     * @since 22.0
+     */
+    export const URL_PROVIDER: Part;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/content-element/part/abstract-part" {
+    export default class AbstractPart extends AbstractBuilder {
+        /**
+         * @param {Part} partId
+         */
+        constructor(partId: Part);
+        /**
+         * @type {Part}
+         * @private
+         */
+        private _partId;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @return {Part}
+         */
+        get partId(): Part;
+        /**
+         * @return {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @param {string} label
+         * @return {AbstractPart}
+         * @since 1.0
+         */
+        withLabel(label: string): AbstractPart;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import { Part } from "src/content-element/part/part";
+}
 declare module "src/html-editor-config/feature" {
     export class Feature extends AbstractConstant {
     }
@@ -1304,21 +1464,6 @@ declare module "src/html-editor-config/format" {
     export const PRE: Format;
     import AbstractConstant from "src/abstract-constant";
 }
-declare module "src/abstract-builder" {
-    export default class AbstractBuilder {
-        /**
-         * @return {{}}
-         */
-        build(): {};
-        /**
-         * @param {string} property
-         * @param {{}} targetObj
-         * @param {function} extractFunc
-         * @protected
-         */
-        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
-    }
-}
 declare module "src/html-editor-config/html-editor-config" {
     export default class HtmlEditorConfig extends AbstractBuilder {
         /**
@@ -1469,6 +1614,9 @@ declare module "src/html-editor-config/html-editor-config" {
     import { EnterMode } from "src/html-editor-config/enter-mode";
 }
 declare module "src/style/style" {
+    /**
+     * @since 1.1
+     */
     export default class Style extends AbstractBuilder {
         _identifier: string;
         _label: string;
@@ -1506,106 +1654,6 @@ declare module "src/style/style" {
         withCssClass(label: string, cssClass: string): Style;
     }
     import AbstractBuilder from "src/abstract-builder";
-}
-declare module "src/content-element/part" {
-    export class Part extends AbstractConstant {
-    }
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const PLAIN_TEXT: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORMATTED_TEXT: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const HTML: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const VIDEO: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const IMAGE: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const BACKGROUND_IMAGE: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const TABLE: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const ITERATOR: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const NEWS_SNIPPETS: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORM: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORM_FIELD: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORM_CHECKBOX: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORM_TEXTAREA: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORM_SELECT: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const FORM_RADIO: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const LINK: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const SOCIAL_FOLLOW: Part;
-    /**
-     * @type {Part}
-     * @since 1.0
-     */
-    export const SOCIAL_SHARE: Part;
-    /**
-     * @type {Part}
-     * @since 22.0
-     */
-    export const URL_PROVIDER: Part;
-    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/content-element/icon" {
     export class Icon extends AbstractConstant {
@@ -1844,12 +1892,46 @@ declare module "src/content-element/icon" {
 }
 declare module "src/content-element/content-element" {
     export default class ContentElement extends AbstractBuilder {
-        _elementId: string;
-        _label: string;
-        _file: any;
-        _icon: Icon;
-        _hidden: boolean;
-        _styleConfigs: Style;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _elementId;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _description;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _file;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _icon;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _hidden;
+        /**
+         * @type {[Style]|undefined}
+         * @private
+         */
+        private _styleConfigs;
+        /**
+         * @type {[AbstractPart]|undefined}
+         * @private
+         */
+        private _parts;
         /**
          * @return {string|undefined}
          */
@@ -1859,6 +1941,10 @@ declare module "src/content-element/content-element" {
          */
         get label(): string;
         /**
+         * @return {string|undefined}
+         */
+        get description(): string;
+        /**
          * @return {{}|undefined}
          */
         get file(): {};
@@ -1867,9 +1953,17 @@ declare module "src/content-element/content-element" {
          */
         get icon(): Icon;
         /**
+         * @return {boolean|undefined}
+         */
+        get hidden(): boolean;
+        /**
          * @return {Style[]|undefined}
          */
         get styleConfigs(): Style[];
+        /**
+         * @return {AbstractPart[]|undefined}
+         */
+        get parts(): AbstractPart[];
         /**
          * @param {string} elementId
          * @return {ContentElement}
@@ -1905,13 +1999,208 @@ declare module "src/content-element/content-element" {
          * @return {ContentElement}
          * @since 1.1
          */
-        withStyleConfig(...styleConfigs: Style): ContentElement;
+        withStyleConfigs(...styleConfigs: Style): ContentElement;
+        /**
+         * @param {AbstractPart} parts
+         * @return {ContentElement}
+         * @since 1.0
+         */
+        withParts(...parts: AbstractPart): ContentElement;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Icon } from "src/content-element/icon";
     import Style from "src/style/style";
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/plain-text-part" {
+    /**
+     * @since 1.0
+     */
+    export default class PlainTextPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/formatted-text-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormattedTextPart extends AbstractPart {
+        constructor();
+        /**
+         * @type {HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
+         * @return {HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): HtmlEditorConfig;
+        /**
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @return {FormattedTextPart}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
+}
+declare module "src/content-element/part/html-part" {
+    /**
+     * @since 1.0
+     */
+    export default class HtmlPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/video-part" {
+    /**
+     * @since 1.0
+     */
+    export default class VideoPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/image-part" {
+    /**
+     * @since 1.0
+     */
+    export default class ImagePart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/background-image-part" {
+    /**
+     * @since 1.0
+     */
+    export default class BackgroundImagePart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/table-part" {
+    /**
+     * @since 1.0
+     */
+    export default class TablePart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/iterator-part" {
+    /**
+     * @since 1.0
+     */
+    export default class IteratorPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/news-snippets-part" {
+    /**
+     * @since 1.0
+     */
+    export default class NewsSnippetsPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-field-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormFieldPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-checkbox-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormCheckboxPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-textarea-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormTextareaPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-select-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormSelectPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-radio-part" {
+    /**
+     * @since 1.0
+     */
+    export default class FormRadioPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/link-part" {
+    /**
+     * @since 1.0
+     */
+    export default class LinkPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/social-follow-part" {
+    /**
+     * @since 1.0
+     */
+    export default class SocialFollowPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/social-share-part" {
+    /**
+     * @since 1.0
+     */
+    export default class SocialSharePart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/url-provider-part" {
+    /**
+     * @since 22.0
+     */
+    export default class UrlProviderPart extends AbstractPart {
+        constructor();
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
 }
 declare module "export/browser" {
+    import AbstractBuilder from "src/abstract-builder";
+    import AbstractPart from "src/content-element/part/abstract-part";
     import * as Version from "src/version";
     import * as DesignType from "src/design-type";
     import * as Feature from "src/html-editor-config/feature";
@@ -1920,10 +2209,29 @@ declare module "export/browser" {
     import * as Format from "src/html-editor-config/format";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
-    import * as Part from "src/content-element/part";
     import * as Icon from "src/content-element/icon";
     import ContentElement from "src/content-element/content-element";
-    export { Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Part, Icon, ContentElement };
+    import * as Part from "src/content-element/part/part";
+    import PlainTextPart from "src/content-element/part/plain-text-part";
+    import FormattedTextPart from "src/content-element/part/formatted-text-part";
+    import HtmlPart from "src/content-element/part/html-part";
+    import VideoPart from "src/content-element/part/video-part";
+    import ImagePart from "src/content-element/part/image-part";
+    import BackgroundImagePart from "src/content-element/part/background-image-part";
+    import TablePart from "src/content-element/part/table-part";
+    import IteratorPart from "src/content-element/part/iterator-part";
+    import NewsSnippetsPart from "src/content-element/part/news-snippets-part";
+    import FormPart from "src/content-element/part/form-part";
+    import FormFieldPart from "src/content-element/part/form-field-part";
+    import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
+    import FormTextareaPart from "src/content-element/part/form-textarea-part";
+    import FormSelectPart from "src/content-element/part/form-select-part";
+    import FormRadioPart from "src/content-element/part/form-radio-part";
+    import LinkPart from "src/content-element/part/link-part";
+    import SocialFollowPart from "src/content-element/part/social-follow-part";
+    import SocialSharePart from "src/content-element/part/social-share-part";
+    import UrlProviderPart from "src/content-element/part/url-provider-part";
+    export { AbstractBuilder, AbstractPart, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

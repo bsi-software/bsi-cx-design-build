@@ -81,27 +81,74 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
+  "AbstractBuilder": () => (/* reexport */ AbstractBuilder),
+  "AbstractPart": () => (/* reexport */ AbstractPart),
+  "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
   "ContentElement": () => (/* reexport */ ContentElement),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
   "Feature": () => (/* reexport */ feature_namespaceObject),
   "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
+  "FormCheckboxPart": () => (/* reexport */ FormCheckboxPart),
+  "FormFieldPart": () => (/* reexport */ FormFieldPart),
+  "FormPart": () => (/* reexport */ FormPart),
+  "FormRadioPart": () => (/* reexport */ FormRadioPart),
+  "FormSelectPart": () => (/* reexport */ FormSelectPart),
+  "FormTextareaPart": () => (/* reexport */ FormTextareaPart),
   "Format": () => (/* reexport */ format_namespaceObject),
+  "FormattedTextPart": () => (/* reexport */ FormattedTextPart),
   "HtmlEditorConfig": () => (/* reexport */ HtmlEditorConfig),
+  "HtmlPart": () => (/* reexport */ HtmlPart),
   "Icon": () => (/* reexport */ icon_namespaceObject),
+  "ImagePart": () => (/* reexport */ ImagePart),
+  "IteratorPart": () => (/* reexport */ IteratorPart),
+  "LinkPart": () => (/* reexport */ LinkPart),
+  "NewsSnippetsPart": () => (/* reexport */ NewsSnippetsPart),
   "Part": () => (/* reexport */ part_namespaceObject),
+  "PlainTextPart": () => (/* reexport */ PlainTextPart),
+  "SocialFollowPart": () => (/* reexport */ SocialFollowPart),
+  "SocialSharePart": () => (/* reexport */ SocialSharePart),
   "Style": () => (/* reexport */ Style),
-  "Version": () => (/* reexport */ version_namespaceObject)
+  "TablePart": () => (/* reexport */ TablePart),
+  "UrlProviderPart": () => (/* reexport */ UrlProviderPart),
+  "Version": () => (/* reexport */ version_namespaceObject),
+  "VideoPart": () => (/* reexport */ VideoPart)
+});
+
+// NAMESPACE OBJECT: ./src/content-element/part/part.js
+var part_namespaceObject = {};
+__webpack_require__.r(part_namespaceObject);
+__webpack_require__.d(part_namespaceObject, {
+  "BACKGROUND_IMAGE": () => (BACKGROUND_IMAGE),
+  "FORM": () => (FORM),
+  "FORMATTED_TEXT": () => (FORMATTED_TEXT),
+  "FORM_CHECKBOX": () => (FORM_CHECKBOX),
+  "FORM_FIELD": () => (FORM_FIELD),
+  "FORM_RADIO": () => (FORM_RADIO),
+  "FORM_SELECT": () => (FORM_SELECT),
+  "FORM_TEXTAREA": () => (FORM_TEXTAREA),
+  "HTML": () => (HTML),
+  "IMAGE": () => (IMAGE),
+  "ITERATOR": () => (ITERATOR),
+  "LINK": () => (LINK),
+  "NEWS_SNIPPETS": () => (NEWS_SNIPPETS),
+  "PLAIN_TEXT": () => (PLAIN_TEXT),
+  "Part": () => (Part),
+  "SOCIAL_FOLLOW": () => (SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (SOCIAL_SHARE),
+  "TABLE": () => (TABLE),
+  "URL_PROVIDER": () => (URL_PROVIDER),
+  "VIDEO": () => (VIDEO)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  "DesignType": () => (DesignType),
+  "DesignType": () => (design_type_DesignType),
   "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (LANDINGPAGE),
-  "WEBSITE": () => (WEBSITE)
+  "LANDINGPAGE": () => (design_type_LANDINGPAGE),
+  "WEBSITE": () => (design_type_WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
@@ -109,11 +156,11 @@ var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
   "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (CX_22_0),
+  "CX_22_0": () => (version_CX_22_0),
   "STUDIO_1_0": () => (STUDIO_1_0),
   "STUDIO_1_1": () => (STUDIO_1_1),
   "STUDIO_1_2": () => (STUDIO_1_2),
-  "Version": () => (Version)
+  "Version": () => (version_Version)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -134,7 +181,7 @@ __webpack_require__.d(feature_namespaceObject, {
   "FULLSCREEN": () => (FULLSCREEN),
   "Feature": () => (Feature),
   "HELP": () => (HELP),
-  "HTML": () => (HTML),
+  "HTML": () => (feature_HTML),
   "INDENT": () => (INDENT),
   "INSERT_LINK": () => (INSERT_LINK),
   "ITALIC": () => (ITALIC),
@@ -191,32 +238,6 @@ __webpack_require__.d(format_namespaceObject, {
   "PRE": () => (PRE)
 });
 
-// NAMESPACE OBJECT: ./src/content-element/part.js
-var part_namespaceObject = {};
-__webpack_require__.r(part_namespaceObject);
-__webpack_require__.d(part_namespaceObject, {
-  "BACKGROUND_IMAGE": () => (BACKGROUND_IMAGE),
-  "FORM": () => (FORM),
-  "FORMATTED_TEXT": () => (FORMATTED_TEXT),
-  "FORM_CHECKBOX": () => (FORM_CHECKBOX),
-  "FORM_FIELD": () => (FORM_FIELD),
-  "FORM_RADIO": () => (FORM_RADIO),
-  "FORM_SELECT": () => (FORM_SELECT),
-  "FORM_TEXTAREA": () => (FORM_TEXTAREA),
-  "HTML": () => (part_HTML),
-  "IMAGE": () => (IMAGE),
-  "ITERATOR": () => (ITERATOR),
-  "LINK": () => (LINK),
-  "NEWS_SNIPPETS": () => (NEWS_SNIPPETS),
-  "PLAIN_TEXT": () => (PLAIN_TEXT),
-  "Part": () => (Part),
-  "SOCIAL_FOLLOW": () => (SOCIAL_FOLLOW),
-  "SOCIAL_SHARE": () => (SOCIAL_SHARE),
-  "TABLE": () => (TABLE),
-  "URL_PROVIDER": () => (URL_PROVIDER),
-  "VIDEO": () => (VIDEO)
-});
-
 // NAMESPACE OBJECT: ./src/content-element/icon.js
 var icon_namespaceObject = {};
 __webpack_require__.r(icon_namespaceObject);
@@ -270,6 +291,39 @@ __webpack_require__.d(icon_namespaceObject, {
   "YOUTUBE": () => (YOUTUBE)
 });
 
+;// CONCATENATED MODULE: ./src/abstract-builder.js
+class AbstractBuilder {
+  /**
+   * @return {{}}
+   */
+  build() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {function} extractFunc
+   * @protected
+   */
+  _applyPropertyIfDefined(property, targetObj, extractFunc) {
+    if (typeof this[property] === 'undefined') {
+      return;
+    }
+
+    let value = this[property];
+    let computedValue;
+
+    if (value instanceof Array) {
+      computedValue = value.map(item => extractFunc(item));
+    } else {
+      computedValue = extractFunc(value);
+    }
+
+    targetObj[property] = computedValue;
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/abstract-constant.js
 class AbstractConstant {
   /**
@@ -291,29 +345,245 @@ class AbstractConstant {
   }
 }
 
+;// CONCATENATED MODULE: ./src/content-element/part/part.js
+
+
+class Part extends AbstractConstant {
+}
+
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const PLAIN_TEXT = new Part('plain-text');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORMATTED_TEXT = new Part('formatted-text');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const HTML = new Part('html');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const VIDEO = new Part('video');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const IMAGE = new Part('image');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const BACKGROUND_IMAGE = new Part('background-image');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const TABLE = new Part('table');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const ITERATOR = new Part('iterator');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const NEWS_SNIPPETS = new Part('news-snippets');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM = new Part('form');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_FIELD = new Part('form-field');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_CHECKBOX = new Part('form-checkbox');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_TEXTAREA = new Part('form-textarea');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_SELECT = new Part('form-select');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const FORM_RADIO = new Part('form-radio');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const LINK = new Part('link');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const SOCIAL_FOLLOW = new Part('social-follow');
+/**
+ * @type {Part}
+ * @since 1.0
+ */
+const SOCIAL_SHARE = new Part('social-share');
+/**
+ * @type {Part}
+ * @since 22.0
+ */
+const URL_PROVIDER = new Part('url-provider');
+
+;// CONCATENATED MODULE: ./src/design-json-property.js
+class DesignJsonProperty {
+  /**
+   * @type {string}
+   */
+  static TITLE = 'title';
+  /**
+   * @type {string}
+   */
+  static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
+  /**
+   * @type {string}
+   */
+  static GROUP_ID = 'groupId';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'contentElements';
+  /**
+   * @type {string}
+   */
+  static ELEMENT_ID = 'elementId';
+  /**
+   * @type {string}
+   */
+  static FILE = 'file';
+  /**
+   * @type {string}
+   */
+  static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static PARTS = 'parts';
+  /**
+   * @type {string}
+   */
+  static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
+  /**
+   * @type {string}
+   */
+  static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static DESCRIPTION = 'description';
+  /**
+   * @type {string}
+   */
+  static HIDDEN = 'hidden';
+  /**
+   * @type {string}
+   */
+  static STYLE_CONFIGS = 'styleConfigs';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASSES = 'cssClasses';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
+  /**
+   * @type {string}
+   */
+  static FEATURES = 'features';
+  /**
+   * @type {string}
+   */
+  static TEXT_COLORS = 'textColors';
+  /**
+   * @type {string}
+   */
+  static BACKGROUND_COLORS = 'backgroundColors';
+  /**
+   * @type {string}
+   */
+  static FORMATS = 'formats';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZES = 'fontSizes';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_UNIT = 'fontSizeUnit';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
+  /**
+   * @type {string}
+   */
+  static LINE_HEIGHTS = 'lineHeights';
+  /**
+   * @type {string}
+   */
+  static ENTER_MODE = 'enterMode';
+}
+
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
 ;// CONCATENATED MODULE: ./src/design-type.js
 
 
-class DesignType extends AbstractConstant {
+class design_type_DesignType extends AbstractConstant {
 }
 
 /**
  * @type {DesignType}
  * @since 1.0
  */
-const LANDINGPAGE = new DesignType('landingpage');
+const design_type_LANDINGPAGE = new design_type_DesignType('landingpage');
 
 /**
  * @type {DesignType}
  * @since 1.0
  */
-const EMAIL = new DesignType('email');
+const EMAIL = new design_type_DesignType('email');
 
 /**
  * @type {DesignType}
  * @since 1.3
  */
-const WEBSITE = new DesignType('website');
+const design_type_WEBSITE = new design_type_DesignType('website');
 
 ;// CONCATENATED MODULE: ./src/version.js
 
@@ -323,7 +593,7 @@ const WEBSITE = new DesignType('website');
  * @type {DesignType[]}
  */
 const LEGACY_TYPES = [
-  LANDINGPAGE,
+  design_type_LANDINGPAGE,
   EMAIL
 ];
 
@@ -331,12 +601,12 @@ const LEGACY_TYPES = [
  * @type {DesignType[]}
  */
 const ALL_TYPES = [
-  LANDINGPAGE,
+  design_type_LANDINGPAGE,
   EMAIL,
-  WEBSITE
+  design_type_WEBSITE
 ];
 
-class Version extends AbstractConstant {
+class version_Version extends AbstractConstant {
   /**
    *
    * @param {string} version
@@ -367,27 +637,555 @@ class Version extends AbstractConstant {
 /**
  * @type {Version}
  */
-const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+const STUDIO_1_0 = new version_Version('1.0', LEGACY_TYPES, true);
 
 /**
  * @type {Version}
  */
-const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+const STUDIO_1_1 = new version_Version('1.1', LEGACY_TYPES, true);
 
 /**
  * @type {Version}
  */
-const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+const STUDIO_1_2 = new version_Version('1.2', LEGACY_TYPES, true);
 
 /**
  * @type {Version}
  */
-const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+const CX_1_3 = new version_Version('1.3', ALL_TYPES, true);
 
 /**
  * @type {Version}
  */
-const CX_22_0 = new Version('22.0', ALL_TYPES, false);
+const version_CX_22_0 = new version_Version('22.0', ALL_TYPES, false);
+
+;// CONCATENATED MODULE: ./src/build-config.js
+
+
+
+/**
+ * The configuration object for the build of one template.
+ */
+class BuildConfig {
+  constructor() {
+    /**
+     * @type {string}
+     */
+    this._name = undefined;
+    /**
+     * @type {string}
+     */
+    this._version = '1.0.0';
+    /**
+     * @type {Version}
+     */
+    this._targetVersion = CX_22_0;
+    /**
+     * @type {DesignType}
+     */
+    this._designType = LANDINGPAGE;
+    /**
+     * @type {string}
+     */
+    this._rootPath = undefined;
+    /**
+     * @type {string}
+     */
+    this._outputPath = undefined;
+    /**
+     * @type {{}}
+     */
+    this._properties = {};
+    /**
+     * @type {number}
+     */
+    this._devServerPort = 9000;
+    /**
+     * @type {boolean}
+     */
+    this._hashZipFiles = true;
+    /**
+     * @type {{}}
+     */
+    this._modules = {};
+    /**
+     * @type {string}
+     */
+    this._modulesRootPath = undefined;
+    /**
+     * @type {[{}]}
+     */
+    this._additionalFilesToCopy = [];
+    /**
+     * @type {boolean}
+     */
+    this._sourceMapEnabled = true;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get version() {
+    return this._version;
+  }
+
+  /**
+   * @returns {Version}
+   */
+  get targetVersion() {
+    return this._targetVersion;
+  }
+
+  /**
+   * @returns {DesignType}
+   */
+  get designType() {
+    return this._designType;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get rootPath() {
+    return this._rootPath;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get outputPath() {
+    return this._outputPath;
+  }
+
+  /**
+   * @returns {{}}
+   */
+  get properties() {
+    return this._properties;
+  }
+
+  /**
+   * @returns {number}
+   */
+  get devServerPort() {
+    return this._devServerPort;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get hashZipFiles() {
+    return this._hashZipFiles;
+  }
+
+  /**
+   * @returns {{}}
+   */
+  get modules() {
+    return this._modules;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get modulesRootPath() {
+    return this._modulesRootPath;
+  }
+
+  /**
+   * @returns {[{}]}
+   */
+  get additionalFilesToCopy() {
+    return this._additionalFilesToCopy;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get sourceMapEnabled() {
+    return this._sourceMapEnabled;
+  }
+
+  /**
+   * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
+   *
+   * @param {string} name
+   * @returns {BuildConfig}
+   */
+  withName(name) {
+    this._name = name;
+    return this;
+  }
+
+  /**
+   * The version of this template, e.g. 1.0.1. This will be included in the name of the resulting ZIP file in the dist folder.
+   *
+   * @param {string} version
+   * @returns {BuildConfig}
+   */
+  withVersion(version) {
+    this._version = version;
+    return this;
+  }
+
+  /**
+   * The application version of BSI CX (or BSI Studio) this design is built for.
+   *
+   * @see Checkout {@link Version} for available versions.
+   * @param {Version} version
+   * @returns
+   */
+  withTargetVersion(version) {
+    this._targetVersion = version;
+    return this;
+  }
+
+  /**
+   * The type of this design (e.g. email or landingpage).
+   *
+   * @see Checkout {@link DesignType} for available types.
+   * @param {DesignType} type
+   * @returns
+   */
+  withDesignType(type) {
+    this._designType = type;
+    return this;
+  }
+
+  /**
+   * The path to the root folder of this template. This folder contains the source code of your template.
+   *
+   * @param {string} rootPath
+   * @returns {BuildConfig}
+   */
+  withRootPath(rootPath) {
+    this._rootPath = rootPath;
+    return this;
+  }
+
+  /**
+   * A custom output path to use. Default: dist/{name}.
+   *
+   * @param {string} outputPath
+   * @returns {BuildConfig}
+   */
+  withOutputPath(outputPath) {
+    this._outputPath = outputPath;
+    return this;
+  }
+
+  /**
+   * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
+   *
+   * @param {{}} properties
+   * @returns {BuildConfig}
+   */
+  withProperties(properties) {
+    this._properties = properties;
+    return this;
+  }
+
+  /**
+   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
+   *
+   * @param {number} devServerPort
+   * @returns {BuildConfig}
+   */
+  withDevServerPort(devServerPort) {
+    this._devServerPort = devServerPort;
+    return this;
+  }
+
+  /**
+   * Add a unique hash value to the name of the resulting ZIP file.
+   *
+   * @param {boolean} hashZipFiles
+   * @returns {BuildConfig}
+   */
+  withHashZipFiles(hashZipFiles) {
+    this._hashZipFiles = !!hashZipFiles;
+    return this;
+  }
+
+  /**
+   * Add additional Java Script modules.
+   *
+   * @param {{}} modules
+   * @returns {BuildConfig}
+   */
+  withModules(modules) {
+    this._modules = modules;
+    return this;
+  }
+
+  /**
+   * Add one additional Java Script module.
+   *
+   * @param {string} name
+   * @param {string} path
+   * @returns {BuildConfig}
+   */
+  withModule(name, path) {
+    this._modules[name] = path;
+    return this;
+  }
+
+  /**
+   * Absolute path to the modules folder.
+   *
+   * @param {string} modulesRootPath
+   * @returns {BuildConfig}
+   */
+  withModulesRootPath(modulesRootPath) {
+    this._modulesRootPath = modulesRootPath;
+    return this;
+  }
+
+  /**
+   * Add additional files to copy to the output folder.
+   *
+   * @param {[{}]} additionalFilesToCopy
+   * @returns {BuildConfig}
+   */
+  withAdditionalFilesToCopy(additionalFilesToCopy) {
+    this._additionalFilesToCopy = additionalFilesToCopy;
+    return this;
+  }
+
+  /**
+   * Add a single configuration for additional files to copy to the output folder.
+   *
+   * @param {{}} additionalFileToCopy
+   * @returns {BuildConfig}
+   */
+  withAdditionalFileToCopy(additionalFileToCopy) {
+    this._additionalFilesToCopy.push(additionalFileToCopy);
+    return this;
+  }
+
+  /**
+   * Enable or disable source maps.
+   *
+   * @param {boolean} sourceMapEnabled
+   * @returns {BuildConfig}
+   */
+  withSourceMapEnabled(sourceMapEnabled) {
+    this._sourceMapEnabled = sourceMapEnabled;
+    return this;
+  }
+
+  /**
+   * @returns {BuildConfig}
+   */
+  validate() {
+    this._checkInstanceofAndRequired('name', String, true);
+    this._checkInstanceofAndRequired('version', String, true);
+    this._checkInstanceofAndRequired('targetVersion', Version, true);
+    this._checkInstanceofAndRequired('designType', DesignType, true);
+    this._checkInstanceofAndRequired('rootPath', String, true);
+    this._checkInstanceofAndRequired('outputPath', String, false);
+    this._checkInstanceofAndRequired('properties', Object, false);
+    this._checkInstanceofAndRequired('devServerPort', Number, false);
+    this._checkInstanceofAndRequired('hashZipFiles', Boolean, false);
+    this._checkInstanceofAndRequired('modules', Object, false);
+    this._checkInstanceofAndRequired('modulesRootPath', String, false);
+    this._checkInstanceofAndRequired('additionalFilesToCopy', Array, false);
+    this._checkInstanceofAndRequired('sourceMapEnabled', Boolean, false);
+
+    return this;
+  }
+
+  /**
+   * @param {string} name
+   * @param {object} type
+   * @param {boolean} required
+   */
+  _checkInstanceofAndRequired(name, type, required) {
+    const property = this[`_${name}`];
+    if (property !== undefined && !property instanceof type) {
+      throw new Error(`${name} must be ${type.constructor.name}`);
+    }
+    if (required && !property) {
+      throw new Error(`${name} is required and can not be empty`);
+    }
+  }
+}
+
+;// CONCATENATED MODULE: ./src/utility.js
+
+
+
+
+
+
+
+
+class StaticJavaScriptCondition {
+  /**
+   * @type {RegExp}
+   */
+  static FILE_EXTENSION = (/* unused pure expression or super */ null && (/\.js/i));
+
+  /**
+   * @param {string} root
+   * @param {string} file
+   * @returns {boolean}
+   */
+  static isInsideStaticFolder(root, file) {
+    let staticFilePath = path.resolve(root, 'static') + path.sep;
+    return file.startsWith(staticFilePath);
+  }
+
+  /**
+   * @param {string} root
+   * @param {string} file
+   * @returns {boolean}
+   */
+  static test(root, file) {
+    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
+      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
+  }
+}
+
+/**
+ *
+ * @param {string} name
+ * @param {string} version
+ * @param {string} [suffix='']
+ */
+function getZipArchiveName(name, version, suffix) {
+  let filename = [name, version, suffix]
+    .filter(value => !!value)
+    .join('-');
+  return `${filename}.zip`;
+}
+
+/**
+ * @param {BuildConfig} config
+ * @param {string|undefined} [suffix=undefined]
+ */
+function buildPublicPath(config, suffix) {
+  let path = '/';
+
+  if (suffix) {
+    path += suffix
+      .trim()
+      .replace(/^\//, '');
+  }
+
+  let pathSuffix = suffix ? path : '';
+
+  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+    return '.' + pathSuffix;
+  } else {
+    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+  }
+}
+
+/**
+ * @param {*} obj
+ * @return {string}
+ */
+function utility_toString(obj) {
+  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
+}
+
+/**
+ * @param {[string|number]} arr
+ * @return {string}
+ */
+function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @param {*} v
+ * @return {*}
+ */
+function identity(v) {
+  return v;
+}
+
+/**
+ * @param {string|number|boolean} v
+ * @return {string|number|boolean}
+ */
+function scalarIdentity(v) {
+  return v;
+}
+
+/**
+ * @param {AbstractConstant} constant
+ * @return {string}
+ */
+function constantObjectValue(constant) {
+  return constant.value;
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/abstract-part.js
+
+
+
+
+
+class AbstractPart extends AbstractBuilder {
+  /**
+   * @param {Part} partId
+   */
+  constructor(partId) {
+    super();
+    /**
+     * @type {Part}
+     * @private
+     */
+    this._partId = partId;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._label = undefined;
+  }
+
+  /**
+   * @return {Part}
+   */
+  get partId() {
+    return this._partId;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @param {string} label
+   * @return {AbstractPart}
+   * @since 1.0
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
+
+    return config;
+  }
+}
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
@@ -510,7 +1308,7 @@ const SELECT_ALL = new Feature('selectAll');
 /**
  * @type {Feature}
  */
-const HTML = new Feature('html');
+const feature_HTML = new Feature('html');
 /**
  * @type {Feature}
  */
@@ -605,152 +1403,8 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
-;// CONCATENATED MODULE: ./src/design-json-property.js
-class DesignJsonProperty {
-  /**
-   * @type {string}
-   */
-  static TITLE = 'title';
-  /**
-   * @type {string}
-   */
-  static AUTHOR = 'author';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
-  /**
-   * @type {string}
-   */
-  static GROUP_ID = 'groupId';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS = 'contentElements';
-  /**
-   * @type {string}
-   */
-  static ELEMENT_ID = 'elementId';
-  /**
-   * @type {string}
-   */
-  static FILE = 'file';
-  /**
-   * @type {string}
-   */
-  static ICON = 'icon';
-  /**
-   * @type {string}
-   */
-  static PARTS = 'parts';
-  /**
-   * @type {string}
-   */
-  static PART_ID = 'partId';
-  /**
-   * @type {string}
-   */
-  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
-  /**
-   * @type {string}
-   */
-  static LABEL = 'label';
-  /**
-   * @type {string}
-   */
-  static DESCRIPTION = 'description';
-  /**
-   * @type {string}
-   */
-  static HIDDEN = 'hidden';
-  /**
-   * @type {string}
-   */
-  static STYLE_CONFIGS = 'styleConfigs';
-  /**
-   * @type {string}
-   */
-  static CSS_CLASSES = 'cssClasses';
-  /**
-   * @type {string}
-   */
-  static CSS_CLASS = 'cssClass';
-  /**
-   * @type {string}
-   */
-  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
-  /**
-   * @type {string}
-   */
-  static FEATURES = 'features';
-  /**
-   * @type {string}
-   */
-  static TEXT_COLORS = 'textColors';
-  /**
-   * @type {string}
-   */
-  static BACKGROUND_COLORS = 'backgroundColors';
-  /**
-   * @type {string}
-   */
-  static FORMATS = 'formats';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZES = 'fontSizes';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZE_UNIT = 'fontSizeUnit';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
-  /**
-   * @type {string}
-   */
-  static LINE_HEIGHTS = 'lineHeights';
-  /**
-   * @type {string}
-   */
-  static ENTER_MODE = 'enterMode';
-}
-
-;// CONCATENATED MODULE: ./src/abstract-builder.js
-class AbstractBuilder {
-  /**
-   * @return {{}}
-   */
-  build() {
-    throw new Error('not implemented');
-  }
-
-  /**
-   * @param {string} property
-   * @param {{}} targetObj
-   * @param {function} extractFunc
-   * @protected
-   */
-  _applyPropertyIfDefined(property, targetObj, extractFunc) {
-    if (typeof this[property] === 'undefined') {
-      return;
-    }
-
-    let value = this[property];
-    let computedValue;
-
-    if (value instanceof Array) {
-      computedValue = value.map(item => extractFunc(item));
-    } else {
-      computedValue = extractFunc(value);
-    }
-
-    targetObj[property] = computedValue;
-  }
-}
-
 ;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
+
 
 
 
@@ -976,17 +1630,18 @@ class HtmlEditorConfig extends AbstractBuilder {
   build() {
     let editorConfig = {};
     let config = {};
+
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
-    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, constantObjectValue);
 
     return config;
   }
@@ -996,6 +1651,9 @@ class HtmlEditorConfig extends AbstractBuilder {
 
 
 
+/**
+ * @since 1.1
+ */
 class Style extends AbstractBuilder {
   constructor() {
     super();
@@ -1071,108 +1729,6 @@ class Style extends AbstractBuilder {
     return config;
   }
 }
-
-;// CONCATENATED MODULE: ./src/content-element/part.js
-
-
-class Part extends AbstractConstant {
-}
-
-/**
- * @type {Part}
- * @since 1.0
- */
-const PLAIN_TEXT = new Part('plain-text');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORMATTED_TEXT = new Part('formatted-text');
-/**
- * @type {Part}
- * @since 1.0
- */
-const part_HTML = new Part('html');
-/**
- * @type {Part}
- * @since 1.0
- */
-const VIDEO = new Part('video');
-/**
- * @type {Part}
- * @since 1.0
- */
-const IMAGE = new Part('image');
-/**
- * @type {Part}
- * @since 1.0
- */
-const BACKGROUND_IMAGE = new Part('background-image');
-/**
- * @type {Part}
- * @since 1.0
- */
-const TABLE = new Part('table');
-/**
- * @type {Part}
- * @since 1.0
- */
-const ITERATOR = new Part('iterator');
-/**
- * @type {Part}
- * @since 1.0
- */
-const NEWS_SNIPPETS = new Part('news-snippets');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM = new Part('form');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_FIELD = new Part('form-field');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_CHECKBOX = new Part('form-checkbox');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_TEXTAREA = new Part('form-textarea');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_SELECT = new Part('form-select');
-/**
- * @type {Part}
- * @since 1.0
- */
-const FORM_RADIO = new Part('form-radio');
-/**
- * @type {Part}
- * @since 1.0
- */
-const LINK = new Part('link');
-/**
- * @type {Part}
- * @since 1.0
- */
-const SOCIAL_FOLLOW = new Part('social-follow');
-/**
- * @type {Part}
- * @since 1.0
- */
-const SOCIAL_SHARE = new Part('social-share');
-/**
- * @type {Part}
- * @since 22.0
- */
-const URL_PROVIDER = new Part('url-provider');
 
 ;// CONCATENATED MODULE: ./src/content-element/icon.js
 
@@ -1416,15 +1972,52 @@ const THREE_COLUMNS = new Icon('three-columns');
 
 
 
+
+
+
 class ContentElement extends AbstractBuilder {
   constructor() {
     super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._elementId = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._label = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._description = undefined;
+    /**
+     * @type {{}|undefined}
+     * @private
+     */
     this._file = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._icon = undefined;
+    /**
+     * @type {boolean|undefined}
+     * @private
+     */
     this._hidden = undefined;
+    /**
+     * @type {[Style]|undefined}
+     * @private
+     */
     this._styleConfigs = undefined;
+    /**
+     * @type {[AbstractPart]|undefined}
+     * @private
+     */
+    this._parts = undefined;
   }
 
   /**
@@ -1442,6 +2035,13 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * @return {string|undefined}
+   */
+  get description() {
+    return this._description;
+  }
+
+  /**
    * @return {{}|undefined}
    */
   get file() {
@@ -1456,10 +2056,24 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * @return {boolean|undefined}
+   */
+  get hidden() {
+    return this._hidden;
+  }
+
+  /**
    * @return {Style[]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
+  }
+
+  /**
+   * @return {AbstractPart[]|undefined}
+   */
+  get parts() {
+    return this._parts;
   }
 
   /**
@@ -1517,17 +2131,337 @@ class ContentElement extends AbstractBuilder {
    * @return {ContentElement}
    * @since 1.1
    */
-  withStyleConfig(...styleConfigs) {
+  withStyleConfigs(...styleConfigs) {
     this._styleConfigs = styleConfigs;
     return this;
   }
 
+  /**
+   * @param {AbstractPart} parts
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withParts(...parts) {
+    this._parts = parts;
+    return this;
+  }
+
   build() {
-    super.build();
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, parts => parts.map(part => part.build()));
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, style => constantObjectValue(style));
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/plain-text-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class PlainTextPart extends AbstractPart {
+  constructor() {
+    super(PLAIN_TEXT);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/formatted-text-part.js
+
+
+
+
+
+/**
+ * @since 1.0
+ */
+class FormattedTextPart extends AbstractPart {
+  constructor() {
+    super(FORMATTED_TEXT);
+    /**
+     * @type {HtmlEditorConfig|undefined}
+     * @private
+     */
+    this._htmlEditorConfig = undefined;
+  }
+
+  /**
+   * @return {HtmlEditorConfig|undefined}
+   */
+  get htmlEditorConfig() {
+    return this._htmlEditorConfig;
+  }
+
+  /**
+   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @return {FormattedTextPart}
+   */
+  withHtmlEditorConfig(htmlEditorConfig) {
+    this._htmlEditorConfig = htmlEditorConfig;
+    return this;
+  }
+
+  build() {
+    let config = super.build();
+
+    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier);
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/html-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class HtmlPart extends AbstractPart {
+  constructor() {
+    super(HTML);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/video-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class VideoPart extends AbstractPart {
+  constructor() {
+    super(VIDEO);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/image-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class ImagePart extends AbstractPart {
+  constructor() {
+    super(IMAGE);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/background-image-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class BackgroundImagePart extends AbstractPart {
+  constructor() {
+    super(BACKGROUND_IMAGE);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/table-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class TablePart extends AbstractPart {
+  constructor() {
+    super(TABLE);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/iterator-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class IteratorPart extends AbstractPart {
+  constructor() {
+    super(ITERATOR);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/news-snippets-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class NewsSnippetsPart extends AbstractPart {
+  constructor() {
+    super(NEWS_SNIPPETS);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/form-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class FormPart extends AbstractPart {
+  constructor() {
+    super(FORM);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/form-field-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class FormFieldPart extends AbstractPart {
+  constructor() {
+    super(FORM_FIELD);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/form-checkbox-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class FormCheckboxPart extends AbstractPart {
+  constructor() {
+    super(FORM_CHECKBOX);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/form-textarea-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class FormTextareaPart extends AbstractPart {
+  constructor() {
+    super(FORM_TEXTAREA);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/form-select-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class FormSelectPart extends AbstractPart {
+  constructor() {
+    super(FORM_SELECT);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/form-radio-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class FormRadioPart extends AbstractPart {
+  constructor() {
+    super(FORM_RADIO);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/link-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class LinkPart extends AbstractPart {
+  constructor() {
+    super(LINK);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/social-follow-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class SocialFollowPart extends AbstractPart {
+  constructor() {
+    super(SOCIAL_FOLLOW);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/social-share-part.js
+
+
+
+/**
+ * @since 1.0
+ */
+class SocialSharePart extends AbstractPart {
+  constructor() {
+    super(SOCIAL_SHARE);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/part/url-provider-part.js
+
+
+
+/**
+ * @since 22.0
+ */
+class UrlProviderPart extends AbstractPart {
+  constructor() {
+    super(URL_PROVIDER);
   }
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,7 @@ import {Format} from './format';
 import {FontSizeUnit} from './font-size-unit';
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
+import {constantObjectValue, scalarIdentity} from '../utility';
 
 export default class HtmlEditorConfig extends AbstractBuilder {
   constructor() {
@@ -223,17 +224,18 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   build() {
     let editorConfig = {};
     let config = {};
+
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
-    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
-    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, constantObjectValue);
 
     return config;
   }

@@ -2767,11 +2767,13 @@ const WEBSITE = new DesignType('website');
 /* harmony export */   "Ot": () => (/* binding */ scalarArrayToList),
 /* harmony export */   "n6": () => (/* binding */ scalarIdentity)
 /* harmony export */ });
+/* unused harmony exports identity, constantObjectValue */
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(622);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _build_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(492);
 /* harmony import */ var _constant__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(911);
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
+
 
 
 
@@ -2858,11 +2860,27 @@ function scalarArrayToList(arr) {
 }
 
 /**
- * @param {string|number} v
- * @return {string|number}
+ * @param {*} v
+ * @return {*}
+ */
+function identity(v) {
+  return v;
+}
+
+/**
+ * @param {string|number|boolean} v
+ * @return {string|number|boolean}
  */
 function scalarIdentity(v) {
   return v;
+}
+
+/**
+ * @param {AbstractConstant} constant
+ * @return {string}
+ */
+function constantObjectValue(constant) {
+  return constant.value;
 }
 
 

@@ -1,4 +1,4 @@
-import AbstractConstant from '../abstract-constant';
+import AbstractConstant from '../../abstract-constant';
 
 export class Part extends AbstractConstant {
 }

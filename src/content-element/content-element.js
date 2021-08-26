@@ -1,16 +1,53 @@
 import AbstractBuilder from '../abstract-builder';
 import Style from '../style/style';
 import {Icon} from './icon';
+import AbstractPart from './part/abstract-part';
+import DesignJsonProperty from '../design-json-property';
+import {constantObjectValue, identity, scalarIdentity} from '../utility';
 
 export default class ContentElement extends AbstractBuilder {
   constructor() {
     super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._elementId = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._label = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._description = undefined;
+    /**
+     * @type {{}|undefined}
+     * @private
+     */
     this._file = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._icon = undefined;
+    /**
+     * @type {boolean|undefined}
+     * @private
+     */
     this._hidden = undefined;
+    /**
+     * @type {[Style]|undefined}
+     * @private
+     */
     this._styleConfigs = undefined;
+    /**
+     * @type {[AbstractPart]|undefined}
+     * @private
+     */
+    this._parts = undefined;
   }
 
   /**
@@ -28,6 +65,13 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * @return {string|undefined}
+   */
+  get description() {
+    return this._description;
+  }
+
+  /**
    * @return {{}|undefined}
    */
   get file() {
@@ -42,10 +86,24 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * @return {boolean|undefined}
+   */
+  get hidden() {
+    return this._hidden;
+  }
+
+  /**
    * @return {Style[]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
+  }
+
+  /**
+   * @return {AbstractPart[]|undefined}
+   */
+  get parts() {
+    return this._parts;
   }
 
   /**
@@ -103,12 +161,33 @@ export default class ContentElement extends AbstractBuilder {
    * @return {ContentElement}
    * @since 1.1
    */
-  withStyleConfig(...styleConfigs) {
+  withStyleConfigs(...styleConfigs) {
     this._styleConfigs = styleConfigs;
     return this;
   }
 
+  /**
+   * @param {AbstractPart} parts
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withParts(...parts) {
+    this._parts = parts;
+    return this;
+  }
+
   build() {
-    super.build();
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, parts => parts.map(part => part.build()));
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, style => constantObjectValue(style));
+
+    return config;
   }
 }

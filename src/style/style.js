@@ -1,6 +1,9 @@
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 
+/**
+ * @since 1.1
+ */
 export default class Style extends AbstractBuilder {
   constructor() {
     super();
