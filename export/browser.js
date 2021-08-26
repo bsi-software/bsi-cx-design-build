@@ -37,6 +37,8 @@ import UrlProviderPart from '../src/content-element/part/url-provider-part';
 import Website from '../src/website/website';
 import PageInclude from '../src/website/page-include';
 import Include from '../src/website/include';
+import NLS from '../src/nls/nls';
+import Translation from '../src/nls/translation';
 
 export {
   AbstractBuilder,
@@ -77,5 +79,7 @@ export {
   UrlProviderPart,
   Website,
   PageInclude,
-  Include
+  Include,
+  NLS,
+  Translation
 };

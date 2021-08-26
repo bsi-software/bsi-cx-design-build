@@ -5,6 +5,7 @@ import ContentElementGroup from '../content-element/content-element-group';
 import Style from '../style/style';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
 import Website from '../website/website';
+import NLS from '../nls/nls';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity} from '../extractor';
 
@@ -66,6 +67,11 @@ export default class Design extends AbstractBuilder {
      * @private
      */
     this._website = undefined;
+    /**
+     * @type {NLS[]|undefined}
+     * @private
+     */
+    this._nls = undefined;
   }
 
   /**
@@ -143,6 +149,13 @@ export default class Design extends AbstractBuilder {
    */
   get website() {
     return this._website;
+  }
+
+  /**
+   * @return {NLS[]|undefined}
+   */
+  get nls() {
+    return this._nls;
   }
 
   /**
@@ -245,6 +258,15 @@ export default class Design extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @param {NLS} nls
+   * @return {Design}
+   */
+  withNLS(...nls) {
+    this._nls = nls;
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -259,6 +281,7 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
 
     return config;
   }

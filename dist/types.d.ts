@@ -864,6 +864,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static NLS: string;
+        /**
+         * @type {string}
+         */
         static MAX_NAVIGATION_LEVEL: string;
         /**
          * @type {string}
@@ -1309,6 +1313,10 @@ declare module "src/content-element/part/abstract-part" {
 declare module "src/design/locale" {
     export class Locale extends AbstractConstant {
     }
+    /**
+     * @type {Locale}
+     */
+    export const WILDCARD: Locale;
     /**
      * @type {Locale}
      */
@@ -2289,6 +2297,91 @@ declare module "src/website/website" {
     import AbstractBuilder from "src/abstract-builder";
     import AbstractInclude from "src/website/abstract-include";
 }
+declare module "src/nls/translation" {
+    export default class Translation extends AbstractBuilder {
+        /**
+         * @param {Locale} locale
+         * @param {string} translation
+         * @return {Translation}
+         */
+        static create(locale: Locale, translation: string): Translation;
+        /**
+         * @param {string} translation
+         * @return {Translation}
+         */
+        static wildcard(translation: string): Translation;
+        /**
+         * @type {Locale|undefined}
+         * @private
+         */
+        private _locale;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _translation;
+        /**
+         * @return {Locale|undefined}
+         */
+        get locale(): Locale;
+        /**
+         * @return {string|undefined}
+         */
+        get translation(): string;
+        /**
+         * @param {Locale} locale
+         * @return {Translation}
+         */
+        withLocale(locale: Locale): Translation;
+        /**
+         * @param {string} translation
+         * @return {Translation}
+         */
+        withTranslation(translation: string): Translation;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import { Locale } from "src/design/locale";
+}
+declare module "src/nls/nls" {
+    export default class NLS extends AbstractBuilder {
+        /**
+         * @param {string} identifier
+         * @param {Translation}translations
+         * @return {NLS}
+         */
+        static create(identifier: string, ...translations: Translation): NLS;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {[Translation]|undefined}
+         * @private
+         */
+        private _translations;
+        /**
+         * @return {string|undefined}
+         */
+        get identifier(): string;
+        /**
+         * @return {[Translation]|undefined}
+         */
+        get translations(): [Translation];
+        /**
+         * @param {string} identifier
+         * @return {NLS}
+         */
+        withIdentifier(identifier: string): NLS;
+        /**
+         * @param {Translation} translations
+         * @return {NLS}
+         */
+        withTranslations(...translations: Translation): NLS;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import Translation from "src/nls/translation";
+}
 declare module "src/design/design" {
     export default class Design extends AbstractBuilder {
         /**
@@ -2347,6 +2440,11 @@ declare module "src/design/design" {
          */
         private _website;
         /**
+         * @type {NLS[]|undefined}
+         * @private
+         */
+        private _nls;
+        /**
          * @return {SchemaVersion|undefined}
          */
         get schemaVersion(): SchemaVersion;
@@ -2390,6 +2488,10 @@ declare module "src/design/design" {
          * @return {Website|undefined}
          */
         get website(): Website;
+        /**
+         * @return {NLS[]|undefined}
+         */
+        get nls(): NLS[];
         /**
          * @param {SchemaVersion} schemaVersion
          * @return {Design}
@@ -2446,12 +2548,18 @@ declare module "src/design/design" {
          * @since 1.3
          */
         withWebsite(website: Website): Design;
+        /**
+         * @param {NLS} nls
+         * @return {Design}
+         */
+        withNLS(...nls: NLS): Design;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { SchemaVersion } from "src/design/schema-version";
     import { Locale } from "src/design/locale";
     import ContentElementGroup from "src/content-element/content-element-group";
     import Website from "src/website/website";
+    import NLS from "src/nls/nls";
     import Style from "src/style/style";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
@@ -2699,7 +2807,9 @@ declare module "export/browser" {
     import Website from "src/website/website";
     import PageInclude from "src/website/page-include";
     import Include from "src/website/include";
-    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include };
+    import NLS from "src/nls/nls";
+    import Translation from "src/nls/translation";
+    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

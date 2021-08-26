@@ -51,4 +51,5 @@ module.exports = new Design()
           .withName('Navigation')
           .withEditable(false)
           .withFile(require('./includes/navigation.hbs'))))
+  .withNLS(...require('./nls'))
   .build();

@@ -134,6 +134,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static NLS = 'nls';
+  /**
+   * @type {string}
+   */
   static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
   /**
    * @type {string}

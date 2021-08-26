@@ -65,6 +65,7 @@ __webpack_require__.d(__webpack_exports__, {
   "IteratorPart": () => (/* reexport */ IteratorPart),
   "LinkPart": () => (/* reexport */ LinkPart),
   "Locale": () => (/* reexport */ locale_namespaceObject),
+  "NLS": () => (/* reexport */ NLS),
   "NewsSnippetsPart": () => (/* reexport */ NewsSnippetsPart),
   "PageInclude": () => (/* reexport */ PageInclude),
   "Part": () => (/* reexport */ part_namespaceObject),
@@ -74,6 +75,7 @@ __webpack_require__.d(__webpack_exports__, {
   "SocialSharePart": () => (/* reexport */ SocialSharePart),
   "Style": () => (/* reexport */ Style),
   "TablePart": () => (/* reexport */ TablePart),
+  "Translation": () => (/* reexport */ Translation),
   "UrlProviderPart": () => (/* reexport */ UrlProviderPart),
   "Version": () => (/* reexport */ version_namespaceObject),
   "VideoPart": () => (/* reexport */ VideoPart),
@@ -120,7 +122,8 @@ __webpack_require__.d(locale_namespaceObject, {
   "FR_CH": () => (FR_CH),
   "IT": () => (IT),
   "IT_CH": () => (IT_CH),
-  "Locale": () => (Locale)
+  "Locale": () => (Locale),
+  "WILDCARD": () => (WILDCARD)
 });
 
 // NAMESPACE OBJECT: ./src/design/schema-version.js
@@ -595,6 +598,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static NLS = 'nls';
+  /**
+   * @type {string}
+   */
   static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
   /**
    * @type {string}
@@ -711,6 +718,10 @@ class AbstractPart extends AbstractBuilder {
 class Locale extends AbstractConstant {
 }
 
+/**
+ * @type {Locale}
+ */
+const WILDCARD = new Locale('*');
 /**
  * @type {Locale}
  */
@@ -1768,7 +1779,168 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 }
 
+;// CONCATENATED MODULE: ./src/nls/translation.js
+
+
+
+class Translation extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {Locale|undefined}
+     * @private
+     */
+    this._locale = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._translation = undefined;
+  }
+
+  /**
+   * @return {Locale|undefined}
+   */
+  get locale() {
+    return this._locale;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get translation() {
+    return this._translation;
+  }
+
+  /**
+   * @param {Locale} locale
+   * @return {Translation}
+   */
+  withLocale(locale) {
+    this._locale = locale;
+    return this;
+  }
+
+  /**
+   * @param {string} translation
+   * @return {Translation}
+   */
+  withTranslation(translation) {
+    this._translation = translation;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    config[this.locale?.value] = this.translation;
+
+    return config;
+  }
+
+  /**
+   * @param {Locale} locale
+   * @param {string} translation
+   * @return {Translation}
+   */
+  static create(locale, translation) {
+    return new Translation()
+      .withLocale(locale)
+      .withTranslation(translation);
+  }
+
+  /**
+   * @param {string} translation
+   * @return {Translation}
+   */
+  static wildcard(translation) {
+    return new Translation()
+      .withLocale(WILDCARD)
+      .withTranslation(translation);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/nls/nls.js
+
+
+
+class NLS extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._identifier = undefined;
+    /**
+     * @type {[Translation]|undefined}
+     * @private
+     */
+    this._translations = undefined;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get identifier() {
+    return this._identifier;
+  }
+
+  /**
+   * @return {[Translation]|undefined}
+   */
+  get translations() {
+    return this._translations;
+  }
+
+  /**
+   * @param {string} identifier
+   * @return {NLS}
+   */
+  withIdentifier(identifier) {
+    this._identifier = identifier;
+    return this;
+  }
+
+  /**
+   * @param {Translation} translations
+   * @return {NLS}
+   */
+  withTranslations(...translations) {
+    this._translations = translations;
+    return this;
+  }
+
+  build() {
+    let config = {};
+    let translation = {};
+
+    for (let translationObj of this.translations ?? []) {
+      translation = {
+        ...translation,
+        ...translationObj.build()
+      }
+    }
+
+    config[this.identifier] = translation;
+
+    return config;
+  }
+
+  /**
+   * @param {string} identifier
+   * @param {Translation}translations
+   * @return {NLS}
+   */
+  static create(identifier, ...translations) {
+    return new NLS()
+      .withIdentifier(identifier)
+      .withTranslations(...translations);
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/design/design.js
+
 
 
 
@@ -1837,6 +2009,11 @@ class Design extends AbstractBuilder {
      * @private
      */
     this._website = undefined;
+    /**
+     * @type {NLS[]|undefined}
+     * @private
+     */
+    this._nls = undefined;
   }
 
   /**
@@ -1914,6 +2091,13 @@ class Design extends AbstractBuilder {
    */
   get website() {
     return this._website;
+  }
+
+  /**
+   * @return {NLS[]|undefined}
+   */
+  get nls() {
+    return this._nls;
   }
 
   /**
@@ -2016,6 +2200,15 @@ class Design extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @param {NLS} nls
+   * @return {Design}
+   */
+  withNLS(...nls) {
+    this._nls = nls;
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -2030,6 +2223,7 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
 
     return config;
   }
@@ -2909,6 +3103,8 @@ class Include extends AbstractInclude {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
 
 
 

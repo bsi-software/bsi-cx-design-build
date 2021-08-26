@@ -6,6 +6,10 @@ export class Locale extends AbstractConstant {
 /**
  * @type {Locale}
  */
+export const WILDCARD = new Locale('*');
+/**
+ * @type {Locale}
+ */
 export const EN = new Locale('en');
 /**
  * @type {Locale}
