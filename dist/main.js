@@ -608,7 +608,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @return {{title:string,author:string,contentElementGroups:[{}]}}
+   * @return {{}}
    * @private
    */
   _getDesignJsonObject() {
@@ -630,7 +630,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{contentElementGroups:[{}]}} designJson
+   * @param {{}} designJson
    * @returns {string}
    * @private
    */
@@ -646,7 +646,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{contentElements:[{}]}} group
+   * @param {{}} group
    * @returns {string}
    * @private
    */
@@ -673,7 +673,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{title:string,author:string,contentElementGroups:[{}]}} designJson
+   * @param {{}} designJson
    * @private
    */
   _createAndEmitDesignProperties(designJson) {
@@ -692,7 +692,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{title:string,author:string}} designJson
+   * @param {{}} designJson
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
@@ -709,7 +709,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @param {{styleConfigs:{}|undefined}} designJson
+   * @param {{}} designJson
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
@@ -725,15 +725,15 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {string} style
-   * @param {{cssClasses:[]|undefined}} config
+   * @param {{}} config
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
   _appendStyleConfig(style, config, properties) {
     /**
-     * @type {{label: string, cssClass: string}[]}
+     * @type {[{}]}
      */
-    let cssClasses = config.cssClasses || [];
+    let cssClasses = config[DesignJsonProperty.CSS_CLASSES] || [];
 
     this._appendStyleConfigLabel(style, config, properties);
     cssClasses.forEach(cssClass => this._appendStyleConfigCssClass(style, cssClass, properties));
@@ -743,7 +743,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {string} style
-   * @param {{label:string}} config
+   * @param {{}} config
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
@@ -755,13 +755,14 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {string} style
-   * @param {{cssClass:string,label:string}} cssClass
+   * @param {{}} styleConfig
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
-  _appendStyleConfigCssClass(style, cssClass, properties) {
-    let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass.cssClass);
-    let value = cssClass[DesignJsonProperty.LABEL];
+  _appendStyleConfigCssClass(style, styleConfig, properties) {
+    let cssClass = styleConfig[DesignJsonProperty.CSS_CLASS];
+    let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass);
+    let value = styleConfig[DesignJsonProperty.LABEL];
     properties.append(key, value);
   }
 
@@ -782,7 +783,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {string} name
-   * @param {{features:[]|undefined}} config
+   * @param {{}} config
    * @param {JavaPropertyFileBuilder} properties
    * @private
    */
