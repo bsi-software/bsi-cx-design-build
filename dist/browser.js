@@ -61,10 +61,12 @@ __webpack_require__.d(__webpack_exports__, {
   "HtmlPart": () => (/* reexport */ HtmlPart),
   "Icon": () => (/* reexport */ icon_namespaceObject),
   "ImagePart": () => (/* reexport */ ImagePart),
+  "Include": () => (/* reexport */ Include),
   "IteratorPart": () => (/* reexport */ IteratorPart),
   "LinkPart": () => (/* reexport */ LinkPart),
   "Locale": () => (/* reexport */ locale_namespaceObject),
   "NewsSnippetsPart": () => (/* reexport */ NewsSnippetsPart),
+  "PageInclude": () => (/* reexport */ PageInclude),
   "Part": () => (/* reexport */ part_namespaceObject),
   "PlainTextPart": () => (/* reexport */ PlainTextPart),
   "SchemaVersion": () => (/* reexport */ schema_version_namespaceObject),
@@ -74,7 +76,8 @@ __webpack_require__.d(__webpack_exports__, {
   "TablePart": () => (/* reexport */ TablePart),
   "UrlProviderPart": () => (/* reexport */ UrlProviderPart),
   "Version": () => (/* reexport */ version_namespaceObject),
-  "VideoPart": () => (/* reexport */ VideoPart)
+  "VideoPart": () => (/* reexport */ VideoPart),
+  "Website": () => (/* reexport */ Website)
 });
 
 // NAMESPACE OBJECT: ./src/content-element/part/part.js
@@ -585,6 +588,26 @@ class DesignJsonProperty {
    * @type {string}
    */
   static ENTER_MODE = 'enterMode';
+  /**
+   * @type {string}
+   */
+  static WEBSITE = 'website';
+  /**
+   * @type {string}
+   */
+  static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
+  /**
+   * @type {string}
+   */
+  static INCLUDES = 'includes';
+  /**
+   * @type {string}
+   */
+  static EDITABLE = 'editable';
+  /**
+   * @type {string}
+   */
+  static PAGE_INCLUDE = '__page__';
 }
 
 ;// CONCATENATED MODULE: ./src/extractor.js
@@ -1755,6 +1778,7 @@ class HtmlEditorConfig extends AbstractBuilder {
 
 
 
+
 class Design extends AbstractBuilder {
   constructor() {
     super();
@@ -1808,6 +1832,11 @@ class Design extends AbstractBuilder {
      * @private
      */
     this._htmlEditorConfigs = undefined;
+    /**
+     * @type {Website|undefined}
+     * @private
+     */
+    this._website = undefined;
   }
 
   /**
@@ -1878,6 +1907,13 @@ class Design extends AbstractBuilder {
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
+  }
+
+  /**
+   * @return {Website|undefined}
+   */
+  get website() {
+    return this._website;
   }
 
   /**
@@ -1970,6 +2006,16 @@ class Design extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @param {Website} website
+   * @return {Design}
+   * @since 1.3
+   */
+  withWebsite(website) {
+    this._website = website;
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -1983,6 +2029,7 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
 
     return config;
   }
@@ -2599,7 +2646,272 @@ class UrlProviderPart extends AbstractPart {
   }
 }
 
+;// CONCATENATED MODULE: ./src/website/website.js
+
+
+
+
+
+/**
+ * @since 1.3
+ */
+class Website extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {number|undefined}
+     * @private
+     */
+    this._maxNavigationLevel = undefined;
+    /**
+     * @type {[AbstractInclude]|undefined}
+     * @private
+     */
+    this._includes = undefined;
+  }
+
+  /**
+   * @return {number|undefined}
+   */
+  get maxNavigationLevel() {
+    return this._maxNavigationLevel;
+  }
+
+  /**
+   * @return {[AbstractInclude]|undefined}
+   */
+  get includes() {
+    return this._includes;
+  }
+
+  /**
+   * @param {number} maxNavigationLevel
+   * @return {Website}
+   */
+  withMaxNavigationLevel(maxNavigationLevel) {
+    this._maxNavigationLevel = maxNavigationLevel;
+    return this;
+  }
+
+  /**
+   * @param {AbstractInclude} includes
+   * @return {Website}
+   */
+  withIncludes(...includes) {
+    this._includes = includes;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDES, config, builderObjectValue, true);
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/website/abstract-include.js
+
+
+
+
+/**
+ * @since 1.3
+ */
+class AbstractInclude extends AbstractBuilder {
+  /**
+   * @param {string|undefined} identifier
+   */
+  constructor(identifier) {
+    super();
+    /**
+     * @type {string|undefined}
+     * @protected
+     */
+    this._identifier = identifier;
+    /**
+     * @type {boolean|undefined}
+     * @protected
+     */
+    this._editable = undefined;
+    /**
+     * @type {{}|undefined}
+     * @protected
+     */
+    this._file = undefined;
+    /**
+     * @type {string|undefined}
+     * @protected
+     */
+    this._name = undefined;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get identifier() {
+    return this._identifier;
+  }
+
+  /**
+   * @return {boolean|undefined}
+   */
+  get editable() {
+    return this._editable;
+  }
+
+  /**
+   * @return {{}|undefined}
+   */
+  get file() {
+    return this._file;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @param {string} identifier
+   * @return {AbstractInclude}
+   */
+  withIdentifier(identifier) {
+    this._identifier = identifier;
+    return this;
+  }
+
+  /**
+   * @param {boolean} editable
+   * @return {AbstractInclude}
+   */
+  withEditable(editable) {
+    this._editable = editable;
+    return this;
+  }
+
+  /**
+   * @param {{}} file
+   * @return {AbstractInclude}
+   */
+  withFile(file) {
+    this._file = file;
+    return this;
+  }
+
+  /**
+   * @param {string} name
+   * @return {AbstractInclude}
+   */
+  withName(name) {
+    this._name = name;
+    return this;
+  }
+
+  build() {
+    let config = {};
+    let include = {};
+
+    config[this.identifier] = include;
+
+    this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/website/page-include.js
+
+
+
+/**
+ * @since 1.3
+ */
+class PageInclude extends AbstractInclude {
+  constructor() {
+    super(DesignJsonProperty.PAGE_INCLUDE);
+  }
+
+  /**
+   * @param {boolean} editable
+   * @return {PageInclude}
+   */
+  withEditable(editable) {
+    return /** @type {PageInclude} */ super.withEditable(editable);
+  }
+
+  /**
+   * @param {{}} file
+   * @return {PageInclude}
+   */
+  withFile(file) {
+    return /** @type {PageInclude} */ super.withFile(file);
+  }
+
+  /**
+   * @param {string} name
+   * @return {PageInclude}
+   */
+  withName(name) {
+    return /** @type {PageInclude} */ super.withName(name);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/website/include.js
+
+
+/**
+ * @since 1.3
+ */
+class Include extends AbstractInclude {
+  constructor() {
+    super(undefined);
+  }
+
+  /**
+   * @param {string} identifier
+   * @return {Include}
+   */
+  withIdentifier(identifier) {
+    this._identifier = identifier;
+    return this;
+  }
+
+  /**
+   * @param {boolean} editable
+   * @return {Include}
+   */
+  withEditable(editable) {
+    return /** @type {Include} */ super.withEditable(editable);
+  }
+
+  /**
+   * @param {{}} file
+   * @return {Include}
+   */
+  withFile(file) {
+    return /** @type {Include} */ super.withFile(file);
+  }
+
+  /**
+   * @param {string} name
+   * @return {Include}
+   */
+  withName(name) {
+    return /** @type {Include} */ super.withName(name);
+  }
+}
+
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
+
 
 
 

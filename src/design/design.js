@@ -4,6 +4,7 @@ import {Locale} from './locale';
 import ContentElementGroup from '../content-element/content-element-group';
 import Style from '../style/style';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
+import Website from '../website/website';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity} from '../extractor';
 
@@ -60,6 +61,11 @@ export default class Design extends AbstractBuilder {
      * @private
      */
     this._htmlEditorConfigs = undefined;
+    /**
+     * @type {Website|undefined}
+     * @private
+     */
+    this._website = undefined;
   }
 
   /**
@@ -130,6 +136,13 @@ export default class Design extends AbstractBuilder {
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
+  }
+
+  /**
+   * @return {Website|undefined}
+   */
+  get website() {
+    return this._website;
   }
 
   /**
@@ -222,6 +235,16 @@ export default class Design extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @param {Website} website
+   * @return {Design}
+   * @since 1.3
+   */
+  withWebsite(website) {
+    this._website = website;
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -235,6 +258,7 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
 
     return config;
   }

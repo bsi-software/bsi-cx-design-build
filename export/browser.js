@@ -34,6 +34,9 @@ import LinkPart from '../src/content-element/part/link-part';
 import SocialFollowPart from '../src/content-element/part/social-follow-part';
 import SocialSharePart from '../src/content-element/part/social-share-part';
 import UrlProviderPart from '../src/content-element/part/url-provider-part';
+import Website from '../src/website/website';
+import PageInclude from '../src/website/page-include';
+import Include from '../src/website/include';
 
 export {
   AbstractBuilder,
@@ -71,5 +74,8 @@ export {
   LinkPart,
   SocialFollowPart,
   SocialSharePart,
-  UrlProviderPart
+  UrlProviderPart,
+  Website,
+  PageInclude,
+  Include
 };

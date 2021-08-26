@@ -599,6 +599,26 @@ class DesignJsonProperty {
    * @type {string}
    */
   static ENTER_MODE = 'enterMode';
+  /**
+   * @type {string}
+   */
+  static WEBSITE = 'website';
+  /**
+   * @type {string}
+   */
+  static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
+  /**
+   * @type {string}
+   */
+  static INCLUDES = 'includes';
+  /**
+   * @type {string}
+   */
+  static EDITABLE = 'editable';
+  /**
+   * @type {string}
+   */
+  static PAGE_INCLUDE = '__page__';
 }
 
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js

@@ -857,6 +857,26 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static ENTER_MODE: string;
+        /**
+         * @type {string}
+         */
+        static WEBSITE: string;
+        /**
+         * @type {string}
+         */
+        static MAX_NAVIGATION_LEVEL: string;
+        /**
+         * @type {string}
+         */
+        static INCLUDES: string;
+        /**
+         * @type {string}
+         */
+        static EDITABLE: string;
+        /**
+         * @type {string}
+         */
+        static PAGE_INCLUDE: string;
     }
 }
 declare module "src/bsi-cx-webpack-legacy-design-plugin" {
@@ -2164,6 +2184,111 @@ declare module "src/html-editor-config/html-editor-config" {
     import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
     import { EnterMode } from "src/html-editor-config/enter-mode";
 }
+declare module "src/website/abstract-include" {
+    /**
+     * @since 1.3
+     */
+    export default class AbstractInclude extends AbstractBuilder {
+        /**
+         * @param {string|undefined} identifier
+         */
+        constructor(identifier: string | undefined);
+        /**
+         * @type {string|undefined}
+         * @protected
+         */
+        protected _identifier: string | undefined;
+        /**
+         * @type {boolean|undefined}
+         * @protected
+         */
+        protected _editable: boolean | undefined;
+        /**
+         * @type {{}|undefined}
+         * @protected
+         */
+        protected _file: {} | undefined;
+        /**
+         * @type {string|undefined}
+         * @protected
+         */
+        protected _name: string | undefined;
+        /**
+         * @return {string|undefined}
+         */
+        get identifier(): string;
+        /**
+         * @return {boolean|undefined}
+         */
+        get editable(): boolean;
+        /**
+         * @return {{}|undefined}
+         */
+        get file(): {};
+        /**
+         * @return {string|undefined}
+         */
+        get name(): string;
+        /**
+         * @param {string} identifier
+         * @return {AbstractInclude}
+         */
+        withIdentifier(identifier: string): AbstractInclude;
+        /**
+         * @param {boolean} editable
+         * @return {AbstractInclude}
+         */
+        withEditable(editable: boolean): AbstractInclude;
+        /**
+         * @param {{}} file
+         * @return {AbstractInclude}
+         */
+        withFile(file: {}): AbstractInclude;
+        /**
+         * @param {string} name
+         * @return {AbstractInclude}
+         */
+        withName(name: string): AbstractInclude;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/website/website" {
+    /**
+     * @since 1.3
+     */
+    export default class Website extends AbstractBuilder {
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _maxNavigationLevel;
+        /**
+         * @type {[AbstractInclude]|undefined}
+         * @private
+         */
+        private _includes;
+        /**
+         * @return {number|undefined}
+         */
+        get maxNavigationLevel(): number;
+        /**
+         * @return {[AbstractInclude]|undefined}
+         */
+        get includes(): [AbstractInclude];
+        /**
+         * @param {number} maxNavigationLevel
+         * @return {Website}
+         */
+        withMaxNavigationLevel(maxNavigationLevel: number): Website;
+        /**
+         * @param {AbstractInclude} includes
+         * @return {Website}
+         */
+        withIncludes(...includes: AbstractInclude): Website;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import AbstractInclude from "src/website/abstract-include";
+}
 declare module "src/design/design" {
     export default class Design extends AbstractBuilder {
         /**
@@ -2217,6 +2342,11 @@ declare module "src/design/design" {
          */
         private _htmlEditorConfigs;
         /**
+         * @type {Website|undefined}
+         * @private
+         */
+        private _website;
+        /**
          * @return {SchemaVersion|undefined}
          */
         get schemaVersion(): SchemaVersion;
@@ -2256,6 +2386,10 @@ declare module "src/design/design" {
          * @return {{}|undefined}
          */
         get htmlEditorConfigs(): {};
+        /**
+         * @return {Website|undefined}
+         */
+        get website(): Website;
         /**
          * @param {SchemaVersion} schemaVersion
          * @return {Design}
@@ -2306,11 +2440,18 @@ declare module "src/design/design" {
          * @return {Design}
          */
         withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig): Design;
+        /**
+         * @param {Website} website
+         * @return {Design}
+         * @since 1.3
+         */
+        withWebsite(website: Website): Design;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { SchemaVersion } from "src/design/schema-version";
     import { Locale } from "src/design/locale";
     import ContentElementGroup from "src/content-element/content-element-group";
+    import Website from "src/website/website";
     import Style from "src/style/style";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
@@ -2500,6 +2641,24 @@ declare module "src/content-element/part/url-provider-part" {
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
+declare module "src/website/page-include" {
+    /**
+     * @since 1.3
+     */
+    export default class PageInclude extends AbstractInclude {
+        constructor();
+    }
+    import AbstractInclude from "src/website/abstract-include";
+}
+declare module "src/website/include" {
+    /**
+     * @since 1.3
+     */
+    export default class Include extends AbstractInclude {
+        constructor();
+    }
+    import AbstractInclude from "src/website/abstract-include";
+}
 declare module "export/browser" {
     import AbstractBuilder from "src/abstract-builder";
     import AbstractPart from "src/content-element/part/abstract-part";
@@ -2537,7 +2696,10 @@ declare module "export/browser" {
     import SocialFollowPart from "src/content-element/part/social-follow-part";
     import SocialSharePart from "src/content-element/part/social-share-part";
     import UrlProviderPart from "src/content-element/part/url-provider-part";
-    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart };
+    import Website from "src/website/website";
+    import PageInclude from "src/website/page-include";
+    import Include from "src/website/include";
+    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";
