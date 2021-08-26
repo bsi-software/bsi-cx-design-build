@@ -1,5 +1,7 @@
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
+import CssClass from './css-class';
+import {builderObjectValue, identity} from '../extractor';
 
 /**
  * @since 1.1
@@ -7,27 +9,39 @@ import AbstractBuilder from '../abstract-builder';
 export default class Style extends AbstractBuilder {
   constructor() {
     super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._identifier = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._label = undefined;
-    this._cssClasses = [];
+    /**
+     * @type {CssClass[]|undefined}
+     * @private
+     */
+    this._cssClasses = undefined;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @returns {[{label:string,cssClass:string}]}
+   * @return {[CssClass]|undefined}
    */
   get cssClasses() {
     return this._cssClasses;
@@ -52,18 +66,11 @@ export default class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
-   * @param {string} cssClass
+   * @param {CssClass} cssClasses
    * @returns {Style}
    */
-  withCssClass(label, cssClass) {
-    let style = {};
-
-    style[DesignJsonProperty.LABEL] = label;
-    style[DesignJsonProperty.CSS_CLASS] = cssClass;
-
-    this._cssClasses.push(style);
-
+  withCssClasses(...cssClasses) {
+    this._cssClasses = cssClasses;
     return this;
   }
 
@@ -71,8 +78,8 @@ export default class Style extends AbstractBuilder {
     let config = {};
     let style = {};
 
-    style[DesignJsonProperty.LABEL] = this.label;
-    style[DesignJsonProperty.CSS_CLASSES] = this.cssClasses;
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, style, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASSES, style, builderObjectValue);
 
     config[this.identifier] = style;
 

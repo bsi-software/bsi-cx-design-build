@@ -1374,29 +1374,77 @@ declare module "src/design/schema-version" {
     export const V_22_0: SchemaVersion;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/style/css-class" {
+    export default class CssClass extends AbstractBuilder {
+        /**
+         * @param {string} cssClass
+         * @param {string} label
+         * @return {CssClass}
+         */
+        static create(cssClass: string, label: string): CssClass;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _cssClass;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @return {string|undefined}
+         */
+        get cssClass(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @param {string} cssClass
+         * @return {CssClass}
+         */
+        withCssClass(cssClass: string): CssClass;
+        /**
+         * @param {string} label
+         * @return {CssClass}
+         */
+        withLabel(label: string): CssClass;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
 declare module "src/style/style" {
     /**
      * @since 1.1
      */
     export default class Style extends AbstractBuilder {
-        _identifier: string;
-        _label: string;
-        _cssClasses: any[];
         /**
-         * @returns {string|undefined}
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {CssClass[]|undefined}
+         * @private
+         */
+        private _cssClasses;
+        /**
+         * @return {string|undefined}
          */
         get identifier(): string;
         /**
-         * @returns {string|undefined}
+         * @return {string|undefined}
          */
         get label(): string;
         /**
-         * @returns {[{label:string,cssClass:string}]}
+         * @return {[CssClass]|undefined}
          */
-        get cssClasses(): [{
-            label: string;
-            cssClass: string;
-        }];
+        get cssClasses(): [CssClass];
         /**
          * @param {string} identifier
          * @returns {Style}
@@ -1408,13 +1456,13 @@ declare module "src/style/style" {
          */
         withLabel(label: string): Style;
         /**
-         * @param {string} label
-         * @param {string} cssClass
+         * @param {CssClass} cssClasses
          * @returns {Style}
          */
-        withCssClass(label: string, cssClass: string): Style;
+        withCssClasses(...cssClasses: CssClass): Style;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import CssClass from "src/style/css-class";
 }
 declare module "src/content-element/icon" {
     export class Icon extends AbstractConstant {
@@ -2782,6 +2830,7 @@ declare module "export/browser" {
     import * as Format from "src/html-editor-config/format";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
+    import CssClass from "src/style/css-class";
     import * as Icon from "src/content-element/icon";
     import ContentElement from "src/content-element/content-element";
     import * as Part from "src/content-element/part/part";
@@ -2809,7 +2858,7 @@ declare module "export/browser" {
     import Include from "src/website/include";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
-    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
+    export { AbstractBuilder, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

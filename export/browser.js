@@ -12,6 +12,7 @@ import * as FontSizeUnit from '../src/html-editor-config/font-size-unit';
 import * as Format from '../src/html-editor-config/format';
 import HtmlEditorConfig from '../src/html-editor-config/html-editor-config';
 import Style from '../src/style/style';
+import CssClass from '../src/style/css-class';
 import * as Icon from '../src/content-element/icon';
 import ContentElement from '../src/content-element/content-element';
 import * as Part from '../src/content-element/part/part';
@@ -55,6 +56,7 @@ export {
   Format,
   HtmlEditorConfig,
   Style,
+  CssClass,
   Icon,
   ContentElement,
   Part,

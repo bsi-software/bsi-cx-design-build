@@ -44,6 +44,7 @@ __webpack_require__.d(__webpack_exports__, {
   "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
   "ContentElement": () => (/* reexport */ ContentElement),
   "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
+  "CssClass": () => (/* reexport */ CssClass),
   "Design": () => (/* reexport */ Design),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
@@ -2331,33 +2332,47 @@ const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 
 
+
+
 /**
  * @since 1.1
  */
 class Style extends AbstractBuilder {
   constructor() {
     super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._identifier = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
     this._label = undefined;
-    this._cssClasses = [];
+    /**
+     * @type {CssClass[]|undefined}
+     * @private
+     */
+    this._cssClasses = undefined;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @returns {[{label:string,cssClass:string}]}
+   * @return {[CssClass]|undefined}
    */
   get cssClasses() {
     return this._cssClasses;
@@ -2382,18 +2397,11 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
-   * @param {string} cssClass
+   * @param {CssClass} cssClasses
    * @returns {Style}
    */
-  withCssClass(label, cssClass) {
-    let style = {};
-
-    style[DesignJsonProperty.LABEL] = label;
-    style[DesignJsonProperty.CSS_CLASS] = cssClass;
-
-    this._cssClasses.push(style);
-
+  withCssClasses(...cssClasses) {
+    this._cssClasses = cssClasses;
     return this;
   }
 
@@ -2401,12 +2409,85 @@ class Style extends AbstractBuilder {
     let config = {};
     let style = {};
 
-    style[DesignJsonProperty.LABEL] = this.label;
-    style[DesignJsonProperty.CSS_CLASSES] = this.cssClasses;
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, style, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASSES, style, builderObjectValue);
 
     config[this.identifier] = style;
 
     return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/style/css-class.js
+
+
+
+
+class CssClass extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._cssClass = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._label = undefined;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get cssClass() {
+    return this._cssClass;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @param {string} cssClass
+   * @return {CssClass}
+   */
+  withCssClass(cssClass) {
+    this._cssClass = cssClass;
+    return this;
+  }
+
+  /**
+   * @param {string} label
+   * @return {CssClass}
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+
+    return config;
+  }
+
+  /**
+   * @param {string} cssClass
+   * @param {string} label
+   * @return {CssClass}
+   */
+  static create(cssClass, label) {
+    return new CssClass()
+      .withCssClass(cssClass)
+      .withLabel(label);
   }
 }
 
@@ -3103,6 +3184,7 @@ class Include extends AbstractInclude {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
 
 
 

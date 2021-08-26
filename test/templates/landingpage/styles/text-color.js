@@ -1,4 +1,4 @@
-const {Style} = require('@bsi-cx/design-build');
+const {Style, CssClass} = require('@bsi-cx/design-build');
 
 /**
  * @type {Style}
@@ -6,7 +6,8 @@ const {Style} = require('@bsi-cx/design-build');
 module.exports = new Style()
   .withIdentifier('text-color')
   .withLabel('Textfarbe')
-  .withCssClass('Schwarz', 'black-text')
-  .withCssClass('Blau', 'blue-text')
-  .withCssClass('Rot', 'red-text')
-  .withCssClass('', 'white-text');
+  .withCssClasses(
+    CssClass.create('black-text', 'Schwarz'),
+    CssClass.create('blue-text', 'Blau'),
+    CssClass.create('red-text', 'Rot'),
+    CssClass.create('white-text', ''));
