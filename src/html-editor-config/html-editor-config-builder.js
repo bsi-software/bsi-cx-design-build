@@ -3,9 +3,11 @@ import {Feature} from './feature';
 import {Format} from './format';
 import {FontSizeUnit} from './font-size-unit';
 import DesignJsonProperty from '../design-json-property';
+import AbstractBuilder from '../abstract-builder';
 
-export default class HtmlEditorConfigBuilder {
+export default class HtmlEditorConfigBuilder extends AbstractBuilder {
   constructor() {
+    super();
     /**
      * @type {string|undefined}
      * @private
@@ -223,40 +225,16 @@ export default class HtmlEditorConfigBuilder {
     let config = {};
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyToConfig(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
-    this._applyPropertyToConfig(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
-    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
-    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
 
     return config;
-  }
-
-  /**
-   * @param {string} property
-   * @param {{}} config
-   * @param {function} extractFunc
-   * @private
-   */
-  _applyPropertyToConfig(property, config, extractFunc) {
-    let value = this[property];
-
-    if (value === undefined) {
-      return;
-    }
-
-    let computedValue;
-
-    if (value instanceof Array) {
-      computedValue = value.map(item => extractFunc(item));
-    } else {
-      computedValue = extractFunc(value);
-    }
-
-    config[property] = computedValue;
   }
 }

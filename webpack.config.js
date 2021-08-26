@@ -53,7 +53,7 @@ module.exports = {
       moduleFilenameTemplate: '[resource-path]'
     }),
     new WebpackShellPluginNext({
-      onBuildEnd: {
+      onBuildExit: {
         scripts: ['tsc'],
         blocking: true,
         parallel: false

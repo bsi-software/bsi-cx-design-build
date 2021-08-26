@@ -1,17 +1,6 @@
-export class DesignType {
-  /**
-   * @param {string} type
-   */
-  constructor(type) {
-    this._type = type;
-  }
+import AbstractConstant from './abstract-constant';
 
-  /**
-   * @returns {string}
-   */
-  get type() {
-    return this._type;
-  }
+export class DesignType extends AbstractConstant {
 }
 
 /**

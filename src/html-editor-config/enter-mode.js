@@ -1,21 +1,6 @@
-export class EnterMode {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
+import AbstractConstant from '../abstract-constant';
 
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
+export class EnterMode extends AbstractConstant {
 }
 
 /**

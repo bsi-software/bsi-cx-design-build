@@ -985,7 +985,7 @@ class BsiCxWebpackLegacyDesignPlugin {
 };
 
 // EXTERNAL MODULE: external "crypto"
-var external_crypto_ = __webpack_require__(417);
+var external_crypto_ = __webpack_require__(373);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
 
 
@@ -1681,6 +1681,35 @@ class WebpackConfigBuilder {
 
 /***/ }),
 
+/***/ 417:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (/* binding */ AbstractConstant)
+/* harmony export */ });
+class AbstractConstant {
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+}
+
+
+/***/ }),
+
 /***/ 940:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
@@ -1694,7 +1723,7 @@ __webpack_require__.d(__webpack_exports__, {
 var external_path_ = __webpack_require__(622);
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
 // EXTERNAL MODULE: external "crypto"
-var external_crypto_ = __webpack_require__(417);
+var external_crypto_ = __webpack_require__(373);
 ;// CONCATENATED MODULE: external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
@@ -2700,20 +2729,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "EMAIL": () => (/* binding */ EMAIL),
 /* harmony export */   "WEBSITE": () => (/* binding */ WEBSITE)
 /* harmony export */ });
-class DesignType {
-  /**
-   * @param {string} type
-   */
-  constructor(type) {
-    this._type = type;
-  }
+/* harmony import */ var _abstract_constant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(417);
 
-  /**
-   * @returns {string}
-   */
-  get type() {
-    return this._type;
-  }
+
+class DesignType extends _abstract_constant__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z {
 }
 
 /**
@@ -2859,6 +2878,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "CX_22_0": () => (/* binding */ CX_22_0)
 /* harmony export */ });
 /* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
+/* harmony import */ var _abstract_constant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(417);
+
 
 
 /**
@@ -2878,7 +2899,7 @@ const ALL_TYPES = [
   _design_type__WEBPACK_IMPORTED_MODULE_0__.WEBSITE
 ];
 
-class Version {
+class Version extends _abstract_constant__WEBPACK_IMPORTED_MODULE_1__/* .default */ .Z {
   /**
    *
    * @param {string} version
@@ -2886,16 +2907,9 @@ class Version {
    * @param {boolean} legacyFormat
    */
   constructor(version, allowedTypes, legacyFormat) {
-    this._version = version;
+    super(version);
     this._allowedTypes = allowedTypes;
     this._legacyFormat = legacyFormat;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get version() {
-    return this._version;
   }
 
   /**
@@ -2941,7 +2955,7 @@ const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 /***/ }),
 
-/***/ 417:
+/***/ 373:
 /***/ ((module) => {
 
 module.exports = require("crypto");

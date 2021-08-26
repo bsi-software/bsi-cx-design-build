@@ -1,14 +1,22 @@
-declare module "src/design-type" {
-    export class DesignType {
+declare module "src/abstract-constant" {
+    export default class AbstractConstant {
         /**
-         * @param {string} type
+         * @param {string} value
          */
-        constructor(type: string);
-        _type: string;
+        constructor(value: string);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _value;
         /**
          * @returns {string}
          */
-        get type(): string;
+        get value(): string;
+    }
+}
+declare module "src/design-type" {
+    export class DesignType extends AbstractConstant {
     }
     /**
      * @type {DesignType}
@@ -22,9 +30,10 @@ declare module "src/design-type" {
      * @type {DesignType}
      */
     export const WEBSITE: DesignType;
+    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/version" {
-    export class Version {
+    export class Version extends AbstractConstant {
         /**
          *
          * @param {string} version
@@ -32,13 +41,8 @@ declare module "src/version" {
          * @param {boolean} legacyFormat
          */
         constructor(version: string, allowedTypes: DesignType[], legacyFormat: boolean);
-        _version: string;
         _allowedTypes: DesignType[];
         _legacyFormat: boolean;
-        /**
-         * @returns {string}
-         */
-        get version(): string;
         /**
          * @returns {DesignType[]}
          */
@@ -68,6 +72,7 @@ declare module "src/version" {
      * @type {Version}
      */
     export const CX_22_0: Version;
+    import AbstractConstant from "src/abstract-constant";
     import { DesignType } from "src/design-type";
 }
 declare module "src/build-config" {
@@ -361,6 +366,16 @@ declare module "src/utility" {
      * @return {string}
      */
     export function toString(obj: any): string;
+    /**
+     * @param {[string|number]} arr
+     * @return {string}
+     */
+    export function scalarArrayToList(arr: [string | number]): string;
+    /**
+     * @param {string|number} v
+     * @return {string|number}
+     */
+    export function scalarIdentity(v: string | number): string | number;
     export class StaticJavaScriptCondition {
         /**
          * @type {RegExp}
@@ -435,6 +450,11 @@ declare module "src/java-property-file-builder" {
          */
         appendComment(comment: string): JavaPropertyFileBuilder;
         /**
+         * @param {string} section
+         * @return {JavaPropertyFileBuilder}
+         */
+        appendCommentSection(section: string): JavaPropertyFileBuilder;
+        /**
          * @returns {JavaPropertyFileBuilder}
          */
         appendBlank(): JavaPropertyFileBuilder;
@@ -471,16 +491,145 @@ declare module "src/legacy-design-property" {
         static TEMPLATE_AUTHOR: string;
         /**
          * @type {string}
+         * @private
          */
-        static LABEL: string;
+        private static _LABEL;
         /**
          * @type {string}
+         * @private
          */
-        static STYLE: string;
+        private static _DESCRIPTION;
         /**
          * @type {string}
+         * @private
          */
-        static CLASS: string;
+        private static _GROUP;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _ELEMENT;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _PARTS;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _ICON;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _STYLES;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _STYLE;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _CLASS;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _HTML_EDITOR_CONFIG;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _FEATURES;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _TEXT_COLORS;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _BACKGROUND_COLORS;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _FORMATS;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _FONT_SIZES;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _FONT_SIZE_UNIT;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _FONT_SIZE_DEFAULT;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _LINE_HEIGHTS;
+        /**
+         * @type {string}
+         * @private
+         */
+        private static _ENTER;
+        /**
+         * @param {string} group
+         * @return {string}
+         */
+        static getContentElementGroupLabel(group: string): string;
+        /**
+         * @param {string} element
+         * @return {string}
+         */
+        static getContentElementLabel(element: string): string;
+        /**
+         * @param {string} element
+         * @return {string}
+         */
+        static getContentElementDescription(element: string): string;
+        /**
+         * @param {string} element
+         * @return {string}
+         */
+        static getContentElementIcon(element: string): string;
+        /**
+         * @param {string} element
+         * @return {string}
+         */
+        static getContentElementStyles(element: string): string;
+        /**
+         * @param {string} element
+         * @param {string} part
+         * @param {number} index
+         * @return {string}
+         */
+        static getContentElementPartLabel(element: string, part: string, index: number): string;
+        /**
+         * @param {string} element
+         * @param {string} part
+         * @param {number} index
+         * @return {string}
+         */
+        static getContentElementPartHtmlEditorConfig(element: string, part: string, index: number): string;
+        /**
+         * @param {string} element
+         * @param {string} part
+         * @param {number} index
+         * @return {string}
+         */
+        static _getContentElementPart(element: string, part: string, index: number): string;
         /**
          * @param {string} name
          * @return {string}
@@ -492,6 +641,163 @@ declare module "src/legacy-design-property" {
          * @return {string}
          */
         static getStyleClassLabel(name: string, cssClass: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigFeatures(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigTextColors(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigBackgroundColors(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigFormats(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigFontSizes(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigFontSizeUnit(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigFontSizeDefault(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigLineHeights(name: string): string;
+        /**
+         * @param {string} name
+         * @return {string}
+         */
+        static getHtmlEditorConfigEnter(name: string): string;
+    }
+}
+declare module "src/design-json-property" {
+    export default class DesignJsonProperty {
+        /**
+         * @type {string}
+         */
+        static TITLE: string;
+        /**
+         * @type {string}
+         */
+        static AUTHOR: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENT_GROUPS: string;
+        /**
+         * @type {string}
+         */
+        static GROUP_ID: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static ELEMENT_ID: string;
+        /**
+         * @type {string}
+         */
+        static FILE: string;
+        /**
+         * @type {string}
+         */
+        static ICON: string;
+        /**
+         * @type {string}
+         */
+        static PARTS: string;
+        /**
+         * @type {string}
+         */
+        static PART_ID: string;
+        /**
+         * @type {string}
+         */
+        static HTML_EDITOR_CONFIG: string;
+        /**
+         * @type {string}
+         */
+        static LABEL: string;
+        /**
+         * @type {string}
+         */
+        static DESCRIPTION: string;
+        /**
+         * @type {string}
+         */
+        static HIDDEN: string;
+        /**
+         * @type {string}
+         */
+        static STYLE_CONFIGS: string;
+        /**
+         * @type {string}
+         */
+        static CSS_CLASSES: string;
+        /**
+         * @type {string}
+         */
+        static CSS_CLASS: string;
+        /**
+         * @type {string}
+         */
+        static HTML_EDITOR_CONFIGS: string;
+        /**
+         * @type {string}
+         */
+        static FEATURES: string;
+        /**
+         * @type {string}
+         */
+        static TEXT_COLORS: string;
+        /**
+         * @type {string}
+         */
+        static BACKGROUND_COLORS: string;
+        /**
+         * @type {string}
+         */
+        static FORMATS: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZES: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZE_UNIT: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZE_DEFAULT: string;
+        /**
+         * @type {string}
+         */
+        static LINE_HEIGHTS: string;
+        /**
+         * @type {string}
+         */
+        static ENTER_MODE: string;
     }
 }
 declare module "src/bsi-cx-webpack-legacy-design-plugin" {
@@ -788,20 +1094,7 @@ declare module "export/main" {
     export { Version, DesignType, BuildConfig, WebpackConfigBuilder, BsiCxWebpackPlugin, BsiCxWebpackZipHashPlugin, BsiCxWebpackLegacyDesignPlugin };
 }
 declare module "src/html-editor-config/feature" {
-    export class Feature {
-        /**
-         * @param {string} value
-         */
-        constructor(value: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _value;
-        /**
-         * @returns {string}
-         */
-        get value(): string;
+    export class Feature extends AbstractConstant {
     }
     /**
      * @type {Feature}
@@ -923,22 +1216,10 @@ declare module "src/html-editor-config/feature" {
      * @type {Feature}
      */
     export const HELP: Feature;
+    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/enter-mode" {
-    export class EnterMode {
-        /**
-         * @param {string} value
-         */
-        constructor(value: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _value;
-        /**
-         * @returns {string}
-         */
-        get value(): string;
+    export class EnterMode extends AbstractConstant {
     }
     /**
      * @type {EnterMode}
@@ -952,22 +1233,10 @@ declare module "src/html-editor-config/enter-mode" {
      * @type {EnterMode}
      */
     export const DIV: EnterMode;
+    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/font-size-unit" {
-    export class FontSizeUnit {
-        /**
-         * @param {string} value
-         */
-        constructor(value: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _value;
-        /**
-         * @returns {string}
-         */
-        get value(): string;
+    export class FontSizeUnit extends AbstractConstant {
     }
     /**
      * @type {FontSizeUnit}
@@ -993,22 +1262,10 @@ declare module "src/html-editor-config/font-size-unit" {
      * @type {FontSizeUnit}
      */
     export const MM: FontSizeUnit;
+    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/format" {
-    export class Format {
-        /**
-         * @param {string} value
-         */
-        constructor(value: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _value;
-        /**
-         * @returns {string}
-         */
-        get value(): string;
+    export class Format extends AbstractConstant {
     }
     /**
      * @type {Format}
@@ -1042,9 +1299,25 @@ declare module "src/html-editor-config/format" {
      * @type {Format}
      */
     export const PRE: Format;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/abstract-builder" {
+    export default class AbstractBuilder {
+        /**
+         * @return {{}}
+         */
+        build(): {};
+        /**
+         * @param {string} property
+         * @param {{}} targetObj
+         * @param {function} extractFunc
+         * @protected
+         */
+        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
+    }
 }
 declare module "src/html-editor-config/html-editor-config-builder" {
-    export default class HtmlEditorConfigBuilder {
+    export default class HtmlEditorConfigBuilder extends AbstractBuilder {
         /**
          * @type {string|undefined}
          * @private
@@ -1185,22 +1458,15 @@ declare module "src/html-editor-config/html-editor-config-builder" {
          * @returns {HtmlEditorConfigBuilder}
          */
         withEnterMode(enterMode: EnterMode): HtmlEditorConfigBuilder;
-        build(): {};
-        /**
-         * @param {string} property
-         * @param {{}} config
-         * @param {function} extractFunc
-         * @private
-         */
-        private _applyPropertyToConfig;
     }
+    import AbstractBuilder from "src/abstract-builder";
     import { Feature } from "src/html-editor-config/feature";
     import { Format } from "src/html-editor-config/format";
     import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
     import { EnterMode } from "src/html-editor-config/enter-mode";
 }
 declare module "src/style/style-builder" {
-    export default class StyleBuilder {
+    export default class StyleBuilder extends AbstractBuilder {
         _identifier: string;
         _label: string;
         _cssClasses: any[];
@@ -1235,8 +1501,8 @@ declare module "src/style/style-builder" {
          * @returns {StyleBuilder}
          */
         withCssClass(label: string, cssClass: string): StyleBuilder;
-        build(): {};
     }
+    import AbstractBuilder from "src/abstract-builder";
 }
 declare module "export/browser" {
     import * as Feature from "src/html-editor-config/feature";

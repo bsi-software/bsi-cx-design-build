@@ -122,8 +122,8 @@ __webpack_require__.d(format_namespaceObject, {
   "PRE": () => (PRE)
 });
 
-;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
-class Feature {
+;// CONCATENATED MODULE: ./src/abstract-constant.js
+class AbstractConstant {
   /**
    * @param {string} value
    */
@@ -141,6 +141,12 @@ class Feature {
   get value() {
     return this._value;
   }
+}
+
+;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
+
+
+class Feature extends AbstractConstant {
 }
 
 /**
@@ -265,24 +271,9 @@ const HTML = new Feature('html');
 const HELP = new Feature('help');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
-class EnterMode {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
 
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
+
+class EnterMode extends AbstractConstant {
 }
 
 /**
@@ -299,24 +290,9 @@ const BR = new EnterMode('br');
 const DIV = new EnterMode('div');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
-class FontSizeUnit {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
 
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
+
+class FontSizeUnit extends AbstractConstant {
 }
 
 /**
@@ -345,24 +321,9 @@ const CM = new FontSizeUnit('cm');
 const MM = new FontSizeUnit('mm');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/format.js
-class Format {
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
-  }
 
-  /**
-   * @returns {string}
-   */
-  get value() {
-    return this._value;
-  }
+
+class Format extends AbstractConstant {
 }
 
 /**
@@ -510,6 +471,39 @@ class DesignJsonProperty {
   static ENTER_MODE = 'enterMode';
 }
 
+;// CONCATENATED MODULE: ./src/abstract-builder.js
+class AbstractBuilder {
+  /**
+   * @return {{}}
+   */
+  build() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {function} extractFunc
+   * @protected
+   */
+  _applyPropertyIfDefined(property, targetObj, extractFunc) {
+    if (typeof this[property] === 'undefined') {
+      return;
+    }
+
+    let value = this[property];
+    let computedValue;
+
+    if (value instanceof Array) {
+      computedValue = value.map(item => extractFunc(item));
+    } else {
+      computedValue = extractFunc(value);
+    }
+
+    targetObj[property] = computedValue;
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config-builder.js
 
 
@@ -517,8 +511,10 @@ class DesignJsonProperty {
 
 
 
-class HtmlEditorConfigBuilder {
+
+class HtmlEditorConfigBuilder extends AbstractBuilder {
   constructor() {
+    super();
     /**
      * @type {string|undefined}
      * @private
@@ -736,49 +732,27 @@ class HtmlEditorConfigBuilder {
     let config = {};
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyToConfig(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
-    this._applyPropertyToConfig(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
-    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
-    this._applyPropertyToConfig(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
-    this._applyPropertyToConfig(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, item => item.value);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, item => item);
+    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, item => item.value);
 
     return config;
-  }
-
-  /**
-   * @param {string} property
-   * @param {{}} config
-   * @param {function} extractFunc
-   * @private
-   */
-  _applyPropertyToConfig(property, config, extractFunc) {
-    let value = this[property];
-
-    if (value === undefined) {
-      return;
-    }
-
-    let computedValue;
-
-    if (value instanceof Array) {
-      computedValue = value.map(item => extractFunc(item));
-    } else {
-      computedValue = extractFunc(value);
-    }
-
-    config[property] = computedValue;
   }
 }
 
 ;// CONCATENATED MODULE: ./src/style/style-builder.js
 
 
-class StyleBuilder {
+
+class StyleBuilder extends AbstractBuilder {
   constructor() {
+    super();
     this._identifier = undefined;
     this._label = undefined;
     this._cssClasses = [];

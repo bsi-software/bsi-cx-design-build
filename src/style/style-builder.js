@@ -1,7 +1,9 @@
 import DesignJsonProperty from '../design-json-property';
+import AbstractBuilder from '../abstract-builder';
 
-export default class StyleBuilder {
+export default class StyleBuilder extends AbstractBuilder {
   constructor() {
+    super();
     this._identifier = undefined;
     this._label = undefined;
     this._cssClasses = [];

@@ -1,4 +1,5 @@
 import {DesignType, EMAIL, LANDINGPAGE, WEBSITE} from './design-type';
+import AbstractConstant from './abstract-constant';
 
 /**
  * @type {DesignType[]}
@@ -17,7 +18,7 @@ const ALL_TYPES = [
   WEBSITE
 ];
 
-export class Version {
+export class Version extends AbstractConstant {
   /**
    *
    * @param {string} version
@@ -25,16 +26,9 @@ export class Version {
    * @param {boolean} legacyFormat
    */
   constructor(version, allowedTypes, legacyFormat) {
-    this._version = version;
+    super(version);
     this._allowedTypes = allowedTypes;
     this._legacyFormat = legacyFormat;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get version() {
-    return this._version;
   }
 
   /**
