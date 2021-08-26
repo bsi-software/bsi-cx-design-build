@@ -11,6 +11,7 @@ import BuildConfig from './build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
 import {buildPublicPath, toString} from './utility';
+import DesignJsonProperty from './design-json-property';
 
 const parentModule = module;
 
@@ -119,17 +120,17 @@ class _BsiCxWebpackPlugin {
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     /**
-     * @type {{contentElementGroups:[{}]|undefined,website:{}|undefined}}
+     * @type {{}}
      */
     let designJsonObj = this._loadModule(designJsonPath);
-    let contentElementGroups = designJsonObj.contentElementGroups || [];
-    let website = designJsonObj.website || {includes: {}};
-    let websiteIncludes = website.includes || {};
+    let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
+    let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
+    let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
 
     this._handleDesignPreviewImage(designJsonObj);
 
     contentElementGroups
-      .forEach(group => group.contentElements
+      .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
         .forEach(element => this._handleElement(element)));
 
     Object.values(websiteIncludes)
@@ -140,25 +141,25 @@ class _BsiCxWebpackPlugin {
   }
 
   _handleDesignPreviewImage(designJsonObj) {
-    if (typeof designJsonObj.previewImage !== 'undefined') {
-      designJsonObj.previewImage = this._removeDesignBaseUrl(designJsonObj.previewImage);
+    if (typeof designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] !== 'undefined') {
+      designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] = this._removeDesignBaseUrl(designJsonObj[DesignJsonProperty.PREVIEW_IMAGE]);
     }
   }
 
   /**
-   * @param {{file:*}} element
+   * @param {{file:{}}} element
    * @private
    */
   _handleElement(element) {
-    element.file = this._handleTemplateFile(element.file, 'contentElements');
+    element[DesignJsonProperty.FILE] = this._handleTemplateFile(element[DesignJsonProperty.FILE], 'contentElements');
   }
 
   /**
-   * @param {{file:*}} include
+   * @param {{file:{}}} include
    * @private
    */
   _handleInclude(include) {
-    include.file = this._handleTemplateFile(include.file, 'includes');
+    include[DesignJsonProperty.FILE] = this._handleTemplateFile(include[DesignJsonProperty.FILE], 'includes');
   }
 
   /**

@@ -389,6 +389,162 @@ declare module "src/utility" {
     }
     import BuildConfig from "src/build-config";
 }
+declare module "src/design-json-property" {
+    export default class DesignJsonProperty {
+        /**
+         * @type {string}
+         */
+        static SCHEMA_VERSION: string;
+        /**
+         * @type {string}
+         */
+        static TITLE: string;
+        /**
+         * @type {string}
+         */
+        static AUTHOR: string;
+        /**
+         * @type {string}
+         */
+        static DATE: string;
+        /**
+         * @type {string}
+         */
+        static PREVIEW_IMAGE: string;
+        /**
+         * @type {string}
+         */
+        static DEFAULT_LOCALE: string;
+        /**
+         * @type {string}
+         */
+        static LOCALES: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENT_GROUPS: string;
+        /**
+         * @type {string}
+         */
+        static GROUP_ID: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static ELEMENT_ID: string;
+        /**
+         * @type {string}
+         */
+        static FILE: string;
+        /**
+         * @type {string}
+         */
+        static ICON: string;
+        /**
+         * @type {string}
+         */
+        static PARTS: string;
+        /**
+         * @type {string}
+         */
+        static PART_ID: string;
+        /**
+         * @type {string}
+         */
+        static HTML_EDITOR_CONFIG: string;
+        /**
+         * @type {string}
+         */
+        static LABEL: string;
+        /**
+         * @type {string}
+         */
+        static DESCRIPTION: string;
+        /**
+         * @type {string}
+         */
+        static HIDDEN: string;
+        /**
+         * @type {string}
+         */
+        static STYLE_CONFIGS: string;
+        /**
+         * @type {string}
+         */
+        static CSS_CLASSES: string;
+        /**
+         * @type {string}
+         */
+        static CSS_CLASS: string;
+        /**
+         * @type {string}
+         */
+        static HTML_EDITOR_CONFIGS: string;
+        /**
+         * @type {string}
+         */
+        static FEATURES: string;
+        /**
+         * @type {string}
+         */
+        static TEXT_COLORS: string;
+        /**
+         * @type {string}
+         */
+        static BACKGROUND_COLORS: string;
+        /**
+         * @type {string}
+         */
+        static FORMATS: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZES: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZE_UNIT: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZE_DEFAULT: string;
+        /**
+         * @type {string}
+         */
+        static LINE_HEIGHTS: string;
+        /**
+         * @type {string}
+         */
+        static ENTER_MODE: string;
+        /**
+         * @type {string}
+         */
+        static WEBSITE: string;
+        /**
+         * @type {string}
+         */
+        static NLS: string;
+        /**
+         * @type {string}
+         */
+        static MAX_NAVIGATION_LEVEL: string;
+        /**
+         * @type {string}
+         */
+        static INCLUDES: string;
+        /**
+         * @type {string}
+         */
+        static EDITABLE: string;
+        /**
+         * @type {string}
+         */
+        static PAGE_INCLUDE: string;
+    }
+}
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
         /**
@@ -742,162 +898,6 @@ declare module "src/legacy-design-property" {
          * @return {string}
          */
         static getHtmlEditorConfigEnter(name: string): string;
-    }
-}
-declare module "src/design-json-property" {
-    export default class DesignJsonProperty {
-        /**
-         * @type {string}
-         */
-        static SCHEMA_VERSION: string;
-        /**
-         * @type {string}
-         */
-        static TITLE: string;
-        /**
-         * @type {string}
-         */
-        static AUTHOR: string;
-        /**
-         * @type {string}
-         */
-        static DATE: string;
-        /**
-         * @type {string}
-         */
-        static PREVIEW_IMAGE: string;
-        /**
-         * @type {string}
-         */
-        static DEFAULT_LOCALE: string;
-        /**
-         * @type {string}
-         */
-        static LOCALES: string;
-        /**
-         * @type {string}
-         */
-        static CONTENT_ELEMENT_GROUPS: string;
-        /**
-         * @type {string}
-         */
-        static GROUP_ID: string;
-        /**
-         * @type {string}
-         */
-        static CONTENT_ELEMENTS: string;
-        /**
-         * @type {string}
-         */
-        static ELEMENT_ID: string;
-        /**
-         * @type {string}
-         */
-        static FILE: string;
-        /**
-         * @type {string}
-         */
-        static ICON: string;
-        /**
-         * @type {string}
-         */
-        static PARTS: string;
-        /**
-         * @type {string}
-         */
-        static PART_ID: string;
-        /**
-         * @type {string}
-         */
-        static HTML_EDITOR_CONFIG: string;
-        /**
-         * @type {string}
-         */
-        static LABEL: string;
-        /**
-         * @type {string}
-         */
-        static DESCRIPTION: string;
-        /**
-         * @type {string}
-         */
-        static HIDDEN: string;
-        /**
-         * @type {string}
-         */
-        static STYLE_CONFIGS: string;
-        /**
-         * @type {string}
-         */
-        static CSS_CLASSES: string;
-        /**
-         * @type {string}
-         */
-        static CSS_CLASS: string;
-        /**
-         * @type {string}
-         */
-        static HTML_EDITOR_CONFIGS: string;
-        /**
-         * @type {string}
-         */
-        static FEATURES: string;
-        /**
-         * @type {string}
-         */
-        static TEXT_COLORS: string;
-        /**
-         * @type {string}
-         */
-        static BACKGROUND_COLORS: string;
-        /**
-         * @type {string}
-         */
-        static FORMATS: string;
-        /**
-         * @type {string}
-         */
-        static FONT_SIZES: string;
-        /**
-         * @type {string}
-         */
-        static FONT_SIZE_UNIT: string;
-        /**
-         * @type {string}
-         */
-        static FONT_SIZE_DEFAULT: string;
-        /**
-         * @type {string}
-         */
-        static LINE_HEIGHTS: string;
-        /**
-         * @type {string}
-         */
-        static ENTER_MODE: string;
-        /**
-         * @type {string}
-         */
-        static WEBSITE: string;
-        /**
-         * @type {string}
-         */
-        static NLS: string;
-        /**
-         * @type {string}
-         */
-        static MAX_NAVIGATION_LEVEL: string;
-        /**
-         * @type {string}
-         */
-        static INCLUDES: string;
-        /**
-         * @type {string}
-         */
-        static EDITABLE: string;
-        /**
-         * @type {string}
-         */
-        static PAGE_INCLUDE: string;
     }
 }
 declare module "src/bsi-cx-webpack-legacy-design-plugin" {

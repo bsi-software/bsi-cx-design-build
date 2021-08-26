@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 681:
+/***/ 880:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -469,162 +469,8 @@ class LegacyDesignProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design-json-property.js
-class DesignJsonProperty {
-  /**
-   * @type {string}
-   */
-  static SCHEMA_VERSION = 'schemaVersion';
-  /**
-   * @type {string}
-   */
-  static TITLE = 'title';
-  /**
-   * @type {string}
-   */
-  static AUTHOR = 'author';
-  /**
-   * @type {string}
-   */
-  static DATE = 'date';
-  /**
-   * @type {string}
-   */
-  static PREVIEW_IMAGE = 'previewImage';
-  /**
-   * @type {string}
-   */
-  static DEFAULT_LOCALE = 'defaultLocale';
-  /**
-   * @type {string}
-   */
-  static LOCALES = 'locales';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
-  /**
-   * @type {string}
-   */
-  static GROUP_ID = 'groupId';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS = 'contentElements';
-  /**
-   * @type {string}
-   */
-  static ELEMENT_ID = 'elementId';
-  /**
-   * @type {string}
-   */
-  static FILE = 'file';
-  /**
-   * @type {string}
-   */
-  static ICON = 'icon';
-  /**
-   * @type {string}
-   */
-  static PARTS = 'parts';
-  /**
-   * @type {string}
-   */
-  static PART_ID = 'partId';
-  /**
-   * @type {string}
-   */
-  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
-  /**
-   * @type {string}
-   */
-  static LABEL = 'label';
-  /**
-   * @type {string}
-   */
-  static DESCRIPTION = 'description';
-  /**
-   * @type {string}
-   */
-  static HIDDEN = 'hidden';
-  /**
-   * @type {string}
-   */
-  static STYLE_CONFIGS = 'styleConfigs';
-  /**
-   * @type {string}
-   */
-  static CSS_CLASSES = 'cssClasses';
-  /**
-   * @type {string}
-   */
-  static CSS_CLASS = 'cssClass';
-  /**
-   * @type {string}
-   */
-  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
-  /**
-   * @type {string}
-   */
-  static FEATURES = 'features';
-  /**
-   * @type {string}
-   */
-  static TEXT_COLORS = 'textColors';
-  /**
-   * @type {string}
-   */
-  static BACKGROUND_COLORS = 'backgroundColors';
-  /**
-   * @type {string}
-   */
-  static FORMATS = 'formats';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZES = 'fontSizes';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZE_UNIT = 'fontSizeUnit';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
-  /**
-   * @type {string}
-   */
-  static LINE_HEIGHTS = 'lineHeights';
-  /**
-   * @type {string}
-   */
-  static ENTER_MODE = 'enterMode';
-  /**
-   * @type {string}
-   */
-  static WEBSITE = 'website';
-  /**
-   * @type {string}
-   */
-  static NLS = 'nls';
-  /**
-   * @type {string}
-   */
-  static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
-  /**
-   * @type {string}
-   */
-  static INCLUDES = 'includes';
-  /**
-   * @type {string}
-   */
-  static EDITABLE = 'editable';
-  /**
-   * @type {string}
-   */
-  static PAGE_INCLUDE = '__page__';
-}
-
+// EXTERNAL MODULE: ./src/design-json-property.js
+var design_json_property = __webpack_require__(529);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
 
 
@@ -717,7 +563,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
-    let contentElementGroups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+    let contentElementGroups = designJson[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS];
     let html = contentElementGroups
       .map(group => this._renderContentElementsGroup(group))
       .join('\n');
@@ -733,11 +579,11 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _renderContentElementsGroup(group) {
-    let contentElements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+    let contentElements = group[design_json_property/* default.CONTENT_ELEMENTS */.Z.CONTENT_ELEMENTS];
     let elements = contentElements
       .map(element => this._renderContentElement(element))
       .join('\n');
-    let groupId = group[DesignJsonProperty.GROUP_ID];
+    let groupId = group[design_json_property/* default.GROUP_ID */.Z.GROUP_ID];
 
     return `<div data-bsi-group="${groupId}">\n${elements}\n</div>`;
   }
@@ -748,7 +594,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _renderContentElement(element) {
-    let asset = this._compilation.getAsset(element[DesignJsonProperty.FILE]);
+    let asset = this._compilation.getAsset(element[design_json_property/* default.FILE */.Z.FILE]);
     let source = asset.source.source();
 
     return source.trim();
@@ -779,8 +625,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendMetaInfo(designJson, properties) {
-    let title = designJson[DesignJsonProperty.TITLE];
-    let author = designJson[DesignJsonProperty.AUTHOR];
+    let title = designJson[design_json_property/* default.TITLE */.Z.TITLE];
+    let author = designJson[design_json_property/* default.AUTHOR */.Z.AUTHOR];
 
     properties.appendCommentSection('Template');
 
@@ -796,7 +642,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendStyles(designJson, properties) {
-    let styleConfigs = designJson[DesignJsonProperty.STYLE_CONFIGS] || {};
+    let styleConfigs = designJson[design_json_property/* default.STYLE_CONFIGS */.Z.STYLE_CONFIGS] || {};
 
     properties.appendCommentSection('Content Element Styles');
 
@@ -815,7 +661,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
     /**
      * @type {[{}]}
      */
-    let cssClasses = config[DesignJsonProperty.CSS_CLASSES] || [];
+    let cssClasses = config[design_json_property/* default.CSS_CLASSES */.Z.CSS_CLASSES] || [];
 
     this._appendStyleConfigLabel(style, config, properties);
     cssClasses.forEach(cssClass => this._appendStyleConfigCssClass(style, cssClass, properties));
@@ -831,7 +677,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendStyleConfigLabel(style, config, properties) {
     let key = LegacyDesignProperty.getStyleLabel(style);
-    let value = config[DesignJsonProperty.LABEL];
+    let value = config[design_json_property/* default.LABEL */.Z.LABEL];
     properties.append(key, value);
   }
 
@@ -842,9 +688,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendStyleConfigCssClass(style, styleConfig, properties) {
-    let cssClass = styleConfig[DesignJsonProperty.CSS_CLASS];
+    let cssClass = styleConfig[design_json_property/* default.CSS_CLASS */.Z.CSS_CLASS];
     let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass);
-    let value = styleConfig[DesignJsonProperty.LABEL];
+    let value = styleConfig[design_json_property/* default.LABEL */.Z.LABEL];
     properties.append(key, value);
   }
 
@@ -854,7 +700,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendHtmlEditorConfigs(designJson, properties) {
-    let editorConfigs = designJson[DesignJsonProperty.HTML_EDITOR_CONFIGS] || {};
+    let editorConfigs = designJson[design_json_property/* default.HTML_EDITOR_CONFIGS */.Z.HTML_EDITOR_CONFIGS] || {};
 
     properties.appendCommentSection('HTML Editor Configs');
 
@@ -870,15 +716,15 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendHtmlEditorConfig(name, config, properties) {
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, identity, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, identity, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, identity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FEATURES */.Z.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.TEXT_COLORS */.Z.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.BACKGROUND_COLORS */.Z.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FORMATS */.Z.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FONT_SIZES */.Z.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FONT_SIZE_UNIT */.Z.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, identity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FONT_SIZE_DEFAULT */.Z.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, identity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.LINE_HEIGHTS */.Z.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.ENTER_MODE */.Z.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, identity, properties);
 
     properties.appendBlank();
   }
@@ -910,7 +756,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendContentElementGroups(designJson, properties) {
-    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+    let groups = designJson[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS];
 
     properties.appendCommentSection('Content Element Groups');
 
@@ -925,9 +771,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendContentElementGroup(group, properties) {
-    let groupId = group[DesignJsonProperty.GROUP_ID];
+    let groupId = group[design_json_property/* default.GROUP_ID */.Z.GROUP_ID];
     let key = LegacyDesignProperty.getContentElementGroupLabel(groupId);
-    let value = group[DesignJsonProperty.LABEL];
+    let value = group[design_json_property/* default.LABEL */.Z.LABEL];
 
     properties.append(key, value);
   }
@@ -938,7 +784,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendContentElements(designJson, properties) {
-    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+    let groups = designJson[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS];
 
     properties.appendCommentSection('Content Elements');
 
@@ -951,7 +797,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendContentElementsFromGroup(group, properties) {
-    let elements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+    let elements = group[design_json_property/* default.CONTENT_ELEMENTS */.Z.CONTENT_ELEMENTS];
 
     elements.forEach(element => this._appendContentElement(element, properties));
   }
@@ -962,14 +808,14 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendContentElement(element, properties) {
-    let elementId = element[DesignJsonProperty.ELEMENT_ID];
-    let parts = element[DesignJsonProperty.PARTS];
+    let elementId = element[design_json_property/* default.ELEMENT_ID */.Z.ELEMENT_ID];
+    let parts = element[design_json_property/* default.PARTS */.Z.PARTS];
     let indexMap = new Map();
 
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, identity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, identity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, identity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.LABEL */.Z.LABEL, LegacyDesignProperty.getContentElementLabel, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.DESCRIPTION */.Z.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.ICON */.Z.ICON, LegacyDesignProperty.getContentElementIcon, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.STYLE_CONFIGS */.Z.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
 
     parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
 
@@ -1005,11 +851,11 @@ class _BsiCxWebpackLegacyDesignPlugin {
    * @private
    */
   _appendContentElementPart(part, indexMap, elementId, properties) {
-    let type = part[DesignJsonProperty.PART_ID];
+    let type = part[design_json_property/* default.PART_ID */.Z.PART_ID];
     let index = indexMap.get(type) || 0;
 
-    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, identity, properties);
-    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, identity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, design_json_property/* default.LABEL */.Z.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, identity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, design_json_property/* default.HTML_EDITOR_CONFIG */.Z.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, identity, properties);
 
     indexMap.set(type, index + 1);
   }
@@ -1836,8 +1682,11 @@ var build_config = __webpack_require__(492);
 var constant = __webpack_require__(911);
 // EXTERNAL MODULE: ./src/utility.js
 var utility = __webpack_require__(923);
+// EXTERNAL MODULE: ./src/design-json-property.js
+var design_json_property = __webpack_require__(529);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
 /* module decorator */ module = __webpack_require__.hmd(module);
+
 
 
 
@@ -1959,17 +1808,17 @@ class _BsiCxWebpackPlugin {
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     /**
-     * @type {{contentElementGroups:[{}]|undefined,website:{}|undefined}}
+     * @type {{}}
      */
     let designJsonObj = this._loadModule(designJsonPath);
-    let contentElementGroups = designJsonObj.contentElementGroups || [];
-    let website = designJsonObj.website || {includes: {}};
-    let websiteIncludes = website.includes || {};
+    let contentElementGroups = designJsonObj[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS] || [];
+    let website = designJsonObj[design_json_property/* default.WEBSITE */.Z.WEBSITE] || {};
+    let websiteIncludes = website[design_json_property/* default.INCLUDES */.Z.INCLUDES] || {};
 
     this._handleDesignPreviewImage(designJsonObj);
 
     contentElementGroups
-      .forEach(group => group.contentElements
+      .forEach(group => group[design_json_property/* default.CONTENT_ELEMENTS */.Z.CONTENT_ELEMENTS]
         .forEach(element => this._handleElement(element)));
 
     Object.values(websiteIncludes)
@@ -1980,25 +1829,25 @@ class _BsiCxWebpackPlugin {
   }
 
   _handleDesignPreviewImage(designJsonObj) {
-    if (typeof designJsonObj.previewImage !== 'undefined') {
-      designJsonObj.previewImage = this._removeDesignBaseUrl(designJsonObj.previewImage);
+    if (typeof designJsonObj[design_json_property/* default.PREVIEW_IMAGE */.Z.PREVIEW_IMAGE] !== 'undefined') {
+      designJsonObj[design_json_property/* default.PREVIEW_IMAGE */.Z.PREVIEW_IMAGE] = this._removeDesignBaseUrl(designJsonObj[design_json_property/* default.PREVIEW_IMAGE */.Z.PREVIEW_IMAGE]);
     }
   }
 
   /**
-   * @param {{file:*}} element
+   * @param {{file:{}}} element
    * @private
    */
   _handleElement(element) {
-    element.file = this._handleTemplateFile(element.file, 'contentElements');
+    element[design_json_property/* default.FILE */.Z.FILE] = this._handleTemplateFile(element[design_json_property/* default.FILE */.Z.FILE], 'contentElements');
   }
 
   /**
-   * @param {{file:*}} include
+   * @param {{file:{}}} include
    * @private
    */
   _handleInclude(include) {
-    include.file = this._handleTemplateFile(include.file, 'includes');
+    include[design_json_property/* default.FILE */.Z.FILE] = this._handleTemplateFile(include[design_json_property/* default.FILE */.Z.FILE], 'includes');
   }
 
   /**
@@ -2805,6 +2654,170 @@ class Constant {
 
 /***/ }),
 
+/***/ 529:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (/* binding */ DesignJsonProperty)
+/* harmony export */ });
+class DesignJsonProperty {
+  /**
+   * @type {string}
+   */
+  static SCHEMA_VERSION = 'schemaVersion';
+  /**
+   * @type {string}
+   */
+  static TITLE = 'title';
+  /**
+   * @type {string}
+   */
+  static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static DATE = 'date';
+  /**
+   * @type {string}
+   */
+  static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static DEFAULT_LOCALE = 'defaultLocale';
+  /**
+   * @type {string}
+   */
+  static LOCALES = 'locales';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
+  /**
+   * @type {string}
+   */
+  static GROUP_ID = 'groupId';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'contentElements';
+  /**
+   * @type {string}
+   */
+  static ELEMENT_ID = 'elementId';
+  /**
+   * @type {string}
+   */
+  static FILE = 'file';
+  /**
+   * @type {string}
+   */
+  static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static PARTS = 'parts';
+  /**
+   * @type {string}
+   */
+  static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
+  /**
+   * @type {string}
+   */
+  static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static DESCRIPTION = 'description';
+  /**
+   * @type {string}
+   */
+  static HIDDEN = 'hidden';
+  /**
+   * @type {string}
+   */
+  static STYLE_CONFIGS = 'styleConfigs';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASSES = 'cssClasses';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
+  /**
+   * @type {string}
+   */
+  static FEATURES = 'features';
+  /**
+   * @type {string}
+   */
+  static TEXT_COLORS = 'textColors';
+  /**
+   * @type {string}
+   */
+  static BACKGROUND_COLORS = 'backgroundColors';
+  /**
+   * @type {string}
+   */
+  static FORMATS = 'formats';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZES = 'fontSizes';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_UNIT = 'fontSizeUnit';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
+  /**
+   * @type {string}
+   */
+  static LINE_HEIGHTS = 'lineHeights';
+  /**
+   * @type {string}
+   */
+  static ENTER_MODE = 'enterMode';
+  /**
+   * @type {string}
+   */
+  static WEBSITE = 'website';
+  /**
+   * @type {string}
+   */
+  static NLS = 'nls';
+  /**
+   * @type {string}
+   */
+  static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
+  /**
+   * @type {string}
+   */
+  static INCLUDES = 'includes';
+  /**
+   * @type {string}
+   */
+  static EDITABLE = 'editable';
+  /**
+   * @type {string}
+   */
+  static PAGE_INCLUDE = '__page__';
+}
+
+
+/***/ }),
+
 /***/ 24:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -3143,7 +3156,7 @@ module.exports = require("webpack/lib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(681);
+/******/ 	var __webpack_exports__ = __webpack_require__(880);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
