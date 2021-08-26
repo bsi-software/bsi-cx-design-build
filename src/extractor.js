@@ -1,3 +1,6 @@
+import AbstractBuilder from './abstract-builder';
+import AbstractConstant from './abstract-constant';
+
 /**
  * @param {[string|number]} arr
  * @return {string}
@@ -7,18 +10,11 @@ export function scalarArrayToList(arr) {
 }
 
 /**
- * @param {*} v
- * @return {*}
+ * @template T
+ * @param {T} v
+ * @return {T}
  */
 export function identity(v) {
-  return v;
-}
-
-/**
- * @param {string|number|boolean} v
- * @return {string|number|boolean}
- */
-export function scalarIdentity(v) {
   return v;
 }
 
@@ -28,4 +24,12 @@ export function scalarIdentity(v) {
  */
 export function constantObjectValue(constant) {
   return constant.value;
+}
+
+/**
+ * @param {AbstractBuilder} builder
+ * @return {{}}
+ */
+export function builderObjectValue(builder) {
+  return builder.build();
 }

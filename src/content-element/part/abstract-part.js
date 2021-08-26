@@ -1,7 +1,7 @@
 import {Part} from './part';
 import AbstractBuilder from '../../abstract-builder';
 import DesignJsonProperty from '../../design-json-property';
-import {constantObjectValue, scalarIdentity} from '../../extractor';
+import {constantObjectValue, identity} from '../../extractor';
 
 export default class AbstractPart extends AbstractBuilder {
   /**
@@ -49,7 +49,7 @@ export default class AbstractPart extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
 
     return config;
   }

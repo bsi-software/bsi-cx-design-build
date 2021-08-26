@@ -43,6 +43,7 @@ __webpack_require__.d(__webpack_exports__, {
   "AbstractPart": () => (/* reexport */ AbstractPart),
   "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
   "ContentElement": () => (/* reexport */ ContentElement),
+  "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
   "Feature": () => (/* reexport */ feature_namespaceObject),
@@ -97,6 +98,59 @@ __webpack_require__.d(part_namespaceObject, {
   "TABLE": () => (TABLE),
   "URL_PROVIDER": () => (URL_PROVIDER),
   "VIDEO": () => (VIDEO)
+});
+
+// NAMESPACE OBJECT: ./src/content-element/icon.js
+var icon_namespaceObject = {};
+__webpack_require__.r(icon_namespaceObject);
+__webpack_require__.d(icon_namespaceObject, {
+  "ASTERISK": () => (ASTERISK),
+  "CHAIN": () => (CHAIN),
+  "CHECKBOX": () => (CHECKBOX),
+  "COMMUNICATION": () => (COMMUNICATION),
+  "COMPASS": () => (COMPASS),
+  "DIAGRAM_AREA": () => (DIAGRAM_AREA),
+  "DIAGRAM_BAR": () => (DIAGRAM_BAR),
+  "DIAGRAM_LINE": () => (DIAGRAM_LINE),
+  "DIVIDER": () => (DIVIDER),
+  "DOCUMENT": () => (DOCUMENT),
+  "DROPDOWN": () => (DROPDOWN),
+  "ENVELOPE": () => (ENVELOPE),
+  "FACEBOOK": () => (FACEBOOK),
+  "FORMFIELD": () => (FORMFIELD),
+  "HANDSHAKE": () => (HANDSHAKE),
+  "HEADING": () => (HEADING),
+  "HEADSET": () => (HEADSET),
+  "HEART": () => (HEART),
+  "IMAGE": () => (icon_IMAGE),
+  "INFO": () => (INFO),
+  "Icon": () => (Icon),
+  "LIST": () => (LIST),
+  "MEGAPHONE": () => (MEGAPHONE),
+  "METADATA": () => (METADATA),
+  "ONE_COLUMN": () => (ONE_COLUMN),
+  "PAPERCLIP": () => (PAPERCLIP),
+  "PARAMETER": () => (PARAMETER),
+  "PERSON_FEMALE": () => (PERSON_FEMALE),
+  "PERSON_MALE": () => (PERSON_MALE),
+  "PHONE": () => (PHONE),
+  "PILE": () => (PILE),
+  "QRCODE": () => (QRCODE),
+  "RADIOBUTTON": () => (RADIOBUTTON),
+  "SIGNPOST": () => (SIGNPOST),
+  "SMILEY": () => (SMILEY),
+  "SNIPPET": () => (SNIPPET),
+  "SOCIAL_FOLLOW": () => (icon_SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (icon_SOCIAL_SHARE),
+  "TABLE": () => (icon_TABLE),
+  "TEXT": () => (TEXT),
+  "TEXTAREA": () => (TEXTAREA),
+  "TEXT_WITH_IMAGE": () => (TEXT_WITH_IMAGE),
+  "THREE_COLUMNS": () => (THREE_COLUMNS),
+  "TWITTER": () => (TWITTER),
+  "TWO_COLUMNS": () => (TWO_COLUMNS),
+  "VIDEO": () => (icon_VIDEO),
+  "YOUTUBE": () => (YOUTUBE)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
@@ -194,59 +248,6 @@ __webpack_require__.d(format_namespaceObject, {
   "H6": () => (H6),
   "P": () => (format_P),
   "PRE": () => (PRE)
-});
-
-// NAMESPACE OBJECT: ./src/content-element/icon.js
-var icon_namespaceObject = {};
-__webpack_require__.r(icon_namespaceObject);
-__webpack_require__.d(icon_namespaceObject, {
-  "ASTERISK": () => (ASTERISK),
-  "CHAIN": () => (CHAIN),
-  "CHECKBOX": () => (CHECKBOX),
-  "COMMUNICATION": () => (COMMUNICATION),
-  "COMPASS": () => (COMPASS),
-  "DIAGRAM_AREA": () => (DIAGRAM_AREA),
-  "DIAGRAM_BAR": () => (DIAGRAM_BAR),
-  "DIAGRAM_LINE": () => (DIAGRAM_LINE),
-  "DIVIDER": () => (DIVIDER),
-  "DOCUMENT": () => (DOCUMENT),
-  "DROPDOWN": () => (DROPDOWN),
-  "ENVELOPE": () => (ENVELOPE),
-  "FACEBOOK": () => (FACEBOOK),
-  "FORMFIELD": () => (FORMFIELD),
-  "HANDSHAKE": () => (HANDSHAKE),
-  "HEADING": () => (HEADING),
-  "HEADSET": () => (HEADSET),
-  "HEART": () => (HEART),
-  "IMAGE": () => (icon_IMAGE),
-  "INFO": () => (INFO),
-  "Icon": () => (Icon),
-  "LIST": () => (LIST),
-  "MEGAPHONE": () => (MEGAPHONE),
-  "METADATA": () => (METADATA),
-  "ONE_COLUMN": () => (ONE_COLUMN),
-  "PAPERCLIP": () => (PAPERCLIP),
-  "PARAMETER": () => (PARAMETER),
-  "PERSON_FEMALE": () => (PERSON_FEMALE),
-  "PERSON_MALE": () => (PERSON_MALE),
-  "PHONE": () => (PHONE),
-  "PILE": () => (PILE),
-  "QRCODE": () => (QRCODE),
-  "RADIOBUTTON": () => (RADIOBUTTON),
-  "SIGNPOST": () => (SIGNPOST),
-  "SMILEY": () => (SMILEY),
-  "SNIPPET": () => (SNIPPET),
-  "SOCIAL_FOLLOW": () => (icon_SOCIAL_FOLLOW),
-  "SOCIAL_SHARE": () => (icon_SOCIAL_SHARE),
-  "TABLE": () => (icon_TABLE),
-  "TEXT": () => (TEXT),
-  "TEXTAREA": () => (TEXTAREA),
-  "TEXT_WITH_IMAGE": () => (TEXT_WITH_IMAGE),
-  "THREE_COLUMNS": () => (THREE_COLUMNS),
-  "TWITTER": () => (TWITTER),
-  "TWO_COLUMNS": () => (TWO_COLUMNS),
-  "VIDEO": () => (icon_VIDEO),
-  "YOUTUBE": () => (YOUTUBE)
 });
 
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
@@ -518,6 +519,9 @@ class DesignJsonProperty {
 }
 
 ;// CONCATENATED MODULE: ./src/extractor.js
+
+
+
 /**
  * @param {[string|number]} arr
  * @return {string}
@@ -527,18 +531,11 @@ function scalarArrayToList(arr) {
 }
 
 /**
- * @param {*} v
- * @return {*}
+ * @template T
+ * @param {T} v
+ * @return {T}
  */
 function identity(v) {
-  return v;
-}
-
-/**
- * @param {string|number|boolean} v
- * @return {string|number|boolean}
- */
-function scalarIdentity(v) {
   return v;
 }
 
@@ -548,6 +545,14 @@ function scalarIdentity(v) {
  */
 function constantObjectValue(constant) {
   return constant.value;
+}
+
+/**
+ * @param {AbstractBuilder} builder
+ * @return {{}}
+ */
+function builderObjectValue(builder) {
+  return builder.build();
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/abstract-part.js
@@ -602,7 +607,546 @@ class AbstractPart extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/icon.js
+
+
+class Icon extends AbstractConstant {
+}
+
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HEADING = new Icon('heading');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TEXT = new Icon('text');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TEXT_WITH_IMAGE = new Icon('text-with-image');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_IMAGE = new Icon('image');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_TABLE = new Icon('table');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const LIST = new Icon('list');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_VIDEO = new Icon('video');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const MEGAPHONE = new Icon('megaphone');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_SOCIAL_FOLLOW = new Icon('social-follow');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const icon_SOCIAL_SHARE = new Icon('social-share');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const SNIPPET = new Icon('snippet');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const QRCODE = new Icon('qrcode');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PAPERCLIP = new Icon('paperclip');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const DOCUMENT = new Icon('document');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PHONE = new Icon('phone');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const COMMUNICATION = new Icon('communication');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HANDSHAKE = new Icon('handshake');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HEART = new Icon('heart');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const INFO = new Icon('info');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const ENVELOPE = new Icon('envelope');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const FACEBOOK = new Icon('facebook');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const YOUTUBE = new Icon('youtube');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PERSON_MALE = new Icon('person-male');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PERSON_FEMALE = new Icon('person-female');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const ASTERISK = new Icon('asterisk');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const SMILEY = new Icon('smiley');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const DIVIDER = new Icon('divider');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PARAMETER = new Icon('parameter');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TWITTER = new Icon('twitter');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const HEADSET = new Icon('headset');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const METADATA = new Icon('metadata');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const PILE = new Icon('pile');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const CHAIN = new Icon('chain');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const SIGNPOST = new Icon('signpost');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const COMPASS = new Icon('compass');
+/**
+ * @type {Icon}
+ * @since 22.0
+ */
+const DIAGRAM_LINE = new Icon('diagram-line');
+/**
+ * @type {Icon}
+ * @since 22.0
+ */
+const DIAGRAM_AREA = new Icon('diagram-area');
+/**
+ * @type {Icon}
+ * @since 22.0
+ */
+const DIAGRAM_BAR = new Icon('diagram-bar');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const RADIOBUTTON = new Icon('radiobutton');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const CHECKBOX = new Icon('checkbox');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TEXTAREA = new Icon('textarea');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const FORMFIELD = new Icon('formfield');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const DROPDOWN = new Icon('dropdown');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const ONE_COLUMN = new Icon('one-column');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const TWO_COLUMNS = new Icon('two-columns');
+/**
+ * @type {Icon}
+ * @since 1.0
+ */
+const THREE_COLUMNS = new Icon('three-columns');
+
+;// CONCATENATED MODULE: ./src/content-element/content-element.js
+
+
+
+
+
+
+
+class ContentElement extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._elementId = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._label = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._description = undefined;
+    /**
+     * @type {{}|undefined}
+     * @private
+     */
+    this._file = undefined;
+    /**
+     * @type {Icon|undefined}
+     * @private
+     */
+    this._icon = undefined;
+    /**
+     * @type {boolean|undefined}
+     * @private
+     */
+    this._hidden = undefined;
+    /**
+     * @type {[Style]|undefined}
+     * @private
+     */
+    this._styleConfigs = undefined;
+    /**
+     * @type {[AbstractPart]|undefined}
+     * @private
+     */
+    this._parts = undefined;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get elementId() {
+    return this._elementId;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get description() {
+    return this._description;
+  }
+
+  /**
+   * @return {{}|undefined}
+   */
+  get file() {
+    return this._file;
+  }
+
+  /**
+   * @return {Icon|undefined}
+   */
+  get icon() {
+    return this._icon;
+  }
+
+  /**
+   * @return {boolean|undefined}
+   */
+  get hidden() {
+    return this._hidden;
+  }
+
+  /**
+   * @return {Style[]|undefined}
+   */
+  get styleConfigs() {
+    return this._styleConfigs;
+  }
+
+  /**
+   * @return {AbstractPart[]|undefined}
+   */
+  get parts() {
+    return this._parts;
+  }
+
+  /**
+   * @param {string} elementId
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withElementId(elementId) {
+    this._elementId = elementId;
+    return this;
+  }
+
+  /**
+   * @param {string} label
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  /**
+   * @param {string} file
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withFile(file) {
+    this._file = file;
+    return this;
+  }
+
+  /**
+   * @param {Icon} icon
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withIcon(icon) {
+    this._icon = icon;
+    return this;
+  }
+
+  /**
+   * @param {boolean} hidden
+   * @return {ContentElement}
+   * @since 1.3
+   */
+  withHidden(hidden) {
+    this._hidden = hidden;
+    return this;
+  }
+
+  /**
+   * @param {Style} styleConfigs
+   * @return {ContentElement}
+   * @since 1.1
+   */
+  withStyleConfigs(...styleConfigs) {
+    this._styleConfigs = styleConfigs;
+    return this;
+  }
+
+  /**
+   * @param {AbstractPart} parts
+   * @return {ContentElement}
+   * @since 1.0
+   */
+  withParts(...parts) {
+    this._parts = parts;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, constantObjectValue);
+
+    return config;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/content-element/content-element-group.js
+
+
+
+
+
+class ContentElementGroup extends AbstractBuilder {
+  constructor() {
+    super();
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._groupId = undefined;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._label = undefined;
+    /**
+     * @type {boolean|undefined}
+     * @private
+     */
+    this._hidden = undefined;
+    /**
+     * @type {[ContentElement]|undefined}
+     * @private
+     */
+    this._contentElements = undefined;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get groupId() {
+    return this._groupId;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @return {boolean|undefined}
+   */
+  get hidden() {
+    return this._hidden;
+  }
+
+  /**
+   * @return {[ContentElement]|undefined}
+   */
+  get contentElements() {
+    return this._contentElements;
+  }
+
+  /**
+   * @param {string} groupId
+   * @return {ContentElementGroup}
+   */
+  withGroupId(groupId) {
+    this._groupId = groupId;
+    return this;
+  }
+
+  /**
+   * @param {string} label
+   * @return {ContentElementGroup}
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  /**
+   * @param {boolean} hidden
+   * @return {ContentElementGroup}
+   */
+  withHidden(hidden) {
+    this._hidden = hidden;
+    return this;
+  }
+
+  /**
+   * @param {ContentElement} contentElements
+   * @return {ContentElementGroup}
+   */
+  withContentElements(...contentElements) {
+    this._contentElements = contentElements;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.GROUP_ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENTS, config, builderObjectValue);
 
     return config;
   }
@@ -1153,13 +1697,13 @@ class HtmlEditorConfig extends AbstractBuilder {
     config[this.identifier] = editorConfig;
 
     this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, constantObjectValue);
 
     return config;
@@ -1244,438 +1788,6 @@ class Style extends AbstractBuilder {
     style[DesignJsonProperty.CSS_CLASSES] = this.cssClasses;
 
     config[this.identifier] = style;
-
-    return config;
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/icon.js
-
-
-class Icon extends AbstractConstant {
-}
-
-/**
- * @type {Icon}
- * @since 1.0
- */
-const HEADING = new Icon('heading');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const TEXT = new Icon('text');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const TEXT_WITH_IMAGE = new Icon('text-with-image');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const icon_IMAGE = new Icon('image');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const icon_TABLE = new Icon('table');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const LIST = new Icon('list');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const icon_VIDEO = new Icon('video');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const MEGAPHONE = new Icon('megaphone');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const icon_SOCIAL_FOLLOW = new Icon('social-follow');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const icon_SOCIAL_SHARE = new Icon('social-share');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const SNIPPET = new Icon('snippet');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const QRCODE = new Icon('qrcode');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const PAPERCLIP = new Icon('paperclip');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const DOCUMENT = new Icon('document');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const PHONE = new Icon('phone');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const COMMUNICATION = new Icon('communication');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const HANDSHAKE = new Icon('handshake');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const HEART = new Icon('heart');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const INFO = new Icon('info');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const ENVELOPE = new Icon('envelope');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const FACEBOOK = new Icon('facebook');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const YOUTUBE = new Icon('youtube');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const PERSON_MALE = new Icon('person-male');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const PERSON_FEMALE = new Icon('person-female');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const ASTERISK = new Icon('asterisk');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const SMILEY = new Icon('smiley');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const DIVIDER = new Icon('divider');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const PARAMETER = new Icon('parameter');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const TWITTER = new Icon('twitter');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const HEADSET = new Icon('headset');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const METADATA = new Icon('metadata');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const PILE = new Icon('pile');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const CHAIN = new Icon('chain');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const SIGNPOST = new Icon('signpost');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const COMPASS = new Icon('compass');
-/**
- * @type {Icon}
- * @since 22.0
- */
-const DIAGRAM_LINE = new Icon('diagram-line');
-/**
- * @type {Icon}
- * @since 22.0
- */
-const DIAGRAM_AREA = new Icon('diagram-area');
-/**
- * @type {Icon}
- * @since 22.0
- */
-const DIAGRAM_BAR = new Icon('diagram-bar');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const RADIOBUTTON = new Icon('radiobutton');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const CHECKBOX = new Icon('checkbox');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const TEXTAREA = new Icon('textarea');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const FORMFIELD = new Icon('formfield');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const DROPDOWN = new Icon('dropdown');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const ONE_COLUMN = new Icon('one-column');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const TWO_COLUMNS = new Icon('two-columns');
-/**
- * @type {Icon}
- * @since 1.0
- */
-const THREE_COLUMNS = new Icon('three-columns');
-
-;// CONCATENATED MODULE: ./src/content-element/content-element.js
-
-
-
-
-
-
-
-class ContentElement extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._elementId = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._label = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._description = undefined;
-    /**
-     * @type {{}|undefined}
-     * @private
-     */
-    this._file = undefined;
-    /**
-     * @type {Icon|undefined}
-     * @private
-     */
-    this._icon = undefined;
-    /**
-     * @type {boolean|undefined}
-     * @private
-     */
-    this._hidden = undefined;
-    /**
-     * @type {[Style]|undefined}
-     * @private
-     */
-    this._styleConfigs = undefined;
-    /**
-     * @type {[AbstractPart]|undefined}
-     * @private
-     */
-    this._parts = undefined;
-  }
-
-  /**
-   * @return {string|undefined}
-   */
-  get elementId() {
-    return this._elementId;
-  }
-
-  /**
-   * @return {string|undefined}
-   */
-  get label() {
-    return this._label;
-  }
-
-  /**
-   * @return {string|undefined}
-   */
-  get description() {
-    return this._description;
-  }
-
-  /**
-   * @return {{}|undefined}
-   */
-  get file() {
-    return this._file;
-  }
-
-  /**
-   * @return {Icon|undefined}
-   */
-  get icon() {
-    return this._icon;
-  }
-
-  /**
-   * @return {boolean|undefined}
-   */
-  get hidden() {
-    return this._hidden;
-  }
-
-  /**
-   * @return {Style[]|undefined}
-   */
-  get styleConfigs() {
-    return this._styleConfigs;
-  }
-
-  /**
-   * @return {AbstractPart[]|undefined}
-   */
-  get parts() {
-    return this._parts;
-  }
-
-  /**
-   * @param {string} elementId
-   * @return {ContentElement}
-   * @since 1.0
-   */
-  withElementId(elementId) {
-    this._elementId = elementId;
-    return this;
-  }
-
-  /**
-   * @param {string} label
-   * @return {ContentElement}
-   * @since 1.0
-   */
-  withLabel(label) {
-    this._label = label;
-    return this;
-  }
-
-  /**
-   * @param {string} file
-   * @return {ContentElement}
-   * @since 1.0
-   */
-  withFile(file) {
-    this._file = file;
-    return this;
-  }
-
-  /**
-   * @param {Icon} icon
-   * @return {ContentElement}
-   * @since 1.0
-   */
-  withIcon(icon) {
-    this._icon = icon;
-    return this;
-  }
-
-  /**
-   * @param {boolean} hidden
-   * @return {ContentElement}
-   * @since 1.3
-   */
-  withHidden(hidden) {
-    this._hidden = hidden;
-    return this;
-  }
-
-  /**
-   * @param {Style} styleConfigs
-   * @return {ContentElement}
-   * @since 1.1
-   */
-  withStyleConfigs(...styleConfigs) {
-    this._styleConfigs = styleConfigs;
-    return this;
-  }
-
-  /**
-   * @param {AbstractPart} parts
-   * @return {ContentElement}
-   * @since 1.0
-   */
-  withParts(...parts) {
-    this._parts = parts;
-    return this;
-  }
-
-  build() {
-    let config = {};
-
-    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, part => part.build());
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, style => constantObjectValue(style));
 
     return config;
   }
@@ -2112,6 +2224,7 @@ class UrlProviderPart extends AbstractPart {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
 
 
 

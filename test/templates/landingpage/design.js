@@ -1,3 +1,5 @@
+const {ContentElementGroup} = require('@bsi-cx/design-build');
+
 module.exports = {
   schemaVersion: '22.0',
   title: 'Landingpage Template',
@@ -13,14 +15,13 @@ module.exports = {
   ],
   nls: require('./nls'),
   contentElementGroups: [
-    {
-      groupId: 'content',
-      label: 'Inhalt',
-      contentElements: [
-        require('./content-elements/content/title').build(),
-        require('./content-elements/content/text').build()
-      ]
-    }
+    new ContentElementGroup()
+      .withGroupId('content')
+      .withLabel('Inhalt')
+      .withContentElements(
+        require('./content-elements/content/title'),
+        require('./content-elements/content/text'))
+      .build()
   ],
   styleConfigs: {
     ...require('./styles/background-color').build(),

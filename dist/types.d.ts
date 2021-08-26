@@ -472,6 +472,21 @@ declare module "src/java-property-file-builder" {
         _escapeValue(value: string): string;
     }
 }
+declare module "src/abstract-builder" {
+    export default class AbstractBuilder {
+        /**
+         * @return {{}}
+         */
+        build(): {};
+        /**
+         * @param {string} property
+         * @param {{}} targetObj
+         * @param {function} extractFunc
+         * @protected
+         */
+        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
+    }
+}
 declare module "src/extractor" {
     /**
      * @param {[string|number]} arr
@@ -479,20 +494,23 @@ declare module "src/extractor" {
      */
     export function scalarArrayToList(arr: [string | number]): string;
     /**
-     * @param {*} v
-     * @return {*}
+     * @template T
+     * @param {T} v
+     * @return {T}
      */
-    export function identity(v: any): any;
-    /**
-     * @param {string|number|boolean} v
-     * @return {string|number|boolean}
-     */
-    export function scalarIdentity(v: string | number | boolean): string | number | boolean;
+    export function identity<T>(v: T): T;
     /**
      * @param {AbstractConstant} constant
      * @return {string}
      */
-    export function constantObjectValue(constant: any): string;
+    export function constantObjectValue(constant: AbstractConstant): string;
+    /**
+     * @param {AbstractBuilder} builder
+     * @return {{}}
+     */
+    export function builderObjectValue(builder: AbstractBuilder): {};
+    import AbstractConstant from "src/abstract-constant";
+    import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/legacy-design-property" {
     export default class LegacyDesignProperty {
@@ -1108,21 +1126,6 @@ declare module "export/main" {
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
     export { Version, DesignType, BuildConfig, WebpackConfigBuilder, BsiCxWebpackPlugin, BsiCxWebpackZipHashPlugin, BsiCxWebpackLegacyDesignPlugin };
 }
-declare module "src/abstract-builder" {
-    export default class AbstractBuilder {
-        /**
-         * @return {{}}
-         */
-        build(): {};
-        /**
-         * @param {string} property
-         * @param {{}} targetObj
-         * @param {function} extractFunc
-         * @protected
-         */
-        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function): void;
-    }
-}
 declare module "src/content-element/part/part" {
     export class Part extends AbstractConstant {
     }
@@ -1256,363 +1259,6 @@ declare module "src/content-element/part/abstract-part" {
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Part } from "src/content-element/part/part";
-}
-declare module "src/html-editor-config/feature" {
-    export class Feature extends AbstractConstant {
-    }
-    /**
-     * @type {Feature}
-     */
-    export const BOLD: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const ITALIC: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const UNDERLINE: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const STRIKE_THROUGH: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const SUBSCRIPT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const SUPERSCRIPT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const FONT_SIZE: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const LINE_HEIGHT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const TEXT_COLOR: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const BACKGROUND_COLOR: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const ALIGN_LEFT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const ALIGN_CENTER: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const ALIGN_RIGHT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const ALIGN_JUSTIFY: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const FORMAT_OL: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const FORMAT_UL: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const OUTDENT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const INDENT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const PARAGRAPH_FORMAT: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const QUOTE: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const SPECIAL_CHARACTERS: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const EMOTICONS: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const INSERT_LINK: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const CLEAR_FORMATTING: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const UNDO: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const REDO: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const FULLSCREEN: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const SELECT_ALL: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const HTML: Feature;
-    /**
-     * @type {Feature}
-     */
-    export const HELP: Feature;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/enter-mode" {
-    export class EnterMode extends AbstractConstant {
-    }
-    /**
-     * @type {EnterMode}
-     */
-    export const P: EnterMode;
-    /**
-     * @type {EnterMode}
-     */
-    export const BR: EnterMode;
-    /**
-     * @type {EnterMode}
-     */
-    export const DIV: EnterMode;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/font-size-unit" {
-    export class FontSizeUnit extends AbstractConstant {
-    }
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const PX: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const EM: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const REM: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const PT: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const CM: FontSizeUnit;
-    /**
-     * @type {FontSizeUnit}
-     */
-    export const MM: FontSizeUnit;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/format" {
-    export class Format extends AbstractConstant {
-    }
-    /**
-     * @type {Format}
-     */
-    export const P: Format;
-    /**
-     * @type {Format}
-     */
-    export const H1: Format;
-    /**
-     * @type {Format}
-     */
-    export const H2: Format;
-    /**
-     * @type {Format}
-     */
-    export const H3: Format;
-    /**
-     * @type {Format}
-     */
-    export const H4: Format;
-    /**
-     * @type {Format}
-     */
-    export const H5: Format;
-    /**
-     * @type {Format}
-     */
-    export const H6: Format;
-    /**
-     * @type {Format}
-     */
-    export const PRE: Format;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/html-editor-config" {
-    export default class HtmlEditorConfig extends AbstractBuilder {
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _identifier;
-        /**
-         * @type {Feature[]|undefined}
-         * @private
-         */
-        private _features;
-        /**
-         * @type {string[]|undefined}
-         * @private
-         */
-        private _textColors;
-        /**
-         * @type {string[]|undefined}
-         * @private
-         */
-        private _backgroundColors;
-        /**
-         * @type {Format[]|undefined}
-         * @private
-         */
-        private _formats;
-        /**
-         * @type {number[]|undefined}
-         * @private
-         */
-        private _fontSizes;
-        /**
-         * @type {FontSizeUnit|undefined}
-         * @private
-         */
-        private _fontSizeUnit;
-        /**
-         * @type {number|undefined}
-         * @private
-         */
-        private _fontSizeDefault;
-        /**
-         * @type {number[]|undefined}
-         * @private
-         */
-        private _lineHeights;
-        /**
-         * @type {EnterMode|undefined}
-         * @private
-         */
-        private _enterMode;
-        /**
-         * @returns {string|undefined}
-         */
-        get identifier(): string;
-        /**
-         * @returns {Feature[]|undefined}
-         */
-        get features(): Feature[];
-        /**
-         * @returns {string[]|undefined}
-         */
-        get textColors(): string[];
-        /**
-         * @returns {string[]|undefined}
-         */
-        get backgroundColors(): string[];
-        /**
-         * @returns {Format[]|undefined}
-         */
-        get formats(): Format[];
-        /**
-         * @returns {number[]|undefined}
-         */
-        get fontSizes(): number[];
-        /**
-         * @returns {FontSizeUnit|undefined}
-         */
-        get fontSizeUnit(): FontSizeUnit;
-        /**
-         * @returns {number|undefined}
-         */
-        get fontSizeDefault(): number;
-        /**
-         * @returns {number[]|undefined}
-         */
-        get lineHeights(): number[];
-        /**
-         * @returns {EnterMode|undefined}
-         */
-        get enterMode(): EnterMode;
-        /**
-         * @param {string} identifier
-         * @returns {HtmlEditorConfig}
-         */
-        withIdentifier(identifier: string): HtmlEditorConfig;
-        /**
-         * @param {Feature} features
-         * @returns {HtmlEditorConfig}
-         */
-        withFeatures(...features: Feature): HtmlEditorConfig;
-        /**
-         * @param {string} textColors
-         * @returns {HtmlEditorConfig}
-         */
-        withTextColors(...textColors: string): HtmlEditorConfig;
-        /**
-         * @param {string} backgroundColors
-         * @returns {HtmlEditorConfig}
-         */
-        withBackgroundColors(...backgroundColors: string): HtmlEditorConfig;
-        /**
-         * @param {Format} formats
-         * @returns {HtmlEditorConfig}
-         */
-        withFormats(...formats: Format): HtmlEditorConfig;
-        /**
-         * @param {number} fontSizes
-         * @returns {HtmlEditorConfig}
-         */
-        withFontSizes(...fontSizes: number): HtmlEditorConfig;
-        /**
-         * @param {FontSizeUnit} fontSizeUnit
-         * @returns {HtmlEditorConfig}
-         */
-        withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
-        /**
-         * @param {number} fontSizeDefault
-         * @returns {HtmlEditorConfig}
-         */
-        withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
-        /**
-         * @param {number} lineHeights
-         * @returns {HtmlEditorConfig}
-         */
-        withLineHeights(...lineHeights: number): HtmlEditorConfig;
-        /**
-         * @param {EnterMode} enterMode
-         * @returns {HtmlEditorConfig}
-         */
-        withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-    import { Feature } from "src/html-editor-config/feature";
-    import { Format } from "src/html-editor-config/format";
-    import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
-    import { EnterMode } from "src/html-editor-config/enter-mode";
 }
 declare module "src/style/style" {
     /**
@@ -2013,6 +1659,425 @@ declare module "src/content-element/content-element" {
     import Style from "src/style/style";
     import AbstractPart from "src/content-element/part/abstract-part";
 }
+declare module "src/content-element/content-element-group" {
+    export default class ContentElementGroup extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _groupId;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _hidden;
+        /**
+         * @type {[ContentElement]|undefined}
+         * @private
+         */
+        private _contentElements;
+        /**
+         * @return {string|undefined}
+         */
+        get groupId(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @return {boolean|undefined}
+         */
+        get hidden(): boolean;
+        /**
+         * @return {[ContentElement]|undefined}
+         */
+        get contentElements(): [ContentElement];
+        /**
+         * @param {string} groupId
+         * @return {ContentElementGroup}
+         */
+        withGroupId(groupId: string): ContentElementGroup;
+        /**
+         * @param {string} label
+         * @return {ContentElementGroup}
+         */
+        withLabel(label: string): ContentElementGroup;
+        /**
+         * @param {boolean} hidden
+         * @return {ContentElementGroup}
+         */
+        withHidden(hidden: boolean): ContentElementGroup;
+        /**
+         * @param {ContentElement} contentElements
+         * @return {ContentElementGroup}
+         */
+        withContentElements(...contentElements: ContentElement): ContentElementGroup;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import ContentElement from "src/content-element/content-element";
+}
+declare module "src/html-editor-config/feature" {
+    export class Feature extends AbstractConstant {
+    }
+    /**
+     * @type {Feature}
+     */
+    export const BOLD: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const ITALIC: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const UNDERLINE: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const STRIKE_THROUGH: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const SUBSCRIPT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const SUPERSCRIPT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const FONT_SIZE: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const LINE_HEIGHT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const TEXT_COLOR: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const BACKGROUND_COLOR: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const ALIGN_LEFT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const ALIGN_CENTER: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const ALIGN_RIGHT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const ALIGN_JUSTIFY: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const FORMAT_OL: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const FORMAT_UL: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const OUTDENT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const INDENT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const PARAGRAPH_FORMAT: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const QUOTE: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const SPECIAL_CHARACTERS: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const EMOTICONS: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const INSERT_LINK: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const CLEAR_FORMATTING: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const UNDO: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const REDO: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const FULLSCREEN: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const SELECT_ALL: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const HTML: Feature;
+    /**
+     * @type {Feature}
+     */
+    export const HELP: Feature;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/enter-mode" {
+    export class EnterMode extends AbstractConstant {
+    }
+    /**
+     * @type {EnterMode}
+     */
+    export const P: EnterMode;
+    /**
+     * @type {EnterMode}
+     */
+    export const BR: EnterMode;
+    /**
+     * @type {EnterMode}
+     */
+    export const DIV: EnterMode;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/font-size-unit" {
+    export class FontSizeUnit extends AbstractConstant {
+    }
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const PX: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const EM: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const REM: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const PT: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const CM: FontSizeUnit;
+    /**
+     * @type {FontSizeUnit}
+     */
+    export const MM: FontSizeUnit;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/format" {
+    export class Format extends AbstractConstant {
+    }
+    /**
+     * @type {Format}
+     */
+    export const P: Format;
+    /**
+     * @type {Format}
+     */
+    export const H1: Format;
+    /**
+     * @type {Format}
+     */
+    export const H2: Format;
+    /**
+     * @type {Format}
+     */
+    export const H3: Format;
+    /**
+     * @type {Format}
+     */
+    export const H4: Format;
+    /**
+     * @type {Format}
+     */
+    export const H5: Format;
+    /**
+     * @type {Format}
+     */
+    export const H6: Format;
+    /**
+     * @type {Format}
+     */
+    export const PRE: Format;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/html-editor-config" {
+    export default class HtmlEditorConfig extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {Feature[]|undefined}
+         * @private
+         */
+        private _features;
+        /**
+         * @type {string[]|undefined}
+         * @private
+         */
+        private _textColors;
+        /**
+         * @type {string[]|undefined}
+         * @private
+         */
+        private _backgroundColors;
+        /**
+         * @type {Format[]|undefined}
+         * @private
+         */
+        private _formats;
+        /**
+         * @type {number[]|undefined}
+         * @private
+         */
+        private _fontSizes;
+        /**
+         * @type {FontSizeUnit|undefined}
+         * @private
+         */
+        private _fontSizeUnit;
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _fontSizeDefault;
+        /**
+         * @type {number[]|undefined}
+         * @private
+         */
+        private _lineHeights;
+        /**
+         * @type {EnterMode|undefined}
+         * @private
+         */
+        private _enterMode;
+        /**
+         * @returns {string|undefined}
+         */
+        get identifier(): string;
+        /**
+         * @returns {Feature[]|undefined}
+         */
+        get features(): Feature[];
+        /**
+         * @returns {string[]|undefined}
+         */
+        get textColors(): string[];
+        /**
+         * @returns {string[]|undefined}
+         */
+        get backgroundColors(): string[];
+        /**
+         * @returns {Format[]|undefined}
+         */
+        get formats(): Format[];
+        /**
+         * @returns {number[]|undefined}
+         */
+        get fontSizes(): number[];
+        /**
+         * @returns {FontSizeUnit|undefined}
+         */
+        get fontSizeUnit(): FontSizeUnit;
+        /**
+         * @returns {number|undefined}
+         */
+        get fontSizeDefault(): number;
+        /**
+         * @returns {number[]|undefined}
+         */
+        get lineHeights(): number[];
+        /**
+         * @returns {EnterMode|undefined}
+         */
+        get enterMode(): EnterMode;
+        /**
+         * @param {string} identifier
+         * @returns {HtmlEditorConfig}
+         */
+        withIdentifier(identifier: string): HtmlEditorConfig;
+        /**
+         * @param {Feature} features
+         * @returns {HtmlEditorConfig}
+         */
+        withFeatures(...features: Feature): HtmlEditorConfig;
+        /**
+         * @param {string} textColors
+         * @returns {HtmlEditorConfig}
+         */
+        withTextColors(...textColors: string): HtmlEditorConfig;
+        /**
+         * @param {string} backgroundColors
+         * @returns {HtmlEditorConfig}
+         */
+        withBackgroundColors(...backgroundColors: string): HtmlEditorConfig;
+        /**
+         * @param {Format} formats
+         * @returns {HtmlEditorConfig}
+         */
+        withFormats(...formats: Format): HtmlEditorConfig;
+        /**
+         * @param {number} fontSizes
+         * @returns {HtmlEditorConfig}
+         */
+        withFontSizes(...fontSizes: number): HtmlEditorConfig;
+        /**
+         * @param {FontSizeUnit} fontSizeUnit
+         * @returns {HtmlEditorConfig}
+         */
+        withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
+        /**
+         * @param {number} fontSizeDefault
+         * @returns {HtmlEditorConfig}
+         */
+        withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
+        /**
+         * @param {number} lineHeights
+         * @returns {HtmlEditorConfig}
+         */
+        withLineHeights(...lineHeights: number): HtmlEditorConfig;
+        /**
+         * @param {EnterMode} enterMode
+         * @returns {HtmlEditorConfig}
+         */
+        withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import { Feature } from "src/html-editor-config/feature";
+    import { Format } from "src/html-editor-config/format";
+    import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
+    import { EnterMode } from "src/html-editor-config/enter-mode";
+}
 declare module "src/content-element/part/plain-text-part" {
     /**
      * @since 1.0
@@ -2202,6 +2267,7 @@ declare module "src/content-element/part/url-provider-part" {
 declare module "export/browser" {
     import AbstractBuilder from "src/abstract-builder";
     import AbstractPart from "src/content-element/part/abstract-part";
+    import ContentElementGroup from "src/content-element/content-element-group";
     import * as Version from "src/version";
     import * as DesignType from "src/design-type";
     import * as Feature from "src/html-editor-config/feature";
@@ -2232,7 +2298,7 @@ declare module "export/browser" {
     import SocialFollowPart from "src/content-element/part/social-follow-part";
     import SocialSharePart from "src/content-element/part/social-share-part";
     import UrlProviderPart from "src/content-element/part/url-provider-part";
-    export { AbstractBuilder, AbstractPart, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart };
+    export { AbstractBuilder, AbstractPart, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

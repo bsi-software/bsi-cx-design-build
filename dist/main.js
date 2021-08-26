@@ -165,6 +165,9 @@ class JavaPropertyFileBuilder {
 }
 
 ;// CONCATENATED MODULE: ./src/extractor.js
+
+
+
 /**
  * @param {[string|number]} arr
  * @return {string}
@@ -174,18 +177,11 @@ function scalarArrayToList(arr) {
 }
 
 /**
- * @param {*} v
- * @return {*}
+ * @template T
+ * @param {T} v
+ * @return {T}
  */
 function identity(v) {
-  return v;
-}
-
-/**
- * @param {string|number|boolean} v
- * @return {string|number|boolean}
- */
-function scalarIdentity(v) {
   return v;
 }
 
@@ -195,6 +191,14 @@ function scalarIdentity(v) {
  */
 function constantObjectValue(constant) {
   return constant.value;
+}
+
+/**
+ * @param {AbstractBuilder} builder
+ * @return {{}}
+ */
+function builderObjectValue(builder) {
+  return builder.build();
 }
 
 // EXTERNAL MODULE: ./src/utility.js
@@ -827,10 +831,10 @@ class _BsiCxWebpackLegacyDesignPlugin {
     this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
     this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
     this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, scalarIdentity, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, scalarIdentity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, identity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, identity, properties);
     this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, scalarIdentity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, identity, properties);
 
     properties.appendBlank();
   }
@@ -918,9 +922,9 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let parts = element[DesignJsonProperty.PARTS];
     let indexMap = new Map();
 
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, scalarIdentity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, scalarIdentity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, scalarIdentity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, identity, properties);
     this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
 
     parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
@@ -960,8 +964,8 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let type = part[DesignJsonProperty.PART_ID];
     let index = indexMap.get(type) || 0;
 
-    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, scalarIdentity, properties);
-    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, scalarIdentity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, identity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, identity, properties);
 
     indexMap.set(type, index + 1);
   }

@@ -3,7 +3,7 @@ import Style from '../style/style';
 import {Icon} from './icon';
 import AbstractPart from './part/abstract-part';
 import DesignJsonProperty from '../design-json-property';
-import {constantObjectValue, identity, scalarIdentity} from '../extractor';
+import {builderObjectValue, constantObjectValue, identity} from '../extractor';
 
 export default class ContentElement extends AbstractBuilder {
   constructor() {
@@ -179,14 +179,14 @@ export default class ContentElement extends AbstractBuilder {
   build() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, scalarIdentity);
-    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, scalarIdentity);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, part => part.build());
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, style => constantObjectValue(style));
+    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, constantObjectValue);
 
     return config;
   }
