@@ -1226,7 +1226,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {Style} styleConfigs
+   * @param {...Style} styleConfigs
    * @return {ContentElement}
    * @since 1.1
    */
@@ -1236,7 +1236,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {string} styleConfigs
+   * @param {...string} styleConfigs
    * @return {ContentElement}
    * @since 1.1
    */
@@ -1246,7 +1246,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {AbstractPart} parts
+   * @param {...AbstractPart} parts
    * @return {ContentElement}
    * @since 1.0
    */
@@ -1256,7 +1256,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} parts
+   * @param {...{}} parts
    * @return {ContentElement}
    * @since 1.0
    */
@@ -1366,7 +1366,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {ContentElement} contentElements
+   * @param {...ContentElement} contentElements
    * @return {ContentElementGroup}
    */
   withContentElements(...contentElements) {
@@ -1375,7 +1375,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} contentElements
+   * @param {...{}} contentElements
    * @return {ContentElementGroup}
    */
   withRawContentElements(...contentElements) {
@@ -1753,7 +1753,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {Feature} features
+   * @param {...Feature} features
    * @returns {HtmlEditorConfig}
    */
   withFeatures(...features) {
@@ -1762,7 +1762,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} features
+   * @param {...string} features
    * @returns {HtmlEditorConfig}
    */
   withRawFeatures(...features) {
@@ -1771,7 +1771,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} textColors
+   * @param {...string} textColors
    * @returns {HtmlEditorConfig}
    */
   withTextColors(...textColors) {
@@ -1780,7 +1780,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} backgroundColors
+   * @param {...string} backgroundColors
    * @returns {HtmlEditorConfig}
    */
   withBackgroundColors(...backgroundColors) {
@@ -1789,7 +1789,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {Format} formats
+   * @param {...Format} formats
    * @returns {HtmlEditorConfig}
    */
   withFormats(...formats) {
@@ -1798,7 +1798,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} formats
+   * @param {...string} formats
    * @returns {HtmlEditorConfig}
    */
   withRawFormats(...formats) {
@@ -1807,7 +1807,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {number} fontSizes
+   * @param {...number} fontSizes
    * @returns {HtmlEditorConfig}
    */
   withFontSizes(...fontSizes) {
@@ -1843,7 +1843,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {number} lineHeights
+   * @param {...number} lineHeights
    * @returns {HtmlEditorConfig}
    */
   withLineHeights(...lineHeights) {
@@ -2010,7 +2010,7 @@ class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {Translation} translations
+   * @param {...Translation} translations
    * @return {NLS}
    */
   withTranslations(...translations) {
@@ -2036,7 +2036,7 @@ class NLS extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @param {Translation}translations
+   * @param {...Translation}translations
    * @return {NLS}
    */
   static create(identifier, ...translations) {
@@ -2297,7 +2297,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} locales
+   * @param {...Locale} locales
    * @return {Design}
    */
   withLocales(...locales) {
@@ -2306,7 +2306,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} locales
+   * @param {...string} locales
    * @return {Design}
    */
   withRawLocales(...locales) {
@@ -2315,7 +2315,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {ContentElementGroup} contentElementGroups
+   * @param {...ContentElementGroup} contentElementGroups
    * @return {Design}
    */
   withContentElementGroups(...contentElementGroups) {
@@ -2324,7 +2324,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} contentElementGroups
+   * @param {...{}} contentElementGroups
    * @return {Design}
    */
   withRawContentElementGroups(...contentElementGroups) {
@@ -2333,7 +2333,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Style} styleConfigs
+   * @param {...Style} styleConfigs
    * @return {Design}
    */
   withStyleConfigs(...styleConfigs) {
@@ -2351,7 +2351,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {HtmlEditorConfig} htmlEditorConfigs
+   * @param {...HtmlEditorConfig} htmlEditorConfigs
    * @return {Design}
    */
   withHtmlEditorConfigs(...htmlEditorConfigs) {
@@ -2389,7 +2389,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {NLS} nls
+   * @param {...NLS} nls
    * @return {Design}
    */
   withNLS(...nls) {
@@ -2591,7 +2591,7 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {CssClass} cssClasses
+   * @param {...CssClass} cssClasses
    * @returns {Style}
    */
   withCssClasses(...cssClasses) {
@@ -2600,7 +2600,7 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} cssClasses
+   * @param {...{}} cssClasses
    * @returns {Style}
    */
   withRawCssClasses(...cssClasses) {
@@ -3168,7 +3168,7 @@ class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {AbstractInclude} includes
+   * @param {...AbstractInclude} includes
    * @return {Website}
    */
   withIncludes(...includes) {

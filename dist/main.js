@@ -1224,7 +1224,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} scope
-   * @param {string} assetNames
+   * @param {...string} assetNames
    * @returns {*}
    */
   _loadAssets(scope, ...assetNames) {

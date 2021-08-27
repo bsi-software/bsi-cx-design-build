@@ -139,7 +139,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {Feature} features
+   * @param {...Feature} features
    * @returns {HtmlEditorConfig}
    */
   withFeatures(...features) {
@@ -148,7 +148,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} features
+   * @param {...string} features
    * @returns {HtmlEditorConfig}
    */
   withRawFeatures(...features) {
@@ -157,7 +157,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} textColors
+   * @param {...string} textColors
    * @returns {HtmlEditorConfig}
    */
   withTextColors(...textColors) {
@@ -166,7 +166,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} backgroundColors
+   * @param {...string} backgroundColors
    * @returns {HtmlEditorConfig}
    */
   withBackgroundColors(...backgroundColors) {
@@ -175,7 +175,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {Format} formats
+   * @param {...Format} formats
    * @returns {HtmlEditorConfig}
    */
   withFormats(...formats) {
@@ -184,7 +184,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} formats
+   * @param {...string} formats
    * @returns {HtmlEditorConfig}
    */
   withRawFormats(...formats) {
@@ -193,7 +193,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {number} fontSizes
+   * @param {...number} fontSizes
    * @returns {HtmlEditorConfig}
    */
   withFontSizes(...fontSizes) {
@@ -229,7 +229,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {number} lineHeights
+   * @param {...number} lineHeights
    * @returns {HtmlEditorConfig}
    */
   withLineHeights(...lineHeights) {

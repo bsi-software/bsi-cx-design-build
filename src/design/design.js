@@ -229,7 +229,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} locales
+   * @param {...Locale} locales
    * @return {Design}
    */
   withLocales(...locales) {
@@ -238,7 +238,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} locales
+   * @param {...string} locales
    * @return {Design}
    */
   withRawLocales(...locales) {
@@ -247,7 +247,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {ContentElementGroup} contentElementGroups
+   * @param {...ContentElementGroup} contentElementGroups
    * @return {Design}
    */
   withContentElementGroups(...contentElementGroups) {
@@ -256,7 +256,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} contentElementGroups
+   * @param {...{}} contentElementGroups
    * @return {Design}
    */
   withRawContentElementGroups(...contentElementGroups) {
@@ -265,7 +265,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Style} styleConfigs
+   * @param {...Style} styleConfigs
    * @return {Design}
    */
   withStyleConfigs(...styleConfigs) {
@@ -283,7 +283,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {HtmlEditorConfig} htmlEditorConfigs
+   * @param {...HtmlEditorConfig} htmlEditorConfigs
    * @return {Design}
    */
   withHtmlEditorConfigs(...htmlEditorConfigs) {
@@ -321,7 +321,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {NLS} nls
+   * @param {...NLS} nls
    * @return {Design}
    */
   withNLS(...nls) {

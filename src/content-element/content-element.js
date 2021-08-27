@@ -155,7 +155,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {Style} styleConfigs
+   * @param {...Style} styleConfigs
    * @return {ContentElement}
    * @since 1.1
    */
@@ -165,7 +165,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {string} styleConfigs
+   * @param {...string} styleConfigs
    * @return {ContentElement}
    * @since 1.1
    */
@@ -175,7 +175,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {AbstractPart} parts
+   * @param {...AbstractPart} parts
    * @return {ContentElement}
    * @since 1.0
    */
@@ -185,7 +185,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} parts
+   * @param {...{}} parts
    * @return {ContentElement}
    * @since 1.0
    */

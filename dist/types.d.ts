@@ -1557,15 +1557,15 @@ declare module "src/style/style" {
          */
         withLabel(label: string): Style;
         /**
-         * @param {CssClass} cssClasses
+         * @param {...CssClass} cssClasses
          * @returns {Style}
          */
-        withCssClasses(...cssClasses: CssClass): Style;
+        withCssClasses(...cssClasses: CssClass[]): Style;
         /**
-         * @param {{}} cssClasses
+         * @param {...{}} cssClasses
          * @returns {Style}
          */
-        withRawCssClasses(...cssClasses: {}): Style;
+        withRawCssClasses(...cssClasses: {}[]): Style;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -1911,29 +1911,29 @@ declare module "src/content-element/content-element" {
          */
         withHidden(hidden: boolean): ContentElement;
         /**
-         * @param {Style} styleConfigs
+         * @param {...Style} styleConfigs
          * @return {ContentElement}
          * @since 1.1
          */
-        withStyleConfigs(...styleConfigs: Style): ContentElement;
+        withStyleConfigs(...styleConfigs: Style[]): ContentElement;
         /**
-         * @param {string} styleConfigs
+         * @param {...string} styleConfigs
          * @return {ContentElement}
          * @since 1.1
          */
-        withRawStyleConfigs(...styleConfigs: string): ContentElement;
+        withRawStyleConfigs(...styleConfigs: string[]): ContentElement;
         /**
-         * @param {AbstractPart} parts
+         * @param {...AbstractPart} parts
          * @return {ContentElement}
          * @since 1.0
          */
-        withParts(...parts: AbstractPart): ContentElement;
+        withParts(...parts: AbstractPart[]): ContentElement;
         /**
-         * @param {{}} parts
+         * @param {...{}} parts
          * @return {ContentElement}
          * @since 1.0
          */
-        withRawParts(...parts: {}): ContentElement;
+        withRawParts(...parts: {}[]): ContentElement;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Icon } from "src/content-element/icon";
@@ -1995,15 +1995,15 @@ declare module "src/content-element/content-element-group" {
          */
         withHidden(hidden: boolean): ContentElementGroup;
         /**
-         * @param {ContentElement} contentElements
+         * @param {...ContentElement} contentElements
          * @return {ContentElementGroup}
          */
-        withContentElements(...contentElements: ContentElement): ContentElementGroup;
+        withContentElements(...contentElements: ContentElement[]): ContentElementGroup;
         /**
-         * @param {{}} contentElements
+         * @param {...{}} contentElements
          * @return {ContentElementGroup}
          */
-        withRawContentElements(...contentElements: {}): ContentElementGroup;
+        withRawContentElements(...contentElements: {}[]): ContentElementGroup;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -2315,40 +2315,40 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         withIdentifier(identifier: string): HtmlEditorConfig;
         /**
-         * @param {Feature} features
+         * @param {...Feature} features
          * @returns {HtmlEditorConfig}
          */
-        withFeatures(...features: Feature): HtmlEditorConfig;
+        withFeatures(...features: Feature[]): HtmlEditorConfig;
         /**
-         * @param {string} features
+         * @param {...string} features
          * @returns {HtmlEditorConfig}
          */
-        withRawFeatures(...features: string): HtmlEditorConfig;
+        withRawFeatures(...features: string[]): HtmlEditorConfig;
         /**
-         * @param {string} textColors
+         * @param {...string} textColors
          * @returns {HtmlEditorConfig}
          */
-        withTextColors(...textColors: string): HtmlEditorConfig;
+        withTextColors(...textColors: string[]): HtmlEditorConfig;
         /**
-         * @param {string} backgroundColors
+         * @param {...string} backgroundColors
          * @returns {HtmlEditorConfig}
          */
-        withBackgroundColors(...backgroundColors: string): HtmlEditorConfig;
+        withBackgroundColors(...backgroundColors: string[]): HtmlEditorConfig;
         /**
-         * @param {Format} formats
+         * @param {...Format} formats
          * @returns {HtmlEditorConfig}
          */
-        withFormats(...formats: Format): HtmlEditorConfig;
+        withFormats(...formats: Format[]): HtmlEditorConfig;
         /**
-         * @param {string} formats
+         * @param {...string} formats
          * @returns {HtmlEditorConfig}
          */
-        withRawFormats(...formats: string): HtmlEditorConfig;
+        withRawFormats(...formats: string[]): HtmlEditorConfig;
         /**
-         * @param {number} fontSizes
+         * @param {...number} fontSizes
          * @returns {HtmlEditorConfig}
          */
-        withFontSizes(...fontSizes: number): HtmlEditorConfig;
+        withFontSizes(...fontSizes: number[]): HtmlEditorConfig;
         /**
          * @param {FontSizeUnit} fontSizeUnit
          * @returns {HtmlEditorConfig}
@@ -2365,10 +2365,10 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
         /**
-         * @param {number} lineHeights
+         * @param {...number} lineHeights
          * @returns {HtmlEditorConfig}
          */
-        withLineHeights(...lineHeights: number): HtmlEditorConfig;
+        withLineHeights(...lineHeights: number[]): HtmlEditorConfig;
         /**
          * @param {EnterMode} enterMode
          * @returns {HtmlEditorConfig}
@@ -2484,10 +2484,10 @@ declare module "src/website/website" {
          */
         withMaxNavigationLevel(maxNavigationLevel: number): Website;
         /**
-         * @param {AbstractInclude} includes
+         * @param {...AbstractInclude} includes
          * @return {Website}
          */
-        withIncludes(...includes: AbstractInclude): Website;
+        withIncludes(...includes: AbstractInclude[]): Website;
         /**
          * @param {{}} includes
          * @return {Website}
@@ -2547,10 +2547,10 @@ declare module "src/nls/nls" {
     export default class NLS extends AbstractBuilder {
         /**
          * @param {string} identifier
-         * @param {Translation}translations
+         * @param {...Translation}translations
          * @return {NLS}
          */
-        static create(identifier: string, ...translations: Translation): NLS;
+        static create(identifier: string, ...translations: Translation[]): NLS;
         /**
          * @param {string} identifier
          * @param {Map<Locale,string>} map
@@ -2580,10 +2580,10 @@ declare module "src/nls/nls" {
          */
         withIdentifier(identifier: string): NLS;
         /**
-         * @param {Translation} translations
+         * @param {...Translation} translations
          * @return {NLS}
          */
-        withTranslations(...translations: Translation): NLS;
+        withTranslations(...translations: Translation[]): NLS;
     }
     import AbstractBuilder from "src/abstract-builder";
     import Translation from "src/nls/translation";
@@ -2739,40 +2739,40 @@ declare module "src/design/design" {
          */
         withRawDefaultLocale(defaultLocale: string): Design;
         /**
-         * @param {Locale} locales
+         * @param {...Locale} locales
          * @return {Design}
          */
-        withLocales(...locales: Locale): Design;
+        withLocales(...locales: Locale[]): Design;
         /**
-         * @param {string} locales
+         * @param {...string} locales
          * @return {Design}
          */
-        withRawLocales(...locales: string): Design;
+        withRawLocales(...locales: string[]): Design;
         /**
-         * @param {ContentElementGroup} contentElementGroups
+         * @param {...ContentElementGroup} contentElementGroups
          * @return {Design}
          */
-        withContentElementGroups(...contentElementGroups: ContentElementGroup): Design;
+        withContentElementGroups(...contentElementGroups: ContentElementGroup[]): Design;
         /**
-         * @param {{}} contentElementGroups
+         * @param {...{}} contentElementGroups
          * @return {Design}
          */
-        withRawContentElementGroups(...contentElementGroups: {}): Design;
+        withRawContentElementGroups(...contentElementGroups: {}[]): Design;
         /**
-         * @param {Style} styleConfigs
+         * @param {...Style} styleConfigs
          * @return {Design}
          */
-        withStyleConfigs(...styleConfigs: Style): Design;
+        withStyleConfigs(...styleConfigs: Style[]): Design;
         /**
          * @param {{}} styleConfigs
          * @return {Design}
          */
         withRawStyleConfigs(styleConfigs: {}): Design;
         /**
-         * @param {HtmlEditorConfig} htmlEditorConfigs
+         * @param {...HtmlEditorConfig} htmlEditorConfigs
          * @return {Design}
          */
-        withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig): Design;
+        withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig[]): Design;
         /**
          * @param {{}} htmlEditorConfigs
          * @return {Design}
@@ -2791,10 +2791,10 @@ declare module "src/design/design" {
          */
         withRawWebsite(website: {}): Design;
         /**
-         * @param {NLS} nls
+         * @param {...NLS} nls
          * @return {Design}
          */
-        withNLS(...nls: NLS): Design;
+        withNLS(...nls: NLS[]): Design;
         /**
          * @param {{}} nls
          * @return {Design}

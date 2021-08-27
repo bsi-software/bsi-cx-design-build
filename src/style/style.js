@@ -64,7 +64,7 @@ export default class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {CssClass} cssClasses
+   * @param {...CssClass} cssClasses
    * @returns {Style}
    */
   withCssClasses(...cssClasses) {
@@ -73,7 +73,7 @@ export default class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} cssClasses
+   * @param {...{}} cssClasses
    * @returns {Style}
    */
   withRawCssClasses(...cssClasses) {

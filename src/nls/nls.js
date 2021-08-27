@@ -37,7 +37,7 @@ export default class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {Translation} translations
+   * @param {...Translation} translations
    * @return {NLS}
    */
   withTranslations(...translations) {
@@ -63,7 +63,7 @@ export default class NLS extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @param {Translation}translations
+   * @param {...Translation}translations
    * @return {NLS}
    */
   static create(identifier, ...translations) {

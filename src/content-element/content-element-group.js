@@ -82,7 +82,7 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {ContentElement} contentElements
+   * @param {...ContentElement} contentElements
    * @return {ContentElementGroup}
    */
   withContentElements(...contentElements) {
@@ -91,7 +91,7 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} contentElements
+   * @param {...{}} contentElements
    * @return {ContentElementGroup}
    */
   withRawContentElements(...contentElements) {

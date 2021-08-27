@@ -43,7 +43,7 @@ export default class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {AbstractInclude} includes
+   * @param {...AbstractInclude} includes
    * @return {Website}
    */
   withIncludes(...includes) {
