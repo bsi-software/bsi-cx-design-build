@@ -280,7 +280,11 @@ class _BsiCxWebpackPlugin {
    * @returns {*}
    */
   _loadAssets(scope, ...assetNames) {
-    let context = {self: {}};
+    let context = {
+      self: {}
+    };
+
+    vm.createContext(context);
 
     for (let assetName of assetNames) {
       let assetFilename = path.resolve(this._compiler.outputPath, assetName);
@@ -291,7 +295,7 @@ class _BsiCxWebpackPlugin {
         filename: assetFilename
       });
 
-      script.runInNewContext(context);
+      script.runInContext(context);
     }
 
     return context[scope];

@@ -3,6 +3,9 @@ import AbstractBuilder from '../../abstract-builder';
 import DesignJsonProperty from '../../design-json-property';
 import {constantObjectValue, identity} from '../../extractor';
 
+/**
+ * @abstract
+ */
 export default class AbstractPart extends AbstractBuilder {
   /**
    * @type {Part}

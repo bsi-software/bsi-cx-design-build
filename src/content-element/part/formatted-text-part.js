@@ -48,4 +48,12 @@ export default class FormattedTextPart extends AbstractPart {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormattedTextPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormattedTextPart(), shallow);
+  }
 }

@@ -68,4 +68,12 @@ export default class Website extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Website}
+   */
+  clone(shallow) {
+    return this._clone(new Website(), shallow);
+  }
 }

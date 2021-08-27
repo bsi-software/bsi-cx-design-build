@@ -32,4 +32,12 @@ export default class PageInclude extends AbstractInclude {
   withName(name) {
     return /** @type {PageInclude} */ super.withName(name);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {PageInclude}
+   */
+  clone(shallow) {
+    return this._clone(new PageInclude(), shallow);
+  }
 }

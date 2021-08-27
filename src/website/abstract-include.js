@@ -3,6 +3,7 @@ import DesignJsonProperty from '../design-json-property';
 import {identity} from '../extractor';
 
 /**
+ * @abstract
  * @since 1.3
  */
 export default class AbstractInclude extends AbstractBuilder {

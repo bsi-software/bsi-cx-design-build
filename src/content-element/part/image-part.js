@@ -16,4 +16,12 @@ export default class ImagePart extends AbstractPart {
   withLabel(label) {
     return /** @type {ImagePart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {ImagePart}
+   */
+  clone(shallow) {
+    return this._clone(new ImagePart(), shallow);
+  }
 }

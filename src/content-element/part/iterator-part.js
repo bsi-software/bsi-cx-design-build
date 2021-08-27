@@ -16,4 +16,12 @@ export default class IteratorPart extends AbstractPart {
   withLabel(label) {
     return /** @type {IteratorPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {IteratorPart}
+   */
+  clone(shallow) {
+    return this._clone(new IteratorPart(), shallow);
+  }
 }

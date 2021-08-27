@@ -16,4 +16,12 @@ export default class VideoPart extends AbstractPart {
   withLabel(label) {
     return /** @type {VideoPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {VideoPart}
+   */
+  clone(shallow) {
+    return this._clone(new VideoPart(), shallow);
+  }
 }

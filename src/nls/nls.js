@@ -90,4 +90,12 @@ export default class NLS extends AbstractBuilder {
       .withIdentifier(identifier)
       .withTranslations(...translations);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {NLS}
+   */
+  clone(shallow) {
+    return this._clone(new NLS(), shallow);
+  }
 }

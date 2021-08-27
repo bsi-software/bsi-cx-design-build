@@ -1,5 +1,8 @@
 import DesignJsonProperty from '../src/design-json-property';
 import AbstractBuilder from '../src/abstract-builder';
+import AbstractConstant from '../src/abstract-constant';
+import BuilderObjectNormalizer from '../src/builder-object-normalizer';
+import BuilderObjectCloner from '../src/builder-object-cloner';
 import RawValue from '../src/raw-value';
 import AbstractPart from '../src/content-element/part/abstract-part';
 import * as Locale from '../src/design/locale';
@@ -46,6 +49,9 @@ import Translation from '../src/nls/translation';
 export {
   DesignJsonProperty,
   AbstractBuilder,
+  AbstractConstant,
+  BuilderObjectNormalizer,
+  BuilderObjectCloner,
   RawValue,
   AbstractPart,
   Locale,

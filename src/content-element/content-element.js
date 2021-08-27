@@ -208,4 +208,12 @@ export default class ContentElement extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {ContentElement}
+   */
+  clone(shallow) {
+    return this._clone(new ContentElement(), shallow);
+  }
 }

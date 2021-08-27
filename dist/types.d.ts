@@ -1,4 +1,7 @@
 declare module "src/abstract-constant" {
+    /**
+     * @abstract
+     */
     export default class AbstractConstant {
         /**
          * @param {string} value
@@ -690,9 +693,53 @@ declare module "src/raw-value" {
         get value(): any;
     }
 }
+declare module "src/builder-object-cloner" {
+    export default class BuilderObjectCloner {
+        /**
+         * @template T
+         * @param {T} source
+         * @param {T} target
+         * @param {boolean} shallow
+         * @return {T}
+         */
+        static clone<T>(source: T, target: T, shallow: boolean): T;
+        /**
+         * @template T
+         * @param {T} source
+         * @param {T} target
+         * @param {boolean} shallow
+         * @return {T}
+         * @private
+         */
+        private _clone;
+        /**
+         * @template T
+         * @param {T} value
+         * @return {T}
+         * @private
+         */
+        private _cloneValue;
+        /**
+         * @param {[]} arr
+         * @return {[]}
+         * @private
+         */
+        private _cloneArray;
+        /**
+         * @param {{}} obj
+         * @return {{}}
+         * @private
+         */
+        private _cloneObject;
+    }
+}
 declare module "src/abstract-builder" {
+    /**
+     * @abstract
+     */
     export default class AbstractBuilder {
         /**
+         * @abstract
          * @return {{}}
          */
         build(): {};
@@ -709,6 +756,14 @@ declare module "src/abstract-builder" {
          * @private
          */
         private _applyArrayToObject;
+        /**
+         * @template T
+         * @param {T} newObj
+         * @param {boolean|undefined} shallow
+         * @return {T}
+         * @protected
+         */
+        protected _clone<T>(newObj: T, shallow: boolean | undefined): T;
     }
 }
 declare module "src/extractor" {
@@ -1378,6 +1433,9 @@ declare module "src/content-element/part/part" {
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/content-element/part/abstract-part" {
+    /**
+     * @abstract
+     */
     export default class AbstractPart extends AbstractBuilder {
         /**
          * @param {Part} partId
@@ -1511,6 +1569,11 @@ declare module "src/style/css-class" {
          * @return {CssClass}
          */
         withLabel(label: string): CssClass;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {CssClass}
+         */
+        clone(shallow?: boolean): CssClass;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -1566,6 +1629,11 @@ declare module "src/style/style" {
          * @returns {Style}
          */
         withRawCssClasses(...cssClasses: {}[]): Style;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {Style}
+         */
+        clone(shallow?: boolean): Style;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -1934,6 +2002,11 @@ declare module "src/content-element/content-element" {
          * @since 1.0
          */
         withRawParts(...parts: {}[]): ContentElement;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {ContentElement}
+         */
+        clone(shallow?: boolean): ContentElement;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Icon } from "src/content-element/icon";
@@ -2004,6 +2077,11 @@ declare module "src/content-element/content-element-group" {
          * @return {ContentElementGroup}
          */
         withRawContentElements(...contentElements: {}[]): ContentElementGroup;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {ContentElementGroup}
+         */
+        clone(shallow?: boolean): ContentElementGroup;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -2379,6 +2457,11 @@ declare module "src/html-editor-config/html-editor-config" {
          * @returns {HtmlEditorConfig}
          */
         withRawEnterMode(enterMode: string): HtmlEditorConfig;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {HtmlEditorConfig}
+         */
+        clone(shallow?: boolean): HtmlEditorConfig;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -2389,6 +2472,7 @@ declare module "src/html-editor-config/html-editor-config" {
 }
 declare module "src/website/abstract-include" {
     /**
+     * @abstract
      * @since 1.3
      */
     export default class AbstractInclude extends AbstractBuilder {
@@ -2493,6 +2577,11 @@ declare module "src/website/website" {
          * @return {Website}
          */
         withRawIncludes(includes: {}): Website;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {Website}
+         */
+        clone(shallow?: boolean): Website;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -2539,6 +2628,11 @@ declare module "src/nls/translation" {
          * @return {Translation}
          */
         withTranslation(translation: string): Translation;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {Translation}
+         */
+        clone(shallow?: boolean): Translation;
     }
     import AbstractBuilder from "src/abstract-builder";
     import { Locale } from "src/design/locale";
@@ -2584,6 +2678,11 @@ declare module "src/nls/nls" {
          * @return {NLS}
          */
         withTranslations(...translations: Translation[]): NLS;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {NLS}
+         */
+        clone(shallow?: boolean): NLS;
     }
     import AbstractBuilder from "src/abstract-builder";
     import Translation from "src/nls/translation";
@@ -2800,6 +2899,11 @@ declare module "src/design/design" {
          * @return {Design}
          */
         withRawNLS(nls: {}): Design;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {Design}
+         */
+        clone(shallow?: boolean): Design;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
@@ -2817,6 +2921,11 @@ declare module "src/content-element/part/plain-text-part" {
      */
     export default class PlainTextPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {PlainTextPart}
+         */
+        clone(shallow?: boolean): PlainTextPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2840,6 +2949,11 @@ declare module "src/content-element/part/formatted-text-part" {
          * @return {FormattedTextPart}
          */
         withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormattedTextPart}
+         */
+        clone(shallow?: boolean): FormattedTextPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
@@ -2850,6 +2964,11 @@ declare module "src/content-element/part/html-part" {
      */
     export default class HtmlPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {HtmlPart}
+         */
+        clone(shallow?: boolean): HtmlPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2859,6 +2978,11 @@ declare module "src/content-element/part/video-part" {
      */
     export default class VideoPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {VideoPart}
+         */
+        clone(shallow?: boolean): VideoPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2868,6 +2992,11 @@ declare module "src/content-element/part/image-part" {
      */
     export default class ImagePart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {ImagePart}
+         */
+        clone(shallow?: boolean): ImagePart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2877,6 +3006,11 @@ declare module "src/content-element/part/background-image-part" {
      */
     export default class BackgroundImagePart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {BackgroundImagePart}
+         */
+        clone(shallow?: boolean): BackgroundImagePart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2886,6 +3020,11 @@ declare module "src/content-element/part/table-part" {
      */
     export default class TablePart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {TablePart}
+         */
+        clone(shallow?: boolean): TablePart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2895,6 +3034,11 @@ declare module "src/content-element/part/iterator-part" {
      */
     export default class IteratorPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {IteratorPart}
+         */
+        clone(shallow?: boolean): IteratorPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2904,6 +3048,11 @@ declare module "src/content-element/part/news-snippets-part" {
      */
     export default class NewsSnippetsPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {NewsSnippetsPart}
+         */
+        clone(shallow?: boolean): NewsSnippetsPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2913,6 +3062,11 @@ declare module "src/content-element/part/form-part" {
      */
     export default class FormPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormPart}
+         */
+        clone(shallow?: boolean): FormPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2922,6 +3076,11 @@ declare module "src/content-element/part/form-field-part" {
      */
     export default class FormFieldPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormFieldPart}
+         */
+        clone(shallow?: boolean): FormFieldPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2931,6 +3090,11 @@ declare module "src/content-element/part/form-checkbox-part" {
      */
     export default class FormCheckboxPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormCheckboxPart}
+         */
+        clone(shallow?: boolean): FormCheckboxPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2940,6 +3104,11 @@ declare module "src/content-element/part/form-textarea-part" {
      */
     export default class FormTextareaPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormTextareaPart}
+         */
+        clone(shallow?: boolean): FormTextareaPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2949,6 +3118,11 @@ declare module "src/content-element/part/form-select-part" {
      */
     export default class FormSelectPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormSelectPart}
+         */
+        clone(shallow?: boolean): FormSelectPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2958,6 +3132,11 @@ declare module "src/content-element/part/form-radio-part" {
      */
     export default class FormRadioPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {FormRadioPart}
+         */
+        clone(shallow?: boolean): FormRadioPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2967,6 +3146,11 @@ declare module "src/content-element/part/link-part" {
      */
     export default class LinkPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {LinkPart}
+         */
+        clone(shallow?: boolean): LinkPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2976,6 +3160,11 @@ declare module "src/content-element/part/social-follow-part" {
      */
     export default class SocialFollowPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {SocialFollowPart}
+         */
+        clone(shallow?: boolean): SocialFollowPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2985,6 +3174,11 @@ declare module "src/content-element/part/social-share-part" {
      */
     export default class SocialSharePart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {SocialSharePart}
+         */
+        clone(shallow?: boolean): SocialSharePart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -2994,6 +3188,11 @@ declare module "src/content-element/part/url-provider-part" {
      */
     export default class UrlProviderPart extends AbstractPart {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {UrlProviderPart}
+         */
+        clone(shallow?: boolean): UrlProviderPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
@@ -3003,6 +3202,11 @@ declare module "src/website/page-include" {
      */
     export default class PageInclude extends AbstractInclude {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {PageInclude}
+         */
+        clone(shallow?: boolean): PageInclude;
     }
     import AbstractInclude from "src/website/abstract-include";
 }
@@ -3012,12 +3216,20 @@ declare module "src/website/include" {
      */
     export default class Include extends AbstractInclude {
         constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @return {Include}
+         */
+        clone(shallow?: boolean): Include;
     }
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";
     import AbstractBuilder from "src/abstract-builder";
+    import AbstractConstant from "src/abstract-constant";
+    import BuilderObjectNormalizer from "src/builder-object-normalizer";
+    import BuilderObjectCloner from "src/builder-object-cloner";
     import RawValue from "src/raw-value";
     import AbstractPart from "src/content-element/part/abstract-part";
     import * as Locale from "src/design/locale";
@@ -3060,7 +3272,7 @@ declare module "export/browser" {
     import Include from "src/website/include";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
-    export { DesignJsonProperty, AbstractBuilder, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, BuilderObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

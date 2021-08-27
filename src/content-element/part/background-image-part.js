@@ -16,4 +16,12 @@ export default class BackgroundImagePart extends AbstractPart {
   withLabel(label) {
     return /** @type {BackgroundImagePart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {BackgroundImagePart}
+   */
+  clone(shallow) {
+    return this._clone(new BackgroundImagePart(), shallow);
+  }
 }

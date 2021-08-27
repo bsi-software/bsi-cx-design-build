@@ -40,8 +40,11 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
   "AbstractBuilder": () => (/* reexport */ AbstractBuilder),
+  "AbstractConstant": () => (/* reexport */ AbstractConstant),
   "AbstractPart": () => (/* reexport */ AbstractPart),
   "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
+  "BuilderObjectCloner": () => (/* reexport */ BuilderObjectCloner),
+  "BuilderObjectNormalizer": () => (/* reexport */ BuilderObjectNormalizer),
   "ContentElement": () => (/* reexport */ ContentElement),
   "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
   "CssClass": () => (/* reexport */ CssClass),
@@ -465,11 +468,139 @@ class RawValue {
   }
 }
 
+;// CONCATENATED MODULE: ./src/abstract-constant.js
+/**
+ * @abstract
+ */
+class AbstractConstant {
+  /**
+   * @type {string}
+   * @private
+   */
+  _value = undefined;
+
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * @return {string}
+   */
+  getValue() {
+    return this.value;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/builder-object-cloner.js
+
+
+
+class BuilderObjectCloner {
+  /**
+   * @template T
+   * @param {T} source
+   * @param {T} target
+   * @param {boolean} shallow
+   * @return {T}
+   * @private
+   */
+  _clone(source, target, shallow) {
+    for (let [propertyName, valueToClone] of Object.entries(source)) {
+      target[propertyName] = shallow ? valueToClone : this._cloneValue(valueToClone);
+    }
+
+    return target;
+  }
+
+  /**
+   * @template T
+   * @param {T} value
+   * @return {T}
+   * @private
+   */
+  _cloneValue(value) {
+    switch (true) {
+      case typeof value === 'undefined':
+        return value;
+      case typeof value === 'string' || value instanceof String:
+        return value;
+      case typeof value === 'number' || value instanceof Number:
+        return value;
+      case typeof value === 'boolean' || value instanceof Boolean:
+        return value;
+      case typeof value === 'bigint' || value instanceof BigInt:
+        return value;
+      case value instanceof AbstractBuilder:
+        return value.clone();
+      case value instanceof AbstractConstant:
+        return value;
+      case value instanceof Array || Array.isArray(value):
+        return this._cloneArray(value);
+      case value instanceof Object || typeof value === 'object':
+        return this._cloneObject(value);
+      default:
+        throw new Error('unable to clone value');
+    }
+  }
+
+  /**
+   * @param {[]} arr
+   * @return {[]}
+   * @private
+   */
+  _cloneArray(arr) {
+    return arr.map(item => this._cloneValue(item));
+  }
+
+  /**
+   * @param {{}} obj
+   * @return {{}}
+   * @private
+   */
+  _cloneObject(obj) {
+    let cloneObj = {};
+    for (let [key, value] of Object.entries(obj)) {
+      cloneObj[key] = this._cloneValue(value);
+    }
+    return cloneObj;
+  }
+
+  /**
+   * @template T
+   * @param {T} source
+   * @param {T} target
+   * @param {boolean} shallow
+   * @return {T}
+   */
+  static clone(source, target, shallow) {
+    return new BuilderObjectCloner()._clone(source, target, shallow);
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
 
 
+
+/**
+ * @abstract
+ */
 class AbstractBuilder {
   /**
+   * @abstract
    * @return {{}}
    */
   build() {
@@ -524,39 +655,86 @@ class AbstractBuilder {
     }
     return obj;
   }
+
+  /**
+   * @template T
+   * @param {T} newObj
+   * @param {boolean|undefined} shallow
+   * @return {T}
+   * @protected
+   */
+  _clone(newObj, shallow) {
+    let shallowParam = shallow === undefined ? true : !!shallow;
+    return BuilderObjectCloner.clone(this, newObj, shallowParam);
+  }
 }
 
-;// CONCATENATED MODULE: ./src/abstract-constant.js
-class AbstractConstant {
+;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
+class BuilderObjectNormalizer {
   /**
-   * @type {string}
+   * @param {*} obj
+   * @return {*}
    * @private
    */
-  _value = undefined;
-
-  /**
-   * @param {string} value
-   */
-  constructor(value) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._value = value;
+  _normalize(obj) {
+    switch (true) {
+      case typeof obj === 'undefined':
+        return obj;
+      case typeof obj === 'string' || obj instanceof String:
+        return obj;
+      case typeof obj === 'number' || obj instanceof Number:
+        return obj;
+      case typeof obj === 'boolean' || obj instanceof Boolean:
+        return obj;
+      case typeof obj === 'bigint' || obj instanceof BigInt:
+        return obj;
+      case typeof obj.build === 'function':
+        return obj.build();
+      case typeof obj.getValue === 'function':
+        return obj.getValue();
+      case obj instanceof Array || Array.isArray(obj):
+        return this._normalizeArray(obj);
+      case obj instanceof Object || typeof obj === 'object':
+        return this._normalizeObject(obj);
+      default:
+        throw new Error('unable to normalize input');
+    }
   }
 
   /**
-   * @returns {string}
+   * @param {[*]} arr
+   * @return {[*]}
+   * @private
    */
-  get value() {
-    return this._value;
+  _normalizeArray(arr) {
+    return arr.map(value => this._normalize(value));
   }
 
   /**
-   * @return {string}
+   * @param {{}} obj
+   * @return {{}}
+   * @private
    */
-  getValue() {
-    return this.value;
+  _normalizeObject(obj) {
+    let targetObj = {};
+
+    for (let [key, value] of Object.entries(obj)) {
+      targetObj[key] = this._normalize(value);
+    }
+
+    return targetObj;
+  }
+
+  /**
+   * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
+   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
+   * Such values cannot be checked with instanceof.
+   *
+   * @param {*} obj
+   * @return {*}
+   */
+  static normalize(obj) {
+    return new BuilderObjectNormalizer()._normalize(obj);
   }
 }
 
@@ -705,6 +883,9 @@ function builderObjectValue(builder) {
 
 
 
+/**
+ * @abstract
+ */
 class AbstractPart extends AbstractBuilder {
   /**
    * @type {Part}
@@ -1279,6 +1460,14 @@ class ContentElement extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {ContentElement}
+   */
+  clone(shallow) {
+    return this._clone(new ContentElement(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/content-element-group.js
@@ -1392,6 +1581,14 @@ class ContentElementGroup extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENTS, config, builderObjectValue);
 
     return config;
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {ContentElementGroup}
+   */
+  clone(shallow) {
+    return this._clone(new ContentElementGroup(), shallow);
   }
 }
 
@@ -1887,6 +2084,14 @@ class HtmlEditorConfig extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {HtmlEditorConfig}
+   */
+  clone(shallow) {
+    return this._clone(new HtmlEditorConfig(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/nls/translation.js
@@ -1946,6 +2151,14 @@ class Translation extends AbstractBuilder {
     config[this.locale?.value] = this.translation;
 
     return config;
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Translation}
+   */
+  clone(shallow) {
+    return this._clone(new Translation(), shallow);
   }
 
   /**
@@ -2062,6 +2275,14 @@ class NLS extends AbstractBuilder {
     return new NLS()
       .withIdentifier(identifier)
       .withTranslations(...translations);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {NLS}
+   */
+  clone(shallow) {
+    return this._clone(new NLS(), shallow);
   }
 }
 
@@ -2424,6 +2645,14 @@ class Design extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Design}
+   */
+  clone(shallow) {
+    return this._clone(new Design(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/design-type.js
@@ -2619,6 +2848,14 @@ class Style extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Style}
+   */
+  clone(shallow) {
+    return this._clone(new Style(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/style/css-class.js
@@ -2680,6 +2917,14 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
+   * @param {boolean} [shallow=true]
+   * @return {CssClass}
+   */
+  clone(shallow) {
+    return this._clone(new CssClass(), shallow);
+  }
+
+  /**
    * @param {string} cssClass
    * @param {string} label
    * @return {CssClass}
@@ -2709,6 +2954,14 @@ class PlainTextPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {PlainTextPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {PlainTextPart}
+   */
+  clone(shallow) {
+    return this._clone(new PlainTextPart(), shallow);
   }
 }
 
@@ -2763,6 +3016,14 @@ class FormattedTextPart extends AbstractPart {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormattedTextPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormattedTextPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/html-part.js
@@ -2783,6 +3044,14 @@ class HtmlPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {HtmlPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {HtmlPart}
+   */
+  clone(shallow) {
+    return this._clone(new HtmlPart(), shallow);
   }
 }
 
@@ -2805,6 +3074,14 @@ class VideoPart extends AbstractPart {
   withLabel(label) {
     return /** @type {VideoPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {VideoPart}
+   */
+  clone(shallow) {
+    return this._clone(new VideoPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/image-part.js
@@ -2825,6 +3102,14 @@ class ImagePart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {ImagePart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {ImagePart}
+   */
+  clone(shallow) {
+    return this._clone(new ImagePart(), shallow);
   }
 }
 
@@ -2847,6 +3132,14 @@ class BackgroundImagePart extends AbstractPart {
   withLabel(label) {
     return /** @type {BackgroundImagePart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {BackgroundImagePart}
+   */
+  clone(shallow) {
+    return this._clone(new BackgroundImagePart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/table-part.js
@@ -2867,6 +3160,14 @@ class TablePart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {TablePart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {TablePart}
+   */
+  clone(shallow) {
+    return this._clone(new TablePart(), shallow);
   }
 }
 
@@ -2889,6 +3190,14 @@ class IteratorPart extends AbstractPart {
   withLabel(label) {
     return /** @type {IteratorPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {IteratorPart}
+   */
+  clone(shallow) {
+    return this._clone(new IteratorPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/news-snippets-part.js
@@ -2909,6 +3218,14 @@ class NewsSnippetsPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {NewsSnippetsPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {NewsSnippetsPart}
+   */
+  clone(shallow) {
+    return this._clone(new NewsSnippetsPart(), shallow);
   }
 }
 
@@ -2931,6 +3248,14 @@ class FormPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/form-field-part.js
@@ -2951,6 +3276,14 @@ class FormFieldPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {FormFieldPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormFieldPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormFieldPart(), shallow);
   }
 }
 
@@ -2973,6 +3306,14 @@ class FormCheckboxPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormCheckboxPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormCheckboxPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormCheckboxPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/form-textarea-part.js
@@ -2993,6 +3334,14 @@ class FormTextareaPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {FormTextareaPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormTextareaPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormTextareaPart(), shallow);
   }
 }
 
@@ -3015,6 +3364,14 @@ class FormSelectPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormSelectPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormSelectPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormSelectPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/form-radio-part.js
@@ -3035,6 +3392,14 @@ class FormRadioPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {FormRadioPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormRadioPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormRadioPart(), shallow);
   }
 }
 
@@ -3057,6 +3422,14 @@ class LinkPart extends AbstractPart {
   withLabel(label) {
     return /** @type {LinkPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {LinkPart}
+   */
+  clone(shallow) {
+    return this._clone(new LinkPart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/social-follow-part.js
@@ -3077,6 +3450,14 @@ class SocialFollowPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {SocialFollowPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {SocialFollowPart}
+   */
+  clone(shallow) {
+    return this._clone(new SocialFollowPart(), shallow);
   }
 }
 
@@ -3099,6 +3480,14 @@ class SocialSharePart extends AbstractPart {
   withLabel(label) {
     return /** @type {SocialSharePart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {SocialSharePart}
+   */
+  clone(shallow) {
+    return this._clone(new SocialSharePart(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/url-provider-part.js
@@ -3119,6 +3508,14 @@ class UrlProviderPart extends AbstractPart {
    */
   withLabel(label) {
     return /** @type {UrlProviderPart} */ super.withLabel(label);
+  }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {UrlProviderPart}
+   */
+  clone(shallow) {
+    return this._clone(new UrlProviderPart(), shallow);
   }
 }
 
@@ -3193,6 +3590,14 @@ class Website extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Website}
+   */
+  clone(shallow) {
+    return this._clone(new Website(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/website/abstract-include.js
@@ -3201,6 +3606,7 @@ class Website extends AbstractBuilder {
 
 
 /**
+ * @abstract
  * @since 1.3
  */
 class AbstractInclude extends AbstractBuilder {
@@ -3350,6 +3756,14 @@ class PageInclude extends AbstractInclude {
   withName(name) {
     return /** @type {PageInclude} */ super.withName(name);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {PageInclude}
+   */
+  clone(shallow) {
+    return this._clone(new PageInclude(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/website/include.js
@@ -3395,9 +3809,20 @@ class Include extends AbstractInclude {
   withName(name) {
     return /** @type {Include} */ super.withName(name);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Include}
+   */
+  clone(shallow) {
+    return this._clone(new Include(), shallow);
+  }
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
+
 
 
 

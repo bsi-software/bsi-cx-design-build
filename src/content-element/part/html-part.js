@@ -16,4 +16,12 @@ export default class HtmlPart extends AbstractPart {
   withLabel(label) {
     return /** @type {HtmlPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {HtmlPart}
+   */
+  clone(shallow) {
+    return this._clone(new HtmlPart(), shallow);
+  }
 }

@@ -56,6 +56,14 @@ export default class CssClass extends AbstractBuilder {
   }
 
   /**
+   * @param {boolean} [shallow=true]
+   * @return {CssClass}
+   */
+  clone(shallow) {
+    return this._clone(new CssClass(), shallow);
+  }
+
+  /**
    * @param {string} cssClass
    * @param {string} label
    * @return {CssClass}

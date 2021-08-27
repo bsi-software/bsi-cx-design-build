@@ -1,3 +1,6 @@
+/**
+ * @abstract
+ */
 export default class AbstractConstant {
   /**
    * @type {string}

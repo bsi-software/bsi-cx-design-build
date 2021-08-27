@@ -16,4 +16,12 @@ export default class TablePart extends AbstractPart {
   withLabel(label) {
     return /** @type {TablePart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {TablePart}
+   */
+  clone(shallow) {
+    return this._clone(new TablePart(), shallow);
+  }
 }

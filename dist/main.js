@@ -44,6 +44,9 @@ __webpack_require__.d(version_namespaceObject, {
 ;// CONCATENATED MODULE: external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
 ;// CONCATENATED MODULE: ./src/abstract-constant.js
+/**
+ * @abstract
+ */
 class AbstractConstant {
   /**
    * @type {string}
@@ -1228,7 +1231,11 @@ class _BsiCxWebpackPlugin {
    * @returns {*}
    */
   _loadAssets(scope, ...assetNames) {
-    let context = {self: {}};
+    let context = {
+      self: {}
+    };
+
+    external_vm_default().createContext(context);
 
     for (let assetName of assetNames) {
       let assetFilename = external_path_default().resolve(this._compiler.outputPath, assetName);
@@ -1239,7 +1246,7 @@ class _BsiCxWebpackPlugin {
         filename: assetFilename
       });
 
-      script.runInNewContext(context);
+      script.runInContext(context);
     }
 
     return context[scope];

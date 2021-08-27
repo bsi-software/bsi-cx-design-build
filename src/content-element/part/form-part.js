@@ -16,4 +16,12 @@ export default class FormPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormPart(), shallow);
+  }
 }

@@ -109,4 +109,12 @@ export default class ContentElementGroup extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {ContentElementGroup}
+   */
+  clone(shallow) {
+    return this._clone(new ContentElementGroup(), shallow);
+  }
 }

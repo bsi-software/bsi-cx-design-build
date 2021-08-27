@@ -16,4 +16,12 @@ export default class LinkPart extends AbstractPart {
   withLabel(label) {
     return /** @type {LinkPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {LinkPart}
+   */
+  clone(shallow) {
+    return this._clone(new LinkPart(), shallow);
+  }
 }

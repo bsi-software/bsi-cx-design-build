@@ -356,4 +356,12 @@ export default class Design extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Design}
+   */
+  clone(shallow) {
+    return this._clone(new Design(), shallow);
+  }
 }

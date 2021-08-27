@@ -92,4 +92,12 @@ export default class Style extends AbstractBuilder {
 
     return config;
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Style}
+   */
+  clone(shallow) {
+    return this._clone(new Style(), shallow);
+  }
 }

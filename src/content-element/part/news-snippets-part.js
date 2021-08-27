@@ -16,4 +16,12 @@ export default class NewsSnippetsPart extends AbstractPart {
   withLabel(label) {
     return /** @type {NewsSnippetsPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {NewsSnippetsPart}
+   */
+  clone(shallow) {
+    return this._clone(new NewsSnippetsPart(), shallow);
+  }
 }

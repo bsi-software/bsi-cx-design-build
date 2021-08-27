@@ -40,4 +40,12 @@ export default class Include extends AbstractInclude {
   withName(name) {
     return /** @type {Include} */ super.withName(name);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {Include}
+   */
+  clone(shallow) {
+    return this._clone(new Include(), shallow);
+  }
 }

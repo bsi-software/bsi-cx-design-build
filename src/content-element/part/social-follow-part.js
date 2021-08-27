@@ -16,4 +16,12 @@ export default class SocialFollowPart extends AbstractPart {
   withLabel(label) {
     return /** @type {SocialFollowPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {SocialFollowPart}
+   */
+  clone(shallow) {
+    return this._clone(new SocialFollowPart(), shallow);
+  }
 }

@@ -16,4 +16,12 @@ export default class FormSelectPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormSelectPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormSelectPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormSelectPart(), shallow);
+  }
 }

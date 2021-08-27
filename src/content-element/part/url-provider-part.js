@@ -16,4 +16,12 @@ export default class UrlProviderPart extends AbstractPart {
   withLabel(label) {
     return /** @type {UrlProviderPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {UrlProviderPart}
+   */
+  clone(shallow) {
+    return this._clone(new UrlProviderPart(), shallow);
+  }
 }

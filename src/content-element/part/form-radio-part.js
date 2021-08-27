@@ -16,4 +16,12 @@ export default class FormRadioPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormRadioPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormRadioPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormRadioPart(), shallow);
+  }
 }

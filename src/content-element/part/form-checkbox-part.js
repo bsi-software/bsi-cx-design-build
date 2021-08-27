@@ -16,4 +16,12 @@ export default class FormCheckboxPart extends AbstractPart {
   withLabel(label) {
     return /** @type {FormCheckboxPart} */ super.withLabel(label);
   }
+
+  /**
+   * @param {boolean} [shallow=true]
+   * @return {FormCheckboxPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormCheckboxPart(), shallow);
+  }
 }

@@ -57,6 +57,14 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
+   * @param {boolean} [shallow=true]
+   * @return {Translation}
+   */
+  clone(shallow) {
+    return this._clone(new Translation(), shallow);
+  }
+
+  /**
    * @param {Locale} locale
    * @param {string} translation
    * @return {Translation}
