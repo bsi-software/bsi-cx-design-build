@@ -927,16 +927,41 @@ declare module "src/bsi-cx-webpack-zip-hash-plugin" {
          * @param {boolean} enabled
          */
         constructor(name: string, version: string, enabled: boolean);
-        _name: string;
-        _version: string;
-        _enabled: boolean;
-        _prodZipFileName: string;
-        _devZipFileName: string;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _name;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _version;
+        /**
+         * @type {boolean}
+         * @private
+         */
+        private _enabled;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _prodZipFileName;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _devZipFileName;
         /**
          * @param {Compilation} compilation
          * @param {Asset} asset
          */
         _handleZipAsset(compilation: any, asset: any): void;
+        /**
+         * @param {Compiler} compiler
+         * @private
+         */
+        private _removeOldZipAssets;
         apply(compiler: any): void;
     }
 }

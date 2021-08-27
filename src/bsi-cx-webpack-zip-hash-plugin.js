@@ -1,6 +1,8 @@
 import {createHash} from 'crypto';
 
-import {Asset, Compilation} from 'webpack/lib';
+import {Asset, Compilation, Compiler} from 'webpack/lib';
+import {sync as fgSync} from 'fast-glob';
+import {unlinkSync} from 'fs';
 
 import {getZipArchiveName} from './utility';
 
@@ -16,10 +18,30 @@ export default class BsiCxWebpackZipHashPlugin {
    * @param {boolean} enabled
    */
   constructor(name, version, enabled) {
+    /**
+     * @type {string}
+     * @private
+     */
     this._name = name;
+    /**
+     * @type {string}
+     * @private
+     */
     this._version = version;
+    /**
+     * @type {boolean}
+     * @private
+     */
     this._enabled = !!enabled;
+    /**
+     * @type {string}
+     * @private
+     */
     this._prodZipFileName = getZipArchiveName(name, version);
+    /**
+     * @type {string}
+     * @private
+     */
     this._devZipFileName = getZipArchiveName(name, version, 'dev');
   }
 
@@ -44,6 +66,22 @@ export default class BsiCxWebpackZipHashPlugin {
     compilation.emitAsset(newAssetName, source);
   }
 
+  /**
+   * @param {Compiler} compiler
+   * @private
+   */
+  _removeOldZipAssets(compiler) {
+    let pattern = getZipArchiveName(this._name, this._version, '*');
+
+    let zipFilesToRemove = fgSync(pattern, {
+      cwd: compiler.outputPath,
+      absolute: true,
+      onlyFiles: true
+    });
+
+    zipFilesToRemove.forEach(unlinkSync);
+  }
+
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxWebpackZipHashPlugin.PLUGIN_NAME, compilation => {
       compilation.hooks.processAssets.tap(
@@ -55,6 +93,8 @@ export default class BsiCxWebpackZipHashPlugin {
           if (!this._enabled) {
             return;
           }
+
+          this._removeOldZipAssets(compiler);
 
           Object.keys(compilation.assets)
             .filter(name => name === this._prodZipFileName || name === this._devZipFileName)

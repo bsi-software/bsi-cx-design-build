@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 880:
+/***/ 221:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -914,7 +914,11 @@ class BsiCxWebpackLegacyDesignPlugin {
 
 // EXTERNAL MODULE: external "crypto"
 var external_crypto_ = __webpack_require__(373);
+;// CONCATENATED MODULE: external "fast-glob"
+const external_fast_glob_namespaceObject = require("fast-glob");
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
+
+
 
 
 
@@ -933,10 +937,30 @@ class BsiCxWebpackZipHashPlugin {
    * @param {boolean} enabled
    */
   constructor(name, version, enabled) {
+    /**
+     * @type {string}
+     * @private
+     */
     this._name = name;
+    /**
+     * @type {string}
+     * @private
+     */
     this._version = version;
+    /**
+     * @type {boolean}
+     * @private
+     */
     this._enabled = !!enabled;
+    /**
+     * @type {string}
+     * @private
+     */
     this._prodZipFileName = (0,utility/* getZipArchiveName */.ur)(name, version);
+    /**
+     * @type {string}
+     * @private
+     */
     this._devZipFileName = (0,utility/* getZipArchiveName */.ur)(name, version, 'dev');
   }
 
@@ -961,6 +985,22 @@ class BsiCxWebpackZipHashPlugin {
     compilation.emitAsset(newAssetName, source);
   }
 
+  /**
+   * @param {Compiler} compiler
+   * @private
+   */
+  _removeOldZipAssets(compiler) {
+    let pattern = (0,utility/* getZipArchiveName */.ur)(this._name, this._version, '*');
+
+    let zipFilesToRemove = (0,external_fast_glob_namespaceObject.sync)(pattern, {
+      cwd: compiler.outputPath,
+      absolute: true,
+      onlyFiles: true
+    });
+
+    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
+  }
+
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxWebpackZipHashPlugin.PLUGIN_NAME, compilation => {
       compilation.hooks.processAssets.tap(
@@ -972,6 +1012,8 @@ class BsiCxWebpackZipHashPlugin {
           if (!this._enabled) {
             return;
           }
+
+          this._removeOldZipAssets(compiler);
 
           Object.keys(compilation.assets)
             .filter(name => name === this._prodZipFileName || name === this._devZipFileName)
@@ -3156,7 +3198,7 @@ module.exports = require("webpack/lib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(880);
+/******/ 	var __webpack_exports__ = __webpack_require__(221);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

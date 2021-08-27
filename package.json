@@ -7,9 +7,10 @@
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "build": "webpack --config webpack.config.js --mode=production",
-    "watch": "webpack --config webpack.config.js --mode=production --watch",
-    "test": "cd test && webpack --config webpack.config.js --mode production"
+    "build": "webpack --config webpack.config.js --mode production",
+    "watch": "webpack --config webpack.config.js --mode production --watch",
+    "test:build": "cd test && webpack --config webpack.config.js --mode production",
+    "test:watch": "cd test && webpack --config webpack.config.js --mode production --watch"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "bugs": {
@@ -28,6 +29,7 @@
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^5.2.6",
     "cssnano": "^5.0.6",
+    "fast-glob": "^3.2.7",
     "handlebars": "^4.7.7",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
