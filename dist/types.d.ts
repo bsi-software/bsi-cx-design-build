@@ -128,23 +128,29 @@ declare module "src/abstract-builder" {
         /**
          * @template T
          * @param {T} newObj
-         * @param {boolean|undefined} shallow
+         * @param {boolean|undefined} [shallow=true]
          * @return {T}
          * @protected
          */
-        protected _clone<T>(newObj: T, shallow: boolean | undefined): T;
+        protected _clone<T>(newObj: T, shallow?: boolean | undefined): T;
     }
 }
-declare module "src/builder-object-cloner" {
-    export default class BuilderObjectCloner {
+declare module "src/object-cloner" {
+    export default class ObjectCloner {
         /**
          * @template T
          * @param {T} source
          * @param {T} target
-         * @param {boolean} shallow
+         * @param {boolean|undefined} [shallow=true]
          * @return {T}
          */
-        static clone<T>(source: T, target: T, shallow: boolean): T;
+        static clone<T>(source: T, target: T, shallow?: boolean | undefined): T;
+        /**
+         * @template T
+         * @param {T} value
+         * @return {T}
+         */
+        static cloneValue<T_1>(value: T_1): T_1;
         /**
          * @template T
          * @param {T} source
@@ -175,63 +181,498 @@ declare module "src/builder-object-cloner" {
         private _cloneObject;
     }
 }
-declare module "src/build-config" {
+declare module "src/build-config/module-config" {
+    export default class ModuleConfig {
+        /**
+         * @param {string|undefined} [name=undefined]
+         * @param {string|undefined} [path=undefined]
+         */
+        constructor(name?: string | undefined, path?: string | undefined);
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _name;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _path;
+        /**
+         * @return {string|undefined}
+         */
+        get name(): string;
+        /**
+         * @return {string|undefined}
+         */
+        get path(): string;
+        /**
+         * @param {string} name
+         * @return {ModuleConfig}
+         */
+        withName(name: string): ModuleConfig;
+        /**
+         * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
+         *
+         * @param {string} path
+         * @return {ModuleConfig}
+         */
+        withPath(path: string): ModuleConfig;
+        /**
+         * @return {{}}
+         */
+        build(): {};
+        /**
+         * @param {boolean|undefined} [shallow=true]
+         * @return {ModuleConfig}
+         */
+        clone(shallow?: boolean | undefined): ModuleConfig;
+    }
+}
+declare module "src/build-config/build-config-interface" {
     /**
-     * The configuration object for the build of one template.
+     * @interface
      */
-    export default class BuildConfig {
+    export default class BuildConfigInterface {
+        /**
+         * @returns {string}
+         */
+        get name(): string;
+        /**
+         * @returns {string}
+         */
+        get version(): string;
+        /**
+         * @returns {Version}
+         */
+        get targetVersion(): any;
+        /**
+         * @returns {DesignType}
+         */
+        get designType(): any;
+        /**
+         * @returns {string}
+         */
+        get rootPath(): string;
+        /**
+         * @returns {string}
+         */
+        get outputPath(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get propertiesFilePath(): string;
+        /**
+         * @returns {number}
+         */
+        get devServerPort(): number;
+        /**
+         * @returns {boolean}
+         */
+        get hashZipFiles(): boolean;
+        /**
+         * @returns {ModuleConfig[]}
+         */
+        get modules(): any[];
+        /**
+         * @returns {string}
+         */
+        get modulesRootPath(): string;
+        /**
+         * @returns {[{}]}
+         */
+        get additionalFilesToCopy(): [{}];
+        /**
+         * @returns {boolean}
+         */
+        get sourceMapEnabled(): boolean;
+    }
+}
+declare module "src/build-config/validated-build-config" {
+    /**
+     * @implements {BuildConfigInterface}
+     */
+    export default class ValidatedBuildConfig implements BuildConfigInterface {
         /**
          * @type {string}
+         * @private
          */
-        _name: string;
+        private _name;
         /**
          * @type {string}
+         * @private
          */
-        _version: string;
+        private _version;
         /**
          * @type {Version}
+         * @private
          */
-        _targetVersion: Version;
+        private _targetVersion;
         /**
          * @type {DesignType}
+         * @private
          */
-        _designType: DesignType;
+        private _designType;
         /**
          * @type {string}
+         * @private
          */
-        _rootPath: string;
+        private _rootPath;
         /**
          * @type {string}
+         * @private
          */
-        _outputPath: string;
+        private _outputPath;
         /**
-         * @type {{}}
+         * @type {string|undefined}
+         * @private
          */
-        _properties: {};
+        private _propertiesFilePath;
         /**
          * @type {number}
+         * @private
          */
-        _devServerPort: number;
+        private _devServerPort;
         /**
          * @type {boolean}
+         * @private
          */
-        _hashZipFiles: boolean;
+        private _hashZipFiles;
         /**
-         * @type {{}}
+         * @type {ModuleConfig[]}
+         * @private
          */
-        _modules: {};
+        private _modules;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _modulesRootPath;
+        /**
+         * @type {[{}]}
+         * @private
+         */
+        private _additionalFilesToCopy;
+        /**
+         * @type {boolean}
+         * @private
+         */
+        private _sourceMapEnabled;
+        /**
+         * @returns {string}
+         */
+        get name(): string;
+        /**
+         * @returns {string}
+         */
+        get version(): string;
+        /**
+         * @returns {Version}
+         */
+        get targetVersion(): any;
+        /**
+         * @returns {DesignType}
+         */
+        get designType(): any;
+        /**
+         * @returns {string}
+         */
+        get rootPath(): string;
+        /**
+         * @returns {string}
+         */
+        get outputPath(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get propertiesFilePath(): string;
+        /**
+         * @returns {number}
+         */
+        get devServerPort(): number;
+        /**
+         * @returns {boolean}
+         */
+        get hashZipFiles(): boolean;
+        /**
+         * @returns {ModuleConfig[]}
+         */
+        get modules(): any[];
+        /**
+         * @returns {string}
+         */
+        get modulesRootPath(): string;
+        /**
+         * @returns {[{}]}
+         */
+        get additionalFilesToCopy(): [{}];
+        /**
+         * @returns {boolean}
+         */
+        get sourceMapEnabled(): boolean;
+    }
+    import BuildConfigInterface from "src/build-config/build-config-interface";
+}
+declare module "src/build-config/validation-error" {
+    export default class ValidationError extends Error {
+    }
+}
+declare module "src/constant" {
+    export default class Constant {
         /**
          * @type {string}
          */
-        _modulesRootPath: string;
+        static BSI_CX_CSS_HREF: string;
         /**
-         * @type {[{}]}
+         * @type {string}
          */
-        _additionalFilesToCopy: [{}];
+        static BSI_CX_CSS_INLINE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_DESIGN_BASE_URL: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_PATH: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_HREF: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_INLINE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_MODULE_START: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_MODULE_END: string;
+    }
+}
+declare module "src/utility" {
+    /**
+     *
+     * @param {string} name
+     * @param {string} version
+     * @param {string} [suffix='']
+     */
+    export function getZipArchiveName(name: string, version: string, suffix?: string): string;
+    /**
+     * @param {ValidatedBuildConfig} config
+     * @param {string|undefined} [suffix=undefined]
+     */
+    export function buildPublicPath(config: ValidatedBuildConfig, suffix?: string | undefined): string;
+    /**
+     * @param {*} obj
+     * @return {string}
+     */
+    export function toString(obj: any): string;
+    /**
+     * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+     * @param {string} input
+     * @return {string}
+     */
+    export function escapeRegex(input: string): string;
+    /**
+     * @param {string} str
+     * @return {string}
+     */
+    export function ucfirst(str: string): string;
+    /**
+     * @param {string} mayRelativePath
+     * @param {string|undefined} [basePathWhenRelative=undefined]
+     * @return {string}
+     */
+    export function getAbsolutePath(mayRelativePath: string, basePathWhenRelative?: string | undefined): string;
+    /**
+     * @param {string} str1
+     * @param {string} str2
+     */
+    export function findStringSimilarities(str1: string, str2: string): string;
+    export class StaticJavaScriptCondition {
+        /**
+         * @type {RegExp}
+         */
+        static FILE_EXTENSION: RegExp;
+        /**
+         * @param {string} root
+         * @param {string} file
+         * @returns {boolean}
+         */
+        static isInsideStaticFolder(root: string, file: string): boolean;
+        /**
+         * @param {string} root
+         * @param {string} file
+         * @returns {boolean}
+         */
+        static test(root: string, file: string): boolean;
+    }
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
+}
+declare module "src/build-config/build-config-validator" {
+    export default class BuildConfigValidator {
+        /**
+         * @param {BuildConfig} buildConfig
+         * @return {ValidatedBuildConfig}
+         */
+        static validate(buildConfig: BuildConfig): ValidatedBuildConfig;
+        /**
+         * @param {BuildConfig} buildConfig
+         */
+        constructor(buildConfig: BuildConfig);
+        /**
+         * @type {BuildConfig}
+         * @private
+         */
+        private _buildConfig;
+        /**
+         * @type {ValidatedBuildConfig}
+         * @private
+         */
+        private _validatedConfig;
+        /**
+         * @return {BuildConfig}
+         */
+        get buildConfig(): BuildConfig;
+        /**
+         * @return {ValidatedBuildConfig}
+         */
+        get validatedConfig(): ValidatedBuildConfig;
+        /**
+         * @private
+         */
+        private _validate;
+        /**
+         * @param {string} name
+         * @param {object} type
+         * @param {boolean} required
+         */
+        _validateProperty(name: string, type: object, required: boolean): void;
+        /**
+         * @param {string} name
+         * @param {string} property
+         * @return {string}
+         * @private
+         */
+        private _validateName;
+        /**
+         * @param {string} version
+         * @param {string} property
+         * @return {string}
+         * @private
+         */
+        private _validateVersion;
+        /**
+         * @param {string} rootPath
+         * @param {string} property
+         * @return {string}
+         * @private
+         */
+        private _validateRootPath;
+        /**
+         * @param {string|undefined} outputPath
+         * @param {string} property
+         * @private
+         */
+        private _validateOutputPath;
+        /**
+         * @param {string|undefined} propertiesFilePath
+         * @param {string} property
+         * @private
+         */
+        private _validatePropertiesFilePath;
+        /**
+         * @param {string} modulesRootPath
+         * @param {string} property
+         * @private
+         */
+        private _validateModulesRootPath;
+        /**
+         * @param {ModuleConfig[]} modules
+         * @param {string} property
+         * @private
+         */
+        private _validateModules;
+    }
+    import BuildConfig from "src/build-config/build-config";
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
+}
+declare module "src/build-config/build-config" {
+    /**
+     * The configuration object for the build of one template.
+     *
+     * @implements {BuildConfigInterface}
+     */
+    export default class BuildConfig implements BuildConfigInterface {
+        /**
+         * @type {string}
+         * @private
+         */
+        private _name;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _version;
+        /**
+         * @type {Version}
+         * @private
+         */
+        private _targetVersion;
+        /**
+         * @type {DesignType}
+         * @private
+         */
+        private _designType;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _rootPath;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _outputPath;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _propertiesFilePath;
+        /**
+         * @type {number}
+         * @private
+         */
+        private _devServerPort;
         /**
          * @type {boolean}
+         * @private
          */
-        _sourceMapEnabled: boolean;
+        private _hashZipFiles;
+        /**
+         * @type {ModuleConfig[]}
+         * @private
+         */
+        private _modules;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _modulesRootPath;
+        /**
+         * @type {[{}]}
+         * @private
+         */
+        private _additionalFilesToCopy;
+        /**
+         * @type {boolean}
+         * @private
+         */
+        private _sourceMapEnabled;
         /**
          * @returns {string}
          */
@@ -253,13 +694,13 @@ declare module "src/build-config" {
          */
         get rootPath(): string;
         /**
-         * @returns {string|undefined}
+         * @returns {string}
          */
         get outputPath(): string;
         /**
-         * @returns {{}}
+         * @returns {string|undefined}
          */
-        get properties(): {};
+        get propertiesFilePath(): string;
         /**
          * @returns {number}
          */
@@ -269,9 +710,9 @@ declare module "src/build-config" {
          */
         get hashZipFiles(): boolean;
         /**
-         * @returns {{}}
+         * @returns {ModuleConfig[]}
          */
-        get modules(): {};
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -329,14 +770,16 @@ declare module "src/build-config" {
          */
         withOutputPath(outputPath: string): BuildConfig;
         /**
-         * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
+         * The data properties file for your Twig templates. This file will be required and the contents of this file will be
+         * available as "properties" variable inside your Twig templates.
          *
-         * @param {{}} properties
+         * @param {string} propertiesFilePath
          * @returns {BuildConfig}
          */
-        withProperties(properties: {}): BuildConfig;
+        withPropertiesFilePath(propertiesFilePath: string): BuildConfig;
         /**
-         * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
+         * A TCP port number to use for the development server. The default port is 9000. Be aware,
+         * that you don't have to configure a separate port for each template.
          *
          * @param {number} devServerPort
          * @returns {BuildConfig}
@@ -352,18 +795,10 @@ declare module "src/build-config" {
         /**
          * Add additional Java Script modules.
          *
-         * @param {{}} modules
+         * @param {...ModuleConfig} modules
          * @returns {BuildConfig}
          */
-        withModules(modules: {}): BuildConfig;
-        /**
-         * Add one additional Java Script module.
-         *
-         * @param {string} name
-         * @param {string} path
-         * @returns {BuildConfig}
-         */
-        withModule(name: string, path: string): BuildConfig;
+        withModules(...modules: ModuleConfig[]): BuildConfig;
         /**
          * Absolute path to the modules folder.
          *
@@ -396,109 +831,26 @@ declare module "src/build-config" {
          * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
          * A shallow clone will be created by default. This means nested objects will still reference the same origin.
          *
-         * @param {boolean} [shallow=true]
+         * @param {boolean|undefined} [shallow=true]
          * @return {BuildConfig}
          */
-        clone(shallow?: boolean): BuildConfig;
+        clone(shallow?: boolean | undefined): BuildConfig;
         /**
-         * @returns {BuildConfig}
+         * @return {ValidatedBuildConfig}
          */
-        validate(): BuildConfig;
-        /**
-         * @param {string} name
-         * @param {object} type
-         * @param {boolean} required
-         */
-        _checkInstanceofAndRequired(name: string, type: object, required: boolean): void;
+        validate(): ValidatedBuildConfig;
     }
+    import BuildConfigInterface from "src/build-config/build-config-interface";
     import { Version } from "src/version";
     import { DesignType } from "src/design-type";
+    import ModuleConfig from "src/build-config/module-config";
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/handlebars-helpers" {
     var _default: {
         'bsi.nls': (key: any) => any;
     };
     export default _default;
-}
-declare module "src/constant" {
-    export default class Constant {
-        /**
-         * @type {string}
-         */
-        static BSI_CX_CSS_HREF: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_CSS_INLINE: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_DESIGN_BASE_URL: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_PATH: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_HREF: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_INLINE: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_MODULE_START: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_MODULE_END: string;
-    }
-}
-declare module "src/utility" {
-    /**
-     *
-     * @param {string} name
-     * @param {string} version
-     * @param {string} [suffix='']
-     */
-    export function getZipArchiveName(name: string, version: string, suffix?: string): string;
-    /**
-     * @param {BuildConfig} config
-     * @param {string|undefined} [suffix=undefined]
-     */
-    export function buildPublicPath(config: BuildConfig, suffix?: string | undefined): string;
-    /**
-     * @param {*} obj
-     * @return {string}
-     */
-    export function toString(obj: any): string;
-    /**
-     * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
-     * @param {string} input
-     * @return {string}
-     */
-    export function escapeRegex(input: string): string;
-    export class StaticJavaScriptCondition {
-        /**
-         * @type {RegExp}
-         */
-        static FILE_EXTENSION: RegExp;
-        /**
-         * @param {string} root
-         * @param {string} file
-         * @returns {boolean}
-         */
-        static isInsideStaticFolder(root: string, file: string): boolean;
-        /**
-         * @param {string} root
-         * @param {string} file
-         * @returns {boolean}
-         */
-        static test(root: string, file: string): boolean;
-    }
-    import BuildConfig from "src/build-config";
 }
 declare module "src/design-json-property" {
     export default class DesignJsonProperty {
@@ -722,13 +1074,17 @@ declare module "src/bsi-cx-webpack-plugin" {
          */
         static PLUGIN_NAME: string;
         /**
-         * @param {BuildConfig} config
+         * @param {ValidatedBuildConfig} config
          */
-        constructor(config: BuildConfig);
-        _config: BuildConfig;
+        constructor(config: ValidatedBuildConfig);
+        /**
+         * @type {ValidatedBuildConfig}
+         * @private
+         */
+        private _config;
         apply(compiler: any): void;
     }
-    import BuildConfig from "src/build-config";
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/java-property-file-builder" {
     export default class JavaPropertyFileBuilder {
@@ -1015,13 +1371,17 @@ declare module "src/bsi-cx-webpack-legacy-design-plugin" {
          */
         static PLUGIN_NAME: string;
         /**
-         * @param {BuildConfig} config
+         * @param {ValidatedBuildConfig} config
          */
-        constructor(config: BuildConfig);
-        _config: BuildConfig;
+        constructor(config: ValidatedBuildConfig);
+        /**
+         * @type {ValidatedBuildConfig}
+         * @private
+         */
+        private _config;
         apply(compiler: any): void;
     }
-    import BuildConfig from "src/build-config";
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/bsi-cx-webpack-zip-hash-plugin" {
     export default class BsiCxWebpackZipHashPlugin {
@@ -1112,18 +1472,18 @@ declare module "src/webpack-config-builder" {
             };
         }[];
         /**
-         * @param {BuildConfig} config
+         * @param {ValidatedBuildConfig} config
          */
-        constructor(config: BuildConfig);
+        constructor(config: ValidatedBuildConfig);
         /**
-         * @type {BuildConfig}
+         * @type {ValidatedBuildConfig}
          * @private
          */
         private _config;
         /**
-         * @returns {BuildConfig}
+         * @returns {ValidatedBuildConfig}
          */
-        get config(): BuildConfig;
+        get config(): ValidatedBuildConfig;
         build(): {
             entry: {};
             name: string;
@@ -1159,24 +1519,6 @@ declare module "src/webpack-config-builder" {
          */
         private _getDefaultOutputPath;
         /**
-         * The output path to use.
-         *
-         * @returns {string}
-         */
-        _getOutputPath(): string;
-        /**
-         * The default modules path: ./modules
-         *
-         * @returns {string}
-         */
-        _getDefaultModulesRootPath(): string;
-        /**
-         * The modules path to use.
-         *
-         * @returns {string}
-         */
-        _getModulesRootPath(): string;
-        /**
          * The entry configuration.
          *
          * @returns {{}}
@@ -1189,13 +1531,23 @@ declare module "src/webpack-config-builder" {
          * @returns {{}}
          */
         _evaluateEntryTemplate(name: string): {};
-        _getDesignJsFilePath(): string;
+        /**
+         * @return {string}
+         * @private
+         */
+        private _getDesignJsFilePath;
         /**
          * Get the entry configurations for the Java Script modules.
          *
          * @returns {[{}]}
          */
         _getJavaScriptModuleEntries(): [{}];
+        /**
+         * @param {ModuleConfig} config
+         * @return {{filename: string, import: string, runtime: string}}
+         * @private
+         */
+        private _getJavaScriptModuleEntry;
         /**
          * Rules for Twig file handling.
          *
@@ -1325,20 +1677,19 @@ declare module "src/webpack-config-builder" {
          */
         _getOutputConfig(): {};
     }
-    import BuildConfig from "src/build-config";
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
     import BsiCxWebpackPlugin from "src/bsi-cx-webpack-plugin";
     import BsiCxWebpackZipHashPlugin from "src/bsi-cx-webpack-zip-hash-plugin";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
+    import BuildConfig from "src/build-config/build-config";
 }
 declare module "export/main" {
     import * as Version from "src/version";
     import * as DesignType from "src/design-type";
-    import BuildConfig from "src/build-config";
+    import BuildConfig from "src/build-config/build-config";
+    import ModuleConfig from "src/build-config/module-config";
     import WebpackConfigBuilder from "src/webpack-config-builder";
-    import BsiCxWebpackPlugin from "src/bsi-cx-webpack-plugin";
-    import BsiCxWebpackZipHashPlugin from "src/bsi-cx-webpack-zip-hash-plugin";
-    import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
-    export { Version, DesignType, BuildConfig, WebpackConfigBuilder, BsiCxWebpackPlugin, BsiCxWebpackZipHashPlugin, BsiCxWebpackLegacyDesignPlugin };
+    export { Version, DesignType, BuildConfig, ModuleConfig, WebpackConfigBuilder };
 }
 declare module "src/content-element/part/part" {
     export class Part extends AbstractConstant {
@@ -3237,7 +3588,7 @@ declare module "export/browser" {
     import AbstractBuilder from "src/abstract-builder";
     import AbstractConstant from "src/abstract-constant";
     import BuilderObjectNormalizer from "src/builder-object-normalizer";
-    import BuilderObjectCloner from "src/builder-object-cloner";
+    import ObjectCloner from "src/object-cloner";
     import RawValue from "src/raw-value";
     import AbstractPart from "src/content-element/part/abstract-part";
     import * as Locale from "src/design/locale";
@@ -3280,7 +3631,7 @@ declare module "export/browser" {
     import Include from "src/website/include";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, BuilderObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

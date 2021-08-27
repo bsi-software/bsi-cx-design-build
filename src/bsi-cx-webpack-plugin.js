@@ -6,7 +6,7 @@ import Handlebars from 'handlebars';
 import {sources} from 'webpack';
 import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 
-import BuildConfig from './build-config';
+import ValidatedBuildConfig from './build-config/validated-build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
 import {buildPublicPath, escapeRegex, toString} from './utility';
@@ -68,7 +68,7 @@ class _BsiCxWebpackPlugin {
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
   /**
-   * @type {BuildConfig}
+   * @type {ValidatedBuildConfig}
    */
   _config = undefined;
   /**
@@ -85,14 +85,14 @@ class _BsiCxWebpackPlugin {
   _logger = undefined;
 
   /**
-   * @param {BuildConfig} config
+   * @param {ValidatedBuildConfig} config
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
   constructor(config, compiler, compilation, logger) {
     /**
-     * @type {BuildConfig}
+     * @type {ValidatedBuildConfig}
      */
     this._config = config;
     /**
@@ -551,9 +551,19 @@ export default class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @param {BuildConfig} config
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+
+  /**
+   * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
+    /**
+     * @type {ValidatedBuildConfig}
+     * @private
+     */
     this._config = config;
   }
 

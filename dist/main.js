@@ -1,20 +1,18 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 470:
+/***/ 283:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "BsiCxWebpackLegacyDesignPlugin": () => (/* reexport */ BsiCxWebpackLegacyDesignPlugin),
-  "BsiCxWebpackPlugin": () => (/* reexport */ BsiCxWebpackPlugin),
-  "BsiCxWebpackZipHashPlugin": () => (/* reexport */ BsiCxWebpackZipHashPlugin),
   "BuildConfig": () => (/* reexport */ BuildConfig),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
+  "ModuleConfig": () => (/* reexport */ ModuleConfig),
   "Version": () => (/* reexport */ version_namespaceObject),
   "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
 });
@@ -267,21 +265,20 @@ class AbstractBuilder {
   /**
    * @template T
    * @param {T} newObj
-   * @param {boolean|undefined} shallow
+   * @param {boolean|undefined} [shallow=true]
    * @return {T}
    * @protected
    */
   _clone(newObj, shallow) {
-    let shallowParam = shallow === undefined ? true : !!shallow;
-    return BuilderObjectCloner.clone(this, newObj, shallowParam);
+    return ObjectCloner.clone(this, newObj, shallow);
   }
 }
 
-;// CONCATENATED MODULE: ./src/builder-object-cloner.js
+;// CONCATENATED MODULE: ./src/object-cloner.js
 
 
 
-class BuilderObjectCloner {
+class ObjectCloner {
   /**
    * @template T
    * @param {T} source
@@ -320,6 +317,8 @@ class BuilderObjectCloner {
         return value.clone();
       case value instanceof AbstractConstant:
         return value;
+      case typeof value.clone === 'function':
+        return value.clone();
       case value instanceof Array || Array.isArray(value):
         return this._cloneArray(value);
       case value instanceof Object || typeof value === 'object':
@@ -355,73 +354,796 @@ class BuilderObjectCloner {
    * @template T
    * @param {T} source
    * @param {T} target
-   * @param {boolean} shallow
+   * @param {boolean|undefined} [shallow=true]
    * @return {T}
    */
   static clone(source, target, shallow) {
-    return new BuilderObjectCloner()._clone(source, target, shallow);
+    let shallowOpt = shallow === undefined ? true : !!shallow;
+    return new ObjectCloner()._clone(source, target, shallowOpt);
+  }
+
+  /**
+   * @template T
+   * @param {T} value
+   * @return {T}
+   */
+  static cloneValue(value) {
+    return new ObjectCloner()._cloneValue(value);
   }
 }
 
-;// CONCATENATED MODULE: ./src/build-config.js
+;// CONCATENATED MODULE: ./src/build-config/module-config.js
+
+
+
+class ModuleConfig {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _name = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _path = undefined;
+
+  /**
+   * @param {string|undefined} [name=undefined]
+   * @param {string|undefined} [path=undefined]
+   */
+  constructor(name, path) {
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._name = name;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._path = path;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get path() {
+    return this._path;
+  }
+
+  /**
+   * @param {string} name
+   * @return {ModuleConfig}
+   */
+  withName(name) {
+    this._name = name;
+    return this;
+  }
+
+  /**
+   * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
+   *
+   * @param {string} path
+   * @return {ModuleConfig}
+   */
+  withPath(path) {
+    this._path = path;
+    return this;
+  }
+
+  /**
+   * @return {{}}
+   */
+  build() {
+    let config = {};
+    config[this.name] = this.path;
+    return config;
+  }
+
+  /**
+   * @param {boolean|undefined} [shallow=true]
+   * @return {ModuleConfig}
+   */
+  clone(shallow) {
+    return ObjectCloner.clone(this, new ModuleConfig(), shallow);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/build-config/validation-error.js
+class ValidationError extends Error {
+}
+
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+;// CONCATENATED MODULE: ./src/constant.js
+class Constant {
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+};
+
+;// CONCATENATED MODULE: ./src/utility.js
+
+
+
+
+
+
+class StaticJavaScriptCondition {
+  /**
+   * @type {RegExp}
+   */
+  static FILE_EXTENSION = /\.js/i;
+
+  /**
+   * @param {string} root
+   * @param {string} file
+   * @returns {boolean}
+   */
+  static isInsideStaticFolder(root, file) {
+    let staticFilePath = external_path_default().resolve(root, 'static') + (external_path_default()).sep;
+    return file.startsWith(staticFilePath);
+  }
+
+  /**
+   * @param {string} root
+   * @param {string} file
+   * @returns {boolean}
+   */
+  static test(root, file) {
+    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
+      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
+  }
+}
+
+/**
+ *
+ * @param {string} name
+ * @param {string} version
+ * @param {string} [suffix='']
+ */
+function getZipArchiveName(name, version, suffix) {
+  let filename = [name, version, suffix]
+    .filter(value => !!value)
+    .join('-');
+  return `${filename}.zip`;
+}
+
+/**
+ * @param {ValidatedBuildConfig} config
+ * @param {string|undefined} [suffix=undefined]
+ */
+function buildPublicPath(config, suffix) {
+  let path = '/';
+
+  if (suffix) {
+    path += suffix
+      .trim()
+      .replace(/^\//, '');
+  }
+
+  let pathSuffix = suffix ? path : '';
+
+  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+    return '.' + pathSuffix;
+  } else {
+    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+  }
+}
+
+/**
+ * @param {*} obj
+ * @return {string}
+ */
+function utility_toString(obj) {
+  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
+}
+
+/**
+ * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+ * @param {string} input
+ * @return {string}
+ */
+function escapeRegex(input) {
+  let pattern = /[-\/\\^$*+?.()|[\]{}]/g
+  return input.replace(pattern, '\\$&');
+}
+
+/**
+ * @param {string} str
+ * @return {string}
+ */
+function ucfirst(str) {
+  return str.charAt(0).toUpperCase() + str.substring(1);
+}
+
+/**
+ * @param {string} mayRelativePath
+ * @param {string|undefined} [basePathWhenRelative=undefined]
+ * @return {string}
+ */
+function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
+  let absolutePath = mayRelativePath;
+
+  if (!external_path_default().isAbsolute(absolutePath)) {
+    let basePath = basePathWhenRelative || process.cwd();
+    absolutePath = external_path_default().resolve(basePath, mayRelativePath);
+  }
+
+  return absolutePath;
+}
+
+/**
+ * @param {string} str1
+ * @param {string} str2
+ */
+function findStringSimilarities(str1, str2) {
+  let length = Math.min(str1.length, str2.length);
+  let similarPart = '';
+
+  for (let index = 0; index < length; index++) {
+    let charToCheck = str1.charAt(index);
+    if (charToCheck === str2.charAt(index)) {
+      similarPart += charToCheck;
+    }
+  }
+
+  return similarPart;
+}
+
+// EXTERNAL MODULE: ./node_modules/slugify/slugify.js
+var slugify = __webpack_require__(304);
+var slugify_default = /*#__PURE__*/__webpack_require__.n(slugify);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
+
+
+/**
+ * @implements {BuildConfigInterface}
+ */
+class ValidatedBuildConfig {
+  /**
+   * @type {string}
+   * @private
+   */
+  _name = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _version = undefined;
+  /**
+   * @type {Version}
+   * @private
+   */
+  _targetVersion = undefined;
+  /**
+   * @type {DesignType}
+   * @private
+   */
+  _designType = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _rootPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _outputPath = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _propertiesFilePath = undefined;
+  /**
+   * @type {number}
+   * @private
+   */
+  _devServerPort = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _hashZipFiles = undefined;
+  /**
+   * @type {ModuleConfig[]}
+   * @private
+   */
+  _modules = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _modulesRootPath = undefined;
+  /**
+   * @type {[{}]}
+   * @private
+   */
+  _additionalFilesToCopy = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _sourceMapEnabled = undefined;
+
+  /**
+   * @returns {string}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get version() {
+    return this._version;
+  }
+
+  /**
+   * @returns {Version}
+   */
+  get targetVersion() {
+    return this._targetVersion;
+  }
+
+  /**
+   * @returns {DesignType}
+   */
+  get designType() {
+    return this._designType;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get rootPath() {
+    return this._rootPath;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get outputPath() {
+    return this._outputPath;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get propertiesFilePath() {
+    return this._propertiesFilePath;
+  }
+
+  /**
+   * @returns {number}
+   */
+  get devServerPort() {
+    return this._devServerPort;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get hashZipFiles() {
+    return this._hashZipFiles;
+  }
+
+  /**
+   * @returns {ModuleConfig[]}
+   */
+  get modules() {
+    return this._modules;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get modulesRootPath() {
+    return this._modulesRootPath;
+  }
+
+  /**
+   * @returns {[{}]}
+   */
+  get additionalFilesToCopy() {
+    return this._additionalFilesToCopy;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get sourceMapEnabled() {
+    return this._sourceMapEnabled;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/build-config/build-config-validator.js
+
+
+
+
+
+
+
+
+
+
+
+
+class BuildConfigValidator {
+  /**
+   * @type {BuildConfig}
+   * @private
+   */
+  _buildConfig = undefined;
+  /**
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _validatedConfig = undefined;
+
+  /**
+   * @param {BuildConfig} buildConfig
+   */
+  constructor(buildConfig) {
+    /**
+     * @type {BuildConfig}
+     * @private
+     */
+    this._buildConfig = buildConfig;
+    /**
+     * @type {ValidatedBuildConfig}
+     * @private
+     */
+    this._validatedConfig = new ValidatedBuildConfig();
+  }
+
+  /**
+   * @return {BuildConfig}
+   */
+  get buildConfig() {
+    return this._buildConfig;
+  }
+
+  /**
+   * @return {ValidatedBuildConfig}
+   */
+  get validatedConfig() {
+    return this._validatedConfig;
+  }
+
+  /**
+   * @private
+   */
+  _validate() {
+    // invocation order is relevant
+    this._validateProperty('name', String, true);
+    this._validateProperty('version', String, true);
+    this._validateProperty('targetVersion', Version, true);
+    this._validateProperty('designType', DesignType, true);
+    this._validateProperty('rootPath', String, true);
+    this._validateProperty('outputPath', String, false);
+    this._validateProperty('propertiesFilePath', String, false);
+    this._validateProperty('devServerPort', Number, false);
+    this._validateProperty('hashZipFiles', Boolean, false);
+    this._validateProperty('modulesRootPath', String, false);
+    this._validateProperty('modules', Array, false);
+    this._validateProperty('additionalFilesToCopy', Array, false);
+    this._validateProperty('sourceMapEnabled', Boolean, false);
+  }
+
+  /**
+   * @param {string} name
+   * @param {object} type
+   * @param {boolean} required
+   */
+  _validateProperty(name, type, required) {
+    let property = '_' + name;
+    let value = this.buildConfig[name];
+
+    if (value !== undefined && !value instanceof type) {
+      throw new ValidationError(`${name} must be ${type.constructor.name}`);
+    }
+
+    if (required && !value) {
+      throw new ValidationError(`${name} is required and can not be empty`);
+    }
+
+    let validatedValue = value;
+    let propertyValidator = `_validate${ucfirst(name)}`;
+    if (typeof this[propertyValidator] === 'function') {
+      validatedValue = this[propertyValidator](validatedValue, name);
+    }
+
+    this.validatedConfig[property] = ObjectCloner.cloneValue(validatedValue);
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} property
+   * @return {string}
+   * @private
+   */
+  _validateName(name, property) {
+    let slug = slugify_default()(name);
+
+    if (slug !== name) {
+      throw new ValidationError(`The configuration for ${property} contains invalid characters. Recommendation: Use ${slug} instead of "${name}"`);
+    }
+
+    return slug;
+  }
+
+  /**
+   * @param {string} version
+   * @param {string} property
+   * @return {string}
+   * @private
+   */
+  _validateVersion(version, property) {
+    let slug = slugify_default()(version);
+
+    if (slug !== version) {
+      throw new ValidationError(`The configuration for ${property} contains invalid characters. Recommendation: Use ${slug} instead of "${version}"`);
+    }
+
+    return slug;
+  }
+
+  /**
+   * @param {string} rootPath
+   * @param {string} property
+   * @return {string}
+   * @private
+   */
+  _validateRootPath(rootPath, property) {
+    let validatedPath = getAbsolutePath(rootPath);
+
+    if (!external_fs_default().existsSync(validatedPath)) {
+      throw new ValidationError(`The configuration for ${property} points to a unknown location: ${validatedPath}`);
+    }
+
+    if (!external_fs_default().statSync(validatedPath).isDirectory()) {
+      throw new ValidationError(`The configuration for ${property} should point to a directory: ${validatedPath}`);
+    }
+
+    return validatedPath;
+  }
+
+  /**
+   * @param {string|undefined} outputPath
+   * @param {string} property
+   * @private
+   */
+  _validateOutputPath(outputPath, property) {
+    let defaultOutputPath = external_path_default().resolve(process.cwd(), 'dist', this.validatedConfig.name);
+    let validatedPath = outputPath || defaultOutputPath;
+
+    return getAbsolutePath(validatedPath);
+  }
+
+  /**
+   * @param {string|undefined} propertiesFilePath
+   * @param {string} property
+   * @private
+   */
+  _validatePropertiesFilePath(propertiesFilePath, property) {
+    if (!propertiesFilePath) {
+      return undefined;
+    }
+
+    let validatedPath = getAbsolutePath(propertiesFilePath, this.validatedConfig.rootPath);
+
+    if (!external_fs_default().existsSync(validatedPath)) {
+      throw new ValidationError(`The configuration for ${property} points to a unknown location: ${validatedPath}`);
+    }
+
+    if (!external_fs_default().statSync(validatedPath).isFile()) {
+      throw new ValidationError(`The configuration for ${property} should point to a file: ${validatedPath}`);
+    }
+
+    return validatedPath;
+  }
+
+  /**
+   * @param {string} modulesRootPath
+   * @param {string} property
+   * @private
+   */
+  _validateModulesRootPath(modulesRootPath, property) {
+    let validatedPath = getAbsolutePath(modulesRootPath || 'modules', this.validatedConfig.rootPath);
+
+    if (this._buildConfig.modules.length === 0) {
+      return validatedPath;
+    }
+
+    if (!external_fs_default().existsSync(validatedPath)) {
+      throw new ValidationError(`The configuration for ${property} points to a unknown location: ${validatedPath}`);
+    }
+
+    if (!external_fs_default().statSync(validatedPath).isDirectory()) {
+      throw new ValidationError(`The configuration for ${property} should point to a directory: ${validatedPath}`);
+    }
+
+    return validatedPath;
+  }
+
+  /**
+   * @param {ModuleConfig[]} modules
+   * @param {string} property
+   * @private
+   */
+  _validateModules(modules, property) {
+    /**
+     * @type {Set<string>}
+     */
+    let moduleNames = new Set();
+    /**
+     * @type {ModuleConfig[]}
+     */
+    let validatedModules = [];
+
+    for (let module of modules) {
+      let validatedName = module.name;
+      if (moduleNames.has(validatedName)) {
+        throw new ValidationError(`The configuration for ${property} contains an invalid module name: "${module.name}" is already in use for ${module.path}, use a different name.`);
+      }
+
+      moduleNames.add(validatedName);
+
+      let validatedPath = getAbsolutePath(module.path, this.validatedConfig.modulesRootPath);
+      if (!external_fs_default().existsSync(validatedPath)) {
+        throw new ValidationError(`The module configuration for "${validatedName}" points to a unknown location: ${validatedPath}`);
+      }
+
+      if (!external_fs_default().statSync(validatedPath).isFile()) {
+        throw new ValidationError(`The module configuration for "${validatedName}" should point to a file: ${validatedPath}`);
+      }
+
+      let validatedModule = new ModuleConfig()
+        .withName(validatedName)
+        .withPath(validatedPath);
+
+      validatedModules.push(validatedModule);
+    }
+
+    return validatedModules;
+  }
+
+  /**
+   * @param {BuildConfig} buildConfig
+   * @return {ValidatedBuildConfig}
+   */
+  static validate(buildConfig) {
+    let validator = new BuildConfigValidator(buildConfig);
+
+    validator._validate();
+
+    return validator.validatedConfig;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/build-config/build-config.js
+
+
+
+
 
 
 
 
 /**
  * The configuration object for the build of one template.
+ *
+ * @implements {BuildConfigInterface}
  */
 class BuildConfig {
   /**
    * @type {string}
+   * @private
    */
   _name = undefined;
   /**
    * @type {string}
+   * @private
    */
   _version = '1.0.0';
   /**
    * @type {Version}
+   * @private
    */
   _targetVersion = CX_22_0;
   /**
    * @type {DesignType}
+   * @private
    */
   _designType = LANDINGPAGE;
   /**
    * @type {string}
+   * @private
    */
   _rootPath = undefined;
   /**
    * @type {string}
+   * @private
    */
   _outputPath = undefined;
   /**
-   * @type {{}}
+   * @type {string|undefined}
+   * @private
    */
-  _properties = {};
+  _propertiesFilePath = undefined;
   /**
    * @type {number}
+   * @private
    */
   _devServerPort = 9000;
   /**
    * @type {boolean}
+   * @private
    */
   _hashZipFiles = true;
   /**
-   * @type {{}}
+   * @type {ModuleConfig[]}
+   * @private
    */
-  _modules = {};
+  _modules = [];
   /**
    * @type {string}
+   * @private
    */
   _modulesRootPath = undefined;
   /**
    * @type {[{}]}
+   * @private
    */
   _additionalFilesToCopy = [];
   /**
    * @type {boolean}
+   * @private
    */
   _sourceMapEnabled = true;
 
@@ -461,17 +1183,17 @@ class BuildConfig {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @returns {{}}
+   * @returns {string|undefined}
    */
-  get properties() {
-    return this._properties;
+  get propertiesFilePath() {
+    return this._propertiesFilePath;
   }
 
   /**
@@ -489,7 +1211,7 @@ class BuildConfig {
   }
 
   /**
-   * @returns {{}}
+   * @returns {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
@@ -585,18 +1307,20 @@ class BuildConfig {
   }
 
   /**
-   * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
+   * The data properties file for your Twig templates. This file will be required and the contents of this file will be
+   * available as "properties" variable inside your Twig templates.
    *
-   * @param {{}} properties
+   * @param {string} propertiesFilePath
    * @returns {BuildConfig}
    */
-  withProperties(properties) {
-    this._properties = properties;
+  withPropertiesFilePath(propertiesFilePath) {
+    this._propertiesFilePath = propertiesFilePath;
     return this;
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
+   * A TCP port number to use for the development server. The default port is 9000. Be aware,
+   * that you don't have to configure a separate port for each template.
    *
    * @param {number} devServerPort
    * @returns {BuildConfig}
@@ -620,23 +1344,11 @@ class BuildConfig {
   /**
    * Add additional Java Script modules.
    *
-   * @param {{}} modules
+   * @param {...ModuleConfig} modules
    * @returns {BuildConfig}
    */
-  withModules(modules) {
+  withModules(...modules) {
     this._modules = modules;
-    return this;
-  }
-
-  /**
-   * Add one additional Java Script module.
-   *
-   * @param {string} name
-   * @param {string} path
-   * @returns {BuildConfig}
-   */
-  withModule(name, path) {
-    this._modules[name] = path;
     return this;
   }
 
@@ -688,56 +1400,21 @@ class BuildConfig {
    * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
-   * @param {boolean} [shallow=true]
+   * @param {boolean|undefined} [shallow=true]
    * @return {BuildConfig}
    */
   clone(shallow) {
-    return BuilderObjectCloner.clone(this, new BuildConfig(), shallow === undefined ? true : !!shallow);
+    return ObjectCloner.clone(this, new BuildConfig(), shallow);
   }
 
   /**
-   * @returns {BuildConfig}
+   * @return {ValidatedBuildConfig}
    */
   validate() {
-    this._checkInstanceofAndRequired('name', String, true);
-    this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', Version, true);
-    this._checkInstanceofAndRequired('designType', DesignType, true);
-    this._checkInstanceofAndRequired('rootPath', String, true);
-    this._checkInstanceofAndRequired('outputPath', String, false);
-    this._checkInstanceofAndRequired('properties', Object, false);
-    this._checkInstanceofAndRequired('devServerPort', Number, false);
-    this._checkInstanceofAndRequired('hashZipFiles', Boolean, false);
-    this._checkInstanceofAndRequired('modules', Object, false);
-    this._checkInstanceofAndRequired('modulesRootPath', String, false);
-    this._checkInstanceofAndRequired('additionalFilesToCopy', Array, false);
-    this._checkInstanceofAndRequired('sourceMapEnabled', Boolean, false);
-
-    return this;
-  }
-
-  /**
-   * @param {string} name
-   * @param {object} type
-   * @param {boolean} required
-   */
-  _checkInstanceofAndRequired(name, type, required) {
-    const property = this[`_${name}`];
-    if (property !== undefined && !property instanceof type) {
-      throw new Error(`${name} must be ${type.constructor.name}`);
-    }
-    if (required && !property) {
-      throw new Error(`${name} is required and can not be empty`);
-    }
+    return BuildConfigValidator.validate(this);
   }
 }
 
-;// CONCATENATED MODULE: external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
 ;// CONCATENATED MODULE: external "zip-webpack-plugin"
 const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
 var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
@@ -768,129 +1445,6 @@ const lib_namespaceObject = require("webpack/lib");
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
 });
-
-;// CONCATENATED MODULE: ./src/constant.js
-class Constant {
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
-};
-
-;// CONCATENATED MODULE: ./src/utility.js
-
-
-
-
-
-
-class StaticJavaScriptCondition {
-  /**
-   * @type {RegExp}
-   */
-  static FILE_EXTENSION = /\.js/i;
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static isInsideStaticFolder(root, file) {
-    let staticFilePath = external_path_default().resolve(root, 'static') + (external_path_default()).sep;
-    return file.startsWith(staticFilePath);
-  }
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static test(root, file) {
-    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
-      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
-  }
-}
-
-/**
- *
- * @param {string} name
- * @param {string} version
- * @param {string} [suffix='']
- */
-function getZipArchiveName(name, version, suffix) {
-  let filename = [name, version, suffix]
-    .filter(value => !!value)
-    .join('-');
-  return `${filename}.zip`;
-}
-
-/**
- * @param {BuildConfig} config
- * @param {string|undefined} [suffix=undefined]
- */
-function buildPublicPath(config, suffix) {
-  let path = '/';
-
-  if (suffix) {
-    path += suffix
-      .trim()
-      .replace(/^\//, '');
-  }
-
-  let pathSuffix = suffix ? path : '';
-
-  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
-    return '.' + pathSuffix;
-  } else {
-    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
-  }
-}
-
-/**
- * @param {*} obj
- * @return {string}
- */
-function utility_toString(obj) {
-  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
-}
-
-/**
- * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
- * @param {string} input
- * @return {string}
- */
-function escapeRegex(input) {
-  let pattern = /[-\/\\^$*+?.()|[\]{}]/g
-  return input.replace(pattern, '\\$&');
-}
 
 ;// CONCATENATED MODULE: ./src/design-json-property.js
 class DesignJsonProperty {
@@ -1216,7 +1770,7 @@ class _BsiCxWebpackPlugin {
   static ELEMENT_FILE_HASH_LENGTH = 20;
 
   /**
-   * @type {BuildConfig}
+   * @type {ValidatedBuildConfig}
    */
   _config = undefined;
   /**
@@ -1233,14 +1787,14 @@ class _BsiCxWebpackPlugin {
   _logger = undefined;
 
   /**
-   * @param {BuildConfig} config
+   * @param {ValidatedBuildConfig} config
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
   constructor(config, compiler, compilation, logger) {
     /**
-     * @type {BuildConfig}
+     * @type {ValidatedBuildConfig}
      */
     this._config = config;
     /**
@@ -1699,9 +2253,19 @@ class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @param {BuildConfig} config
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+
+  /**
+   * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
+    /**
+     * @type {ValidatedBuildConfig}
+     * @private
+     */
     this._config = config;
   }
 
@@ -2124,14 +2688,35 @@ class LegacyDesignProperty {
 
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
-   * @param {BuildConfig} config
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+  /**
+   * @type {Compiler}
+   * @private
+   */
+  _compiler = undefined;
+  /**
+   * @type {Compilation}
+   * @private
+   */
+  _compilation = undefined;
+  /**
+   * @type {WebpackLogger}
+   * @private
+   */
+  _logger = undefined;
+
+  /**
+   * @param {ValidatedBuildConfig} config
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
   constructor(config, compiler, compilation, logger) {
     /**
-     * @type {BuildConfig}
+     * @type {ValidatedBuildConfig}
      * @private
      */
     this._config = config;
@@ -2530,9 +3115,19 @@ class BsiCxWebpackLegacyDesignPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackLegacyDesignPlugin';
 
   /**
-   * @param {BuildConfig} config
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+
+  /**
+   * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
+    /**
+     * @type {ValidatedBuildConfig}
+     * @private
+     */
     this._config = config;
   }
 
@@ -2680,6 +3275,7 @@ class BsiCxWebpackZipHashPlugin {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -2687,24 +3283,24 @@ class WebpackConfigBuilder {
   static DESIGN_LAYER = 'design';
 
   /**
-   * @type {BuildConfig}
+   * @type {ValidatedBuildConfig}
    * @private
    */
   _config = undefined;
 
   /**
-   * @param {BuildConfig} config
+   * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
     /**
-     * @type {BuildConfig}
+     * @type {ValidatedBuildConfig}
      * @private
      */
     this._config = config;
   }
 
   /**
-   * @returns {BuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get config() {
     return this._config;
@@ -2766,33 +3362,6 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * The output path to use.
-   *
-   * @returns {string}
-   */
-  _getOutputPath() {
-    return this.config.outputPath || this._getDefaultOutputPath();
-  }
-
-  /**
-   * The default modules path: ./modules
-   *
-   * @returns {string}
-   */
-  _getDefaultModulesRootPath() {
-    return external_path_default().resolve(this.config.rootPath, 'modules');
-  }
-
-  /**
-   * The modules path to use.
-   *
-   * @returns {string}
-   */
-  _getModulesRootPath() {
-    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
-  }
-
-  /**
    * The entry configuration.
    *
    * @returns {{}}
@@ -2831,6 +3400,10 @@ class WebpackConfigBuilder {
     };
   }
 
+  /**
+   * @return {string}
+   * @private
+   */
   _getDesignJsFilePath() {
     return external_path_default().resolve(this.config.rootPath, File.DESIGN_JS);
   }
@@ -2842,14 +3415,41 @@ class WebpackConfigBuilder {
    */
   _getJavaScriptModuleEntries() {
     let entries = {};
-    for (const [name, filePath] of Object.entries(this.config.modules)) {
-      entries[name] = {
-        import: external_path_default().resolve(filePath),
-        filename: 'modules/[name]-[contenthash].js',
-        runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
-      };
+
+    for (let config of this.config.modules) {
+      let name = config.name;
+      entries[name] = this._getJavaScriptModuleEntry(config);
     }
+
     return entries;
+  }
+
+  /**
+   * @param {ModuleConfig} config
+   * @return {{filename: string, import: string, runtime: string}}
+   * @private
+   */
+  _getJavaScriptModuleEntry(config) {
+    let importPath;
+    if (external_path_default().isAbsolute(config.path)) {
+      importPath = external_path_default().resolve(config.path);
+    } else {
+      importPath = external_path_default().resolve(this.config.modulesRootPath, config.path);
+    }
+
+    if (!external_fs_default().existsSync(importPath)) {
+      throw new Error(`The file ${importPath} for module ${config.name} does not exist.`);
+    }
+
+    if (!external_fs_default().statSync(importPath).isFile()) {
+      throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
+    }
+
+    return {
+      import: importPath,
+      filename: 'modules/[name]-[contenthash].js',
+      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
+    };
   }
 
   /**
@@ -3001,7 +3601,7 @@ class WebpackConfigBuilder {
       {
         test: /\.m?js$/i,
         exclude: /(node_modules|bower_components)/,
-        include: this._getModulesRootPath(),
+        include: this.config.modulesRootPath,
         use: {
           loader: 'babel-loader',
           options: {
@@ -3160,13 +3760,11 @@ class WebpackConfigBuilder {
    * @returns {{}}
    */
   _getDevServerConfig() {
-    let outputPath = this._getOutputPath();
-    let contentBase = outputPath === this._getDefaultOutputPath() ? external_path_default().resolve(outputPath, '..') : process.cwd();
     let zipRegEx = /\.zip$/i;
 
     return {
       port: this.config.devServerPort,
-      contentBase: contentBase,
+      contentBase: this.config.outputPath,
       publicPath: '/',
       compress: true,
       writeToDisk: filePath => zipRegEx.test(filePath),
@@ -3267,7 +3865,7 @@ class WebpackConfigBuilder {
    */
   _getOutputConfig() {
     return {
-      path: this._getOutputPath(),
+      path: this.config.outputPath,
       publicPath: buildPublicPath(this.config, '/'),
       clean: true,
       library: {
@@ -3283,20 +3881,32 @@ class WebpackConfigBuilder {
    * @param  {...BuildConfig} configs
    */
   static fromConfigs(...configs) {
-    let devServerPort = undefined;
+    let commonDevServerPort = undefined;
+    let commonContentBase = undefined;
 
-    return configs
+    let buildConfigs = configs
       .map(config => config.validate())
       .map(config => new WebpackConfigBuilder(config))
-      .map(config => config.build())
-      .map((config, index) => {
-        if (index === 0) {
-          devServerPort = config.devServer.port;
-        } else if (config.devServer.port === devServerPort) {
-          delete config.devServer;
-        }
-        return config;
-      });
+      .map(config => config.build());
+
+    buildConfigs.forEach((config, index) => {
+      if (index === 0) {
+        commonDevServerPort = config.devServer.port;
+        commonContentBase = config.devServer.contentBase;
+      } else {
+        commonContentBase = findStringSimilarities(commonContentBase, config.devServer.contentBase);
+      }
+
+      if (index > 0) {
+        delete config.devServer;
+      }
+    });
+
+    let devServerConfig = buildConfigs[0].devServer;
+    devServerConfig.port = commonDevServerPort;
+    devServerConfig.contentBase = commonContentBase;
+
+    return buildConfigs;
   }
 }
 
@@ -3312,14 +3922,100 @@ class WebpackConfigBuilder {
 
 
 
+/***/ }),
+
+/***/ 304:
+/***/ (function(module) {
+
+
+;(function (name, root, factory) {
+  if (true) {
+    module.exports = factory()
+    module.exports.default = factory()
+  }
+  /* istanbul ignore next */
+  else {}
+}('slugify', this, function () {
+  var charMap = JSON.parse('{"$":"dollar","%":"percent","&":"and","<":"less",">":"greater","|":"or","¢":"cent","£":"pound","¤":"currency","¥":"yen","©":"(c)","ª":"a","®":"(r)","º":"o","À":"A","Á":"A","Â":"A","Ã":"A","Ä":"A","Å":"A","Æ":"AE","Ç":"C","È":"E","É":"E","Ê":"E","Ë":"E","Ì":"I","Í":"I","Î":"I","Ï":"I","Ð":"D","Ñ":"N","Ò":"O","Ó":"O","Ô":"O","Õ":"O","Ö":"O","Ø":"O","Ù":"U","Ú":"U","Û":"U","Ü":"U","Ý":"Y","Þ":"TH","ß":"ss","à":"a","á":"a","â":"a","ã":"a","ä":"a","å":"a","æ":"ae","ç":"c","è":"e","é":"e","ê":"e","ë":"e","ì":"i","í":"i","î":"i","ï":"i","ð":"d","ñ":"n","ò":"o","ó":"o","ô":"o","õ":"o","ö":"o","ø":"o","ù":"u","ú":"u","û":"u","ü":"u","ý":"y","þ":"th","ÿ":"y","Ā":"A","ā":"a","Ă":"A","ă":"a","Ą":"A","ą":"a","Ć":"C","ć":"c","Č":"C","č":"c","Ď":"D","ď":"d","Đ":"DJ","đ":"dj","Ē":"E","ē":"e","Ė":"E","ė":"e","Ę":"e","ę":"e","Ě":"E","ě":"e","Ğ":"G","ğ":"g","Ģ":"G","ģ":"g","Ĩ":"I","ĩ":"i","Ī":"i","ī":"i","Į":"I","į":"i","İ":"I","ı":"i","Ķ":"k","ķ":"k","Ļ":"L","ļ":"l","Ľ":"L","ľ":"l","Ł":"L","ł":"l","Ń":"N","ń":"n","Ņ":"N","ņ":"n","Ň":"N","ň":"n","Ō":"O","ō":"o","Ő":"O","ő":"o","Œ":"OE","œ":"oe","Ŕ":"R","ŕ":"r","Ř":"R","ř":"r","Ś":"S","ś":"s","Ş":"S","ş":"s","Š":"S","š":"s","Ţ":"T","ţ":"t","Ť":"T","ť":"t","Ũ":"U","ũ":"u","Ū":"u","ū":"u","Ů":"U","ů":"u","Ű":"U","ű":"u","Ų":"U","ų":"u","Ŵ":"W","ŵ":"w","Ŷ":"Y","ŷ":"y","Ÿ":"Y","Ź":"Z","ź":"z","Ż":"Z","ż":"z","Ž":"Z","ž":"z","Ə":"E","ƒ":"f","Ơ":"O","ơ":"o","Ư":"U","ư":"u","ǈ":"LJ","ǉ":"lj","ǋ":"NJ","ǌ":"nj","Ș":"S","ș":"s","Ț":"T","ț":"t","ə":"e","˚":"o","Ά":"A","Έ":"E","Ή":"H","Ί":"I","Ό":"O","Ύ":"Y","Ώ":"W","ΐ":"i","Α":"A","Β":"B","Γ":"G","Δ":"D","Ε":"E","Ζ":"Z","Η":"H","Θ":"8","Ι":"I","Κ":"K","Λ":"L","Μ":"M","Ν":"N","Ξ":"3","Ο":"O","Π":"P","Ρ":"R","Σ":"S","Τ":"T","Υ":"Y","Φ":"F","Χ":"X","Ψ":"PS","Ω":"W","Ϊ":"I","Ϋ":"Y","ά":"a","έ":"e","ή":"h","ί":"i","ΰ":"y","α":"a","β":"b","γ":"g","δ":"d","ε":"e","ζ":"z","η":"h","θ":"8","ι":"i","κ":"k","λ":"l","μ":"m","ν":"n","ξ":"3","ο":"o","π":"p","ρ":"r","ς":"s","σ":"s","τ":"t","υ":"y","φ":"f","χ":"x","ψ":"ps","ω":"w","ϊ":"i","ϋ":"y","ό":"o","ύ":"y","ώ":"w","Ё":"Yo","Ђ":"DJ","Є":"Ye","І":"I","Ї":"Yi","Ј":"J","Љ":"LJ","Њ":"NJ","Ћ":"C","Џ":"DZ","А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ж":"Zh","З":"Z","И":"I","Й":"J","К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F","Х":"H","Ц":"C","Ч":"Ch","Ш":"Sh","Щ":"Sh","Ъ":"U","Ы":"Y","Ь":"","Э":"E","Ю":"Yu","Я":"Ya","а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ж":"zh","з":"z","и":"i","й":"j","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"c","ч":"ch","ш":"sh","щ":"sh","ъ":"u","ы":"y","ь":"","э":"e","ю":"yu","я":"ya","ё":"yo","ђ":"dj","є":"ye","і":"i","ї":"yi","ј":"j","љ":"lj","њ":"nj","ћ":"c","ѝ":"u","џ":"dz","Ґ":"G","ґ":"g","Ғ":"GH","ғ":"gh","Қ":"KH","қ":"kh","Ң":"NG","ң":"ng","Ү":"UE","ү":"ue","Ұ":"U","ұ":"u","Һ":"H","һ":"h","Ә":"AE","ә":"ae","Ө":"OE","ө":"oe","Ա":"A","Բ":"B","Գ":"G","Դ":"D","Ե":"E","Զ":"Z","Է":"E\'","Ը":"Y\'","Թ":"T\'","Ժ":"JH","Ի":"I","Լ":"L","Խ":"X","Ծ":"C\'","Կ":"K","Հ":"H","Ձ":"D\'","Ղ":"GH","Ճ":"TW","Մ":"M","Յ":"Y","Ն":"N","Շ":"SH","Չ":"CH","Պ":"P","Ջ":"J","Ռ":"R\'","Ս":"S","Վ":"V","Տ":"T","Ր":"R","Ց":"C","Փ":"P\'","Ք":"Q\'","Օ":"O\'\'","Ֆ":"F","և":"EV","฿":"baht","ა":"a","ბ":"b","გ":"g","დ":"d","ე":"e","ვ":"v","ზ":"z","თ":"t","ი":"i","კ":"k","ლ":"l","მ":"m","ნ":"n","ო":"o","პ":"p","ჟ":"zh","რ":"r","ს":"s","ტ":"t","უ":"u","ფ":"f","ქ":"k","ღ":"gh","ყ":"q","შ":"sh","ჩ":"ch","ც":"ts","ძ":"dz","წ":"ts","ჭ":"ch","ხ":"kh","ჯ":"j","ჰ":"h","Ẁ":"W","ẁ":"w","Ẃ":"W","ẃ":"w","Ẅ":"W","ẅ":"w","ẞ":"SS","Ạ":"A","ạ":"a","Ả":"A","ả":"a","Ấ":"A","ấ":"a","Ầ":"A","ầ":"a","Ẩ":"A","ẩ":"a","Ẫ":"A","ẫ":"a","Ậ":"A","ậ":"a","Ắ":"A","ắ":"a","Ằ":"A","ằ":"a","Ẳ":"A","ẳ":"a","Ẵ":"A","ẵ":"a","Ặ":"A","ặ":"a","Ẹ":"E","ẹ":"e","Ẻ":"E","ẻ":"e","Ẽ":"E","ẽ":"e","Ế":"E","ế":"e","Ề":"E","ề":"e","Ể":"E","ể":"e","Ễ":"E","ễ":"e","Ệ":"E","ệ":"e","Ỉ":"I","ỉ":"i","Ị":"I","ị":"i","Ọ":"O","ọ":"o","Ỏ":"O","ỏ":"o","Ố":"O","ố":"o","Ồ":"O","ồ":"o","Ổ":"O","ổ":"o","Ỗ":"O","ỗ":"o","Ộ":"O","ộ":"o","Ớ":"O","ớ":"o","Ờ":"O","ờ":"o","Ở":"O","ở":"o","Ỡ":"O","ỡ":"o","Ợ":"O","ợ":"o","Ụ":"U","ụ":"u","Ủ":"U","ủ":"u","Ứ":"U","ứ":"u","Ừ":"U","ừ":"u","Ử":"U","ử":"u","Ữ":"U","ữ":"u","Ự":"U","ự":"u","Ỳ":"Y","ỳ":"y","Ỵ":"Y","ỵ":"y","Ỷ":"Y","ỷ":"y","Ỹ":"Y","ỹ":"y","–":"-","‘":"\'","’":"\'","“":"\\\"","”":"\\\"","„":"\\\"","†":"+","•":"*","…":"...","₠":"ecu","₢":"cruzeiro","₣":"french franc","₤":"lira","₥":"mill","₦":"naira","₧":"peseta","₨":"rupee","₩":"won","₪":"new shequel","₫":"dong","€":"euro","₭":"kip","₮":"tugrik","₯":"drachma","₰":"penny","₱":"peso","₲":"guarani","₳":"austral","₴":"hryvnia","₵":"cedi","₸":"kazakhstani tenge","₹":"indian rupee","₺":"turkish lira","₽":"russian ruble","₿":"bitcoin","℠":"sm","™":"tm","∂":"d","∆":"delta","∑":"sum","∞":"infinity","♥":"love","元":"yuan","円":"yen","﷼":"rial"}')
+  var locales = JSON.parse('{"de":{"Ä":"AE","ä":"ae","Ö":"OE","ö":"oe","Ü":"UE","ü":"ue","%":"prozent","&":"und","|":"oder","∑":"summe","∞":"unendlich","♥":"liebe"},"es":{"%":"por ciento","&":"y","<":"menor que",">":"mayor que","|":"o","¢":"centavos","£":"libras","¤":"moneda","₣":"francos","∑":"suma","∞":"infinito","♥":"amor"},"fr":{"%":"pourcent","&":"et","<":"plus petit",">":"plus grand","|":"ou","¢":"centime","£":"livre","¤":"devise","₣":"franc","∑":"somme","∞":"infini","♥":"amour"},"pt":{"%":"porcento","&":"e","<":"menor",">":"maior","|":"ou","¢":"centavo","∑":"soma","£":"libra","∞":"infinito","♥":"amor"},"uk":{"И":"Y","и":"y","Й":"Y","й":"y","Ц":"Ts","ц":"ts","Х":"Kh","х":"kh","Щ":"Shch","щ":"shch","Г":"H","г":"h"},"vi":{"Đ":"D","đ":"d"}}')
+
+  function replace (string, options) {
+    if (typeof string !== 'string') {
+      throw new Error('slugify: string argument expected')
+    }
+
+    options = (typeof options === 'string')
+      ? {replacement: options}
+      : options || {}
+
+    var locale = locales[options.locale] || {}
+
+    var replacement = options.replacement === undefined ? '-' : options.replacement
+
+    var trim = options.trim === undefined ? true : options.trim
+
+    var slug = string.normalize().split('')
+      // replace characters based on charMap
+      .reduce(function (result, ch) {
+        return result + (locale[ch] || charMap[ch] ||  (ch === replacement ? ' ' : ch))
+          // remove not allowed characters
+          .replace(options.remove || /[^\w\s$*_+~.()'"!\-:@]+/g, '')
+      }, '');
+
+    if (options.strict) {
+      slug = slug.replace(/[^A-Za-z0-9\s]/g, '');
+    }
+
+    if (trim) {
+      slug = slug.trim()
+    }
+
+    // Replace spaces with replacement character, treating multiple consecutive
+    // spaces as a single space.
+    slug = slug.replace(/\s+/g, replacement);
+
+    if (options.lower) {
+      slug = slug.toLowerCase()
+    }
+
+    return slug
+  }
+
+  replace.extend = function (customMap) {
+    Object.assign(charMap, customMap)
+  }
+
+  return replace
+}))
 
 
 /***/ })
 
 /******/ 	});
 /************************************************************************/
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -3367,8 +4063,7 @@ class WebpackConfigBuilder {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[470](0, __webpack_exports__, __webpack_require__);
+/******/ 	var __webpack_exports__ = __webpack_require__(283);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

@@ -1,24 +1,45 @@
 import {sources} from 'webpack';
 import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 
-import BuildConfig from './build-config';
 import File from './file';
 import JavaPropertyFileBuilder from './java-property-file-builder';
 import {identity, scalarArrayToList} from './extractor';
 import {toString} from './utility';
 import LegacyDesignProperty from './legacy-design-property';
 import DesignJsonProperty from './design-json-property';
+import ValidatedBuildConfig from './build-config/validated-build-config';
 
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
-   * @param {BuildConfig} config
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+  /**
+   * @type {Compiler}
+   * @private
+   */
+  _compiler = undefined;
+  /**
+   * @type {Compilation}
+   * @private
+   */
+  _compilation = undefined;
+  /**
+   * @type {WebpackLogger}
+   * @private
+   */
+  _logger = undefined;
+
+  /**
+   * @param {ValidatedBuildConfig} config
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
   constructor(config, compiler, compilation, logger) {
     /**
-     * @type {BuildConfig}
+     * @type {ValidatedBuildConfig}
      * @private
      */
     this._config = config;
@@ -417,9 +438,19 @@ export default class BsiCxWebpackLegacyDesignPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackLegacyDesignPlugin';
 
   /**
-   * @param {BuildConfig} config
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+
+  /**
+   * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
+    /**
+     * @type {ValidatedBuildConfig}
+     * @private
+     */
     this._config = config;
   }
 

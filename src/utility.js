@@ -1,5 +1,5 @@
 import path from 'path';
-import BuildConfig from './build-config';
+import ValidatedBuildConfig from './build-config/validated-build-config';
 import Constant from './constant';
 import {WEBSITE} from './design-type';
 
@@ -45,7 +45,7 @@ export function getZipArchiveName(name, version, suffix) {
 }
 
 /**
- * @param {BuildConfig} config
+ * @param {ValidatedBuildConfig} config
  * @param {string|undefined} [suffix=undefined]
  */
 export function buildPublicPath(config, suffix) {
@@ -82,4 +82,46 @@ export function toString(obj) {
 export function escapeRegex(input) {
   let pattern = /[-\/\\^$*+?.()|[\]{}]/g
   return input.replace(pattern, '\\$&');
+}
+
+/**
+ * @param {string} str
+ * @return {string}
+ */
+export function ucfirst(str) {
+  return str.charAt(0).toUpperCase() + str.substring(1);
+}
+
+/**
+ * @param {string} mayRelativePath
+ * @param {string|undefined} [basePathWhenRelative=undefined]
+ * @return {string}
+ */
+export function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
+  let absolutePath = mayRelativePath;
+
+  if (!path.isAbsolute(absolutePath)) {
+    let basePath = basePathWhenRelative || process.cwd();
+    absolutePath = path.resolve(basePath, mayRelativePath);
+  }
+
+  return absolutePath;
+}
+
+/**
+ * @param {string} str1
+ * @param {string} str2
+ */
+export function findStringSimilarities(str1, str2) {
+  let length = Math.min(str1.length, str2.length);
+  let similarPart = '';
+
+  for (let index = 0; index < length; index++) {
+    let charToCheck = str1.charAt(index);
+    if (charToCheck === str2.charAt(index)) {
+      similarPart += charToCheck;
+    }
+  }
+
+  return similarPart;
 }

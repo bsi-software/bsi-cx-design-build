@@ -1,61 +1,80 @@
-import {DesignType, LANDINGPAGE} from './design-type';
-import {CX_22_0, Version} from './version';
-import BuilderObjectCloner from './builder-object-cloner';
+import {DesignType, LANDINGPAGE} from '../design-type';
+import {CX_22_0, Version} from '../version';
+import ObjectCloner from '../object-cloner';
+import ModuleConfig from './module-config';
+import BuildConfigInterface from './build-config-interface';
+import ValidatedBuildConfig from './validated-build-config';
+import BuildConfigValidator from './build-config-validator';
 
 /**
  * The configuration object for the build of one template.
+ *
+ * @implements {BuildConfigInterface}
  */
 export default class BuildConfig {
   /**
    * @type {string}
+   * @private
    */
   _name = undefined;
   /**
    * @type {string}
+   * @private
    */
   _version = '1.0.0';
   /**
    * @type {Version}
+   * @private
    */
   _targetVersion = CX_22_0;
   /**
    * @type {DesignType}
+   * @private
    */
   _designType = LANDINGPAGE;
   /**
    * @type {string}
+   * @private
    */
   _rootPath = undefined;
   /**
    * @type {string}
+   * @private
    */
   _outputPath = undefined;
   /**
-   * @type {{}}
+   * @type {string|undefined}
+   * @private
    */
-  _properties = {};
+  _propertiesFilePath = undefined;
   /**
    * @type {number}
+   * @private
    */
   _devServerPort = 9000;
   /**
    * @type {boolean}
+   * @private
    */
   _hashZipFiles = true;
   /**
-   * @type {{}}
+   * @type {ModuleConfig[]}
+   * @private
    */
-  _modules = {};
+  _modules = [];
   /**
    * @type {string}
+   * @private
    */
   _modulesRootPath = undefined;
   /**
    * @type {[{}]}
+   * @private
    */
   _additionalFilesToCopy = [];
   /**
    * @type {boolean}
+   * @private
    */
   _sourceMapEnabled = true;
 
@@ -95,17 +114,17 @@ export default class BuildConfig {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @returns {{}}
+   * @returns {string|undefined}
    */
-  get properties() {
-    return this._properties;
+  get propertiesFilePath() {
+    return this._propertiesFilePath;
   }
 
   /**
@@ -123,7 +142,7 @@ export default class BuildConfig {
   }
 
   /**
-   * @returns {{}}
+   * @returns {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
@@ -219,18 +238,20 @@ export default class BuildConfig {
   }
 
   /**
-   * The data properties for your Twig templates. This object will be available as "properties" variable inside your Twig templates.
+   * The data properties file for your Twig templates. This file will be required and the contents of this file will be
+   * available as "properties" variable inside your Twig templates.
    *
-   * @param {{}} properties
+   * @param {string} propertiesFilePath
    * @returns {BuildConfig}
    */
-  withProperties(properties) {
-    this._properties = properties;
+  withPropertiesFilePath(propertiesFilePath) {
+    this._propertiesFilePath = propertiesFilePath;
     return this;
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware, that you don't have to configure a separate port for each template.
+   * A TCP port number to use for the development server. The default port is 9000. Be aware,
+   * that you don't have to configure a separate port for each template.
    *
    * @param {number} devServerPort
    * @returns {BuildConfig}
@@ -254,23 +275,11 @@ export default class BuildConfig {
   /**
    * Add additional Java Script modules.
    *
-   * @param {{}} modules
+   * @param {...ModuleConfig} modules
    * @returns {BuildConfig}
    */
-  withModules(modules) {
+  withModules(...modules) {
     this._modules = modules;
-    return this;
-  }
-
-  /**
-   * Add one additional Java Script module.
-   *
-   * @param {string} name
-   * @param {string} path
-   * @returns {BuildConfig}
-   */
-  withModule(name, path) {
-    this._modules[name] = path;
     return this;
   }
 
@@ -322,46 +331,17 @@ export default class BuildConfig {
    * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
-   * @param {boolean} [shallow=true]
+   * @param {boolean|undefined} [shallow=true]
    * @return {BuildConfig}
    */
   clone(shallow) {
-    return BuilderObjectCloner.clone(this, new BuildConfig(), shallow === undefined ? true : !!shallow);
+    return ObjectCloner.clone(this, new BuildConfig(), shallow);
   }
 
   /**
-   * @returns {BuildConfig}
+   * @return {ValidatedBuildConfig}
    */
   validate() {
-    this._checkInstanceofAndRequired('name', String, true);
-    this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', Version, true);
-    this._checkInstanceofAndRequired('designType', DesignType, true);
-    this._checkInstanceofAndRequired('rootPath', String, true);
-    this._checkInstanceofAndRequired('outputPath', String, false);
-    this._checkInstanceofAndRequired('properties', Object, false);
-    this._checkInstanceofAndRequired('devServerPort', Number, false);
-    this._checkInstanceofAndRequired('hashZipFiles', Boolean, false);
-    this._checkInstanceofAndRequired('modules', Object, false);
-    this._checkInstanceofAndRequired('modulesRootPath', String, false);
-    this._checkInstanceofAndRequired('additionalFilesToCopy', Array, false);
-    this._checkInstanceofAndRequired('sourceMapEnabled', Boolean, false);
-
-    return this;
-  }
-
-  /**
-   * @param {string} name
-   * @param {object} type
-   * @param {boolean} required
-   */
-  _checkInstanceofAndRequired(name, type, required) {
-    const property = this[`_${name}`];
-    if (property !== undefined && !property instanceof type) {
-      throw new Error(`${name} must be ${type.constructor.name}`);
-    }
-    if (required && !property) {
-      throw new Error(`${name} is required and can not be empty`);
-    }
+    return BuildConfigValidator.validate(this);
   }
 }

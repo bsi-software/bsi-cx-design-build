@@ -12,8 +12,9 @@ import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugi
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
 import File from './file';
-import {buildPublicPath, getZipArchiveName, StaticJavaScriptCondition} from './utility';
-import BuildConfig from './build-config';
+import {buildPublicPath, findStringSimilarities, getZipArchiveName, StaticJavaScriptCondition} from './utility';
+import BuildConfig from './build-config/build-config';
+import ValidatedBuildConfig from './build-config/validated-build-config';
 
 
 export default class WebpackConfigBuilder {
@@ -23,24 +24,24 @@ export default class WebpackConfigBuilder {
   static DESIGN_LAYER = 'design';
 
   /**
-   * @type {BuildConfig}
+   * @type {ValidatedBuildConfig}
    * @private
    */
   _config = undefined;
 
   /**
-   * @param {BuildConfig} config
+   * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
     /**
-     * @type {BuildConfig}
+     * @type {ValidatedBuildConfig}
      * @private
      */
     this._config = config;
   }
 
   /**
-   * @returns {BuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get config() {
     return this._config;
@@ -102,33 +103,6 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * The output path to use.
-   *
-   * @returns {string}
-   */
-  _getOutputPath() {
-    return this.config.outputPath || this._getDefaultOutputPath();
-  }
-
-  /**
-   * The default modules path: ./modules
-   *
-   * @returns {string}
-   */
-  _getDefaultModulesRootPath() {
-    return path.resolve(this.config.rootPath, 'modules');
-  }
-
-  /**
-   * The modules path to use.
-   *
-   * @returns {string}
-   */
-  _getModulesRootPath() {
-    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
-  }
-
-  /**
    * The entry configuration.
    *
    * @returns {{}}
@@ -167,6 +141,10 @@ export default class WebpackConfigBuilder {
     };
   }
 
+  /**
+   * @return {string}
+   * @private
+   */
   _getDesignJsFilePath() {
     return path.resolve(this.config.rootPath, File.DESIGN_JS);
   }
@@ -178,14 +156,41 @@ export default class WebpackConfigBuilder {
    */
   _getJavaScriptModuleEntries() {
     let entries = {};
-    for (const [name, filePath] of Object.entries(this.config.modules)) {
-      entries[name] = {
-        import: path.resolve(filePath),
-        filename: 'modules/[name]-[contenthash].js',
-        runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
-      };
+
+    for (let config of this.config.modules) {
+      let name = config.name;
+      entries[name] = this._getJavaScriptModuleEntry(config);
     }
+
     return entries;
+  }
+
+  /**
+   * @param {ModuleConfig} config
+   * @return {{filename: string, import: string, runtime: string}}
+   * @private
+   */
+  _getJavaScriptModuleEntry(config) {
+    let importPath;
+    if (path.isAbsolute(config.path)) {
+      importPath = path.resolve(config.path);
+    } else {
+      importPath = path.resolve(this.config.modulesRootPath, config.path);
+    }
+
+    if (!fs.existsSync(importPath)) {
+      throw new Error(`The file ${importPath} for module ${config.name} does not exist.`);
+    }
+
+    if (!fs.statSync(importPath).isFile()) {
+      throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
+    }
+
+    return {
+      import: importPath,
+      filename: 'modules/[name]-[contenthash].js',
+      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
+    };
   }
 
   /**
@@ -337,7 +342,7 @@ export default class WebpackConfigBuilder {
       {
         test: /\.m?js$/i,
         exclude: /(node_modules|bower_components)/,
-        include: this._getModulesRootPath(),
+        include: this.config.modulesRootPath,
         use: {
           loader: 'babel-loader',
           options: {
@@ -496,13 +501,11 @@ export default class WebpackConfigBuilder {
    * @returns {{}}
    */
   _getDevServerConfig() {
-    let outputPath = this._getOutputPath();
-    let contentBase = outputPath === this._getDefaultOutputPath() ? path.resolve(outputPath, '..') : process.cwd();
     let zipRegEx = /\.zip$/i;
 
     return {
       port: this.config.devServerPort,
-      contentBase: contentBase,
+      contentBase: this.config.outputPath,
       publicPath: '/',
       compress: true,
       writeToDisk: filePath => zipRegEx.test(filePath),
@@ -603,7 +606,7 @@ export default class WebpackConfigBuilder {
    */
   _getOutputConfig() {
     return {
-      path: this._getOutputPath(),
+      path: this.config.outputPath,
       publicPath: buildPublicPath(this.config, '/'),
       clean: true,
       library: {
@@ -619,19 +622,31 @@ export default class WebpackConfigBuilder {
    * @param  {...BuildConfig} configs
    */
   static fromConfigs(...configs) {
-    let devServerPort = undefined;
+    let commonDevServerPort = undefined;
+    let commonContentBase = undefined;
 
-    return configs
+    let buildConfigs = configs
       .map(config => config.validate())
       .map(config => new WebpackConfigBuilder(config))
-      .map(config => config.build())
-      .map((config, index) => {
-        if (index === 0) {
-          devServerPort = config.devServer.port;
-        } else if (config.devServer.port === devServerPort) {
-          delete config.devServer;
-        }
-        return config;
-      });
+      .map(config => config.build());
+
+    buildConfigs.forEach((config, index) => {
+      if (index === 0) {
+        commonDevServerPort = config.devServer.port;
+        commonContentBase = config.devServer.contentBase;
+      } else {
+        commonContentBase = findStringSimilarities(commonContentBase, config.devServer.contentBase);
+      }
+
+      if (index > 0) {
+        delete config.devServer;
+      }
+    });
+
+    let devServerConfig = buildConfigs[0].devServer;
+    devServerConfig.port = commonDevServerPort;
+    devServerConfig.contentBase = commonContentBase;
+
+    return buildConfigs;
   }
 }

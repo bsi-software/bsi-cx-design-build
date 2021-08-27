@@ -1,7 +1,7 @@
 import AbstractConstant from './abstract-constant';
 import AbstractBuilder from './abstract-builder';
 
-export default class BuilderObjectCloner {
+export default class ObjectCloner {
   /**
    * @template T
    * @param {T} source
@@ -40,6 +40,8 @@ export default class BuilderObjectCloner {
         return value.clone();
       case value instanceof AbstractConstant:
         return value;
+      case typeof value.clone === 'function':
+        return value.clone();
       case value instanceof Array || Array.isArray(value):
         return this._cloneArray(value);
       case value instanceof Object || typeof value === 'object':
@@ -75,10 +77,20 @@ export default class BuilderObjectCloner {
    * @template T
    * @param {T} source
    * @param {T} target
-   * @param {boolean} shallow
+   * @param {boolean|undefined} [shallow=true]
    * @return {T}
    */
   static clone(source, target, shallow) {
-    return new BuilderObjectCloner()._clone(source, target, shallow);
+    let shallowOpt = shallow === undefined ? true : !!shallow;
+    return new ObjectCloner()._clone(source, target, shallowOpt);
+  }
+
+  /**
+   * @template T
+   * @param {T} value
+   * @return {T}
+   */
+  static cloneValue(value) {
+    return new ObjectCloner()._cloneValue(value);
   }
 }

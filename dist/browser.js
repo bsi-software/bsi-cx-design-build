@@ -43,7 +43,6 @@ __webpack_require__.d(__webpack_exports__, {
   "AbstractConstant": () => (/* reexport */ AbstractConstant),
   "AbstractPart": () => (/* reexport */ AbstractPart),
   "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
-  "BuilderObjectCloner": () => (/* reexport */ BuilderObjectCloner),
   "BuilderObjectNormalizer": () => (/* reexport */ BuilderObjectNormalizer),
   "ContentElement": () => (/* reexport */ ContentElement),
   "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
@@ -72,6 +71,7 @@ __webpack_require__.d(__webpack_exports__, {
   "Locale": () => (/* reexport */ locale_namespaceObject),
   "NLS": () => (/* reexport */ NLS),
   "NewsSnippetsPart": () => (/* reexport */ NewsSnippetsPart),
+  "ObjectCloner": () => (/* reexport */ ObjectCloner),
   "PageInclude": () => (/* reexport */ PageInclude),
   "Part": () => (/* reexport */ part_namespaceObject),
   "PlainTextPart": () => (/* reexport */ PlainTextPart),
@@ -505,11 +505,11 @@ class AbstractConstant {
   }
 }
 
-;// CONCATENATED MODULE: ./src/builder-object-cloner.js
+;// CONCATENATED MODULE: ./src/object-cloner.js
 
 
 
-class BuilderObjectCloner {
+class ObjectCloner {
   /**
    * @template T
    * @param {T} source
@@ -548,6 +548,8 @@ class BuilderObjectCloner {
         return value.clone();
       case value instanceof AbstractConstant:
         return value;
+      case typeof value.clone === 'function':
+        return value.clone();
       case value instanceof Array || Array.isArray(value):
         return this._cloneArray(value);
       case value instanceof Object || typeof value === 'object':
@@ -583,11 +585,21 @@ class BuilderObjectCloner {
    * @template T
    * @param {T} source
    * @param {T} target
-   * @param {boolean} shallow
+   * @param {boolean|undefined} [shallow=true]
    * @return {T}
    */
   static clone(source, target, shallow) {
-    return new BuilderObjectCloner()._clone(source, target, shallow);
+    let shallowOpt = shallow === undefined ? true : !!shallow;
+    return new ObjectCloner()._clone(source, target, shallowOpt);
+  }
+
+  /**
+   * @template T
+   * @param {T} value
+   * @return {T}
+   */
+  static cloneValue(value) {
+    return new ObjectCloner()._cloneValue(value);
   }
 }
 
@@ -659,13 +671,12 @@ class AbstractBuilder {
   /**
    * @template T
    * @param {T} newObj
-   * @param {boolean|undefined} shallow
+   * @param {boolean|undefined} [shallow=true]
    * @return {T}
    * @protected
    */
   _clone(newObj, shallow) {
-    let shallowParam = shallow === undefined ? true : !!shallow;
-    return BuilderObjectCloner.clone(this, newObj, shallowParam);
+    return ObjectCloner.clone(this, newObj, shallow);
   }
 }
 

@@ -1,5 +1,5 @@
 import RawValue from './raw-value';
-import BuilderObjectCloner from './builder-object-cloner';
+import ObjectCloner from './object-cloner';
 
 /**
  * @abstract
@@ -65,12 +65,11 @@ export default class AbstractBuilder {
   /**
    * @template T
    * @param {T} newObj
-   * @param {boolean|undefined} shallow
+   * @param {boolean|undefined} [shallow=true]
    * @return {T}
    * @protected
    */
   _clone(newObj, shallow) {
-    let shallowParam = shallow === undefined ? true : !!shallow;
-    return BuilderObjectCloner.clone(this, newObj, shallowParam);
+    return ObjectCloner.clone(this, newObj, shallow);
   }
 }
