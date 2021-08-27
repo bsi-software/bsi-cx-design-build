@@ -6,6 +6,7 @@ import Handlebars from 'handlebars';
 import {sources} from 'webpack';
 import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 
+import WebpackConfigBuilder from './webpack-config-builder';
 import ValidatedBuildConfig from './build-config/validated-build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
@@ -13,6 +14,7 @@ import {buildPublicPath, escapeRegex, toString} from './utility';
 import DesignJsonProperty from './design-json-property';
 import BuilderObjectNormalizer from './builder-object-normalizer';
 import File from './file';
+import {ModuleLoader} from './module-loader';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -85,16 +87,16 @@ class _BsiCxWebpackPlugin {
   _logger = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {WebpackConfigBuilder} builder
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
-  constructor(config, compiler, compilation, logger) {
+  constructor(builder, compiler, compilation, logger) {
     /**
      * @type {ValidatedBuildConfig}
      */
-    this._config = config;
+    this._config = builder.config;
     /**
      * @type {Compiler}
      */
@@ -551,20 +553,20 @@ export default class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @type {ValidatedBuildConfig}
+   * @type {WebpackConfigBuilder}
    * @private
    */
-  _config = undefined;
+  _builder = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {WebpackConfigBuilder} builder
    */
-  constructor(config) {
+  constructor(builder) {
     /**
-     * @type {ValidatedBuildConfig}
+     * @type {WebpackConfigBuilder}
      * @private
      */
-    this._config = config;
+    this._builder = builder;
   }
 
   apply(compiler) {
@@ -576,7 +578,10 @@ export default class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._builder, compiler, compilation, logger).apply();
+
+          let module = new ModuleLoader(this._builder.config.propertiesFilePath).load();
+          console.info(Object.assign(this._builder.twigProperties, module.exports));
         })
     });
   }

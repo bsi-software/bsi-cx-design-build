@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 283:
+/***/ 294:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -461,9 +461,9 @@ class ModuleConfig {
 class ValidationError extends Error {
 }
 
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __webpack_require__(622);
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
 ;// CONCATENATED MODULE: ./src/constant.js
 class Constant {
   /**
@@ -632,9 +632,9 @@ function findStringSimilarities(str1, str2) {
 // EXTERNAL MODULE: ./node_modules/slugify/slugify.js
 var slugify = __webpack_require__(304);
 var slugify_default = /*#__PURE__*/__webpack_require__.n(slugify);
-;// CONCATENATED MODULE: external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __webpack_require__(747);
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
 ;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
 
 
@@ -1699,7 +1699,11 @@ class File {
   static DESIGN_PROPERTIES = 'design.properties';
 }
 
+// EXTERNAL MODULE: ./src/module-loader.js + 1 modules
+var module_loader = __webpack_require__(936);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+
+
 
 
 
@@ -1787,16 +1791,16 @@ class _BsiCxWebpackPlugin {
   _logger = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {WebpackConfigBuilder} builder
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
-  constructor(config, compiler, compilation, logger) {
+  constructor(builder, compiler, compilation, logger) {
     /**
      * @type {ValidatedBuildConfig}
      */
-    this._config = config;
+    this._config = builder.config;
     /**
      * @type {Compiler}
      */
@@ -2253,20 +2257,20 @@ class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @type {ValidatedBuildConfig}
+   * @type {WebpackConfigBuilder}
    * @private
    */
-  _config = undefined;
+  _builder = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {WebpackConfigBuilder} builder
    */
-  constructor(config) {
+  constructor(builder) {
     /**
-     * @type {ValidatedBuildConfig}
+     * @type {WebpackConfigBuilder}
      * @private
      */
-    this._config = config;
+    this._builder = builder;
   }
 
   apply(compiler) {
@@ -2278,7 +2282,10 @@ class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._builder, compiler, compilation, logger).apply();
+
+          let module = new module_loader/* ModuleLoader */.m(this._builder.config.propertiesFilePath).load();
+          console.info(Object.assign(this._builder.twigProperties, module.exports));
         })
     });
   }
@@ -3230,7 +3237,7 @@ class BsiCxWebpackZipHashPlugin {
       onlyFiles: true
     });
 
-    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
+    zipFilesToRemove.forEach(external_fs_.unlinkSync);
   }
 
   apply(compiler) {
@@ -3276,6 +3283,7 @@ class BsiCxWebpackZipHashPlugin {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -3287,6 +3295,11 @@ class WebpackConfigBuilder {
    * @private
    */
   _config = undefined;
+  /**
+   * @type {{}}
+   * @private
+   */
+  _twigProperties = undefined;
 
   /**
    * @param {ValidatedBuildConfig} config
@@ -3297,6 +3310,11 @@ class WebpackConfigBuilder {
      * @private
      */
     this._config = config;
+    /**
+     * @type {{}}
+     * @private
+     */
+    this._twigProperties = {};
   }
 
   /**
@@ -3304,6 +3322,13 @@ class WebpackConfigBuilder {
    */
   get config() {
     return this._config;
+  }
+
+  /**
+   * @return {{}}
+   */
+  get twigProperties() {
+    return this._twigProperties;
   }
 
   build() {
@@ -3453,6 +3478,21 @@ class WebpackConfigBuilder {
   }
 
   /**
+   * @return {{}}
+   * @private
+   */
+  _getTwigEnvironmentProperties() {
+    if (this.config.propertiesFilePath === undefined) {
+      return this.twigProperties;
+    }
+
+    let moduleLoader = new module_loader/* ModuleLoader */.m(this.config.propertiesFilePath);
+    let module = moduleLoader.load();
+
+    return Object.assign(this.twigProperties, module.exports);
+  }
+
+  /**
    * Rules for Twig file handling.
    *
    * @returns {[{}]}
@@ -3469,7 +3509,7 @@ class WebpackConfigBuilder {
             options: {
               environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
               renderContext: {
-                properties: this.config.properties,
+                properties: this._getTwigEnvironmentProperties(),
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -3695,7 +3735,7 @@ class WebpackConfigBuilder {
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin(this.config)
+      new BsiCxWebpackPlugin(this)
     ];
   }
 
@@ -3989,6 +4029,124 @@ class WebpackConfigBuilder {
 }))
 
 
+/***/ }),
+
+/***/ 936:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "m": () => (/* binding */ ModuleLoader)
+});
+
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __webpack_require__(747);
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __webpack_require__(622);
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
+;// CONCATENATED MODULE: external "module"
+const external_module_namespaceObject = require("module");
+var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
+;// CONCATENATED MODULE: ./src/module-loader.js
+/* module decorator */ module = __webpack_require__.hmd(module);
+
+
+
+
+const parentModule = module;
+
+class ModuleLoader {
+  /**
+   * @type {string}
+   * @private
+   */
+  _modulePath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _code = undefined;
+
+  /**
+   * @param {string} modulePath
+   */
+  constructor(modulePath) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._modulePath = modulePath;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._context = external_path_default().dirname(modulePath);
+    /**
+     * @type {string}
+     * @private
+     */
+    this._code = external_fs_default().readFileSync(modulePath).toString();
+  }
+
+  /**
+   * @return {string}
+   */
+  get modulePath() {
+    return this._modulePath;
+  }
+
+  /**
+   * @return {string}
+   */
+  get context() {
+    return this._context;
+  }
+
+  /**
+   * @return {string}
+   */
+  get code() {
+    return this._code;
+  }
+
+  /**
+   *
+   * @return {Module}
+   */
+  load() {
+    let module = new (external_module_default())(this.modulePath, parentModule);
+
+    module.paths = external_module_default()._nodeModulePaths(this.context);
+    module.filename = this.modulePath;
+
+    module._compile(this.code, this.modulePath);
+
+    // TODO resolve and reload children to bust cache
+
+    return module;
+  }
+}
+
+
+/***/ }),
+
+/***/ 747:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ 622:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("path");
+
 /***/ })
 
 /******/ 	});
@@ -4005,13 +4163,16 @@ class WebpackConfigBuilder {
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -4042,6 +4203,21 @@ class WebpackConfigBuilder {
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/harmony module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.hmd = (module) => {
+/******/ 			module = Object.create(module);
+/******/ 			if (!module.children) module.children = [];
+/******/ 			Object.defineProperty(module, 'exports', {
+/******/ 				enumerable: true,
+/******/ 				set: () => {
+/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
+/******/ 				}
+/******/ 			});
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -4063,7 +4239,7 @@ class WebpackConfigBuilder {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(283);
+/******/ 	var __webpack_exports__ = __webpack_require__(294);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

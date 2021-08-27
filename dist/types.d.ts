@@ -1,3 +1,4 @@
+/// <reference types="node" />
 declare module "src/abstract-constant" {
     /**
      * @abstract
@@ -1067,6 +1068,47 @@ declare module "src/file" {
         static DESIGN_PROPERTIES: string;
     }
 }
+declare module "src/module-loader" {
+    export class ModuleLoader {
+        /**
+         * @param {string} modulePath
+         */
+        constructor(modulePath: string);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _modulePath;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _code;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _context;
+        /**
+         * @return {string}
+         */
+        get modulePath(): string;
+        /**
+         * @return {string}
+         */
+        get context(): string;
+        /**
+         * @return {string}
+         */
+        get code(): string;
+        /**
+         *
+         * @return {Module}
+         */
+        load(): Module;
+    }
+    import Module from "module";
+}
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
         /**
@@ -1074,17 +1116,17 @@ declare module "src/bsi-cx-webpack-plugin" {
          */
         static PLUGIN_NAME: string;
         /**
-         * @param {ValidatedBuildConfig} config
+         * @param {WebpackConfigBuilder} builder
          */
-        constructor(config: ValidatedBuildConfig);
+        constructor(builder: WebpackConfigBuilder);
         /**
-         * @type {ValidatedBuildConfig}
+         * @type {WebpackConfigBuilder}
          * @private
          */
-        private _config;
+        private _builder;
         apply(compiler: any): void;
     }
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
+    import WebpackConfigBuilder from "src/webpack-config-builder";
 }
 declare module "src/java-property-file-builder" {
     export default class JavaPropertyFileBuilder {
@@ -1481,9 +1523,18 @@ declare module "src/webpack-config-builder" {
          */
         private _config;
         /**
+         * @type {{}}
+         * @private
+         */
+        private _twigProperties;
+        /**
          * @returns {ValidatedBuildConfig}
          */
         get config(): ValidatedBuildConfig;
+        /**
+         * @return {{}}
+         */
+        get twigProperties(): {};
         build(): {
             entry: {};
             name: string;
@@ -1548,6 +1599,11 @@ declare module "src/webpack-config-builder" {
          * @private
          */
         private _getJavaScriptModuleEntry;
+        /**
+         * @return {{}}
+         * @private
+         */
+        private _getTwigEnvironmentProperties;
         /**
          * Rules for Twig file handling.
          *

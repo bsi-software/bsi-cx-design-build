@@ -15,6 +15,7 @@ import File from './file';
 import {buildPublicPath, findStringSimilarities, getZipArchiveName, StaticJavaScriptCondition} from './utility';
 import BuildConfig from './build-config/build-config';
 import ValidatedBuildConfig from './build-config/validated-build-config';
+import {ModuleLoader} from './module-loader';
 
 
 export default class WebpackConfigBuilder {
@@ -28,6 +29,11 @@ export default class WebpackConfigBuilder {
    * @private
    */
   _config = undefined;
+  /**
+   * @type {{}}
+   * @private
+   */
+  _twigProperties = undefined;
 
   /**
    * @param {ValidatedBuildConfig} config
@@ -38,6 +44,11 @@ export default class WebpackConfigBuilder {
      * @private
      */
     this._config = config;
+    /**
+     * @type {{}}
+     * @private
+     */
+    this._twigProperties = {};
   }
 
   /**
@@ -45,6 +56,13 @@ export default class WebpackConfigBuilder {
    */
   get config() {
     return this._config;
+  }
+
+  /**
+   * @return {{}}
+   */
+  get twigProperties() {
+    return this._twigProperties;
   }
 
   build() {
@@ -194,6 +212,21 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * @return {{}}
+   * @private
+   */
+  _getTwigEnvironmentProperties() {
+    if (this.config.propertiesFilePath === undefined) {
+      return this.twigProperties;
+    }
+
+    let moduleLoader = new ModuleLoader(this.config.propertiesFilePath);
+    let module = moduleLoader.load();
+
+    return Object.assign(this.twigProperties, module.exports);
+  }
+
+  /**
    * Rules for Twig file handling.
    *
    * @returns {[{}]}
@@ -210,7 +243,7 @@ export default class WebpackConfigBuilder {
             options: {
               environmentModulePath: `${packageJson.name}/dist/twing-environment.js`,
               renderContext: {
-                properties: this.config.properties,
+                properties: this._getTwigEnvironmentProperties(),
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -436,7 +469,7 @@ export default class WebpackConfigBuilder {
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin(this.config)
+      new BsiCxWebpackPlugin(this)
     ];
   }
 

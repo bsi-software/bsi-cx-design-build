@@ -8,7 +8,8 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withVersion('1.0.0-alpha')
     .withDesignType(DesignType.LANDINGPAGE)
     .withTargetVersion(Version.STUDIO_1_2)
-    .withRootPath('templates/landingpage')
+    .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
+    .withPropertiesFilePath('properties.js')
     .withModules(
       new ModuleConfig()
         .withName('main')
