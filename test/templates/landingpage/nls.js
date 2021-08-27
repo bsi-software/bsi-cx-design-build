@@ -1,5 +1,8 @@
 const {NLS, Translation, Locale} = require('@bsi-cx/design-build');
 
+/**
+ * @type {NLS[]}
+ */
 module.exports = [
   new NLS()
     .withIdentifier('action')

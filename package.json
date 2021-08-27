@@ -10,7 +10,8 @@
     "build": "webpack --config webpack.config.js --mode production",
     "watch": "webpack --config webpack.config.js --mode production --watch",
     "test:build": "cd test && webpack --config webpack.config.js --mode production",
-    "test:watch": "cd test && webpack --config webpack.config.js --mode production --watch"
+    "test:watch": "cd test && webpack --config webpack.config.js --mode production --watch",
+    "test:serve": "cd test && webpack serve --config webpack.config.js --mode production"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "bugs": {
