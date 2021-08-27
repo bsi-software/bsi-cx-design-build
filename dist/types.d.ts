@@ -85,6 +85,96 @@ declare module "src/version" {
     import AbstractConstant from "src/abstract-constant";
     import { DesignType } from "src/design-type";
 }
+declare module "src/raw-value" {
+    export default class RawValue {
+        /**
+         * @param {*} value
+         */
+        constructor(value: any);
+        /**
+         * @type {*}
+         * @private
+         */
+        private _value;
+        /**
+         * @return {*}
+         */
+        get value(): any;
+    }
+}
+declare module "src/abstract-builder" {
+    /**
+     * @abstract
+     */
+    export default class AbstractBuilder {
+        /**
+         * @abstract
+         * @return {{}}
+         */
+        build(): {};
+        /**
+         * @param {string} property
+         * @param {{}} targetObj
+         * @param {function} extractFunc
+         * @param {boolean} [arrayToObject=false]
+         * @protected
+         */
+        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean): void;
+        /**
+         * @param {[{}]} arr
+         * @private
+         */
+        private _applyArrayToObject;
+        /**
+         * @template T
+         * @param {T} newObj
+         * @param {boolean|undefined} shallow
+         * @return {T}
+         * @protected
+         */
+        protected _clone<T>(newObj: T, shallow: boolean | undefined): T;
+    }
+}
+declare module "src/builder-object-cloner" {
+    export default class BuilderObjectCloner {
+        /**
+         * @template T
+         * @param {T} source
+         * @param {T} target
+         * @param {boolean} shallow
+         * @return {T}
+         */
+        static clone<T>(source: T, target: T, shallow: boolean): T;
+        /**
+         * @template T
+         * @param {T} source
+         * @param {T} target
+         * @param {boolean} shallow
+         * @return {T}
+         * @private
+         */
+        private _clone;
+        /**
+         * @template T
+         * @param {T} value
+         * @return {T}
+         * @private
+         */
+        private _cloneValue;
+        /**
+         * @param {[]} arr
+         * @return {[]}
+         * @private
+         */
+        private _cloneArray;
+        /**
+         * @param {{}} obj
+         * @return {{}}
+         * @private
+         */
+        private _cloneObject;
+    }
+}
 declare module "src/build-config" {
     /**
      * The configuration object for the build of one template.
@@ -302,6 +392,14 @@ declare module "src/build-config" {
          * @returns {BuildConfig}
          */
         withSourceMapEnabled(sourceMapEnabled: boolean): BuildConfig;
+        /**
+         * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
+         * A shallow clone will be created by default. This means nested objects will still reference the same origin.
+         *
+         * @param {boolean} [shallow=true]
+         * @return {BuildConfig}
+         */
+        clone(shallow?: boolean): BuildConfig;
         /**
          * @returns {BuildConfig}
          */
@@ -674,96 +772,6 @@ declare module "src/java-property-file-builder" {
          * @returns {string}
          */
         _escapeValue(value: string): string;
-    }
-}
-declare module "src/raw-value" {
-    export default class RawValue {
-        /**
-         * @param {*} value
-         */
-        constructor(value: any);
-        /**
-         * @type {*}
-         * @private
-         */
-        private _value;
-        /**
-         * @return {*}
-         */
-        get value(): any;
-    }
-}
-declare module "src/builder-object-cloner" {
-    export default class BuilderObjectCloner {
-        /**
-         * @template T
-         * @param {T} source
-         * @param {T} target
-         * @param {boolean} shallow
-         * @return {T}
-         */
-        static clone<T>(source: T, target: T, shallow: boolean): T;
-        /**
-         * @template T
-         * @param {T} source
-         * @param {T} target
-         * @param {boolean} shallow
-         * @return {T}
-         * @private
-         */
-        private _clone;
-        /**
-         * @template T
-         * @param {T} value
-         * @return {T}
-         * @private
-         */
-        private _cloneValue;
-        /**
-         * @param {[]} arr
-         * @return {[]}
-         * @private
-         */
-        private _cloneArray;
-        /**
-         * @param {{}} obj
-         * @return {{}}
-         * @private
-         */
-        private _cloneObject;
-    }
-}
-declare module "src/abstract-builder" {
-    /**
-     * @abstract
-     */
-    export default class AbstractBuilder {
-        /**
-         * @abstract
-         * @return {{}}
-         */
-        build(): {};
-        /**
-         * @param {string} property
-         * @param {{}} targetObj
-         * @param {function} extractFunc
-         * @param {boolean} [arrayToObject=false]
-         * @protected
-         */
-        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean): void;
-        /**
-         * @param {[{}]} arr
-         * @private
-         */
-        private _applyArrayToObject;
-        /**
-         * @template T
-         * @param {T} newObj
-         * @param {boolean|undefined} shallow
-         * @return {T}
-         * @protected
-         */
-        protected _clone<T>(newObj: T, shallow: boolean | undefined): T;
     }
 }
 declare module "src/extractor" {

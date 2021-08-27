@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 779:
+/***/ 470:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -178,7 +178,193 @@ const CX_1_3 = new Version('1.3', ALL_TYPES, true);
  */
 const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
+;// CONCATENATED MODULE: ./src/raw-value.js
+class RawValue {
+  /**
+   * @param {*} value
+   */
+  constructor(value) {
+    /**
+     * @type {*}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @return {*}
+   */
+  get value() {
+    return this._value;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/abstract-builder.js
+
+
+
+/**
+ * @abstract
+ */
+class AbstractBuilder {
+  /**
+   * @abstract
+   * @return {{}}
+   */
+  build() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {function} extractFunc
+   * @param {boolean} [arrayToObject=false]
+   * @protected
+   */
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
+    if (typeof this[property] === 'undefined') {
+      return;
+    }
+
+    let value = this[property];
+    let computedValue;
+
+    switch (true) {
+      case value instanceof RawValue:
+        computedValue = value.value;
+        break;
+      case value instanceof Array:
+        computedValue = value.map(item => extractFunc(item));
+        break;
+      default:
+        computedValue = extractFunc(value);
+        break;
+    }
+
+    if (!!arrayToObject && !(value instanceof RawValue)) {
+      computedValue = this._applyArrayToObject(computedValue);
+    }
+
+    targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {[{}]} arr
+   * @private
+   */
+  _applyArrayToObject(arr) {
+    let obj = {};
+    for (let item of arr) {
+      obj = {
+        ...obj,
+        ...item
+      };
+    }
+    return obj;
+  }
+
+  /**
+   * @template T
+   * @param {T} newObj
+   * @param {boolean|undefined} shallow
+   * @return {T}
+   * @protected
+   */
+  _clone(newObj, shallow) {
+    let shallowParam = shallow === undefined ? true : !!shallow;
+    return BuilderObjectCloner.clone(this, newObj, shallowParam);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/builder-object-cloner.js
+
+
+
+class BuilderObjectCloner {
+  /**
+   * @template T
+   * @param {T} source
+   * @param {T} target
+   * @param {boolean} shallow
+   * @return {T}
+   * @private
+   */
+  _clone(source, target, shallow) {
+    for (let [propertyName, valueToClone] of Object.entries(source)) {
+      target[propertyName] = shallow ? valueToClone : this._cloneValue(valueToClone);
+    }
+
+    return target;
+  }
+
+  /**
+   * @template T
+   * @param {T} value
+   * @return {T}
+   * @private
+   */
+  _cloneValue(value) {
+    switch (true) {
+      case typeof value === 'undefined':
+        return value;
+      case typeof value === 'string' || value instanceof String:
+        return value;
+      case typeof value === 'number' || value instanceof Number:
+        return value;
+      case typeof value === 'boolean' || value instanceof Boolean:
+        return value;
+      case typeof value === 'bigint' || value instanceof BigInt:
+        return value;
+      case value instanceof AbstractBuilder:
+        return value.clone();
+      case value instanceof AbstractConstant:
+        return value;
+      case value instanceof Array || Array.isArray(value):
+        return this._cloneArray(value);
+      case value instanceof Object || typeof value === 'object':
+        return this._cloneObject(value);
+      default:
+        throw new Error('unable to clone value');
+    }
+  }
+
+  /**
+   * @param {[]} arr
+   * @return {[]}
+   * @private
+   */
+  _cloneArray(arr) {
+    return arr.map(item => this._cloneValue(item));
+  }
+
+  /**
+   * @param {{}} obj
+   * @return {{}}
+   * @private
+   */
+  _cloneObject(obj) {
+    let cloneObj = {};
+    for (let [key, value] of Object.entries(obj)) {
+      cloneObj[key] = this._cloneValue(value);
+    }
+    return cloneObj;
+  }
+
+  /**
+   * @template T
+   * @param {T} source
+   * @param {T} target
+   * @param {boolean} shallow
+   * @return {T}
+   */
+  static clone(source, target, shallow) {
+    return new BuilderObjectCloner()._clone(source, target, shallow);
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/build-config.js
+
 
 
 
@@ -496,6 +682,17 @@ class BuildConfig {
   withSourceMapEnabled(sourceMapEnabled) {
     this._sourceMapEnabled = sourceMapEnabled;
     return this;
+  }
+
+  /**
+   * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
+   * A shallow clone will be created by default. This means nested objects will still reference the same origin.
+   *
+   * @param {boolean} [shallow=true]
+   * @return {BuildConfig}
+   */
+  clone(shallow) {
+    return BuilderObjectCloner.clone(this, new BuildConfig(), shallow === undefined ? true : !!shallow);
   }
 
   /**
@@ -3171,7 +3368,7 @@ class WebpackConfigBuilder {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[779](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[470](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

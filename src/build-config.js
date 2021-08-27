@@ -1,5 +1,6 @@
 import {DesignType, LANDINGPAGE} from './design-type';
 import {CX_22_0, Version} from './version';
+import BuilderObjectCloner from './builder-object-cloner';
 
 /**
  * The configuration object for the build of one template.
@@ -315,6 +316,17 @@ export default class BuildConfig {
   withSourceMapEnabled(sourceMapEnabled) {
     this._sourceMapEnabled = sourceMapEnabled;
     return this;
+  }
+
+  /**
+   * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
+   * A shallow clone will be created by default. This means nested objects will still reference the same origin.
+   *
+   * @param {boolean} [shallow=true]
+   * @return {BuildConfig}
+   */
+  clone(shallow) {
+    return BuilderObjectCloner.clone(this, new BuildConfig(), shallow === undefined ? true : !!shallow);
   }
 
   /**
