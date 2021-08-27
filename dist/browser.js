@@ -551,6 +551,13 @@ class AbstractConstant {
   get value() {
     return this._value;
   }
+
+  /**
+   * @return {string}
+   */
+  getValue() {
+    return this.value;
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/part.js

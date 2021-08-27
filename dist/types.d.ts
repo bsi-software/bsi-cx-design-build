@@ -13,6 +13,10 @@ declare module "src/abstract-constant" {
          * @returns {string}
          */
         get value(): string;
+        /**
+         * @return {string}
+         */
+        getValue(): string;
     }
 }
 declare module "src/design-type" {
@@ -543,6 +547,37 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static PAGE_INCLUDE: string;
+    }
+}
+declare module "src/builder-object-normalizer" {
+    export default class BuilderObjectNormalizer {
+        /**
+         * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
+         * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAsset}.
+         * Such values cannot be checked with instanceof.
+         *
+         * @param {*} obj
+         * @return {*}
+         */
+        static normalize(obj: any): any;
+        /**
+         * @param {*} obj
+         * @return {*}
+         * @private
+         */
+        private _normalize;
+        /**
+         * @param {[*]} arr
+         * @return {[*]}
+         * @private
+         */
+        private _normalizeArray;
+        /**
+         * @param {{}} obj
+         * @return {{}}
+         * @private
+         */
+        private _normalizeObject;
     }
 }
 declare module "src/bsi-cx-webpack-plugin" {

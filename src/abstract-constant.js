@@ -22,4 +22,11 @@ export default class AbstractConstant {
   get value() {
     return this._value;
   }
+
+  /**
+   * @return {string}
+   */
+  getValue() {
+    return this.value;
+  }
 }

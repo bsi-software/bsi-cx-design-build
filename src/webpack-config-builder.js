@@ -122,7 +122,8 @@ export default class WebpackConfigBuilder {
         import: this._getDesignJsFilePath(),
         filename: File.DESIGN_JSON,
         library: {
-          type: 'commonjs'
+          type: 'var',
+          name: 'json'
         }
       },
       design: this._evaluateEntryTemplate('design'),

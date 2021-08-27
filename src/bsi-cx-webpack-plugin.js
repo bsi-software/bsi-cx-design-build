@@ -1,7 +1,6 @@
 import path from 'path';
 import {createHash} from 'crypto';
 import vm from 'vm';
-import Module from 'module';
 
 import Handlebars from 'handlebars';
 import {sources} from 'webpack';
@@ -12,8 +11,7 @@ import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
 import {buildPublicPath, toString} from './utility';
 import DesignJsonProperty from './design-json-property';
-
-const parentModule = module;
+import BuilderObjectNormalizer from './builder-object-normalizer';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -63,6 +61,23 @@ class _BsiCxWebpackPlugin {
    * @type {number}
    */
   static ELEMENT_FILE_HASH_LENGTH = 20;
+
+  /**
+   * @type {BuildConfig}
+   */
+  _config = undefined;
+  /**
+   * @type {Compiler}
+   */
+  _compiler = undefined;
+  /**
+   * @type {Compilation}
+   */
+  _compilation = undefined;
+  /**
+   * @type {WebpackLogger}
+   */
+  _logger = undefined;
 
   /**
    * @param {BuildConfig} config
@@ -120,9 +135,13 @@ class _BsiCxWebpackPlugin {
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     /**
+     * @type {*}
+     */
+    let designJson = this._loadAsset(designJsonPath, 'json');
+    /**
      * @type {{}}
      */
-    let designJsonObj = this._loadModule(designJsonPath);
+    let designJsonObj = BuilderObjectNormalizer.normalize(designJson);
     let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
@@ -263,22 +282,6 @@ class _BsiCxWebpackPlugin {
     script.runInNewContext(context);
 
     return context[scope];
-  }
-
-  _loadModule(name) {
-    let asset = this._compilation.getAsset(name);
-    let modulePath = path.resolve(this._compiler.outputPath, name);
-    let moduleFolder = path.dirname(modulePath);
-    let code = asset.source.source();
-
-    let module = new Module(modulePath, parentModule);
-    // noinspection JSUnresolvedFunction
-    module.paths = Module._nodeModulePaths(moduleFolder);
-    module.filename = modulePath;
-
-    module._compile(`var self = {}; ${code}`, modulePath);
-
-    return module.exports;
   }
 
   /**

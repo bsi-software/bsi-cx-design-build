@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 221:
+/***/ 779:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -11,1652 +11,39 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
   "BsiCxWebpackLegacyDesignPlugin": () => (/* reexport */ BsiCxWebpackLegacyDesignPlugin),
-  "BsiCxWebpackPlugin": () => (/* reexport */ bsi_cx_webpack_plugin/* default */.Z),
+  "BsiCxWebpackPlugin": () => (/* reexport */ BsiCxWebpackPlugin),
   "BsiCxWebpackZipHashPlugin": () => (/* reexport */ BsiCxWebpackZipHashPlugin),
-  "BuildConfig": () => (/* reexport */ build_config/* default */.Z),
-  "DesignType": () => (/* reexport */ design_type),
-  "Version": () => (/* reexport */ version),
+  "BuildConfig": () => (/* reexport */ BuildConfig),
+  "DesignType": () => (/* reexport */ design_type_namespaceObject),
+  "Version": () => (/* reexport */ version_namespaceObject),
   "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
+});
+
+// NAMESPACE OBJECT: ./src/design-type.js
+var design_type_namespaceObject = {};
+__webpack_require__.r(design_type_namespaceObject);
+__webpack_require__.d(design_type_namespaceObject, {
+  "DesignType": () => (DesignType),
+  "EMAIL": () => (EMAIL),
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "WEBSITE": () => (WEBSITE)
+});
+
+// NAMESPACE OBJECT: ./src/version.js
+var version_namespaceObject = {};
+__webpack_require__.r(version_namespaceObject);
+__webpack_require__.d(version_namespaceObject, {
+  "CX_1_3": () => (CX_1_3),
+  "CX_22_0": () => (CX_22_0),
+  "STUDIO_1_0": () => (STUDIO_1_0),
+  "STUDIO_1_1": () => (STUDIO_1_1),
+  "STUDIO_1_2": () => (STUDIO_1_2),
+  "Version": () => (Version)
 });
 
 ;// CONCATENATED MODULE: external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-// EXTERNAL MODULE: ./src/version.js
-var version = __webpack_require__(345);
-// EXTERNAL MODULE: ./src/design-type.js
-var design_type = __webpack_require__(24);
-// EXTERNAL MODULE: ./src/build-config.js
-var build_config = __webpack_require__(492);
-;// CONCATENATED MODULE: external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-// EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(622);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
-;// CONCATENATED MODULE: external "zip-webpack-plugin"
-const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
-var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "mini-css-extract-plugin"
-const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
-var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "copy-webpack-plugin"
-const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
-var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "terser-webpack-plugin"
-const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
-var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
-// EXTERNAL MODULE: ./src/bsi-cx-webpack-plugin.js + 4 modules
-var bsi_cx_webpack_plugin = __webpack_require__(940);
-// EXTERNAL MODULE: external "webpack"
-var external_webpack_ = __webpack_require__(78);
-// EXTERNAL MODULE: external "webpack/lib"
-var lib_ = __webpack_require__(73);
-;// CONCATENATED MODULE: ./src/file.js
-class File {
-  /**
-   * @type {string}
-   */
-  static DESIGN_JSON = 'design.json';
-  /**
-   * @type {string}
-   */
-  static DESIGN_JS = 'design.js';
-  /**
-   * @type {string}
-   */
-  static DESIGN_HTML = 'design.html';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
-  /**
-   * @type {string}
-   */
-  static DESIGN_PROPERTIES = 'design.properties';
-}
-
-;// CONCATENATED MODULE: ./src/java-property-file-builder.js
-class JavaPropertyFileBuilder {
-  constructor() {
-    this._properties = [];
-  }
-
-  /**
-   * @param {string} key
-   * @param {string} value
-   * @returns {JavaPropertyFileBuilder}
-   */
-  append(key, value) {
-    this._properties.push([key, value]);
-    return this;
-  }
-
-  /**
-   * @param {string} comment
-   * @returns {JavaPropertyFileBuilder}
-   */
-  appendComment(comment) {
-    this._properties.push(comment);
-    return this;
-  }
-
-  /**
-   * @param {string} section
-   * @return {JavaPropertyFileBuilder}
-   */
-  appendCommentSection(section) {
-    let border = '#'.repeat(section.length + 4);
-    let sectionComment = `# ${section} #`;
-
-    this.appendComment(border);
-    this.appendComment(sectionComment);
-    this.appendComment(border);
-
-    return this;
-  }
-
-  /**
-   * @returns {JavaPropertyFileBuilder}
-   */
-  appendBlank() {
-    this._properties.push('');
-    return this;
-  }
-
-  /**
-   * @returns {string}
-   */
-  build() {
-    return this._properties
-      .map(line => this._printLine(line))
-      .join('\n');
-  }
-
-  /**
-   * @param {string} line
-   * @returns {string}
-   */
-  _printLine(line) {
-    if (line instanceof Array) {
-      let [key, value] = line;
-      return this._escapeKey(key) + '=' + this._escapeValue(value);
-    } else {
-      return line;
-    }
-  }
-
-  /**
-   * @param {string} key
-   * @returns {string}
-   */
-  _escapeKey(key) {
-    return key;
-  }
-
-  /**
-   * @param {string} value
-   * @returns {string}
-   */
-  _escapeValue(value) {
-    return value;
-  }
-}
-
-;// CONCATENATED MODULE: ./src/extractor.js
-
-
-
-/**
- * @param {[string|number]} arr
- * @return {string}
- */
-function scalarArrayToList(arr) {
-  return arr.join(',');
-}
-
-/**
- * @template T
- * @param {T} v
- * @return {T}
- */
-function identity(v) {
-  return v;
-}
-
-/**
- * @param {AbstractConstant} constant
- * @return {string}
- */
-function constantObjectValue(constant) {
-  return constant.value;
-}
-
-/**
- * @param {AbstractBuilder} builder
- * @return {{}}
- */
-function builderObjectValue(builder) {
-  return builder.build();
-}
-
-// EXTERNAL MODULE: ./src/utility.js
-var utility = __webpack_require__(923);
-;// CONCATENATED MODULE: ./src/legacy-design-property.js
-class LegacyDesignProperty {
-  /**
-   * @type {string}
-   */
-  static TEMPLATE_NAME = 'template.name';
-  /**
-   * @type {string}
-   */
-  static TEMPLATE_AUTHOR = 'template.author';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _LABEL = 'label';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _DESCRIPTION = 'description';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _GROUP = 'group';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _ELEMENT = 'element';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _PARTS = 'parts';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _ICON = 'icon';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _STYLES = 'styles';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _STYLE = 'style';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _CLASS = 'class';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _HTML_EDITOR_CONFIG = 'html-editor-config';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _FEATURES = 'features';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _TEXT_COLORS = 'text-colors';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _BACKGROUND_COLORS = 'background-colors';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _FORMATS = 'formats';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _FONT_SIZES = 'font-sizes';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _FONT_SIZE_UNIT = 'font-size-unit';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _FONT_SIZE_DEFAULT = 'font-size-default';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _LINE_HEIGHTS = 'line-heights';
-  /**
-   * @type {string}
-   * @private
-   */
-  static _ENTER = 'enter';
-
-  /**
-   * @param {string} group
-   * @return {string}
-   */
-  static getContentElementGroupLabel(group) {
-    return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
-  }
-
-  /**
-   * @param {string} element
-   * @return {string}
-   */
-  static getContentElementLabel(element) {
-    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._LABEL;
-  }
-
-  /**
-   * @param {string} element
-   * @return {string}
-   */
-  static getContentElementDescription(element) {
-    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._DESCRIPTION;
-  }
-
-  /**
-   * @param {string} element
-   * @return {string}
-   */
-  static getContentElementIcon(element) {
-    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._ICON;
-  }
-
-  /**
-   * @param {string} element
-   * @return {string}
-   */
-  static getContentElementStyles(element) {
-    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._STYLES;
-  }
-
-  /**
-   * @param {string} element
-   * @param {string} part
-   * @param {number} index
-   * @return {string}
-   */
-  static getContentElementPartLabel(element, part, index) {
-    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._LABEL;
-  }
-
-  /**
-   * @param {string} element
-   * @param {string} part
-   * @param {number} index
-   * @return {string}
-   */
-  static getContentElementPartHtmlEditorConfig(element, part, index) {
-    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._HTML_EDITOR_CONFIG;
-  }
-
-  /**
-   * @param {string} element
-   * @param {string} part
-   * @param {number} index
-   * @return {string}
-   */
-  static _getContentElementPart(element, part, index) {
-    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._PARTS + '.' + part + '[' + index + ']';
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getStyleLabel(name) {
-    return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._LABEL;
-  }
-
-  /**
-   * @param {string} name
-   * @param {string} cssClass
-   * @return {string}
-   */
-  static getStyleClassLabel(name, cssClass) {
-    return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._CLASS + '.' + cssClass + '.' + LegacyDesignProperty._LABEL
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigFeatures(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FEATURES;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigTextColors(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._TEXT_COLORS;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigBackgroundColors(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._BACKGROUND_COLORS;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigFormats(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FORMATS;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigFontSizes(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZES;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigFontSizeUnit(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_UNIT;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigFontSizeDefault(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_DEFAULT;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigLineHeights(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._LINE_HEIGHTS;
-  }
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  static getHtmlEditorConfigEnter(name) {
-    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._ENTER;
-  }
-}
-
-// EXTERNAL MODULE: ./src/design-json-property.js
-var design_json_property = __webpack_require__(529);
-;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
-
-
-
-
-
-
-
-
-
-
-
-class _BsiCxWebpackLegacyDesignPlugin {
-  /**
-   * @param {BuildConfig} config
-   * @param {Compiler} compiler
-   * @param {Compilation} compilation
-   * @param {WebpackLogger} logger
-   */
-  constructor(config, compiler, compilation, logger) {
-    /**
-     * @type {BuildConfig}
-     * @private
-     */
-    this._config = config;
-    /**
-     * @type {Compiler}
-     * @private
-     */
-    this._compiler = compiler;
-    /**
-     * @type {Compilation}
-     * @private
-     */
-    this._compilation = compilation;
-    /**
-     * @type {WebpackLogger}
-     * @private
-     */
-    this._logger = logger;
-  }
-
-  apply() {
-    try {
-      this._convertToLegacyFormat();
-    } catch (error) {
-      if (error instanceof lib_.WebpackError) {
-        this._compilation.errors.push(error);
-      } else {
-        this._logger.error(error);
-      }
-    }
-  }
-
-  /**
-   * @private
-   */
-  _convertToLegacyFormat() {
-    let designJson = this._getDesignJsonObject();
-
-    this._createAndEmitContentElementsHtml(designJson);
-    this._createAndEmitDesignProperties(designJson);
-  }
-
-  /**
-   * @return {{}}
-   * @private
-   */
-  _getDesignJsonObject() {
-    let asset = this._compilation.getAsset(File.DESIGN_JSON);
-
-    if (!asset) {
-      throw new Error(`The asset "${File.DESIGN_JSON}" does not exist.`);
-    }
-
-    let source = asset.source.source();
-    let sourceStr = (0,utility/* toString */.BB)(source);
-    let json = JSON.parse(sourceStr);
-
-    if (!json) {
-      throw new Error('Unable to parse JSON.');
-    }
-
-    return json;
-  }
-
-  /**
-   * @param {{}} designJson
-   * @returns {string}
-   * @private
-   */
-  _createAndEmitContentElementsHtml(designJson) {
-    let contentElementGroups = designJson[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS];
-    let html = contentElementGroups
-      .map(group => this._renderContentElementsGroup(group))
-      .join('\n');
-
-    let source = new external_webpack_.sources.RawSource(html);
-
-    this._compilation.emitAsset(File.CONTENT_ELEMENTS_HTML, source);
-  }
-
-  /**
-   * @param {{}} group
-   * @returns {string}
-   * @private
-   */
-  _renderContentElementsGroup(group) {
-    let contentElements = group[design_json_property/* default.CONTENT_ELEMENTS */.Z.CONTENT_ELEMENTS];
-    let elements = contentElements
-      .map(element => this._renderContentElement(element))
-      .join('\n');
-    let groupId = group[design_json_property/* default.GROUP_ID */.Z.GROUP_ID];
-
-    return `<div data-bsi-group="${groupId}">\n${elements}\n</div>`;
-  }
-
-  /**
-   * @param {{}} element
-   * @returns {string}
-   * @private
-   */
-  _renderContentElement(element) {
-    let asset = this._compilation.getAsset(element[design_json_property/* default.FILE */.Z.FILE]);
-    let source = asset.source.source();
-
-    return source.trim();
-  }
-
-  /**
-   * @param {{}} designJson
-   * @private
-   */
-  _createAndEmitDesignProperties(designJson) {
-    let properties = new JavaPropertyFileBuilder();
-
-    this._appendMetaInfo(designJson, properties);
-    this._appendStyles(designJson, properties);
-    this._appendHtmlEditorConfigs(designJson, properties);
-    this._appendContentElementGroups(designJson, properties);
-    this._appendContentElements(designJson, properties);
-
-    let code = properties.build();
-    let source = new external_webpack_.sources.RawSource(code);
-
-    this._compilation.emitAsset(File.DESIGN_PROPERTIES, source);
-  }
-
-  /**
-   * @param {{}} designJson
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendMetaInfo(designJson, properties) {
-    let title = designJson[design_json_property/* default.TITLE */.Z.TITLE];
-    let author = designJson[design_json_property/* default.AUTHOR */.Z.AUTHOR];
-
-    properties.appendCommentSection('Template');
-
-    properties.append(LegacyDesignProperty.TEMPLATE_NAME, title);
-    properties.append(LegacyDesignProperty.TEMPLATE_AUTHOR, author);
-
-    properties.appendBlank();
-  }
-
-  /**
-   * @param {{}} designJson
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendStyles(designJson, properties) {
-    let styleConfigs = designJson[design_json_property/* default.STYLE_CONFIGS */.Z.STYLE_CONFIGS] || {};
-
-    properties.appendCommentSection('Content Element Styles');
-
-    for (let [style, config] of Object.entries(styleConfigs)) {
-      this._appendStyleConfig(style, config, properties);
-    }
-  }
-
-  /**
-   * @param {string} style
-   * @param {{}} config
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendStyleConfig(style, config, properties) {
-    /**
-     * @type {[{}]}
-     */
-    let cssClasses = config[design_json_property/* default.CSS_CLASSES */.Z.CSS_CLASSES] || [];
-
-    this._appendStyleConfigLabel(style, config, properties);
-    cssClasses.forEach(cssClass => this._appendStyleConfigCssClass(style, cssClass, properties));
-
-    properties.appendBlank();
-  }
-
-  /**
-   * @param {string} style
-   * @param {{}} config
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendStyleConfigLabel(style, config, properties) {
-    let key = LegacyDesignProperty.getStyleLabel(style);
-    let value = config[design_json_property/* default.LABEL */.Z.LABEL];
-    properties.append(key, value);
-  }
-
-  /**
-   * @param {string} style
-   * @param {{}} styleConfig
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendStyleConfigCssClass(style, styleConfig, properties) {
-    let cssClass = styleConfig[design_json_property/* default.CSS_CLASS */.Z.CSS_CLASS];
-    let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass);
-    let value = styleConfig[design_json_property/* default.LABEL */.Z.LABEL];
-    properties.append(key, value);
-  }
-
-  /**
-   * @param {{}} designJson
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendHtmlEditorConfigs(designJson, properties) {
-    let editorConfigs = designJson[design_json_property/* default.HTML_EDITOR_CONFIGS */.Z.HTML_EDITOR_CONFIGS] || {};
-
-    properties.appendCommentSection('HTML Editor Configs');
-
-    for (let [name, config] of Object.entries(editorConfigs)) {
-      this._appendHtmlEditorConfig(name, config, properties);
-    }
-  }
-
-  /**
-   * @param {string} name
-   * @param {{}} config
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendHtmlEditorConfig(name, config, properties) {
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FEATURES */.Z.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.TEXT_COLORS */.Z.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.BACKGROUND_COLORS */.Z.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FORMATS */.Z.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FONT_SIZES */.Z.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FONT_SIZE_UNIT */.Z.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, identity, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.FONT_SIZE_DEFAULT */.Z.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, identity, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.LINE_HEIGHTS */.Z.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
-    this._appendHtmlEditorConfigIfDefined(name, config, design_json_property/* default.ENTER_MODE */.Z.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, identity, properties);
-
-    properties.appendBlank();
-  }
-
-  /**
-   * @param {string} configName
-   * @param {{}} config
-   * @param {string} property
-   * @param {function(string):string} labelGenerator
-   * @param {function(*):string|number} valueExtractor
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendHtmlEditorConfigIfDefined(configName, config, property, labelGenerator, valueExtractor, properties) {
-    if (typeof config[property] === 'undefined') {
-      return;
-    }
-
-    let key = labelGenerator(configName);
-    let rawValue = config[property];
-    let value = valueExtractor(rawValue);
-
-    properties.append(key, value);
-  }
-
-  /**
-   * @param {{}} designJson
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElementGroups(designJson, properties) {
-    let groups = designJson[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS];
-
-    properties.appendCommentSection('Content Element Groups');
-
-    groups.forEach(group => this._appendContentElementGroup(group, properties));
-
-    properties.appendBlank();
-  }
-
-  /**
-   * @param {{}} group
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElementGroup(group, properties) {
-    let groupId = group[design_json_property/* default.GROUP_ID */.Z.GROUP_ID];
-    let key = LegacyDesignProperty.getContentElementGroupLabel(groupId);
-    let value = group[design_json_property/* default.LABEL */.Z.LABEL];
-
-    properties.append(key, value);
-  }
-
-  /**
-   * @param {{}} designJson
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElements(designJson, properties) {
-    let groups = designJson[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS];
-
-    properties.appendCommentSection('Content Elements');
-
-    groups.forEach(group => this._appendContentElementsFromGroup(group, properties));
-  }
-
-  /**
-   * @param {{}} group
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElementsFromGroup(group, properties) {
-    let elements = group[design_json_property/* default.CONTENT_ELEMENTS */.Z.CONTENT_ELEMENTS];
-
-    elements.forEach(element => this._appendContentElement(element, properties));
-  }
-
-  /**
-   * @param {{}} element
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElement(element, properties) {
-    let elementId = element[design_json_property/* default.ELEMENT_ID */.Z.ELEMENT_ID];
-    let parts = element[design_json_property/* default.PARTS */.Z.PARTS];
-    let indexMap = new Map();
-
-    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.LABEL */.Z.LABEL, LegacyDesignProperty.getContentElementLabel, identity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.DESCRIPTION */.Z.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, identity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.ICON */.Z.ICON, LegacyDesignProperty.getContentElementIcon, identity, properties);
-    this._appendContentElementPropertyIfDefined(element, elementId, design_json_property/* default.STYLE_CONFIGS */.Z.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
-
-    parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
-
-    properties.appendBlank();
-  }
-
-  /**
-   * @param {{}} element
-   * @param {string} elementId
-   * @param {string} property
-   * @param {function(string):string} labelGenerator
-   * @param {function(*):string|number} valueExtractor
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElementPropertyIfDefined(element, elementId, property, labelGenerator, valueExtractor, properties) {
-    if (typeof element[property] === 'undefined') {
-      return;
-    }
-
-    let key = labelGenerator(elementId);
-    let rawValue = element[property];
-    let value = valueExtractor(rawValue);
-
-    properties.append(key, value);
-  }
-
-  /**
-   * @param {{}} part
-   * @param {Map<string,number>} indexMap
-   * @param {string} elementId
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElementPart(part, indexMap, elementId, properties) {
-    let type = part[design_json_property/* default.PART_ID */.Z.PART_ID];
-    let index = indexMap.get(type) || 0;
-
-    this._appendContentElementPartPropertyIfDefined(part, design_json_property/* default.LABEL */.Z.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, identity, properties);
-    this._appendContentElementPartPropertyIfDefined(part, design_json_property/* default.HTML_EDITOR_CONFIG */.Z.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, identity, properties);
-
-    indexMap.set(type, index + 1);
-  }
-
-  /**
-   * @param {{}} part
-   * @param {string} property
-   * @param {string} elementId
-   * @param {string} type
-   * @param {number} index
-   * @param {function(string,string,number):string} labelGenerator
-   * @param {function(*):string|number} valueExtractor
-   * @param {JavaPropertyFileBuilder} properties
-   * @private
-   */
-  _appendContentElementPartPropertyIfDefined(part, property, elementId, type, index, labelGenerator, valueExtractor, properties) {
-    if (typeof part[property] === 'undefined') {
-      return;
-    }
-
-    let key = labelGenerator(elementId, type, index);
-    let rawValue = part[property];
-    let value = valueExtractor(rawValue);
-
-    properties.append(key, value);
-  }
-}
-
-class BsiCxWebpackLegacyDesignPlugin {
-  /**
-   * @type {string}
-   */
-  static PLUGIN_NAME = 'BsiCxWebpackLegacyDesignPlugin';
-
-  /**
-   * @param {BuildConfig} config
-   */
-  constructor(config) {
-    this._config = config;
-  }
-
-  apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME, compilation => {
-      compilation.hooks.processAssets.tap(
-        {
-          name: BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME,
-          stage: lib_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
-        },
-        () => {
-          const logger = compilation.getLogger(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackLegacyDesignPlugin(this._config, compiler, compilation, logger).apply();
-        })
-    });
-  }
-};
-
-// EXTERNAL MODULE: external "crypto"
-var external_crypto_ = __webpack_require__(373);
-;// CONCATENATED MODULE: external "fast-glob"
-const external_fast_glob_namespaceObject = require("fast-glob");
-;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
-
-
-
-
-
-
-
-
-class BsiCxWebpackZipHashPlugin {
-  /**
-   * @type {string}
-   */
-  static PLUGIN_NAME = 'BsiCxWebpackZipHashPlugin';
-
-  /**
-   * @param {string} name
-   * @param {string} version
-   * @param {boolean} enabled
-   */
-  constructor(name, version, enabled) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._name = name;
-    /**
-     * @type {string}
-     * @private
-     */
-    this._version = version;
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this._enabled = !!enabled;
-    /**
-     * @type {string}
-     * @private
-     */
-    this._prodZipFileName = (0,utility/* getZipArchiveName */.ur)(name, version);
-    /**
-     * @type {string}
-     * @private
-     */
-    this._devZipFileName = (0,utility/* getZipArchiveName */.ur)(name, version, 'dev');
-  }
-
-  /**
-   * @param {Compilation} compilation
-   * @param {Asset} asset
-   */
-  _handleZipAsset(compilation, asset) {
-    let oldAssetName = asset.name;
-    let source = asset.source;
-    /**
-     * @type {Buffer}
-     */
-    let sourceBuffer = source.buffer();
-    let hash = (0,external_crypto_.createHash)('sha256')
-      .update(sourceBuffer)
-      .digest('hex')
-      .substr(0, 5);
-    let newAssetName = oldAssetName.replace(/\.zip$/, `-${hash}.zip`);
-
-    compilation.deleteAsset(oldAssetName);
-    compilation.emitAsset(newAssetName, source);
-  }
-
-  /**
-   * @param {Compiler} compiler
-   * @private
-   */
-  _removeOldZipAssets(compiler) {
-    let pattern = (0,utility/* getZipArchiveName */.ur)(this._name, this._version, '*');
-
-    let zipFilesToRemove = (0,external_fast_glob_namespaceObject.sync)(pattern, {
-      cwd: compiler.outputPath,
-      absolute: true,
-      onlyFiles: true
-    });
-
-    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
-  }
-
-  apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxWebpackZipHashPlugin.PLUGIN_NAME, compilation => {
-      compilation.hooks.processAssets.tap(
-        {
-          name: BsiCxWebpackZipHashPlugin.PLUGIN_NAME,
-          stage: lib_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
-        },
-        () => {
-          if (!this._enabled) {
-            return;
-          }
-
-          this._removeOldZipAssets(compiler);
-
-          Object.keys(compilation.assets)
-            .filter(name => name === this._prodZipFileName || name === this._devZipFileName)
-            .map(name => compilation.getAsset(name))
-            .forEach(asset => this._handleZipAsset(compilation, asset));
-        })
-    });
-  }
-};
-
-// EXTERNAL MODULE: ./src/constant.js
-var constant = __webpack_require__(911);
-;// CONCATENATED MODULE: ./src/webpack-config-builder.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class WebpackConfigBuilder {
-  /**
-   * @param {BuildConfig} config
-   */
-  constructor(config) {
-    this._config = config;
-  }
-
-  /**
-   * @returns {BuildConfig}
-   */
-  get config() {
-    return this._config;
-  }
-
-  build() {
-    return {
-      entry: this._getEntryConfig(),
-      name: this.config.name,
-      context: this.config.rootPath,
-      target: 'web',
-      module: {
-        rules: [
-          ...this._getTwigRuleConfig(),
-          ...this._getHtmlAndHbsRuleConfig(),
-          ...this._getStyleRulesConfig(),
-          ...this._getStaticAssetsRuleConfig(),
-          ...this._getStaticJavaScriptFileRuleConfig(),
-          ...this._getRegularJavaScriptFileRuleConfig()
-        ]
-      },
-      plugins: [
-        ...this._getMiniCssExtractPluginConfig(),
-        ...this._getCopyPluginConfig(),
-        ...this._getBsiCxWebpackPluginConfig(),
-        ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
-        ...this._getZipPluginConfig(),
-      ],
-      devtool: this._getDevToolConfig(),
-      devServer: this._getDevServerConfig(),
-      stats: this._getStatsConfig(),
-      performance: this._getPerformanceConfig(),
-      optimization: {
-        minimize: true,
-        minimizer: this._getOptimizationMinimizerConfig(),
-        splitChunks: {
-          chunks: 'all',
-          name: this._getOptimizationSplitChunksNameConfig(),
-          cacheGroups: {
-            ...this._getOptimizationCacheGroupsConfig(),
-          }
-        }
-      },
-      output: this._getOutputConfig()
-    };
-  }
-
-  /**
-   * The default output path: dist/{name}
-   *
-   * @returns {string}
-   * @private
-   */
-  _getDefaultOutputPath() {
-    return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
-  }
-
-  /**
-   * The output path to use.
-   *
-   * @returns {string}
-   */
-  _getOutputPath() {
-    return this.config.outputPath || this._getDefaultOutputPath();
-  }
-
-  /**
-   * The default modules path: ./modules
-   *
-   * @returns {string}
-   */
-  _getDefaultModulesRootPath() {
-    return external_path_default().resolve(this.config.rootPath, 'modules');
-  }
-
-  /**
-   * The modules path to use.
-   *
-   * @returns {string}
-   */
-  _getModulesRootPath() {
-    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
-  }
-
-  /**
-   * The entry configuration.
-   *
-   * @returns {{}}
-   */
-  _getEntryConfig() {
-    return {
-      ...this._getJavaScriptModuleEntries(),
-      json: {
-        import: this._getDesignJsFilePath(),
-        filename: File.DESIGN_JSON,
-        library: {
-          type: 'commonjs'
-        }
-      },
-      design: this._evaluateEntryTemplate('design'),
-      preview: this._evaluateEntryTemplate('preview')
-    };
-  }
-
-  /**
-   * Get the entry configuration for a template.
-   *
-   * @param {string} name
-   * @returns {{}}
-   */
-  _evaluateEntryTemplate(name) {
-    let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
-    let hbsFilePath = external_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
-    let isTwig = external_fs_default().existsSync(twigFilePath);
-    let extension = isTwig ? 'html' : 'hbs';
-    return {
-      import: isTwig ? twigFilePath : hbsFilePath,
-      filename: `${name}.${extension}`
-    };
-  }
-
-  _getDesignJsFilePath() {
-    return external_path_default().resolve(this.config.rootPath, File.DESIGN_JS);
-  }
-
-  /**
-   * Get the entry configurations for the Java Script modules.
-   *
-   * @returns {[{}]}
-   */
-  _getJavaScriptModuleEntries() {
-    let entries = {};
-    for (const [name, filePath] of Object.entries(this.config.modules)) {
-      entries[name] = {
-        import: external_path_default().resolve(filePath),
-        filename: 'modules/[name]-[contenthash].js',
-        runtime: constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH
-      };
-    }
-    return entries;
-  }
-
-  /**
-   * Rules for Twig file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getTwigRuleConfig() {
-    return [
-      {
-        test: /\.twig$/i,
-        use: [
-          this._getTemplateLoader(),
-          'ref-loader',
-          {
-            loader: 'twing-loader',
-            options: {
-              environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
-              renderContext: {
-                properties: this.config.properties,
-                designBaseUrl: (0,utility/* buildPublicPath */.YV)(this.config)
-              }
-            }
-          }
-        ]
-      }
-    ];
-  }
-
-  /**
-   * Rule for HTML and Handlebars file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getHtmlAndHbsRuleConfig() {
-    return [
-      {
-        test: /\.(html|hbs)$/i,
-        use: [
-          this._getTemplateLoader(),
-          'ref-loader',
-        ]
-      }
-    ];
-  }
-
-  /**
-   * Rules for LESS, SASS/SCSS and CSS file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getStyleRulesConfig() {
-    return [
-      {
-        test: /\.less$/i,
-        use: [
-          ...this._getCssLoaderChain(),
-          {
-            loader: 'less-loader',
-          }
-        ]
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          ...this._getCssLoaderChain(),
-          {
-            loader: 'sass-loader',
-          }
-        ]
-      },
-      {
-        test: /\.css$/i,
-        use: [
-          ...this._getCssLoaderChain()
-        ]
-      }
-    ];
-  }
-
-  /**
-   * Get all file extensions that should be handled as static assets (e.g. images and fonts).
-   *
-   * @returns {[string]}
-   */
-  _getStaticAssetFileExtensions() {
-    return [
-      'png',
-      'apng',
-      'jpg',
-      'jpeg',
-      'webp',
-      'gif',
-      'bmp',
-      'tiff',
-      'raw',
-      'svg',
-      'eot',
-      'ttf',
-      'woff',
-      'woff2'
-    ];
-  }
-
-  /**
-   * Rule for static assets handling.
-   *
-   * @returns {[{}]}
-   */
-  _getStaticAssetsRuleConfig() {
-    let fileExtensions = this._getStaticAssetFileExtensions().join('|');
-    let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
-
-    return [
-      {
-        test: testRegex,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[name]-[contenthash][ext]'
-        }
-      }
-    ];
-  }
-
-  /**
-   * Rule for static Java Script file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getStaticJavaScriptFileRuleConfig() {
-    return [
-      {
-        resource: (file) => utility/* StaticJavaScriptCondition.test */.BA.test(this.config.rootPath, file),
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[name]-[contenthash][ext]'
-        }
-      }
-    ];
-  }
-
-  /**
-   * Rule for regular Java Script file handling.
-   *
-   * @returns {[{}]}
-   */
-  _getRegularJavaScriptFileRuleConfig() {
-    return [
-      {
-        test: /\.m?js$/i,
-        exclude: /(node_modules|bower_components)/,
-        include: this._getModulesRootPath(),
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-runtime'],
-            cacheDirectory: true
-          }
-        }
-      }
-    ];
-  }
-
-  /**
-   * @returns {string}
-   */
-  _getTemplateLoader() {
-    return `${package_namespaceObject.u2}/dist/template-loader`;
-  }
-
-  /**
-   * @returns {[{}]}
-   */
-  _getCssLoaderChain() {
-    return [
-      {
-        loader: (external_mini_css_extract_plugin_default()).loader,
-        options: {
-          publicPath: '../'
-        }
-      },
-      {
-        loader: 'css-loader'
-      },
-      {
-        loader: 'postcss-loader',
-        options: {
-          postcssOptions: {
-            plugins: [
-              'postcss-preset-env',
-              'cssnano'
-            ]
-          }
-        }
-      }
-    ];
-  }
-
-  /**
-   * Mini CSS extract plugin configuration.
-   *
-   * @returns {[MiniCssExtractPlugin]}
-   */
-  _getMiniCssExtractPluginConfig() {
-    return [
-      new (external_mini_css_extract_plugin_default())({
-        filename: 'static/styles-[contenthash].css',
-      })
-    ];
-  }
-
-  /**
-   * Copy plugin configuration.
-   *
-   * @returns {[CopyPlugin]}
-   */
-  _getCopyPluginConfig() {
-    return [
-      new (external_copy_webpack_plugin_default())({
-        patterns: [
-          {
-            from: 'assets/**/*',
-            globOptions: {
-              dot: true,
-              ignore: ['**/.gitkeep', '**/.gitignore']
-            },
-            noErrorOnMissing: true,
-            info: {
-              minimized: true
-            },
-          },
-          ...this.config.additionalFilesToCopy
-        ]
-      })
-    ];
-  }
-
-  /**
-   * BSI CX Webpack plugin.
-   *
-   * @returns {[BsiCxWebpackPlugin]}
-   */
-  _getBsiCxWebpackPluginConfig() {
-    return [
-      new bsi_cx_webpack_plugin/* default */.Z(this.config)
-    ];
-  }
-
-  /**
-   * Webpack ZIP plugin configuration.
-   *
-   * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
-   */
-  _getZipPluginConfig() {
-    /**
-     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
-     */
-    let plugins = [
-      new (external_zip_webpack_plugin_default())({
-        filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version),
-        exclude: [/\.map$/]
-      })
-    ];
-
-    if (this.config.sourceMapEnabled) {
-      plugins.push(
-        new (external_zip_webpack_plugin_default())({
-          filename: (0,utility/* getZipArchiveName */.ur)(this.config.name, this.config.version, 'dev'),
-        })
-      );
-    }
-
-    plugins.push(
-      new BsiCxWebpackZipHashPlugin(this.config.name, this.config.version, this.config.hashZipFiles)
-    );
-
-    return plugins;
-  }
-
-  /**
-   * BSI CX legacy design format plugin config.
-   *
-   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
-   */
-  _getBsiCxWebpackLegacyDesignPluginConfig() {
-    let plugins = [];
-    if (this.config.targetVersion.legacyFormat) {
-      plugins.push(
-        new BsiCxWebpackLegacyDesignPlugin(this.config)
-      );
-    }
-    return plugins;
-  }
-
-  /**
-   * The dev tool configuration.
-   *
-   * @returns {string|boolean}
-   */
-  _getDevToolConfig() {
-    return this.config.sourceMapEnabled ? 'source-map' : false;
-  }
-
-  /**
-   * Development server configuration.
-   *
-   * @returns {{}}
-   */
-  _getDevServerConfig() {
-    let outputPath = this._getOutputPath();
-    let contentBase = outputPath === this._getDefaultOutputPath() ? external_path_default().resolve(outputPath, '..') : process.cwd();
-    let zipRegEx = /\.zip$/i;
-
-    return {
-      port: this.config.devServerPort,
-      contentBase: contentBase,
-      publicPath: '/',
-      compress: true,
-      writeToDisk: filePath => zipRegEx.test(filePath),
-      inline: false
-    };
-  }
-
-  /**
-   * The stats configuration.
-   *
-   * @returns {{}}
-   */
-  _getStatsConfig() {
-    return {
-      children: false,
-      errorDetails: true,
-    };
-  }
-
-  /**
-   * The performance configuration.
-   *
-   * @returns {{}}
-   */
-  _getPerformanceConfig() {
-    let excludedAssets = [
-      File.DESIGN_JSON,
-    ];
-    let excludedExtensions = /\.(map|zip|html|hbs)$/;
-
-    return {
-      assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
-      hints: 'warning'
-    };
-  }
-
-  /**
-   * The minimizer configuration.
-   *
-   * @returns {[TerserPlugin]}
-   */
-  _getOptimizationMinimizerConfig() {
-    return [
-      new (external_terser_webpack_plugin_default())({
-        extractComments: false
-      })
-    ];
-  }
-
-  /**
-   * The split chunks name configuration.
-   *
-   * @returns {function}
-   */
-  _getOptimizationSplitChunksNameConfig() {
-    return (module, _, cacheGroupKey) => {
-      return cacheGroupKey !== 'vendors' ? false : (module.rawRequest || false);
-    };
-  }
-
-  /**
-   * The chache groups configuration.
-   *
-   * @returns {{}}
-   */
-  _getOptimizationCacheGroupsConfig() {
-    return {
-      vendors: {
-        test: /[\\/]node_modules[\\/]/,
-        priority: 10,
-        reuseExistingChunk: true,
-        filename: 'vendors/[name]-[chunkhash].js'
-      },
-      styles: {
-        name: 'styles',
-        type: 'css/mini-extract',
-        chunks: 'all',
-        priority: 20,
-        enforce: true,
-      }
-    };
-  }
-
-  /**
-   * The output configuration.
-   *
-   * @returns {{}}
-   */
-  _getOutputConfig() {
-    return {
-      path: this._getOutputPath(),
-      publicPath: (0,utility/* buildPublicPath */.YV)(this.config, '/'),
-      clean: true,
-      library: {
-        type: 'var',
-        name: '[name]'
-      }
-    };
-  }
-
-  /**
-   * Build the configuration for webpack from {@link BuildConfig} objects.
-   *
-   * @param  {...BuildConfig} configs
-   */
-  static fromConfigs(...configs) {
-    let devServerPort = undefined;
-
-    return configs
-      .map(config => config.validate())
-      .map(config => new WebpackConfigBuilder(config))
-      .map(config => config.build())
-      .map((config, index) => {
-        if (index === 0) {
-          devServerPort = config.devServer.port;
-        } else if (config.devServer.port === devServerPort) {
-          delete config.devServer;
-        }
-        return config;
-      });
-  }
-}
-
-;// CONCATENATED MODULE: ./export/main.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-
-/***/ 417:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ AbstractConstant)
-/* harmony export */ });
+;// CONCATENATED MODULE: ./src/abstract-constant.js
 class AbstractConstant {
   /**
    * @type {string}
@@ -1681,618 +68,114 @@ class AbstractConstant {
   get value() {
     return this._value;
   }
-}
-
-
-/***/ }),
-
-/***/ 940:
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "Z": () => (/* binding */ BsiCxWebpackPlugin)
-});
-
-// EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(622);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
-// EXTERNAL MODULE: external "crypto"
-var external_crypto_ = __webpack_require__(373);
-;// CONCATENATED MODULE: external "vm"
-const external_vm_namespaceObject = require("vm");
-var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = require("module");
-var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
-;// CONCATENATED MODULE: external "handlebars"
-const external_handlebars_namespaceObject = require("handlebars");
-var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
-// EXTERNAL MODULE: external "webpack"
-var external_webpack_ = __webpack_require__(78);
-// EXTERNAL MODULE: external "webpack/lib"
-var lib_ = __webpack_require__(73);
-// EXTERNAL MODULE: ./src/build-config.js
-var build_config = __webpack_require__(492);
-;// CONCATENATED MODULE: ./src/handlebars-helpers.js
-/* harmony default export */ const handlebars_helpers = ({
-  'bsi.nls': key => key
-});
-
-// EXTERNAL MODULE: ./src/constant.js
-var constant = __webpack_require__(911);
-// EXTERNAL MODULE: ./src/utility.js
-var utility = __webpack_require__(923);
-// EXTERNAL MODULE: ./src/design-json-property.js
-var design_json_property = __webpack_require__(529);
-;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
-/* module decorator */ module = __webpack_require__.hmd(module);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const parentModule = module;
-
-class _BsiCxWebpackPlugin {
-  /**
-   * @type {RegExp}
-   */
-  static DESIGN_JSON = /^design\.json$/;
-  /**
-   * @type {RegExp}
-   */
-  static DESIGN_HTML = /^design\.(html|hbs)$/;
-  /**
-   * @type {RegExp}
-   */
-  static PREVIEW_HTML = /^preview\.(html|hbs)$/;
 
   /**
-   * @type {RegExp}
+   * @return {string}
    */
-  static STYLES_CSS = /^static\/styles-[0-9a-z]+\.css$/;
-  /**
-   * @type {RegExp}
-   */
-  static CSS_INLINE = new RegExp(constant/* default.BSI_CX_CSS_INLINE */.Z.BSI_CX_CSS_INLINE, 'g');
-  /**
-   * @type {RegExp}
-   */
-  static CSS_HREF = new RegExp(constant/* default.BSI_CX_CSS_HREF */.Z.BSI_CX_CSS_HREF, 'g');
-
-  /**
-   * @type {RegExp}
-   */
-  static JS_MODULE = new RegExp(`${constant/* default.BSI_CX_JS_MODULE_START */.Z.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${constant/* default.BSI_CX_JS_MODULE_END */.Z.BSI_CX_JS_MODULE_END}`, 'g');
-  /**
-   * @type {RegExp}
-   */
-  static JS_MODULE_RUNTIME_HREF = new RegExp(constant/* default.BSI_CX_MODULE_RUNTIME_HREF */.Z.BSI_CX_MODULE_RUNTIME_HREF, 'g');
-  /**
-   * @type {RegExp}
-   */
-  static JS_MODULE_RUNTIME_INLINE = new RegExp(constant/* default.BSI_CX_MODULE_RUNTIME_INLINE */.Z.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
-  /**
-   * @type {RegExp}
-   */
-  static JS_MODULE_RUNTIME = new RegExp(`^${constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
-
-  /**
-   * @type {number}
-   */
-  static ELEMENT_FILE_HASH_LENGTH = 20;
-
-  /**
-   * @param {BuildConfig} config
-   * @param {Compiler} compiler
-   * @param {Compilation} compilation
-   * @param {WebpackLogger} logger
-   */
-  constructor(config, compiler, compilation, logger) {
-    /**
-     * @type {BuildConfig}
-     */
-    this._config = config;
-    /**
-     * @type {Compiler}
-     */
-    this._compiler = compiler;
-    /**
-     * @type {Compilation}
-     */
-    this._compilation = compilation;
-    /**
-     * @type {WebpackLogger}
-     */
-    this._logger = logger;
-  }
-
-  apply() {
-    try {
-      this._exportDesignJson();
-      this._exportDesignHtml();
-      this._exportPreviewHtml();
-    } catch (error) {
-      if (error instanceof lib_.WebpackError) {
-        this._compilation.errors.push(error);
-      } else {
-        this._logger.error(error);
-      }
-    }
-  }
-
-  _exportDesignHtml() {
-    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
-    this._updateHtmlTemplate(designHtmlPath, 'design');
-  }
-
-  _exportPreviewHtml() {
-    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
-    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview');
-
-    if (/\.hbs$/.test(previewFilePath)) {
-      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
-    }
-  }
-
-  _exportDesignJson() {
-    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    /**
-     * @type {{}}
-     */
-    let designJsonObj = this._loadModule(designJsonPath);
-    let contentElementGroups = designJsonObj[design_json_property/* default.CONTENT_ELEMENT_GROUPS */.Z.CONTENT_ELEMENT_GROUPS] || [];
-    let website = designJsonObj[design_json_property/* default.WEBSITE */.Z.WEBSITE] || {};
-    let websiteIncludes = website[design_json_property/* default.INCLUDES */.Z.INCLUDES] || {};
-
-    this._handleDesignPreviewImage(designJsonObj);
-
-    contentElementGroups
-      .forEach(group => group[design_json_property/* default.CONTENT_ELEMENTS */.Z.CONTENT_ELEMENTS]
-        .forEach(element => this._handleElement(element)));
-
-    Object.values(websiteIncludes)
-      .forEach(include => this._handleInclude(include));
-
-    let jsonStr = JSON.stringify(designJsonObj, null, 2);
-    this._updateAsset(designJsonPath, jsonStr);
-  }
-
-  _handleDesignPreviewImage(designJsonObj) {
-    if (typeof designJsonObj[design_json_property/* default.PREVIEW_IMAGE */.Z.PREVIEW_IMAGE] !== 'undefined') {
-      designJsonObj[design_json_property/* default.PREVIEW_IMAGE */.Z.PREVIEW_IMAGE] = this._removeDesignBaseUrl(designJsonObj[design_json_property/* default.PREVIEW_IMAGE */.Z.PREVIEW_IMAGE]);
-    }
-  }
-
-  /**
-   * @param {{file:{}}} element
-   * @private
-   */
-  _handleElement(element) {
-    element[design_json_property/* default.FILE */.Z.FILE] = this._handleTemplateFile(element[design_json_property/* default.FILE */.Z.FILE], 'contentElements');
-  }
-
-  /**
-   * @param {{file:{}}} include
-   * @private
-   */
-  _handleInclude(include) {
-    include[design_json_property/* default.FILE */.Z.FILE] = this._handleTemplateFile(include[design_json_property/* default.FILE */.Z.FILE], 'includes');
-  }
-
-  /**
-   * @param {{content:string,path:string}} fileObj
-   * @param {string} baseFolder
-   * @returns {string}
-   */
-  _handleTemplateFile(fileObj, baseFolder) {
-    let rawContent = fileObj.content;
-    let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
-    let originalExtension = external_path_default().extname(fileObj.path);
-    let fileName = external_path_default().basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
-    let contentHash = this._createContentHash(content);
-    let extension = this._getTemplateFileExtension(fileObj.path);
-    let elementFilePath = `${baseFolder}${(external_path_default()).posix.sep}${fileName}-${contentHash}.${extension}`;
-
-    this._emitAsset(elementFilePath, content);
-
-    return elementFilePath;
-  }
-
-  /**
-   * @param {string} previewFilePath
-   * @param {string} previewTemplate
-   */
-  _handlePreviewHandlebars(previewFilePath, previewTemplate) {
-    let parser = this._getHandlebarsParser();
-    let template = parser.compile(previewTemplate);
-    let rendered = template({
-      designBaseUrl: '.',
-      bsi: this._getHandlebarsHelpers()
-    });
-    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, '.html');
-
-    this._emitAsset(previewHtmlPath, rendered);
-    this._deleteAsset(previewFilePath);
-  }
-
-  /**
-   * @param {string} fileName
-   * @returns {string}
-   */
-  _getTemplateFileExtension(fileName) {
-    if (/\.hbs\.twig$/.test(fileName)) {
-      return 'hbs';
-    }
-    if (/\.hbs$/.test(fileName)) {
-      return 'hbs';
-    }
-    return 'html';
-  }
-
-  /**
-   * @param {RegExp} nameRegEx
-   * @returns {string[]}
-   */
-  _getAssetNames(nameRegEx) {
-    /**
-     * @type {string[]}
-     */
-    let assetNames = Object.keys(this._compilation.assets);
-    return assetNames.filter(name => nameRegEx.test(name));
-  }
-
-  /**
-   * @param {RegExp} nameRegEx
-   * @returns {string}
-   */
-  _getAssetName(nameRegEx) {
-    return this._getAssetNames(nameRegEx).shift();
-  }
-
-  _eval(source) {
-    let script = new (external_vm_default()).Script(source);
-    let context = {module: {}};
-    script.runInNewContext(context);
-    return context.module.exports;
-  }
-
-  /**
-   * @param {string} filePath
-   * @param {string} content
-   */
-  _updateAsset(filePath, content) {
-    let source = new external_webpack_.sources.RawSource(content);
-    this._compilation.updateAsset(filePath, source);
-  }
-
-  /**
-   * @param {string} name
-   * @param {string} scope
-   * @returns {*}
-   */
-  _loadAsset(name, scope) {
-    let asset = this._compilation.getAsset(name);
-    let source = asset.source.source();
-    let sourceStr = (0,utility/* toString */.BB)(source);
-    let script = new (external_vm_default()).Script(sourceStr);
-    let context = {self: {}};
-
-    script.runInNewContext(context);
-
-    return context[scope];
-  }
-
-  _loadModule(name) {
-    let asset = this._compilation.getAsset(name);
-    let modulePath = external_path_default().resolve(this._compiler.outputPath, name);
-    let moduleFolder = external_path_default().dirname(modulePath);
-    let code = asset.source.source();
-
-    let module = new (external_module_default())(modulePath, parentModule);
-    // noinspection JSUnresolvedFunction
-    module.paths = external_module_default()._nodeModulePaths(moduleFolder);
-    module.filename = modulePath;
-
-    module._compile(`var self = {}; ${code}`, modulePath);
-
-    return module.exports;
-  }
-
-  /**
-   * @param {string} filePath
-   * @param {string} content
-   */
-  _emitAsset(filePath, content) {
-    let source = new external_webpack_.sources.RawSource(content);
-    this._compilation.emitAsset(filePath, source);
-  }
-
-  /**
-   * @param {string} filePath
-   */
-  _deleteAsset(filePath) {
-    this._compilation.deleteAsset(filePath);
-  }
-
-  /**
-   * @param {string} filePath
-   * @param {string} name
-   * @returns {string}
-   */
-  _updateHtmlTemplate(filePath, name) {
-    let templateObj = this._loadAsset(filePath, name);
-    let templateStr = this._eval(templateObj.content);
-
-    templateStr = templateStr.trim();
-    templateStr = this._handleStylesheets(templateStr);
-    templateStr = this._handleJavaScriptModules(templateStr);
-
-    this._updateAsset(filePath, templateStr);
-
-    return templateStr;
-  }
-
-  /**
-   * @param {string} content
-   * @returns {string}
-   */
-  _handleStylesheets(content) {
-    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
-
-    if (cssStylesFilename === undefined) {
-      return content;
-    }
-
-    let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
-    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/static/` : './static/';
-    let asset = this._compilation.getAsset(cssStylesFilename);
-    let source = asset.source.source()
-      .trim()
-      .replace(/\n/g, '')
-      .replace(/\.\.\/static\//g, inlineSourceAssetsUrl);
-
-    content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
-    content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
-
-    return content;
-  }
-
-  /**
-   * @param {string} content
-   * @returns {string}
-   */
-  _handleJavaScriptModules(content) {
-    let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
-    let importedModules = [];
-
-    for (const match of jsModuleMatches) {
-      content = this._handleFoundJavaScriptModule(content, match, importedModules);
-    }
-
-    content = this._injectModuleRuntime(content);
-
-    return content;
-  }
-
-  _injectModuleRuntime(content) {
-    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
-
-    if (filename === undefined) {
-      return content;
-    }
-
-    let url = publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
-    let asset = this._compilation.getAsset(filename);
-    let source = asset.source.source()
-      .trim()
-      .replace(/\n/g, '');
-
-    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
-    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
-
-    return content;
-  }
-
-  /**
-   * @param {string} content
-   * @param {RegExpMatchArray} match
-   * @param {string[]} importedModules
-   * @returns {string}
-   */
-  _handleFoundJavaScriptModule(content, match, importedModules) {
-    /**
-     * @type {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}}
-     */
-    let metaInfo = JSON.parse(match.groups.metaInfo);
-    let strToReplace = match[0];
-    let replacement = '';
-
-    if (typeof metaInfo.module !== 'undefined') {
-      replacement = this._handleFoundJavaScriptModuleImport(metaInfo, importedModules);
-    } else if (typeof metaInfo.chunks !== 'undefined') {
-      replacement = this._handleFoundJavaScriptModuleChunks(metaInfo, importedModules);
-    }
-
-    return content.replace(strToReplace, replacement);
-  }
-
-  /**
-   * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
-   * @param {string[]} importedModules
-   * @returns {string}
-   */
-  _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
-    let module = metaInfo.module;
-    let inline = metaInfo.inline;
-    let moduleAssetRegex = new RegExp(`^modules\/${module}\-[0-9a-z]+\.js$`);
-    let moduleAssetPath = this._getAssetName(moduleAssetRegex);
-
-    if (!moduleAssetPath) {
-      throw this._webpackError(
-        `Module "${module}" does not exist.`,
-        `The module "${module}" does not exist. You need to include it in your modules configuration.`,
-        metaInfo.template
-      );
-    }
-
-    let replacement;
-
-    if (inline) {
-      let asset = this._compilation.getAsset(moduleAssetPath);
-      let source = asset.source.source();
-      replacement = (0,utility/* toString */.BB)(source);
-    } else {
-      replacement = (0,utility/* buildPublicPath */.YV)(this._config, moduleAssetPath);
-    }
-
-    importedModules.push(moduleAssetPath);
-
-    return replacement;
-  }
-
-  /**
-   * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
-   * @param {string[]} importedModules
-   * @returns {string}
-   */
-  _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
-    let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
-    let assetPaths = this._getAssetNames(assetRegex);
-
-    return assetPaths
-      .filter(assetPath => !assetPath.startsWith(constant/* default.BSI_CX_MODULE_RUNTIME_PATH */.Z.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
-      .map(assetPath => {
-        importedModules.push(assetPath);
-        if (inline) {
-          let asset = this._compilation.getAsset(assetPath);
-          let source = asset.source.source();
-          let strSource = (0,utility/* toString */.BB)(source);
-          // noinspection JSUnresolvedVariable
-          return `<script>${strSource}</script>`;
-        } else {
-          let url = (0,utility/* buildPublicPath */.YV)(this._config, assetPath);
-          return `<script src="${url}" defer="defer"></script>`;
-        }
-      }).join('');
-  }
-
-  /**
-   * @param {string} message
-   * @param {string} details
-   * @param {string|undefined} [location=undefined]
-   * @returns
-   */
-  _webpackError(message, details, location) {
-    let error = new lib_.WebpackError(message);
-    error.details = details;
-    if (!!location) {
-      error.loc = {
-        name: this._getContextRelativePath(location)
-      };
-    }
-    return error;
-  }
-
-  _getContextRelativePath(absolutePath) {
-    let contextPath = this._compiler.context;
-    let relativePath = external_path_default().relative(contextPath, absolutePath).replace(/\\/g, (external_path_default()).posix.sep);
-    return '.' + (external_path_default()).posix.sep + relativePath;
-  }
-
-  /**
-   * @param {string} content
-   * @returns {string}
-   */
-  _createContentHash(content) {
-    return (0,external_crypto_.createHash)('sha256')
-      .update(content)
-      .digest('hex')
-      .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
-  }
-
-  /**
-   * @returns {Handlebars}
-   */
-  _getHandlebarsParser() {
-    return external_handlebars_default().create();
-  }
-
-  /**
-   * @returns {{}}
-   */
-  _getHandlebarsHelpers() {
-    let helpersObj = {};
-    for (const [name, func] of Object.entries(handlebars_helpers)) {
-      let fixedName = name.replace(/^bsi\./, '');
-      helpersObj[fixedName] = func;
-    }
-    return helpersObj;
-  }
-
-  /**
-   * @param {string} url
-   * @returns {string}
-   */
-  _removeDesignBaseUrl(url) {
-    return url.replace(`${constant/* default.BSI_CX_DESIGN_BASE_URL */.Z.BSI_CX_DESIGN_BASE_URL}/`, '');
+  getValue() {
+    return this.value;
   }
 }
 
-class BsiCxWebpackPlugin {
-  /**
-   * @type {string}
-   */
-  static PLUGIN_NAME = 'BsiCxWebpackPlugin';
+;// CONCATENATED MODULE: ./src/design-type.js
 
+
+class DesignType extends AbstractConstant {
+}
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ * @since 1.0
+ */
+const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ * @since 1.3
+ */
+const WEBSITE = new DesignType('website');
+
+;// CONCATENATED MODULE: ./src/version.js
+
+
+
+/**
+ * @type {DesignType[]}
+ */
+const LEGACY_TYPES = [
+  LANDINGPAGE,
+  EMAIL
+];
+
+/**
+ * @type {DesignType[]}
+ */
+const ALL_TYPES = [
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
+];
+
+class Version extends AbstractConstant {
   /**
-   * @param {BuildConfig} config
+   *
+   * @param {string} version
+   * @param {DesignType[]} allowedTypes
+   * @param {boolean} legacyFormat
    */
-  constructor(config) {
-    this._config = config;
+  constructor(version, allowedTypes, legacyFormat) {
+    super(version);
+    this._allowedTypes = allowedTypes;
+    this._legacyFormat = legacyFormat;
   }
 
-  apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
-      compilation.hooks.processAssets.tap(
-        {
-          name: BsiCxWebpackPlugin.PLUGIN_NAME,
-          stage: lib_.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
-        },
-        () => {
-          const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
-        })
-    });
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return this._allowedTypes;
   }
-};
 
+  /**
+   * @returns {boolean}
+   */
+  get legacyFormat() {
+    return this._legacyFormat;
+  }
+}
 
-/***/ }),
+/**
+ * @type {Version}
+ */
+const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
 
-/***/ 492:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/**
+ * @type {Version}
+ */
+const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
 
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ BuildConfig)
-/* harmony export */ });
-/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
-/* harmony import */ var _version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(345);
+/**
+ * @type {Version}
+ */
+const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_22_0 = new Version('22.0', ALL_TYPES, false);
+
+;// CONCATENATED MODULE: ./src/build-config.js
 
 
 
@@ -2311,11 +194,11 @@ class BuildConfig {
   /**
    * @type {Version}
    */
-  _targetVersion = _version__WEBPACK_IMPORTED_MODULE_1__.CX_22_0;
+  _targetVersion = CX_22_0;
   /**
    * @type {DesignType}
    */
-  _designType = _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE;
+  _designType = LANDINGPAGE;
   /**
    * @type {string}
    */
@@ -2618,8 +501,8 @@ class BuildConfig {
   validate() {
     this._checkInstanceofAndRequired('name', String, true);
     this._checkInstanceofAndRequired('version', String, true);
-    this._checkInstanceofAndRequired('targetVersion', _version__WEBPACK_IMPORTED_MODULE_1__.Version, true);
-    this._checkInstanceofAndRequired('designType', _design_type__WEBPACK_IMPORTED_MODULE_0__.DesignType, true);
+    this._checkInstanceofAndRequired('targetVersion', Version, true);
+    this._checkInstanceofAndRequired('designType', DesignType, true);
     this._checkInstanceofAndRequired('rootPath', String, true);
     this._checkInstanceofAndRequired('outputPath', String, false);
     this._checkInstanceofAndRequired('properties', Object, false);
@@ -2649,15 +532,44 @@ class BuildConfig {
   }
 }
 
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+;// CONCATENATED MODULE: external "zip-webpack-plugin"
+const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
+var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "mini-css-extract-plugin"
+const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
+var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "copy-webpack-plugin"
+const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
+var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: external "terser-webpack-plugin"
+const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
+var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
+;// CONCATENATED MODULE: ./package.json
+const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
+;// CONCATENATED MODULE: external "crypto"
+const external_crypto_namespaceObject = require("crypto");
+;// CONCATENATED MODULE: external "vm"
+const external_vm_namespaceObject = require("vm");
+var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
+;// CONCATENATED MODULE: external "handlebars"
+const external_handlebars_namespaceObject = require("handlebars");
+var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
+;// CONCATENATED MODULE: external "webpack"
+const external_webpack_namespaceObject = require("webpack");
+;// CONCATENATED MODULE: external "webpack/lib"
+const lib_namespaceObject = require("webpack/lib");
+;// CONCATENATED MODULE: ./src/handlebars-helpers.js
+/* harmony default export */ const handlebars_helpers = ({
+  'bsi.nls': key => key
+});
 
-/***/ }),
-
-/***/ 911:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ Constant)
-/* harmony export */ });
+;// CONCATENATED MODULE: ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -2693,15 +605,84 @@ class Constant {
   static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
 };
 
+;// CONCATENATED MODULE: ./src/utility.js
 
-/***/ }),
 
-/***/ 529:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ DesignJsonProperty)
-/* harmony export */ });
+
+
+
+class StaticJavaScriptCondition {
+  /**
+   * @type {RegExp}
+   */
+  static FILE_EXTENSION = /\.js/i;
+
+  /**
+   * @param {string} root
+   * @param {string} file
+   * @returns {boolean}
+   */
+  static isInsideStaticFolder(root, file) {
+    let staticFilePath = external_path_default().resolve(root, 'static') + (external_path_default()).sep;
+    return file.startsWith(staticFilePath);
+  }
+
+  /**
+   * @param {string} root
+   * @param {string} file
+   * @returns {boolean}
+   */
+  static test(root, file) {
+    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
+      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
+  }
+}
+
+/**
+ *
+ * @param {string} name
+ * @param {string} version
+ * @param {string} [suffix='']
+ */
+function getZipArchiveName(name, version, suffix) {
+  let filename = [name, version, suffix]
+    .filter(value => !!value)
+    .join('-');
+  return `${filename}.zip`;
+}
+
+/**
+ * @param {BuildConfig} config
+ * @param {string|undefined} [suffix=undefined]
+ */
+function buildPublicPath(config, suffix) {
+  let path = '/';
+
+  if (suffix) {
+    path += suffix
+      .trim()
+      .replace(/^\//, '');
+  }
+
+  let pathSuffix = suffix ? path : '';
+
+  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+    return '.' + pathSuffix;
+  } else {
+    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+  }
+}
+
+/**
+ * @param {*} obj
+ * @return {string}
+ */
+function utility_toString(obj) {
+  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
+}
+
+;// CONCATENATED MODULE: ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -2857,285 +838,2228 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
+;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
+class BuilderObjectNormalizer {
+  /**
+   * @param {*} obj
+   * @return {*}
+   * @private
+   */
+  _normalize(obj) {
+    switch (true) {
+      case typeof obj === 'undefined':
+        return obj;
+      case typeof obj === 'string' || obj instanceof String:
+        return obj;
+      case typeof obj === 'number' || obj instanceof Number:
+        return obj;
+      case typeof obj === 'boolean' || obj instanceof Boolean:
+        return obj;
+      case typeof obj === 'bigint' || obj instanceof BigInt:
+        return obj;
+      case typeof obj.build === 'function':
+        return obj.build();
+      case typeof obj.getValue === 'function':
+        return obj.getValue();
+      case obj instanceof Array || Array.isArray(obj):
+        return this._normalizeArray(obj);
+      case obj instanceof Object || typeof obj === 'object':
+        return this._normalizeObject(obj);
+      default:
+        throw new Error('unable to normalize input');
+    }
+  }
 
-/***/ }),
+  /**
+   * @param {[*]} arr
+   * @return {[*]}
+   * @private
+   */
+  _normalizeArray(arr) {
+    return arr.map(value => this._normalize(value));
+  }
 
-/***/ 24:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+  /**
+   * @param {{}} obj
+   * @return {{}}
+   * @private
+   */
+  _normalizeObject(obj) {
+    let targetObj = {};
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DesignType": () => (/* binding */ DesignType),
-/* harmony export */   "LANDINGPAGE": () => (/* binding */ LANDINGPAGE),
-/* harmony export */   "EMAIL": () => (/* binding */ EMAIL),
-/* harmony export */   "WEBSITE": () => (/* binding */ WEBSITE)
-/* harmony export */ });
-/* harmony import */ var _abstract_constant__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(417);
+    for (let [key, value] of Object.entries(obj)) {
+      targetObj[key] = this._normalize(value);
+    }
 
+    return targetObj;
+  }
 
-class DesignType extends _abstract_constant__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z {
+  /**
+   * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
+   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAsset}.
+   * Such values cannot be checked with instanceof.
+   *
+   * @param {*} obj
+   * @return {*}
+   */
+  static normalize(obj) {
+    return new BuilderObjectNormalizer()._normalize(obj);
+  }
 }
 
-/**
- * @type {DesignType}
- * @since 1.0
- */
-const LANDINGPAGE = new DesignType('landingpage');
-
-/**
- * @type {DesignType}
- * @since 1.0
- */
-const EMAIL = new DesignType('email');
-
-/**
- * @type {DesignType}
- * @since 1.3
- */
-const WEBSITE = new DesignType('website');
-
-
-/***/ }),
-
-/***/ 923:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BA": () => (/* binding */ StaticJavaScriptCondition),
-/* harmony export */   "ur": () => (/* binding */ getZipArchiveName),
-/* harmony export */   "YV": () => (/* binding */ buildPublicPath),
-/* harmony export */   "BB": () => (/* binding */ toString)
-/* harmony export */ });
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(622);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _build_config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(492);
-/* harmony import */ var _constant__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(911);
-/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24);
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
 
 
 
 
 
 
-class StaticJavaScriptCondition {
+
+
+
+
+
+
+
+
+
+class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static FILE_EXTENSION = /\.js/i;
+  static DESIGN_JSON = /^design\.json$/;
+  /**
+   * @type {RegExp}
+   */
+  static DESIGN_HTML = /^design\.(html|hbs)$/;
+  /**
+   * @type {RegExp}
+   */
+  static PREVIEW_HTML = /^preview\.(html|hbs)$/;
 
   /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
+   * @type {RegExp}
    */
-  static isInsideStaticFolder(root, file) {
-    let staticFilePath = path__WEBPACK_IMPORTED_MODULE_0___default().resolve(root, 'static') + (path__WEBPACK_IMPORTED_MODULE_0___default().sep);
-    return file.startsWith(staticFilePath);
+  static STYLES_CSS = /^static\/styles-[0-9a-z]+\.css$/;
+  /**
+   * @type {RegExp}
+   */
+  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, 'g');
+
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE = new RegExp(`${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE_RUNTIME_HREF = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_HREF, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE_RUNTIME_INLINE = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
+  /**
+   * @type {RegExp}
+   */
+  static JS_MODULE_RUNTIME = new RegExp(`^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
+
+  /**
+   * @type {number}
+   */
+  static ELEMENT_FILE_HASH_LENGTH = 20;
+
+  /**
+   * @type {BuildConfig}
+   */
+  _config = undefined;
+  /**
+   * @type {Compiler}
+   */
+  _compiler = undefined;
+  /**
+   * @type {Compilation}
+   */
+  _compilation = undefined;
+  /**
+   * @type {WebpackLogger}
+   */
+  _logger = undefined;
+
+  /**
+   * @param {BuildConfig} config
+   * @param {Compiler} compiler
+   * @param {Compilation} compilation
+   * @param {WebpackLogger} logger
+   */
+  constructor(config, compiler, compilation, logger) {
+    /**
+     * @type {BuildConfig}
+     */
+    this._config = config;
+    /**
+     * @type {Compiler}
+     */
+    this._compiler = compiler;
+    /**
+     * @type {Compilation}
+     */
+    this._compilation = compilation;
+    /**
+     * @type {WebpackLogger}
+     */
+    this._logger = logger;
+  }
+
+  apply() {
+    try {
+      this._exportDesignJson();
+      this._exportDesignHtml();
+      this._exportPreviewHtml();
+    } catch (error) {
+      if (error instanceof lib_namespaceObject.WebpackError) {
+        this._compilation.errors.push(error);
+      } else {
+        this._logger.error(error);
+      }
+    }
+  }
+
+  _exportDesignHtml() {
+    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
+    this._updateHtmlTemplate(designHtmlPath, 'design');
+  }
+
+  _exportPreviewHtml() {
+    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview');
+
+    if (/\.hbs$/.test(previewFilePath)) {
+      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
+    }
+  }
+
+  _exportDesignJson() {
+    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    /**
+     * @type {*}
+     */
+    let designJson = this._loadAsset(designJsonPath, 'json');
+    /**
+     * @type {{}}
+     */
+    let designJsonObj = BuilderObjectNormalizer.normalize(designJson);
+    let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
+    let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
+    let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
+
+    this._handleDesignPreviewImage(designJsonObj);
+
+    contentElementGroups
+      .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
+        .forEach(element => this._handleElement(element)));
+
+    Object.values(websiteIncludes)
+      .forEach(include => this._handleInclude(include));
+
+    let jsonStr = JSON.stringify(designJsonObj, null, 2);
+    this._updateAsset(designJsonPath, jsonStr);
+  }
+
+  _handleDesignPreviewImage(designJsonObj) {
+    if (typeof designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] !== 'undefined') {
+      designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] = this._removeDesignBaseUrl(designJsonObj[DesignJsonProperty.PREVIEW_IMAGE]);
+    }
   }
 
   /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
+   * @param {{file:{}}} element
+   * @private
    */
-  static test(root, file) {
-    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
-      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
+  _handleElement(element) {
+    element[DesignJsonProperty.FILE] = this._handleTemplateFile(element[DesignJsonProperty.FILE], 'contentElements');
   }
-}
 
-/**
- *
- * @param {string} name
- * @param {string} version
- * @param {string} [suffix='']
- */
-function getZipArchiveName(name, version, suffix) {
-  let filename = [name, version, suffix]
-    .filter(value => !!value)
-    .join('-');
-  return `${filename}.zip`;
-}
+  /**
+   * @param {{file:{}}} include
+   * @private
+   */
+  _handleInclude(include) {
+    include[DesignJsonProperty.FILE] = this._handleTemplateFile(include[DesignJsonProperty.FILE], 'includes');
+  }
 
-/**
- * @param {BuildConfig} config
- * @param {string|undefined} [suffix=undefined]
- */
-function buildPublicPath(config, suffix) {
-  let path = '/';
+  /**
+   * @param {{content:string,path:string}} fileObj
+   * @param {string} baseFolder
+   * @returns {string}
+   */
+  _handleTemplateFile(fileObj, baseFolder) {
+    let rawContent = fileObj.content;
+    let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
+    let originalExtension = external_path_default().extname(fileObj.path);
+    let fileName = external_path_default().basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
+    let contentHash = this._createContentHash(content);
+    let extension = this._getTemplateFileExtension(fileObj.path);
+    let elementFilePath = `${baseFolder}${(external_path_default()).posix.sep}${fileName}-${contentHash}.${extension}`;
 
-  if (suffix) {
-    path += suffix
+    this._emitAsset(elementFilePath, content);
+
+    return elementFilePath;
+  }
+
+  /**
+   * @param {string} previewFilePath
+   * @param {string} previewTemplate
+   */
+  _handlePreviewHandlebars(previewFilePath, previewTemplate) {
+    let parser = this._getHandlebarsParser();
+    let template = parser.compile(previewTemplate);
+    let rendered = template({
+      designBaseUrl: '.',
+      bsi: this._getHandlebarsHelpers()
+    });
+    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, '.html');
+
+    this._emitAsset(previewHtmlPath, rendered);
+    this._deleteAsset(previewFilePath);
+  }
+
+  /**
+   * @param {string} fileName
+   * @returns {string}
+   */
+  _getTemplateFileExtension(fileName) {
+    if (/\.hbs\.twig$/.test(fileName)) {
+      return 'hbs';
+    }
+    if (/\.hbs$/.test(fileName)) {
+      return 'hbs';
+    }
+    return 'html';
+  }
+
+  /**
+   * @param {RegExp} nameRegEx
+   * @returns {string[]}
+   */
+  _getAssetNames(nameRegEx) {
+    /**
+     * @type {string[]}
+     */
+    let assetNames = Object.keys(this._compilation.assets);
+    return assetNames.filter(name => nameRegEx.test(name));
+  }
+
+  /**
+   * @param {RegExp} nameRegEx
+   * @returns {string}
+   */
+  _getAssetName(nameRegEx) {
+    return this._getAssetNames(nameRegEx).shift();
+  }
+
+  _eval(source) {
+    let script = new (external_vm_default()).Script(source);
+    let context = {module: {}};
+    script.runInNewContext(context);
+    return context.module.exports;
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {string} content
+   */
+  _updateAsset(filePath, content) {
+    let source = new external_webpack_namespaceObject.sources.RawSource(content);
+    this._compilation.updateAsset(filePath, source);
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} scope
+   * @returns {*}
+   */
+  _loadAsset(name, scope) {
+    let asset = this._compilation.getAsset(name);
+    let source = asset.source.source();
+    let sourceStr = utility_toString(source);
+    let script = new (external_vm_default()).Script(sourceStr);
+    let context = {self: {}};
+
+    script.runInNewContext(context);
+
+    return context[scope];
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {string} content
+   */
+  _emitAsset(filePath, content) {
+    let source = new external_webpack_namespaceObject.sources.RawSource(content);
+    this._compilation.emitAsset(filePath, source);
+  }
+
+  /**
+   * @param {string} filePath
+   */
+  _deleteAsset(filePath) {
+    this._compilation.deleteAsset(filePath);
+  }
+
+  /**
+   * @param {string} filePath
+   * @param {string} name
+   * @returns {string}
+   */
+  _updateHtmlTemplate(filePath, name) {
+    let templateObj = this._loadAsset(filePath, name);
+    let templateStr = this._eval(templateObj.content);
+
+    templateStr = templateStr.trim();
+    templateStr = this._handleStylesheets(templateStr);
+    templateStr = this._handleJavaScriptModules(templateStr);
+
+    this._updateAsset(filePath, templateStr);
+
+    return templateStr;
+  }
+
+  /**
+   * @param {string} content
+   * @returns {string}
+   */
+  _handleStylesheets(content) {
+    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
+
+    if (cssStylesFilename === undefined) {
+      return content;
+    }
+
+    let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
+    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/static/` : './static/';
+    let asset = this._compilation.getAsset(cssStylesFilename);
+    let source = asset.source.source()
       .trim()
-      .replace(/^\//, '');
+      .replace(/\n/g, '')
+      .replace(/\.\.\/static\//g, inlineSourceAssetsUrl);
+
+    content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
+    content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
+
+    return content;
   }
 
-  let pathSuffix = suffix ? path : '';
+  /**
+   * @param {string} content
+   * @returns {string}
+   */
+  _handleJavaScriptModules(content) {
+    let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
+    let importedModules = [];
 
-  if (config.targetVersion.legacyFormat && config.designType !== _design_type__WEBPACK_IMPORTED_MODULE_2__.WEBSITE) {
-    return '.' + pathSuffix;
-  } else {
-    return _constant__WEBPACK_IMPORTED_MODULE_3__/* .default.BSI_CX_DESIGN_BASE_URL */ .Z.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+    for (const match of jsModuleMatches) {
+      content = this._handleFoundJavaScriptModule(content, match, importedModules);
+    }
+
+    content = this._injectModuleRuntime(content);
+
+    return content;
+  }
+
+  _injectModuleRuntime(content) {
+    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
+
+    if (filename === undefined) {
+      return content;
+    }
+
+    let url = publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
+    let asset = this._compilation.getAsset(filename);
+    let source = asset.source.source()
+      .trim()
+      .replace(/\n/g, '');
+
+    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
+    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
+
+    return content;
+  }
+
+  /**
+   * @param {string} content
+   * @param {RegExpMatchArray} match
+   * @param {string[]} importedModules
+   * @returns {string}
+   */
+  _handleFoundJavaScriptModule(content, match, importedModules) {
+    /**
+     * @type {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}}
+     */
+    let metaInfo = JSON.parse(match.groups.metaInfo);
+    let strToReplace = match[0];
+    let replacement = '';
+
+    if (typeof metaInfo.module !== 'undefined') {
+      replacement = this._handleFoundJavaScriptModuleImport(metaInfo, importedModules);
+    } else if (typeof metaInfo.chunks !== 'undefined') {
+      replacement = this._handleFoundJavaScriptModuleChunks(metaInfo, importedModules);
+    }
+
+    return content.replace(strToReplace, replacement);
+  }
+
+  /**
+   * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
+   * @param {string[]} importedModules
+   * @returns {string}
+   */
+  _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
+    let module = metaInfo.module;
+    let inline = metaInfo.inline;
+    let moduleAssetRegex = new RegExp(`^modules\/${module}\-[0-9a-z]+\.js$`);
+    let moduleAssetPath = this._getAssetName(moduleAssetRegex);
+
+    if (!moduleAssetPath) {
+      throw this._webpackError(
+        `Module "${module}" does not exist.`,
+        `The module "${module}" does not exist. You need to include it in your modules configuration.`,
+        metaInfo.template
+      );
+    }
+
+    let replacement;
+
+    if (inline) {
+      let asset = this._compilation.getAsset(moduleAssetPath);
+      let source = asset.source.source();
+      replacement = utility_toString(source);
+    } else {
+      replacement = buildPublicPath(this._config, moduleAssetPath);
+    }
+
+    importedModules.push(moduleAssetPath);
+
+    return replacement;
+  }
+
+  /**
+   * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
+   * @param {string[]} importedModules
+   * @returns {string}
+   */
+  _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
+    let inline = metaInfo.inline;
+    let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
+    let assetPaths = this._getAssetNames(assetRegex);
+
+    return assetPaths
+      .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
+      .map(assetPath => {
+        importedModules.push(assetPath);
+        if (inline) {
+          let asset = this._compilation.getAsset(assetPath);
+          let source = asset.source.source();
+          let strSource = utility_toString(source);
+          // noinspection JSUnresolvedVariable
+          return `<script>${strSource}</script>`;
+        } else {
+          let url = buildPublicPath(this._config, assetPath);
+          return `<script src="${url}" defer="defer"></script>`;
+        }
+      }).join('');
+  }
+
+  /**
+   * @param {string} message
+   * @param {string} details
+   * @param {string|undefined} [location=undefined]
+   * @returns
+   */
+  _webpackError(message, details, location) {
+    let error = new lib_namespaceObject.WebpackError(message);
+    error.details = details;
+    if (!!location) {
+      error.loc = {
+        name: this._getContextRelativePath(location)
+      };
+    }
+    return error;
+  }
+
+  _getContextRelativePath(absolutePath) {
+    let contextPath = this._compiler.context;
+    let relativePath = external_path_default().relative(contextPath, absolutePath).replace(/\\/g, (external_path_default()).posix.sep);
+    return '.' + (external_path_default()).posix.sep + relativePath;
+  }
+
+  /**
+   * @param {string} content
+   * @returns {string}
+   */
+  _createContentHash(content) {
+    return (0,external_crypto_namespaceObject.createHash)('sha256')
+      .update(content)
+      .digest('hex')
+      .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
+  }
+
+  /**
+   * @returns {Handlebars}
+   */
+  _getHandlebarsParser() {
+    return external_handlebars_default().create();
+  }
+
+  /**
+   * @returns {{}}
+   */
+  _getHandlebarsHelpers() {
+    let helpersObj = {};
+    for (const [name, func] of Object.entries(handlebars_helpers)) {
+      let fixedName = name.replace(/^bsi\./, '');
+      helpersObj[fixedName] = func;
+    }
+    return helpersObj;
+  }
+
+  /**
+   * @param {string} url
+   * @returns {string}
+   */
+  _removeDesignBaseUrl(url) {
+    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
   }
 }
 
+class BsiCxWebpackPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxWebpackPlugin';
+
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: BsiCxWebpackPlugin.PLUGIN_NAME,
+          stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+        },
+        () => {
+          const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
+          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
+        })
+    });
+  }
+};
+
+;// CONCATENATED MODULE: ./src/file.js
+class File {
+  /**
+   * @type {string}
+   */
+  static DESIGN_JSON = 'design.json';
+  /**
+   * @type {string}
+   */
+  static DESIGN_JS = 'design.js';
+  /**
+   * @type {string}
+   */
+  static DESIGN_HTML = 'design.html';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
+  /**
+   * @type {string}
+   */
+  static DESIGN_PROPERTIES = 'design.properties';
+}
+
+;// CONCATENATED MODULE: ./src/java-property-file-builder.js
+class JavaPropertyFileBuilder {
+  constructor() {
+    this._properties = [];
+  }
+
+  /**
+   * @param {string} key
+   * @param {string} value
+   * @returns {JavaPropertyFileBuilder}
+   */
+  append(key, value) {
+    this._properties.push([key, value]);
+    return this;
+  }
+
+  /**
+   * @param {string} comment
+   * @returns {JavaPropertyFileBuilder}
+   */
+  appendComment(comment) {
+    this._properties.push(comment);
+    return this;
+  }
+
+  /**
+   * @param {string} section
+   * @return {JavaPropertyFileBuilder}
+   */
+  appendCommentSection(section) {
+    let border = '#'.repeat(section.length + 4);
+    let sectionComment = `# ${section} #`;
+
+    this.appendComment(border);
+    this.appendComment(sectionComment);
+    this.appendComment(border);
+
+    return this;
+  }
+
+  /**
+   * @returns {JavaPropertyFileBuilder}
+   */
+  appendBlank() {
+    this._properties.push('');
+    return this;
+  }
+
+  /**
+   * @returns {string}
+   */
+  build() {
+    return this._properties
+      .map(line => this._printLine(line))
+      .join('\n');
+  }
+
+  /**
+   * @param {string} line
+   * @returns {string}
+   */
+  _printLine(line) {
+    if (line instanceof Array) {
+      let [key, value] = line;
+      return this._escapeKey(key) + '=' + this._escapeValue(value);
+    } else {
+      return line;
+    }
+  }
+
+  /**
+   * @param {string} key
+   * @returns {string}
+   */
+  _escapeKey(key) {
+    return key;
+  }
+
+  /**
+   * @param {string} value
+   * @returns {string}
+   */
+  _escapeValue(value) {
+    return value;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/extractor.js
+
+
+
 /**
- * @param {*} obj
+ * @param {[string|number]} arr
  * @return {string}
  */
-function toString(obj) {
-  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
+function scalarArrayToList(arr) {
+  return arr.join(',');
 }
 
-
-/***/ }),
-
-/***/ 345:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Version": () => (/* binding */ Version),
-/* harmony export */   "STUDIO_1_0": () => (/* binding */ STUDIO_1_0),
-/* harmony export */   "STUDIO_1_1": () => (/* binding */ STUDIO_1_1),
-/* harmony export */   "STUDIO_1_2": () => (/* binding */ STUDIO_1_2),
-/* harmony export */   "CX_1_3": () => (/* binding */ CX_1_3),
-/* harmony export */   "CX_22_0": () => (/* binding */ CX_22_0)
-/* harmony export */ });
-/* harmony import */ var _design_type__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
-/* harmony import */ var _abstract_constant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(417);
-
-
+/**
+ * @template T
+ * @param {T} v
+ * @return {T}
+ */
+function identity(v) {
+  return v;
+}
 
 /**
- * @type {DesignType[]}
+ * @param {AbstractConstant} constant
+ * @return {string}
  */
-const LEGACY_TYPES = [
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.EMAIL
-];
+function constantObjectValue(constant) {
+  return constant.value;
+}
 
 /**
- * @type {DesignType[]}
+ * @param {AbstractBuilder} builder
+ * @return {{}}
  */
-const ALL_TYPES = [
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.LANDINGPAGE,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.EMAIL,
-  _design_type__WEBPACK_IMPORTED_MODULE_0__.WEBSITE
-];
+function builderObjectValue(builder) {
+  return builder.build();
+}
 
-class Version extends _abstract_constant__WEBPACK_IMPORTED_MODULE_1__/* .default */ .Z {
+;// CONCATENATED MODULE: ./src/legacy-design-property.js
+class LegacyDesignProperty {
   /**
-   *
+   * @type {string}
+   */
+  static TEMPLATE_NAME = 'template.name';
+  /**
+   * @type {string}
+   */
+  static TEMPLATE_AUTHOR = 'template.author';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _LABEL = 'label';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _DESCRIPTION = 'description';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _GROUP = 'group';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ELEMENT = 'element';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _PARTS = 'parts';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ICON = 'icon';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _STYLES = 'styles';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _STYLE = 'style';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _CLASS = 'class';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _HTML_EDITOR_CONFIG = 'html-editor-config';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FEATURES = 'features';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _TEXT_COLORS = 'text-colors';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _BACKGROUND_COLORS = 'background-colors';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FORMATS = 'formats';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FONT_SIZES = 'font-sizes';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FONT_SIZE_UNIT = 'font-size-unit';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _FONT_SIZE_DEFAULT = 'font-size-default';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _LINE_HEIGHTS = 'line-heights';
+  /**
+   * @type {string}
+   * @private
+   */
+  static _ENTER = 'enter';
+
+  /**
+   * @param {string} group
+   * @return {string}
+   */
+  static getContentElementGroupLabel(group) {
+    return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementLabel(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementDescription(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._DESCRIPTION;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementIcon(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._ICON;
+  }
+
+  /**
+   * @param {string} element
+   * @return {string}
+   */
+  static getContentElementStyles(element) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._STYLES;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static getContentElementPartLabel(element, part, index) {
+    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static getContentElementPartHtmlEditorConfig(element, part, index) {
+    return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._HTML_EDITOR_CONFIG;
+  }
+
+  /**
+   * @param {string} element
+   * @param {string} part
+   * @param {number} index
+   * @return {string}
+   */
+  static _getContentElementPart(element, part, index) {
+    return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._PARTS + '.' + part + '[' + index + ']';
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getStyleLabel(name) {
+    return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._LABEL;
+  }
+
+  /**
+   * @param {string} name
+   * @param {string} cssClass
+   * @return {string}
+   */
+  static getStyleClassLabel(name, cssClass) {
+    return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._CLASS + '.' + cssClass + '.' + LegacyDesignProperty._LABEL
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFeatures(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FEATURES;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigTextColors(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._TEXT_COLORS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigBackgroundColors(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._BACKGROUND_COLORS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFormats(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FORMATS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFontSizes(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZES;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFontSizeUnit(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_UNIT;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigFontSizeDefault(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_DEFAULT;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigLineHeights(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._LINE_HEIGHTS;
+  }
+
+  /**
+   * @param {string} name
+   * @return {string}
+   */
+  static getHtmlEditorConfigEnter(name) {
+    return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._ENTER;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
+
+
+
+
+
+
+
+
+
+
+
+class _BsiCxWebpackLegacyDesignPlugin {
+  /**
+   * @param {BuildConfig} config
+   * @param {Compiler} compiler
+   * @param {Compilation} compilation
+   * @param {WebpackLogger} logger
+   */
+  constructor(config, compiler, compilation, logger) {
+    /**
+     * @type {BuildConfig}
+     * @private
+     */
+    this._config = config;
+    /**
+     * @type {Compiler}
+     * @private
+     */
+    this._compiler = compiler;
+    /**
+     * @type {Compilation}
+     * @private
+     */
+    this._compilation = compilation;
+    /**
+     * @type {WebpackLogger}
+     * @private
+     */
+    this._logger = logger;
+  }
+
+  apply() {
+    try {
+      this._convertToLegacyFormat();
+    } catch (error) {
+      if (error instanceof lib_namespaceObject.WebpackError) {
+        this._compilation.errors.push(error);
+      } else {
+        this._logger.error(error);
+      }
+    }
+  }
+
+  /**
+   * @private
+   */
+  _convertToLegacyFormat() {
+    let designJson = this._getDesignJsonObject();
+
+    this._createAndEmitContentElementsHtml(designJson);
+    this._createAndEmitDesignProperties(designJson);
+  }
+
+  /**
+   * @return {{}}
+   * @private
+   */
+  _getDesignJsonObject() {
+    let asset = this._compilation.getAsset(File.DESIGN_JSON);
+
+    if (!asset) {
+      throw new Error(`The asset "${File.DESIGN_JSON}" does not exist.`);
+    }
+
+    let source = asset.source.source();
+    let sourceStr = utility_toString(source);
+    let json = JSON.parse(sourceStr);
+
+    if (!json) {
+      throw new Error('Unable to parse JSON.');
+    }
+
+    return json;
+  }
+
+  /**
+   * @param {{}} designJson
+   * @returns {string}
+   * @private
+   */
+  _createAndEmitContentElementsHtml(designJson) {
+    let contentElementGroups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+    let html = contentElementGroups
+      .map(group => this._renderContentElementsGroup(group))
+      .join('\n');
+
+    let source = new external_webpack_namespaceObject.sources.RawSource(html);
+
+    this._compilation.emitAsset(File.CONTENT_ELEMENTS_HTML, source);
+  }
+
+  /**
+   * @param {{}} group
+   * @returns {string}
+   * @private
+   */
+  _renderContentElementsGroup(group) {
+    let contentElements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+    let elements = contentElements
+      .map(element => this._renderContentElement(element))
+      .join('\n');
+    let groupId = group[DesignJsonProperty.GROUP_ID];
+
+    return `<div data-bsi-group="${groupId}">\n${elements}\n</div>`;
+  }
+
+  /**
+   * @param {{}} element
+   * @returns {string}
+   * @private
+   */
+  _renderContentElement(element) {
+    let asset = this._compilation.getAsset(element[DesignJsonProperty.FILE]);
+    let source = asset.source.source();
+
+    return source.trim();
+  }
+
+  /**
+   * @param {{}} designJson
+   * @private
+   */
+  _createAndEmitDesignProperties(designJson) {
+    let properties = new JavaPropertyFileBuilder();
+
+    this._appendMetaInfo(designJson, properties);
+    this._appendStyles(designJson, properties);
+    this._appendHtmlEditorConfigs(designJson, properties);
+    this._appendContentElementGroups(designJson, properties);
+    this._appendContentElements(designJson, properties);
+
+    let code = properties.build();
+    let source = new external_webpack_namespaceObject.sources.RawSource(code);
+
+    this._compilation.emitAsset(File.DESIGN_PROPERTIES, source);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendMetaInfo(designJson, properties) {
+    let title = designJson[DesignJsonProperty.TITLE];
+    let author = designJson[DesignJsonProperty.AUTHOR];
+
+    properties.appendCommentSection('Template');
+
+    properties.append(LegacyDesignProperty.TEMPLATE_NAME, title);
+    properties.append(LegacyDesignProperty.TEMPLATE_AUTHOR, author);
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendStyles(designJson, properties) {
+    let styleConfigs = designJson[DesignJsonProperty.STYLE_CONFIGS] || {};
+
+    properties.appendCommentSection('Content Element Styles');
+
+    for (let [style, config] of Object.entries(styleConfigs)) {
+      this._appendStyleConfig(style, config, properties);
+    }
+  }
+
+  /**
+   * @param {string} style
+   * @param {{}} config
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendStyleConfig(style, config, properties) {
+    /**
+     * @type {[{}]}
+     */
+    let cssClasses = config[DesignJsonProperty.CSS_CLASSES] || [];
+
+    this._appendStyleConfigLabel(style, config, properties);
+    cssClasses.forEach(cssClass => this._appendStyleConfigCssClass(style, cssClass, properties));
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {string} style
+   * @param {{}} config
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendStyleConfigLabel(style, config, properties) {
+    let key = LegacyDesignProperty.getStyleLabel(style);
+    let value = config[DesignJsonProperty.LABEL];
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {string} style
+   * @param {{}} styleConfig
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendStyleConfigCssClass(style, styleConfig, properties) {
+    let cssClass = styleConfig[DesignJsonProperty.CSS_CLASS];
+    let key = LegacyDesignProperty.getStyleClassLabel(style, cssClass);
+    let value = styleConfig[DesignJsonProperty.LABEL];
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendHtmlEditorConfigs(designJson, properties) {
+    let editorConfigs = designJson[DesignJsonProperty.HTML_EDITOR_CONFIGS] || {};
+
+    properties.appendCommentSection('HTML Editor Configs');
+
+    for (let [name, config] of Object.entries(editorConfigs)) {
+      this._appendHtmlEditorConfig(name, config, properties);
+    }
+  }
+
+  /**
+   * @param {string} name
+   * @param {{}} config
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendHtmlEditorConfig(name, config, properties) {
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FEATURES, LegacyDesignProperty.getHtmlEditorConfigFeatures, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.TEXT_COLORS, LegacyDesignProperty.getHtmlEditorConfigTextColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.BACKGROUND_COLORS, LegacyDesignProperty.getHtmlEditorConfigBackgroundColors, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FORMATS, LegacyDesignProperty.getHtmlEditorConfigFormats, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZES, LegacyDesignProperty.getHtmlEditorConfigFontSizes, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_UNIT, LegacyDesignProperty.getHtmlEditorConfigFontSizeUnit, identity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.FONT_SIZE_DEFAULT, LegacyDesignProperty.getHtmlEditorConfigFontSizeDefault, identity, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.LINE_HEIGHTS, LegacyDesignProperty.getHtmlEditorConfigLineHeights, scalarArrayToList, properties);
+    this._appendHtmlEditorConfigIfDefined(name, config, DesignJsonProperty.ENTER_MODE, LegacyDesignProperty.getHtmlEditorConfigEnter, identity, properties);
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {string} configName
+   * @param {{}} config
+   * @param {string} property
+   * @param {function(string):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendHtmlEditorConfigIfDefined(configName, config, property, labelGenerator, valueExtractor, properties) {
+    if (typeof config[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(configName);
+    let rawValue = config[property];
+    let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementGroups(designJson, properties) {
+    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+
+    properties.appendCommentSection('Content Element Groups');
+
+    groups.forEach(group => this._appendContentElementGroup(group, properties));
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} group
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementGroup(group, properties) {
+    let groupId = group[DesignJsonProperty.GROUP_ID];
+    let key = LegacyDesignProperty.getContentElementGroupLabel(groupId);
+    let value = group[DesignJsonProperty.LABEL];
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} designJson
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElements(designJson, properties) {
+    let groups = designJson[DesignJsonProperty.CONTENT_ELEMENT_GROUPS];
+
+    properties.appendCommentSection('Content Elements');
+
+    groups.forEach(group => this._appendContentElementsFromGroup(group, properties));
+  }
+
+  /**
+   * @param {{}} group
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementsFromGroup(group, properties) {
+    let elements = group[DesignJsonProperty.CONTENT_ELEMENTS];
+
+    elements.forEach(element => this._appendContentElement(element, properties));
+  }
+
+  /**
+   * @param {{}} element
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElement(element, properties) {
+    let elementId = element[DesignJsonProperty.ELEMENT_ID];
+    let parts = element[DesignJsonProperty.PARTS];
+    let indexMap = new Map();
+
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.LABEL, LegacyDesignProperty.getContentElementLabel, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.DESCRIPTION, LegacyDesignProperty.getContentElementDescription, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.ICON, LegacyDesignProperty.getContentElementIcon, identity, properties);
+    this._appendContentElementPropertyIfDefined(element, elementId, DesignJsonProperty.STYLE_CONFIGS, LegacyDesignProperty.getContentElementStyles, scalarArrayToList, properties);
+
+    parts.forEach(part => this._appendContentElementPart(part, indexMap, elementId, properties));
+
+    properties.appendBlank();
+  }
+
+  /**
+   * @param {{}} element
+   * @param {string} elementId
+   * @param {string} property
+   * @param {function(string):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPropertyIfDefined(element, elementId, property, labelGenerator, valueExtractor, properties) {
+    if (typeof element[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(elementId);
+    let rawValue = element[property];
+    let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
+  }
+
+  /**
+   * @param {{}} part
+   * @param {Map<string,number>} indexMap
+   * @param {string} elementId
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPart(part, indexMap, elementId, properties) {
+    let type = part[DesignJsonProperty.PART_ID];
+    let index = indexMap.get(type) || 0;
+
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.LABEL, elementId, type, index, LegacyDesignProperty.getContentElementPartLabel, identity, properties);
+    this._appendContentElementPartPropertyIfDefined(part, DesignJsonProperty.HTML_EDITOR_CONFIG, elementId, type, index, LegacyDesignProperty.getContentElementPartHtmlEditorConfig, identity, properties);
+
+    indexMap.set(type, index + 1);
+  }
+
+  /**
+   * @param {{}} part
+   * @param {string} property
+   * @param {string} elementId
+   * @param {string} type
+   * @param {number} index
+   * @param {function(string,string,number):string} labelGenerator
+   * @param {function(*):string|number} valueExtractor
+   * @param {JavaPropertyFileBuilder} properties
+   * @private
+   */
+  _appendContentElementPartPropertyIfDefined(part, property, elementId, type, index, labelGenerator, valueExtractor, properties) {
+    if (typeof part[property] === 'undefined') {
+      return;
+    }
+
+    let key = labelGenerator(elementId, type, index);
+    let rawValue = part[property];
+    let value = valueExtractor(rawValue);
+
+    properties.append(key, value);
+  }
+}
+
+class BsiCxWebpackLegacyDesignPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxWebpackLegacyDesignPlugin';
+
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME, compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME,
+          stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
+        },
+        () => {
+          const logger = compilation.getLogger(BsiCxWebpackLegacyDesignPlugin.PLUGIN_NAME);
+          new _BsiCxWebpackLegacyDesignPlugin(this._config, compiler, compilation, logger).apply();
+        })
+    });
+  }
+};
+
+;// CONCATENATED MODULE: external "fast-glob"
+const external_fast_glob_namespaceObject = require("fast-glob");
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
+
+
+
+
+
+
+
+
+class BsiCxWebpackZipHashPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxWebpackZipHashPlugin';
+
+  /**
+   * @param {string} name
    * @param {string} version
-   * @param {DesignType[]} allowedTypes
-   * @param {boolean} legacyFormat
+   * @param {boolean} enabled
    */
-  constructor(version, allowedTypes, legacyFormat) {
-    super(version);
-    this._allowedTypes = allowedTypes;
-    this._legacyFormat = legacyFormat;
+  constructor(name, version, enabled) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._name = name;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._version = version;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._enabled = !!enabled;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._prodZipFileName = getZipArchiveName(name, version);
+    /**
+     * @type {string}
+     * @private
+     */
+    this._devZipFileName = getZipArchiveName(name, version, 'dev');
   }
 
   /**
-   * @returns {DesignType[]}
+   * @param {Compilation} compilation
+   * @param {Asset} asset
    */
-  get allowedTypes() {
-    return this._allowedTypes;
+  _handleZipAsset(compilation, asset) {
+    let oldAssetName = asset.name;
+    let source = asset.source;
+    /**
+     * @type {Buffer}
+     */
+    let sourceBuffer = source.buffer();
+    let hash = (0,external_crypto_namespaceObject.createHash)('sha256')
+      .update(sourceBuffer)
+      .digest('hex')
+      .substr(0, 5);
+    let newAssetName = oldAssetName.replace(/\.zip$/, `-${hash}.zip`);
+
+    compilation.deleteAsset(oldAssetName);
+    compilation.emitAsset(newAssetName, source);
   }
 
   /**
-   * @returns {boolean}
+   * @param {Compiler} compiler
+   * @private
    */
-  get legacyFormat() {
-    return this._legacyFormat;
+  _removeOldZipAssets(compiler) {
+    let pattern = getZipArchiveName(this._name, this._version, '*');
+
+    let zipFilesToRemove = (0,external_fast_glob_namespaceObject.sync)(pattern, {
+      cwd: compiler.outputPath,
+      absolute: true,
+      onlyFiles: true
+    });
+
+    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxWebpackZipHashPlugin.PLUGIN_NAME, compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: BsiCxWebpackZipHashPlugin.PLUGIN_NAME,
+          stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER
+        },
+        () => {
+          if (!this._enabled) {
+            return;
+          }
+
+          this._removeOldZipAssets(compiler);
+
+          Object.keys(compilation.assets)
+            .filter(name => name === this._prodZipFileName || name === this._devZipFileName)
+            .map(name => compilation.getAsset(name))
+            .forEach(asset => this._handleZipAsset(compilation, asset));
+        })
+    });
+  }
+};
+
+;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class WebpackConfigBuilder {
+  /**
+   * @param {BuildConfig} config
+   */
+  constructor(config) {
+    this._config = config;
+  }
+
+  /**
+   * @returns {BuildConfig}
+   */
+  get config() {
+    return this._config;
+  }
+
+  build() {
+    return {
+      entry: this._getEntryConfig(),
+      name: this.config.name,
+      context: this.config.rootPath,
+      target: 'web',
+      module: {
+        rules: [
+          ...this._getTwigRuleConfig(),
+          ...this._getHtmlAndHbsRuleConfig(),
+          ...this._getStyleRulesConfig(),
+          ...this._getStaticAssetsRuleConfig(),
+          ...this._getStaticJavaScriptFileRuleConfig(),
+          ...this._getRegularJavaScriptFileRuleConfig()
+        ]
+      },
+      plugins: [
+        ...this._getMiniCssExtractPluginConfig(),
+        ...this._getCopyPluginConfig(),
+        ...this._getBsiCxWebpackPluginConfig(),
+        ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
+        ...this._getZipPluginConfig(),
+      ],
+      devtool: this._getDevToolConfig(),
+      devServer: this._getDevServerConfig(),
+      stats: this._getStatsConfig(),
+      performance: this._getPerformanceConfig(),
+      optimization: {
+        minimize: true,
+        minimizer: this._getOptimizationMinimizerConfig(),
+        splitChunks: {
+          chunks: 'all',
+          name: this._getOptimizationSplitChunksNameConfig(),
+          cacheGroups: {
+            ...this._getOptimizationCacheGroupsConfig(),
+          }
+        }
+      },
+      output: this._getOutputConfig()
+    };
+  }
+
+  /**
+   * The default output path: dist/{name}
+   *
+   * @returns {string}
+   * @private
+   */
+  _getDefaultOutputPath() {
+    return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
+  }
+
+  /**
+   * The output path to use.
+   *
+   * @returns {string}
+   */
+  _getOutputPath() {
+    return this.config.outputPath || this._getDefaultOutputPath();
+  }
+
+  /**
+   * The default modules path: ./modules
+   *
+   * @returns {string}
+   */
+  _getDefaultModulesRootPath() {
+    return external_path_default().resolve(this.config.rootPath, 'modules');
+  }
+
+  /**
+   * The modules path to use.
+   *
+   * @returns {string}
+   */
+  _getModulesRootPath() {
+    return this.config.modulesRootPath || this._getDefaultModulesRootPath();
+  }
+
+  /**
+   * The entry configuration.
+   *
+   * @returns {{}}
+   */
+  _getEntryConfig() {
+    return {
+      ...this._getJavaScriptModuleEntries(),
+      json: {
+        import: this._getDesignJsFilePath(),
+        filename: File.DESIGN_JSON,
+        library: {
+          type: 'var',
+          name: 'json'
+        }
+      },
+      design: this._evaluateEntryTemplate('design'),
+      preview: this._evaluateEntryTemplate('preview')
+    };
+  }
+
+  /**
+   * Get the entry configuration for a template.
+   *
+   * @param {string} name
+   * @returns {{}}
+   */
+  _evaluateEntryTemplate(name) {
+    let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
+    let hbsFilePath = external_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
+    let isTwig = external_fs_default().existsSync(twigFilePath);
+    let extension = isTwig ? 'html' : 'hbs';
+    return {
+      import: isTwig ? twigFilePath : hbsFilePath,
+      filename: `${name}.${extension}`
+    };
+  }
+
+  _getDesignJsFilePath() {
+    return external_path_default().resolve(this.config.rootPath, File.DESIGN_JS);
+  }
+
+  /**
+   * Get the entry configurations for the Java Script modules.
+   *
+   * @returns {[{}]}
+   */
+  _getJavaScriptModuleEntries() {
+    let entries = {};
+    for (const [name, filePath] of Object.entries(this.config.modules)) {
+      entries[name] = {
+        import: external_path_default().resolve(filePath),
+        filename: 'modules/[name]-[contenthash].js',
+        runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
+      };
+    }
+    return entries;
+  }
+
+  /**
+   * Rules for Twig file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getTwigRuleConfig() {
+    return [
+      {
+        test: /\.twig$/i,
+        use: [
+          this._getTemplateLoader(),
+          'ref-loader',
+          {
+            loader: 'twing-loader',
+            options: {
+              environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
+              renderContext: {
+                properties: this.config.properties,
+                designBaseUrl: buildPublicPath(this.config)
+              }
+            }
+          }
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Rule for HTML and Handlebars file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getHtmlAndHbsRuleConfig() {
+    return [
+      {
+        test: /\.(html|hbs)$/i,
+        use: [
+          this._getTemplateLoader(),
+          'ref-loader',
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Rules for LESS, SASS/SCSS and CSS file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getStyleRulesConfig() {
+    return [
+      {
+        test: /\.less$/i,
+        use: [
+          ...this._getCssLoaderChain(),
+          {
+            loader: 'less-loader',
+          }
+        ]
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          ...this._getCssLoaderChain(),
+          {
+            loader: 'sass-loader',
+          }
+        ]
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          ...this._getCssLoaderChain()
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Get all file extensions that should be handled as static assets (e.g. images and fonts).
+   *
+   * @returns {[string]}
+   */
+  _getStaticAssetFileExtensions() {
+    return [
+      'png',
+      'apng',
+      'jpg',
+      'jpeg',
+      'webp',
+      'gif',
+      'bmp',
+      'tiff',
+      'raw',
+      'svg',
+      'eot',
+      'ttf',
+      'woff',
+      'woff2'
+    ];
+  }
+
+  /**
+   * Rule for static assets handling.
+   *
+   * @returns {[{}]}
+   */
+  _getStaticAssetsRuleConfig() {
+    let fileExtensions = this._getStaticAssetFileExtensions().join('|');
+    let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
+
+    return [
+      {
+        test: testRegex,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[name]-[contenthash][ext]'
+        }
+      }
+    ];
+  }
+
+  /**
+   * Rule for static Java Script file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getStaticJavaScriptFileRuleConfig() {
+    return [
+      {
+        resource: (file) => StaticJavaScriptCondition.test(this.config.rootPath, file),
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[name]-[contenthash][ext]'
+        }
+      }
+    ];
+  }
+
+  /**
+   * Rule for regular Java Script file handling.
+   *
+   * @returns {[{}]}
+   */
+  _getRegularJavaScriptFileRuleConfig() {
+    return [
+      {
+        test: /\.m?js$/i,
+        exclude: /(node_modules|bower_components)/,
+        include: this._getModulesRootPath(),
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-transform-runtime'],
+            cacheDirectory: true
+          }
+        }
+      }
+    ];
+  }
+
+  /**
+   * @returns {string}
+   */
+  _getTemplateLoader() {
+    return `${package_namespaceObject.u2}/dist/template-loader`;
+  }
+
+  /**
+   * @returns {[{}]}
+   */
+  _getCssLoaderChain() {
+    return [
+      {
+        loader: (external_mini_css_extract_plugin_default()).loader,
+        options: {
+          publicPath: '../'
+        }
+      },
+      {
+        loader: 'css-loader'
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          postcssOptions: {
+            plugins: [
+              'postcss-preset-env',
+              'cssnano'
+            ]
+          }
+        }
+      }
+    ];
+  }
+
+  /**
+   * Mini CSS extract plugin configuration.
+   *
+   * @returns {[MiniCssExtractPlugin]}
+   */
+  _getMiniCssExtractPluginConfig() {
+    return [
+      new (external_mini_css_extract_plugin_default())({
+        filename: 'static/styles-[contenthash].css',
+      })
+    ];
+  }
+
+  /**
+   * Copy plugin configuration.
+   *
+   * @returns {[CopyPlugin]}
+   */
+  _getCopyPluginConfig() {
+    return [
+      new (external_copy_webpack_plugin_default())({
+        patterns: [
+          {
+            from: 'assets/**/*',
+            globOptions: {
+              dot: true,
+              ignore: ['**/.gitkeep', '**/.gitignore']
+            },
+            noErrorOnMissing: true,
+            info: {
+              minimized: true
+            },
+          },
+          ...this.config.additionalFilesToCopy
+        ]
+      })
+    ];
+  }
+
+  /**
+   * BSI CX Webpack plugin.
+   *
+   * @returns {[BsiCxWebpackPlugin]}
+   */
+  _getBsiCxWebpackPluginConfig() {
+    return [
+      new BsiCxWebpackPlugin(this.config)
+    ];
+  }
+
+  /**
+   * Webpack ZIP plugin configuration.
+   *
+   * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+   */
+  _getZipPluginConfig() {
+    /**
+     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+     */
+    let plugins = [
+      new (external_zip_webpack_plugin_default())({
+        filename: getZipArchiveName(this.config.name, this.config.version),
+        exclude: [/\.map$/]
+      })
+    ];
+
+    if (this.config.sourceMapEnabled) {
+      plugins.push(
+        new (external_zip_webpack_plugin_default())({
+          filename: getZipArchiveName(this.config.name, this.config.version, 'dev'),
+        })
+      );
+    }
+
+    plugins.push(
+      new BsiCxWebpackZipHashPlugin(this.config.name, this.config.version, this.config.hashZipFiles)
+    );
+
+    return plugins;
+  }
+
+  /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   */
+  _getBsiCxWebpackLegacyDesignPluginConfig() {
+    let plugins = [];
+    if (this.config.targetVersion.legacyFormat) {
+      plugins.push(
+        new BsiCxWebpackLegacyDesignPlugin(this.config)
+      );
+    }
+    return plugins;
+  }
+
+  /**
+   * The dev tool configuration.
+   *
+   * @returns {string|boolean}
+   */
+  _getDevToolConfig() {
+    return this.config.sourceMapEnabled ? 'source-map' : false;
+  }
+
+  /**
+   * Development server configuration.
+   *
+   * @returns {{}}
+   */
+  _getDevServerConfig() {
+    let outputPath = this._getOutputPath();
+    let contentBase = outputPath === this._getDefaultOutputPath() ? external_path_default().resolve(outputPath, '..') : process.cwd();
+    let zipRegEx = /\.zip$/i;
+
+    return {
+      port: this.config.devServerPort,
+      contentBase: contentBase,
+      publicPath: '/',
+      compress: true,
+      writeToDisk: filePath => zipRegEx.test(filePath),
+      inline: false
+    };
+  }
+
+  /**
+   * The stats configuration.
+   *
+   * @returns {{}}
+   */
+  _getStatsConfig() {
+    return {
+      children: false,
+      errorDetails: true,
+    };
+  }
+
+  /**
+   * The performance configuration.
+   *
+   * @returns {{}}
+   */
+  _getPerformanceConfig() {
+    let excludedAssets = [
+      File.DESIGN_JSON,
+    ];
+    let excludedExtensions = /\.(map|zip|html|hbs)$/;
+
+    return {
+      assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
+      hints: 'warning'
+    };
+  }
+
+  /**
+   * The minimizer configuration.
+   *
+   * @returns {[TerserPlugin]}
+   */
+  _getOptimizationMinimizerConfig() {
+    return [
+      new (external_terser_webpack_plugin_default())({
+        extractComments: false
+      })
+    ];
+  }
+
+  /**
+   * The split chunks name configuration.
+   *
+   * @returns {function}
+   */
+  _getOptimizationSplitChunksNameConfig() {
+    return (module, _, cacheGroupKey) => {
+      return cacheGroupKey !== 'vendors' ? false : (module.rawRequest || false);
+    };
+  }
+
+  /**
+   * The chache groups configuration.
+   *
+   * @returns {{}}
+   */
+  _getOptimizationCacheGroupsConfig() {
+    return {
+      vendors: {
+        test: /[\\/]node_modules[\\/]/,
+        priority: 10,
+        reuseExistingChunk: true,
+        filename: 'vendors/[name]-[chunkhash].js'
+      },
+      styles: {
+        name: 'styles',
+        type: 'css/mini-extract',
+        chunks: 'all',
+        priority: 20,
+        enforce: true,
+      }
+    };
+  }
+
+  /**
+   * The output configuration.
+   *
+   * @returns {{}}
+   */
+  _getOutputConfig() {
+    return {
+      path: this._getOutputPath(),
+      publicPath: buildPublicPath(this.config, '/'),
+      clean: true,
+      library: {
+        type: 'var',
+        name: '[name]'
+      }
+    };
+  }
+
+  /**
+   * Build the configuration for webpack from {@link BuildConfig} objects.
+   *
+   * @param  {...BuildConfig} configs
+   */
+  static fromConfigs(...configs) {
+    let devServerPort = undefined;
+
+    return configs
+      .map(config => config.validate())
+      .map(config => new WebpackConfigBuilder(config))
+      .map(config => config.build())
+      .map((config, index) => {
+        if (index === 0) {
+          devServerPort = config.devServer.port;
+        } else if (config.devServer.port === devServerPort) {
+          delete config.devServer;
+        }
+        return config;
+      });
   }
 }
 
-/**
- * @type {Version}
- */
-const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_1_3 = new Version('1.3', ALL_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_22_0 = new Version('22.0', ALL_TYPES, false);
+;// CONCATENATED MODULE: ./export/main.js
 
 
-/***/ }),
 
-/***/ 373:
-/***/ ((module) => {
 
-module.exports = require("crypto");
 
-/***/ }),
 
-/***/ 622:
-/***/ ((module) => {
 
-module.exports = require("path");
 
-/***/ }),
 
-/***/ 78:
-/***/ ((module) => {
 
-module.exports = require("webpack");
 
-/***/ }),
 
-/***/ 73:
-/***/ ((module) => {
-
-module.exports = require("webpack/lib");
 
 /***/ })
 
 /******/ 	});
 /************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -3162,21 +3086,6 @@ module.exports = require("webpack/lib");
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -3198,7 +3107,8 @@ module.exports = require("webpack/lib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(221);
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__[779](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
