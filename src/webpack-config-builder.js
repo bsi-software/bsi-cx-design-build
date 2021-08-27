@@ -18,9 +18,24 @@ import BuildConfig from './build-config';
 
 export default class WebpackConfigBuilder {
   /**
+   * @type {string}
+   */
+  static DESIGN_LAYER = 'design';
+
+  /**
+   * @type {BuildConfig}
+   * @private
+   */
+  _config = undefined;
+
+  /**
    * @param {BuildConfig} config
    */
   constructor(config) {
+    /**
+     * @type {BuildConfig}
+     * @private
+     */
     this._config = config;
   }
 
@@ -69,7 +84,10 @@ export default class WebpackConfigBuilder {
           }
         }
       },
-      output: this._getOutputConfig()
+      output: this._getOutputConfig(),
+      experiments: {
+        layers: true
+      }
     };
   }
 
@@ -121,6 +139,7 @@ export default class WebpackConfigBuilder {
       json: {
         import: this._getDesignJsFilePath(),
         filename: File.DESIGN_JSON,
+        layer: WebpackConfigBuilder.DESIGN_LAYER,
         library: {
           type: 'var',
           name: 'json'
@@ -557,11 +576,21 @@ export default class WebpackConfigBuilder {
         reuseExistingChunk: true,
         filename: 'vendors/[name]-[chunkhash].js'
       },
+      design: {
+        test: module => {
+          return module.layer === WebpackConfigBuilder.DESIGN_LAYER;
+        },
+        priority: 20,
+        reuseExistingChunk: false,
+        chunks: 'all',
+        enforce: true,
+        filename: File.DESIGN_JSON_CHUNK
+      },
       styles: {
         name: 'styles',
         type: 'css/mini-extract',
         chunks: 'all',
-        priority: 20,
+        priority: 30,
         enforce: true,
       }
     };

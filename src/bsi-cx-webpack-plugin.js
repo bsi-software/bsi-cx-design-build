@@ -9,15 +9,20 @@ import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 import BuildConfig from './build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
-import {buildPublicPath, toString} from './utility';
+import {buildPublicPath, escapeRegex, toString} from './utility';
 import DesignJsonProperty from './design-json-property';
 import BuilderObjectNormalizer from './builder-object-normalizer';
+import File from './file';
 
 class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static DESIGN_JSON = /^design\.json$/;
+  static DESIGN_JSON = new RegExp('^' + escapeRegex(File.DESIGN_JSON) + '$');
+  /**
+   * @type {RegExp}
+   */
+  static DESIGN_JSON_CHUNK = new RegExp('^' + escapeRegex(File.DESIGN_JSON_CHUNK) + '$');
   /**
    * @type {RegExp}
    */
@@ -134,10 +139,11 @@ class _BsiCxWebpackPlugin {
 
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     /**
      * @type {*}
      */
-    let designJson = this._loadAsset(designJsonPath, 'json');
+    let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
     /**
      * @type {{}}
      */
@@ -157,6 +163,7 @@ class _BsiCxWebpackPlugin {
 
     let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
+    this._deleteAsset(designJsonChunkPath);
   }
 
   _handleDesignPreviewImage(designJsonObj) {
@@ -268,18 +275,24 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} name
    * @param {string} scope
+   * @param {string} assetNames
    * @returns {*}
    */
-  _loadAsset(name, scope) {
-    let asset = this._compilation.getAsset(name);
-    let source = asset.source.source();
-    let sourceStr = toString(source);
-    let script = new vm.Script(sourceStr);
+  _loadAssets(scope, ...assetNames) {
     let context = {self: {}};
 
-    script.runInNewContext(context);
+    for (let assetName of assetNames) {
+      let assetFilename = path.resolve(this._compiler.outputPath, assetName);
+      let asset = this._compilation.getAsset(assetName);
+      let source = asset.source.source();
+      let code = toString(source);
+      let script = new vm.Script(code, {
+        filename: assetFilename
+      });
+
+      script.runInNewContext(context);
+    }
 
     return context[scope];
   }
@@ -306,7 +319,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _updateHtmlTemplate(filePath, name) {
-    let templateObj = this._loadAsset(filePath, name);
+    let templateObj = this._loadAssets(name, filePath);
     let templateStr = this._eval(templateObj.content);
 
     templateStr = templateStr.trim();

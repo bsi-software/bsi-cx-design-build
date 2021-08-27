@@ -73,3 +73,13 @@ export function buildPublicPath(config, suffix) {
 export function toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
 }
+
+/**
+ * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+ * @param {string} input
+ * @return {string}
+ */
+export function escapeRegex(input) {
+  let pattern = /[-\/\\^$*+?.()|[\]{}]/g
+  return input.replace(pattern, '\\$&');
+}

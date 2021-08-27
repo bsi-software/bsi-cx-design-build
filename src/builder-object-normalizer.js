@@ -55,7 +55,7 @@ export default class BuilderObjectNormalizer {
 
   /**
    * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
-   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAsset}.
+   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
    * Such values cannot be checked with instanceof.
    *
    * @param {*} obj

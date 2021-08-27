@@ -682,6 +682,16 @@ function utility_toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
 }
 
+/**
+ * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+ * @param {string} input
+ * @return {string}
+ */
+function escapeRegex(input) {
+  let pattern = /[-\/\\^$*+?.()|[\]{}]/g
+  return input.replace(pattern, '\\$&');
+}
+
 ;// CONCATENATED MODULE: ./src/design-json-property.js
 class DesignJsonProperty {
   /**
@@ -896,7 +906,7 @@ class BuilderObjectNormalizer {
 
   /**
    * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
-   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAsset}.
+   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
    * Such values cannot be checked with instanceof.
    *
    * @param {*} obj
@@ -907,7 +917,36 @@ class BuilderObjectNormalizer {
   }
 }
 
+;// CONCATENATED MODULE: ./src/file.js
+class File {
+  /**
+   * @type {string}
+   */
+  static DESIGN_JSON = 'design.json';
+  /**
+   * @type {string}
+   */
+  static DESIGN_JSON_CHUNK = 'design.json.chunk';
+  /**
+   * @type {string}
+   */
+  static DESIGN_JS = 'design.js';
+  /**
+   * @type {string}
+   */
+  static DESIGN_HTML = 'design.html';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
+  /**
+   * @type {string}
+   */
+  static DESIGN_PROPERTIES = 'design.properties';
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+
 
 
 
@@ -927,7 +966,11 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static DESIGN_JSON = /^design\.json$/;
+  static DESIGN_JSON = new RegExp('^' + escapeRegex(File.DESIGN_JSON) + '$');
+  /**
+   * @type {RegExp}
+   */
+  static DESIGN_JSON_CHUNK = new RegExp('^' + escapeRegex(File.DESIGN_JSON_CHUNK) + '$');
   /**
    * @type {RegExp}
    */
@@ -1044,10 +1087,11 @@ class _BsiCxWebpackPlugin {
 
   _exportDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     /**
      * @type {*}
      */
-    let designJson = this._loadAsset(designJsonPath, 'json');
+    let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
     /**
      * @type {{}}
      */
@@ -1067,6 +1111,7 @@ class _BsiCxWebpackPlugin {
 
     let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
+    this._deleteAsset(designJsonChunkPath);
   }
 
   _handleDesignPreviewImage(designJsonObj) {
@@ -1178,18 +1223,24 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {string} name
    * @param {string} scope
+   * @param {string} assetNames
    * @returns {*}
    */
-  _loadAsset(name, scope) {
-    let asset = this._compilation.getAsset(name);
-    let source = asset.source.source();
-    let sourceStr = utility_toString(source);
-    let script = new (external_vm_default()).Script(sourceStr);
+  _loadAssets(scope, ...assetNames) {
     let context = {self: {}};
 
-    script.runInNewContext(context);
+    for (let assetName of assetNames) {
+      let assetFilename = external_path_default().resolve(this._compiler.outputPath, assetName);
+      let asset = this._compilation.getAsset(assetName);
+      let source = asset.source.source();
+      let code = utility_toString(source);
+      let script = new (external_vm_default()).Script(code, {
+        filename: assetFilename
+      });
+
+      script.runInNewContext(context);
+    }
 
     return context[scope];
   }
@@ -1216,7 +1267,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _updateHtmlTemplate(filePath, name) {
-    let templateObj = this._loadAsset(filePath, name);
+    let templateObj = this._loadAssets(name, filePath);
     let templateStr = this._eval(templateObj.content);
 
     templateStr = templateStr.trim();
@@ -1464,30 +1515,6 @@ class BsiCxWebpackPlugin {
     });
   }
 };
-
-;// CONCATENATED MODULE: ./src/file.js
-class File {
-  /**
-   * @type {string}
-   */
-  static DESIGN_JSON = 'design.json';
-  /**
-   * @type {string}
-   */
-  static DESIGN_JS = 'design.js';
-  /**
-   * @type {string}
-   */
-  static DESIGN_HTML = 'design.html';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS_HTML = 'content-elements.html';
-  /**
-   * @type {string}
-   */
-  static DESIGN_PROPERTIES = 'design.properties';
-}
 
 ;// CONCATENATED MODULE: ./src/java-property-file-builder.js
 class JavaPropertyFileBuilder {
@@ -2451,9 +2478,24 @@ class BsiCxWebpackZipHashPlugin {
 
 class WebpackConfigBuilder {
   /**
+   * @type {string}
+   */
+  static DESIGN_LAYER = 'design';
+
+  /**
+   * @type {BuildConfig}
+   * @private
+   */
+  _config = undefined;
+
+  /**
    * @param {BuildConfig} config
    */
   constructor(config) {
+    /**
+     * @type {BuildConfig}
+     * @private
+     */
     this._config = config;
   }
 
@@ -2502,7 +2544,10 @@ class WebpackConfigBuilder {
           }
         }
       },
-      output: this._getOutputConfig()
+      output: this._getOutputConfig(),
+      experiments: {
+        layers: true
+      }
     };
   }
 
@@ -2554,6 +2599,7 @@ class WebpackConfigBuilder {
       json: {
         import: this._getDesignJsFilePath(),
         filename: File.DESIGN_JSON,
+        layer: WebpackConfigBuilder.DESIGN_LAYER,
         library: {
           type: 'var',
           name: 'json'
@@ -2990,11 +3036,21 @@ class WebpackConfigBuilder {
         reuseExistingChunk: true,
         filename: 'vendors/[name]-[chunkhash].js'
       },
+      design: {
+        test: module => {
+          return module.layer === WebpackConfigBuilder.DESIGN_LAYER;
+        },
+        priority: 20,
+        reuseExistingChunk: false,
+        chunks: 'all',
+        enforce: true,
+        filename: File.DESIGN_JSON_CHUNK
+      },
       styles: {
         name: 'styles',
         type: 'css/mini-extract',
         chunks: 'all',
-        priority: 20,
+        priority: 30,
         enforce: true,
       }
     };

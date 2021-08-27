@@ -373,6 +373,12 @@ declare module "src/utility" {
      * @return {string}
      */
     export function toString(obj: any): string;
+    /**
+     * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+     * @param {string} input
+     * @return {string}
+     */
+    export function escapeRegex(input: string): string;
     export class StaticJavaScriptCondition {
         /**
          * @type {RegExp}
@@ -553,7 +559,7 @@ declare module "src/builder-object-normalizer" {
     export default class BuilderObjectNormalizer {
         /**
          * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
-         * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAsset}.
+         * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
          * Such values cannot be checked with instanceof.
          *
          * @param {*} obj
@@ -580,27 +586,16 @@ declare module "src/builder-object-normalizer" {
         private _normalizeObject;
     }
 }
-declare module "src/bsi-cx-webpack-plugin" {
-    export default class BsiCxWebpackPlugin {
-        /**
-         * @type {string}
-         */
-        static PLUGIN_NAME: string;
-        /**
-         * @param {BuildConfig} config
-         */
-        constructor(config: BuildConfig);
-        _config: BuildConfig;
-        apply(compiler: any): void;
-    }
-    import BuildConfig from "src/build-config";
-}
 declare module "src/file" {
     export default class File {
         /**
          * @type {string}
          */
         static DESIGN_JSON: string;
+        /**
+         * @type {string}
+         */
+        static DESIGN_JSON_CHUNK: string;
         /**
          * @type {string}
          */
@@ -618,6 +613,21 @@ declare module "src/file" {
          */
         static DESIGN_PROPERTIES: string;
     }
+}
+declare module "src/bsi-cx-webpack-plugin" {
+    export default class BsiCxWebpackPlugin {
+        /**
+         * @type {string}
+         */
+        static PLUGIN_NAME: string;
+        /**
+         * @param {BuildConfig} config
+         */
+        constructor(config: BuildConfig);
+        _config: BuildConfig;
+        apply(compiler: any): void;
+    }
+    import BuildConfig from "src/build-config";
 }
 declare module "src/java-property-file-builder" {
     export default class JavaPropertyFileBuilder {
@@ -1003,6 +1013,10 @@ declare module "src/bsi-cx-webpack-zip-hash-plugin" {
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {
         /**
+         * @type {string}
+         */
+        static DESIGN_LAYER: string;
+        /**
          * Build the configuration for webpack from {@link BuildConfig} objects.
          *
          * @param  {...BuildConfig} configs
@@ -1030,12 +1044,19 @@ declare module "src/webpack-config-builder" {
                 };
             };
             output: {};
+            experiments: {
+                layers: boolean;
+            };
         }[];
         /**
          * @param {BuildConfig} config
          */
         constructor(config: BuildConfig);
-        _config: BuildConfig;
+        /**
+         * @type {BuildConfig}
+         * @private
+         */
+        private _config;
         /**
          * @returns {BuildConfig}
          */
@@ -1063,6 +1084,9 @@ declare module "src/webpack-config-builder" {
                 };
             };
             output: {};
+            experiments: {
+                layers: boolean;
+            };
         };
         /**
          * The default output path: dist/{name}

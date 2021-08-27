@@ -6,6 +6,10 @@ export default class File {
   /**
    * @type {string}
    */
+  static DESIGN_JSON_CHUNK = 'design.json.chunk';
+  /**
+   * @type {string}
+   */
   static DESIGN_JS = 'design.js';
   /**
    * @type {string}
