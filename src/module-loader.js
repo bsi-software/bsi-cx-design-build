@@ -43,12 +43,12 @@ export class ModuleLoader {
    * @return {Module}
    */
   load() {
-    let require = Module.createRequire(this.modulePath);
-    let module = require(this.modulePath);
+    let moduleRequire = Module.createRequire(this.modulePath);
+    let module = moduleRequire(this.modulePath);
 
     this._dependencies.clear();
 
-    this._deleteRelatedModuleCache(this._dependencies, require.cache, this.modulePath, 0);
+    this._deleteRelatedModuleCache(this._dependencies, moduleRequire.cache, this.modulePath, 0);
 
     return module;
   }

@@ -3,5 +3,10 @@
 .element.content-title {
   > h2 {
     #bsi.color(@mainColor);
+    background-color: bsiProperty('other.test.alternateColor')
   }
+
+  background: bsiProperty('other.test.background') repeat-x;
+  margin: bsiProperty('other.test.margin');
+  color: darken(@mainColor, 10%);
 }

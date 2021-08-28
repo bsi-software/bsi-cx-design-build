@@ -1,4 +1,4 @@
-const {DesignType, Version} = require('@bsi-cx/design-build');
+const {DesignType, Version, css} = require('@bsi-cx/design-build');
 
 module.exports = {
   dirname: __dirname,
@@ -7,6 +7,9 @@ module.exports = {
   design: DesignType.LANDINGPAGE.value,
   version: Version.CX_22_0.value,
   test: {
-    mainColor: '#789456'
+    alternateColor: css.color('#abc'),
+    mainColor: '#ff00ff',
+    background: css.url(__dirname, 'content-elements', 'content', 'title', 'placeholder.png'),
+    margin: '10px'
   }
 };

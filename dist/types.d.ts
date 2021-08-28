@@ -1570,8 +1570,247 @@ declare module "src/bsi-cx-twig-context-webpack-plugin" {
     }
     import TwigContext from "src/twig-context";
 }
+declare module "src/css/abstract-css-property" {
+    export default class AbstractCssProperty {
+        /**
+         * @param {string|number} value
+         * @return {function(string|number):AbstractCssProperty|undefined}
+         */
+        static getParser(value: string | number): (arg0: string | number) => AbstractCssProperty | undefined;
+        /**
+         * @return {Node}
+         * @abstract
+         */
+        getLessNode(): any;
+        /**
+         * @return {string}
+         * @abstract
+         */
+        toString(): string;
+    }
+}
+declare module "src/css/css-color" {
+    export default class CssColor extends AbstractCssProperty {
+        /**
+         * @type {RegExp}
+         */
+        static RGBA: RegExp;
+        /**
+         * @type {RegExp}
+         */
+        static HEX: RegExp;
+        /**
+         * @type {{}}
+         */
+        static COLORS: {};
+        /**
+         * @param {string} hex
+         * @return {CssColor}
+         */
+        static fromHex(hex: string): CssColor;
+        /**
+         * @param {number} red
+         * @param {number} green
+         * @param {number} blue
+         * @param {number} [alpha=255]
+         */
+        static fromRGB(red: number, green: number, blue: number, alpha?: number): CssColor;
+        /**
+         * @param {string} str
+         * @return {CssColor}
+         */
+        static fromRGBString(str: string): CssColor;
+        /**
+         * @param {string} color
+         * @return {CssColor}
+         */
+        static fromKeyword(color: string): CssColor;
+        /**
+         * @param {string|number} value
+         * @return {function(string|number):CssColor|undefined}
+         */
+        static getParser(value: string | number): (arg0: string | number) => CssColor | undefined;
+        /**
+         * @param {number} red
+         * @param {number} green
+         * @param {number} blue
+         * @param {number} alpha
+         */
+        constructor(red: number, green: number, blue: number, alpha: number);
+        /**
+         * @type {number}
+         * @private
+         */
+        private _red;
+        /**
+         * @type {number}
+         * @private
+         */
+        private _green;
+        /**
+         * @type {number}
+         * @private
+         */
+        private _blue;
+        /**
+         * @type {number}
+         * @private
+         */
+        private _alpha;
+        /**
+         * @return {number}
+         */
+        get red(): number;
+        /**
+         * @return {number}
+         */
+        get green(): number;
+        /**
+         * @return {number}
+         */
+        get blue(): number;
+        /**
+         * @return {number}
+         */
+        get alpha(): number;
+        /**
+         * @return {string}
+         */
+        get hex(): string;
+        /**
+         * @return {string}
+         */
+        get rgb(): string;
+        /**
+         * @return {string}
+         */
+        get rgba(): string;
+        /**
+         * @param {number} color
+         * @return {number}
+         * @private
+         */
+        private _assertColor;
+        /**
+         * @param {number|undefined} [color=undefined]
+         * @return {string}
+         * @private
+         */
+        private _toHex;
+        /**
+         * @return {string}
+         * @private
+         */
+        private _toRgb;
+        /**
+         * @return {string}
+         * @private
+         */
+        private _toRgba;
+    }
+    import AbstractCssProperty from "src/css/abstract-css-property";
+}
+declare module "src/css/css-dimension" {
+    export default class CssDimension extends AbstractCssProperty {
+        /**
+         * @type {RegExp}
+         */
+        static VALUE_UNIT: RegExp;
+        static fromString(str: any): CssDimension;
+        /**
+         * @param {number} num
+         * @return {CssDimension}
+         */
+        static fromNumber(num: number): CssDimension;
+        /**
+         * @param {string|number} value
+         * @return {function(string|number):CssDimension|undefined}
+         */
+        static getParser(value: string | number): (arg0: string | number) => CssDimension | undefined;
+        /**
+         * @param {number} value
+         * @param {string|undefined} [unit=undefined]
+         */
+        constructor(value: number, unit?: string | undefined);
+        /**
+         * @type {number}
+         * @private
+         */
+        private _value;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _unit;
+        /**
+         * @return {number}
+         */
+        get value(): number;
+        /**
+         * @return {string|undefined}
+         */
+        get unit(): string;
+    }
+    import AbstractCssProperty from "src/css/abstract-css-property";
+}
+declare module "src/css/css-raw" {
+    export default class CssRaw extends AbstractCssProperty {
+        /**
+         * @param {*} value
+         * @return {CssRaw}
+         */
+        static fromAny(value: any): CssRaw;
+        /**
+         * @param {*} value
+         * @return {function(*): CssRaw}
+         */
+        static getParser(value: any): (arg0: any) => CssRaw;
+        /**
+         * @param {*} value
+         */
+        constructor(value: any);
+        /**
+         * @type {*}
+         * @private
+         */
+        private _value;
+        /**
+         * @return {*}
+         */
+        get value(): any;
+    }
+    import AbstractCssProperty from "src/css/abstract-css-property";
+}
+declare module "src/css/css-property-resolver" {
+    export default class CssPropertyResolver {
+        /**
+         * @type {Map<string|number, AbstractCssProperty>}
+         * @private
+         */
+        private _cache;
+        clearCache(): void;
+        /**
+         * @template T
+         * @param {T} value
+         * @return {AbstractCssProperty|T}
+         */
+        resolve<T>(value: T): AbstractCssProperty | T;
+        /**
+         * @param {string|number} value
+         * @return {AbstractCssProperty}
+         * @private
+         */
+        private _createProperty;
+    }
+    import AbstractCssProperty from "src/css/abstract-css-property";
+}
 declare module "src/bsi-less-property-plugin" {
     export default class BsiLessPropertyPlugin {
+        /**
+         * @type {CssPropertyResolver}
+         * @private
+         */
+        private static _propertyResolver;
         /**
          * @param {{}} properties
          */
@@ -1587,6 +1826,11 @@ declare module "src/bsi-less-property-plugin" {
          * @return {{}}
          */
         getProperty(propertyNode: any): {};
+        /**
+         * @param lessInstance
+         * @param pluginManager
+         * @param functions
+         */
         install(lessInstance: any, pluginManager: any, functions: any): void;
     }
 }
@@ -1854,13 +2098,27 @@ declare module "src/webpack-config-builder" {
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
     import BuildConfig from "src/build-config/build-config";
 }
+declare module "src/css/helper" {
+    /**
+     * @param {string} pathSegments
+     * @return {string}
+     */
+    export function url(...pathSegments: string): string;
+    /**
+     * @param {...string|number} channels
+     * @return {CssColor|string}
+     */
+    export function color(...channels: (string | number)[]): CssColor | string;
+    import CssColor from "src/css/css-color";
+}
 declare module "export/main" {
     import * as Version from "src/version";
     import * as DesignType from "src/design-type";
     import BuildConfig from "src/build-config/build-config";
     import ModuleConfig from "src/build-config/module-config";
     import WebpackConfigBuilder from "src/webpack-config-builder";
-    export { Version, DesignType, BuildConfig, ModuleConfig, WebpackConfigBuilder };
+    import * as css from "src/css/helper";
+    export { Version, DesignType, BuildConfig, ModuleConfig, WebpackConfigBuilder, css };
 }
 declare module "src/content-element/part/part" {
     export class Part extends AbstractConstant {

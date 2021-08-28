@@ -1,4 +1,11 @@
+import CssPropertyResolver from './css/css-property-resolver';
+
 export default class BsiLessPropertyPlugin {
+  /**
+   * @type {CssPropertyResolver}
+   * @private
+   */
+  static _propertyResolver = new CssPropertyResolver();
   /**
    * @type {{}}
    * @private
@@ -51,9 +58,16 @@ export default class BsiLessPropertyPlugin {
       }
     }
 
-    return scope;
+    let value = BsiLessPropertyPlugin._propertyResolver.resolve(scope);
+
+    return value.getLessNode();
   }
 
+  /**
+   * @param lessInstance
+   * @param pluginManager
+   * @param functions
+   */
   install(lessInstance, pluginManager, functions) {
     functions.add('bsiProperty', (property) => this.getProperty(property));
   }

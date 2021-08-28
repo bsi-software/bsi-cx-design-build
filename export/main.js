@@ -5,6 +5,7 @@ import * as DesignType from '../src/design-type';
 import BuildConfig from '../src/build-config/build-config';
 import ModuleConfig from '../src/build-config/module-config';
 import WebpackConfigBuilder from '../src/webpack-config-builder';
+import * as css from '../src/css/helper';
 
 export {
   Version,
@@ -12,4 +13,5 @@ export {
   BuildConfig,
   ModuleConfig,
   WebpackConfigBuilder,
+  css
 };

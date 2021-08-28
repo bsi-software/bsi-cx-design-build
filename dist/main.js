@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 900:
+/***/ 875:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -14,7 +14,8 @@ __webpack_require__.d(__webpack_exports__, {
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "ModuleConfig": () => (/* reexport */ ModuleConfig),
   "Version": () => (/* reexport */ version_namespaceObject),
-  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder)
+  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
+  "css": () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
@@ -37,6 +38,14 @@ __webpack_require__.d(version_namespaceObject, {
   "STUDIO_1_1": () => (STUDIO_1_1),
   "STUDIO_1_2": () => (STUDIO_1_2),
   "Version": () => (Version)
+});
+
+// NAMESPACE OBJECT: ./src/css/helper.js
+var helper_namespaceObject = {};
+__webpack_require__.r(helper_namespaceObject);
+__webpack_require__.d(helper_namespaceObject, {
+  "color": () => (color),
+  "url": () => (url)
 });
 
 ;// CONCATENATED MODULE: external "source-map-support/register"
@@ -3304,12 +3313,12 @@ class ModuleLoader {
    * @return {Module}
    */
   load() {
-    let require = external_module_default().createRequire(this.modulePath);
-    let module = require(this.modulePath);
+    let moduleRequire = external_module_default().createRequire(this.modulePath);
+    let module = moduleRequire(this.modulePath);
 
     this._dependencies.clear();
 
-    this._deleteRelatedModuleCache(this._dependencies, require.cache, this.modulePath, 0);
+    this._deleteRelatedModuleCache(this._dependencies, moduleRequire.cache, this.modulePath, 0);
 
     return module;
   }
@@ -3517,8 +3526,541 @@ class BsiCxTwigContextWebpackPlugin {
   }
 }
 
+;// CONCATENATED MODULE: external "less/lib/less/tree/node"
+const node_namespaceObject = require("less/lib/less/tree/node");
+;// CONCATENATED MODULE: ./src/css/abstract-css-property.js
+
+
+class AbstractCssProperty {
+  /**
+   * @return {Node}
+   * @abstract
+   */
+  getLessNode() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @return {string}
+   * @abstract
+   */
+  toString() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @param {string|number} value
+   * @return {function(string|number):AbstractCssProperty|undefined}
+   */
+  static getParser(value) {
+    throw new Error('not implemented');
+  }
+}
+
+;// CONCATENATED MODULE: external "less/lib/less/tree/color"
+const color_namespaceObject = require("less/lib/less/tree/color");
+var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
+;// CONCATENATED MODULE: external "less/lib/less/data/colors"
+const colors_namespaceObject = require("less/lib/less/data/colors");
+var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
+;// CONCATENATED MODULE: ./src/css/css-color.js
+
+
+
+
+
+
+class CssColor extends AbstractCssProperty {
+  /**
+   * @type {RegExp}
+   */
+  static RGBA = /^rgb[a]?\(([0-9.,\W]+)\)$/i;
+  /**
+   * @type {RegExp}
+   */
+  static HEX = /^#[0-9a-f]+$/i;
+  /**
+   * @type {{}}
+   */
+  static COLORS = Object.assign({}, (colors_default()), {transparent: '#00000000'});
+
+  /**
+   * @type {number}
+   * @private
+   */
+  _red = 0;
+  /**
+   * @type {number}
+   * @private
+   */
+  _green = 0;
+  /**
+   * @type {number}
+   * @private
+   */
+  _blue = 0;
+  /**
+   * @type {number}
+   * @private
+   */
+  _alpha = 1;
+
+  /**
+   * @param {number} red
+   * @param {number} green
+   * @param {number} blue
+   * @param {number} alpha
+   */
+  constructor(red, green, blue, alpha) {
+    super();
+    /**
+     * @type {number}
+     * @private
+     */
+    this._red = this._assertColor(red);
+    /**
+     * @type {number}
+     * @private
+     */
+    this._green = this._assertColor(green);
+    /**
+     * @type {number}
+     * @private
+     */
+    this._blue = this._assertColor(blue);
+    /**
+     * @type {number}
+     * @private
+     */
+    this._alpha = this._assertColor(alpha);
+  }
+
+  /**
+   * @return {number}
+   */
+  get red() {
+    return this._red;
+  }
+
+  /**
+   * @return {number}
+   */
+  get green() {
+    return this._green;
+  }
+
+  /**
+   * @return {number}
+   */
+  get blue() {
+    return this._blue;
+  }
+
+  /**
+   * @return {number}
+   */
+  get alpha() {
+    return this._alpha;
+  }
+
+  /**
+   * @return {string}
+   */
+  get hex() {
+    return this._toHex();
+  }
+
+  /**
+   * @return {string}
+   */
+  get rgb() {
+    return this._toRgb();
+  }
+
+  /**
+   * @return {string}
+   */
+  get rgba() {
+    return this._toRgba();
+  }
+
+  /**
+   * @return {Node}
+   */
+  getLessNode() {
+    let rgb = [this.red, this.green, this.blue];
+    let alpha = this.alpha / 255;
+
+    return new (color_default())(rgb, alpha);
+  }
+
+  toString() {
+    return this.hex;
+  }
+
+  /**
+   * @param {number} color
+   * @return {number}
+   * @private
+   */
+  _assertColor(color) {
+    if (Number.isNaN(color) || color < 0 || color > 255) {
+      throw new Error('Color value must be >= 0 and <= 255.');
+    }
+
+    return color;
+  }
+
+  /**
+   * @param {number|undefined} [color=undefined]
+   * @return {string}
+   * @private
+   */
+  _toHex(color) {
+    if (color === undefined) {
+      let channels = [
+        this._toHex(this.red),
+        this._toHex(this.green),
+        this._toHex(this.blue)
+      ];
+      if (this.alpha < 255) {
+        channels.push(this._toHex(this.alpha));
+      }
+      return '#' + channels.join('');
+    }
+
+    return color
+      .toString(16)
+      .padStart(2, '0');
+  }
+
+  /**
+   * @return {string}
+   * @private
+   */
+  _toRgb() {
+    return `rgb(${this.red},${this.green},${this.blue})`;
+  }
+
+  /**
+   * @return {string}
+   * @private
+   */
+  _toRgba() {
+    return `rgba(${this.red},${this.green},${this.blue},${this.alpha})`;
+  }
+
+  /**
+   * @param {string} hex
+   * @return {CssColor}
+   */
+  static fromHex(hex) {
+    let color = hex.replace(/^#/, '');
+    let rgba = [255, 255, 255, 255];
+
+    if (color.length >= 6) {
+      color.match(/.{2}/g).map(function (channel, index) {
+        rgba[index] = parseInt(channel, 16);
+      });
+    } else {
+      color.split('').map(function (channel, index) {
+        rgba[index] = parseInt(channel + channel, 16);
+      });
+    }
+
+    return new CssColor(...rgba);
+  }
+
+  /**
+   * @param {number} red
+   * @param {number} green
+   * @param {number} blue
+   * @param {number} [alpha=255]
+   */
+  static fromRGB(red, green, blue, alpha) {
+    return new CssColor(red, green, blue, alpha ?? 255);
+  }
+
+  /**
+   * @param {string} str
+   * @return {CssColor}
+   */
+  static fromRGBString(str) {
+    let match = CssColor.RGBA.exec(str);
+    let [red, green, blue, alpha] = match[1]
+      .split(',')
+      .map(channel => parseInt(channel));
+
+    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, alpha ?? 0);
+  }
+
+  /**
+   * @param {string} color
+   * @return {CssColor}
+   */
+  static fromKeyword(color) {
+    if (CssColor.COLORS.hasOwnProperty(color)) {
+      return CssColor.fromHex((colors_default())[color]);
+    } else {
+      throw new Error(`Unknown color keyword: ${color}`);
+    }
+  }
+
+  /**
+   * @param {string|number} value
+   * @return {function(string|number):CssColor|undefined}
+   */
+  static getParser(value) {
+    switch (true) {
+      case CssColor.RGBA.test(value):
+        return CssColor.fromRGBString;
+      case CssColor.HEX.test(value):
+        return CssColor.fromHex;
+      case CssColor.COLORS.hasOwnProperty(value):
+        return CssColor.fromKeyword;
+      default:
+        return undefined;
+    }
+  }
+}
+
+;// CONCATENATED MODULE: external "less/lib/less/tree/dimension"
+const dimension_namespaceObject = require("less/lib/less/tree/dimension");
+var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceObject);
+;// CONCATENATED MODULE: ./src/css/css-dimension.js
+
+
+
+
+
+class CssDimension extends AbstractCssProperty {
+  /**
+   * @type {RegExp}
+   */
+  static VALUE_UNIT = /^([0-9,.]+)(px|em|ex|ch|rem|in|cm|mm|pc|pt|vw|vh|vmin|vmax|%)?$/i;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  _value = 0;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _unit = undefined;
+
+  /**
+   * @param {number} value
+   * @param {string|undefined} [unit=undefined]
+   */
+  constructor(value, unit) {
+    super();
+    /**
+     * @type {number}
+     * @private
+     */
+    this._value = value;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._unit = unit;
+  }
+
+  /**
+   * @return {number}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get unit() {
+    return this._unit;
+  }
+
+  /**
+   * @return {Node}
+   */
+  getLessNode() {
+    return new (dimension_default())(this.value, this.unit);
+  }
+
+  toString() {
+    return `${this.value}${this.unit}`;
+  }
+
+  static fromString(str) {
+    let match = CssDimension.VALUE_UNIT.exec(str);
+    let value = parseFloat(match[1]);
+    let unit = match[2];
+
+    return new CssDimension(value, unit);
+  }
+
+  /**
+   * @param {number} num
+   * @return {CssDimension}
+   */
+  static fromNumber(num) {
+    return new CssDimension(num);
+  }
+
+  /**
+   * @param {string|number} value
+   * @return {function(string|number):CssDimension|undefined}
+   */
+  static getParser(value) {
+    switch (true) {
+      case CssDimension.VALUE_UNIT.test(value):
+        return CssDimension.fromString;
+      case typeof value === 'number':
+        return CssDimension.fromNumber;
+      default:
+        return undefined;
+    }
+  }
+}
+
+;// CONCATENATED MODULE: ./src/css/css-raw.js
+
+
+class CssRaw extends AbstractCssProperty {
+  /**
+   * @type {*}
+   * @private
+   */
+  _value = undefined;
+
+  /**
+   * @param {*} value
+   */
+  constructor(value) {
+    super();
+    /**
+     * @type {*}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @return {*}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * @return {*}
+   */
+  getLessNode() {
+    return this.value;
+  }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return `${this.value}`;
+  }
+
+  /**
+   * @param {*} value
+   * @return {CssRaw}
+   */
+  static fromAny(value) {
+    return new CssRaw(value);
+  }
+
+  /**
+   * @param {*} value
+   * @return {function(*): CssRaw}
+   */
+  static getParser(value) {
+    return CssRaw.fromAny;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/css/css-property-resolver.js
+
+
+
+
+
+class CssPropertyResolver {
+  /**
+   * @type {Map<string|number, AbstractCssProperty>}
+   * @private
+   */
+  _cache = new Map();
+
+  clearCache() {
+    this._cache.clear();
+  }
+
+  /**
+   * @template T
+   * @param {T} value
+   * @return {AbstractCssProperty|T}
+   */
+  resolve(value) {
+    if (typeof value.getLessNode === 'function') {
+      return value;
+    }
+
+    let resolvedProperty = this._cache.get(value);
+
+    if (!resolvedProperty) {
+      resolvedProperty = this._createProperty(value);
+
+      this._cache.set(value, resolvedProperty);
+    }
+
+    return resolvedProperty;
+  }
+
+  /**
+   * @param {string|number} value
+   * @return {AbstractCssProperty}
+   * @private
+   */
+  _createProperty(value) {
+    /**
+     * @type {AbstractCssProperty[]}
+     */
+    let availablePropertyClasses = [
+      CssColor,
+      CssDimension,
+      CssRaw
+    ];
+
+    for (let propertyClass of availablePropertyClasses) {
+      /**
+       * @type {(function(string): AbstractCssProperty)|undefined}
+       */
+      let parser = propertyClass.getParser(value);
+      if (!!parser) {
+        return parser(value);
+      }
+    }
+
+    throw new Error(`Can not create property from "${value}"`);
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+
+
 class BsiLessPropertyPlugin {
+  /**
+   * @type {CssPropertyResolver}
+   * @private
+   */
+  static _propertyResolver = new CssPropertyResolver();
   /**
    * @type {{}}
    * @private
@@ -3571,9 +4113,16 @@ class BsiLessPropertyPlugin {
       }
     }
 
-    return scope;
+    let value = BsiLessPropertyPlugin._propertyResolver.resolve(scope);
+
+    return value.getLessNode();
   }
 
+  /**
+   * @param lessInstance
+   * @param pluginManager
+   * @param functions
+   */
   install(lessInstance, pluginManager, functions) {
     functions.add('bsiProperty', (property) => this.getProperty(property));
   }
@@ -4276,7 +4825,39 @@ class WebpackConfigBuilder {
   }
 }
 
+;// CONCATENATED MODULE: ./src/css/helper.js
+
+
+
+/**
+ * @param {string} pathSegments
+ * @return {string}
+ */
+function url(...pathSegments) {
+  let resolvedPath = external_path_default().resolve(...pathSegments);
+  return `url(${resolvedPath})`;
+}
+
+/**
+ * @param {...string|number} channels
+ * @return {CssColor|string}
+ */
+function color(...channels) {
+  switch (channels.length) {
+    case 1:
+      let color = channels.shift();
+      let parser = CssColor.getParser(color);
+      return !!parser ? parser(color) : color;
+    case 3:
+    case 4:
+      return CssColor.fromRGB(...channels);
+    default:
+      throw new Error(`unable to parse color definition [${channels.join(',')}]`);
+  }
+}
+
 ;// CONCATENATED MODULE: ./export/main.js
+
 
 
 
@@ -4342,7 +4923,7 @@ class WebpackConfigBuilder {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[900](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[875](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
