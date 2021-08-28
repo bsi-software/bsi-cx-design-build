@@ -2,6 +2,8 @@ import AbstractCssProperty from './abstract-css-property';
 import CssColor from './css-color';
 import CssDimension from './css-dimension';
 import CssRaw from './css-raw';
+import CssUrl from './css-url';
+import CssBool from './css-bool';
 
 export default class CssPropertyResolver {
   /**
@@ -47,6 +49,8 @@ export default class CssPropertyResolver {
     let availablePropertyClasses = [
       CssColor,
       CssDimension,
+      CssBool,
+      CssUrl,
       CssRaw
     ];
 

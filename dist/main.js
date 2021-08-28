@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 497:
+/***/ 851:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -4033,7 +4033,158 @@ class CssRaw extends AbstractCssProperty {
   }
 }
 
+;// CONCATENATED MODULE: ./src/css/css-url.js
+
+
+
+
+class CssUrl extends AbstractCssProperty {
+  /**
+   * @type {string}
+   * @private
+   */
+  _url = undefined;
+
+  /**
+   * @param {string} url
+   */
+  constructor(url) {
+    super();
+    /**
+     * @type {string}
+     * @private
+     */
+    this._url = url;
+  }
+
+  /**
+   * @return {string}
+   */
+  get url() {
+    return this._url;
+  }
+
+  /**
+   * @return {string}
+   */
+  get ref() {
+    return `@ref(${this.url})`;
+  }
+
+  /**
+   * @return {string}
+   */
+  get css() {
+    return `url(${this.url})`;
+  }
+
+  /**
+   * @return {*}
+   */
+  getLessNode() {
+    return this.css;
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new (external_sass_default()).types.String(this.css);
+  }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return `url(${this.ref})`;
+  }
+
+  /**
+   * @param {string|number} value
+   * @return {undefined}
+   */
+  static getParser(value) {
+    return undefined;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/css/css-bool.js
+
+
+
+
+class CssBool extends AbstractCssProperty {
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _value = undefined;
+
+  /**
+   * @param {boolean} value
+   */
+  constructor(value) {
+    super();
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * @return {*}
+   */
+  getLessNode() {
+    return this.value;
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return !!this.value ? (external_sass_default()).types.Boolean.TRUE : (external_sass_default()).types.Boolean.FALSE;
+  }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return JSON.stringify(this.value);
+  }
+
+  /**
+   * @param {boolean} value
+   * @return {CssBool}
+   */
+  static fromBoolean(value) {
+    return new CssBool(!!value);
+  }
+
+  /**
+   * @param {string|number|boolean} value
+   * @return {(function(boolean): CssBool)|undefined}
+   */
+  static getParser(value) {
+    switch (true) {
+      case typeof value === 'boolean' || value instanceof Boolean:
+        return CssBool.fromBoolean;
+      default:
+        return undefined;
+    }
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/css/css-property-resolver.js
+
+
 
 
 
@@ -4083,6 +4234,8 @@ class CssPropertyResolver {
     let availablePropertyClasses = [
       CssColor,
       CssDimension,
+      CssBool,
+      CssUrl,
       CssRaw
     ];
 
@@ -4996,13 +5149,15 @@ class WebpackConfigBuilder {
 
 
 
+
+
 /**
  * @param {string} pathSegments
- * @return {string}
+ * @return {CssUrl}
  */
 function url(...pathSegments) {
   let resolvedPath = external_path_default().resolve(...pathSegments);
-  return `url(${resolvedPath})`;
+  return new CssUrl(resolvedPath);
 }
 
 /**
@@ -5090,7 +5245,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[497](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[851](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

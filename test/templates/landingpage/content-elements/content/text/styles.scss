@@ -1,6 +1,10 @@
-.element.content-text {
-  color: #ff00ff;
-  content: bsiProperty('other.test.alternateColor');
-  background: bsiProperty('other.test.background');
-  margin: bsiProperty('other.test.margin');
+$flag: bsiProperty('other.test.flag');
+
+@if $flag {
+  .element.content-text {
+    color: #ff00ff;
+    content: bsiProperty('other.test.alternateColor');
+    background: bsiProperty('other.test.background');
+    margin: bsiProperty('other.test.margin');
+  }
 }

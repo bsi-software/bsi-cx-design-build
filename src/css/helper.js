@@ -1,13 +1,15 @@
 import path from 'path';
+
 import CssColor from './css-color';
+import CssUrl from './css-url';
 
 /**
  * @param {string} pathSegments
- * @return {string}
+ * @return {CssUrl}
  */
 export function url(...pathSegments) {
   let resolvedPath = path.resolve(...pathSegments);
-  return `url(${resolvedPath})`;
+  return new CssUrl(resolvedPath);
 }
 
 /**

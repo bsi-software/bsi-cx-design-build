@@ -1794,6 +1794,65 @@ declare module "src/css/css-raw" {
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
+declare module "src/css/css-url" {
+    export default class CssUrl extends AbstractCssProperty {
+        /**
+         * @param {string|number} value
+         * @return {undefined}
+         */
+        static getParser(value: string | number): undefined;
+        /**
+         * @param {string} url
+         */
+        constructor(url: string);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _url;
+        /**
+         * @return {string}
+         */
+        get url(): string;
+        /**
+         * @return {string}
+         */
+        get ref(): string;
+        /**
+         * @return {string}
+         */
+        get css(): string;
+    }
+    import AbstractCssProperty from "src/css/abstract-css-property";
+}
+declare module "src/css/css-bool" {
+    export default class CssBool extends AbstractCssProperty {
+        /**
+         * @param {boolean} value
+         * @return {CssBool}
+         */
+        static fromBoolean(value: boolean): CssBool;
+        /**
+         * @param {string|number|boolean} value
+         * @return {(function(boolean): CssBool)|undefined}
+         */
+        static getParser(value: string | number | boolean): ((arg0: boolean) => CssBool) | undefined;
+        /**
+         * @param {boolean} value
+         */
+        constructor(value: boolean);
+        /**
+         * @type {boolean}
+         * @private
+         */
+        private _value;
+        /**
+         * @return {boolean}
+         */
+        get value(): boolean;
+    }
+    import AbstractCssProperty from "src/css/abstract-css-property";
+}
 declare module "src/css/css-property-resolver" {
     export default class CssPropertyResolver {
         /**
@@ -2175,14 +2234,15 @@ declare module "src/webpack-config-builder" {
 declare module "src/css/helper" {
     /**
      * @param {string} pathSegments
-     * @return {string}
+     * @return {CssUrl}
      */
-    export function url(...pathSegments: string): string;
+    export function url(...pathSegments: string): CssUrl;
     /**
      * @param {...string|number} channels
      * @return {CssColor|string}
      */
     export function color(...channels: (string | number)[]): CssColor | string;
+    import CssUrl from "src/css/css-url";
     import CssColor from "src/css/css-color";
 }
 declare module "export/main" {
