@@ -1,3 +1,5 @@
+require('./styles.scss');
+
 const {ContentElement, FormattedTextPart, Icon} = require('@bsi-cx/design-build');
 
 const full = require('../../../html-editor-configs/full');

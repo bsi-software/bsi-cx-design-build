@@ -1570,6 +1570,26 @@ declare module "src/bsi-cx-twig-context-webpack-plugin" {
     }
     import TwigContext from "src/twig-context";
 }
+declare module "src/bsi-less-property-plugin" {
+    export default class BsiLessPropertyPlugin {
+        /**
+         * @param {{}} properties
+         */
+        constructor(properties: {});
+        /**
+         * @type {{}}
+         * @private
+         */
+        private _properties;
+        get minVersion(): number[];
+        /**
+         * @param {*} propertyNode
+         * @return {{}}
+         */
+        getProperty(propertyNode: any): {};
+        install(lessInstance: any, pluginManager: any, functions: any): void;
+    }
+}
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {
         /**

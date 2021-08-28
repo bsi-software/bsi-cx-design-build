@@ -6,4 +6,7 @@ module.exports = {
   date: Date.now(),
   design: DesignType.LANDINGPAGE.value,
   version: Version.CX_22_0.value,
+  test: {
+    mainColor: '#789456'
+  }
 };

@@ -17,6 +17,7 @@ import BuildConfig from './build-config/build-config';
 import ValidatedBuildConfig from './build-config/validated-build-config';
 import TwigContext from './twig-context';
 import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
+import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 
 
 export default class WebpackConfigBuilder {
@@ -270,6 +271,14 @@ export default class WebpackConfigBuilder {
           ...this._getCssLoaderChain(),
           {
             loader: 'less-loader',
+            options: {
+              sourceMap: true,
+              lessOptions: {
+                plugins: [
+                  new BsiLessPropertyPlugin(this.twigContext.properties),
+                ],
+              }
+            }
           }
         ]
       },
@@ -394,11 +403,15 @@ export default class WebpackConfigBuilder {
         }
       },
       {
-        loader: 'css-loader'
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        }
       },
       {
         loader: 'postcss-loader',
         options: {
+          sourceMap: true,
           postcssOptions: {
             plugins: [
               'postcss-preset-env',

@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 631:
+/***/ 900:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -3517,7 +3517,70 @@ class BsiCxTwigContextWebpackPlugin {
   }
 }
 
+;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+class BsiLessPropertyPlugin {
+  /**
+   * @type {{}}
+   * @private
+   */
+  _properties = undefined;
+
+  /**
+   * @param {{}} properties
+   */
+  constructor(properties) {
+    /**
+     * @type {{}}
+     * @private
+     */
+    this._properties = properties;
+  }
+
+  get minVersion() {
+    return [3, 0, 0];
+  }
+
+  /**
+   * @param {*} propertyNode
+   * @return {{}}
+   */
+  getProperty(propertyNode) {
+    if (!propertyNode) {
+      throw new Error('Property argument is required.');
+    }
+
+    if (typeof propertyNode.value === 'undefined') {
+      throw new Error('Property must be instanceof Node and have a value attribute.');
+    }
+
+    if (typeof propertyNode.value !== 'string') {
+      throw new Error('Property must be a string.');
+    }
+
+    /**
+     * @type {string}
+     */
+    let property = propertyNode.value;
+    let segments = property.split('.');
+    let scope = this._properties;
+
+    for (let segment of segments) {
+      scope = scope[segment];
+      if (typeof scope === 'undefined') {
+        throw new Error(`Property ${property} not found.`);
+      }
+    }
+
+    return scope;
+  }
+
+  install(lessInstance, pluginManager, functions) {
+    functions.add('bsiProperty', (property) => this.getProperty(property));
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
 
 
 
@@ -3790,6 +3853,14 @@ class WebpackConfigBuilder {
           ...this._getCssLoaderChain(),
           {
             loader: 'less-loader',
+            options: {
+              sourceMap: true,
+              lessOptions: {
+                plugins: [
+                  new BsiLessPropertyPlugin(this.twigContext.properties),
+                ],
+              }
+            }
           }
         ]
       },
@@ -3914,11 +3985,15 @@ class WebpackConfigBuilder {
         }
       },
       {
-        loader: 'css-loader'
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+        }
       },
       {
         loader: 'postcss-loader',
         options: {
+          sourceMap: true,
           postcssOptions: {
             plugins: [
               'postcss-preset-env',
@@ -4267,7 +4342,7 @@ class WebpackConfigBuilder {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[631](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[900](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
