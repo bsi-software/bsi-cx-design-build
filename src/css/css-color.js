@@ -1,3 +1,5 @@
+import sass from 'sass';
+
 import Node from 'less/lib/less/tree/node';
 import Color from 'less/lib/less/tree/color';
 import colors from 'less/lib/less/data/colors';
@@ -126,6 +128,13 @@ export default class CssColor extends AbstractCssProperty {
     let alpha = this.alpha / 255;
 
     return new Color(rgb, alpha);
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new sass.types.Color(this.red, this.green, this.blue, this.alpha);
   }
 
   toString() {

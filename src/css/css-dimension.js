@@ -1,3 +1,4 @@
+import sass from 'sass';
 import Node from 'less/lib/less/tree/node';
 import Dimension from 'less/lib/less/tree/dimension';
 
@@ -57,6 +58,13 @@ export default class CssDimension extends AbstractCssProperty {
    */
   getLessNode() {
     return new Dimension(this.value, this.unit);
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new sass.types.Number(this.value, this.unit);
   }
 
   toString() {

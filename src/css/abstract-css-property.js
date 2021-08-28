@@ -10,6 +10,14 @@ export default class AbstractCssProperty {
   }
 
   /**
+   * @return {*}
+   * @abstract
+   */
+  getSassObject() {
+    throw new Error('not implemented');
+  }
+
+  /**
    * @return {string}
    * @abstract
    */

@@ -18,7 +18,8 @@ import ValidatedBuildConfig from './build-config/validated-build-config';
 import TwigContext from './twig-context';
 import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
-
+import BuildContext from './build-context';
+import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
 
 export default class WebpackConfigBuilder {
   /**
@@ -27,44 +28,41 @@ export default class WebpackConfigBuilder {
   static DESIGN_LAYER = 'design';
 
   /**
-   * @type {ValidatedBuildConfig}
+   * @type {BuildContext}
    * @private
    */
-  _config = undefined;
-  /**
-   * @type {TwigContext}
-   * @private
-   */
-  _twigContext = undefined;
+  _context = undefined;
 
   /**
    * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
     /**
-     * @type {ValidatedBuildConfig}
+     * @type {BuildContext}
      * @private
      */
-    this._config = config;
-    /**
-     * @type {TwigContext}
-     * @private
-     */
-    this._twigContext = new TwigContext(config.propertiesFilePath);
+    this._context = new BuildContext(config,);
+  }
+
+  /**
+   * @return {BuildContext}
+   */
+  get context() {
+    return this._context;
   }
 
   /**
    * @returns {ValidatedBuildConfig}
    */
   get config() {
-    return this._config;
+    return this.context.config;
   }
 
   /**
    * @return {TwigContext}
    */
   get twigContext() {
-    return this._twigContext;
+    return this.context.properties;
   }
 
   build() {
@@ -231,7 +229,7 @@ export default class WebpackConfigBuilder {
             options: {
               environmentModulePath: `${packageJson.name}/dist/twing-environment.js`,
               renderContext: {
-                properties: this._twigContext.properties,
+                properties: this.twigContext.propertiesProxy,
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -275,7 +273,7 @@ export default class WebpackConfigBuilder {
               sourceMap: true,
               lessOptions: {
                 plugins: [
-                  new BsiLessPropertyPlugin(this.twigContext.properties),
+                  new BsiLessPropertyPlugin(this.context),
                 ],
               }
             }
@@ -288,6 +286,14 @@ export default class WebpackConfigBuilder {
           ...this._getCssLoaderChain(),
           {
             loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              sassOptions: {
+                functions: {
+                  ...new BsiSassPropertyPlugin(this.context).getFunction()
+                }
+              }
+            }
           }
         ]
       },

@@ -1515,9 +1515,17 @@ declare module "src/twig-context" {
          */
         get propertiesModule(): ModuleLoader;
         /**
+         * Get the original properties object without the proxy.
+         *
          * @return {{}}
          */
         get properties(): {};
+        /**
+         * Get the properties object, guarded by a proxy.
+         *
+         * @return {{}}
+         */
+        get propertiesProxy(): {};
         /**
          * @return {boolean}
          */
@@ -1582,6 +1590,11 @@ declare module "src/css/abstract-css-property" {
          * @abstract
          */
         getLessNode(): any;
+        /**
+         * @return {*}
+         * @abstract
+         */
+        getSassObject(): any;
         /**
          * @return {string}
          * @abstract
@@ -1804,28 +1817,80 @@ declare module "src/css/css-property-resolver" {
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
-declare module "src/bsi-less-property-plugin" {
-    export default class BsiLessPropertyPlugin {
+declare module "src/build-context" {
+    export default class BuildContext {
+        /**
+         * @param {ValidatedBuildConfig} config
+         */
+        constructor(config: ValidatedBuildConfig);
+        /**
+         * @type {ValidatedBuildConfig}
+         * @private
+         */
+        private _config;
+        /**
+         * @type {TwigContext}
+         * @private
+         */
+        private _properties;
         /**
          * @type {CssPropertyResolver}
          * @private
          */
-        private static _propertyResolver;
+        private _cssPropertyResolver;
         /**
-         * @param {{}} properties
+         * @return {ValidatedBuildConfig}
          */
-        constructor(properties: {});
+        get config(): ValidatedBuildConfig;
+        /**
+         * @return {TwigContext}
+         */
+        get properties(): TwigContext;
+        /**
+         * @return {CssPropertyResolver}
+         */
+        get cssPropertyResolver(): CssPropertyResolver;
+    }
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
+    import TwigContext from "src/twig-context";
+    import CssPropertyResolver from "src/css/css-property-resolver";
+}
+declare module "src/abstract-property-plugin" {
+    /**
+     * @abstract
+     */
+    export default class AbstractPropertyPlugin {
+        /**
+         * @param {BuildContext} context
+         */
+        constructor(context: BuildContext);
+        /**
+         * @type {CssPropertyResolver}
+         * @protected
+         */
+        protected _propertyResolver: CssPropertyResolver;
         /**
          * @type {{}}
-         * @private
+         * @protected
          */
-        private _properties;
-        get minVersion(): number[];
+        protected _properties: {};
         /**
-         * @param {*} propertyNode
-         * @return {{}}
+         * @template T
+         * @param {T} property
+         * @return {AbstractCssProperty|T}
          */
-        getProperty(propertyNode: any): {};
+        getProperty<T>(property: T): AbstractCssProperty | T;
+    }
+    import CssPropertyResolver from "src/css/css-property-resolver";
+    import AbstractCssProperty from "src/css/abstract-css-property";
+    import BuildContext from "src/build-context";
+}
+declare module "src/bsi-less-property-plugin" {
+    export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+        /**
+         * @return {number[]}
+         */
+        get minVersion(): number[];
         /**
          * @param lessInstance
          * @param pluginManager
@@ -1833,6 +1898,15 @@ declare module "src/bsi-less-property-plugin" {
          */
         install(lessInstance: any, pluginManager: any, functions: any): void;
     }
+    import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
+declare module "src/bsi-sass-property-plugin" {
+    export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
+        getFunction(): {
+            'bsiProperty($property)': any;
+        };
+    }
+    import AbstractPropertyPlugin from "src/abstract-property-plugin";
 }
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {
@@ -1877,15 +1951,14 @@ declare module "src/webpack-config-builder" {
          */
         constructor(config: ValidatedBuildConfig);
         /**
-         * @type {ValidatedBuildConfig}
+         * @type {BuildContext}
          * @private
          */
-        private _config;
+        private _context;
         /**
-         * @type {TwigContext}
-         * @private
+         * @return {BuildContext}
          */
-        private _twigContext;
+        get context(): BuildContext;
         /**
          * @returns {ValidatedBuildConfig}
          */
@@ -2092,6 +2165,7 @@ declare module "src/webpack-config-builder" {
          */
         _getOutputConfig(): {};
     }
+    import BuildContext from "src/build-context";
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
     import TwigContext from "src/twig-context";
     import BsiCxWebpackZipHashPlugin from "src/bsi-cx-webpack-zip-hash-plugin";

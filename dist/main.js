@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 875:
+/***/ 497:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -3416,9 +3416,20 @@ class TwigContext {
   }
 
   /**
+   * Get the original properties object without the proxy.
+   *
    * @return {{}}
    */
   get properties() {
+    return this._properties;
+  }
+
+  /**
+   * Get the properties object, guarded by a proxy.
+   *
+   * @return {{}}
+   */
+  get propertiesProxy() {
     return this._propertiesProxy;
   }
 
@@ -3541,6 +3552,14 @@ class AbstractCssProperty {
   }
 
   /**
+   * @return {*}
+   * @abstract
+   */
+  getSassObject() {
+    throw new Error('not implemented');
+  }
+
+  /**
    * @return {string}
    * @abstract
    */
@@ -3557,6 +3576,9 @@ class AbstractCssProperty {
   }
 }
 
+;// CONCATENATED MODULE: external "sass"
+const external_sass_namespaceObject = require("sass");
+var external_sass_default = /*#__PURE__*/__webpack_require__.n(external_sass_namespaceObject);
 ;// CONCATENATED MODULE: external "less/lib/less/tree/color"
 const color_namespaceObject = require("less/lib/less/tree/color");
 var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
@@ -3564,6 +3586,8 @@ var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
 const colors_namespaceObject = require("less/lib/less/data/colors");
 var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
 ;// CONCATENATED MODULE: ./src/css/css-color.js
+
+
 
 
 
@@ -3692,6 +3716,13 @@ class CssColor extends AbstractCssProperty {
     let alpha = this.alpha / 255;
 
     return new (color_default())(rgb, alpha);
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new (external_sass_default()).types.Color(this.red, this.green, this.blue, this.alpha);
   }
 
   toString() {
@@ -3833,6 +3864,7 @@ var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceOb
 
 
 
+
 class CssDimension extends AbstractCssProperty {
   /**
    * @type {RegExp}
@@ -3889,6 +3921,13 @@ class CssDimension extends AbstractCssProperty {
     return new (dimension_default())(this.value, this.unit);
   }
 
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new (external_sass_default()).types.Number(this.value, this.unit);
+  }
+
   toString() {
     return `${this.value}${this.unit}`;
   }
@@ -3928,6 +3967,8 @@ class CssDimension extends AbstractCssProperty {
 ;// CONCATENATED MODULE: ./src/css/css-raw.js
 
 
+
+
 class CssRaw extends AbstractCssProperty {
   /**
    * @type {*}
@@ -3959,6 +4000,13 @@ class CssRaw extends AbstractCssProperty {
    */
   getLessNode() {
     return this.value;
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new (external_sass_default()).types.String(this.value);
   }
 
   /**
@@ -4052,39 +4100,136 @@ class CssPropertyResolver {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+;// CONCATENATED MODULE: ./src/build-context.js
 
 
-class BsiLessPropertyPlugin {
+
+
+class BuildContext {
+  /**
+   * @type {ValidatedBuildConfig}
+   * @private
+   */
+  _config = undefined;
+  /**
+   * @type {TwigContext}
+   * @private
+   */
+  _properties = undefined;
   /**
    * @type {CssPropertyResolver}
    * @private
    */
-  static _propertyResolver = new CssPropertyResolver();
+  _cssPropertyResolver = new CssPropertyResolver();
+
+  /**
+   * @param {ValidatedBuildConfig} config
+   */
+  constructor(config) {
+    /**
+     * @type {ValidatedBuildConfig}
+     * @private
+     */
+    this._config = config;
+    /**
+     * @type {TwigContext}
+     * @private
+     */
+    this._properties = new TwigContext(config.propertiesFilePath);
+  }
+
+  /**
+   * @return {ValidatedBuildConfig}
+   */
+  get config() {
+    return this._config;
+  }
+
+  /**
+   * @return {TwigContext}
+   */
+  get properties() {
+    return this._properties;
+  }
+
+  /**
+   * @return {CssPropertyResolver}
+   */
+  get cssPropertyResolver() {
+    return this._cssPropertyResolver;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
+
+
+
+
+/**
+ * @abstract
+ */
+class AbstractPropertyPlugin {
+  /**
+   * @type {CssPropertyResolver}
+   * @protected
+   */
+  _propertyResolver = undefined;
   /**
    * @type {{}}
-   * @private
+   * @protected
    */
   _properties = undefined;
 
   /**
-   * @param {{}} properties
+   * @param {BuildContext} context
    */
-  constructor(properties) {
+  constructor(context) {
     /**
      * @type {{}}
      * @private
      */
-    this._properties = properties;
+    this._properties = context.properties.propertiesProxy;
+    /**
+     * @type {CssPropertyResolver}
+     * @private
+     */
+    this._propertyResolver = context.cssPropertyResolver;
   }
 
+  /**
+   * @template T
+   * @param {T} property
+   * @return {AbstractCssProperty|T}
+   */
+  getProperty(property) {
+    let segments = property.split('.');
+    let scope = this._properties;
+
+    for (let segment of segments) {
+      scope = scope[segment];
+      if (typeof scope === 'undefined') {
+        throw new Error(`Property ${property} not found.`);
+      }
+    }
+
+    return this._propertyResolver.resolve(scope);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+
+
+class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+  /**
+   * @return {number[]}
+   */
   get minVersion() {
     return [3, 0, 0];
   }
 
   /**
    * @param {*} propertyNode
-   * @return {{}}
+   * @return {*}
    */
   getProperty(propertyNode) {
     if (!propertyNode) {
@@ -4103,17 +4248,8 @@ class BsiLessPropertyPlugin {
      * @type {string}
      */
     let property = propertyNode.value;
-    let segments = property.split('.');
-    let scope = this._properties;
 
-    for (let segment of segments) {
-      scope = scope[segment];
-      if (typeof scope === 'undefined') {
-        throw new Error(`Property ${property} not found.`);
-      }
-    }
-
-    let value = BsiLessPropertyPlugin._propertyResolver.resolve(scope);
+    let value = super.getProperty(property);
 
     return value.getLessNode();
   }
@@ -4128,7 +4264,33 @@ class BsiLessPropertyPlugin {
   }
 }
 
+;// CONCATENATED MODULE: ./src/bsi-sass-property-plugin.js
+
+
+
+
+class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
+  /**
+   * @param {sass.types.String} property
+   * @return {AbstractCssProperty|T}
+   */
+  getProperty(property) {
+    let propertyName = property.getValue();
+
+    let value = super.getProperty(propertyName);
+
+    return value.getSassObject();
+  }
+
+  getFunction() {
+    return {
+      'bsiProperty($property)': this.getProperty.bind(this)
+    }
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
 
 
 
@@ -4158,44 +4320,41 @@ class WebpackConfigBuilder {
   static DESIGN_LAYER = 'design';
 
   /**
-   * @type {ValidatedBuildConfig}
+   * @type {BuildContext}
    * @private
    */
-  _config = undefined;
-  /**
-   * @type {TwigContext}
-   * @private
-   */
-  _twigContext = undefined;
+  _context = undefined;
 
   /**
    * @param {ValidatedBuildConfig} config
    */
   constructor(config) {
     /**
-     * @type {ValidatedBuildConfig}
+     * @type {BuildContext}
      * @private
      */
-    this._config = config;
-    /**
-     * @type {TwigContext}
-     * @private
-     */
-    this._twigContext = new TwigContext(config.propertiesFilePath);
+    this._context = new BuildContext(config,);
+  }
+
+  /**
+   * @return {BuildContext}
+   */
+  get context() {
+    return this._context;
   }
 
   /**
    * @returns {ValidatedBuildConfig}
    */
   get config() {
-    return this._config;
+    return this.context.config;
   }
 
   /**
    * @return {TwigContext}
    */
   get twigContext() {
-    return this._twigContext;
+    return this.context.properties;
   }
 
   build() {
@@ -4362,7 +4521,7 @@ class WebpackConfigBuilder {
             options: {
               environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
               renderContext: {
-                properties: this._twigContext.properties,
+                properties: this.twigContext.propertiesProxy,
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -4406,7 +4565,7 @@ class WebpackConfigBuilder {
               sourceMap: true,
               lessOptions: {
                 plugins: [
-                  new BsiLessPropertyPlugin(this.twigContext.properties),
+                  new BsiLessPropertyPlugin(this.context),
                 ],
               }
             }
@@ -4419,6 +4578,14 @@ class WebpackConfigBuilder {
           ...this._getCssLoaderChain(),
           {
             loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              sassOptions: {
+                functions: {
+                  ...new BsiSassPropertyPlugin(this.context).getFunction()
+                }
+              }
+            }
           }
         ]
       },
@@ -4923,7 +5090,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[875](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[497](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

@@ -1,35 +1,16 @@
-import CssPropertyResolver from './css/css-property-resolver';
+import AbstractPropertyPlugin from './abstract-property-plugin';
 
-export default class BsiLessPropertyPlugin {
+export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
   /**
-   * @type {CssPropertyResolver}
-   * @private
+   * @return {number[]}
    */
-  static _propertyResolver = new CssPropertyResolver();
-  /**
-   * @type {{}}
-   * @private
-   */
-  _properties = undefined;
-
-  /**
-   * @param {{}} properties
-   */
-  constructor(properties) {
-    /**
-     * @type {{}}
-     * @private
-     */
-    this._properties = properties;
-  }
-
   get minVersion() {
     return [3, 0, 0];
   }
 
   /**
    * @param {*} propertyNode
-   * @return {{}}
+   * @return {*}
    */
   getProperty(propertyNode) {
     if (!propertyNode) {
@@ -48,17 +29,8 @@ export default class BsiLessPropertyPlugin {
      * @type {string}
      */
     let property = propertyNode.value;
-    let segments = property.split('.');
-    let scope = this._properties;
 
-    for (let segment of segments) {
-      scope = scope[segment];
-      if (typeof scope === 'undefined') {
-        throw new Error(`Property ${property} not found.`);
-      }
-    }
-
-    let value = BsiLessPropertyPlugin._propertyResolver.resolve(scope);
+    let value = super.getProperty(property);
 
     return value.getLessNode();
   }

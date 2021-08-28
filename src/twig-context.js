@@ -65,9 +65,20 @@ export default class TwigContext {
   }
 
   /**
+   * Get the original properties object without the proxy.
+   *
    * @return {{}}
    */
   get properties() {
+    return this._properties;
+  }
+
+  /**
+   * Get the properties object, guarded by a proxy.
+   *
+   * @return {{}}
+   */
+  get propertiesProxy() {
     return this._propertiesProxy;
   }
 

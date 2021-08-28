@@ -1,3 +1,5 @@
+import sass from 'sass';
+
 import AbstractCssProperty from './abstract-css-property';
 
 export default class CssRaw extends AbstractCssProperty {
@@ -31,6 +33,13 @@ export default class CssRaw extends AbstractCssProperty {
    */
   getLessNode() {
     return this.value;
+  }
+
+  /**
+   * @return {*}
+   */
+  getSassObject() {
+    return new sass.types.String(this.value);
   }
 
   /**
