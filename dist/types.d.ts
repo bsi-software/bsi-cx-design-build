@@ -1068,47 +1068,6 @@ declare module "src/file" {
         static DESIGN_PROPERTIES: string;
     }
 }
-declare module "src/module-loader" {
-    export class ModuleLoader {
-        /**
-         * @param {string} modulePath
-         */
-        constructor(modulePath: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _modulePath;
-        /**
-         * @type {string}
-         * @private
-         */
-        private _code;
-        /**
-         * @type {string}
-         * @private
-         */
-        private _context;
-        /**
-         * @return {string}
-         */
-        get modulePath(): string;
-        /**
-         * @return {string}
-         */
-        get context(): string;
-        /**
-         * @return {string}
-         */
-        get code(): string;
-        /**
-         *
-         * @return {Module}
-         */
-        load(): Module;
-    }
-    import Module from "module";
-}
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
         /**
@@ -1116,17 +1075,17 @@ declare module "src/bsi-cx-webpack-plugin" {
          */
         static PLUGIN_NAME: string;
         /**
-         * @param {WebpackConfigBuilder} builder
+         * @param {ValidatedBuildConfig} config
          */
-        constructor(builder: WebpackConfigBuilder);
+        constructor(config: ValidatedBuildConfig);
         /**
-         * @type {WebpackConfigBuilder}
+         * @type {ValidatedBuildConfig}
          * @private
          */
-        private _builder;
+        private _config;
         apply(compiler: any): void;
     }
-    import WebpackConfigBuilder from "src/webpack-config-builder";
+    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/java-property-file-builder" {
     export default class JavaPropertyFileBuilder {
@@ -1475,6 +1434,142 @@ declare module "src/bsi-cx-webpack-zip-hash-plugin" {
         apply(compiler: any): void;
     }
 }
+declare module "src/module-loader" {
+    export class ModuleLoader {
+        static NODE_MODULES: RegExp;
+        /**
+         * @param {string} modulePath
+         */
+        constructor(modulePath: string);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _modulePath;
+        /**
+         * @type {Set<string>}
+         * @private
+         */
+        private _dependencies;
+        /**
+         * @return {string}
+         */
+        get modulePath(): string;
+        /**
+         * @return {Set<string>}
+         */
+        get dependencies(): Set<string>;
+        /**
+         *
+         * @return {Module}
+         */
+        load(): Module;
+        /**
+         * @param {Set<string>} visited,
+         * @param {Dict<NodeModule>} cache
+         * @param {string} id
+         * @param {number} level
+         * @private
+         */
+        private _deleteRelatedModuleCache;
+    }
+    import Module from "module";
+}
+declare module "src/twig-context" {
+    export default class TwigContext {
+        /**
+         * @param {string|undefined} propertiesFilePath
+         */
+        constructor(propertiesFilePath: string | undefined);
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _propertiesFilePath;
+        /**
+         * @type {ModuleLoader}
+         * @private
+         */
+        private _propertiesModule;
+        /**
+         * @type {{}}
+         * @private
+         */
+        private _properties;
+        /**
+         * @type {{}}
+         * @private
+         */
+        private _propertiesProxy;
+        /**
+         * @type {boolean}
+         * @private
+         */
+        private _propertiesReloadRequired;
+        /**
+         * @return {string|undefined}
+         */
+        get propertiesFilePath(): string;
+        /**
+         * @return {ModuleLoader}
+         */
+        get propertiesModule(): ModuleLoader;
+        /**
+         * @return {{}}
+         */
+        get properties(): {};
+        /**
+         * @return {boolean}
+         */
+        get propertiesReloadRequired(): boolean;
+        forcePropertiesReload(): void;
+        /**
+         * @return {boolean}
+         */
+        hasPropertiesFilePath(): boolean;
+        /**
+         * @return {{}}
+         * @private
+         */
+        private _getPropertiesProxy;
+        /**
+         * @return {{}}
+         * @private
+         */
+        private _getProxyHandler;
+        /**
+         * @param {{}} target
+         * @param {string} property
+         * @return {*}
+         * @private
+         */
+        private _get;
+        /**
+         * @private
+         */
+        private _reloadPropertiesIfRequired;
+    }
+    import { ModuleLoader } from "src/module-loader";
+}
+declare module "src/bsi-cx-twig-context-webpack-plugin" {
+    export default class BsiCxTwigContextWebpackPlugin {
+        /**
+         * @type {string}
+         */
+        static PLUGIN_NAME: string;
+        /**
+         * @param {TwigContext} twigContext
+         */
+        constructor(twigContext: TwigContext);
+        /**
+         * @type {TwigContext}
+         * @private
+         */
+        private _twigContext;
+        apply(compiler: any): void;
+    }
+    import TwigContext from "src/twig-context";
+}
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {
         /**
@@ -1523,18 +1618,18 @@ declare module "src/webpack-config-builder" {
          */
         private _config;
         /**
-         * @type {{}}
+         * @type {TwigContext}
          * @private
          */
-        private _twigProperties;
+        private _twigContext;
         /**
          * @returns {ValidatedBuildConfig}
          */
         get config(): ValidatedBuildConfig;
         /**
-         * @return {{}}
+         * @return {TwigContext}
          */
-        get twigProperties(): {};
+        get twigContext(): TwigContext;
         build(): {
             entry: {};
             name: string;
@@ -1600,11 +1695,6 @@ declare module "src/webpack-config-builder" {
          */
         private _getJavaScriptModuleEntry;
         /**
-         * @return {{}}
-         * @private
-         */
-        private _getTwigEnvironmentProperties;
-        /**
          * Rules for Twig file handling.
          *
          * @returns {[{}]}
@@ -1667,11 +1757,16 @@ declare module "src/webpack-config-builder" {
          */
         _getCopyPluginConfig(): [any];
         /**
-         * BSI CX Webpack plugin.
          *
-         * @returns {[BsiCxWebpackPlugin]}
+         * @return {BsiCxTwigContextWebpackPlugin[]}
+         * @private
          */
-        _getBsiCxWebpackPluginConfig(): [BsiCxWebpackPlugin];
+        private _getBsiCxTwigContextWebpackPlugin;
+        /**
+         * @return {[BsiCxWebpackPlugin]}
+         * @private
+         */
+        private _getBsiCxWebpackPluginConfig;
         /**
          * Webpack ZIP plugin configuration.
          *
@@ -1734,7 +1829,7 @@ declare module "src/webpack-config-builder" {
         _getOutputConfig(): {};
     }
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
-    import BsiCxWebpackPlugin from "src/bsi-cx-webpack-plugin";
+    import TwigContext from "src/twig-context";
     import BsiCxWebpackZipHashPlugin from "src/bsi-cx-webpack-zip-hash-plugin";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
     import BuildConfig from "src/build-config/build-config";

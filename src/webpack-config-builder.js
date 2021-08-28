@@ -15,7 +15,8 @@ import File from './file';
 import {buildPublicPath, findStringSimilarities, getZipArchiveName, StaticJavaScriptCondition} from './utility';
 import BuildConfig from './build-config/build-config';
 import ValidatedBuildConfig from './build-config/validated-build-config';
-import {ModuleLoader} from './module-loader';
+import TwigContext from './twig-context';
+import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
 
 
 export default class WebpackConfigBuilder {
@@ -30,10 +31,10 @@ export default class WebpackConfigBuilder {
    */
   _config = undefined;
   /**
-   * @type {{}}
+   * @type {TwigContext}
    * @private
    */
-  _twigProperties = undefined;
+  _twigContext = undefined;
 
   /**
    * @param {ValidatedBuildConfig} config
@@ -45,10 +46,10 @@ export default class WebpackConfigBuilder {
      */
     this._config = config;
     /**
-     * @type {{}}
+     * @type {TwigContext}
      * @private
      */
-    this._twigProperties = {};
+    this._twigContext = new TwigContext(config.propertiesFilePath);
   }
 
   /**
@@ -59,10 +60,10 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {{}}
+   * @return {TwigContext}
    */
-  get twigProperties() {
-    return this._twigProperties;
+  get twigContext() {
+    return this._twigContext;
   }
 
   build() {
@@ -82,6 +83,7 @@ export default class WebpackConfigBuilder {
         ]
       },
       plugins: [
+        ...this._getBsiCxTwigContextWebpackPlugin(),
         ...this._getMiniCssExtractPluginConfig(),
         ...this._getCopyPluginConfig(),
         ...this._getBsiCxWebpackPluginConfig(),
@@ -212,21 +214,6 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {{}}
-   * @private
-   */
-  _getTwigEnvironmentProperties() {
-    if (this.config.propertiesFilePath === undefined) {
-      return this.twigProperties;
-    }
-
-    let moduleLoader = new ModuleLoader(this.config.propertiesFilePath);
-    let module = moduleLoader.load();
-
-    return Object.assign(this.twigProperties, module.exports);
-  }
-
-  /**
    * Rules for Twig file handling.
    *
    * @returns {[{}]}
@@ -243,7 +230,7 @@ export default class WebpackConfigBuilder {
             options: {
               environmentModulePath: `${packageJson.name}/dist/twing-environment.js`,
               renderContext: {
-                properties: this._getTwigEnvironmentProperties(),
+                properties: this._twigContext.properties,
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -463,13 +450,23 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * BSI CX Webpack plugin.
    *
-   * @returns {[BsiCxWebpackPlugin]}
+   * @return {BsiCxTwigContextWebpackPlugin[]}
+   * @private
+   */
+  _getBsiCxTwigContextWebpackPlugin() {
+    return [
+      new BsiCxTwigContextWebpackPlugin(this.twigContext)
+    ]
+  }
+
+  /**
+   * @return {[BsiCxWebpackPlugin]}
+   * @private
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin(this)
+      new BsiCxWebpackPlugin(this.config)
     ];
   }
 

@@ -1,20 +1,17 @@
-import fs from 'fs';
-import path from 'path';
 import Module from 'module';
 
-const parentModule = module;
-
 export class ModuleLoader {
+  static NODE_MODULES = /[\\/]node_modules[\\/]/;
   /**
    * @type {string}
    * @private
    */
   _modulePath = undefined;
   /**
-   * @type {string}
+   * @type {Set<string>}
    * @private
    */
-  _code = undefined;
+  _dependencies = new Set();
 
   /**
    * @param {string} modulePath
@@ -25,16 +22,6 @@ export class ModuleLoader {
      * @private
      */
     this._modulePath = modulePath;
-    /**
-     * @type {string}
-     * @private
-     */
-    this._context = path.dirname(modulePath);
-    /**
-     * @type {string}
-     * @private
-     */
-    this._code = fs.readFileSync(modulePath).toString();
   }
 
   /**
@@ -45,17 +32,10 @@ export class ModuleLoader {
   }
 
   /**
-   * @return {string}
+   * @return {Set<string>}
    */
-  get context() {
-    return this._context;
-  }
-
-  /**
-   * @return {string}
-   */
-  get code() {
-    return this._code;
+  get dependencies() {
+    return this._dependencies;
   }
 
   /**
@@ -63,15 +43,37 @@ export class ModuleLoader {
    * @return {Module}
    */
   load() {
-    let module = new Module(this.modulePath, parentModule);
+    let require = Module.createRequire(this.modulePath);
+    let module = require(this.modulePath);
 
-    module.paths = Module._nodeModulePaths(this.context);
-    module.filename = this.modulePath;
+    this._dependencies.clear();
 
-    module._compile(this.code, this.modulePath);
-
-    // TODO resolve and reload children to bust cache
+    this._deleteRelatedModuleCache(this._dependencies, require.cache, this.modulePath, 0);
 
     return module;
+  }
+
+  /**
+   * @param {Set<string>} visited,
+   * @param {Dict<NodeModule>} cache
+   * @param {string} id
+   * @param {number} level
+   * @private
+   */
+  _deleteRelatedModuleCache(visited, cache, id, level) {
+    if (ModuleLoader.NODE_MODULES.test(id) || visited.has(id)) {
+      return;
+    }
+
+    /**
+     * @type {NodeModule | undefined}
+     */
+    let module = cache[id];
+
+    if (!!module) {
+      visited.add(id);
+      module.children.forEach(child => this._deleteRelatedModuleCache(visited, cache, child.id, level + 1));
+      delete cache[id];
+    }
   }
 }

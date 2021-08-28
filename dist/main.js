@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 294:
+/***/ 631:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -461,9 +461,9 @@ class ModuleConfig {
 class ValidationError extends Error {
 }
 
-// EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(622);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
 ;// CONCATENATED MODULE: ./src/constant.js
 class Constant {
   /**
@@ -629,12 +629,12 @@ function findStringSimilarities(str1, str2) {
   return similarPart;
 }
 
-// EXTERNAL MODULE: ./node_modules/slugify/slugify.js
-var slugify = __webpack_require__(304);
-var slugify_default = /*#__PURE__*/__webpack_require__.n(slugify);
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __webpack_require__(747);
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
+;// CONCATENATED MODULE: external "slugify"
+const external_slugify_namespaceObject = require("slugify");
+var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
 
 
@@ -908,7 +908,7 @@ class BuildConfigValidator {
    * @private
    */
   _validateName(name, property) {
-    let slug = slugify_default()(name);
+    let slug = external_slugify_default()(name);
 
     if (slug !== name) {
       throw new ValidationError(`The configuration for ${property} contains invalid characters. Recommendation: Use ${slug} instead of "${name}"`);
@@ -924,7 +924,7 @@ class BuildConfigValidator {
    * @private
    */
   _validateVersion(version, property) {
-    let slug = slugify_default()(version);
+    let slug = external_slugify_default()(version);
 
     if (slug !== version) {
       throw new ValidationError(`The configuration for ${property} contains invalid characters. Recommendation: Use ${slug} instead of "${version}"`);
@@ -1699,12 +1699,7 @@ class File {
   static DESIGN_PROPERTIES = 'design.properties';
 }
 
-// EXTERNAL MODULE: ./src/module-loader.js + 1 modules
-var module_loader = __webpack_require__(936);
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
-
-
-
 
 
 
@@ -1791,16 +1786,16 @@ class _BsiCxWebpackPlugin {
   _logger = undefined;
 
   /**
-   * @param {WebpackConfigBuilder} builder
+   * @param {ValidatedBuildConfig} config
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
-  constructor(builder, compiler, compilation, logger) {
+  constructor(config, compiler, compilation, logger) {
     /**
      * @type {ValidatedBuildConfig}
      */
-    this._config = builder.config;
+    this._config = config;
     /**
      * @type {Compiler}
      */
@@ -2257,20 +2252,20 @@ class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @type {WebpackConfigBuilder}
+   * @type {ValidatedBuildConfig}
    * @private
    */
-  _builder = undefined;
+  _config = undefined;
 
   /**
-   * @param {WebpackConfigBuilder} builder
+   * @param {ValidatedBuildConfig} config
    */
-  constructor(builder) {
+  constructor(config) {
     /**
-     * @type {WebpackConfigBuilder}
+     * @type {ValidatedBuildConfig}
      * @private
      */
-    this._builder = builder;
+    this._config = config;
   }
 
   apply(compiler) {
@@ -2282,10 +2277,7 @@ class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._builder, compiler, compilation, logger).apply();
-
-          let module = new module_loader/* ModuleLoader */.m(this._builder.config.propertiesFilePath).load();
-          console.info(Object.assign(this._builder.twigProperties, module.exports));
+          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
         })
     });
   }
@@ -3237,7 +3229,7 @@ class BsiCxWebpackZipHashPlugin {
       onlyFiles: true
     });
 
-    zipFilesToRemove.forEach(external_fs_.unlinkSync);
+    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
   }
 
   apply(compiler) {
@@ -3263,7 +3255,270 @@ class BsiCxWebpackZipHashPlugin {
   }
 };
 
+;// CONCATENATED MODULE: external "module"
+const external_module_namespaceObject = require("module");
+var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
+;// CONCATENATED MODULE: ./src/module-loader.js
+
+
+class ModuleLoader {
+  static NODE_MODULES = /[\\/]node_modules[\\/]/;
+  /**
+   * @type {string}
+   * @private
+   */
+  _modulePath = undefined;
+  /**
+   * @type {Set<string>}
+   * @private
+   */
+  _dependencies = new Set();
+
+  /**
+   * @param {string} modulePath
+   */
+  constructor(modulePath) {
+    /**
+     * @type {string}
+     * @private
+     */
+    this._modulePath = modulePath;
+  }
+
+  /**
+   * @return {string}
+   */
+  get modulePath() {
+    return this._modulePath;
+  }
+
+  /**
+   * @return {Set<string>}
+   */
+  get dependencies() {
+    return this._dependencies;
+  }
+
+  /**
+   *
+   * @return {Module}
+   */
+  load() {
+    let require = external_module_default().createRequire(this.modulePath);
+    let module = require(this.modulePath);
+
+    this._dependencies.clear();
+
+    this._deleteRelatedModuleCache(this._dependencies, require.cache, this.modulePath, 0);
+
+    return module;
+  }
+
+  /**
+   * @param {Set<string>} visited,
+   * @param {Dict<NodeModule>} cache
+   * @param {string} id
+   * @param {number} level
+   * @private
+   */
+  _deleteRelatedModuleCache(visited, cache, id, level) {
+    if (ModuleLoader.NODE_MODULES.test(id) || visited.has(id)) {
+      return;
+    }
+
+    /**
+     * @type {NodeModule | undefined}
+     */
+    let module = cache[id];
+
+    if (!!module) {
+      visited.add(id);
+      module.children.forEach(child => this._deleteRelatedModuleCache(visited, cache, child.id, level + 1));
+      delete cache[id];
+    }
+  }
+}
+
+;// CONCATENATED MODULE: ./src/twig-context.js
+
+
+class TwigContext {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _propertiesFilePath = undefined;
+  /**
+   * @type {ModuleLoader}
+   * @private
+   */
+  _propertiesModule = undefined;
+  /**
+   * @type {{}}
+   * @private
+   */
+  _properties = {};
+  /**
+   * @type {{}}
+   * @private
+   */
+  _propertiesProxy = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _propertiesReloadRequired = true;
+
+  /**
+   * @param {string|undefined} propertiesFilePath
+   */
+  constructor(propertiesFilePath) {
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this._propertiesFilePath = propertiesFilePath;
+    /**
+     * @type {ModuleLoader}
+     * @private
+     */
+    this._propertiesModule = new ModuleLoader(propertiesFilePath);
+    /**
+     * @type {{}}
+     * @private
+     */
+    this._propertiesProxy = this._getPropertiesProxy();
+
+    this._reloadPropertiesIfRequired();
+  }
+
+  /**
+   * @return {string|undefined}
+   */
+  get propertiesFilePath() {
+    return this._propertiesFilePath;
+  }
+
+  /**
+   * @return {ModuleLoader}
+   */
+  get propertiesModule() {
+    return this._propertiesModule;
+  }
+
+  /**
+   * @return {{}}
+   */
+  get properties() {
+    return this._propertiesProxy;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  get propertiesReloadRequired() {
+    return this._propertiesReloadRequired;
+  }
+
+  forcePropertiesReload() {
+    this._propertiesReloadRequired = true;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  hasPropertiesFilePath() {
+    return !!this._propertiesFilePath;
+  }
+
+  /**
+   * @return {{}}
+   * @private
+   */
+  _getPropertiesProxy() {
+    let handler = this._getProxyHandler();
+
+    return new Proxy(this._properties, handler);
+  }
+
+  /**
+   * @return {{}}
+   * @private
+   */
+  _getProxyHandler() {
+    return {
+      get: this._get.bind(this),
+      set: () => void (0),
+      deleteProperty: () => void (0),
+      defineProperty: () => void (0)
+    };
+  }
+
+  /**
+   * @param {{}} target
+   * @param {string} property
+   * @return {*}
+   * @private
+   */
+  _get(target, property) {
+    this._reloadPropertiesIfRequired();
+    return target[property];
+  }
+
+  /**
+   * @private
+   */
+  _reloadPropertiesIfRequired() {
+    if (!this._propertiesReloadRequired) {
+      return;
+    }
+
+    if (this.hasPropertiesFilePath()) {
+      let loadedProperties = this._propertiesModule.load();
+
+      Object.assign(this._properties, loadedProperties);
+    }
+
+    this._propertiesReloadRequired = false;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-cx-twig-context-webpack-plugin.js
+
+
+class BsiCxTwigContextWebpackPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxTwigContextWebpackPlugin';
+
+  /**
+   * @type {TwigContext}
+   * @private
+   */
+  _twigContext = undefined;
+
+  /**
+   * @param {TwigContext} twigContext
+   */
+  constructor(twigContext) {
+    /**
+     * @type {TwigContext}
+     * @private
+     */
+    this._twigContext = twigContext;
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
+      this._twigContext.forcePropertiesReload();
+      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies);
+    });
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
 
 
 
@@ -3296,10 +3551,10 @@ class WebpackConfigBuilder {
    */
   _config = undefined;
   /**
-   * @type {{}}
+   * @type {TwigContext}
    * @private
    */
-  _twigProperties = undefined;
+  _twigContext = undefined;
 
   /**
    * @param {ValidatedBuildConfig} config
@@ -3311,10 +3566,10 @@ class WebpackConfigBuilder {
      */
     this._config = config;
     /**
-     * @type {{}}
+     * @type {TwigContext}
      * @private
      */
-    this._twigProperties = {};
+    this._twigContext = new TwigContext(config.propertiesFilePath);
   }
 
   /**
@@ -3325,10 +3580,10 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {{}}
+   * @return {TwigContext}
    */
-  get twigProperties() {
-    return this._twigProperties;
+  get twigContext() {
+    return this._twigContext;
   }
 
   build() {
@@ -3348,6 +3603,7 @@ class WebpackConfigBuilder {
         ]
       },
       plugins: [
+        ...this._getBsiCxTwigContextWebpackPlugin(),
         ...this._getMiniCssExtractPluginConfig(),
         ...this._getCopyPluginConfig(),
         ...this._getBsiCxWebpackPluginConfig(),
@@ -3478,21 +3734,6 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {{}}
-   * @private
-   */
-  _getTwigEnvironmentProperties() {
-    if (this.config.propertiesFilePath === undefined) {
-      return this.twigProperties;
-    }
-
-    let moduleLoader = new module_loader/* ModuleLoader */.m(this.config.propertiesFilePath);
-    let module = moduleLoader.load();
-
-    return Object.assign(this.twigProperties, module.exports);
-  }
-
-  /**
    * Rules for Twig file handling.
    *
    * @returns {[{}]}
@@ -3509,7 +3750,7 @@ class WebpackConfigBuilder {
             options: {
               environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
               renderContext: {
-                properties: this._getTwigEnvironmentProperties(),
+                properties: this._twigContext.properties,
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -3729,13 +3970,23 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * BSI CX Webpack plugin.
    *
-   * @returns {[BsiCxWebpackPlugin]}
+   * @return {BsiCxTwigContextWebpackPlugin[]}
+   * @private
+   */
+  _getBsiCxTwigContextWebpackPlugin() {
+    return [
+      new BsiCxTwigContextWebpackPlugin(this.twigContext)
+    ]
+  }
+
+  /**
+   * @return {[BsiCxWebpackPlugin]}
+   * @private
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin(this)
+      new BsiCxWebpackPlugin(this.config)
     ];
   }
 
@@ -3962,221 +4213,12 @@ class WebpackConfigBuilder {
 
 
 
-/***/ }),
-
-/***/ 304:
-/***/ (function(module) {
-
-
-;(function (name, root, factory) {
-  if (true) {
-    module.exports = factory()
-    module.exports.default = factory()
-  }
-  /* istanbul ignore next */
-  else {}
-}('slugify', this, function () {
-  var charMap = JSON.parse('{"$":"dollar","%":"percent","&":"and","<":"less",">":"greater","|":"or","¢":"cent","£":"pound","¤":"currency","¥":"yen","©":"(c)","ª":"a","®":"(r)","º":"o","À":"A","Á":"A","Â":"A","Ã":"A","Ä":"A","Å":"A","Æ":"AE","Ç":"C","È":"E","É":"E","Ê":"E","Ë":"E","Ì":"I","Í":"I","Î":"I","Ï":"I","Ð":"D","Ñ":"N","Ò":"O","Ó":"O","Ô":"O","Õ":"O","Ö":"O","Ø":"O","Ù":"U","Ú":"U","Û":"U","Ü":"U","Ý":"Y","Þ":"TH","ß":"ss","à":"a","á":"a","â":"a","ã":"a","ä":"a","å":"a","æ":"ae","ç":"c","è":"e","é":"e","ê":"e","ë":"e","ì":"i","í":"i","î":"i","ï":"i","ð":"d","ñ":"n","ò":"o","ó":"o","ô":"o","õ":"o","ö":"o","ø":"o","ù":"u","ú":"u","û":"u","ü":"u","ý":"y","þ":"th","ÿ":"y","Ā":"A","ā":"a","Ă":"A","ă":"a","Ą":"A","ą":"a","Ć":"C","ć":"c","Č":"C","č":"c","Ď":"D","ď":"d","Đ":"DJ","đ":"dj","Ē":"E","ē":"e","Ė":"E","ė":"e","Ę":"e","ę":"e","Ě":"E","ě":"e","Ğ":"G","ğ":"g","Ģ":"G","ģ":"g","Ĩ":"I","ĩ":"i","Ī":"i","ī":"i","Į":"I","į":"i","İ":"I","ı":"i","Ķ":"k","ķ":"k","Ļ":"L","ļ":"l","Ľ":"L","ľ":"l","Ł":"L","ł":"l","Ń":"N","ń":"n","Ņ":"N","ņ":"n","Ň":"N","ň":"n","Ō":"O","ō":"o","Ő":"O","ő":"o","Œ":"OE","œ":"oe","Ŕ":"R","ŕ":"r","Ř":"R","ř":"r","Ś":"S","ś":"s","Ş":"S","ş":"s","Š":"S","š":"s","Ţ":"T","ţ":"t","Ť":"T","ť":"t","Ũ":"U","ũ":"u","Ū":"u","ū":"u","Ů":"U","ů":"u","Ű":"U","ű":"u","Ų":"U","ų":"u","Ŵ":"W","ŵ":"w","Ŷ":"Y","ŷ":"y","Ÿ":"Y","Ź":"Z","ź":"z","Ż":"Z","ż":"z","Ž":"Z","ž":"z","Ə":"E","ƒ":"f","Ơ":"O","ơ":"o","Ư":"U","ư":"u","ǈ":"LJ","ǉ":"lj","ǋ":"NJ","ǌ":"nj","Ș":"S","ș":"s","Ț":"T","ț":"t","ə":"e","˚":"o","Ά":"A","Έ":"E","Ή":"H","Ί":"I","Ό":"O","Ύ":"Y","Ώ":"W","ΐ":"i","Α":"A","Β":"B","Γ":"G","Δ":"D","Ε":"E","Ζ":"Z","Η":"H","Θ":"8","Ι":"I","Κ":"K","Λ":"L","Μ":"M","Ν":"N","Ξ":"3","Ο":"O","Π":"P","Ρ":"R","Σ":"S","Τ":"T","Υ":"Y","Φ":"F","Χ":"X","Ψ":"PS","Ω":"W","Ϊ":"I","Ϋ":"Y","ά":"a","έ":"e","ή":"h","ί":"i","ΰ":"y","α":"a","β":"b","γ":"g","δ":"d","ε":"e","ζ":"z","η":"h","θ":"8","ι":"i","κ":"k","λ":"l","μ":"m","ν":"n","ξ":"3","ο":"o","π":"p","ρ":"r","ς":"s","σ":"s","τ":"t","υ":"y","φ":"f","χ":"x","ψ":"ps","ω":"w","ϊ":"i","ϋ":"y","ό":"o","ύ":"y","ώ":"w","Ё":"Yo","Ђ":"DJ","Є":"Ye","І":"I","Ї":"Yi","Ј":"J","Љ":"LJ","Њ":"NJ","Ћ":"C","Џ":"DZ","А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ж":"Zh","З":"Z","И":"I","Й":"J","К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F","Х":"H","Ц":"C","Ч":"Ch","Ш":"Sh","Щ":"Sh","Ъ":"U","Ы":"Y","Ь":"","Э":"E","Ю":"Yu","Я":"Ya","а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ж":"zh","з":"z","и":"i","й":"j","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"c","ч":"ch","ш":"sh","щ":"sh","ъ":"u","ы":"y","ь":"","э":"e","ю":"yu","я":"ya","ё":"yo","ђ":"dj","є":"ye","і":"i","ї":"yi","ј":"j","љ":"lj","њ":"nj","ћ":"c","ѝ":"u","џ":"dz","Ґ":"G","ґ":"g","Ғ":"GH","ғ":"gh","Қ":"KH","қ":"kh","Ң":"NG","ң":"ng","Ү":"UE","ү":"ue","Ұ":"U","ұ":"u","Һ":"H","һ":"h","Ә":"AE","ә":"ae","Ө":"OE","ө":"oe","Ա":"A","Բ":"B","Գ":"G","Դ":"D","Ե":"E","Զ":"Z","Է":"E\'","Ը":"Y\'","Թ":"T\'","Ժ":"JH","Ի":"I","Լ":"L","Խ":"X","Ծ":"C\'","Կ":"K","Հ":"H","Ձ":"D\'","Ղ":"GH","Ճ":"TW","Մ":"M","Յ":"Y","Ն":"N","Շ":"SH","Չ":"CH","Պ":"P","Ջ":"J","Ռ":"R\'","Ս":"S","Վ":"V","Տ":"T","Ր":"R","Ց":"C","Փ":"P\'","Ք":"Q\'","Օ":"O\'\'","Ֆ":"F","և":"EV","฿":"baht","ა":"a","ბ":"b","გ":"g","დ":"d","ე":"e","ვ":"v","ზ":"z","თ":"t","ი":"i","კ":"k","ლ":"l","მ":"m","ნ":"n","ო":"o","პ":"p","ჟ":"zh","რ":"r","ს":"s","ტ":"t","უ":"u","ფ":"f","ქ":"k","ღ":"gh","ყ":"q","შ":"sh","ჩ":"ch","ც":"ts","ძ":"dz","წ":"ts","ჭ":"ch","ხ":"kh","ჯ":"j","ჰ":"h","Ẁ":"W","ẁ":"w","Ẃ":"W","ẃ":"w","Ẅ":"W","ẅ":"w","ẞ":"SS","Ạ":"A","ạ":"a","Ả":"A","ả":"a","Ấ":"A","ấ":"a","Ầ":"A","ầ":"a","Ẩ":"A","ẩ":"a","Ẫ":"A","ẫ":"a","Ậ":"A","ậ":"a","Ắ":"A","ắ":"a","Ằ":"A","ằ":"a","Ẳ":"A","ẳ":"a","Ẵ":"A","ẵ":"a","Ặ":"A","ặ":"a","Ẹ":"E","ẹ":"e","Ẻ":"E","ẻ":"e","Ẽ":"E","ẽ":"e","Ế":"E","ế":"e","Ề":"E","ề":"e","Ể":"E","ể":"e","Ễ":"E","ễ":"e","Ệ":"E","ệ":"e","Ỉ":"I","ỉ":"i","Ị":"I","ị":"i","Ọ":"O","ọ":"o","Ỏ":"O","ỏ":"o","Ố":"O","ố":"o","Ồ":"O","ồ":"o","Ổ":"O","ổ":"o","Ỗ":"O","ỗ":"o","Ộ":"O","ộ":"o","Ớ":"O","ớ":"o","Ờ":"O","ờ":"o","Ở":"O","ở":"o","Ỡ":"O","ỡ":"o","Ợ":"O","ợ":"o","Ụ":"U","ụ":"u","Ủ":"U","ủ":"u","Ứ":"U","ứ":"u","Ừ":"U","ừ":"u","Ử":"U","ử":"u","Ữ":"U","ữ":"u","Ự":"U","ự":"u","Ỳ":"Y","ỳ":"y","Ỵ":"Y","ỵ":"y","Ỷ":"Y","ỷ":"y","Ỹ":"Y","ỹ":"y","–":"-","‘":"\'","’":"\'","“":"\\\"","”":"\\\"","„":"\\\"","†":"+","•":"*","…":"...","₠":"ecu","₢":"cruzeiro","₣":"french franc","₤":"lira","₥":"mill","₦":"naira","₧":"peseta","₨":"rupee","₩":"won","₪":"new shequel","₫":"dong","€":"euro","₭":"kip","₮":"tugrik","₯":"drachma","₰":"penny","₱":"peso","₲":"guarani","₳":"austral","₴":"hryvnia","₵":"cedi","₸":"kazakhstani tenge","₹":"indian rupee","₺":"turkish lira","₽":"russian ruble","₿":"bitcoin","℠":"sm","™":"tm","∂":"d","∆":"delta","∑":"sum","∞":"infinity","♥":"love","元":"yuan","円":"yen","﷼":"rial"}')
-  var locales = JSON.parse('{"de":{"Ä":"AE","ä":"ae","Ö":"OE","ö":"oe","Ü":"UE","ü":"ue","%":"prozent","&":"und","|":"oder","∑":"summe","∞":"unendlich","♥":"liebe"},"es":{"%":"por ciento","&":"y","<":"menor que",">":"mayor que","|":"o","¢":"centavos","£":"libras","¤":"moneda","₣":"francos","∑":"suma","∞":"infinito","♥":"amor"},"fr":{"%":"pourcent","&":"et","<":"plus petit",">":"plus grand","|":"ou","¢":"centime","£":"livre","¤":"devise","₣":"franc","∑":"somme","∞":"infini","♥":"amour"},"pt":{"%":"porcento","&":"e","<":"menor",">":"maior","|":"ou","¢":"centavo","∑":"soma","£":"libra","∞":"infinito","♥":"amor"},"uk":{"И":"Y","и":"y","Й":"Y","й":"y","Ц":"Ts","ц":"ts","Х":"Kh","х":"kh","Щ":"Shch","щ":"shch","Г":"H","г":"h"},"vi":{"Đ":"D","đ":"d"}}')
-
-  function replace (string, options) {
-    if (typeof string !== 'string') {
-      throw new Error('slugify: string argument expected')
-    }
-
-    options = (typeof options === 'string')
-      ? {replacement: options}
-      : options || {}
-
-    var locale = locales[options.locale] || {}
-
-    var replacement = options.replacement === undefined ? '-' : options.replacement
-
-    var trim = options.trim === undefined ? true : options.trim
-
-    var slug = string.normalize().split('')
-      // replace characters based on charMap
-      .reduce(function (result, ch) {
-        return result + (locale[ch] || charMap[ch] ||  (ch === replacement ? ' ' : ch))
-          // remove not allowed characters
-          .replace(options.remove || /[^\w\s$*_+~.()'"!\-:@]+/g, '')
-      }, '');
-
-    if (options.strict) {
-      slug = slug.replace(/[^A-Za-z0-9\s]/g, '');
-    }
-
-    if (trim) {
-      slug = slug.trim()
-    }
-
-    // Replace spaces with replacement character, treating multiple consecutive
-    // spaces as a single space.
-    slug = slug.replace(/\s+/g, replacement);
-
-    if (options.lower) {
-      slug = slug.toLowerCase()
-    }
-
-    return slug
-  }
-
-  replace.extend = function (customMap) {
-    Object.assign(charMap, customMap)
-  }
-
-  return replace
-}))
-
-
-/***/ }),
-
-/***/ 936:
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-
-// EXPORTS
-__webpack_require__.d(__webpack_exports__, {
-  "m": () => (/* binding */ ModuleLoader)
-});
-
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __webpack_require__(747);
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
-// EXTERNAL MODULE: external "path"
-var external_path_ = __webpack_require__(622);
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_);
-;// CONCATENATED MODULE: external "module"
-const external_module_namespaceObject = require("module");
-var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
-;// CONCATENATED MODULE: ./src/module-loader.js
-/* module decorator */ module = __webpack_require__.hmd(module);
-
-
-
-
-const parentModule = module;
-
-class ModuleLoader {
-  /**
-   * @type {string}
-   * @private
-   */
-  _modulePath = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _code = undefined;
-
-  /**
-   * @param {string} modulePath
-   */
-  constructor(modulePath) {
-    /**
-     * @type {string}
-     * @private
-     */
-    this._modulePath = modulePath;
-    /**
-     * @type {string}
-     * @private
-     */
-    this._context = external_path_default().dirname(modulePath);
-    /**
-     * @type {string}
-     * @private
-     */
-    this._code = external_fs_default().readFileSync(modulePath).toString();
-  }
-
-  /**
-   * @return {string}
-   */
-  get modulePath() {
-    return this._modulePath;
-  }
-
-  /**
-   * @return {string}
-   */
-  get context() {
-    return this._context;
-  }
-
-  /**
-   * @return {string}
-   */
-  get code() {
-    return this._code;
-  }
-
-  /**
-   *
-   * @return {Module}
-   */
-  load() {
-    let module = new (external_module_default())(this.modulePath, parentModule);
-
-    module.paths = external_module_default()._nodeModulePaths(this.context);
-    module.filename = this.modulePath;
-
-    module._compile(this.code, this.modulePath);
-
-    // TODO resolve and reload children to bust cache
-
-    return module;
-  }
-}
-
-
-/***/ }),
-
-/***/ 747:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs");
-
-/***/ }),
-
-/***/ 622:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("path");
-
 /***/ })
 
 /******/ 	});
 /************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -4203,21 +4245,6 @@ module.exports = require("path");
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -4239,7 +4266,8 @@ module.exports = require("path");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(294);
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__[631](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
