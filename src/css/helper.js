@@ -4,12 +4,21 @@ import CssColor from './css-color';
 import CssUrl from './css-url';
 
 /**
- * @param {string} pathSegments
+ * @param {...string} pathSegments
  * @return {CssUrl}
  */
 export function url(...pathSegments) {
   let resolvedPath = path.resolve(...pathSegments);
   return new CssUrl(resolvedPath);
+}
+
+/**
+ * @param {...string} pathSegments
+ * @return {CssUrl}
+ */
+export function dataUri(...pathSegments) {
+  let resolvedPath = path.resolve(...pathSegments);
+  return new CssUrl(resolvedPath, true);
 }
 
 /**

@@ -1596,6 +1596,8 @@ declare module "src/css/abstract-css-property" {
          */
         getSassObject(): any;
         /**
+         * Will be used in Twig files.
+         *
          * @return {string}
          * @abstract
          */
@@ -1794,6 +1796,14 @@ declare module "src/css/css-raw" {
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
+declare module "src/query-constant" {
+    export default class QueryConstant {
+        /**
+         * @type {string}
+         */
+        static INLINE: string;
+    }
+}
 declare module "src/css/css-url" {
     export default class CssUrl extends AbstractCssProperty {
         /**
@@ -1803,13 +1813,31 @@ declare module "src/css/css-url" {
         static getParser(value: string | number): undefined;
         /**
          * @param {string} url
+         * @param {boolean} [inline=false]
          */
-        constructor(url: string);
+        constructor(url: string, inline?: boolean);
         /**
          * @type {string}
          * @private
          */
         private _url;
+        /**
+         * @type {boolean}
+         * @private
+         */
+        private _inline;
+        /**
+         * @return {string}
+         */
+        get rawUrl(): string;
+        /**
+         * @return {string}
+         */
+        get externalUrl(): string;
+        /**
+         * @return {string}
+         */
+        get inlineUrl(): string;
         /**
          * @return {string}
          */
@@ -1821,7 +1849,52 @@ declare module "src/css/css-url" {
         /**
          * @return {string}
          */
+        get inlineRef(): string;
+        /**
+         * @return {string}
+         */
+        get externalRef(): string;
+        /**
+         * @return {string}
+         */
         get css(): string;
+        /**
+         * @return {string}
+         */
+        get inlineCss(): string;
+        /**
+         * @return {string}
+         */
+        get inlineRefCss(): string;
+        /**
+         * @return {string}
+         */
+        get externalCss(): string;
+        /**
+         * @return {string}
+         */
+        get externalRefCss(): string;
+        /**
+         * @return {boolean}
+         */
+        get inline(): boolean;
+        /**
+         * @return {string}
+         * @private
+         */
+        private _getInlineUrl;
+        /**
+         * @param {string} url
+         * @return {string}
+         * @private
+         */
+        private _getRef;
+        /**
+         * @param {string} url
+         * @return {string}
+         * @private
+         */
+        private _getCss;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
@@ -2233,10 +2306,15 @@ declare module "src/webpack-config-builder" {
 }
 declare module "src/css/helper" {
     /**
-     * @param {string} pathSegments
+     * @param {...string} pathSegments
      * @return {CssUrl}
      */
-    export function url(...pathSegments: string): CssUrl;
+    export function url(...pathSegments: string[]): CssUrl;
+    /**
+     * @param {...string} pathSegments
+     * @return {CssUrl}
+     */
+    export function dataUri(...pathSegments: string[]): CssUrl;
     /**
      * @param {...string|number} channels
      * @return {CssColor|string}

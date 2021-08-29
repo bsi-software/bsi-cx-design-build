@@ -84,7 +84,16 @@ class Constant {
   static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
 };
 
+;// CONCATENATED MODULE: ./src/query-constant.js
+class QueryConstant {
+  /**
+   * @type {string}
+   */
+  static INLINE = 'inline';
+}
+
 ;// CONCATENATED MODULE: ./src/twig-functions.js
+
 
 
 
@@ -119,11 +128,13 @@ function bsiCxJsModuleImport(template, config, inline) {
 /**
  * Resolve static assets.
  */
-const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asset', (template, assetPath) => {
+const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asset', (template, assetPath, inline) => {
   let templatePath = template.source.getResolvedName();
   let templateDirPath = external_path_default().dirname(templatePath);
   let absoluteAssetPath = external_path_default().resolve(templateDirPath, assetPath).replace(/\\/g, (external_path_default()).posix.sep);
-  return strToPromise(`@ref(${absoluteAssetPath})`);
+  let assetQuery = !!inline ? QueryConstant.INLINE : '';
+  let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
+  return strToPromise(`@ref(${assetRequest})`);
 }, [], {needs_template: true});
 
 /**

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Support for inline assets with data-uri
 - Boolean support for CSS properties
 - URL support for CSS properties
 

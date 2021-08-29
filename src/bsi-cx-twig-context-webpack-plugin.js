@@ -26,7 +26,7 @@ export default class BsiCxTwigContextWebpackPlugin {
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
       this._twigContext.forcePropertiesReload();
-      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies);
+      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
     });
   }
 }

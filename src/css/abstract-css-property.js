@@ -18,6 +18,8 @@ export default class AbstractCssProperty {
   }
 
   /**
+   * Will be used in Twig files.
+   *
    * @return {string}
    * @abstract
    */

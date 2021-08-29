@@ -20,6 +20,7 @@ import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin'
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
 import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
+import QueryConstant from './query-constant';
 
 export default class WebpackConfigBuilder {
   /**
@@ -338,14 +339,28 @@ export default class WebpackConfigBuilder {
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
     let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
+    let inlineQueryRegex = new RegExp(QueryConstant.INLINE);
 
     return [
       {
         test: testRegex,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[name]-[contenthash][ext]'
-        }
+        oneOf: [
+          {
+            resourceQuery: /inline/,
+            type: 'asset/inline'
+          },
+          {
+            resourceQuery: {
+              not: [
+                inlineQueryRegex
+              ]
+            },
+            type: 'asset/resource',
+            generator: {
+              filename: 'static/[name]-[contenthash][ext]'
+            }
+          },
+        ]
       }
     ];
   }

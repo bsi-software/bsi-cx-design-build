@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 851:
+/***/ 220:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -45,6 +45,7 @@ var helper_namespaceObject = {};
 __webpack_require__.r(helper_namespaceObject);
 __webpack_require__.d(helper_namespaceObject, {
   "color": () => (color),
+  "dataUri": () => (dataUri),
   "url": () => (url)
 });
 
@@ -3532,7 +3533,7 @@ class BsiCxTwigContextWebpackPlugin {
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
       this._twigContext.forcePropertiesReload();
-      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies);
+      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
     });
   }
 }
@@ -3560,6 +3561,8 @@ class AbstractCssProperty {
   }
 
   /**
+   * Will be used in Twig files.
+   *
    * @return {string}
    * @abstract
    */
@@ -4033,7 +4036,16 @@ class CssRaw extends AbstractCssProperty {
   }
 }
 
+;// CONCATENATED MODULE: ./src/query-constant.js
+class QueryConstant {
+  /**
+   * @type {string}
+   */
+  static INLINE = 'inline';
+}
+
 ;// CONCATENATED MODULE: ./src/css/css-url.js
+
 
 
 
@@ -4044,38 +4056,119 @@ class CssUrl extends AbstractCssProperty {
    * @private
    */
   _url = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _inline = undefined;
 
   /**
    * @param {string} url
+   * @param {boolean} [inline=false]
    */
-  constructor(url) {
+  constructor(url, inline) {
     super();
     /**
      * @type {string}
      * @private
      */
     this._url = url;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this._inline = !!inline;
   }
 
   /**
    * @return {string}
    */
-  get url() {
+  get rawUrl() {
     return this._url;
   }
 
   /**
    * @return {string}
    */
+  get externalUrl() {
+    return this.rawUrl;
+  }
+
+  /**
+   * @return {string}
+   */
+  get inlineUrl() {
+    return this._getInlineUrl();
+  }
+
+  /**
+   * @return {string}
+   */
+  get url() {
+    return this.inline ? this.inlineUrl : this.rawUrl;
+  }
+
+  /**
+   * @return {string}
+   */
   get ref() {
-    return `@ref(${this.url})`;
+    return this._getRef(this.url);
+  }
+
+  /**
+   * @return {string}
+   */
+  get inlineRef() {
+    return this._getRef(this.inlineUrl);
+  }
+
+  /**
+   * @return {string}
+   */
+  get externalRef() {
+    return this._getRef(this.rawUrl);
   }
 
   /**
    * @return {string}
    */
   get css() {
-    return `url(${this.url})`;
+    return this._getCss(this.url);
+  }
+
+  /**
+   * @return {string}
+   */
+  get inlineCss() {
+    return this._getCss(this.inlineUrl);
+  }
+
+  /**
+   * @return {string}
+   */
+  get inlineRefCss() {
+    return this._getCss(this.inlineRef);
+  }
+
+  /**
+   * @return {string}
+   */
+  get externalCss() {
+    return this._getCss(this.rawUrl);
+  }
+
+  /**
+   * @return {string}
+   */
+  get externalRefCss() {
+    return this._getCss(this.externalRef);
+  }
+
+  /**
+   * @return {boolean}
+   */
+  get inline() {
+    return this._inline;
   }
 
   /**
@@ -4097,6 +4190,32 @@ class CssUrl extends AbstractCssProperty {
    */
   toString() {
     return `url(${this.ref})`;
+  }
+
+  /**
+   * @return {string}
+   * @private
+   */
+  _getInlineUrl() {
+    return `${this.rawUrl}?${QueryConstant.INLINE}`; // FIXME: care about already applied query strings
+  }
+
+  /**
+   * @param {string} url
+   * @return {string}
+   * @private
+   */
+  _getRef(url) {
+    return `@ref(${url})`;
+  }
+
+  /**
+   * @param {string} url
+   * @return {string}
+   * @private
+   */
+  _getCss(url) {
+    return `url(${url})`;
   }
 
   /**
@@ -4466,6 +4585,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -4783,14 +4903,28 @@ class WebpackConfigBuilder {
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
     let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
+    let inlineQueryRegex = new RegExp(QueryConstant.INLINE);
 
     return [
       {
         test: testRegex,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/[name]-[contenthash][ext]'
-        }
+        oneOf: [
+          {
+            resourceQuery: /inline/,
+            type: 'asset/inline'
+          },
+          {
+            resourceQuery: {
+              not: [
+                inlineQueryRegex
+              ]
+            },
+            type: 'asset/resource',
+            generator: {
+              filename: 'static/[name]-[contenthash][ext]'
+            }
+          },
+        ]
       }
     ];
   }
@@ -5152,12 +5286,21 @@ class WebpackConfigBuilder {
 
 
 /**
- * @param {string} pathSegments
+ * @param {...string} pathSegments
  * @return {CssUrl}
  */
 function url(...pathSegments) {
   let resolvedPath = external_path_default().resolve(...pathSegments);
   return new CssUrl(resolvedPath);
+}
+
+/**
+ * @param {...string} pathSegments
+ * @return {CssUrl}
+ */
+function dataUri(...pathSegments) {
+  let resolvedPath = external_path_default().resolve(...pathSegments);
+  return new CssUrl(resolvedPath, true);
 }
 
 /**
@@ -5245,7 +5388,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[851](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[220](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
