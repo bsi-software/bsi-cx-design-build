@@ -1,11 +1,11 @@
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 import CssClass from './css-class';
-import {builderObjectValue, identity} from '../extractor';
+import {builderObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
 
 /**
- * @since 1.1
+ * @since Studio 1.1
  */
 export default class Style extends AbstractBuilder {
   /**
@@ -47,7 +47,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @returns {Style}
+   * @return {Style}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -56,7 +56,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @returns {Style}
+   * @return {Style}
    */
   withLabel(label) {
     this._label = label;
@@ -65,7 +65,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {...CssClass} cssClasses
-   * @returns {Style}
+   * @return {Style}
    */
   withCssClasses(...cssClasses) {
     this._cssClasses = cssClasses;
@@ -74,7 +74,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {...{}} cssClasses
-   * @returns {Style}
+   * @return {Style}
    */
   withRawCssClasses(...cssClasses) {
     this._cssClasses = new RawValue(cssClasses);

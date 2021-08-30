@@ -2,7 +2,7 @@ import AbstractInclude from './abstract-include';
 import DesignJsonProperty from '../design-json-property';
 
 /**
- * @since 1.3
+ * @since BSI CX 1.3
  */
 export default class PageInclude extends AbstractInclude {
   constructor() {

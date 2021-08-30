@@ -115,7 +115,7 @@ class AbstractConstant {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get value() {
     return this._value;
@@ -137,19 +137,19 @@ class DesignType extends AbstractConstant {
 
 /**
  * @type {DesignType}
- * @since 1.0
+ * @since Studio 1.0
  */
 const LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
- * @since 1.0
+ * @since Studio 1.0
  */
 const EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
- * @since 1.3
+ * @since BSI CX 1.3
  */
 const design_type_WEBSITE = new DesignType('website');
 
@@ -283,7 +283,7 @@ function strToPromise(resolve) {
  * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
  * @param {boolean} inline
- * @returns {Promise<string>}
+ * @return {Promise<string>}
  */
 function bsiCxJsModuleImport(template, config, inline) {
   let templatePath = template.source.getResolvedName();

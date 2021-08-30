@@ -1,7 +1,7 @@
 import AbstractInclude from './abstract-include';
 
 /**
- * @since 1.3
+ * @since BSI CX 1.3
  */
 export default class Include extends AbstractInclude {
   constructor() {

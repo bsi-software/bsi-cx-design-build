@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 114:
+/***/ 715:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -11,6 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
   "BuildConfig": () => (/* reexport */ BuildConfig),
+  "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "ModuleConfig": () => (/* reexport */ ModuleConfig),
   "Version": () => (/* reexport */ version_namespaceObject),
@@ -74,7 +75,7 @@ class AbstractConstant {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get value() {
     return this._value;
@@ -96,19 +97,19 @@ class DesignType extends AbstractConstant {
 
 /**
  * @type {DesignType}
- * @since 1.0
+ * @since Studio 1.0
  */
 const LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
- * @since 1.0
+ * @since Studio 1.0
  */
 const EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
- * @since 1.3
+ * @since BSI CX 1.3
  */
 const WEBSITE = new DesignType('website');
 
@@ -147,14 +148,14 @@ class Version extends AbstractConstant {
   }
 
   /**
-   * @returns {DesignType[]}
+   * @return {DesignType[]}
    */
   get allowedTypes() {
     return this._allowedTypes;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get legacyFormat() {
     return this._legacyFormat;
@@ -216,6 +217,8 @@ class RawValue {
  */
 class AbstractBuilder {
   /**
+   * Build the configuration.
+   *
    * @abstract
    * @return {{}}
    */
@@ -430,7 +433,11 @@ class ModuleConfig {
   }
 
   /**
-   * @param {string} name
+   * The name for your JavaScript module. The name specified here must be unique in your build configuration.
+   * This means you can't configure two modules with the same name. This will be the name of the resulting entry
+   * in the Webpack configuration.
+   *
+   * @param {string} name - The module name.
    * @return {ModuleConfig}
    */
   withName(name) {
@@ -441,7 +448,7 @@ class ModuleConfig {
   /**
    * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
    *
-   * @param {string} path
+   * @param {string} path - The path to the module.
    * @return {ModuleConfig}
    */
   withPath(path) {
@@ -464,6 +471,83 @@ class ModuleConfig {
    */
   clone(shallow) {
     return ObjectCloner.clone(this, new ModuleConfig(), shallow);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
+
+
+
+/**
+ * @implements {BuildConfigInterface}
+ */
+class DefaultBuildConfig {
+  get additionalFilesToCopy() {
+    return [];
+  }
+
+  get copyAssetsFolderPath() {
+    return 'assets';
+  }
+
+  get designType() {
+    return LANDINGPAGE;
+  }
+
+  get devServerPort() {
+    return 9000;
+  }
+
+  get hashZipFiles() {
+    return true;
+  }
+
+  get modules() {
+    return [];
+  }
+
+  get modulesRootPath() {
+    return 'modules';
+  }
+
+  get name() {
+    return undefined;
+  }
+
+  get outputPath() {
+    return 'dist';
+  }
+
+  get propertiesFilePath() {
+    return undefined;
+  }
+
+  get rootPath() {
+    return undefined;
+  }
+
+  get sourceMapEnabled() {
+    return true;
+  }
+
+  get staticFileFolderPath() {
+    return 'static';
+  }
+
+  get targetVersion() {
+    return CX_22_0;
+  }
+
+  get version() {
+    return '1.0.0';
+  }
+
+  get webpackPlugins() {
+    return [];
+  }
+
+  get webpackRules() {
+    return [];
   }
 }
 
@@ -707,93 +791,103 @@ class ValidatedBuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {Object[]}
+   * @private
+   */
+  _webpackPlugins = undefined;
+  /**
+   * @type {{}[]}
+   * @private
+   */
+  _webpackRules = undefined;
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get version() {
     return this._version;
   }
 
   /**
-   * @returns {Version}
+   * @return {Version}
    */
   get targetVersion() {
     return this._targetVersion;
   }
 
   /**
-   * @returns {DesignType}
+   * @return {DesignType}
    */
   get designType() {
     return this._designType;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get rootPath() {
     return this._rootPath;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @returns {number}
+   * @return {number}
    */
   get devServerPort() {
     return this._devServerPort;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get hashZipFiles() {
     return this._hashZipFiles;
   }
 
   /**
-   * @returns {ModuleConfig[]}
+   * @return {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get modulesRootPath() {
     return this._modulesRootPath;
   }
 
   /**
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
@@ -812,74 +906,19 @@ class ValidatedBuildConfig {
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
   }
-}
 
-;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
-
-
-
-/**
- * @implements {BuildConfigInterface}
- */
-class DefaultBuildConfig {
-  get additionalFilesToCopy() {
-    return [];
+  /**
+   * @return {Object[]}
+   */
+  get webpackPlugins() {
+    return this._webpackPlugins;
   }
 
-  get copyAssetsFolderPath() {
-    return 'assets';
-  }
-
-  get designType() {
-    return LANDINGPAGE;
-  }
-
-  get devServerPort() {
-    return 9000;
-  }
-
-  get hashZipFiles() {
-    return true;
-  }
-
-  get modules() {
-    return [];
-  }
-
-  get modulesRootPath() {
-    return 'modules';
-  }
-
-  get name() {
-    return undefined;
-  }
-
-  get outputPath() {
-    return 'dist';
-  }
-
-  get propertiesFilePath() {
-    return undefined;
-  }
-
-  get rootPath() {
-    return undefined;
-  }
-
-  get sourceMapEnabled() {
-    return false;
-  }
-
-  get staticFileFolderPath() {
-    return 'static';
-  }
-
-  get targetVersion() {
-    return CX_22_0;
-  }
-
-  get version() {
-    return '1.0.0';
+  /**
+   * @return {{}[]}
+   */
+  get webpackRules() {
+    return this._webpackRules;
   }
 }
 
@@ -971,11 +1010,13 @@ class BuildConfigValidator {
     this._validateProperty('devServerPort', Number);
     this._validateProperty('hashZipFiles', Boolean);
     this._validateProperty('modulesRootPath', String);
-    this._validateProperty('modules', Array, false);
+    this._validateProperty('modules', Array);
     this._validateProperty('additionalFilesToCopy', Array);
     this._validateProperty('sourceMapEnabled', Boolean);
     this._validateProperty('staticFileFolderPath', String);
     this._validateProperty('copyAssetsFolderPath', String);
+    this._validateProperty('webpackPlugins', Array);
+    this._validateProperty('webpackRules', Array);
   }
 
   /**
@@ -1226,6 +1267,7 @@ class BuildConfigValidator {
 
 
 
+
 /**
  * The configuration object for the build of one template.
  *
@@ -1307,93 +1349,103 @@ class BuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {{}[]}
+   * @private
+   */
+  _webpackRules = [];
+  /**
+   * @type {Object[]}
+   * @private
+   */
+  _webpackPlugins = [];
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get version() {
     return this._version;
   }
 
   /**
-   * @returns {Version}
+   * @return {Version}
    */
   get targetVersion() {
     return this._targetVersion;
   }
 
   /**
-   * @returns {DesignType}
+   * @return {DesignType}
    */
   get designType() {
     return this._designType;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get rootPath() {
     return this._rootPath;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @returns {number}
+   * @return {number}
    */
   get devServerPort() {
     return this._devServerPort;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get hashZipFiles() {
     return this._hashZipFiles;
   }
 
   /**
-   * @returns {ModuleConfig[]}
+   * @return {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get modulesRootPath() {
     return this._modulesRootPath;
   }
 
   /**
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
@@ -1414,10 +1466,25 @@ class BuildConfig {
   }
 
   /**
+   * @return {{}[]}
+   */
+  get webpackRules() {
+    return this._webpackRules;
+  }
+
+  /**
+   * @return {Object[]}
+   */
+  get webpackPlugins() {
+    return this._webpackPlugins;
+  }
+
+  /**
    * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
+   * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
    *
-   * @param {string} name
-   * @returns {BuildConfig}
+   * @param {string} name - The name of your template.
+   * @return {BuildConfig}
    */
   withName(name) {
     this._name = name;
@@ -1427,8 +1494,9 @@ class BuildConfig {
   /**
    * The version of this template, e.g. 1.0.1. This will be included in the name of the resulting ZIP file in the dist folder.
    *
-   * @param {string} version
-   * @returns {BuildConfig}
+   * @see {@link https://semver.org/spec/v2.0.0.html}
+   * @param {string} version - The version for this template. It is recommended to use a semantic version string.
+   * @return {BuildConfig}
    */
   withVersion(version) {
     this._version = version;
@@ -1438,9 +1506,9 @@ class BuildConfig {
   /**
    * The application version of BSI CX (or BSI Studio) this design is built for.
    *
-   * @see Checkout {@link Version} for available versions.
-   * @param {Version} version
-   * @returns
+   * @see {@link Version} for available versions
+   * @param {Version} version - The BSI CX version. Default will be {@link CX_22_0}
+   * @return {BuildConfig}
    */
   withTargetVersion(version) {
     this._targetVersion = version;
@@ -1450,9 +1518,9 @@ class BuildConfig {
   /**
    * The type of this design (e.g. email or landingpage).
    *
-   * @see Checkout {@link DesignType} for available types.
-   * @param {DesignType} type
-   * @returns
+   * @see {@link DesignType} for available types
+   * @param {DesignType} type - The design type to use. Default will be {@link LANDINGPAGE}
+   * @return {BuildConfig}
    */
   withDesignType(type) {
     this._designType = type;
@@ -1461,9 +1529,10 @@ class BuildConfig {
 
   /**
    * The path to the root folder of this template. This folder contains the source code of your template.
+   * An absolute path is recommended. If the path is relative, it will be resolved in relation to the current working directory.
    *
-   * @param {string} rootPath
-   * @returns {BuildConfig}
+   * @param {string} rootPath - The path to your template root. An absolute path is recommended.
+   * @return {BuildConfig}
    */
   withRootPath(rootPath) {
     this._rootPath = rootPath;
@@ -1471,10 +1540,14 @@ class BuildConfig {
   }
 
   /**
-   * A custom output path to use. Default: dist/{name}.
+   * A custom output folder path to use. Default: dist/{name}. An absolute path is recommended.
+   * If the path is relative, it will be resolved in relation to the current working directory.
+   * The folder does not have to exist, the build will create it for you. But it is recommended
+   * to ignore the folder and its content in your VCS.
    *
-   * @param {string} outputPath
-   * @returns {BuildConfig}
+   * @see {@link https://git-scm.com/docs/gitignore}
+   * @param {string} outputPath - The path to your output folder. An absolute path is recommended.
+   * @return {BuildConfig}
    */
   withOutputPath(outputPath) {
     this._outputPath = outputPath;
@@ -1483,10 +1556,11 @@ class BuildConfig {
 
   /**
    * The data properties file for your Twig templates. This file will be required and the contents of this file will be
-   * available as "properties" variable inside your Twig templates.
+   * available as "properties" variable inside your Twig templates and trough the <code>bsiProperty</code> functions inside
+   * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
    *
-   * @param {string} propertiesFilePath
-   * @returns {BuildConfig}
+   * @param {string} propertiesFilePath - The path to your properties file.
+   * @return {BuildConfig}
    */
   withPropertiesFilePath(propertiesFilePath) {
     this._propertiesFilePath = propertiesFilePath;
@@ -1495,10 +1569,11 @@ class BuildConfig {
 
   /**
    * A TCP port number to use for the development server. The default port is 9000. Be aware,
-   * that you don't have to configure a separate port for each template.
+   * that you don't have to configure a separate port for each template of your build.
+   * Only the first configuration will be considered.
    *
-   * @param {number} devServerPort
-   * @returns {BuildConfig}
+   * @param {number} devServerPort - The development server port number.
+   * @return {BuildConfig}
    */
   withDevServerPort(devServerPort) {
     this._devServerPort = devServerPort;
@@ -1506,10 +1581,10 @@ class BuildConfig {
   }
 
   /**
-   * Add a unique hash value to the name of the resulting ZIP file.
+   * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
    *
-   * @param {boolean} hashZipFiles
-   * @returns {BuildConfig}
+   * @param {boolean} hashZipFiles - Enable or disable this feature. Default is <code>true</code>.
+   * @return {BuildConfig}
    */
   withHashZipFiles(hashZipFiles) {
     this._hashZipFiles = !!hashZipFiles;
@@ -1517,10 +1592,12 @@ class BuildConfig {
   }
 
   /**
-   * Add additional Java Script modules.
+   * Add additional JavaScript modules. Each additional JavaScript module configuration will result in a separate
+   * entry configuration. Be aware, that your modules must be placed inside the modules root path.
+   * Use {@link withModulesRootPath} to set a custom modules root path.
    *
-   * @param {...ModuleConfig} modules
-   * @returns {BuildConfig}
+   * @param {...ModuleConfig} modules - Pass objects of the {@link BuildConfig} class.
+   * @return {BuildConfig}
    */
   withModules(...modules) {
     this._modules = modules;
@@ -1528,10 +1605,11 @@ class BuildConfig {
   }
 
   /**
-   * Absolute path to the modules folder.
+   * Absolute or relative path to the modules root folder. Per default this will be the "modules" folder inside your template root.
+   * Relative paths will be resolved in relation to your {@link withRootPath|template root} configuration.
    *
-   * @param {string} modulesRootPath
-   * @returns {BuildConfig}
+   * @param {string} modulesRootPath - The path to your modules root folder.
+   * @return {BuildConfig}
    */
   withModulesRootPath(modulesRootPath) {
     this._modulesRootPath = modulesRootPath;
@@ -1539,11 +1617,14 @@ class BuildConfig {
   }
 
   /**
-   * Add additional files to copy to the output folder.
+   * Add additional files to copy to the output folder. The configuration here will be passed down to the
+   * {@link https://github.com/webpack-contrib/copy-webpack-plugin|CopyWebpackPlugin}. Be aware, that you always
+   * can put files inside the "assets" folder inside your template root without any configuration here.
+   * You can change the path to the assets folder with the {@link withCopyAssetsFolderPath} method.
    *
    * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
-   * @param {...{}} additionalFilesToCopy
-   * @returns {BuildConfig}
+   * @param {...{}} additionalFilesToCopy - Pattern configuration object.
+   * @return {BuildConfig}
    */
   withAdditionalFilesToCopy(...additionalFilesToCopy) {
     this._additionalFilesToCopy = additionalFilesToCopy;
@@ -1551,10 +1632,13 @@ class BuildConfig {
   }
 
   /**
-   * Enable or disable source maps.
+   * Enable or disable source map generation. If enabled, source maps will be emitted for JavaScript, LESS and SASS
+   * files. Enabling this feature will also emit an additional "dev" ZIP file. The generated .map files will only be
+   * contained in this ZIP file. So upload the dev ZIP file if you want to debug a design in BSI CX. The dev ZIP file
+   * should not be used in production environments. Enabling source maps will also have a slight performance impact.
    *
-   * @param {boolean} sourceMapEnabled
-   * @returns {BuildConfig}
+   * @param {boolean} sourceMapEnabled - Enable or disable the feature. Enabled by default.
+   * @return {BuildConfig}
    */
   withSourceMapEnabled(sourceMapEnabled) {
     this._sourceMapEnabled = sourceMapEnabled;
@@ -1566,7 +1650,7 @@ class BuildConfig {
    * Can either be an absolute or relative path. Relative paths will be normalized in relation to the template root folder.
    * Use {@link withRootPath} to set the template root folder.
    *
-   * @param {string} staticFileFolderPath
+   * @param {string} staticFileFolderPath - The path to the static assets folder.
    * @return {BuildConfig}
    */
   withStaticFileFolderPath(staticFileFolderPath) {
@@ -1580,7 +1664,7 @@ class BuildConfig {
    * Relative paths will be normalized in relation to the template root folder.
    * Use {@link withRootPath} to set the template root folder.
    *
-   * @param {string} copyAssetsFolderPath
+   * @param {string} copyAssetsFolderPath - The path to the copy assets folder.
    * @return {BuildConfig}
    */
   withCopyAssetsFolderPath(copyAssetsFolderPath) {
@@ -1589,10 +1673,34 @@ class BuildConfig {
   }
 
   /**
+   * Configure additional rules for the Webpack configuration. Be aware, that this can clash with the existing rules.
+   *
+   * @see {@link https://webpack.js.org/configuration/module/#rule}
+   * @param {...{}} rules - Webpack rules objects.
+   * @return {BuildConfig}
+   */
+  withWebpackRules(...rules) {
+    this._webpackRules = rules;
+    return this;
+  }
+
+  /**
+   * Configure additional plugins for the Webpack configuration. Be aware, that this can clash with the existing plugins.
+   *
+   * @see {@link https://webpack.js.org/configuration/plugins/}
+   * @param {...Object} plugins - Instances of Webpack plugins.
+   * @return {BuildConfig}
+   */
+  withWebpackPlugins(...plugins) {
+    this._webpackPlugins = plugins;
+    return this;
+  }
+
+  /**
    * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
-   * @param {boolean} [shallow=true]
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @return {BuildConfig}
    */
   clone(shallow) {
@@ -1600,7 +1708,10 @@ class BuildConfig {
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * Validate the build configuration. <strong>There is no need to call this method.</strong>
+   * The {@link WebpackConfigBuilder.fromConfigs|WebpackConfigBuilder} will do this for you.
+   *
+   * @return {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
    */
   validate() {
     return BuildConfigValidator.validate(this);
@@ -2084,7 +2195,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{content:string,path:string}} fileObj
    * @param {string} baseFolder
-   * @returns {string}
+   * @return {string}
    */
   _handleTemplateFile(fileObj, baseFolder) {
     let rawContent = fileObj.content;
@@ -2119,7 +2230,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} fileName
-   * @returns {string}
+   * @return {string}
    */
   _getTemplateFileExtension(fileName) {
     if (/\.hbs\.twig$/.test(fileName)) {
@@ -2133,7 +2244,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx
-   * @returns {string[]}
+   * @return {string[]}
    */
   _getAssetNames(nameRegEx) {
     /**
@@ -2145,7 +2256,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx
-   * @returns {string}
+   * @return {string}
    */
   _getAssetName(nameRegEx) {
     return this._getAssetNames(nameRegEx).shift();
@@ -2170,7 +2281,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} scope
    * @param {...string} assetNames
-   * @returns {*}
+   * @return {*}
    */
   _loadAssets(scope, ...assetNames) {
     let context = {
@@ -2213,7 +2324,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} filePath
    * @param {string} name
-   * @returns {string}
+   * @return {string}
    */
   _updateHtmlTemplate(filePath, name) {
     let templateObj = this._loadAssets(name, filePath);
@@ -2230,7 +2341,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @returns {string}
+   * @return {string}
    */
   _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
@@ -2256,7 +2367,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @returns {string}
+   * @return {string}
    */
   _handleJavaScriptModules(content) {
     let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
@@ -2295,7 +2406,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} content
    * @param {RegExpMatchArray} match
    * @param {string[]} importedModules
-   * @returns {string}
+   * @return {string}
    */
   _handleFoundJavaScriptModule(content, match, importedModules) {
     /**
@@ -2317,7 +2428,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
    * @param {string[]} importedModules
-   * @returns {string}
+   * @return {string}
    */
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
@@ -2351,7 +2462,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
    * @param {string[]} importedModules
-   * @returns {string}
+   * @return {string}
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
@@ -2379,7 +2490,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} message
    * @param {string} details
    * @param {string|undefined} [location=undefined]
-   * @returns
+   * @return {WebpackError}
    */
   _webpackError(message, details, location) {
     let error = new lib_namespaceObject.WebpackError(message);
@@ -2400,7 +2511,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @returns {string}
+   * @return {string}
    */
   _createContentHash(content) {
     return (0,external_crypto_namespaceObject.createHash)('sha256')
@@ -2410,14 +2521,14 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @returns {Handlebars}
+   * @return {Handlebars}
    */
   _getHandlebarsParser() {
     return external_handlebars_default().create();
   }
 
   /**
-   * @returns {{}}
+   * @return {{}}
    */
   _getHandlebarsHelpers() {
     let helpersObj = {};
@@ -2430,7 +2541,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} url
-   * @returns {string}
+   * @return {string}
    */
   _removeDesignBaseUrl(url) {
     return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
@@ -2484,7 +2595,7 @@ class JavaPropertyFileBuilder {
   /**
    * @param {string} key
    * @param {string} value
-   * @returns {JavaPropertyFileBuilder}
+   * @return {JavaPropertyFileBuilder}
    */
   append(key, value) {
     this._properties.push([key, value]);
@@ -2493,7 +2604,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} comment
-   * @returns {JavaPropertyFileBuilder}
+   * @return {JavaPropertyFileBuilder}
    */
   appendComment(comment) {
     this._properties.push(comment);
@@ -2516,7 +2627,7 @@ class JavaPropertyFileBuilder {
   }
 
   /**
-   * @returns {JavaPropertyFileBuilder}
+   * @return {JavaPropertyFileBuilder}
    */
   appendBlank() {
     this._properties.push('');
@@ -2524,7 +2635,7 @@ class JavaPropertyFileBuilder {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   build() {
     return this._properties
@@ -2534,7 +2645,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} line
-   * @returns {string}
+   * @return {string}
    */
   _printLine(line) {
     if (line instanceof Array) {
@@ -2547,7 +2658,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} key
-   * @returns {string}
+   * @return {string}
    */
   _escapeKey(key) {
     return key;
@@ -2555,14 +2666,14 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} value
-   * @returns {string}
+   * @return {string}
    */
   _escapeValue(value) {
     return value;
   }
 }
 
-;// CONCATENATED MODULE: ./src/extractor.js
+;// CONCATENATED MODULE: ./src/browser-utility.js
 
 
 
@@ -2597,6 +2708,20 @@ function constantObjectValue(constant) {
  */
 function builderObjectValue(builder) {
   return builder.build();
+}
+
+/**
+ * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
+ * (won't work in the browser context).
+ *
+ * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
+ * @return {string}
+ */
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
 
 ;// CONCATENATED MODULE: ./src/legacy-design-property.js
@@ -2974,7 +3099,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} designJson
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
@@ -2990,7 +3115,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} group
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _renderContentElementsGroup(group) {
@@ -3005,7 +3130,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} element
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _renderContentElement(element) {
@@ -4802,7 +4927,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {ValidatedBuildConfig}
+   * @return {ValidatedBuildConfig}
    */
   get config() {
     return this.context.config;
@@ -4828,7 +4953,8 @@ class WebpackConfigBuilder {
           ...this._getStyleRulesConfig(),
           ...this._getStaticAssetsRuleConfig(),
           ...this._getStaticJavaScriptFileRuleConfig(),
-          ...this._getRegularJavaScriptFileRuleConfig()
+          ...this._getRegularJavaScriptFileRuleConfig(),
+          ...this._getAdditionalRules()
         ]
       },
       plugins: [
@@ -4838,6 +4964,7 @@ class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
+        ...this._getAdditionalPlugins()
       ],
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
@@ -4864,7 +4991,7 @@ class WebpackConfigBuilder {
   /**
    * The default output path: dist/{name}
    *
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _getDefaultOutputPath() {
@@ -4874,7 +5001,7 @@ class WebpackConfigBuilder {
   /**
    * The entry configuration.
    *
-   * @returns {{}}
+   * @return {{}}
    */
   _getEntryConfig() {
     return {
@@ -4897,7 +5024,7 @@ class WebpackConfigBuilder {
    * Get the entry configuration for a template.
    *
    * @param {string} name
-   * @returns {{}}
+   * @return {{}}
    */
   _evaluateEntryTemplate(name) {
     let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
@@ -4921,7 +5048,7 @@ class WebpackConfigBuilder {
   /**
    * Get the entry configurations for the Java Script modules.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getJavaScriptModuleEntries() {
     let entries = {};
@@ -4965,7 +5092,7 @@ class WebpackConfigBuilder {
   /**
    * Rules for Twig file handling.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getTwigRuleConfig() {
     return [
@@ -4992,7 +5119,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for HTML and Handlebars file handling.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getHtmlAndHbsRuleConfig() {
     return [
@@ -5009,7 +5136,7 @@ class WebpackConfigBuilder {
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getStyleRulesConfig() {
     return [
@@ -5059,7 +5186,7 @@ class WebpackConfigBuilder {
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
    *
-   * @returns {[string]}
+   * @return {[string]}
    */
   _getStaticAssetFileExtensions() {
     return [
@@ -5083,7 +5210,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for static assets handling.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
@@ -5117,7 +5244,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for static Java Script file handling.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getStaticJavaScriptFileRuleConfig() {
     return [
@@ -5145,7 +5272,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for regular Java Script file handling.
    *
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getRegularJavaScriptFileRuleConfig() {
     return [
@@ -5166,14 +5293,22 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {string}
+   * @return {{}[]}
+   * @private
+   */
+  _getAdditionalRules() {
+    return this.config.webpackRules;
+  }
+
+  /**
+   * @return {string}
    */
   _getTemplateLoader() {
     return `${package_namespaceObject.u2}/dist/template-loader`;
   }
 
   /**
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   _getCssLoaderChain() {
     return [
@@ -5207,7 +5342,7 @@ class WebpackConfigBuilder {
   /**
    * Mini CSS extract plugin configuration.
    *
-   * @returns {[MiniCssExtractPlugin]}
+   * @return {[MiniCssExtractPlugin]}
    */
   _getMiniCssExtractPluginConfig() {
     return [
@@ -5220,7 +5355,7 @@ class WebpackConfigBuilder {
   /**
    * Copy plugin configuration.
    *
-   * @returns {[CopyPlugin]}
+   * @return {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
     let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
@@ -5269,7 +5404,7 @@ class WebpackConfigBuilder {
   /**
    * Webpack ZIP plugin configuration.
    *
-   * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+   * @return {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
    */
   _getZipPluginConfig() {
     /**
@@ -5298,9 +5433,17 @@ class WebpackConfigBuilder {
   }
 
   /**
+   * @return {Object[]}
+   * @private
+   */
+  _getAdditionalPlugins() {
+    return this.config.webpackPlugins;
+  }
+
+  /**
    * BSI CX legacy design format plugin config.
    *
-   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   * @return {[BsiCxWebpackLegacyDesignPlugin]}
    */
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
@@ -5315,7 +5458,7 @@ class WebpackConfigBuilder {
   /**
    * The dev tool configuration.
    *
-   * @returns {string|boolean}
+   * @return {string|boolean}
    */
   _getDevToolConfig() {
     return this.config.sourceMapEnabled ? 'source-map' : false;
@@ -5324,7 +5467,7 @@ class WebpackConfigBuilder {
   /**
    * Development server configuration.
    *
-   * @returns {{}}
+   * @return {{}}
    */
   _getDevServerConfig() {
     let zipRegEx = /\.zip$/i;
@@ -5342,7 +5485,7 @@ class WebpackConfigBuilder {
   /**
    * The stats configuration.
    *
-   * @returns {{}}
+   * @return {{}}
    */
   _getStatsConfig() {
     return {
@@ -5354,7 +5497,7 @@ class WebpackConfigBuilder {
   /**
    * The performance configuration.
    *
-   * @returns {{}}
+   * @return {{}}
    */
   _getPerformanceConfig() {
     let excludedAssets = [
@@ -5371,7 +5514,7 @@ class WebpackConfigBuilder {
   /**
    * The minimizer configuration.
    *
-   * @returns {[TerserPlugin]}
+   * @return {[TerserPlugin]}
    */
   _getOptimizationMinimizerConfig() {
     return [
@@ -5384,7 +5527,7 @@ class WebpackConfigBuilder {
   /**
    * The split chunks name configuration.
    *
-   * @returns {function}
+   * @return {function}
    */
   _getOptimizationSplitChunksNameConfig() {
     return (module, _, cacheGroupKey) => {
@@ -5395,7 +5538,7 @@ class WebpackConfigBuilder {
   /**
    * The chache groups configuration.
    *
-   * @returns {{}}
+   * @return {{}}
    */
   _getOptimizationCacheGroupsConfig() {
     return {
@@ -5428,7 +5571,7 @@ class WebpackConfigBuilder {
   /**
    * The output configuration.
    *
-   * @returns {{}}
+   * @return {{}}
    */
   _getOutputConfig() {
     return {
@@ -5532,6 +5675,7 @@ function color(...channels) {
 
 
 
+
 /***/ })
 
 /******/ 	});
@@ -5586,7 +5730,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[114](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[715](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

@@ -1,15 +1,26 @@
 import AbstractBuilder from '../abstract-builder';
 import ContentElement from './content-element';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, identity} from '../extractor';
+import {builderObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 
+/**
+ * This is the builder class to specify content element groups.
+ *
+ * @example
+ * module.exports = new ContentElementGroup()
+ *   .withGroupId('content')
+ *   .withLabel('Content')
+ *   .withContentElements(
+ *     require('./content-elements/content/title'),
+ *     require('./content-elements/content/text')));
+ */
 export default class ContentElementGroup extends AbstractBuilder {
   /**
    * @type {string|undefined}
    * @private
    */
-  _groupId = undefined;
+  _groupId = uuid();
   /**
    * @type {string|undefined}
    * @private
@@ -55,6 +66,9 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
+   * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
+   * It is recommended to set the group identifier.
+   *
    * @param {string} groupId
    * @return {ContentElementGroup}
    */

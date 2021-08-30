@@ -6,6 +6,8 @@ import ObjectCloner from './object-cloner';
  */
 export default class AbstractBuilder {
   /**
+   * Build the configuration.
+   *
    * @abstract
    * @return {{}}
    */

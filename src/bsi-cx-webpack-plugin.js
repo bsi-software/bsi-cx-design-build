@@ -190,7 +190,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{content:string,path:string}} fileObj
    * @param {string} baseFolder
-   * @returns {string}
+   * @return {string}
    */
   _handleTemplateFile(fileObj, baseFolder) {
     let rawContent = fileObj.content;
@@ -225,7 +225,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} fileName
-   * @returns {string}
+   * @return {string}
    */
   _getTemplateFileExtension(fileName) {
     if (/\.hbs\.twig$/.test(fileName)) {
@@ -239,7 +239,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx
-   * @returns {string[]}
+   * @return {string[]}
    */
   _getAssetNames(nameRegEx) {
     /**
@@ -251,7 +251,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx
-   * @returns {string}
+   * @return {string}
    */
   _getAssetName(nameRegEx) {
     return this._getAssetNames(nameRegEx).shift();
@@ -276,7 +276,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} scope
    * @param {...string} assetNames
-   * @returns {*}
+   * @return {*}
    */
   _loadAssets(scope, ...assetNames) {
     let context = {
@@ -319,7 +319,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} filePath
    * @param {string} name
-   * @returns {string}
+   * @return {string}
    */
   _updateHtmlTemplate(filePath, name) {
     let templateObj = this._loadAssets(name, filePath);
@@ -336,7 +336,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @returns {string}
+   * @return {string}
    */
   _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
@@ -362,7 +362,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @returns {string}
+   * @return {string}
    */
   _handleJavaScriptModules(content) {
     let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
@@ -401,7 +401,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} content
    * @param {RegExpMatchArray} match
    * @param {string[]} importedModules
-   * @returns {string}
+   * @return {string}
    */
   _handleFoundJavaScriptModule(content, match, importedModules) {
     /**
@@ -423,7 +423,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
    * @param {string[]} importedModules
-   * @returns {string}
+   * @return {string}
    */
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
@@ -457,7 +457,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
    * @param {string[]} importedModules
-   * @returns {string}
+   * @return {string}
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
@@ -485,7 +485,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} message
    * @param {string} details
    * @param {string|undefined} [location=undefined]
-   * @returns
+   * @return {WebpackError}
    */
   _webpackError(message, details, location) {
     let error = new WebpackError(message);
@@ -506,7 +506,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @returns {string}
+   * @return {string}
    */
   _createContentHash(content) {
     return createHash('sha256')
@@ -516,14 +516,14 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @returns {Handlebars}
+   * @return {Handlebars}
    */
   _getHandlebarsParser() {
     return Handlebars.create();
   }
 
   /**
-   * @returns {{}}
+   * @return {{}}
    */
   _getHandlebarsHelpers() {
     let helpersObj = {};
@@ -536,7 +536,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} url
-   * @returns {string}
+   * @return {string}
    */
   _removeDesignBaseUrl(url) {
     return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');

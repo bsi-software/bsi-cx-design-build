@@ -50,7 +50,7 @@ export default class DefaultBuildConfig {
   }
 
   get sourceMapEnabled() {
-    return false;
+    return true;
   }
 
   get staticFileFolderPath() {

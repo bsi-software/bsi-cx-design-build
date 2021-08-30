@@ -45,7 +45,11 @@ export default class ModuleConfig {
   }
 
   /**
-   * @param {string} name
+   * The name for your JavaScript module. The name specified here must be unique in your build configuration.
+   * This means you can't configure two modules with the same name. This will be the name of the resulting entry
+   * in the Webpack configuration.
+   *
+   * @param {string} name - The module name.
    * @return {ModuleConfig}
    */
   withName(name) {
@@ -56,7 +60,7 @@ export default class ModuleConfig {
   /**
    * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
    *
-   * @param {string} path
+   * @param {string} path - The path to the module.
    * @return {ModuleConfig}
    */
   withPath(path) {

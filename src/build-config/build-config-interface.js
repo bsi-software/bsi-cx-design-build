@@ -3,79 +3,79 @@
  */
 export default class BuildConfigInterface {
   /**
-   * @returns {string}
+   * @return {string}
    */
   get name() {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get version() {
   }
 
   /**
-   * @returns {Version}
+   * @return {Version}
    */
   get targetVersion() {
   }
 
   /**
-   * @returns {DesignType}
+   * @return {DesignType}
    */
   get designType() {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get rootPath() {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get outputPath() {
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get propertiesFilePath() {
   }
 
   /**
-   * @returns {number}
+   * @return {number}
    */
   get devServerPort() {
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get hashZipFiles() {
   }
 
   /**
-   * @returns {ModuleConfig[]}
+   * @return {ModuleConfig[]}
    */
   get modules() {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get modulesRootPath() {
   }
 
   /**
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   get additionalFilesToCopy() {
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get sourceMapEnabled() {
   }

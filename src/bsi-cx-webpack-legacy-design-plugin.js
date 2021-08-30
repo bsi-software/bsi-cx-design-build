@@ -3,7 +3,7 @@ import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 
 import File from './file';
 import JavaPropertyFileBuilder from './java-property-file-builder';
-import {identity, scalarArrayToList} from './extractor';
+import {identity, scalarArrayToList} from './browser-utility';
 import {toString} from './utility';
 import LegacyDesignProperty from './legacy-design-property';
 import DesignJsonProperty from './design-json-property';
@@ -106,7 +106,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} designJson
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
@@ -122,7 +122,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} group
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _renderContentElementsGroup(group) {
@@ -137,7 +137,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} element
-   * @returns {string}
+   * @return {string}
    * @private
    */
   _renderContentElement(element) {

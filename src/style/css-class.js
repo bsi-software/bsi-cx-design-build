@@ -1,6 +1,6 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
-import {identity} from '../extractor';
+import {identity} from '../browser-utility';
 
 export default class CssClass extends AbstractBuilder {
   /**

@@ -7,9 +7,31 @@ import HtmlEditorConfig from '../html-editor-config/html-editor-config';
 import Website from '../website/website';
 import NLS from '../nls/nls';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, constantObjectValue, identity} from '../extractor';
+import {builderObjectValue, constantObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
 
+/**
+ * This is the builder class to specify a design.
+ *
+ * @example
+ * module.exports = new Design()
+ *   .withSchemaVersion(SchemaVersion.V_22_0)
+ *   .withTitle('My BSI CX Design')
+ *   .withAuthor('John Doe')
+ *   .withDate('18.8.2021')
+ *   .withPreviewImage(require('./preview.png'))
+ *   .withRawDefaultLocale('en')
+ *   withHtmlEditorConfigs(
+ *     require('./configs/html-editor/full.js'),
+ *     require('./configs/html-editor/minimal.js'))
+ *   .withContentElementGroups(
+ *     new ContentElementGroup()
+ *       .withGroupId('content')
+ *       .withLabel('Content')
+ *       .withContentElements(
+ *         require('./content-elements/content/title'),
+ *         require('./content-elements/content/text')));
+ */
 export default class Design extends AbstractBuilder {
   /**
    * @type {RawValue|SchemaVersion|undefined}
@@ -157,7 +179,13 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {SchemaVersion} schemaVersion
+   * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+   *
+   * @example
+   * .withSchemaVersion(SchemaVersion.V_22_0)
+   * @see {@link SchemaVersion} for available versions
+   * @see {@link withRawSchemaVersion} to set a raw value
+   * @param {SchemaVersion} schemaVersion - The schema version to use.
    * @return {Design}
    */
   withSchemaVersion(schemaVersion) {
@@ -166,7 +194,12 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} schemaVersion
+   * Supply a raw schema version.
+   *
+   * @example
+   * .withRawSchemaVersion('22.0')
+   * @see {@link withSchemaVersion}
+   * @param {string} schemaVersion - The schema version to use.
    * @return {Design}
    */
   withRawSchemaVersion(schemaVersion) {
@@ -175,7 +208,9 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} title
+   * The title for your design.
+   *
+   * @param {string} title - The design title.
    * @return {Design}
    */
   withTitle(title) {
@@ -184,7 +219,9 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} author
+   * The author of your design.
+   *
+   * @param {string} author - The design author.
    * @return {Design}
    */
   withAuthor(author) {
@@ -193,7 +230,11 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} date
+   * The creation date of your design e.g. 18.08.2021.
+   *
+   * @example
+   * .withDate('18.08.2021')
+   * @param {string} date - The design date.
    * @return {Design}
    */
   withDate(date) {
@@ -202,6 +243,10 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * The preview image of your design. Use in combination with require.
+   *
+   * @example
+   * .withPreviewImage(require('./preview-image.png'))
    * @param {{}} previewImage
    * @return {Design}
    */
@@ -211,7 +256,13 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} defaultLocale
+   * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+   *
+   * @example
+   * .withDefaultLocale(Locale.EN)
+   * @see {@link Locale} for available locales
+   * @see {@link withRawDefaultLocale} to set a raw value
+   * @param {Locale} defaultLocale - The design default locale.
    * @return {Design}
    */
   withDefaultLocale(defaultLocale) {
@@ -220,7 +271,12 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} defaultLocale
+   * Set the raw default locale as string.
+   *
+   * @example
+   * .withRawDefaultLocale('en')
+   * @see {@link withDefaultLocale}
+   * @param {string} defaultLocale - The default locale.
    * @return {Design}
    */
   withRawDefaultLocale(defaultLocale) {
@@ -229,7 +285,13 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...Locale} locales
+   * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+   *
+   * @example
+   * .withLocales(Locale.EN_GB,Locale.DE_CH)
+   * @see {@link Locale} for available locales
+   * @see {@link withRawLocales} to set a raw value
+   * @param {...Locale} locales - The design locales.
    * @return {Design}
    */
   withLocales(...locales) {
@@ -238,7 +300,12 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} locales
+   * Set the raw locales as string.
+   *
+   * @example
+   * .withRawLocales('en-GB','de-CH')
+   * @see {@link withLocales}
+   * @param {...string} locales - The design locales.
    * @return {Design}
    */
   withRawLocales(...locales) {
@@ -247,7 +314,10 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...ContentElementGroup} contentElementGroups
+   * Your design's content element groups.
+   *
+   * @see {@link withRawContentElementGroups} to set a raw value
+   * @param {...ContentElementGroup} contentElementGroups - The content element groups.
    * @return {Design}
    */
   withContentElementGroups(...contentElementGroups) {
@@ -256,7 +326,23 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...{}} contentElementGroups
+   * Set the content element groups of your design as raw object.
+   *
+   * @example
+   * .withRawContentElementGroups(
+   *   {
+   *     groupId: 'content',
+   *     label: 'Content',
+   *     contentElements: []
+   *   },
+   *   {
+   *     groupId: 'advanced',
+   *     label: 'Advanced',
+   *     contentElements: []
+   *   }
+   * )
+   * @see {@link withContentElementGroups}
+   * @param {...{}} contentElementGroups - The content element groups.
    * @return {Design}
    */
   withRawContentElementGroups(...contentElementGroups) {
@@ -265,7 +351,10 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...Style} styleConfigs
+   * The style configurations of your design.
+   *
+   * @see {@link withRawStyleConfigs} to set a raw value
+   * @param {...Style} styleConfigs - The style configurations.
    * @return {Design}
    */
   withStyleConfigs(...styleConfigs) {
@@ -274,7 +363,27 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} styleConfigs
+   * Set the style configurations of your design as raw object.
+   *
+   * @example
+   * .withRawStyleConfigs({
+   *   'background-color': {
+   *     label: 'Background Color',
+   *     cssClasses: [
+   *       { cssClass: 'black-background', label: 'Black' },
+   *       { cssClass: 'blue-background', label: 'Blue' }
+   *     ]
+   *   },
+   *   'text-color': {
+   *     label: 'Text Color',
+   *     cssClasses: [
+   *       { cssClass: 'black-text', label: 'Black' },
+   *       { cssClass: 'blue-text', label: 'Blue' }
+   *     ]
+   *   }
+   * })
+   * @see {@link withStyleConfigs}
+   * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
    * @return {Design}
    */
   withRawStyleConfigs(styleConfigs) {
@@ -283,6 +392,9 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * The HTML editor configurations of your design.
+   *
+   * @see {@link withRawHtmlEditorConfigs} to set a raw value
    * @param {...HtmlEditorConfig} htmlEditorConfigs
    * @return {Design}
    */
@@ -292,7 +404,16 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} htmlEditorConfigs
+   * Set the HTML editor configurations as raw object.
+   *
+   * @example
+   * .withRawHtmlEditorConfigs({
+   *   minimal: {
+   *     features: ['italic','bold','underline','strikeThrough']
+   *   }
+   * })
+   * @see {@link withHtmlEditorConfigs}
+   * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
    * @return {Design}
    */
   withRawHtmlEditorConfigs(htmlEditorConfigs) {
@@ -301,9 +422,12 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Website} website
+   * The website configuration of your design.
+   *
+   * @see {@link withRawWebsite} to set a raw value
+   * @param {Website} website - The website object.
    * @return {Design}
-   * @since 1.3
+   * @since BSI CX 1.3
    */
   withWebsite(website) {
     this._website = website;
@@ -311,9 +435,27 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} website
+   * Set the raw website object of your design.
+   *
+   * @example
+   * .withRawWebsite({
+   *   maxNavigationLevel: 2,
+   *   includes: {
+   *     __page__: {
+   *       editable: true,
+   *       file: require('./includes/page.hbs'),
+   *       name: 'Template for content pages'
+   *     },
+   *     footer: {
+   *       editable: true,
+   *       file: require('./includes/footer.html'),
+   *       name: 'Footer'
+   *     }
+   *   }
+   * })
+   * @param {{}} website - The raw <code>website</code> object.
    * @return {Design}
-   * @since 1.3
+   * @since BSI CX 1.3
    */
   withRawWebsite(website) {
     this._website = new RawValue(website);
@@ -321,6 +463,9 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure you design's translation support.
+   *
+   * @see {@link withRawNLS} to set a raw value
    * @param {...NLS} nls
    * @return {Design}
    */
@@ -330,7 +475,15 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} nls
+   * Set the raw value of the <code>nls</code> property.
+   *
+   * @example
+   * .withRawNLS({
+   *   action: { '*': 'action', de: 'Aktion' },
+   *   name: { '*': 'name', de: 'Name' }
+   * })
+   * @see {@link withNLS}
+   * @param {{}} nls - The raw value.
    * @return {Design}
    */
   withRawNLS(nls) {
@@ -338,6 +491,9 @@ export default class Design extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @inheritDoc
+   */
   build() {
     let config = {};
 
@@ -358,7 +514,13 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @example
+   * let design1 = new Design().withName('my first design');
+   * let design2 = design1.clone().withName('my second design');
+   * design1 === design2 // false
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @return {Design}
    */
   clone(shallow) {

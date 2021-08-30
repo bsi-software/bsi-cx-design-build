@@ -3,7 +3,7 @@ import Style from '../style/style';
 import {Icon} from './icon';
 import AbstractPart from './part/abstract-part';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, constantObjectValue, identity} from '../extractor';
+import {builderObjectValue, constantObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
 
 export default class ContentElement extends AbstractBuilder {
@@ -107,7 +107,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {string} elementId
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withElementId(elementId) {
     this._elementId = elementId;
@@ -117,7 +117,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {string} label
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withLabel(label) {
     this._label = label;
@@ -127,7 +127,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {string} file
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withFile(file) {
     this._file = file;
@@ -137,7 +137,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {Icon} icon
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withIcon(icon) {
     this._icon = icon;
@@ -147,7 +147,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {boolean} hidden
    * @return {ContentElement}
-   * @since 1.3
+   * @since BSI CX 1.3
    */
   withHidden(hidden) {
     this._hidden = hidden;
@@ -157,7 +157,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {...Style} styleConfigs
    * @return {ContentElement}
-   * @since 1.1
+   * @since Studio 1.1
    */
   withStyleConfigs(...styleConfigs) {
     this._styleConfigs = styleConfigs;
@@ -167,7 +167,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {...string} styleConfigs
    * @return {ContentElement}
-   * @since 1.1
+   * @since Studio 1.1
    */
   withRawStyleConfigs(...styleConfigs) {
     this._styleConfigs = new RawValue(styleConfigs);
@@ -177,7 +177,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {...AbstractPart} parts
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withParts(...parts) {
     this._parts = parts;
@@ -187,7 +187,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * @param {...{}} parts
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withRawParts(...parts) {
     this._parts = new RawValue(parts);

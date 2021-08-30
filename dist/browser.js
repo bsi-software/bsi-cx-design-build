@@ -491,7 +491,7 @@ class AbstractConstant {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get value() {
     return this._value;
@@ -612,6 +612,8 @@ class ObjectCloner {
  */
 class AbstractBuilder {
   /**
+   * Build the configuration.
+   *
    * @abstract
    * @return {{}}
    */
@@ -757,92 +759,92 @@ class Part extends AbstractConstant {
 
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PLAIN_TEXT = new Part('plain-text');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORMATTED_TEXT = new Part('formatted-text');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const HTML = new Part('html');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const VIDEO = new Part('video');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const IMAGE = new Part('image');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const BACKGROUND_IMAGE = new Part('background-image');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const TABLE = new Part('table');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const ITERATOR = new Part('iterator');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const NEWS_SNIPPETS = new Part('news-snippets');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORM = new Part('form');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORM_FIELD = new Part('form-field');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORM_CHECKBOX = new Part('form-checkbox');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORM_TEXTAREA = new Part('form-textarea');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORM_SELECT = new Part('form-select');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORM_RADIO = new Part('form-radio');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const LINK = new Part('link');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const SOCIAL_FOLLOW = new Part('social-follow');
 /**
  * @type {Part}
- * @since 1.0
+ * @since Studio 1.0
  */
 const SOCIAL_SHARE = new Part('social-share');
 /**
@@ -851,7 +853,7 @@ const SOCIAL_SHARE = new Part('social-share');
  */
 const URL_PROVIDER = new Part('url-provider');
 
-;// CONCATENATED MODULE: ./src/extractor.js
+;// CONCATENATED MODULE: ./src/browser-utility.js
 
 
 
@@ -886,6 +888,20 @@ function constantObjectValue(constant) {
  */
 function builderObjectValue(builder) {
   return builder.build();
+}
+
+/**
+ * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
+ * (won't work in the browser context).
+ *
+ * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
+ * @return {string}
+ */
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
 
 ;// CONCATENATED MODULE: ./src/content-element/part/abstract-part.js
@@ -938,7 +954,7 @@ class AbstractPart extends AbstractBuilder {
   /**
    * @param {string} label
    * @return {AbstractPart}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withLabel(label) {
     this._label = label;
@@ -1013,11 +1029,15 @@ class SchemaVersion extends AbstractConstant {
 }
 
 /**
+ * Use this in website templates for BSI CX 1.3.
+ *
  * @type {SchemaVersion}
- * @since 1.3
+ * @since BSI CX 1.3
  */
 const V_1_0 = new SchemaVersion('1.0');
 /**
+ * Use this in all templates for BSI CX 22.0.
+ *
  * @type {SchemaVersion}
  * @since 22.0
  */
@@ -1031,177 +1051,177 @@ class Icon extends AbstractConstant {
 
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const HEADING = new Icon('heading');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const TEXT = new Icon('text');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const TEXT_WITH_IMAGE = new Icon('text-with-image');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const icon_IMAGE = new Icon('image');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const icon_TABLE = new Icon('table');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const LIST = new Icon('list');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const icon_VIDEO = new Icon('video');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const MEGAPHONE = new Icon('megaphone');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const icon_SOCIAL_FOLLOW = new Icon('social-follow');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const icon_SOCIAL_SHARE = new Icon('social-share');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const SNIPPET = new Icon('snippet');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const QRCODE = new Icon('qrcode');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PAPERCLIP = new Icon('paperclip');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const DOCUMENT = new Icon('document');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PHONE = new Icon('phone');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const COMMUNICATION = new Icon('communication');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const HANDSHAKE = new Icon('handshake');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const HEART = new Icon('heart');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const INFO = new Icon('info');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const ENVELOPE = new Icon('envelope');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FACEBOOK = new Icon('facebook');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const YOUTUBE = new Icon('youtube');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PERSON_MALE = new Icon('person-male');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PERSON_FEMALE = new Icon('person-female');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const ASTERISK = new Icon('asterisk');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const SMILEY = new Icon('smiley');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const DIVIDER = new Icon('divider');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PARAMETER = new Icon('parameter');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const TWITTER = new Icon('twitter');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const HEADSET = new Icon('headset');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const METADATA = new Icon('metadata');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const PILE = new Icon('pile');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const CHAIN = new Icon('chain');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const SIGNPOST = new Icon('signpost');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const COMPASS = new Icon('compass');
 /**
@@ -1221,42 +1241,42 @@ const DIAGRAM_AREA = new Icon('diagram-area');
 const DIAGRAM_BAR = new Icon('diagram-bar');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const RADIOBUTTON = new Icon('radiobutton');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const CHECKBOX = new Icon('checkbox');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const TEXTAREA = new Icon('textarea');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const FORMFIELD = new Icon('formfield');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const DROPDOWN = new Icon('dropdown');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const ONE_COLUMN = new Icon('one-column');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const TWO_COLUMNS = new Icon('two-columns');
 /**
  * @type {Icon}
- * @since 1.0
+ * @since Studio 1.0
  */
 const THREE_COLUMNS = new Icon('three-columns');
 
@@ -1370,7 +1390,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {string} elementId
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withElementId(elementId) {
     this._elementId = elementId;
@@ -1380,7 +1400,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {string} label
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withLabel(label) {
     this._label = label;
@@ -1390,7 +1410,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {string} file
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withFile(file) {
     this._file = file;
@@ -1400,7 +1420,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {Icon} icon
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withIcon(icon) {
     this._icon = icon;
@@ -1410,7 +1430,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {boolean} hidden
    * @return {ContentElement}
-   * @since 1.3
+   * @since BSI CX 1.3
    */
   withHidden(hidden) {
     this._hidden = hidden;
@@ -1420,7 +1440,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {...Style} styleConfigs
    * @return {ContentElement}
-   * @since 1.1
+   * @since Studio 1.1
    */
   withStyleConfigs(...styleConfigs) {
     this._styleConfigs = styleConfigs;
@@ -1430,7 +1450,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {...string} styleConfigs
    * @return {ContentElement}
-   * @since 1.1
+   * @since Studio 1.1
    */
   withRawStyleConfigs(...styleConfigs) {
     this._styleConfigs = new RawValue(styleConfigs);
@@ -1440,7 +1460,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {...AbstractPart} parts
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withParts(...parts) {
     this._parts = parts;
@@ -1450,7 +1470,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * @param {...{}} parts
    * @return {ContentElement}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withRawParts(...parts) {
     this._parts = new RawValue(parts);
@@ -1610,14 +1630,23 @@ class EnterMode extends AbstractConstant {
 }
 
 /**
+ * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
+ *
+ * @see {@link HtmlEditorConfig#withEnterMode}
  * @type {EnterMode}
  */
 const P = new EnterMode('p');
 /**
+ * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
+ *
+ * @see {@link HtmlEditorConfig#withEnterMode}
  * @type {EnterMode}
  */
 const BR = new EnterMode('br');
 /**
+ * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
+ *
+ * @see {@link HtmlEditorConfig#withEnterMode}
  * @type {EnterMode}
  */
 const DIV = new EnterMode('div');
@@ -1629,122 +1658,217 @@ class Feature extends AbstractConstant {
 }
 
 /**
+ * Bold formatting option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const BOLD = new Feature('bold');
 /**
+ * Italic formatting option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const ITALIC = new Feature('italic');
 /**
+ * Underline formatting option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const UNDERLINE = new Feature('underline');
 /**
+ * Strike trough formatting option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const STRIKE_THROUGH = new Feature('strikeThrough');
 /**
+ * Subscript formatting option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const SUBSCRIPT = new Feature('subscript');
 /**
+ * Superscript formatting option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const SUPERSCRIPT = new Feature('superscript');
 /**
+ * Set the font size in the editor.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizes}
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const FONT_SIZE = new Feature('fontSize');
 /**
+ * Set the line height in the editor.
+ *
+ * @see {@link HtmlEditorConfig#withLineHeights}
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const LINE_HEIGHT = new Feature('lineHeight');
 /**
+ * Set the text color in the editor.
+ *
+ * @see {@link HtmlEditorConfig#withTextColors}
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const TEXT_COLOR = new Feature('textColor');
 /**
+ * Set the background color in the editor.
+ *
+ * @see {@link HtmlEditorConfig#withBackgroundColors}
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const BACKGROUND_COLOR = new Feature('backgroundColor');
 /**
+ * Align the text left.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const ALIGN_LEFT = new Feature('alignLeft');
 /**
+ * Align the text center.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const ALIGN_CENTER = new Feature('alignCenter');
 /**
+ * Align the text right.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const ALIGN_RIGHT = new Feature('alignRight');
 /**
+ * Align the text justify.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const ALIGN_JUSTIFY = new Feature('alignJustify');
 /**
+ * Create an ordered list.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const FORMAT_OL = new Feature('formatOL');
 /**
+ * Create an unordered list.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const FORMAT_UL = new Feature('formatUL');
 /**
+ * Outdent the text.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const OUTDENT = new Feature('outdent');
 /**
+ * Indent the text.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const INDENT = new Feature('indent');
 /**
+ * Enable paragraph format options.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const PARAGRAPH_FORMAT = new Feature('paragraphFormat');
 /**
+ * Quote the text.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const QUOTE = new Feature('quote');
 /**
+ * Insert special characters.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const SPECIAL_CHARACTERS = new Feature('specialCharacters');
 /**
+ * Insert emoticons.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const EMOTICONS = new Feature('emoticons');
 /**
+ * Insert a link.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const INSERT_LINK = new Feature('insertLink');
 /**
+ * Clear all applied styles and formatting.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const CLEAR_FORMATTING = new Feature('clearFormatting');
 /**
+ * Undo the previous action.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const UNDO = new Feature('undo');
 /**
+ * Redo the previous action.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const REDO = new Feature('redo');
 /**
+ * Show the editor in fullscreen mode.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const FULLSCREEN = new Feature('fullscreen');
 /**
+ * Select all text.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const SELECT_ALL = new Feature('selectAll');
 /**
+ * Edit the raw HTML code.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const feature_HTML = new Feature('html');
 /**
+ * Show the editor help.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
 const HELP = new Feature('help');
@@ -1834,7 +1958,7 @@ class HtmlEditorConfig extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _identifier = undefined;
+  _identifier = uuid();
   /**
    * @type {RawValue|Feature[]|undefined}
    * @private
@@ -1882,78 +2006,81 @@ class HtmlEditorConfig extends AbstractBuilder {
   _enterMode = undefined;
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @returns {RawValue|Feature[]|undefined}
+   * @return {RawValue|Feature[]|undefined}
    */
   get features() {
     return this._features;
   }
 
   /**
-   * @returns {string[]|undefined}
+   * @return {string[]|undefined}
    */
   get textColors() {
     return this._textColors;
   }
 
   /**
-   * @returns {string[]|undefined}
+   * @return {string[]|undefined}
    */
   get backgroundColors() {
     return this._backgroundColors;
   }
 
   /**
-   * @returns {RawValue|Format[]|undefined}
+   * @return {RawValue|Format[]|undefined}
    */
   get formats() {
     return this._formats;
   }
 
   /**
-   * @returns {number[]|undefined}
+   * @return {number[]|undefined}
    */
   get fontSizes() {
     return this._fontSizes;
   }
 
   /**
-   * @returns {RawValue|FontSizeUnit|undefined}
+   * @return {RawValue|FontSizeUnit|undefined}
    */
   get fontSizeUnit() {
     return this._fontSizeUnit;
   }
 
   /**
-   * @returns {number|undefined}
+   * @return {number|undefined}
    */
   get fontSizeDefault() {
     return this._fontSizeDefault;
   }
 
   /**
-   * @returns {number[]|undefined}
+   * @return {number[]|undefined}
    */
   get lineHeights() {
     return this._lineHeights;
   }
 
   /**
-   * @returns {RawValue|EnterMode|undefined}
+   * @return {RawValue|EnterMode|undefined}
    */
   get enterMode() {
     return this._enterMode;
   }
 
   /**
-   * @param {string} identifier
-   * @returns {HtmlEditorConfig}
+   * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
+   * It is recommended to set the identifier.
+   *
+   * @param {string} identifier - The unique identifier for this editor config.
+   * @return {HtmlEditorConfig}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -1961,8 +2088,14 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...Feature} features
-   * @returns {HtmlEditorConfig}
+   * The features enable in this HTML editor configuration.
+   *
+   * @example
+   * .withFeatures(Feature.ITALIC, Feature.BOLD, Feature.UNDERLINE)
+   * @see {@link Feature} for available features
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {...Feature} features - The features to enable.
+   * @return {HtmlEditorConfig}
    */
   withFeatures(...features) {
     this._features = features;
@@ -1970,8 +2103,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} features
-   * @returns {HtmlEditorConfig}
+   * Set the raw <code>features</code> property.
+   *
+   * @example
+   * .withRawFeatures('bold', 'italic', 'underline')
+   * @see {@link withFeatures}
+   * @param {...string} features - The raw features to enable.
+   * @return {HtmlEditorConfig}
    */
   withRawFeatures(...features) {
     this._features = new RawValue(features);
@@ -1979,8 +2117,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} textColors
-   * @returns {HtmlEditorConfig}
+   * Set the available text colors. Specify the colors in the hexadecimal format.
+   *
+   * @example
+   * .withTextColors('#ff00ff', '#ff0000', '#00ff00')
+   * @see {@link TEXT_COLOR} to enable the feature
+   * @param {...string} textColors - The text colors to set.
+   * @return {HtmlEditorConfig}
    */
   withTextColors(...textColors) {
     this._textColors = textColors;
@@ -1988,8 +2131,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} backgroundColors
-   * @returns {HtmlEditorConfig}
+   * Set the available background colors. Specify the colors in the hexadecimal format.
+   *
+   * @example
+   * .withBackgroundColors('#ff00ff', '#ff0000', '#00ff00')
+   * @see {@link BACKGROUND_COLOR} to enable the feature
+   * @param {...string} backgroundColors - The background colors to set.
+   * @return {HtmlEditorConfig}
    */
   withBackgroundColors(...backgroundColors) {
     this._backgroundColors = backgroundColors;
@@ -1997,8 +2145,14 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...Format} formats
-   * @returns {HtmlEditorConfig}
+   * Specify the available formats.
+   *
+   * @example
+   * .withFormats(Format.P, Format.PRE)
+   * @see {@link Format} for available formats
+   * @see {@link withRawFormats} to set a raw value
+   * @param {...Format} formats - The formats to set.
+   * @return {HtmlEditorConfig}
    */
   withFormats(...formats) {
     this._formats = formats;
@@ -2006,8 +2160,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} formats
-   * @returns {HtmlEditorConfig}
+   * Specify a raw value for the <code>formats</code> field.
+   *
+   * @example
+   * .withRawFormats('p', 'pre')
+   * @see {@link withFormats}
+   * @param {...string} formats - The raw formats to set.
+   * @return {HtmlEditorConfig}
    */
   withRawFormats(...formats) {
     this._formats = new RawValue(formats);
@@ -2015,8 +2174,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...number} fontSizes
-   * @returns {HtmlEditorConfig}
+   * Specify the available font sizes.
+   *
+   * @example
+   * .withFontSizes(12, 13, 14, 15, 16)
+   * @see {@link FONT_SIZE} to enable this feature
+   * @param {...number} fontSizes - The font sizes to set.
+   * @return {HtmlEditorConfig}
    */
   withFontSizes(...fontSizes) {
     this._fontSizes = fontSizes;
@@ -2024,8 +2188,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {FontSizeUnit} fontSizeUnit
-   * @returns {HtmlEditorConfig}
+   * Specify the font size unit to use.
+   *
+   * @example
+   * .withFontSizeUnit(FontSizeUnit.PX)
+   * @see {@link withRawFontSizeUnit} to set the raw value
+   * @param {FontSizeUnit} fontSizeUnit - The font size unit to set.
+   * @return {HtmlEditorConfig}
    */
   withFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = fontSizeUnit;
@@ -2033,8 +2202,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} fontSizeUnit
-   * @returns {HtmlEditorConfig}
+   * Set the raw value for the <code>fontSizeUnit</code> property.
+   *
+   * @example
+   * .withRawFontSizeUnit('px')
+   * @see {@link withFontSizeUnit}
+   * @param {string} fontSizeUnit - The raw font size unit to set.
+   * @return {HtmlEditorConfig}
    */
   withRawFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = new RawValue(fontSizeUnit);
@@ -2042,8 +2216,12 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {number} fontSizeDefault
-   * @returns {HtmlEditorConfig}
+   * Set the default font size to use.
+   *
+   * @example
+   * .withFontSizeDefault(16)
+   * @param {number} fontSizeDefault - The default font size to set.
+   * @return {HtmlEditorConfig}
    */
   withFontSizeDefault(fontSizeDefault) {
     this._fontSizeDefault = fontSizeDefault;
@@ -2051,8 +2229,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {...number} lineHeights
-   * @returns {HtmlEditorConfig}
+   * Set the available line heights.
+   *
+   * @example
+   * .withLineHeights(1, 1.15 , 1.5, 2)
+   * @see {@link LINE_HEIGHT} to enable this feature
+   * @param {...number} lineHeights - The line heights.
+   * @return {HtmlEditorConfig}
    */
   withLineHeights(...lineHeights) {
     this._lineHeights = lineHeights;
@@ -2060,8 +2243,13 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {EnterMode} enterMode
-   * @returns {HtmlEditorConfig}
+   * Define the enter mode to use.
+   *
+   * @example
+   * .withEnterMode(EnterMode.P)
+   * @see {@link withRawEnterMode} to set the raw value
+   * @param {EnterMode} enterMode - The enter mode.
+   * @return {HtmlEditorConfig}
    */
   withEnterMode(enterMode) {
     this._enterMode = enterMode;
@@ -2069,8 +2257,12 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {string} enterMode
-   * @returns {HtmlEditorConfig}
+   * Set the raw enter mode.
+   *
+   * @example
+   * .withRawEnterMode('p')
+   * @param {string} enterMode - The raw enter mode.
+   * @return {HtmlEditorConfig}
    */
   withRawEnterMode(enterMode) {
     this._enterMode = new RawValue(enterMode);
@@ -2457,7 +2649,13 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {SchemaVersion} schemaVersion
+   * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+   *
+   * @example
+   * .withSchemaVersion(SchemaVersion.V_22_0)
+   * @see {@link SchemaVersion} for available versions
+   * @see {@link withRawSchemaVersion} to set a raw value
+   * @param {SchemaVersion} schemaVersion - The schema version to use.
    * @return {Design}
    */
   withSchemaVersion(schemaVersion) {
@@ -2466,7 +2664,12 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} schemaVersion
+   * Supply a raw schema version.
+   *
+   * @example
+   * .withRawSchemaVersion('22.0')
+   * @see {@link withSchemaVersion}
+   * @param {string} schemaVersion - The schema version to use.
    * @return {Design}
    */
   withRawSchemaVersion(schemaVersion) {
@@ -2475,7 +2678,9 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} title
+   * The title for your design.
+   *
+   * @param {string} title - The design title.
    * @return {Design}
    */
   withTitle(title) {
@@ -2484,7 +2689,9 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} author
+   * The author of your design.
+   *
+   * @param {string} author - The design author.
    * @return {Design}
    */
   withAuthor(author) {
@@ -2493,7 +2700,11 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} date
+   * The creation date of your design e.g. 18.08.2021.
+   *
+   * @example
+   * .withDate('18.08.2021')
+   * @param {string} date - The design date.
    * @return {Design}
    */
   withDate(date) {
@@ -2502,6 +2713,10 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * The preview image of your design. Use in combination with require.
+   *
+   * @example
+   * .withPreviewImage(require('./preview-image.png'))
    * @param {{}} previewImage
    * @return {Design}
    */
@@ -2511,7 +2726,13 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} defaultLocale
+   * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+   *
+   * @example
+   * .withDefaultLocale(Locale.EN)
+   * @see {@link Locale} for available locales
+   * @see {@link withRawDefaultLocale} to set a raw value
+   * @param {Locale} defaultLocale - The design default locale.
    * @return {Design}
    */
   withDefaultLocale(defaultLocale) {
@@ -2520,7 +2741,12 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {string} defaultLocale
+   * Set the raw default locale as string.
+   *
+   * @example
+   * .withRawDefaultLocale('en')
+   * @see {@link withDefaultLocale}
+   * @param {string} defaultLocale - The default locale.
    * @return {Design}
    */
   withRawDefaultLocale(defaultLocale) {
@@ -2529,7 +2755,13 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...Locale} locales
+   * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+   *
+   * @example
+   * .withLocales(Locale.EN_GB,Locale.DE_CH)
+   * @see {@link Locale} for available locales
+   * @see {@link withRawLocales} to set a raw value
+   * @param {...Locale} locales - The design locales.
    * @return {Design}
    */
   withLocales(...locales) {
@@ -2538,7 +2770,12 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} locales
+   * Set the raw locales as string.
+   *
+   * @example
+   * .withRawLocales('en-GB','de-CH')
+   * @see {@link withLocales}
+   * @param {...string} locales - The design locales.
    * @return {Design}
    */
   withRawLocales(...locales) {
@@ -2547,7 +2784,10 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...ContentElementGroup} contentElementGroups
+   * Your design's content element groups.
+   *
+   * @see {@link withRawContentElementGroups} to set a raw value
+   * @param {...ContentElementGroup} contentElementGroups - The content element groups.
    * @return {Design}
    */
   withContentElementGroups(...contentElementGroups) {
@@ -2556,7 +2796,23 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...{}} contentElementGroups
+   * Set the content element groups of your design as raw object.
+   *
+   * @example
+   * .withRawContentElementGroups(
+   *   {
+   *     groupId: 'content',
+   *     label: 'Content',
+   *     contentElements: []
+   *   },
+   *   {
+   *     groupId: 'advanced',
+   *     label: 'Advanced',
+   *     contentElements: []
+   *   }
+   * )
+   * @see {@link withContentElementGroups}
+   * @param {...{}} contentElementGroups - The content element groups.
    * @return {Design}
    */
   withRawContentElementGroups(...contentElementGroups) {
@@ -2565,7 +2821,10 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {...Style} styleConfigs
+   * The style configurations of your design.
+   *
+   * @see {@link withRawStyleConfigs} to set a raw value
+   * @param {...Style} styleConfigs - The style configurations.
    * @return {Design}
    */
   withStyleConfigs(...styleConfigs) {
@@ -2574,7 +2833,27 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} styleConfigs
+   * Set the style configurations of your design as raw object.
+   *
+   * @example
+   * .withRawStyleConfigs({
+   *   'background-color': {
+   *     label: 'Background Color',
+   *     cssClasses: [
+   *       { cssClass: 'black-background', label: 'Black' },
+   *       { cssClass: 'blue-background', label: 'Blue' }
+   *     ]
+   *   },
+   *   'text-color': {
+   *     label: 'Text Color',
+   *     cssClasses: [
+   *       { cssClass: 'black-text', label: 'Black' },
+   *       { cssClass: 'blue-text', label: 'Blue' }
+   *     ]
+   *   }
+   * })
+   * @see {@link withStyleConfigs}
+   * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
    * @return {Design}
    */
   withRawStyleConfigs(styleConfigs) {
@@ -2583,6 +2862,9 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * The HTML editor configurations of your design.
+   *
+   * @see {@link withRawHtmlEditorConfigs} to set a raw value
    * @param {...HtmlEditorConfig} htmlEditorConfigs
    * @return {Design}
    */
@@ -2592,7 +2874,16 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} htmlEditorConfigs
+   * Set the HTML editor configurations as raw object.
+   *
+   * @example
+   * .withRawHtmlEditorConfigs({
+   *   minimal: {
+   *     features: ['italic','bold','underline','strikeThrough']
+   *   }
+   * })
+   * @see {@link withHtmlEditorConfigs}
+   * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
    * @return {Design}
    */
   withRawHtmlEditorConfigs(htmlEditorConfigs) {
@@ -2601,9 +2892,12 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {Website} website
+   * The website configuration of your design.
+   *
+   * @see {@link withRawWebsite} to set a raw value
+   * @param {Website} website - The website object.
    * @return {Design}
-   * @since 1.3
+   * @since BSI CX 1.3
    */
   withWebsite(website) {
     this._website = website;
@@ -2611,9 +2905,27 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} website
+   * Set the raw website object of your design.
+   *
+   * @example
+   * .withRawWebsite({
+   *   maxNavigationLevel: 2,
+   *   includes: {
+   *     __page__: {
+   *       editable: true,
+   *       file: require('./includes/page.hbs'),
+   *       name: 'Template for content pages'
+   *     },
+   *     footer: {
+   *       editable: true,
+   *       file: require('./includes/footer.html'),
+   *       name: 'Footer'
+   *     }
+   *   }
+   * })
+   * @param {{}} website - The raw <code>website</code> object.
    * @return {Design}
-   * @since 1.3
+   * @since BSI CX 1.3
    */
   withRawWebsite(website) {
     this._website = new RawValue(website);
@@ -2621,6 +2933,9 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure you design's translation support.
+   *
+   * @see {@link withRawNLS} to set a raw value
    * @param {...NLS} nls
    * @return {Design}
    */
@@ -2630,7 +2945,15 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} nls
+   * Set the raw value of the <code>nls</code> property.
+   *
+   * @example
+   * .withRawNLS({
+   *   action: { '*': 'action', de: 'Aktion' },
+   *   name: { '*': 'name', de: 'Name' }
+   * })
+   * @see {@link withNLS}
+   * @param {{}} nls - The raw value.
    * @return {Design}
    */
   withRawNLS(nls) {
@@ -2638,6 +2961,9 @@ class Design extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * @inheritDoc
+   */
   build() {
     let config = {};
 
@@ -2658,7 +2984,13 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @example
+   * let design1 = new Design().withName('my first design');
+   * let design2 = design1.clone().withName('my second design');
+   * design1 === design2 // false
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @return {Design}
    */
   clone(shallow) {
@@ -2674,19 +3006,19 @@ class DesignType extends AbstractConstant {
 
 /**
  * @type {DesignType}
- * @since 1.0
+ * @since Studio 1.0
  */
 const LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
- * @since 1.0
+ * @since Studio 1.0
  */
 const EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
- * @since 1.3
+ * @since BSI CX 1.3
  */
 const WEBSITE = new DesignType('website');
 
@@ -2725,14 +3057,14 @@ class Version extends AbstractConstant {
   }
 
   /**
-   * @returns {DesignType[]}
+   * @return {DesignType[]}
    */
   get allowedTypes() {
     return this._allowedTypes;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get legacyFormat() {
     return this._legacyFormat;
@@ -2772,7 +3104,7 @@ const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 
 /**
- * @since 1.1
+ * @since Studio 1.1
  */
 class Style extends AbstractBuilder {
   /**
@@ -2814,7 +3146,7 @@ class Style extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @returns {Style}
+   * @return {Style}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -2823,7 +3155,7 @@ class Style extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @returns {Style}
+   * @return {Style}
    */
   withLabel(label) {
     this._label = label;
@@ -2832,7 +3164,7 @@ class Style extends AbstractBuilder {
 
   /**
    * @param {...CssClass} cssClasses
-   * @returns {Style}
+   * @return {Style}
    */
   withCssClasses(...cssClasses) {
     this._cssClasses = cssClasses;
@@ -2841,7 +3173,7 @@ class Style extends AbstractBuilder {
 
   /**
    * @param {...{}} cssClasses
-   * @returns {Style}
+   * @return {Style}
    */
   withRawCssClasses(...cssClasses) {
     this._cssClasses = new RawValue(cssClasses);
@@ -2952,7 +3284,7 @@ class CssClass extends AbstractBuilder {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class PlainTextPart extends AbstractPart {
   constructor() {
@@ -2983,7 +3315,7 @@ class PlainTextPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormattedTextPart extends AbstractPart {
   /**
@@ -3042,7 +3374,7 @@ class FormattedTextPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class HtmlPart extends AbstractPart {
   constructor() {
@@ -3071,7 +3403,7 @@ class HtmlPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class VideoPart extends AbstractPart {
   constructor() {
@@ -3100,7 +3432,7 @@ class VideoPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class ImagePart extends AbstractPart {
   constructor() {
@@ -3129,7 +3461,7 @@ class ImagePart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class BackgroundImagePart extends AbstractPart {
   constructor() {
@@ -3158,7 +3490,7 @@ class BackgroundImagePart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class TablePart extends AbstractPart {
   constructor() {
@@ -3187,7 +3519,7 @@ class TablePart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class IteratorPart extends AbstractPart {
   constructor() {
@@ -3216,7 +3548,7 @@ class IteratorPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class NewsSnippetsPart extends AbstractPart {
   constructor() {
@@ -3245,7 +3577,7 @@ class NewsSnippetsPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormPart extends AbstractPart {
   constructor() {
@@ -3274,7 +3606,7 @@ class FormPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormFieldPart extends AbstractPart {
   constructor() {
@@ -3303,7 +3635,7 @@ class FormFieldPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormCheckboxPart extends AbstractPart {
   constructor() {
@@ -3332,7 +3664,7 @@ class FormCheckboxPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormTextareaPart extends AbstractPart {
   constructor() {
@@ -3361,7 +3693,7 @@ class FormTextareaPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormSelectPart extends AbstractPart {
   constructor() {
@@ -3390,7 +3722,7 @@ class FormSelectPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class FormRadioPart extends AbstractPart {
   constructor() {
@@ -3419,7 +3751,7 @@ class FormRadioPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class LinkPart extends AbstractPart {
   constructor() {
@@ -3448,7 +3780,7 @@ class LinkPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class SocialFollowPart extends AbstractPart {
   constructor() {
@@ -3477,7 +3809,7 @@ class SocialFollowPart extends AbstractPart {
 
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 class SocialSharePart extends AbstractPart {
   constructor() {
@@ -3538,7 +3870,7 @@ class UrlProviderPart extends AbstractPart {
 
 
 /**
- * @since 1.3
+ * @since BSI CX 1.3
  */
 class Website extends AbstractBuilder {
   /**
@@ -3618,7 +3950,7 @@ class Website extends AbstractBuilder {
 
 /**
  * @abstract
- * @since 1.3
+ * @since BSI CX 1.3
  */
 class AbstractInclude extends AbstractBuilder {
   /**
@@ -3737,7 +4069,7 @@ class AbstractInclude extends AbstractBuilder {
 
 
 /**
- * @since 1.3
+ * @since BSI CX 1.3
  */
 class PageInclude extends AbstractInclude {
   constructor() {
@@ -3781,7 +4113,7 @@ class PageInclude extends AbstractInclude {
 
 
 /**
- * @since 1.3
+ * @since BSI CX 1.3
  */
 class Include extends AbstractInclude {
   constructor() {

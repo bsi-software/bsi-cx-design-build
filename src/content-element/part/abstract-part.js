@@ -1,7 +1,7 @@
 import {Part} from './part';
 import AbstractBuilder from '../../abstract-builder';
 import DesignJsonProperty from '../../design-json-property';
-import {constantObjectValue, identity} from '../../extractor';
+import {constantObjectValue, identity} from '../../browser-utility';
 
 /**
  * @abstract
@@ -47,7 +47,7 @@ export default class AbstractPart extends AbstractBuilder {
   /**
    * @param {string} label
    * @return {AbstractPart}
-   * @since 1.0
+   * @since Studio 1.0
    */
   withLabel(label) {
     this._label = label;

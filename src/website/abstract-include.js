@@ -1,10 +1,10 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
-import {identity} from '../extractor';
+import {identity} from '../browser-utility';
 
 /**
  * @abstract
- * @since 1.3
+ * @since BSI CX 1.3
  */
 export default class AbstractInclude extends AbstractBuilder {
   /**

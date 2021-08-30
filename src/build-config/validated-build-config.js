@@ -91,91 +91,91 @@ export default class ValidatedBuildConfig {
   _webpackRules = undefined;
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get version() {
     return this._version;
   }
 
   /**
-   * @returns {Version}
+   * @return {Version}
    */
   get targetVersion() {
     return this._targetVersion;
   }
 
   /**
-   * @returns {DesignType}
+   * @return {DesignType}
    */
   get designType() {
     return this._designType;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get rootPath() {
     return this._rootPath;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @returns {string|undefined}
+   * @return {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @returns {number}
+   * @return {number}
    */
   get devServerPort() {
     return this._devServerPort;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get hashZipFiles() {
     return this._hashZipFiles;
   }
 
   /**
-   * @returns {ModuleConfig[]}
+   * @return {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get modulesRootPath() {
     return this._modulesRootPath;
   }
 
   /**
-   * @returns {[{}]}
+   * @return {[{}]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
   }
 
   /**
-   * @returns {boolean}
+   * @return {boolean}
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;

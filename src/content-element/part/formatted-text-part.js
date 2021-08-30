@@ -4,7 +4,7 @@ import HtmlEditorConfig from '../../html-editor-config/html-editor-config';
 import DesignJsonProperty from '../../design-json-property';
 
 /**
- * @since 1.0
+ * @since Studio 1.0
  */
 export default class FormattedTextPart extends AbstractPart {
   /**

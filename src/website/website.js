@@ -1,11 +1,11 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, identity} from '../extractor';
+import {builderObjectValue, identity} from '../browser-utility';
 import AbstractInclude from './abstract-include';
 import RawValue from '../raw-value';
 
 /**
- * @since 1.3
+ * @since BSI CX 1.3
  */
 export default class Website extends AbstractBuilder {
   /**

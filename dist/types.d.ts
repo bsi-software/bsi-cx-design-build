@@ -14,7 +14,7 @@ declare module "src/abstract-constant" {
          */
         private _value;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get value(): string;
         /**
@@ -28,17 +28,17 @@ declare module "src/design-type" {
     }
     /**
      * @type {DesignType}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const LANDINGPAGE: DesignType;
     /**
      * @type {DesignType}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const EMAIL: DesignType;
     /**
      * @type {DesignType}
-     * @since 1.3
+     * @since BSI CX 1.3
      */
     export const WEBSITE: DesignType;
     import AbstractConstant from "src/abstract-constant";
@@ -55,11 +55,11 @@ declare module "src/version" {
         _allowedTypes: DesignType[];
         _legacyFormat: boolean;
         /**
-         * @returns {DesignType[]}
+         * @return {DesignType[]}
          */
         get allowedTypes(): DesignType[];
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get legacyFormat(): boolean;
     }
@@ -109,6 +109,8 @@ declare module "src/abstract-builder" {
      */
     export default class AbstractBuilder {
         /**
+         * Build the configuration.
+         *
          * @abstract
          * @return {{}}
          */
@@ -208,14 +210,18 @@ declare module "src/build-config/module-config" {
          */
         get path(): string;
         /**
-         * @param {string} name
+         * The name for your JavaScript module. The name specified here must be unique in your build configuration.
+         * This means you can't configure two modules with the same name. This will be the name of the resulting entry
+         * in the Webpack configuration.
+         *
+         * @param {string} name - The module name.
          * @return {ModuleConfig}
          */
         withName(name: string): ModuleConfig;
         /**
          * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
          *
-         * @param {string} path
+         * @param {string} path - The path to the module.
          * @return {ModuleConfig}
          */
         withPath(path: string): ModuleConfig;
@@ -230,61 +236,85 @@ declare module "src/build-config/module-config" {
         clone(shallow?: boolean | undefined): ModuleConfig;
     }
 }
+declare module "src/build-config/default-build-config" {
+    /**
+     * @implements {BuildConfigInterface}
+     */
+    export default class DefaultBuildConfig implements BuildConfigInterface {
+        get additionalFilesToCopy(): any[];
+        get copyAssetsFolderPath(): string;
+        get designType(): import("src/design-type").DesignType;
+        get devServerPort(): number;
+        get hashZipFiles(): boolean;
+        get modules(): any[];
+        get modulesRootPath(): string;
+        get name(): any;
+        get outputPath(): string;
+        get propertiesFilePath(): any;
+        get rootPath(): any;
+        get sourceMapEnabled(): boolean;
+        get staticFileFolderPath(): string;
+        get targetVersion(): import("src/version").Version;
+        get version(): string;
+        get webpackPlugins(): any[];
+        get webpackRules(): any[];
+    }
+}
 declare module "src/build-config/build-config-interface" {
     /**
      * @interface
      */
     export default class BuildConfigInterface {
         /**
-         * @returns {string}
+         * @return {string}
          */
         get name(): string;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get version(): string;
         /**
-         * @returns {Version}
+         * @return {Version}
          */
         get targetVersion(): any;
         /**
-         * @returns {DesignType}
+         * @return {DesignType}
          */
         get designType(): any;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get rootPath(): string;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get outputPath(): string;
         /**
-         * @returns {string|undefined}
+         * @return {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @returns {number}
+         * @return {number}
          */
         get devServerPort(): number;
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get hashZipFiles(): boolean;
         /**
-         * @returns {ModuleConfig[]}
+         * @return {ModuleConfig[]}
          */
         get modules(): any[];
         /**
-         * @returns {string}
+         * @return {string}
          */
         get modulesRootPath(): string;
         /**
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         get additionalFilesToCopy(): [{}];
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get sourceMapEnabled(): boolean;
         /**
@@ -295,6 +325,14 @@ declare module "src/build-config/build-config-interface" {
          * @return {string}
          */
         get copyAssetsFolderPath(): string;
+        /**
+         * @return {{}[]}
+         */
+        get webpackRules(): {}[];
+        /**
+         * @return {Object[]}
+         */
+        get webpackPlugins(): any[];
     }
 }
 declare module "src/build-config/validated-build-config" {
@@ -378,55 +416,65 @@ declare module "src/build-config/validated-build-config" {
          */
         private _copyAssetsFolderPath;
         /**
-         * @returns {string}
+         * @type {Object[]}
+         * @private
+         */
+        private _webpackPlugins;
+        /**
+         * @type {{}[]}
+         * @private
+         */
+        private _webpackRules;
+        /**
+         * @return {string}
          */
         get name(): string;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get version(): string;
         /**
-         * @returns {Version}
+         * @return {Version}
          */
         get targetVersion(): any;
         /**
-         * @returns {DesignType}
+         * @return {DesignType}
          */
         get designType(): any;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get rootPath(): string;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get outputPath(): string;
         /**
-         * @returns {string|undefined}
+         * @return {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @returns {number}
+         * @return {number}
          */
         get devServerPort(): number;
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get hashZipFiles(): boolean;
         /**
-         * @returns {ModuleConfig[]}
+         * @return {ModuleConfig[]}
          */
         get modules(): any[];
         /**
-         * @returns {string}
+         * @return {string}
          */
         get modulesRootPath(): string;
         /**
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         get additionalFilesToCopy(): [{}];
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get sourceMapEnabled(): boolean;
         /**
@@ -437,6 +485,14 @@ declare module "src/build-config/validated-build-config" {
          * @return {string}
          */
         get copyAssetsFolderPath(): string;
+        /**
+         * @return {Object[]}
+         */
+        get webpackPlugins(): any[];
+        /**
+         * @return {{}[]}
+         */
+        get webpackRules(): {}[];
     }
     import BuildConfigInterface from "src/build-config/build-config-interface";
 }
@@ -526,28 +582,6 @@ declare module "src/utility" {
      */
     export function toPosixPath(possibleWin32Path: string): string;
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
-}
-declare module "src/build-config/default-build-config" {
-    /**
-     * @implements {BuildConfigInterface}
-     */
-    export default class DefaultBuildConfig implements BuildConfigInterface {
-        get additionalFilesToCopy(): any[];
-        get copyAssetsFolderPath(): string;
-        get designType(): import("src/design-type").DesignType;
-        get devServerPort(): number;
-        get hashZipFiles(): boolean;
-        get modules(): any[];
-        get modulesRootPath(): string;
-        get name(): any;
-        get outputPath(): string;
-        get propertiesFilePath(): any;
-        get rootPath(): any;
-        get sourceMapEnabled(): boolean;
-        get staticFileFolderPath(): string;
-        get targetVersion(): import("src/version").Version;
-        get version(): string;
-    }
 }
 declare module "src/build-config/build-config-validator" {
     export default class BuildConfigValidator {
@@ -749,55 +783,65 @@ declare module "src/build-config/build-config" {
          */
         private _copyAssetsFolderPath;
         /**
-         * @returns {string}
+         * @type {{}[]}
+         * @private
+         */
+        private _webpackRules;
+        /**
+         * @type {Object[]}
+         * @private
+         */
+        private _webpackPlugins;
+        /**
+         * @return {string}
          */
         get name(): string;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get version(): string;
         /**
-         * @returns {Version}
+         * @return {Version}
          */
         get targetVersion(): Version;
         /**
-         * @returns {DesignType}
+         * @return {DesignType}
          */
         get designType(): DesignType;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get rootPath(): string;
         /**
-         * @returns {string}
+         * @return {string}
          */
         get outputPath(): string;
         /**
-         * @returns {string|undefined}
+         * @return {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @returns {number}
+         * @return {number}
          */
         get devServerPort(): number;
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get hashZipFiles(): boolean;
         /**
-         * @returns {ModuleConfig[]}
+         * @return {ModuleConfig[]}
          */
         get modules(): ModuleConfig[];
         /**
-         * @returns {string}
+         * @return {string}
          */
         get modulesRootPath(): string;
         /**
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         get additionalFilesToCopy(): [{}];
         /**
-         * @returns {boolean}
+         * @return {boolean}
          */
         get sourceMapEnabled(): boolean;
         /**
@@ -809,99 +853,125 @@ declare module "src/build-config/build-config" {
          */
         get copyAssetsFolderPath(): string;
         /**
+         * @return {{}[]}
+         */
+        get webpackRules(): {}[];
+        /**
+         * @return {Object[]}
+         */
+        get webpackPlugins(): any[];
+        /**
          * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
+         * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
          *
-         * @param {string} name
-         * @returns {BuildConfig}
+         * @param {string} name - The name of your template.
+         * @return {BuildConfig}
          */
         withName(name: string): BuildConfig;
         /**
          * The version of this template, e.g. 1.0.1. This will be included in the name of the resulting ZIP file in the dist folder.
          *
-         * @param {string} version
-         * @returns {BuildConfig}
+         * @see {@link https://semver.org/spec/v2.0.0.html}
+         * @param {string} version - The version for this template. It is recommended to use a semantic version string.
+         * @return {BuildConfig}
          */
         withVersion(version: string): BuildConfig;
         /**
          * The application version of BSI CX (or BSI Studio) this design is built for.
          *
-         * @see Checkout {@link Version} for available versions.
-         * @param {Version} version
-         * @returns
+         * @see {@link Version} for available versions
+         * @param {Version} version - The BSI CX version. Default will be {@link CX_22_0}
+         * @return {BuildConfig}
          */
         withTargetVersion(version: Version): BuildConfig;
         /**
          * The type of this design (e.g. email or landingpage).
          *
-         * @see Checkout {@link DesignType} for available types.
-         * @param {DesignType} type
-         * @returns
+         * @see {@link DesignType} for available types
+         * @param {DesignType} type - The design type to use. Default will be {@link LANDINGPAGE}
+         * @return {BuildConfig}
          */
         withDesignType(type: DesignType): BuildConfig;
         /**
          * The path to the root folder of this template. This folder contains the source code of your template.
+         * An absolute path is recommended. If the path is relative, it will be resolved in relation to the current working directory.
          *
-         * @param {string} rootPath
-         * @returns {BuildConfig}
+         * @param {string} rootPath - The path to your template root. An absolute path is recommended.
+         * @return {BuildConfig}
          */
         withRootPath(rootPath: string): BuildConfig;
         /**
-         * A custom output path to use. Default: dist/{name}.
+         * A custom output folder path to use. Default: dist/{name}. An absolute path is recommended.
+         * If the path is relative, it will be resolved in relation to the current working directory.
+         * The folder does not have to exist, the build will create it for you. But it is recommended
+         * to ignore the folder and its content in your VCS.
          *
-         * @param {string} outputPath
-         * @returns {BuildConfig}
+         * @see {@link https://git-scm.com/docs/gitignore}
+         * @param {string} outputPath - The path to your output folder. An absolute path is recommended.
+         * @return {BuildConfig}
          */
         withOutputPath(outputPath: string): BuildConfig;
         /**
          * The data properties file for your Twig templates. This file will be required and the contents of this file will be
-         * available as "properties" variable inside your Twig templates.
+         * available as "properties" variable inside your Twig templates and trough the <code>bsiProperty</code> functions inside
+         * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
          *
-         * @param {string} propertiesFilePath
-         * @returns {BuildConfig}
+         * @param {string} propertiesFilePath - The path to your properties file.
+         * @return {BuildConfig}
          */
         withPropertiesFilePath(propertiesFilePath: string): BuildConfig;
         /**
          * A TCP port number to use for the development server. The default port is 9000. Be aware,
-         * that you don't have to configure a separate port for each template.
+         * that you don't have to configure a separate port for each template of your build.
+         * Only the first configuration will be considered.
          *
-         * @param {number} devServerPort
-         * @returns {BuildConfig}
+         * @param {number} devServerPort - The development server port number.
+         * @return {BuildConfig}
          */
         withDevServerPort(devServerPort: number): BuildConfig;
         /**
-         * Add a unique hash value to the name of the resulting ZIP file.
+         * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
          *
-         * @param {boolean} hashZipFiles
-         * @returns {BuildConfig}
+         * @param {boolean} hashZipFiles - Enable or disable this feature. Default is <code>true</code>.
+         * @return {BuildConfig}
          */
         withHashZipFiles(hashZipFiles: boolean): BuildConfig;
         /**
-         * Add additional Java Script modules.
+         * Add additional JavaScript modules. Each additional JavaScript module configuration will result in a separate
+         * entry configuration. Be aware, that your modules must be placed inside the modules root path.
+         * Use {@link withModulesRootPath} to set a custom modules root path.
          *
-         * @param {...ModuleConfig} modules
-         * @returns {BuildConfig}
+         * @param {...ModuleConfig} modules - Pass objects of the {@link BuildConfig} class.
+         * @return {BuildConfig}
          */
         withModules(...modules: ModuleConfig[]): BuildConfig;
         /**
-         * Absolute path to the modules folder.
+         * Absolute or relative path to the modules root folder. Per default this will be the "modules" folder inside your template root.
+         * Relative paths will be resolved in relation to your {@link withRootPath|template root} configuration.
          *
-         * @param {string} modulesRootPath
-         * @returns {BuildConfig}
+         * @param {string} modulesRootPath - The path to your modules root folder.
+         * @return {BuildConfig}
          */
         withModulesRootPath(modulesRootPath: string): BuildConfig;
         /**
-         * Add additional files to copy to the output folder.
+         * Add additional files to copy to the output folder. The configuration here will be passed down to the
+         * {@link https://github.com/webpack-contrib/copy-webpack-plugin|CopyWebpackPlugin}. Be aware, that you always
+         * can put files inside the "assets" folder inside your template root without any configuration here.
+         * You can change the path to the assets folder with the {@link withCopyAssetsFolderPath} method.
          *
          * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
-         * @param {...{}} additionalFilesToCopy
-         * @returns {BuildConfig}
+         * @param {...{}} additionalFilesToCopy - Pattern configuration object.
+         * @return {BuildConfig}
          */
         withAdditionalFilesToCopy(...additionalFilesToCopy: {}[]): BuildConfig;
         /**
-         * Enable or disable source maps.
+         * Enable or disable source map generation. If enabled, source maps will be emitted for JavaScript, LESS and SASS
+         * files. Enabling this feature will also emit an additional "dev" ZIP file. The generated .map files will only be
+         * contained in this ZIP file. So upload the dev ZIP file if you want to debug a design in BSI CX. The dev ZIP file
+         * should not be used in production environments. Enabling source maps will also have a slight performance impact.
          *
-         * @param {boolean} sourceMapEnabled
-         * @returns {BuildConfig}
+         * @param {boolean} sourceMapEnabled - Enable or disable the feature. Enabled by default.
+         * @return {BuildConfig}
          */
         withSourceMapEnabled(sourceMapEnabled: boolean): BuildConfig;
         /**
@@ -909,7 +979,7 @@ declare module "src/build-config/build-config" {
          * Can either be an absolute or relative path. Relative paths will be normalized in relation to the template root folder.
          * Use {@link withRootPath} to set the template root folder.
          *
-         * @param {string} staticFileFolderPath
+         * @param {string} staticFileFolderPath - The path to the static assets folder.
          * @return {BuildConfig}
          */
         withStaticFileFolderPath(staticFileFolderPath: string): BuildConfig;
@@ -919,20 +989,39 @@ declare module "src/build-config/build-config" {
          * Relative paths will be normalized in relation to the template root folder.
          * Use {@link withRootPath} to set the template root folder.
          *
-         * @param {string} copyAssetsFolderPath
+         * @param {string} copyAssetsFolderPath - The path to the copy assets folder.
          * @return {BuildConfig}
          */
         withCopyAssetsFolderPath(copyAssetsFolderPath: string): BuildConfig;
         /**
+         * Configure additional rules for the Webpack configuration. Be aware, that this can clash with the existing rules.
+         *
+         * @see {@link https://webpack.js.org/configuration/module/#rule}
+         * @param {...{}} rules - Webpack rules objects.
+         * @return {BuildConfig}
+         */
+        withWebpackRules(...rules: {}[]): BuildConfig;
+        /**
+         * Configure additional plugins for the Webpack configuration. Be aware, that this can clash with the existing plugins.
+         *
+         * @see {@link https://webpack.js.org/configuration/plugins/}
+         * @param {...Object} plugins - Instances of Webpack plugins.
+         * @return {BuildConfig}
+         */
+        withWebpackPlugins(...plugins: any[]): BuildConfig;
+        /**
          * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
          * A shallow clone will be created by default. This means nested objects will still reference the same origin.
          *
-         * @param {boolean} [shallow=true]
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @return {BuildConfig}
          */
         clone(shallow?: boolean): BuildConfig;
         /**
-         * @return {ValidatedBuildConfig}
+         * Validate the build configuration. <strong>There is no need to call this method.</strong>
+         * The {@link WebpackConfigBuilder.fromConfigs|WebpackConfigBuilder} will do this for you.
+         *
+         * @return {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
          */
         validate(): ValidatedBuildConfig;
     }
@@ -1188,12 +1277,12 @@ declare module "src/java-property-file-builder" {
         /**
          * @param {string} key
          * @param {string} value
-         * @returns {JavaPropertyFileBuilder}
+         * @return {JavaPropertyFileBuilder}
          */
         append(key: string, value: string): JavaPropertyFileBuilder;
         /**
          * @param {string} comment
-         * @returns {JavaPropertyFileBuilder}
+         * @return {JavaPropertyFileBuilder}
          */
         appendComment(comment: string): JavaPropertyFileBuilder;
         /**
@@ -1202,31 +1291,31 @@ declare module "src/java-property-file-builder" {
          */
         appendCommentSection(section: string): JavaPropertyFileBuilder;
         /**
-         * @returns {JavaPropertyFileBuilder}
+         * @return {JavaPropertyFileBuilder}
          */
         appendBlank(): JavaPropertyFileBuilder;
         /**
-         * @returns {string}
+         * @return {string}
          */
         build(): string;
         /**
          * @param {string} line
-         * @returns {string}
+         * @return {string}
          */
         _printLine(line: string): string;
         /**
          * @param {string} key
-         * @returns {string}
+         * @return {string}
          */
         _escapeKey(key: string): string;
         /**
          * @param {string} value
-         * @returns {string}
+         * @return {string}
          */
         _escapeValue(value: string): string;
     }
 }
-declare module "src/extractor" {
+declare module "src/browser-utility" {
     /**
      * @param {[string|number]} arr
      * @return {string}
@@ -1248,6 +1337,14 @@ declare module "src/extractor" {
      * @return {{}}
      */
     export function builderObjectValue(builder: AbstractBuilder): {};
+    /**
+     * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
+     * (won't work in the browser context).
+     *
+     * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
+     * @return {string}
+     */
+    export function uuid(): string;
     import AbstractConstant from "src/abstract-constant";
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -2191,7 +2288,7 @@ declare module "src/webpack-config-builder" {
          */
         get context(): BuildContext;
         /**
-         * @returns {ValidatedBuildConfig}
+         * @return {ValidatedBuildConfig}
          */
         get config(): ValidatedBuildConfig;
         /**
@@ -2228,21 +2325,21 @@ declare module "src/webpack-config-builder" {
         /**
          * The default output path: dist/{name}
          *
-         * @returns {string}
+         * @return {string}
          * @private
          */
         private _getDefaultOutputPath;
         /**
          * The entry configuration.
          *
-         * @returns {{}}
+         * @return {{}}
          */
         _getEntryConfig(): {};
         /**
          * Get the entry configuration for a template.
          *
          * @param {string} name
-         * @returns {{}}
+         * @return {{}}
          */
         _evaluateEntryTemplate(name: string): {};
         /**
@@ -2253,7 +2350,7 @@ declare module "src/webpack-config-builder" {
         /**
          * Get the entry configurations for the Java Script modules.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getJavaScriptModuleEntries(): [{}];
         /**
@@ -2265,37 +2362,37 @@ declare module "src/webpack-config-builder" {
         /**
          * Rules for Twig file handling.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getTwigRuleConfig(): [{}];
         /**
          * Rule for HTML and Handlebars file handling.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getHtmlAndHbsRuleConfig(): [{}];
         /**
          * Rules for LESS, SASS/SCSS and CSS file handling.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getStyleRulesConfig(): [{}];
         /**
          * Get all file extensions that should be handled as static assets (e.g. images and fonts).
          *
-         * @returns {[string]}
+         * @return {[string]}
          */
         _getStaticAssetFileExtensions(): [string];
         /**
          * Rule for static assets handling.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getStaticAssetsRuleConfig(): [{}];
         /**
          * Rule for static Java Script file handling.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getStaticJavaScriptFileRuleConfig(): [{}];
         /**
@@ -2306,27 +2403,32 @@ declare module "src/webpack-config-builder" {
         /**
          * Rule for regular Java Script file handling.
          *
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getRegularJavaScriptFileRuleConfig(): [{}];
         /**
-         * @returns {string}
+         * @return {{}[]}
+         * @private
+         */
+        private _getAdditionalRules;
+        /**
+         * @return {string}
          */
         _getTemplateLoader(): string;
         /**
-         * @returns {[{}]}
+         * @return {[{}]}
          */
         _getCssLoaderChain(): [{}];
         /**
          * Mini CSS extract plugin configuration.
          *
-         * @returns {[MiniCssExtractPlugin]}
+         * @return {[MiniCssExtractPlugin]}
          */
         _getMiniCssExtractPluginConfig(): [any];
         /**
          * Copy plugin configuration.
          *
-         * @returns {[CopyPlugin]}
+         * @return {[CopyPlugin]}
          */
         _getCopyPluginConfig(): [any];
         /**
@@ -2343,61 +2445,66 @@ declare module "src/webpack-config-builder" {
         /**
          * Webpack ZIP plugin configuration.
          *
-         * @returns {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+         * @return {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
          */
         _getZipPluginConfig(): [any | BsiCxWebpackZipHashPlugin];
         /**
+         * @return {Object[]}
+         * @private
+         */
+        private _getAdditionalPlugins;
+        /**
          * BSI CX legacy design format plugin config.
          *
-         * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+         * @return {[BsiCxWebpackLegacyDesignPlugin]}
          */
         _getBsiCxWebpackLegacyDesignPluginConfig(): [BsiCxWebpackLegacyDesignPlugin];
         /**
          * The dev tool configuration.
          *
-         * @returns {string|boolean}
+         * @return {string|boolean}
          */
         _getDevToolConfig(): string | boolean;
         /**
          * Development server configuration.
          *
-         * @returns {{}}
+         * @return {{}}
          */
         _getDevServerConfig(): {};
         /**
          * The stats configuration.
          *
-         * @returns {{}}
+         * @return {{}}
          */
         _getStatsConfig(): {};
         /**
          * The performance configuration.
          *
-         * @returns {{}}
+         * @return {{}}
          */
         _getPerformanceConfig(): {};
         /**
          * The minimizer configuration.
          *
-         * @returns {[TerserPlugin]}
+         * @return {[TerserPlugin]}
          */
         _getOptimizationMinimizerConfig(): [any];
         /**
          * The split chunks name configuration.
          *
-         * @returns {function}
+         * @return {function}
          */
         _getOptimizationSplitChunksNameConfig(): Function;
         /**
          * The chache groups configuration.
          *
-         * @returns {{}}
+         * @return {{}}
          */
         _getOptimizationCacheGroupsConfig(): {};
         /**
          * The output configuration.
          *
-         * @returns {{}}
+         * @return {{}}
          */
         _getOutputConfig(): {};
     }
@@ -2432,101 +2539,102 @@ declare module "export/main" {
     import * as DesignType from "src/design-type";
     import BuildConfig from "src/build-config/build-config";
     import ModuleConfig from "src/build-config/module-config";
+    import DefaultBuildConfig from "src/build-config/default-build-config";
     import WebpackConfigBuilder from "src/webpack-config-builder";
     import * as css from "src/css/helper";
-    export { Version, DesignType, BuildConfig, ModuleConfig, WebpackConfigBuilder, css };
+    export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
 }
 declare module "src/content-element/part/part" {
     export class Part extends AbstractConstant {
     }
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PLAIN_TEXT: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORMATTED_TEXT: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const HTML: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const VIDEO: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const IMAGE: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const BACKGROUND_IMAGE: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TABLE: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const ITERATOR: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const NEWS_SNIPPETS: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORM: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORM_FIELD: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORM_CHECKBOX: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORM_TEXTAREA: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORM_SELECT: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORM_RADIO: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const LINK: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SOCIAL_FOLLOW: Part;
     /**
      * @type {Part}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SOCIAL_SHARE: Part;
     /**
@@ -2566,7 +2674,7 @@ declare module "src/content-element/part/abstract-part" {
         /**
          * @param {string} label
          * @return {AbstractPart}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withLabel(label: string): AbstractPart;
     }
@@ -2626,11 +2734,15 @@ declare module "src/design/schema-version" {
     export class SchemaVersion extends AbstractConstant {
     }
     /**
+     * Use this in website templates for BSI CX 1.3.
+     *
      * @type {SchemaVersion}
-     * @since 1.3
+     * @since BSI CX 1.3
      */
     export const V_1_0: SchemaVersion;
     /**
+     * Use this in all templates for BSI CX 22.0.
+     *
      * @type {SchemaVersion}
      * @since 22.0
      */
@@ -2683,7 +2795,7 @@ declare module "src/style/css-class" {
 }
 declare module "src/style/style" {
     /**
-     * @since 1.1
+     * @since Studio 1.1
      */
     export default class Style extends AbstractBuilder {
         /**
@@ -2715,22 +2827,22 @@ declare module "src/style/style" {
         get cssClasses(): RawValue | [CssClass];
         /**
          * @param {string} identifier
-         * @returns {Style}
+         * @return {Style}
          */
         withIdentifier(identifier: string): Style;
         /**
          * @param {string} label
-         * @returns {Style}
+         * @return {Style}
          */
         withLabel(label: string): Style;
         /**
          * @param {...CssClass} cssClasses
-         * @returns {Style}
+         * @return {Style}
          */
         withCssClasses(...cssClasses: CssClass[]): Style;
         /**
          * @param {...{}} cssClasses
-         * @returns {Style}
+         * @return {Style}
          */
         withRawCssClasses(...cssClasses: {}[]): Style;
         /**
@@ -2748,177 +2860,177 @@ declare module "src/content-element/icon" {
     }
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const HEADING: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TEXT: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TEXT_WITH_IMAGE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const IMAGE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TABLE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const LIST: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const VIDEO: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const MEGAPHONE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SOCIAL_FOLLOW: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SOCIAL_SHARE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SNIPPET: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const QRCODE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PAPERCLIP: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const DOCUMENT: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PHONE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const COMMUNICATION: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const HANDSHAKE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const HEART: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const INFO: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const ENVELOPE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FACEBOOK: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const YOUTUBE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PERSON_MALE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PERSON_FEMALE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const ASTERISK: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SMILEY: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const DIVIDER: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PARAMETER: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TWITTER: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const HEADSET: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const METADATA: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const PILE: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const CHAIN: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const SIGNPOST: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const COMPASS: Icon;
     /**
@@ -2938,42 +3050,42 @@ declare module "src/content-element/icon" {
     export const DIAGRAM_BAR: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const RADIOBUTTON: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const CHECKBOX: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TEXTAREA: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const FORMFIELD: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const DROPDOWN: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const ONE_COLUMN: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const TWO_COLUMNS: Icon;
     /**
      * @type {Icon}
-     * @since 1.0
+     * @since Studio 1.0
      */
     export const THREE_COLUMNS: Icon;
     import AbstractConstant from "src/abstract-constant";
@@ -3055,55 +3167,55 @@ declare module "src/content-element/content-element" {
         /**
          * @param {string} elementId
          * @return {ContentElement}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withElementId(elementId: string): ContentElement;
         /**
          * @param {string} label
          * @return {ContentElement}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withLabel(label: string): ContentElement;
         /**
          * @param {string} file
          * @return {ContentElement}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withFile(file: string): ContentElement;
         /**
          * @param {Icon} icon
          * @return {ContentElement}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withIcon(icon: Icon): ContentElement;
         /**
          * @param {boolean} hidden
          * @return {ContentElement}
-         * @since 1.3
+         * @since BSI CX 1.3
          */
         withHidden(hidden: boolean): ContentElement;
         /**
          * @param {...Style} styleConfigs
          * @return {ContentElement}
-         * @since 1.1
+         * @since Studio 1.1
          */
         withStyleConfigs(...styleConfigs: Style[]): ContentElement;
         /**
          * @param {...string} styleConfigs
          * @return {ContentElement}
-         * @since 1.1
+         * @since Studio 1.1
          */
         withRawStyleConfigs(...styleConfigs: string[]): ContentElement;
         /**
          * @param {...AbstractPart} parts
          * @return {ContentElement}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withParts(...parts: AbstractPart[]): ContentElement;
         /**
          * @param {...{}} parts
          * @return {ContentElement}
-         * @since 1.0
+         * @since Studio 1.0
          */
         withRawParts(...parts: {}[]): ContentElement;
         /**
@@ -3195,14 +3307,23 @@ declare module "src/html-editor-config/enter-mode" {
     export class EnterMode extends AbstractConstant {
     }
     /**
+     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
      * @type {EnterMode}
      */
     export const P: EnterMode;
     /**
+     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
      * @type {EnterMode}
      */
     export const BR: EnterMode;
     /**
+     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
      * @type {EnterMode}
      */
     export const DIV: EnterMode;
@@ -3212,122 +3333,217 @@ declare module "src/html-editor-config/feature" {
     export class Feature extends AbstractConstant {
     }
     /**
+     * Bold formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const BOLD: Feature;
     /**
+     * Italic formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const ITALIC: Feature;
     /**
+     * Underline formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const UNDERLINE: Feature;
     /**
+     * Strike trough formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const STRIKE_THROUGH: Feature;
     /**
+     * Subscript formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const SUBSCRIPT: Feature;
     /**
+     * Superscript formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const SUPERSCRIPT: Feature;
     /**
+     * Set the font size in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizes}
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const FONT_SIZE: Feature;
     /**
+     * Set the line height in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withLineHeights}
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const LINE_HEIGHT: Feature;
     /**
+     * Set the text color in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withTextColors}
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const TEXT_COLOR: Feature;
     /**
+     * Set the background color in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withBackgroundColors}
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const BACKGROUND_COLOR: Feature;
     /**
+     * Align the text left.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const ALIGN_LEFT: Feature;
     /**
+     * Align the text center.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const ALIGN_CENTER: Feature;
     /**
+     * Align the text right.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const ALIGN_RIGHT: Feature;
     /**
+     * Align the text justify.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const ALIGN_JUSTIFY: Feature;
     /**
+     * Create an ordered list.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const FORMAT_OL: Feature;
     /**
+     * Create an unordered list.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const FORMAT_UL: Feature;
     /**
+     * Outdent the text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const OUTDENT: Feature;
     /**
+     * Indent the text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const INDENT: Feature;
     /**
+     * Enable paragraph format options.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const PARAGRAPH_FORMAT: Feature;
     /**
+     * Quote the text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const QUOTE: Feature;
     /**
+     * Insert special characters.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const SPECIAL_CHARACTERS: Feature;
     /**
+     * Insert emoticons.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const EMOTICONS: Feature;
     /**
+     * Insert a link.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const INSERT_LINK: Feature;
     /**
+     * Clear all applied styles and formatting.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const CLEAR_FORMATTING: Feature;
     /**
+     * Undo the previous action.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const UNDO: Feature;
     /**
+     * Redo the previous action.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const REDO: Feature;
     /**
+     * Show the editor in fullscreen mode.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const FULLSCREEN: Feature;
     /**
+     * Select all text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const SELECT_ALL: Feature;
     /**
+     * Edit the raw HTML code.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const HTML: Feature;
     /**
+     * Show the editor help.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
      * @type {Feature}
      */
     export const HELP: Feature;
@@ -3452,113 +3668,181 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         private _enterMode;
         /**
-         * @returns {string|undefined}
+         * @return {string|undefined}
          */
         get identifier(): string;
         /**
-         * @returns {RawValue|Feature[]|undefined}
+         * @return {RawValue|Feature[]|undefined}
          */
         get features(): RawValue | Feature[];
         /**
-         * @returns {string[]|undefined}
+         * @return {string[]|undefined}
          */
         get textColors(): string[];
         /**
-         * @returns {string[]|undefined}
+         * @return {string[]|undefined}
          */
         get backgroundColors(): string[];
         /**
-         * @returns {RawValue|Format[]|undefined}
+         * @return {RawValue|Format[]|undefined}
          */
         get formats(): RawValue | Format[];
         /**
-         * @returns {number[]|undefined}
+         * @return {number[]|undefined}
          */
         get fontSizes(): number[];
         /**
-         * @returns {RawValue|FontSizeUnit|undefined}
+         * @return {RawValue|FontSizeUnit|undefined}
          */
         get fontSizeUnit(): RawValue | FontSizeUnit;
         /**
-         * @returns {number|undefined}
+         * @return {number|undefined}
          */
         get fontSizeDefault(): number;
         /**
-         * @returns {number[]|undefined}
+         * @return {number[]|undefined}
          */
         get lineHeights(): number[];
         /**
-         * @returns {RawValue|EnterMode|undefined}
+         * @return {RawValue|EnterMode|undefined}
          */
         get enterMode(): RawValue | EnterMode;
         /**
-         * @param {string} identifier
-         * @returns {HtmlEditorConfig}
+         * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
+         * It is recommended to set the identifier.
+         *
+         * @param {string} identifier - The unique identifier for this editor config.
+         * @return {HtmlEditorConfig}
          */
         withIdentifier(identifier: string): HtmlEditorConfig;
         /**
-         * @param {...Feature} features
-         * @returns {HtmlEditorConfig}
+         * The features enable in this HTML editor configuration.
+         *
+         * @example
+         * .withFeatures(Feature.ITALIC, Feature.BOLD, Feature.UNDERLINE)
+         * @see {@link Feature} for available features
+         * @see {@link withRawFeatures} to set a raw value
+         * @param {...Feature} features - The features to enable.
+         * @return {HtmlEditorConfig}
          */
         withFeatures(...features: Feature[]): HtmlEditorConfig;
         /**
-         * @param {...string} features
-         * @returns {HtmlEditorConfig}
+         * Set the raw <code>features</code> property.
+         *
+         * @example
+         * .withRawFeatures('bold', 'italic', 'underline')
+         * @see {@link withFeatures}
+         * @param {...string} features - The raw features to enable.
+         * @return {HtmlEditorConfig}
          */
         withRawFeatures(...features: string[]): HtmlEditorConfig;
         /**
-         * @param {...string} textColors
-         * @returns {HtmlEditorConfig}
+         * Set the available text colors. Specify the colors in the hexadecimal format.
+         *
+         * @example
+         * .withTextColors('#ff00ff', '#ff0000', '#00ff00')
+         * @see {@link TEXT_COLOR} to enable the feature
+         * @param {...string} textColors - The text colors to set.
+         * @return {HtmlEditorConfig}
          */
         withTextColors(...textColors: string[]): HtmlEditorConfig;
         /**
-         * @param {...string} backgroundColors
-         * @returns {HtmlEditorConfig}
+         * Set the available background colors. Specify the colors in the hexadecimal format.
+         *
+         * @example
+         * .withBackgroundColors('#ff00ff', '#ff0000', '#00ff00')
+         * @see {@link BACKGROUND_COLOR} to enable the feature
+         * @param {...string} backgroundColors - The background colors to set.
+         * @return {HtmlEditorConfig}
          */
         withBackgroundColors(...backgroundColors: string[]): HtmlEditorConfig;
         /**
-         * @param {...Format} formats
-         * @returns {HtmlEditorConfig}
+         * Specify the available formats.
+         *
+         * @example
+         * .withFormats(Format.P, Format.PRE)
+         * @see {@link Format} for available formats
+         * @see {@link withRawFormats} to set a raw value
+         * @param {...Format} formats - The formats to set.
+         * @return {HtmlEditorConfig}
          */
         withFormats(...formats: Format[]): HtmlEditorConfig;
         /**
-         * @param {...string} formats
-         * @returns {HtmlEditorConfig}
+         * Specify a raw value for the <code>formats</code> field.
+         *
+         * @example
+         * .withRawFormats('p', 'pre')
+         * @see {@link withFormats}
+         * @param {...string} formats - The raw formats to set.
+         * @return {HtmlEditorConfig}
          */
         withRawFormats(...formats: string[]): HtmlEditorConfig;
         /**
-         * @param {...number} fontSizes
-         * @returns {HtmlEditorConfig}
+         * Specify the available font sizes.
+         *
+         * @example
+         * .withFontSizes(12, 13, 14, 15, 16)
+         * @see {@link FONT_SIZE} to enable this feature
+         * @param {...number} fontSizes - The font sizes to set.
+         * @return {HtmlEditorConfig}
          */
         withFontSizes(...fontSizes: number[]): HtmlEditorConfig;
         /**
-         * @param {FontSizeUnit} fontSizeUnit
-         * @returns {HtmlEditorConfig}
+         * Specify the font size unit to use.
+         *
+         * @example
+         * .withFontSizeUnit(FontSizeUnit.PX)
+         * @see {@link withRawFontSizeUnit} to set the raw value
+         * @param {FontSizeUnit} fontSizeUnit - The font size unit to set.
+         * @return {HtmlEditorConfig}
          */
         withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
         /**
-         * @param {string} fontSizeUnit
-         * @returns {HtmlEditorConfig}
+         * Set the raw value for the <code>fontSizeUnit</code> property.
+         *
+         * @example
+         * .withRawFontSizeUnit('px')
+         * @see {@link withFontSizeUnit}
+         * @param {string} fontSizeUnit - The raw font size unit to set.
+         * @return {HtmlEditorConfig}
          */
         withRawFontSizeUnit(fontSizeUnit: string): HtmlEditorConfig;
         /**
-         * @param {number} fontSizeDefault
-         * @returns {HtmlEditorConfig}
+         * Set the default font size to use.
+         *
+         * @example
+         * .withFontSizeDefault(16)
+         * @param {number} fontSizeDefault - The default font size to set.
+         * @return {HtmlEditorConfig}
          */
         withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
         /**
-         * @param {...number} lineHeights
-         * @returns {HtmlEditorConfig}
+         * Set the available line heights.
+         *
+         * @example
+         * .withLineHeights(1, 1.15 , 1.5, 2)
+         * @see {@link LINE_HEIGHT} to enable this feature
+         * @param {...number} lineHeights - The line heights.
+         * @return {HtmlEditorConfig}
          */
         withLineHeights(...lineHeights: number[]): HtmlEditorConfig;
         /**
-         * @param {EnterMode} enterMode
-         * @returns {HtmlEditorConfig}
+         * Define the enter mode to use.
+         *
+         * @example
+         * .withEnterMode(EnterMode.P)
+         * @see {@link withRawEnterMode} to set the raw value
+         * @param {EnterMode} enterMode - The enter mode.
+         * @return {HtmlEditorConfig}
          */
         withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
         /**
-         * @param {string} enterMode
-         * @returns {HtmlEditorConfig}
+         * Set the raw enter mode.
+         *
+         * @example
+         * .withRawEnterMode('p')
+         * @param {string} enterMode - The raw enter mode.
+         * @return {HtmlEditorConfig}
          */
         withRawEnterMode(enterMode: string): HtmlEditorConfig;
         /**
@@ -3577,7 +3861,7 @@ declare module "src/html-editor-config/html-editor-config" {
 declare module "src/website/abstract-include" {
     /**
      * @abstract
-     * @since 1.3
+     * @since BSI CX 1.3
      */
     export default class AbstractInclude extends AbstractBuilder {
         /**
@@ -3645,7 +3929,7 @@ declare module "src/website/abstract-include" {
 }
 declare module "src/website/website" {
     /**
-     * @since 1.3
+     * @since BSI CX 1.3
      */
     export default class Website extends AbstractBuilder {
         /**
@@ -3902,109 +4186,246 @@ declare module "src/design/design" {
          */
         get nls(): RawValue | NLS[];
         /**
-         * @param {SchemaVersion} schemaVersion
+         * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withSchemaVersion(SchemaVersion.V_22_0)
+         * @see {@link SchemaVersion} for available versions
+         * @see {@link withRawSchemaVersion} to set a raw value
+         * @param {SchemaVersion} schemaVersion - The schema version to use.
          * @return {Design}
          */
         withSchemaVersion(schemaVersion: SchemaVersion): Design;
         /**
-         * @param {string} schemaVersion
+         * Supply a raw schema version.
+         *
+         * @example
+         * .withRawSchemaVersion('22.0')
+         * @see {@link withSchemaVersion}
+         * @param {string} schemaVersion - The schema version to use.
          * @return {Design}
          */
         withRawSchemaVersion(schemaVersion: string): Design;
         /**
-         * @param {string} title
+         * The title for your design.
+         *
+         * @param {string} title - The design title.
          * @return {Design}
          */
         withTitle(title: string): Design;
         /**
-         * @param {string} author
+         * The author of your design.
+         *
+         * @param {string} author - The design author.
          * @return {Design}
          */
         withAuthor(author: string): Design;
         /**
-         * @param {string} date
+         * The creation date of your design e.g. 18.08.2021.
+         *
+         * @example
+         * .withDate('18.08.2021')
+         * @param {string} date - The design date.
          * @return {Design}
          */
         withDate(date: string): Design;
         /**
+         * The preview image of your design. Use in combination with require.
+         *
+         * @example
+         * .withPreviewImage(require('./preview-image.png'))
          * @param {{}} previewImage
          * @return {Design}
          */
         withPreviewImage(previewImage: {}): Design;
         /**
-         * @param {Locale} defaultLocale
+         * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withDefaultLocale(Locale.EN)
+         * @see {@link Locale} for available locales
+         * @see {@link withRawDefaultLocale} to set a raw value
+         * @param {Locale} defaultLocale - The design default locale.
          * @return {Design}
          */
         withDefaultLocale(defaultLocale: Locale): Design;
         /**
-         * @param {string} defaultLocale
+         * Set the raw default locale as string.
+         *
+         * @example
+         * .withRawDefaultLocale('en')
+         * @see {@link withDefaultLocale}
+         * @param {string} defaultLocale - The default locale.
          * @return {Design}
          */
         withRawDefaultLocale(defaultLocale: string): Design;
         /**
-         * @param {...Locale} locales
+         * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withLocales(Locale.EN_GB,Locale.DE_CH)
+         * @see {@link Locale} for available locales
+         * @see {@link withRawLocales} to set a raw value
+         * @param {...Locale} locales - The design locales.
          * @return {Design}
          */
         withLocales(...locales: Locale[]): Design;
         /**
-         * @param {...string} locales
+         * Set the raw locales as string.
+         *
+         * @example
+         * .withRawLocales('en-GB','de-CH')
+         * @see {@link withLocales}
+         * @param {...string} locales - The design locales.
          * @return {Design}
          */
         withRawLocales(...locales: string[]): Design;
         /**
-         * @param {...ContentElementGroup} contentElementGroups
+         * Your design's content element groups.
+         *
+         * @see {@link withRawContentElementGroups} to set a raw value
+         * @param {...ContentElementGroup} contentElementGroups - The content element groups.
          * @return {Design}
          */
         withContentElementGroups(...contentElementGroups: ContentElementGroup[]): Design;
         /**
-         * @param {...{}} contentElementGroups
+         * Set the content element groups of your design as raw object.
+         *
+         * @example
+         * .withRawContentElementGroups(
+         *   {
+         *     groupId: 'content',
+         *     label: 'Content',
+         *     contentElements: []
+         *   },
+         *   {
+         *     groupId: 'advanced',
+         *     label: 'Advanced',
+         *     contentElements: []
+         *   }
+         * )
+         * @see {@link withContentElementGroups}
+         * @param {...{}} contentElementGroups - The content element groups.
          * @return {Design}
          */
         withRawContentElementGroups(...contentElementGroups: {}[]): Design;
         /**
-         * @param {...Style} styleConfigs
+         * The style configurations of your design.
+         *
+         * @see {@link withRawStyleConfigs} to set a raw value
+         * @param {...Style} styleConfigs - The style configurations.
          * @return {Design}
          */
         withStyleConfigs(...styleConfigs: Style[]): Design;
         /**
-         * @param {{}} styleConfigs
+         * Set the style configurations of your design as raw object.
+         *
+         * @example
+         * .withRawStyleConfigs({
+         *   'background-color': {
+         *     label: 'Background Color',
+         *     cssClasses: [
+         *       { cssClass: 'black-background', label: 'Black' },
+         *       { cssClass: 'blue-background', label: 'Blue' }
+         *     ]
+         *   },
+         *   'text-color': {
+         *     label: 'Text Color',
+         *     cssClasses: [
+         *       { cssClass: 'black-text', label: 'Black' },
+         *       { cssClass: 'blue-text', label: 'Blue' }
+         *     ]
+         *   }
+         * })
+         * @see {@link withStyleConfigs}
+         * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
          * @return {Design}
          */
         withRawStyleConfigs(styleConfigs: {}): Design;
         /**
+         * The HTML editor configurations of your design.
+         *
+         * @see {@link withRawHtmlEditorConfigs} to set a raw value
          * @param {...HtmlEditorConfig} htmlEditorConfigs
          * @return {Design}
          */
         withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig[]): Design;
         /**
-         * @param {{}} htmlEditorConfigs
+         * Set the HTML editor configurations as raw object.
+         *
+         * @example
+         * .withRawHtmlEditorConfigs({
+         *   minimal: {
+         *     features: ['italic','bold','underline','strikeThrough']
+         *   }
+         * })
+         * @see {@link withHtmlEditorConfigs}
+         * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
          * @return {Design}
          */
         withRawHtmlEditorConfigs(htmlEditorConfigs: {}): Design;
         /**
-         * @param {Website} website
+         * The website configuration of your design.
+         *
+         * @see {@link withRawWebsite} to set a raw value
+         * @param {Website} website - The website object.
          * @return {Design}
-         * @since 1.3
+         * @since BSI CX 1.3
          */
         withWebsite(website: Website): Design;
         /**
-         * @param {{}} website
+         * Set the raw website object of your design.
+         *
+         * @example
+         * .withRawWebsite({
+         *   maxNavigationLevel: 2,
+         *   includes: {
+         *     __page__: {
+         *       editable: true,
+         *       file: require('./includes/page.hbs'),
+         *       name: 'Template for content pages'
+         *     },
+         *     footer: {
+         *       editable: true,
+         *       file: require('./includes/footer.html'),
+         *       name: 'Footer'
+         *     }
+         *   }
+         * })
+         * @param {{}} website - The raw <code>website</code> object.
          * @return {Design}
-         * @since 1.3
+         * @since BSI CX 1.3
          */
         withRawWebsite(website: {}): Design;
         /**
+         * Configure you design's translation support.
+         *
+         * @see {@link withRawNLS} to set a raw value
          * @param {...NLS} nls
          * @return {Design}
          */
         withNLS(...nls: NLS[]): Design;
         /**
-         * @param {{}} nls
+         * Set the raw value of the <code>nls</code> property.
+         *
+         * @example
+         * .withRawNLS({
+         *   action: { '*': 'action', de: 'Aktion' },
+         *   name: { '*': 'name', de: 'Name' }
+         * })
+         * @see {@link withNLS}
+         * @param {{}} nls - The raw value.
          * @return {Design}
          */
         withRawNLS(nls: {}): Design;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @example
+         * let design1 = new Design().withName('my first design');
+         * let design2 = design1.clone().withName('my second design');
+         * design1 === design2 // false
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @return {Design}
          */
         clone(shallow?: boolean): Design;
@@ -4021,7 +4442,7 @@ declare module "src/design/design" {
 }
 declare module "src/content-element/part/plain-text-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class PlainTextPart extends AbstractPart {
         constructor();
@@ -4035,7 +4456,7 @@ declare module "src/content-element/part/plain-text-part" {
 }
 declare module "src/content-element/part/formatted-text-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormattedTextPart extends AbstractPart {
         constructor();
@@ -4064,7 +4485,7 @@ declare module "src/content-element/part/formatted-text-part" {
 }
 declare module "src/content-element/part/html-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class HtmlPart extends AbstractPart {
         constructor();
@@ -4078,7 +4499,7 @@ declare module "src/content-element/part/html-part" {
 }
 declare module "src/content-element/part/video-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class VideoPart extends AbstractPart {
         constructor();
@@ -4092,7 +4513,7 @@ declare module "src/content-element/part/video-part" {
 }
 declare module "src/content-element/part/image-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class ImagePart extends AbstractPart {
         constructor();
@@ -4106,7 +4527,7 @@ declare module "src/content-element/part/image-part" {
 }
 declare module "src/content-element/part/background-image-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class BackgroundImagePart extends AbstractPart {
         constructor();
@@ -4120,7 +4541,7 @@ declare module "src/content-element/part/background-image-part" {
 }
 declare module "src/content-element/part/table-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class TablePart extends AbstractPart {
         constructor();
@@ -4134,7 +4555,7 @@ declare module "src/content-element/part/table-part" {
 }
 declare module "src/content-element/part/iterator-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class IteratorPart extends AbstractPart {
         constructor();
@@ -4148,7 +4569,7 @@ declare module "src/content-element/part/iterator-part" {
 }
 declare module "src/content-element/part/news-snippets-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class NewsSnippetsPart extends AbstractPart {
         constructor();
@@ -4162,7 +4583,7 @@ declare module "src/content-element/part/news-snippets-part" {
 }
 declare module "src/content-element/part/form-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormPart extends AbstractPart {
         constructor();
@@ -4176,7 +4597,7 @@ declare module "src/content-element/part/form-part" {
 }
 declare module "src/content-element/part/form-field-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormFieldPart extends AbstractPart {
         constructor();
@@ -4190,7 +4611,7 @@ declare module "src/content-element/part/form-field-part" {
 }
 declare module "src/content-element/part/form-checkbox-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormCheckboxPart extends AbstractPart {
         constructor();
@@ -4204,7 +4625,7 @@ declare module "src/content-element/part/form-checkbox-part" {
 }
 declare module "src/content-element/part/form-textarea-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormTextareaPart extends AbstractPart {
         constructor();
@@ -4218,7 +4639,7 @@ declare module "src/content-element/part/form-textarea-part" {
 }
 declare module "src/content-element/part/form-select-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormSelectPart extends AbstractPart {
         constructor();
@@ -4232,7 +4653,7 @@ declare module "src/content-element/part/form-select-part" {
 }
 declare module "src/content-element/part/form-radio-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class FormRadioPart extends AbstractPart {
         constructor();
@@ -4246,7 +4667,7 @@ declare module "src/content-element/part/form-radio-part" {
 }
 declare module "src/content-element/part/link-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class LinkPart extends AbstractPart {
         constructor();
@@ -4260,7 +4681,7 @@ declare module "src/content-element/part/link-part" {
 }
 declare module "src/content-element/part/social-follow-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class SocialFollowPart extends AbstractPart {
         constructor();
@@ -4274,7 +4695,7 @@ declare module "src/content-element/part/social-follow-part" {
 }
 declare module "src/content-element/part/social-share-part" {
     /**
-     * @since 1.0
+     * @since Studio 1.0
      */
     export default class SocialSharePart extends AbstractPart {
         constructor();
@@ -4302,7 +4723,7 @@ declare module "src/content-element/part/url-provider-part" {
 }
 declare module "src/website/page-include" {
     /**
-     * @since 1.3
+     * @since BSI CX 1.3
      */
     export default class PageInclude extends AbstractInclude {
         constructor();
@@ -4316,7 +4737,7 @@ declare module "src/website/page-include" {
 }
 declare module "src/website/include" {
     /**
-     * @since 1.3
+     * @since BSI CX 1.3
      */
     export default class Include extends AbstractInclude {
         constructor();

@@ -18,7 +18,7 @@ function strToPromise(resolve) {
  * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
  * @param {boolean} inline
- * @returns {Promise<string>}
+ * @return {Promise<string>}
  */
 function bsiCxJsModuleImport(template, config, inline) {
   let templatePath = template.source.getResolvedName();

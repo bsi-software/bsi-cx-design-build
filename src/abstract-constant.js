@@ -20,7 +20,7 @@ export default class AbstractConstant {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   get value() {
     return this._value;

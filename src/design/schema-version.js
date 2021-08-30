@@ -4,11 +4,17 @@ export class SchemaVersion extends AbstractConstant {
 }
 
 /**
+ * Use this in website templates for BSI CX 1.3.
+ *
+ * @see {@link Design#withSchemaVersion}
  * @type {SchemaVersion}
- * @since 1.3
+ * @since BSI CX 1.3
  */
 export const V_1_0 = new SchemaVersion('1.0');
 /**
+ * Use this in all templates for BSI CX 22.0.
+ *
+ * @see {@link Design#withSchemaVersion}
  * @type {SchemaVersion}
  * @since 22.0
  */

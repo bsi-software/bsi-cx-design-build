@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build config option for static assets folder
 - Build config option for additional Webpack rules
 - Build config option for additional Webpack plugins
+- JSDoc strings for `BuildConfig` and `ModuleConfig`
 
 ## [1.0.0-rc.13] - 28.08.2021
 ### Added
