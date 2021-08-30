@@ -85,11 +85,13 @@ export default class BuildConfigValidator {
     this._validateProperty('devServerPort', Number);
     this._validateProperty('hashZipFiles', Boolean);
     this._validateProperty('modulesRootPath', String);
-    this._validateProperty('modules', Array, false);
+    this._validateProperty('modules', Array);
     this._validateProperty('additionalFilesToCopy', Array);
     this._validateProperty('sourceMapEnabled', Boolean);
     this._validateProperty('staticFileFolderPath', String);
     this._validateProperty('copyAssetsFolderPath', String);
+    this._validateProperty('webpackPlugins', Array);
+    this._validateProperty('webpackRules', Array);
   }
 
   /**

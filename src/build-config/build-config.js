@@ -87,6 +87,16 @@ export default class BuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {{}[]}
+   * @private
+   */
+  _webpackRules = [];
+  /**
+   * @type {Object[]}
+   * @private
+   */
+  _webpackPlugins = [];
 
   /**
    * @returns {string}
@@ -191,6 +201,20 @@ export default class BuildConfig {
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
+  }
+
+  /**
+   * @return {{}[]}
+   */
+  get webpackRules() {
+    return this._webpackRules;
+  }
+
+  /**
+   * @return {Object[]}
+   */
+  get webpackPlugins() {
+    return this._webpackPlugins;
   }
 
   /**
@@ -365,6 +389,30 @@ export default class BuildConfig {
    */
   withCopyAssetsFolderPath(copyAssetsFolderPath) {
     this._copyAssetsFolderPath = copyAssetsFolderPath;
+    return this;
+  }
+
+  /**
+   * Configure additional rules for the Webpack configuration. Be aware, that this can clash with the existing rules.
+   *
+   * @see {@link https://webpack.js.org/configuration/module/#rule}
+   * @param {...{}} rules
+   * @return {BuildConfig}
+   */
+  withWebpackRules(...rules) {
+    this._webpackRules = rules;
+    return this;
+  }
+
+  /**
+   * Configure additional plugins for the Webpack configuration. Be aware, that this can clash with the existing plugins.
+   *
+   * @see {@link https://webpack.js.org/configuration/plugins/}
+   * @param {...Object} plugins
+   * @return {BuildConfig}
+   */
+  withWebpackPlugins(...plugins) {
+    this._webpackPlugins = plugins;
     return this;
   }
 

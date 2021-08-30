@@ -79,6 +79,16 @@ export default class ValidatedBuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {Object[]}
+   * @private
+   */
+  _webpackPlugins = undefined;
+  /**
+   * @type {{}[]}
+   * @private
+   */
+  _webpackRules = undefined;
 
   /**
    * @returns {string}
@@ -183,5 +193,19 @@ export default class ValidatedBuildConfig {
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
+  }
+
+  /**
+   * @return {Object[]}
+   */
+  get webpackPlugins() {
+    return this._webpackPlugins;
+  }
+
+  /**
+   * @return {{}[]}
+   */
+  get webpackRules() {
+    return this._webpackRules;
   }
 }

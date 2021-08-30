@@ -91,4 +91,16 @@ export default class BuildConfigInterface {
    */
   get copyAssetsFolderPath() {
   }
+
+  /**
+   * @return {{}[]}
+   */
+  get webpackRules() {
+  }
+
+  /**
+   * @return {Object[]}
+   */
+  get webpackPlugins() {
+  }
 }

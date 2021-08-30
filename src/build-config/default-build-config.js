@@ -64,4 +64,12 @@ export default class DefaultBuildConfig {
   get version() {
     return '1.0.0';
   }
+
+  get webpackPlugins() {
+    return [];
+  }
+
+  get webpackRules() {
+    return [];
+  }
 }

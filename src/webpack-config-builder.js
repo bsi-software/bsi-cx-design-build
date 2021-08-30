@@ -82,7 +82,8 @@ export default class WebpackConfigBuilder {
           ...this._getStyleRulesConfig(),
           ...this._getStaticAssetsRuleConfig(),
           ...this._getStaticJavaScriptFileRuleConfig(),
-          ...this._getRegularJavaScriptFileRuleConfig()
+          ...this._getRegularJavaScriptFileRuleConfig(),
+          ...this._getAdditionalRules()
         ]
       },
       plugins: [
@@ -92,6 +93,7 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
+        ...this._getAdditionalPlugins()
       ],
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
@@ -420,6 +422,14 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * @return {{}[]}
+   * @private
+   */
+  _getAdditionalRules() {
+    return this.config.webpackRules;
+  }
+
+  /**
    * @returns {string}
    */
   _getTemplateLoader() {
@@ -549,6 +559,14 @@ export default class WebpackConfigBuilder {
     );
 
     return plugins;
+  }
+
+  /**
+   * @return {Object[]}
+   * @private
+   */
+  _getAdditionalPlugins() {
+    return this.config.webpackPlugins;
   }
 
   /**
