@@ -9,8 +9,14 @@ import ModuleConfig from './module-config';
 import ValidatedBuildConfig from './validated-build-config';
 import {Version} from '../version';
 import {DesignType} from '../design-type';
+import DefaultBuildConfig from './default-build-config';
 
 export default class BuildConfigValidator {
+  /**
+   * @type {DefaultBuildConfig}
+   * @private
+   */
+  _defaultBuildConfig = new DefaultBuildConfig();
   /**
    * @type {BuildConfig}
    * @private
@@ -27,6 +33,11 @@ export default class BuildConfigValidator {
    */
   constructor(buildConfig) {
     /**
+     * @type {DefaultBuildConfig}
+     * @private
+     */
+    this._defaultBuildConfig = new DefaultBuildConfig();
+    /**
      * @type {BuildConfig}
      * @private
      */
@@ -36,6 +47,13 @@ export default class BuildConfigValidator {
      * @private
      */
     this._validatedConfig = new ValidatedBuildConfig();
+  }
+
+  /**
+   * @return {DefaultBuildConfig}
+   */
+  get defaultBuildConfig() {
+    return this._defaultBuildConfig;
   }
 
   /**
@@ -57,29 +75,32 @@ export default class BuildConfigValidator {
    */
   _validate() {
     // invocation order is relevant
-    this._validateProperty('name', String, true);
-    this._validateProperty('version', String, true);
-    this._validateProperty('targetVersion', Version, true);
-    this._validateProperty('designType', DesignType, true);
-    this._validateProperty('rootPath', String, true);
-    this._validateProperty('outputPath', String, false);
-    this._validateProperty('propertiesFilePath', String, false);
-    this._validateProperty('devServerPort', Number, false);
-    this._validateProperty('hashZipFiles', Boolean, false);
-    this._validateProperty('modulesRootPath', String, false);
+    this._validateProperty('name', String);
+    this._validateProperty('version', String);
+    this._validateProperty('targetVersion', Version);
+    this._validateProperty('designType', DesignType);
+    this._validateProperty('rootPath', String);
+    this._validateProperty('outputPath', String);
+    this._validateProperty('propertiesFilePath', String);
+    this._validateProperty('devServerPort', Number);
+    this._validateProperty('hashZipFiles', Boolean);
+    this._validateProperty('modulesRootPath', String);
     this._validateProperty('modules', Array, false);
-    this._validateProperty('additionalFilesToCopy', Array, false);
-    this._validateProperty('sourceMapEnabled', Boolean, false);
+    this._validateProperty('additionalFilesToCopy', Array);
+    this._validateProperty('sourceMapEnabled', Boolean);
+    this._validateProperty('staticFileFolderPath', String);
+    this._validateProperty('copyAssetsFolderPath', String);
   }
 
   /**
    * @param {string} name
    * @param {object} type
-   * @param {boolean} required
    */
-  _validateProperty(name, type, required) {
+  _validateProperty(name, type) {
     let property = '_' + name;
     let value = this.buildConfig[name];
+    let defaultValue = this.defaultBuildConfig[name];
+    let required = defaultValue === undefined;
 
     if (value !== undefined && !value instanceof type) {
       throw new ValidationError(`${name} must be ${type.constructor.name}`);
@@ -87,6 +108,10 @@ export default class BuildConfigValidator {
 
     if (required && !value) {
       throw new ValidationError(`${name} is required and can not be empty`);
+    }
+
+    if (value === undefined) {
+      value = defaultValue;
     }
 
     let validatedValue = value;
@@ -156,7 +181,7 @@ export default class BuildConfigValidator {
    * @private
    */
   _validateOutputPath(outputPath, property) {
-    let defaultOutputPath = path.resolve(process.cwd(), 'dist', this.validatedConfig.name);
+    let defaultOutputPath = path.resolve(process.cwd(), this._defaultBuildConfig.outputPath, this.validatedConfig.name);
     let validatedPath = outputPath || defaultOutputPath;
 
     return getAbsolutePath(validatedPath);
@@ -191,9 +216,9 @@ export default class BuildConfigValidator {
    * @private
    */
   _validateModulesRootPath(modulesRootPath, property) {
-    let validatedPath = getAbsolutePath(modulesRootPath || 'modules', this.validatedConfig.rootPath);
+    let validatedPath = getAbsolutePath(modulesRootPath, this.validatedConfig.rootPath);
 
-    if (this._buildConfig.modules.length === 0) {
+    if (this._buildConfig.modulesRootPath === undefined && this._buildConfig.modules.length === 0) {
       return validatedPath;
     }
 
@@ -248,6 +273,49 @@ export default class BuildConfigValidator {
     }
 
     return validatedModules;
+  }
+
+  /**
+   * @param {string} staticFileFolderPath
+   * @param {string} property
+   * @private
+   */
+  _validateStaticFileFolderPath(staticFileFolderPath, property) {
+    return this._validateRelativeOrAbsoluteFolderPath(this._buildConfig.staticFileFolderPath, staticFileFolderPath, property);
+  }
+
+  /**
+   * @param {string} copyAssetsFolderPath
+   * @param {string} property
+   * @private
+   */
+  _validateCopyAssetsFolderPath(copyAssetsFolderPath, property) {
+    return this._validateRelativeOrAbsoluteFolderPath(this._buildConfig.copyAssetsFolderPath, copyAssetsFolderPath, property);
+  }
+
+  /**
+   * @param {string|undefined} originalPath
+   * @param {string} configuredPath
+   * @param {string} property
+   * @return {string}
+   * @private
+   */
+  _validateRelativeOrAbsoluteFolderPath(originalPath, configuredPath, property) {
+    let validatedPath = getAbsolutePath(configuredPath, this.validatedConfig.rootPath);
+
+    if (originalPath === undefined) {
+      return validatedPath;
+    }
+
+    if (!fs.existsSync(validatedPath)) {
+      throw new ValidationError(`The configuration for ${property} points to a unknown location: ${validatedPath}`);
+    }
+
+    if (!fs.statSync(validatedPath).isDirectory()) {
+      throw new ValidationError(`The configuration for ${property} should point to a directory: ${validatedPath}`);
+    }
+
+    return validatedPath;
   }
 
   /**

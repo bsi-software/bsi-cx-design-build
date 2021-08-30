@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for inline assets with data-uri
 - Boolean support for CSS properties
 - URL support for CSS properties
+- Build config option for copy assets folder
+- Build config option for static assets folder
 
 ## [1.0.0-rc.13] - 28.08.2021
 ### Added

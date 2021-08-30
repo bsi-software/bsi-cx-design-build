@@ -3,34 +3,6 @@ import ValidatedBuildConfig from './build-config/validated-build-config';
 import Constant from './constant';
 import {WEBSITE} from './design-type';
 
-
-export class StaticJavaScriptCondition {
-  /**
-   * @type {RegExp}
-   */
-  static FILE_EXTENSION = /\.js/i;
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static isInsideStaticFolder(root, file) {
-    let staticFilePath = path.resolve(root, 'static') + path.sep;
-    return file.startsWith(staticFilePath);
-  }
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static test(root, file) {
-    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
-      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
-  }
-}
-
 /**
  *
  * @param {string} name
@@ -75,7 +47,7 @@ export function toString(obj) {
 }
 
 /**
- * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+ * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
  * @param {string} input
  * @return {string}
  */
@@ -124,4 +96,12 @@ export function findStringSimilarities(str1, str2) {
   }
 
   return similarPart;
+}
+
+/**
+ * @param {string} possibleWin32Path
+ * @return {string}
+ */
+export function toPosixPath(possibleWin32Path) {
+  return possibleWin32Path.replace(/\\/g, path.posix.sep);
 }

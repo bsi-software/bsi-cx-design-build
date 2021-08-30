@@ -287,6 +287,14 @@ declare module "src/build-config/build-config-interface" {
          * @returns {boolean}
          */
         get sourceMapEnabled(): boolean;
+        /**
+         * @return {string}
+         */
+        get staticFileFolderPath(): string;
+        /**
+         * @return {string}
+         */
+        get copyAssetsFolderPath(): string;
     }
 }
 declare module "src/build-config/validated-build-config" {
@@ -360,6 +368,16 @@ declare module "src/build-config/validated-build-config" {
          */
         private _sourceMapEnabled;
         /**
+         * @type {string}
+         * @private
+         */
+        private _staticFileFolderPath;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _copyAssetsFolderPath;
+        /**
          * @returns {string}
          */
         get name(): string;
@@ -411,6 +429,14 @@ declare module "src/build-config/validated-build-config" {
          * @returns {boolean}
          */
         get sourceMapEnabled(): boolean;
+        /**
+         * @return {string}
+         */
+        get staticFileFolderPath(): string;
+        /**
+         * @return {string}
+         */
+        get copyAssetsFolderPath(): string;
     }
     import BuildConfigInterface from "src/build-config/build-config-interface";
 }
@@ -473,7 +499,7 @@ declare module "src/utility" {
      */
     export function toString(obj: any): string;
     /**
-     * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+     * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
      * @param {string} input
      * @return {string}
      */
@@ -494,25 +520,34 @@ declare module "src/utility" {
      * @param {string} str2
      */
     export function findStringSimilarities(str1: string, str2: string): string;
-    export class StaticJavaScriptCondition {
-        /**
-         * @type {RegExp}
-         */
-        static FILE_EXTENSION: RegExp;
-        /**
-         * @param {string} root
-         * @param {string} file
-         * @returns {boolean}
-         */
-        static isInsideStaticFolder(root: string, file: string): boolean;
-        /**
-         * @param {string} root
-         * @param {string} file
-         * @returns {boolean}
-         */
-        static test(root: string, file: string): boolean;
-    }
+    /**
+     * @param {string} possibleWin32Path
+     * @return {string}
+     */
+    export function toPosixPath(possibleWin32Path: string): string;
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
+}
+declare module "src/build-config/default-build-config" {
+    /**
+     * @implements {BuildConfigInterface}
+     */
+    export default class DefaultBuildConfig implements BuildConfigInterface {
+        get additionalFilesToCopy(): any[];
+        get copyAssetsFolderPath(): string;
+        get designType(): import("src/design-type").DesignType;
+        get devServerPort(): number;
+        get hashZipFiles(): boolean;
+        get modules(): any[];
+        get modulesRootPath(): string;
+        get name(): any;
+        get outputPath(): string;
+        get propertiesFilePath(): any;
+        get rootPath(): any;
+        get sourceMapEnabled(): boolean;
+        get staticFileFolderPath(): string;
+        get targetVersion(): import("src/version").Version;
+        get version(): string;
+    }
 }
 declare module "src/build-config/build-config-validator" {
     export default class BuildConfigValidator {
@@ -526,6 +561,11 @@ declare module "src/build-config/build-config-validator" {
          */
         constructor(buildConfig: BuildConfig);
         /**
+         * @type {DefaultBuildConfig}
+         * @private
+         */
+        private _defaultBuildConfig;
+        /**
          * @type {BuildConfig}
          * @private
          */
@@ -535,6 +575,10 @@ declare module "src/build-config/build-config-validator" {
          * @private
          */
         private _validatedConfig;
+        /**
+         * @return {DefaultBuildConfig}
+         */
+        get defaultBuildConfig(): DefaultBuildConfig;
         /**
          * @return {BuildConfig}
          */
@@ -550,9 +594,8 @@ declare module "src/build-config/build-config-validator" {
         /**
          * @param {string} name
          * @param {object} type
-         * @param {boolean} required
          */
-        _validateProperty(name: string, type: object, required: boolean): void;
+        _validateProperty(name: string, type: object): void;
         /**
          * @param {string} name
          * @param {string} property
@@ -598,7 +641,28 @@ declare module "src/build-config/build-config-validator" {
          * @private
          */
         private _validateModules;
+        /**
+         * @param {string} staticFileFolderPath
+         * @param {string} property
+         * @private
+         */
+        private _validateStaticFileFolderPath;
+        /**
+         * @param {string} copyAssetsFolderPath
+         * @param {string} property
+         * @private
+         */
+        private _validateCopyAssetsFolderPath;
+        /**
+         * @param {string|undefined} originalPath
+         * @param {string} configuredPath
+         * @param {string} property
+         * @return {string}
+         * @private
+         */
+        private _validateRelativeOrAbsoluteFolderPath;
     }
+    import DefaultBuildConfig from "src/build-config/default-build-config";
     import BuildConfig from "src/build-config/build-config";
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
@@ -675,6 +739,16 @@ declare module "src/build-config/build-config" {
          */
         private _sourceMapEnabled;
         /**
+         * @type {string}
+         * @private
+         */
+        private _staticFileFolderPath;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _copyAssetsFolderPath;
+        /**
          * @returns {string}
          */
         get name(): string;
@@ -726,6 +800,14 @@ declare module "src/build-config/build-config" {
          * @returns {boolean}
          */
         get sourceMapEnabled(): boolean;
+        /**
+         * @return {string}
+         */
+        get staticFileFolderPath(): string;
+        /**
+         * @return {string}
+         */
+        get copyAssetsFolderPath(): string;
         /**
          * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
          *
@@ -810,17 +892,11 @@ declare module "src/build-config/build-config" {
         /**
          * Add additional files to copy to the output folder.
          *
-         * @param {[{}]} additionalFilesToCopy
+         * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
+         * @param {...{}} additionalFilesToCopy
          * @returns {BuildConfig}
          */
-        withAdditionalFilesToCopy(additionalFilesToCopy: [{}]): BuildConfig;
-        /**
-         * Add a single configuration for additional files to copy to the output folder.
-         *
-         * @param {{}} additionalFileToCopy
-         * @returns {BuildConfig}
-         */
-        withAdditionalFileToCopy(additionalFileToCopy: {}): BuildConfig;
+        withAdditionalFilesToCopy(...additionalFilesToCopy: {}[]): BuildConfig;
         /**
          * Enable or disable source maps.
          *
@@ -829,13 +905,32 @@ declare module "src/build-config/build-config" {
          */
         withSourceMapEnabled(sourceMapEnabled: boolean): BuildConfig;
         /**
+         * Set the folder for static assets (e.g. images or simple JavaScript files).
+         * Can either be an absolute or relative path. Relative paths will be normalized in relation to the template root folder.
+         * Use {@link withRootPath} to set the template root folder.
+         *
+         * @param {string} staticFileFolderPath
+         * @return {BuildConfig}
+         */
+        withStaticFileFolderPath(staticFileFolderPath: string): BuildConfig;
+        /**
+         * Set the root folder to copy additional assets from. Use {@link withAdditionalFilesToCopy} to configure additional
+         * assets for your bundle. This can either be an absolute or relative path.
+         * Relative paths will be normalized in relation to the template root folder.
+         * Use {@link withRootPath} to set the template root folder.
+         *
+         * @param {string} copyAssetsFolderPath
+         * @return {BuildConfig}
+         */
+        withCopyAssetsFolderPath(copyAssetsFolderPath: string): BuildConfig;
+        /**
          * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
          * A shallow clone will be created by default. This means nested objects will still reference the same origin.
          *
-         * @param {boolean|undefined} [shallow=true]
+         * @param {boolean} [shallow=true]
          * @return {BuildConfig}
          */
-        clone(shallow?: boolean | undefined): BuildConfig;
+        clone(shallow?: boolean): BuildConfig;
         /**
          * @return {ValidatedBuildConfig}
          */
@@ -2047,6 +2142,10 @@ declare module "src/webpack-config-builder" {
          */
         static DESIGN_LAYER: string;
         /**
+         * @type {RegExp}
+         */
+        static STATIC_JS_FILE_EXTENSION: RegExp;
+        /**
          * Build the configuration for webpack from {@link BuildConfig} objects.
          *
          * @param  {...BuildConfig} configs
@@ -2199,6 +2298,11 @@ declare module "src/webpack-config-builder" {
          * @returns {[{}]}
          */
         _getStaticJavaScriptFileRuleConfig(): [{}];
+        /**
+         * @param {string} fileToCheck
+         * @return {boolean}
+         */
+        _isStaticJavaScriptFile(fileToCheck: string): boolean;
         /**
          * Rule for regular Java Script file handling.
          *

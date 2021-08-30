@@ -12,7 +12,7 @@ import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugi
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
 import File from './file';
-import {buildPublicPath, findStringSimilarities, getZipArchiveName, StaticJavaScriptCondition} from './utility';
+import {buildPublicPath, findStringSimilarities, getZipArchiveName, toPosixPath} from './utility';
 import BuildConfig from './build-config/build-config';
 import ValidatedBuildConfig from './build-config/validated-build-config';
 import TwigContext from './twig-context';
@@ -27,7 +27,10 @@ export default class WebpackConfigBuilder {
    * @type {string}
    */
   static DESIGN_LAYER = 'design';
-
+  /**
+   * @type {RegExp}
+   */
+  static STATIC_JS_FILE_EXTENSION = /\.js/i;
   /**
    * @type {BuildContext}
    * @private
@@ -373,13 +376,24 @@ export default class WebpackConfigBuilder {
   _getStaticJavaScriptFileRuleConfig() {
     return [
       {
-        resource: (file) => StaticJavaScriptCondition.test(this.config.rootPath, file),
+        resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
           filename: 'static/[name]-[contenthash][ext]'
         }
       }
     ];
+  }
+
+  /**
+   * @param {string} fileToCheck
+   * @return {boolean}
+   */
+  _isStaticJavaScriptFile(fileToCheck) {
+    let staticFilePath = path.resolve(this.config.staticFileFolderPath) + path.sep;
+    let isInsideStaticFolder = fileToCheck.startsWith(staticFilePath);
+
+    return isInsideStaticFolder && WebpackConfigBuilder.STATIC_JS_FILE_EXTENSION.test(fileToCheck);
   }
 
   /**
@@ -463,11 +477,13 @@ export default class WebpackConfigBuilder {
    * @returns {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
+    let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
+
     return [
       new CopyPlugin({
         patterns: [
           {
-            from: 'assets/**/*',
+            from: `${copyAssetsFolderPath}/**/*`,
             globOptions: {
               dot: true,
               ignore: ['**/.gitkeep', '**/.gitignore']

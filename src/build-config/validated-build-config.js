@@ -69,6 +69,16 @@ export default class ValidatedBuildConfig {
    * @private
    */
   _sourceMapEnabled = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _staticFileFolderPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _copyAssetsFolderPath = undefined;
 
   /**
    * @returns {string}
@@ -159,5 +169,19 @@ export default class ValidatedBuildConfig {
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
+  }
+
+  /**
+   * @return {string}
+   */
+  get staticFileFolderPath() {
+    return this._staticFileFolderPath;
+  }
+
+  /**
+   * @return {string}
+   */
+  get copyAssetsFolderPath() {
+    return this._copyAssetsFolderPath;
   }
 }

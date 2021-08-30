@@ -8,7 +8,7 @@ import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
 import ValidatedBuildConfig from './build-config/validated-build-config';
 import handlebarsHelpers from './handlebars-helpers';
 import Constant from './constant';
-import {buildPublicPath, escapeRegex, toString} from './utility';
+import {buildPublicPath, escapeRegex, toPosixPath, toString} from './utility';
 import DesignJsonProperty from './design-json-property';
 import BuilderObjectNormalizer from './builder-object-normalizer';
 import File from './file';
@@ -500,7 +500,7 @@ class _BsiCxWebpackPlugin {
 
   _getContextRelativePath(absolutePath) {
     let contextPath = this._compiler.context;
-    let relativePath = path.relative(contextPath, absolutePath).replace(/\\/g, path.posix.sep);
+    let relativePath = toPosixPath(path.relative(contextPath, absolutePath));
     return '.' + path.posix.sep + relativePath;
   }
 

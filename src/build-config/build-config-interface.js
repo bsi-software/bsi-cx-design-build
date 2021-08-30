@@ -79,4 +79,16 @@ export default class BuildConfigInterface {
    */
   get sourceMapEnabled() {
   }
+
+  /**
+   * @return {string}
+   */
+  get staticFileFolderPath() {
+  }
+
+  /**
+   * @return {string}
+   */
+  get copyAssetsFolderPath() {
+  }
 }

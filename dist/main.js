@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 220:
+/***/ 114:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -516,34 +516,6 @@ class Constant {
 
 
 
-
-class StaticJavaScriptCondition {
-  /**
-   * @type {RegExp}
-   */
-  static FILE_EXTENSION = /\.js/i;
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static isInsideStaticFolder(root, file) {
-    let staticFilePath = external_path_default().resolve(root, 'static') + (external_path_default()).sep;
-    return file.startsWith(staticFilePath);
-  }
-
-  /**
-   * @param {string} root
-   * @param {string} file
-   * @returns {boolean}
-   */
-  static test(root, file) {
-    return StaticJavaScriptCondition.isInsideStaticFolder(root, file)
-      && StaticJavaScriptCondition.FILE_EXTENSION.test(file);
-  }
-}
-
 /**
  *
  * @param {string} name
@@ -588,7 +560,7 @@ function utility_toString(obj) {
 }
 
 /**
- * @see https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711
+ * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
  * @param {string} input
  * @return {string}
  */
@@ -637,6 +609,14 @@ function findStringSimilarities(str1, str2) {
   }
 
   return similarPart;
+}
+
+/**
+ * @param {string} possibleWin32Path
+ * @return {string}
+ */
+function toPosixPath(possibleWin32Path) {
+  return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
 }
 
 ;// CONCATENATED MODULE: external "slugify"
@@ -717,6 +697,16 @@ class ValidatedBuildConfig {
    * @private
    */
   _sourceMapEnabled = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _staticFileFolderPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _copyAssetsFolderPath = undefined;
 
   /**
    * @returns {string}
@@ -808,6 +798,89 @@ class ValidatedBuildConfig {
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
   }
+
+  /**
+   * @return {string}
+   */
+  get staticFileFolderPath() {
+    return this._staticFileFolderPath;
+  }
+
+  /**
+   * @return {string}
+   */
+  get copyAssetsFolderPath() {
+    return this._copyAssetsFolderPath;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
+
+
+
+/**
+ * @implements {BuildConfigInterface}
+ */
+class DefaultBuildConfig {
+  get additionalFilesToCopy() {
+    return [];
+  }
+
+  get copyAssetsFolderPath() {
+    return 'assets';
+  }
+
+  get designType() {
+    return LANDINGPAGE;
+  }
+
+  get devServerPort() {
+    return 9000;
+  }
+
+  get hashZipFiles() {
+    return true;
+  }
+
+  get modules() {
+    return [];
+  }
+
+  get modulesRootPath() {
+    return 'modules';
+  }
+
+  get name() {
+    return undefined;
+  }
+
+  get outputPath() {
+    return 'dist';
+  }
+
+  get propertiesFilePath() {
+    return undefined;
+  }
+
+  get rootPath() {
+    return undefined;
+  }
+
+  get sourceMapEnabled() {
+    return false;
+  }
+
+  get staticFileFolderPath() {
+    return 'static';
+  }
+
+  get targetVersion() {
+    return CX_22_0;
+  }
+
+  get version() {
+    return '1.0.0';
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/build-config/build-config-validator.js
@@ -823,7 +896,13 @@ class ValidatedBuildConfig {
 
 
 
+
 class BuildConfigValidator {
+  /**
+   * @type {DefaultBuildConfig}
+   * @private
+   */
+  _defaultBuildConfig = new DefaultBuildConfig();
   /**
    * @type {BuildConfig}
    * @private
@@ -840,6 +919,11 @@ class BuildConfigValidator {
    */
   constructor(buildConfig) {
     /**
+     * @type {DefaultBuildConfig}
+     * @private
+     */
+    this._defaultBuildConfig = new DefaultBuildConfig();
+    /**
      * @type {BuildConfig}
      * @private
      */
@@ -849,6 +933,13 @@ class BuildConfigValidator {
      * @private
      */
     this._validatedConfig = new ValidatedBuildConfig();
+  }
+
+  /**
+   * @return {DefaultBuildConfig}
+   */
+  get defaultBuildConfig() {
+    return this._defaultBuildConfig;
   }
 
   /**
@@ -870,29 +961,32 @@ class BuildConfigValidator {
    */
   _validate() {
     // invocation order is relevant
-    this._validateProperty('name', String, true);
-    this._validateProperty('version', String, true);
-    this._validateProperty('targetVersion', Version, true);
-    this._validateProperty('designType', DesignType, true);
-    this._validateProperty('rootPath', String, true);
-    this._validateProperty('outputPath', String, false);
-    this._validateProperty('propertiesFilePath', String, false);
-    this._validateProperty('devServerPort', Number, false);
-    this._validateProperty('hashZipFiles', Boolean, false);
-    this._validateProperty('modulesRootPath', String, false);
+    this._validateProperty('name', String);
+    this._validateProperty('version', String);
+    this._validateProperty('targetVersion', Version);
+    this._validateProperty('designType', DesignType);
+    this._validateProperty('rootPath', String);
+    this._validateProperty('outputPath', String);
+    this._validateProperty('propertiesFilePath', String);
+    this._validateProperty('devServerPort', Number);
+    this._validateProperty('hashZipFiles', Boolean);
+    this._validateProperty('modulesRootPath', String);
     this._validateProperty('modules', Array, false);
-    this._validateProperty('additionalFilesToCopy', Array, false);
-    this._validateProperty('sourceMapEnabled', Boolean, false);
+    this._validateProperty('additionalFilesToCopy', Array);
+    this._validateProperty('sourceMapEnabled', Boolean);
+    this._validateProperty('staticFileFolderPath', String);
+    this._validateProperty('copyAssetsFolderPath', String);
   }
 
   /**
    * @param {string} name
    * @param {object} type
-   * @param {boolean} required
    */
-  _validateProperty(name, type, required) {
+  _validateProperty(name, type) {
     let property = '_' + name;
     let value = this.buildConfig[name];
+    let defaultValue = this.defaultBuildConfig[name];
+    let required = defaultValue === undefined;
 
     if (value !== undefined && !value instanceof type) {
       throw new ValidationError(`${name} must be ${type.constructor.name}`);
@@ -900,6 +994,10 @@ class BuildConfigValidator {
 
     if (required && !value) {
       throw new ValidationError(`${name} is required and can not be empty`);
+    }
+
+    if (value === undefined) {
+      value = defaultValue;
     }
 
     let validatedValue = value;
@@ -969,7 +1067,7 @@ class BuildConfigValidator {
    * @private
    */
   _validateOutputPath(outputPath, property) {
-    let defaultOutputPath = external_path_default().resolve(process.cwd(), 'dist', this.validatedConfig.name);
+    let defaultOutputPath = external_path_default().resolve(process.cwd(), this._defaultBuildConfig.outputPath, this.validatedConfig.name);
     let validatedPath = outputPath || defaultOutputPath;
 
     return getAbsolutePath(validatedPath);
@@ -1004,9 +1102,9 @@ class BuildConfigValidator {
    * @private
    */
   _validateModulesRootPath(modulesRootPath, property) {
-    let validatedPath = getAbsolutePath(modulesRootPath || 'modules', this.validatedConfig.rootPath);
+    let validatedPath = getAbsolutePath(modulesRootPath, this.validatedConfig.rootPath);
 
-    if (this._buildConfig.modules.length === 0) {
+    if (this._buildConfig.modulesRootPath === undefined && this._buildConfig.modules.length === 0) {
       return validatedPath;
     }
 
@@ -1064,6 +1162,49 @@ class BuildConfigValidator {
   }
 
   /**
+   * @param {string} staticFileFolderPath
+   * @param {string} property
+   * @private
+   */
+  _validateStaticFileFolderPath(staticFileFolderPath, property) {
+    return this._validateRelativeOrAbsoluteFolderPath(this._buildConfig.staticFileFolderPath, staticFileFolderPath, property);
+  }
+
+  /**
+   * @param {string} copyAssetsFolderPath
+   * @param {string} property
+   * @private
+   */
+  _validateCopyAssetsFolderPath(copyAssetsFolderPath, property) {
+    return this._validateRelativeOrAbsoluteFolderPath(this._buildConfig.copyAssetsFolderPath, copyAssetsFolderPath, property);
+  }
+
+  /**
+   * @param {string|undefined} originalPath
+   * @param {string} configuredPath
+   * @param {string} property
+   * @return {string}
+   * @private
+   */
+  _validateRelativeOrAbsoluteFolderPath(originalPath, configuredPath, property) {
+    let validatedPath = getAbsolutePath(configuredPath, this.validatedConfig.rootPath);
+
+    if (originalPath === undefined) {
+      return validatedPath;
+    }
+
+    if (!external_fs_default().existsSync(validatedPath)) {
+      throw new ValidationError(`The configuration for ${property} points to a unknown location: ${validatedPath}`);
+    }
+
+    if (!external_fs_default().statSync(validatedPath).isDirectory()) {
+      throw new ValidationError(`The configuration for ${property} should point to a directory: ${validatedPath}`);
+    }
+
+    return validatedPath;
+  }
+
+  /**
    * @param {BuildConfig} buildConfig
    * @return {ValidatedBuildConfig}
    */
@@ -1100,17 +1241,17 @@ class BuildConfig {
    * @type {string}
    * @private
    */
-  _version = '1.0.0';
+  _version = undefined;
   /**
    * @type {Version}
    * @private
    */
-  _targetVersion = CX_22_0;
+  _targetVersion = undefined;
   /**
    * @type {DesignType}
    * @private
    */
-  _designType = LANDINGPAGE;
+  _designType = undefined;
   /**
    * @type {string}
    * @private
@@ -1130,12 +1271,12 @@ class BuildConfig {
    * @type {number}
    * @private
    */
-  _devServerPort = 9000;
+  _devServerPort = undefined;
   /**
    * @type {boolean}
    * @private
    */
-  _hashZipFiles = true;
+  _hashZipFiles = undefined;
   /**
    * @type {ModuleConfig[]}
    * @private
@@ -1155,7 +1296,17 @@ class BuildConfig {
    * @type {boolean}
    * @private
    */
-  _sourceMapEnabled = true;
+  _sourceMapEnabled = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _staticFileFolderPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _copyAssetsFolderPath = undefined;
 
   /**
    * @returns {string}
@@ -1246,6 +1397,20 @@ class BuildConfig {
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
+  }
+
+  /**
+   * @return {string}
+   */
+  get staticFileFolderPath() {
+    return this._staticFileFolderPath;
+  }
+
+  /**
+   * @return {string}
+   */
+  get copyAssetsFolderPath() {
+    return this._copyAssetsFolderPath;
   }
 
   /**
@@ -1376,22 +1541,12 @@ class BuildConfig {
   /**
    * Add additional files to copy to the output folder.
    *
-   * @param {[{}]} additionalFilesToCopy
+   * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
+   * @param {...{}} additionalFilesToCopy
    * @returns {BuildConfig}
    */
-  withAdditionalFilesToCopy(additionalFilesToCopy) {
+  withAdditionalFilesToCopy(...additionalFilesToCopy) {
     this._additionalFilesToCopy = additionalFilesToCopy;
-    return this;
-  }
-
-  /**
-   * Add a single configuration for additional files to copy to the output folder.
-   *
-   * @param {{}} additionalFileToCopy
-   * @returns {BuildConfig}
-   */
-  withAdditionalFileToCopy(additionalFileToCopy) {
-    this._additionalFilesToCopy.push(additionalFileToCopy);
     return this;
   }
 
@@ -1407,10 +1562,37 @@ class BuildConfig {
   }
 
   /**
+   * Set the folder for static assets (e.g. images or simple JavaScript files).
+   * Can either be an absolute or relative path. Relative paths will be normalized in relation to the template root folder.
+   * Use {@link withRootPath} to set the template root folder.
+   *
+   * @param {string} staticFileFolderPath
+   * @return {BuildConfig}
+   */
+  withStaticFileFolderPath(staticFileFolderPath) {
+    this._staticFileFolderPath = staticFileFolderPath;
+    return this;
+  }
+
+  /**
+   * Set the root folder to copy additional assets from. Use {@link withAdditionalFilesToCopy} to configure additional
+   * assets for your bundle. This can either be an absolute or relative path.
+   * Relative paths will be normalized in relation to the template root folder.
+   * Use {@link withRootPath} to set the template root folder.
+   *
+   * @param {string} copyAssetsFolderPath
+   * @return {BuildConfig}
+   */
+  withCopyAssetsFolderPath(copyAssetsFolderPath) {
+    this._copyAssetsFolderPath = copyAssetsFolderPath;
+    return this;
+  }
+
+  /**
    * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
-   * @param {boolean|undefined} [shallow=true]
+   * @param {boolean} [shallow=true]
    * @return {BuildConfig}
    */
   clone(shallow) {
@@ -2212,7 +2394,7 @@ class _BsiCxWebpackPlugin {
 
   _getContextRelativePath(absolutePath) {
     let contextPath = this._compiler.context;
-    let relativePath = external_path_default().relative(contextPath, absolutePath).replace(/\\/g, (external_path_default()).posix.sep);
+    let relativePath = toPosixPath(external_path_default().relative(contextPath, absolutePath));
     return '.' + (external_path_default()).posix.sep + relativePath;
   }
 
@@ -4591,7 +4773,10 @@ class WebpackConfigBuilder {
    * @type {string}
    */
   static DESIGN_LAYER = 'design';
-
+  /**
+   * @type {RegExp}
+   */
+  static STATIC_JS_FILE_EXTENSION = /\.js/i;
   /**
    * @type {BuildContext}
    * @private
@@ -4937,13 +5122,24 @@ class WebpackConfigBuilder {
   _getStaticJavaScriptFileRuleConfig() {
     return [
       {
-        resource: (file) => StaticJavaScriptCondition.test(this.config.rootPath, file),
+        resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
           filename: 'static/[name]-[contenthash][ext]'
         }
       }
     ];
+  }
+
+  /**
+   * @param {string} fileToCheck
+   * @return {boolean}
+   */
+  _isStaticJavaScriptFile(fileToCheck) {
+    let staticFilePath = external_path_default().resolve(this.config.staticFileFolderPath) + (external_path_default()).sep;
+    let isInsideStaticFolder = fileToCheck.startsWith(staticFilePath);
+
+    return isInsideStaticFolder && WebpackConfigBuilder.STATIC_JS_FILE_EXTENSION.test(fileToCheck);
   }
 
   /**
@@ -5027,11 +5223,13 @@ class WebpackConfigBuilder {
    * @returns {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
+    let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
+
     return [
       new (external_copy_webpack_plugin_default())({
         patterns: [
           {
-            from: 'assets/**/*',
+            from: `${copyAssetsFolderPath}/**/*`,
             globOptions: {
               dot: true,
               ignore: ['**/.gitkeep', '**/.gitignore']
@@ -5388,7 +5586,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[220](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[114](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

@@ -4,6 +4,7 @@ import {TwingFunction, TwingTemplate} from 'twing';
 
 import Constant from './constant';
 import QueryConstant from './query-constant';
+import {toPosixPath} from './utility';
 
 /**
  * @param {string} resolve
@@ -36,7 +37,7 @@ function bsiCxJsModuleImport(template, config, inline) {
 export const bsiCxAsset = new TwingFunction('bsi_cx_asset', (template, assetPath, inline) => {
   let templatePath = template.source.getResolvedName();
   let templateDirPath = path.dirname(templatePath);
-  let absoluteAssetPath = path.resolve(templateDirPath, assetPath).replace(/\\/g, path.posix.sep);
+  let absoluteAssetPath = toPosixPath(path.resolve(templateDirPath, assetPath));
   let assetQuery = !!inline ? QueryConstant.INLINE : '';
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);

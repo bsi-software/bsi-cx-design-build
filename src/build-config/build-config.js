@@ -1,5 +1,5 @@
-import {DesignType, LANDINGPAGE} from '../design-type';
-import {CX_22_0, Version} from '../version';
+import {DesignType} from '../design-type';
+import {Version} from '../version';
 import ObjectCloner from '../object-cloner';
 import ModuleConfig from './module-config';
 import BuildConfigInterface from './build-config-interface';
@@ -21,17 +21,17 @@ export default class BuildConfig {
    * @type {string}
    * @private
    */
-  _version = '1.0.0';
+  _version = undefined;
   /**
    * @type {Version}
    * @private
    */
-  _targetVersion = CX_22_0;
+  _targetVersion = undefined;
   /**
    * @type {DesignType}
    * @private
    */
-  _designType = LANDINGPAGE;
+  _designType = undefined;
   /**
    * @type {string}
    * @private
@@ -51,12 +51,12 @@ export default class BuildConfig {
    * @type {number}
    * @private
    */
-  _devServerPort = 9000;
+  _devServerPort = undefined;
   /**
    * @type {boolean}
    * @private
    */
-  _hashZipFiles = true;
+  _hashZipFiles = undefined;
   /**
    * @type {ModuleConfig[]}
    * @private
@@ -76,7 +76,17 @@ export default class BuildConfig {
    * @type {boolean}
    * @private
    */
-  _sourceMapEnabled = true;
+  _sourceMapEnabled = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _staticFileFolderPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _copyAssetsFolderPath = undefined;
 
   /**
    * @returns {string}
@@ -167,6 +177,20 @@ export default class BuildConfig {
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
+  }
+
+  /**
+   * @return {string}
+   */
+  get staticFileFolderPath() {
+    return this._staticFileFolderPath;
+  }
+
+  /**
+   * @return {string}
+   */
+  get copyAssetsFolderPath() {
+    return this._copyAssetsFolderPath;
   }
 
   /**
@@ -297,22 +321,12 @@ export default class BuildConfig {
   /**
    * Add additional files to copy to the output folder.
    *
-   * @param {[{}]} additionalFilesToCopy
+   * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
+   * @param {...{}} additionalFilesToCopy
    * @returns {BuildConfig}
    */
-  withAdditionalFilesToCopy(additionalFilesToCopy) {
+  withAdditionalFilesToCopy(...additionalFilesToCopy) {
     this._additionalFilesToCopy = additionalFilesToCopy;
-    return this;
-  }
-
-  /**
-   * Add a single configuration for additional files to copy to the output folder.
-   *
-   * @param {{}} additionalFileToCopy
-   * @returns {BuildConfig}
-   */
-  withAdditionalFileToCopy(additionalFileToCopy) {
-    this._additionalFilesToCopy.push(additionalFileToCopy);
     return this;
   }
 
@@ -328,10 +342,37 @@ export default class BuildConfig {
   }
 
   /**
+   * Set the folder for static assets (e.g. images or simple JavaScript files).
+   * Can either be an absolute or relative path. Relative paths will be normalized in relation to the template root folder.
+   * Use {@link withRootPath} to set the template root folder.
+   *
+   * @param {string} staticFileFolderPath
+   * @return {BuildConfig}
+   */
+  withStaticFileFolderPath(staticFileFolderPath) {
+    this._staticFileFolderPath = staticFileFolderPath;
+    return this;
+  }
+
+  /**
+   * Set the root folder to copy additional assets from. Use {@link withAdditionalFilesToCopy} to configure additional
+   * assets for your bundle. This can either be an absolute or relative path.
+   * Relative paths will be normalized in relation to the template root folder.
+   * Use {@link withRootPath} to set the template root folder.
+   *
+   * @param {string} copyAssetsFolderPath
+   * @return {BuildConfig}
+   */
+  withCopyAssetsFolderPath(copyAssetsFolderPath) {
+    this._copyAssetsFolderPath = copyAssetsFolderPath;
+    return this;
+  }
+
+  /**
    * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
-   * @param {boolean|undefined} [shallow=true]
+   * @param {boolean} [shallow=true]
    * @return {BuildConfig}
    */
   clone(shallow) {
