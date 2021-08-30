@@ -2685,46 +2685,70 @@ declare module "src/design/locale" {
     export class Locale extends AbstractConstant {
     }
     /**
+     * This defines the fallback locale to ues.
+     *
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const WILDCARD: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const EN: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const EN_GB: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const EN_US: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const DE: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const DE_DE: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const DE_CH: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const FR: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const FR_CH: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const IT: Locale;
     /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
      * @type {Locale}
      */
     export const IT_CH: Locale;
@@ -2736,6 +2760,7 @@ declare module "src/design/schema-version" {
     /**
      * Use this in website templates for BSI CX 1.3.
      *
+     * @see {@link Design#withSchemaVersion}
      * @type {SchemaVersion}
      * @since BSI CX 1.3
      */
@@ -2743,6 +2768,7 @@ declare module "src/design/schema-version" {
     /**
      * Use this in all templates for BSI CX 22.0.
      *
+     * @see {@link Design#withSchemaVersion}
      * @type {SchemaVersion}
      * @since 22.0
      */
@@ -3231,6 +3257,17 @@ declare module "src/content-element/content-element" {
     import AbstractPart from "src/content-element/part/abstract-part";
 }
 declare module "src/content-element/content-element-group" {
+    /**
+     * This is the builder class to specify content element groups.
+     *
+     * @example
+     * module.exports = new ContentElementGroup()
+     *   .withGroupId('content')
+     *   .withLabel('Content')
+     *   .withContentElements(
+     *     require('./content-elements/content/title'),
+     *     require('./content-elements/content/text')));
+     */
     export default class ContentElementGroup extends AbstractBuilder {
         /**
          * @type {string|undefined}
@@ -3269,6 +3306,9 @@ declare module "src/content-element/content-element-group" {
          */
         get contentElements(): RawValue | [ContentElement];
         /**
+         * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
+         * It is recommended to set the group identifier.
+         *
          * @param {string} groupId
          * @return {ContentElementGroup}
          */
@@ -3553,34 +3593,58 @@ declare module "src/html-editor-config/format" {
     export class Format extends AbstractConstant {
     }
     /**
+     * Allow <code>&lt;p&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const P: Format;
     /**
+     * Allow <code>&lt;h1&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const H1: Format;
     /**
+     * Allow <code>&lt;h2&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const H2: Format;
     /**
+     * Allow <code>&lt;h3&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const H3: Format;
     /**
+     * Allow <code>&lt;h4&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const H4: Format;
     /**
+     * Allow <code>&lt;h5&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const H5: Format;
     /**
+     * Allow <code>&lt;h6&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const H6: Format;
     /**
+     * Allow <code>&lt;pre&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
      * @type {Format}
      */
     export const PRE: Format;
@@ -3590,32 +3654,62 @@ declare module "src/html-editor-config/font-size-unit" {
     export class FontSizeUnit extends AbstractConstant {
     }
     /**
+     * Font sizes as pixel values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
      * @type {FontSizeUnit}
      */
     export const PX: FontSizeUnit;
     /**
+     * Font sizes as em values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
      * @type {FontSizeUnit}
      */
     export const EM: FontSizeUnit;
     /**
+     * Font sizes as rem values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
      * @type {FontSizeUnit}
      */
     export const REM: FontSizeUnit;
     /**
+     * Font sizes as pt values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
      * @type {FontSizeUnit}
      */
     export const PT: FontSizeUnit;
     /**
+     * Font sizes as cm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
      * @type {FontSizeUnit}
      */
     export const CM: FontSizeUnit;
     /**
+     * Font sizes as mm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
      * @type {FontSizeUnit}
      */
     export const MM: FontSizeUnit;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/html-editor-config" {
+    /**
+     * This is the builder class to specify a HTML editor configuration.
+     *
+     * @example
+     * module.exports = new HtmlEditorConfig()
+     *   .withIdentifier('minimal')
+     *   .withRawEnterMode('p')
+     *   .withFeatures(
+     *     Feature.BOLD,
+     *     Feature.ITALIC,
+     *     Feature.UNDERLINE);
+     */
     export default class HtmlEditorConfig extends AbstractBuilder {
         /**
          * @type {string|undefined}
@@ -4076,6 +4170,28 @@ declare module "src/nls/nls" {
     import Translation from "src/nls/translation";
 }
 declare module "src/design/design" {
+    /**
+     * This is the builder class to specify a design.
+     *
+     * @example
+     * module.exports = new Design()
+     *   .withSchemaVersion(SchemaVersion.V_22_0)
+     *   .withTitle('My BSI CX Design')
+     *   .withAuthor('John Doe')
+     *   .withDate('18.8.2021')
+     *   .withPreviewImage(require('./preview.png'))
+     *   .withRawDefaultLocale('en')
+     *   withHtmlEditorConfigs(
+     *     require('./configs/html-editor/full.js'),
+     *     require('./configs/html-editor/minimal.js'))
+     *   .withContentElementGroups(
+     *     new ContentElementGroup()
+     *       .withGroupId('content')
+     *       .withLabel('Content')
+     *       .withContentElements(
+     *         require('./content-elements/content/title'),
+     *         require('./content-elements/content/text')));
+     */
     export default class Design extends AbstractBuilder {
         /**
          * @type {RawValue|SchemaVersion|undefined}

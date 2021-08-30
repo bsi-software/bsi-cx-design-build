@@ -978,46 +978,70 @@ class Locale extends AbstractConstant {
 }
 
 /**
+ * This defines the fallback locale to ues.
+ *
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const WILDCARD = new Locale('*');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const EN = new Locale('en');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const EN_GB = new Locale('en-GB');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const EN_US = new Locale('en-US');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const DE = new Locale('de');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const DE_DE = new Locale('de-DE');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const DE_CH = new Locale('de-CH');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const FR = new Locale('fr');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const FR_CH = new Locale('fr-CH');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const IT = new Locale('it');
 /**
+ * @see {@link Design#withDefaultLocale}
+ * @see {@link Design#withLocales}
  * @type {Locale}
  */
 const IT_CH = new Locale('it-CH');
@@ -1031,6 +1055,7 @@ class SchemaVersion extends AbstractConstant {
 /**
  * Use this in website templates for BSI CX 1.3.
  *
+ * @see {@link Design#withSchemaVersion}
  * @type {SchemaVersion}
  * @since BSI CX 1.3
  */
@@ -1038,6 +1063,7 @@ const V_1_0 = new SchemaVersion('1.0');
 /**
  * Use this in all templates for BSI CX 22.0.
  *
+ * @see {@link Design#withSchemaVersion}
  * @type {SchemaVersion}
  * @since 22.0
  */
@@ -1508,12 +1534,23 @@ class ContentElement extends AbstractBuilder {
 
 
 
+/**
+ * This is the builder class to specify content element groups.
+ *
+ * @example
+ * module.exports = new ContentElementGroup()
+ *   .withGroupId('content')
+ *   .withLabel('Content')
+ *   .withContentElements(
+ *     require('./content-elements/content/title'),
+ *     require('./content-elements/content/text')));
+ */
 class ContentElementGroup extends AbstractBuilder {
   /**
    * @type {string|undefined}
    * @private
    */
-  _groupId = undefined;
+  _groupId = uuid();
   /**
    * @type {string|undefined}
    * @private
@@ -1559,6 +1596,9 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
+   * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
+   * It is recommended to set the group identifier.
+   *
    * @param {string} groupId
    * @return {ContentElementGroup}
    */
@@ -1880,34 +1920,58 @@ class Format extends AbstractConstant {
 }
 
 /**
+ * Allow <code>&lt;p&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const format_P = new Format('p');
 /**
+ * Allow <code>&lt;h1&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const H1 = new Format('h1');
 /**
+ * Allow <code>&lt;h2&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const H2 = new Format('h2');
 /**
+ * Allow <code>&lt;h3&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const H3 = new Format('h3');
 /**
+ * Allow <code>&lt;h4&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const H4 = new Format('h4');
 /**
+ * Allow <code>&lt;h5&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const H5 = new Format('h5');
 /**
+ * Allow <code>&lt;h6&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const H6 = new Format('h6');
 /**
+ * Allow <code>&lt;pre&gt;</code> tags.
+ *
+ * @see {@link HtmlEditorConfig#withFormats}
  * @type {Format}
  */
 const PRE = new Format('pre');
@@ -1919,26 +1983,44 @@ class FontSizeUnit extends AbstractConstant {
 }
 
 /**
+ * Font sizes as pixel values.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizeUnit}
  * @type {FontSizeUnit}
  */
 const PX = new FontSizeUnit('px');
 /**
+ * Font sizes as em values.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizeUnit}
  * @type {FontSizeUnit}
  */
 const EM = new FontSizeUnit('em');
 /**
+ * Font sizes as rem values.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizeUnit}
  * @type {FontSizeUnit}
  */
 const REM = new FontSizeUnit('rem');
 /**
+ * Font sizes as pt values.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizeUnit}
  * @type {FontSizeUnit}
  */
 const PT = new FontSizeUnit('pt');
 /**
+ * Font sizes as cm values.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizeUnit}
  * @type {FontSizeUnit}
  */
 const CM = new FontSizeUnit('cm');
 /**
+ * Font sizes as mm values.
+ *
+ * @see {@link HtmlEditorConfig#withFontSizeUnit}
  * @type {FontSizeUnit}
  */
 const MM = new FontSizeUnit('mm');
@@ -1953,6 +2035,18 @@ const MM = new FontSizeUnit('mm');
 
 
 
+/**
+ * This is the builder class to specify a HTML editor configuration.
+ *
+ * @example
+ * module.exports = new HtmlEditorConfig()
+ *   .withIdentifier('minimal')
+ *   .withRawEnterMode('p')
+ *   .withFeatures(
+ *     Feature.BOLD,
+ *     Feature.ITALIC,
+ *     Feature.UNDERLINE);
+ */
 class HtmlEditorConfig extends AbstractBuilder {
   /**
    * @type {string|undefined}
@@ -2502,6 +2596,28 @@ class NLS extends AbstractBuilder {
 
 
 
+/**
+ * This is the builder class to specify a design.
+ *
+ * @example
+ * module.exports = new Design()
+ *   .withSchemaVersion(SchemaVersion.V_22_0)
+ *   .withTitle('My BSI CX Design')
+ *   .withAuthor('John Doe')
+ *   .withDate('18.8.2021')
+ *   .withPreviewImage(require('./preview.png'))
+ *   .withRawDefaultLocale('en')
+ *   withHtmlEditorConfigs(
+ *     require('./configs/html-editor/full.js'),
+ *     require('./configs/html-editor/minimal.js'))
+ *   .withContentElementGroups(
+ *     new ContentElementGroup()
+ *       .withGroupId('content')
+ *       .withLabel('Content')
+ *       .withContentElements(
+ *         require('./content-elements/content/title'),
+ *         require('./content-elements/content/text')));
+ */
 class Design extends AbstractBuilder {
   /**
    * @type {RawValue|SchemaVersion|undefined}

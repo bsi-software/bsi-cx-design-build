@@ -52,7 +52,6 @@
     "zip-webpack-plugin": "^4.0.1"
   },
   "devDependencies": {
-    "@bsi-cx/design-build": "file:.",
     "typescript": "^4.3.5",
     "webpack-node-externals": "^3.0.0",
     "webpack-shell-plugin-next": "^2.2.2"
