@@ -9,9 +9,9 @@
   "scripts": {
     "build": "webpack --config webpack.config.js --mode production",
     "watch": "webpack --config webpack.config.js --mode production --watch",
-    "test:build": "cd test && webpack --config webpack.config.js --mode production --progress",
-    "test:watch": "cd test && webpack --config webpack.config.js --mode production --watch --progress",
-    "test:serve": "cd test && webpack serve --config webpack.config.js --mode production --progress"
+    "pretest": "npx ./test/install.js",
+    "posttest": "npx ./test/uninstall.js",
+    "test": "cd test && webpack --config webpack.config.js --mode production --progress"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "bugs": {
