@@ -18,7 +18,9 @@ export default class PlainTextPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {PlainTextPart}
    */
   clone(shallow) {

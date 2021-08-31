@@ -12,11 +12,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, {
   "BuildConfig": () => (/* reexport */ BuildConfig),
   "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
+  "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "ModuleConfig": () => (/* reexport */ ModuleConfig),
+  "Version": () => (/* reexport */ version_namespaceObject),
   "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
-  "css": () => (/* reexport */ helper_namespaceObject),
-  "designType": () => (/* reexport */ design_type_namespaceObject),
-  "version": () => (/* reexport */ version_namespaceObject)
+  "css": () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js

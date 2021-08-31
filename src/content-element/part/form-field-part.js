@@ -18,7 +18,9 @@ export default class FormFieldPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormFieldPart}
    */
   clone(shallow) {

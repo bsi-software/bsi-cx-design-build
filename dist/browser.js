@@ -935,7 +935,7 @@ class Locale extends AbstractConstant {
 }
 
 /**
- * This defines the fallback locale to ues.
+ * This defines the fallback locale to use.
  *
  * @see {@link Design#withDefaultLocale}
  * @see {@link Design#withLocales}
@@ -1730,7 +1730,9 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {ContentElementGroup}
    */
   clone(shallow) {
@@ -2565,7 +2567,9 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {HtmlEditorConfig}
    */
   clone(shallow) {
@@ -2582,6 +2586,19 @@ class HtmlEditorConfig extends AbstractBuilder {
 /** @typedef {import('./css-class').default} CssClass */
 
 /**
+ * This is the builder class for style configuration objects.
+ *
+ * @example
+ * module.exports = cx.style
+ *   .withIdentifier('text-color')
+ *   .withLabel('Text Color')
+ *   .withCssClasses(
+ *     cx.cssClass
+ *       .withCssClass('text-red')
+ *       .withLabel('Red'),
+ *     cx.cssClass
+ *       .withCssClass('text-blue')
+ *       .withLabel('Blue'));
  * @since Studio 1.1
  */
 class Style extends AbstractBuilder {
@@ -2623,7 +2640,12 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {string} identifier
+   * Set the unique identifier for this style configuration. If not specified, a UUID v4 will be used.
+   * <strong>It is recommended to set this property.</strong>
+   *
+   * @example
+   * .withIdentifier('text-color')
+   * @param {string} identifier - The identifier to use.
    * @returns {Style}
    */
   withIdentifier(identifier) {
@@ -2632,7 +2654,9 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
+   * Set the label for this style configuration.
+   *
+   * @param {string} label - The label to use.
    * @returns {Style}
    */
   withLabel(label) {
@@ -2641,7 +2665,18 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {...CssClass} cssClasses
+   * Specify the css classes to use with this style configuration.
+   *
+   * @example
+   * .withCssClasses(
+   *   cx.cssClass
+   *     .withCssClass('text-red')
+   *     .withLabel('Red'),
+   *   cx.cssClass
+   *     .withCssClass('text-blue')
+   *     .withLabel('Blue'))
+   * @see {@link withRawCssClasses} to set a raw value
+   * @param {...CssClass} cssClasses - The css classes to use.
    * @returns {Style}
    */
   withCssClasses(...cssClasses) {
@@ -2650,6 +2685,19 @@ class Style extends AbstractBuilder {
   }
 
   /**
+   * Set the raw css classes to use with this style.
+   *
+   * @example
+   * .withRawCssClasses(
+   *   {
+   *     cssClass: 'text-red',
+   *     label: 'Red'
+   *   },
+   *   {
+   *     cssClass: 'text-blue',
+   *     label: 'Blue'
+   *   }
+   * )
    * @param {...{}} cssClasses
    * @returns {Style}
    */
@@ -2671,7 +2719,9 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {Style}
    */
   clone(shallow) {
@@ -2684,7 +2734,22 @@ class Style extends AbstractBuilder {
 
 
 
+/** @typedef {import('./style').default} Style */
+
 /**
+ * This is the builder class for css class objects (required by the {@link Style|style} configuration object).
+ *
+ * @example
+ * module.exports = cx.style
+ *   .withIdentifier('text-color')
+ *   .withLabel('Text Color')
+ *   .withCssClasses(
+ *     cx.cssClass
+ *       .withCssClass('text-red')
+ *       .withLabel('Red'),
+ *     cx.cssClass
+ *       .withCssClass('text-blue')
+ *       .withLabel('Blue'));
  * @since Studio 1.1
  */
 class CssClass extends AbstractBuilder {
@@ -2714,7 +2779,11 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @param {string} cssClass
+   * Specify the CSS class to use.
+   *
+   * @example
+   * .withCssClass('text-red')
+   * @param {string} cssClass - The CSS class to use.
    * @returns {CssClass}
    */
   withCssClass(cssClass) {
@@ -2723,7 +2792,9 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
+   * Specify the label to use with this CSS class.
+   *
+   * @param {string} label - The label to use.
    * @returns {CssClass}
    */
   withLabel(label) {
@@ -2741,7 +2812,9 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {CssClass}
    */
   clone(shallow) {
@@ -2749,8 +2822,12 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @param {string} cssClass
-   * @param {string} label
+   * Static helper method to create a new CSS class object.
+   *
+   * @example
+   * CssClass.create('text-red','Red')
+   * @param {string} cssClass - The CSS class to use.
+   * @param {string} label - The label to use.
    * @returns {CssClass}
    */
   static create(cssClass, label) {
@@ -3309,7 +3386,9 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {ContentElement}
    */
   clone(shallow) {
@@ -3440,7 +3519,9 @@ class PlainTextPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {PlainTextPart}
    */
   clone(shallow) {
@@ -3534,7 +3615,9 @@ class FormattedTextPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormattedTextPart}
    */
   clone(shallow) {
@@ -3563,7 +3646,9 @@ class HtmlPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {HtmlPart}
    */
   clone(shallow) {
@@ -3592,7 +3677,9 @@ class VideoPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {VideoPart}
    */
   clone(shallow) {
@@ -3621,7 +3708,9 @@ class ImagePart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {ImagePart}
    */
   clone(shallow) {
@@ -3650,7 +3739,9 @@ class BackgroundImagePart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {BackgroundImagePart}
    */
   clone(shallow) {
@@ -3679,7 +3770,9 @@ class TablePart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {TablePart}
    */
   clone(shallow) {
@@ -3708,7 +3801,9 @@ class IteratorPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {IteratorPart}
    */
   clone(shallow) {
@@ -3737,7 +3832,9 @@ class NewsSnippetsPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {NewsSnippetsPart}
    */
   clone(shallow) {
@@ -3766,7 +3863,9 @@ class FormPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormPart}
    */
   clone(shallow) {
@@ -3795,7 +3894,9 @@ class FormFieldPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormFieldPart}
    */
   clone(shallow) {
@@ -3824,7 +3925,9 @@ class FormCheckboxPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormCheckboxPart}
    */
   clone(shallow) {
@@ -3853,7 +3956,9 @@ class FormTextareaPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormTextareaPart}
    */
   clone(shallow) {
@@ -3882,7 +3987,9 @@ class FormSelectPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormSelectPart}
    */
   clone(shallow) {
@@ -3911,7 +4018,9 @@ class FormRadioPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormRadioPart}
    */
   clone(shallow) {
@@ -3940,7 +4049,9 @@ class LinkPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {LinkPart}
    */
   clone(shallow) {
@@ -3969,7 +4080,9 @@ class SocialFollowPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {SocialFollowPart}
    */
   clone(shallow) {
@@ -3998,7 +4111,9 @@ class SocialSharePart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {SocialSharePart}
    */
   clone(shallow) {
@@ -4027,7 +4142,9 @@ class UrlProviderPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {UrlProviderPart}
    */
   clone(shallow) {
@@ -4042,6 +4159,17 @@ class UrlProviderPart extends AbstractPart {
 
 
 /**
+ * This is the builder class for website objects.
+ *
+ * @example
+ * module.exports = cx.website
+ *   .withMaxNavigationLevel(2)
+ *   .withIncludes(
+ *     cx.include
+ *       .withIdentifier('header')
+ *       .withEditable(true)
+ *       .withFile(require('./template.twig')
+ *       .withName('Template for the Homepage'))
  * @since BSI CX 1.3
  */
 class Website extends AbstractBuilder {
@@ -4071,7 +4199,9 @@ class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {number} maxNavigationLevel
+   * Define the maximum navigation level.
+   *
+   * @param {number} maxNavigationLevel - The maximum navigation level.
    * @returns {Website}
    */
   withMaxNavigationLevel(maxNavigationLevel) {
@@ -4080,6 +4210,16 @@ class Website extends AbstractBuilder {
   }
 
   /**
+   * Define the includes for this website.
+   *
+   * @example
+   * .withIncludes(
+   *   cx.include
+   *     .withIdentifier('footer')
+   *     .withEditable(true)
+   *     .withFile(require('./template.twig'))
+   *     .withName('Footer'))
+   * @see {@link withRawIncludes} to set a raw value
    * @param {...AbstractInclude} includes
    * @returns {Website}
    */
@@ -4089,7 +4229,22 @@ class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} includes
+   * Define the includes for this website as raw value.
+   *
+   * @example
+   * .withRawIncludes({
+   *   __page__: {
+   *     editable: true,
+   *     file: require('./page.twig'),
+   *     name: 'Template for content'
+   *   },
+   *   header: {
+   *     editable: true,
+   *     file: require('./header.html'),
+   *     name: 'Header'
+   *   }
+   * })
+   * @param {{}} includes - The includes as raw value.
    * @returns {Website}
    */
   withRawIncludes(includes) {
@@ -4107,7 +4262,9 @@ class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {Website}
    */
   clone(shallow) {
@@ -4129,7 +4286,7 @@ class AbstractInclude extends AbstractBuilder {
    * @type {string|undefined}
    * @protected
    */
-  _identifier = undefined;
+  _identifier = uuid();
   /**
    * @type {boolean|undefined}
    * @protected
@@ -4187,16 +4344,9 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @param {string} identifier
-   * @returns {AbstractInclude}
-   */
-  withIdentifier(identifier) {
-    this._identifier = identifier;
-    return this;
-  }
-
-  /**
-   * @param {boolean} editable
+   * Enable or disable edit mode on this include.
+   *
+   * @param {boolean} editable - The editable flag.
    * @returns {AbstractInclude}
    */
   withEditable(editable) {
@@ -4205,7 +4355,12 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} file
+   * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
+   * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
+   *
+   * @example
+   * .withFile(require('./footer.html'))
+   * @param {{}} file - The file object. Just pass the response of your require statement.
    * @returns {AbstractInclude}
    */
   withFile(file) {
@@ -4214,7 +4369,9 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @param {string} name
+   * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
+   *
+   * @param {string} name -
    * @returns {AbstractInclude}
    */
   withName(name) {
@@ -4241,6 +4398,13 @@ class AbstractInclude extends AbstractBuilder {
 
 
 /**
+ * This is the page include builder class.
+ *
+ * @example
+ * new PageInclude()
+ *   .withEditable(true)
+ *   .withFile(require('./includes/page.html'))
+ *   .withName('Template for content')
  * @since BSI CX 1.3
  */
 class PageInclude extends AbstractInclude {
@@ -4249,6 +4413,7 @@ class PageInclude extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {boolean} editable
    * @returns {PageInclude}
    */
@@ -4257,6 +4422,7 @@ class PageInclude extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {{}} file
    * @returns {PageInclude}
    */
@@ -4273,7 +4439,9 @@ class PageInclude extends AbstractInclude {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {PageInclude}
    */
   clone(shallow) {
@@ -4284,7 +4452,22 @@ class PageInclude extends AbstractInclude {
 ;// CONCATENATED MODULE: ./src/website/include.js
 
 
+/** @typedef {import('./website').default} Website */
+
 /**
+ * This is the builder class for {@link Website|website} includes.
+ *
+ * @example
+ * .withIncludes(
+ *   cx.pageInclude
+ *     .withEditable(true)
+ *     .withFile(require('./includes/page.html'))
+ *     .withName('Template for new content'),
+ *   cx.include
+ *     .withIdentifier('header')
+ *     .withEditable(true)
+ *     .withFile(require('./includes/header.twig'))
+ *     .withName('Header'))
  * @since BSI CX 1.3
  */
 class Include extends AbstractInclude {
@@ -4293,7 +4476,10 @@ class Include extends AbstractInclude {
   }
 
   /**
-   * @param {string} identifier
+   * Set the unique identifier to use. A UUID v4 will be used, if you don't set this property.
+   * <strong>It is recommended to define this property.</strong>
+   *
+   * @param {string} identifier - A unique identifier for this include.
    * @returns {Include}
    */
   withIdentifier(identifier) {
@@ -4302,6 +4488,7 @@ class Include extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {boolean} editable
    * @returns {Include}
    */
@@ -4310,6 +4497,7 @@ class Include extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {{}} file
    * @returns {Include}
    */
@@ -4318,6 +4506,7 @@ class Include extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {string} name
    * @returns {Include}
    */
@@ -4326,7 +4515,9 @@ class Include extends AbstractInclude {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {Include}
    */
   clone(shallow) {
@@ -4341,6 +4532,29 @@ class Include extends AbstractInclude {
 
 /** @typedef {import('../design/locale').Locale} Locale */
 
+/**
+ * The builder class for translation objects.
+ *
+ * @example
+ * module.exports = [
+ *   // using with* methods
+ *   cx.nls
+ *     .withIdentifier('action')
+ *     .withTranslations(
+ *       cx.translation
+ *         .withLocale(Locale.WILDCARD)
+ *         .withTranslation('action'),
+ *       cx.translation
+ *         .withLocale(Locale.DE)
+ *         .withTranslation('Aktion')),
+ *   // using factory shortcuts
+ *   cx.n(
+ *     'contact',
+ *     cx.t('contact'),
+ *     cx.t('de', 'Kontakt'),
+ *     cx.t(Locale.DE_CH, 'Kontakt'))
+ * ];
+ */
 class Translation extends AbstractBuilder {
   /**
    * @type {Locale|RawValue|undefined}
@@ -4368,7 +4582,11 @@ class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} locale
+   * Set the locale to use for this translation.
+   *
+   * @example
+   * .withLocale(Locale.EN)
+   * @param {Locale} locale - The locale to use.
    * @returns {Translation}
    */
   withLocale(locale) {
@@ -4377,7 +4595,11 @@ class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {string} locale
+   * Set the locale as raw value.
+   *
+   * @example
+   * .withRawLocale('en')
+   * @param {string} locale - The raw locale to use.
    * @returns {Translation}
    */
   withRawLocale(locale) {
@@ -4386,7 +4608,11 @@ class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {string} translation
+   * Set the translated string for this translation object.
+   *
+   * @example
+   * .withTranslation('action')
+   * @param {string} translation - The translation to use.
    * @returns {Translation}
    */
   withTranslation(translation) {
@@ -4403,7 +4629,9 @@ class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {Translation}
    */
   clone(shallow) {
@@ -4411,8 +4639,12 @@ class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} locale
-   * @param {string} translation
+   * Static helper to create a translation object with a given locale.
+   *
+   * @example
+   * Translation.create(Locale.EN, 'action')
+   * @param {Locale} locale - The locale to use.
+   * @param {string} translation - The translation to use.
    * @returns {Translation}
    */
   static create(locale, translation) {
@@ -4422,7 +4654,11 @@ class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {string} translation
+   * Static helper to create a translation object with a {@link WILDCARD|wildcard} locale.
+   *
+   * @example
+   * Translation.wildcard('action')
+   * @param {string} translation - The translation to use.
    * @returns {Translation}
    */
   static wildcard(translation) {
@@ -4440,15 +4676,24 @@ class Translation extends AbstractBuilder {
  * The builder class for NLS objects.
  *
  * @example
- * module.exports = cx.nls
- *   .withIdentifier('action')
- *   .withTranslations(
- *     cx.translation
- *       .withLocale(Locale.WILDCARD)
- *       .withTranslation('action'),
- *     cx.translation
- *       .withLocale(Locale.DE)
- *       .withTranslation('Aktion'));
+ * module.exports = [
+ *   // using with* methods
+ *   cx.nls
+ *     .withIdentifier('action')
+ *     .withTranslations(
+ *       cx.translation
+ *         .withLocale(Locale.WILDCARD)
+ *         .withTranslation('action'),
+ *       cx.translation
+ *         .withLocale(Locale.DE)
+ *         .withTranslation('Aktion')),
+ *   // using factory shortcuts
+ *   cx.n(
+ *     'contact',
+ *     cx.t('contact'),
+ *     cx.t('de', 'Kontakt'),
+ *     cx.t(Locale.DE_CH, 'Kontakt'))
+ * ];
  */
 class NLS extends AbstractBuilder {
   /**
@@ -4486,11 +4731,48 @@ class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {...Translation} translations
+   * Add translations to this NLS object.
+   *
+   * @example
+   * cx.nls
+   *   .withIdentifier('action')
+   *   .withTranslations(
+   *     cx.translation
+   *       .withLocale(Locale.WILDCARD)
+   *       .withTranslation('action'),
+   *     cx.translation
+   *       .withLocale(Locale.DE)
+   *       .withTranslation('Aktion'))
+   * @param {...Translation} translations - The translation objects.
    * @returns {NLS}
    */
   withTranslations(...translations) {
     this._translations = translations;
+    return this;
+  }
+
+  /**
+   * Set the translations as raw value.
+   *
+   * @example
+   * .withRawTranslations({
+   *   '*': 'contact',
+   *   'de': 'Kontakt',
+   *   'de-CH': 'Kontakt'
+   * })
+   * @param {{}} translations
+   * @returns {NLS}
+   */
+  withRawTranslations(translations) {
+    this._translations = [];
+
+    for (let [locale, translation] of Object.entries(translations)) {
+      let translationObj = new Translation()
+        .withRawLocale(locale)
+        .withTranslation(translation);
+      this._translations.push(translationObj);
+    }
+
     return this;
   }
 
@@ -4511,8 +4793,10 @@ class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {string} identifier
-   * @param {...Translation}translations
+   * Static helper method to create a NLS with some translations.
+   *
+   * @param {string} identifier - The identifier to use.
+   * @param {...Translation} translations - The translation objects.
    * @returns {NLS}
    */
   static create(identifier, ...translations) {
@@ -4522,6 +4806,14 @@ class NLS extends AbstractBuilder {
   }
 
   /**
+   * @example
+   * NLS.fromMap(
+   *   'reset',
+   *   new Map([
+   *     [Locale.WILDCARD, 'Reset'],
+   *     [Locale.DE, 'Zurücksetzen']
+   *   ])
+   * )
    * @param {string} identifier
    * @param {Map<Locale,string>} map
    */
@@ -4541,7 +4833,9 @@ class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {NLS}
    */
   clone(shallow) {
@@ -4971,7 +5265,7 @@ class DesignFactory {
    * .withNLS(
    *   cx.nls
    *     .withIdentifier('action')
-   *     .withTranslation(
+   *     .withTranslations(
    *       cx.translation
    *         .withLocale(Locale.WILDCARD)
    *         .withTranslation('action'),
@@ -4988,7 +5282,7 @@ class DesignFactory {
    * Get a new NLS translation builder instance.
    *
    * @example
-   * .withTranslation(
+   * .withTranslations(
    *   cx.translation
    *     .withLocale(Locale.WILDCARD)
    *     .withTranslation('action'),
@@ -5021,8 +5315,46 @@ class DesignFactory {
   }
 
   /**
-   * @param {Locale|string} localeOrWildcardTranslation
-   * @param {string|undefined} [optionalTranslation=undefined]
+   * Shortcut to create a {@link NLS} object. See example for usage.
+   *
+   * @example
+   * module.exports = [
+   *   cx.n(
+   *     'action',
+   *     cx.t('action'),
+   *     cx.t('de', 'Aktion'),
+   *     cx.t(Locale.DE_CH, 'Aktion')),
+   *   cx.n(
+   *     'contact',
+   *     cx.t('contact'),
+   *     cx.t('de', 'Kontakt'),
+   *     cx.t(Locale.DE_CH, 'Kontakt'))
+   * ];
+   * @see {@link t}
+   * @param {string} identifier
+   * @param {Translation} translations
+   * @returns {NLS}
+   */
+  n(identifier, ...translations) {
+    return this.nls
+      .withIdentifier(identifier)
+      .withTranslations(...translations);
+  }
+
+  /**
+   * Shortcut to create a {@link Translation} object. See example for usage.
+   *
+   * @example
+   * cx.nls
+   *   .withIdentifier('action')
+   *   .withTranslations(
+   *     cx.t('action'), // wildcard translation
+   *     cx.t('de', 'Aktion'), // translation with raw locale
+   *     cx.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
+   * @see {@link n}
+   * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
+   * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
+   * @returns {Translation}
    */
   t(localeOrWildcardTranslation, optionalTranslation) {
     let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;

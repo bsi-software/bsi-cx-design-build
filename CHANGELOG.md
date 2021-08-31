@@ -9,6 +9,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+* Factory classes
+* Helper classes
+* More JSDoc
+
 ## [1.0.0-rc.14] - 31.08.2021
 
 ### Added
@@ -20,7 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Build config option for static assets folder
 * Build config option for additional Webpack rules
 * Build config option for additional Webpack plugins
-* JSDoc strings for `BuildConfig` and `ModuleConfig`
+* JSDoc strings for various classes
 * Sort content element parts in correct order using a unique part ID
 
 ### Fixed

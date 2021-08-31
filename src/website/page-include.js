@@ -2,6 +2,13 @@ import AbstractInclude from './abstract-include';
 import DesignJsonProperty from '../design-json-property';
 
 /**
+ * This is the page include builder class.
+ *
+ * @example
+ * new PageInclude()
+ *   .withEditable(true)
+ *   .withFile(require('./includes/page.html'))
+ *   .withName('Template for content')
  * @since BSI CX 1.3
  */
 export default class PageInclude extends AbstractInclude {
@@ -10,6 +17,7 @@ export default class PageInclude extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {boolean} editable
    * @returns {PageInclude}
    */
@@ -18,6 +26,7 @@ export default class PageInclude extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
    * @param {{}} file
    * @returns {PageInclude}
    */
@@ -34,7 +43,9 @@ export default class PageInclude extends AbstractInclude {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {PageInclude}
    */
   clone(shallow) {

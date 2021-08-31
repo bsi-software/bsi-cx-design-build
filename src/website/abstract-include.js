@@ -1,6 +1,6 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
-import {identity} from '../browser-utility';
+import {identity, uuid} from '../browser-utility';
 
 /**
  * @abstract
@@ -11,7 +11,7 @@ export default class AbstractInclude extends AbstractBuilder {
    * @type {string|undefined}
    * @protected
    */
-  _identifier = undefined;
+  _identifier = uuid();
   /**
    * @type {boolean|undefined}
    * @protected
@@ -69,16 +69,9 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @param {string} identifier
-   * @returns {AbstractInclude}
-   */
-  withIdentifier(identifier) {
-    this._identifier = identifier;
-    return this;
-  }
-
-  /**
-   * @param {boolean} editable
+   * Enable or disable edit mode on this include.
+   *
+   * @param {boolean} editable - The editable flag.
    * @returns {AbstractInclude}
    */
   withEditable(editable) {
@@ -87,7 +80,12 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} file
+   * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
+   * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
+   *
+   * @example
+   * .withFile(require('./footer.html'))
+   * @param {{}} file - The file object. Just pass the response of your require statement.
    * @returns {AbstractInclude}
    */
   withFile(file) {
@@ -96,7 +94,9 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @param {string} name
+   * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
+   *
+   * @param {string} name -
    * @returns {AbstractInclude}
    */
   withName(name) {

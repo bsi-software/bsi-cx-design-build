@@ -18,7 +18,9 @@ export default class FormRadioPart extends AbstractPart {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {FormRadioPart}
    */
   clone(shallow) {

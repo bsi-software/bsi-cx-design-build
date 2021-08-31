@@ -4,6 +4,29 @@ import RawValue from '../raw-value';
 
 /** @typedef {import('../design/locale').Locale} Locale */
 
+/**
+ * The builder class for translation objects.
+ *
+ * @example
+ * module.exports = [
+ *   // using with* methods
+ *   cx.nls
+ *     .withIdentifier('action')
+ *     .withTranslations(
+ *       cx.translation
+ *         .withLocale(Locale.WILDCARD)
+ *         .withTranslation('action'),
+ *       cx.translation
+ *         .withLocale(Locale.DE)
+ *         .withTranslation('Aktion')),
+ *   // using factory shortcuts
+ *   cx.n(
+ *     'contact',
+ *     cx.t('contact'),
+ *     cx.t('de', 'Kontakt'),
+ *     cx.t(Locale.DE_CH, 'Kontakt'))
+ * ];
+ */
 export default class Translation extends AbstractBuilder {
   /**
    * @type {Locale|RawValue|undefined}
@@ -31,7 +54,11 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} locale
+   * Set the locale to use for this translation.
+   *
+   * @example
+   * .withLocale(Locale.EN)
+   * @param {Locale} locale - The locale to use.
    * @returns {Translation}
    */
   withLocale(locale) {
@@ -40,7 +67,11 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {string} locale
+   * Set the locale as raw value.
+   *
+   * @example
+   * .withRawLocale('en')
+   * @param {string} locale - The raw locale to use.
    * @returns {Translation}
    */
   withRawLocale(locale) {
@@ -49,7 +80,11 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {string} translation
+   * Set the translated string for this translation object.
+   *
+   * @example
+   * .withTranslation('action')
+   * @param {string} translation - The translation to use.
    * @returns {Translation}
    */
   withTranslation(translation) {
@@ -66,7 +101,9 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {Translation}
    */
   clone(shallow) {
@@ -74,8 +111,12 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {Locale} locale
-   * @param {string} translation
+   * Static helper to create a translation object with a given locale.
+   *
+   * @example
+   * Translation.create(Locale.EN, 'action')
+   * @param {Locale} locale - The locale to use.
+   * @param {string} translation - The translation to use.
    * @returns {Translation}
    */
   static create(locale, translation) {
@@ -85,7 +126,11 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @param {string} translation
+   * Static helper to create a translation object with a {@link WILDCARD|wildcard} locale.
+   *
+   * @example
+   * Translation.wildcard('action')
+   * @param {string} translation - The translation to use.
    * @returns {Translation}
    */
   static wildcard(translation) {

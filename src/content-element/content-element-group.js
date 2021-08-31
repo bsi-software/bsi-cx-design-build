@@ -164,7 +164,9 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {ContentElementGroup}
    */
   clone(shallow) {

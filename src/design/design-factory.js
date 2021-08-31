@@ -225,7 +225,7 @@ export default class DesignFactory {
    * .withNLS(
    *   cx.nls
    *     .withIdentifier('action')
-   *     .withTranslation(
+   *     .withTranslations(
    *       cx.translation
    *         .withLocale(Locale.WILDCARD)
    *         .withTranslation('action'),
@@ -242,7 +242,7 @@ export default class DesignFactory {
    * Get a new NLS translation builder instance.
    *
    * @example
-   * .withTranslation(
+   * .withTranslations(
    *   cx.translation
    *     .withLocale(Locale.WILDCARD)
    *     .withTranslation('action'),
@@ -275,8 +275,46 @@ export default class DesignFactory {
   }
 
   /**
-   * @param {Locale|string} localeOrWildcardTranslation
-   * @param {string|undefined} [optionalTranslation=undefined]
+   * Shortcut to create a {@link NLS} object. See example for usage.
+   *
+   * @example
+   * module.exports = [
+   *   cx.n(
+   *     'action',
+   *     cx.t('action'),
+   *     cx.t('de', 'Aktion'),
+   *     cx.t(Locale.DE_CH, 'Aktion')),
+   *   cx.n(
+   *     'contact',
+   *     cx.t('contact'),
+   *     cx.t('de', 'Kontakt'),
+   *     cx.t(Locale.DE_CH, 'Kontakt'))
+   * ];
+   * @see {@link t}
+   * @param {string} identifier
+   * @param {Translation} translations
+   * @returns {NLS}
+   */
+  n(identifier, ...translations) {
+    return this.nls
+      .withIdentifier(identifier)
+      .withTranslations(...translations);
+  }
+
+  /**
+   * Shortcut to create a {@link Translation} object. See example for usage.
+   *
+   * @example
+   * cx.nls
+   *   .withIdentifier('action')
+   *   .withTranslations(
+   *     cx.t('action'), // wildcard translation
+   *     cx.t('de', 'Aktion'), // translation with raw locale
+   *     cx.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
+   * @see {@link n}
+   * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
+   * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
+   * @returns {Translation}
    */
   t(localeOrWildcardTranslation, optionalTranslation) {
     let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;

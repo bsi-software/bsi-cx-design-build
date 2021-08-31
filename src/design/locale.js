@@ -9,7 +9,7 @@ export class Locale extends AbstractConstant {
 }
 
 /**
- * This defines the fallback locale to ues.
+ * This defines the fallback locale to use.
  *
  * @see {@link Design#withDefaultLocale}
  * @see {@link Design#withLocales}

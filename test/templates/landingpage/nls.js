@@ -21,7 +21,8 @@ module.exports = [
         .withTranslation('Please support our friends!'),
       cx.translation
         .withLocale(Locale.DE)
-        .withTranslation('Bitte unterstütze unsere Freunde!')),
+        .withTranslation('Bitte unterstütze unsere Freunde!'),
+      cx.t(Locale.DE_CH, 'Unterstütz üsi fründe!')),
   NLS.create(
     'column',
     Translation.wildcard('Column'),

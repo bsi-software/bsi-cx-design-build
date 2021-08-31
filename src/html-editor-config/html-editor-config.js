@@ -356,7 +356,9 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {HtmlEditorConfig}
    */
   clone(shallow) {

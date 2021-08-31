@@ -4,6 +4,17 @@ import {builderObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
 
 /**
+ * This is the builder class for website objects.
+ *
+ * @example
+ * module.exports = cx.website
+ *   .withMaxNavigationLevel(2)
+ *   .withIncludes(
+ *     cx.include
+ *       .withIdentifier('header')
+ *       .withEditable(true)
+ *       .withFile(require('./template.twig')
+ *       .withName('Template for the Homepage'))
  * @since BSI CX 1.3
  */
 export default class Website extends AbstractBuilder {
@@ -33,7 +44,9 @@ export default class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {number} maxNavigationLevel
+   * Define the maximum navigation level.
+   *
+   * @param {number} maxNavigationLevel - The maximum navigation level.
    * @returns {Website}
    */
   withMaxNavigationLevel(maxNavigationLevel) {
@@ -42,6 +55,16 @@ export default class Website extends AbstractBuilder {
   }
 
   /**
+   * Define the includes for this website.
+   *
+   * @example
+   * .withIncludes(
+   *   cx.include
+   *     .withIdentifier('footer')
+   *     .withEditable(true)
+   *     .withFile(require('./template.twig'))
+   *     .withName('Footer'))
+   * @see {@link withRawIncludes} to set a raw value
    * @param {...AbstractInclude} includes
    * @returns {Website}
    */
@@ -51,7 +74,22 @@ export default class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {{}} includes
+   * Define the includes for this website as raw value.
+   *
+   * @example
+   * .withRawIncludes({
+   *   __page__: {
+   *     editable: true,
+   *     file: require('./page.twig'),
+   *     name: 'Template for content'
+   *   },
+   *   header: {
+   *     editable: true,
+   *     file: require('./header.html'),
+   *     name: 'Header'
+   *   }
+   * })
+   * @param {{}} includes - The includes as raw value.
    * @returns {Website}
    */
   withRawIncludes(includes) {
@@ -69,7 +107,9 @@ export default class Website extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {Website}
    */
   clone(shallow) {

@@ -2635,14 +2635,14 @@ declare module "src/css/helper" {
     import CssDimension from "src/css/css-dimension";
 }
 declare module "export/main" {
-    import * as version from "src/version";
-    import * as designType from "src/design-type";
+    import * as Version from "src/version";
+    import * as DesignType from "src/design-type";
     import BuildConfig from "src/build-config/build-config";
     import ModuleConfig from "src/build-config/module-config";
     import DefaultBuildConfig from "src/build-config/default-build-config";
     import WebpackConfigBuilder from "src/webpack-config-builder";
     import * as css from "src/css/helper";
-    export { version, designType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
+    export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
 }
 declare module "src/content-element/part/part" {
     export class Part extends AbstractConstant {
@@ -2852,13 +2852,31 @@ declare module "src/design/schema-version" {
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/style/css-class" {
+    /** @typedef {import('./style').default} Style */
     /**
+     * This is the builder class for css class objects (required by the {@link Style|style} configuration object).
+     *
+     * @example
+     * module.exports = cx.style
+     *   .withIdentifier('text-color')
+     *   .withLabel('Text Color')
+     *   .withCssClasses(
+     *     cx.cssClass
+     *       .withCssClass('text-red')
+     *       .withLabel('Red'),
+     *     cx.cssClass
+     *       .withCssClass('text-blue')
+     *       .withLabel('Blue'));
      * @since Studio 1.1
      */
     export default class CssClass extends AbstractBuilder {
         /**
-         * @param {string} cssClass
-         * @param {string} label
+         * Static helper method to create a new CSS class object.
+         *
+         * @example
+         * CssClass.create('text-red','Red')
+         * @param {string} cssClass - The CSS class to use.
+         * @param {string} label - The label to use.
          * @returns {CssClass}
          */
         static create(cssClass: string, label: string): CssClass;
@@ -2881,26 +2899,48 @@ declare module "src/style/css-class" {
          */
         get label(): string;
         /**
-         * @param {string} cssClass
+         * Specify the CSS class to use.
+         *
+         * @example
+         * .withCssClass('text-red')
+         * @param {string} cssClass - The CSS class to use.
          * @returns {CssClass}
          */
         withCssClass(cssClass: string): CssClass;
         /**
-         * @param {string} label
+         * Specify the label to use with this CSS class.
+         *
+         * @param {string} label - The label to use.
          * @returns {CssClass}
          */
         withLabel(label: string): CssClass;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {CssClass}
          */
         clone(shallow?: boolean): CssClass;
     }
+    export type Style = import("src/style/style").default;
     import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/style/style" {
     /** @typedef {import('./css-class').default} CssClass */
     /**
+     * This is the builder class for style configuration objects.
+     *
+     * @example
+     * module.exports = cx.style
+     *   .withIdentifier('text-color')
+     *   .withLabel('Text Color')
+     *   .withCssClasses(
+     *     cx.cssClass
+     *       .withCssClass('text-red')
+     *       .withLabel('Red'),
+     *     cx.cssClass
+     *       .withCssClass('text-blue')
+     *       .withLabel('Blue'));
      * @since Studio 1.1
      */
     export default class Style extends AbstractBuilder {
@@ -2932,27 +2972,60 @@ declare module "src/style/style" {
          */
         get cssClasses(): RawValue | [import("src/style/css-class").default];
         /**
-         * @param {string} identifier
+         * Set the unique identifier for this style configuration. If not specified, a UUID v4 will be used.
+         * <strong>It is recommended to set this property.</strong>
+         *
+         * @example
+         * .withIdentifier('text-color')
+         * @param {string} identifier - The identifier to use.
          * @returns {Style}
          */
         withIdentifier(identifier: string): Style;
         /**
-         * @param {string} label
+         * Set the label for this style configuration.
+         *
+         * @param {string} label - The label to use.
          * @returns {Style}
          */
         withLabel(label: string): Style;
         /**
-         * @param {...CssClass} cssClasses
+         * Specify the css classes to use with this style configuration.
+         *
+         * @example
+         * .withCssClasses(
+         *   cx.cssClass
+         *     .withCssClass('text-red')
+         *     .withLabel('Red'),
+         *   cx.cssClass
+         *     .withCssClass('text-blue')
+         *     .withLabel('Blue'))
+         * @see {@link withRawCssClasses} to set a raw value
+         * @param {...CssClass} cssClasses - The css classes to use.
          * @returns {Style}
          */
         withCssClasses(...cssClasses: CssClass[]): Style;
         /**
+         * Set the raw css classes to use with this style.
+         *
+         * @example
+         * .withRawCssClasses(
+         *   {
+         *     cssClass: 'text-red',
+         *     label: 'Red'
+         *   },
+         *   {
+         *     cssClass: 'text-blue',
+         *     label: 'Blue'
+         *   }
+         * )
          * @param {...{}} cssClasses
          * @returns {Style}
          */
         withRawCssClasses(...cssClasses: {}[]): Style;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {Style}
          */
         clone(shallow?: boolean): Style;
@@ -3422,7 +3495,9 @@ declare module "src/content-element/content-element" {
          */
         withRawParts(...parts: {}[]): ContentElement;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {ContentElement}
          */
         clone(shallow?: boolean): ContentElement;
@@ -3551,7 +3626,9 @@ declare module "src/content-element/content-element-group" {
          */
         withRawContentElements(...contentElements: {}[]): ContentElementGroup;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {ContentElementGroup}
          */
         clone(shallow?: boolean): ContentElementGroup;
@@ -4169,7 +4246,9 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         withRawEnterMode(enterMode: string): HtmlEditorConfig;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {HtmlEditorConfig}
          */
         clone(shallow?: boolean): HtmlEditorConfig;
@@ -4183,6 +4262,17 @@ declare module "src/html-editor-config/html-editor-config" {
 }
 declare module "src/website/website" {
     /**
+     * This is the builder class for website objects.
+     *
+     * @example
+     * module.exports = cx.website
+     *   .withMaxNavigationLevel(2)
+     *   .withIncludes(
+     *     cx.include
+     *       .withIdentifier('header')
+     *       .withEditable(true)
+     *       .withFile(require('./template.twig')
+     *       .withName('Template for the Homepage'))
      * @since BSI CX 1.3
      */
     export default class Website extends AbstractBuilder {
@@ -4205,22 +4295,51 @@ declare module "src/website/website" {
          */
         get includes(): any[] | RawValue;
         /**
-         * @param {number} maxNavigationLevel
+         * Define the maximum navigation level.
+         *
+         * @param {number} maxNavigationLevel - The maximum navigation level.
          * @returns {Website}
          */
         withMaxNavigationLevel(maxNavigationLevel: number): Website;
         /**
+         * Define the includes for this website.
+         *
+         * @example
+         * .withIncludes(
+         *   cx.include
+         *     .withIdentifier('footer')
+         *     .withEditable(true)
+         *     .withFile(require('./template.twig'))
+         *     .withName('Footer'))
+         * @see {@link withRawIncludes} to set a raw value
          * @param {...AbstractInclude} includes
          * @returns {Website}
          */
         withIncludes(...includes: any[]): Website;
         /**
-         * @param {{}} includes
+         * Define the includes for this website as raw value.
+         *
+         * @example
+         * .withRawIncludes({
+         *   __page__: {
+         *     editable: true,
+         *     file: require('./page.twig'),
+         *     name: 'Template for content'
+         *   },
+         *   header: {
+         *     editable: true,
+         *     file: require('./header.html'),
+         *     name: 'Header'
+         *   }
+         * })
+         * @param {{}} includes - The includes as raw value.
          * @returns {Website}
          */
         withRawIncludes(includes: {}): Website;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {Website}
          */
         clone(shallow?: boolean): Website;
@@ -4230,15 +4349,46 @@ declare module "src/website/website" {
 }
 declare module "src/nls/translation" {
     /** @typedef {import('../design/locale').Locale} Locale */
+    /**
+     * The builder class for translation objects.
+     *
+     * @example
+     * module.exports = [
+     *   // using with* methods
+     *   cx.nls
+     *     .withIdentifier('action')
+     *     .withTranslations(
+     *       cx.translation
+     *         .withLocale(Locale.WILDCARD)
+     *         .withTranslation('action'),
+     *       cx.translation
+     *         .withLocale(Locale.DE)
+     *         .withTranslation('Aktion')),
+     *   // using factory shortcuts
+     *   cx.n(
+     *     'contact',
+     *     cx.t('contact'),
+     *     cx.t('de', 'Kontakt'),
+     *     cx.t(Locale.DE_CH, 'Kontakt'))
+     * ];
+     */
     export default class Translation extends AbstractBuilder {
         /**
-         * @param {Locale} locale
-         * @param {string} translation
+         * Static helper to create a translation object with a given locale.
+         *
+         * @example
+         * Translation.create(Locale.EN, 'action')
+         * @param {Locale} locale - The locale to use.
+         * @param {string} translation - The translation to use.
          * @returns {Translation}
          */
         static create(locale: Locale, translation: string): Translation;
         /**
-         * @param {string} translation
+         * Static helper to create a translation object with a {@link WILDCARD|wildcard} locale.
+         *
+         * @example
+         * Translation.wildcard('action')
+         * @param {string} translation - The translation to use.
          * @returns {Translation}
          */
         static wildcard(translation: string): Translation;
@@ -4261,22 +4411,36 @@ declare module "src/nls/translation" {
          */
         get translation(): string;
         /**
-         * @param {Locale} locale
+         * Set the locale to use for this translation.
+         *
+         * @example
+         * .withLocale(Locale.EN)
+         * @param {Locale} locale - The locale to use.
          * @returns {Translation}
          */
         withLocale(locale: Locale): Translation;
         /**
-         * @param {string} locale
+         * Set the locale as raw value.
+         *
+         * @example
+         * .withRawLocale('en')
+         * @param {string} locale - The raw locale to use.
          * @returns {Translation}
          */
         withRawLocale(locale: string): Translation;
         /**
-         * @param {string} translation
+         * Set the translated string for this translation object.
+         *
+         * @example
+         * .withTranslation('action')
+         * @param {string} translation - The translation to use.
          * @returns {Translation}
          */
         withTranslation(translation: string): Translation;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {Translation}
          */
         clone(shallow?: boolean): Translation;
@@ -4290,24 +4454,43 @@ declare module "src/nls/nls" {
      * The builder class for NLS objects.
      *
      * @example
-     * module.exports = cx.nls
-     *   .withIdentifier('action')
-     *   .withTranslations(
-     *     cx.translation
-     *       .withLocale(Locale.WILDCARD)
-     *       .withTranslation('action'),
-     *     cx.translation
-     *       .withLocale(Locale.DE)
-     *       .withTranslation('Aktion'));
+     * module.exports = [
+     *   // using with* methods
+     *   cx.nls
+     *     .withIdentifier('action')
+     *     .withTranslations(
+     *       cx.translation
+     *         .withLocale(Locale.WILDCARD)
+     *         .withTranslation('action'),
+     *       cx.translation
+     *         .withLocale(Locale.DE)
+     *         .withTranslation('Aktion')),
+     *   // using factory shortcuts
+     *   cx.n(
+     *     'contact',
+     *     cx.t('contact'),
+     *     cx.t('de', 'Kontakt'),
+     *     cx.t(Locale.DE_CH, 'Kontakt'))
+     * ];
      */
     export default class NLS extends AbstractBuilder {
         /**
-         * @param {string} identifier
-         * @param {...Translation}translations
+         * Static helper method to create a NLS with some translations.
+         *
+         * @param {string} identifier - The identifier to use.
+         * @param {...Translation} translations - The translation objects.
          * @returns {NLS}
          */
         static create(identifier: string, ...translations: Translation[]): NLS;
         /**
+         * @example
+         * NLS.fromMap(
+         *   'reset',
+         *   new Map([
+         *     [Locale.WILDCARD, 'Reset'],
+         *     [Locale.DE, 'Zurücksetzen']
+         *   ])
+         * )
          * @param {string} identifier
          * @param {Map<Locale,string>} map
          */
@@ -4336,12 +4519,39 @@ declare module "src/nls/nls" {
          */
         withIdentifier(identifier: string): NLS;
         /**
-         * @param {...Translation} translations
+         * Add translations to this NLS object.
+         *
+         * @example
+         * cx.nls
+         *   .withIdentifier('action')
+         *   .withTranslations(
+         *     cx.translation
+         *       .withLocale(Locale.WILDCARD)
+         *       .withTranslation('action'),
+         *     cx.translation
+         *       .withLocale(Locale.DE)
+         *       .withTranslation('Aktion'))
+         * @param {...Translation} translations - The translation objects.
          * @returns {NLS}
          */
         withTranslations(...translations: Translation[]): NLS;
         /**
-         * @param {boolean} [shallow=true]
+         * Set the translations as raw value.
+         *
+         * @example
+         * .withRawTranslations({
+         *   '*': 'contact',
+         *   'de': 'Kontakt',
+         *   'de-CH': 'Kontakt'
+         * })
+         * @param {{}} translations
+         * @returns {NLS}
+         */
+        withRawTranslations(translations: {}): NLS;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {NLS}
          */
         clone(shallow?: boolean): NLS;
@@ -4751,7 +4961,7 @@ declare module "src/design/locale" {
     export class Locale extends AbstractConstant {
     }
     /**
-     * This defines the fallback locale to ues.
+     * This defines the fallback locale to use.
      *
      * @see {@link Design#withDefaultLocale}
      * @see {@link Design#withLocales}
@@ -4828,7 +5038,9 @@ declare module "src/content-element/part/plain-text-part" {
     export default class PlainTextPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {PlainTextPart}
          */
         clone(shallow?: boolean): PlainTextPart;
@@ -4884,7 +5096,9 @@ declare module "src/content-element/part/formatted-text-part" {
          */
         withRawHtmlEditorConfig(htmlEditorConfig: string): FormattedTextPart;
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormattedTextPart}
          */
         clone(shallow?: boolean): FormattedTextPart;
@@ -4900,7 +5114,9 @@ declare module "src/content-element/part/html-part" {
     export default class HtmlPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {HtmlPart}
          */
         clone(shallow?: boolean): HtmlPart;
@@ -4914,7 +5130,9 @@ declare module "src/content-element/part/video-part" {
     export default class VideoPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {VideoPart}
          */
         clone(shallow?: boolean): VideoPart;
@@ -4928,7 +5146,9 @@ declare module "src/content-element/part/image-part" {
     export default class ImagePart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {ImagePart}
          */
         clone(shallow?: boolean): ImagePart;
@@ -4942,7 +5162,9 @@ declare module "src/content-element/part/background-image-part" {
     export default class BackgroundImagePart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {BackgroundImagePart}
          */
         clone(shallow?: boolean): BackgroundImagePart;
@@ -4956,7 +5178,9 @@ declare module "src/content-element/part/table-part" {
     export default class TablePart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {TablePart}
          */
         clone(shallow?: boolean): TablePart;
@@ -4970,7 +5194,9 @@ declare module "src/content-element/part/iterator-part" {
     export default class IteratorPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {IteratorPart}
          */
         clone(shallow?: boolean): IteratorPart;
@@ -4984,7 +5210,9 @@ declare module "src/content-element/part/news-snippets-part" {
     export default class NewsSnippetsPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {NewsSnippetsPart}
          */
         clone(shallow?: boolean): NewsSnippetsPart;
@@ -4998,7 +5226,9 @@ declare module "src/content-element/part/form-part" {
     export default class FormPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormPart}
          */
         clone(shallow?: boolean): FormPart;
@@ -5012,7 +5242,9 @@ declare module "src/content-element/part/form-field-part" {
     export default class FormFieldPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormFieldPart}
          */
         clone(shallow?: boolean): FormFieldPart;
@@ -5026,7 +5258,9 @@ declare module "src/content-element/part/form-checkbox-part" {
     export default class FormCheckboxPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormCheckboxPart}
          */
         clone(shallow?: boolean): FormCheckboxPart;
@@ -5040,7 +5274,9 @@ declare module "src/content-element/part/form-textarea-part" {
     export default class FormTextareaPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormTextareaPart}
          */
         clone(shallow?: boolean): FormTextareaPart;
@@ -5054,7 +5290,9 @@ declare module "src/content-element/part/form-select-part" {
     export default class FormSelectPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormSelectPart}
          */
         clone(shallow?: boolean): FormSelectPart;
@@ -5068,7 +5306,9 @@ declare module "src/content-element/part/form-radio-part" {
     export default class FormRadioPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {FormRadioPart}
          */
         clone(shallow?: boolean): FormRadioPart;
@@ -5082,7 +5322,9 @@ declare module "src/content-element/part/link-part" {
     export default class LinkPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {LinkPart}
          */
         clone(shallow?: boolean): LinkPart;
@@ -5096,7 +5338,9 @@ declare module "src/content-element/part/social-follow-part" {
     export default class SocialFollowPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {SocialFollowPart}
          */
         clone(shallow?: boolean): SocialFollowPart;
@@ -5110,7 +5354,9 @@ declare module "src/content-element/part/social-share-part" {
     export default class SocialSharePart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {SocialSharePart}
          */
         clone(shallow?: boolean): SocialSharePart;
@@ -5124,7 +5370,9 @@ declare module "src/content-element/part/url-provider-part" {
     export default class UrlProviderPart extends AbstractPart {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {UrlProviderPart}
          */
         clone(shallow?: boolean): UrlProviderPart;
@@ -5178,22 +5426,26 @@ declare module "src/website/abstract-include" {
          */
         get name(): string;
         /**
-         * @param {string} identifier
-         * @returns {AbstractInclude}
-         */
-        withIdentifier(identifier: string): AbstractInclude;
-        /**
-         * @param {boolean} editable
+         * Enable or disable edit mode on this include.
+         *
+         * @param {boolean} editable - The editable flag.
          * @returns {AbstractInclude}
          */
         withEditable(editable: boolean): AbstractInclude;
         /**
-         * @param {{}} file
+         * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
+         * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
+         *
+         * @example
+         * .withFile(require('./footer.html'))
+         * @param {{}} file - The file object. Just pass the response of your require statement.
          * @returns {AbstractInclude}
          */
         withFile(file: {}): AbstractInclude;
         /**
-         * @param {string} name
+         * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
+         *
+         * @param {string} name -
          * @returns {AbstractInclude}
          */
         withName(name: string): AbstractInclude;
@@ -5202,12 +5454,21 @@ declare module "src/website/abstract-include" {
 }
 declare module "src/website/page-include" {
     /**
+     * This is the page include builder class.
+     *
+     * @example
+     * new PageInclude()
+     *   .withEditable(true)
+     *   .withFile(require('./includes/page.html'))
+     *   .withName('Template for content')
      * @since BSI CX 1.3
      */
     export default class PageInclude extends AbstractInclude {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {PageInclude}
          */
         clone(shallow?: boolean): PageInclude;
@@ -5215,17 +5476,42 @@ declare module "src/website/page-include" {
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "src/website/include" {
+    /** @typedef {import('./website').default} Website */
     /**
+     * This is the builder class for {@link Website|website} includes.
+     *
+     * @example
+     * .withIncludes(
+     *   cx.pageInclude
+     *     .withEditable(true)
+     *     .withFile(require('./includes/page.html'))
+     *     .withName('Template for new content'),
+     *   cx.include
+     *     .withIdentifier('header')
+     *     .withEditable(true)
+     *     .withFile(require('./includes/header.twig'))
+     *     .withName('Header'))
      * @since BSI CX 1.3
      */
     export default class Include extends AbstractInclude {
         constructor();
         /**
-         * @param {boolean} [shallow=true]
+         * Set the unique identifier to use. A UUID v4 will be used, if you don't set this property.
+         * <strong>It is recommended to define this property.</strong>
+         *
+         * @param {string} identifier - A unique identifier for this include.
+         * @returns {Include}
+         */
+        withIdentifier(identifier: string): Include;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
          * @returns {Include}
          */
         clone(shallow?: boolean): Include;
     }
+    export type Website = import("src/website/website").default;
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "src/content-element/part/part-factory" {
@@ -5552,7 +5838,7 @@ declare module "src/design/design-factory" {
          * .withNLS(
          *   cx.nls
          *     .withIdentifier('action')
-         *     .withTranslation(
+         *     .withTranslations(
          *       cx.translation
          *         .withLocale(Locale.WILDCARD)
          *         .withTranslation('action'),
@@ -5566,7 +5852,7 @@ declare module "src/design/design-factory" {
          * Get a new NLS translation builder instance.
          *
          * @example
-         * .withTranslation(
+         * .withTranslations(
          *   cx.translation
          *     .withLocale(Locale.WILDCARD)
          *     .withTranslation('action'),
@@ -5593,8 +5879,41 @@ declare module "src/design/design-factory" {
          */
         get part(): PartFactory;
         /**
-         * @param {Locale|string} localeOrWildcardTranslation
-         * @param {string|undefined} [optionalTranslation=undefined]
+         * Shortcut to create a {@link NLS} object. See example for usage.
+         *
+         * @example
+         * module.exports = [
+         *   cx.n(
+         *     'action',
+         *     cx.t('action'),
+         *     cx.t('de', 'Aktion'),
+         *     cx.t(Locale.DE_CH, 'Aktion')),
+         *   cx.n(
+         *     'contact',
+         *     cx.t('contact'),
+         *     cx.t('de', 'Kontakt'),
+         *     cx.t(Locale.DE_CH, 'Kontakt'))
+         * ];
+         * @see {@link t}
+         * @param {string} identifier
+         * @param {Translation} translations
+         * @returns {NLS}
+         */
+        n(identifier: string, ...translations: Translation): NLS;
+        /**
+         * Shortcut to create a {@link Translation} object. See example for usage.
+         *
+         * @example
+         * cx.nls
+         *   .withIdentifier('action')
+         *   .withTranslations(
+         *     cx.t('action'), // wildcard translation
+         *     cx.t('de', 'Aktion'), // translation with raw locale
+         *     cx.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
+         * @see {@link n}
+         * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
+         * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
+         * @returns {Translation}
          */
         t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): Translation;
     }

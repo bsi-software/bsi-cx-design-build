@@ -5,15 +5,24 @@ import Translation from './translation';
  * The builder class for NLS objects.
  *
  * @example
- * module.exports = cx.nls
- *   .withIdentifier('action')
- *   .withTranslations(
- *     cx.translation
- *       .withLocale(Locale.WILDCARD)
- *       .withTranslation('action'),
- *     cx.translation
- *       .withLocale(Locale.DE)
- *       .withTranslation('Aktion'));
+ * module.exports = [
+ *   // using with* methods
+ *   cx.nls
+ *     .withIdentifier('action')
+ *     .withTranslations(
+ *       cx.translation
+ *         .withLocale(Locale.WILDCARD)
+ *         .withTranslation('action'),
+ *       cx.translation
+ *         .withLocale(Locale.DE)
+ *         .withTranslation('Aktion')),
+ *   // using factory shortcuts
+ *   cx.n(
+ *     'contact',
+ *     cx.t('contact'),
+ *     cx.t('de', 'Kontakt'),
+ *     cx.t(Locale.DE_CH, 'Kontakt'))
+ * ];
  */
 export default class NLS extends AbstractBuilder {
   /**
@@ -51,11 +60,48 @@ export default class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {...Translation} translations
+   * Add translations to this NLS object.
+   *
+   * @example
+   * cx.nls
+   *   .withIdentifier('action')
+   *   .withTranslations(
+   *     cx.translation
+   *       .withLocale(Locale.WILDCARD)
+   *       .withTranslation('action'),
+   *     cx.translation
+   *       .withLocale(Locale.DE)
+   *       .withTranslation('Aktion'))
+   * @param {...Translation} translations - The translation objects.
    * @returns {NLS}
    */
   withTranslations(...translations) {
     this._translations = translations;
+    return this;
+  }
+
+  /**
+   * Set the translations as raw value.
+   *
+   * @example
+   * .withRawTranslations({
+   *   '*': 'contact',
+   *   'de': 'Kontakt',
+   *   'de-CH': 'Kontakt'
+   * })
+   * @param {{}} translations
+   * @returns {NLS}
+   */
+  withRawTranslations(translations) {
+    this._translations = [];
+
+    for (let [locale, translation] of Object.entries(translations)) {
+      let translationObj = new Translation()
+        .withRawLocale(locale)
+        .withTranslation(translation);
+      this._translations.push(translationObj);
+    }
+
     return this;
   }
 
@@ -76,8 +122,10 @@ export default class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {string} identifier
-   * @param {...Translation}translations
+   * Static helper method to create a NLS with some translations.
+   *
+   * @param {string} identifier - The identifier to use.
+   * @param {...Translation} translations - The translation objects.
    * @returns {NLS}
    */
   static create(identifier, ...translations) {
@@ -87,6 +135,14 @@ export default class NLS extends AbstractBuilder {
   }
 
   /**
+   * @example
+   * NLS.fromMap(
+   *   'reset',
+   *   new Map([
+   *     [Locale.WILDCARD, 'Reset'],
+   *     [Locale.DE, 'Zurücksetzen']
+   *   ])
+   * )
    * @param {string} identifier
    * @param {Map<Locale,string>} map
    */
@@ -106,7 +162,9 @@ export default class NLS extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} [shallow=true]
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
    * @returns {NLS}
    */
   clone(shallow) {
