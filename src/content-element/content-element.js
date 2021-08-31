@@ -13,16 +13,16 @@ import RawValue from '../raw-value';
  *
  * @example
  * .withContentElements(
- *   new ContentElement()
+ *   cx.contentElement
  *     .withElementId('image-with-text')
  *     .withLabel('Image with text')
  *     .withDescription('Displays an image with an optional text.')
  *     .withFile(require('./template.twig'))
  *     .withIcon(Icon.IMAGE)
  *     .withParts(
- *       new ImagePart()
+ *       cx.part.image
  *         .withLabel('Image'),
- *       new PlainTextPart()
+ *       cx.part.plainText
  *         .withLabel('Description')))
  */
 export default class ContentElement extends AbstractBuilder {
@@ -209,17 +209,17 @@ export default class ContentElement extends AbstractBuilder {
    * Declare the styles for this content element.
    *
    * @example
-   * let textColorStyle = new Style()
+   * let textColorStyle = cx.style
    *   .withIdentifier('text-color')
    *   .withLabel('Text Color')
    *   .withCssClasses(
-   *     new CssClass()
+   *     cx.cssClass
    *       .withCssClass('blue-text')
    *       .withLabel('Blue'),
-   *     new CssClass()
+   *     cx.cssClass
    *       .withCssClass('red-text')
    *       .withLabel('Red'))
-   *  let textElement = new ContentElement()
+   *  let textElement = cx.contentElement
    *    .withStyleConfigs(
    *      textColorStyle,
    *      require('./styles/background-color'))
@@ -255,9 +255,9 @@ export default class ContentElement extends AbstractBuilder {
    *
    * @example
    * .withParts(
-   *   new ImagePart()
+   *   cx.part.image
    *     .withLabel('Image'),
-   *   new PlainTextPart()
+   *   cx.part.plainText
    *     .withLabel('Description'))
    * @see {@link withRawParts} to set a raw value
    * @param {...AbstractPart} parts - The parts to use.

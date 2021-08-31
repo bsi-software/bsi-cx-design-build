@@ -1049,7 +1049,7 @@ const V_22_0 = new SchemaVersion('22.0');
  * This is the builder class to specify a design.
  *
  * @example
- * module.exports = new Design()
+ * module.exports = cx.design
  *   .withSchemaVersion(SchemaVersion.V_22_0)
  *   .withTitle('My BSI CX Design')
  *   .withAuthor('John Doe')
@@ -1060,7 +1060,7 @@ const V_22_0 = new SchemaVersion('22.0');
  *     require('./configs/html-editor/full.js'),
  *     require('./configs/html-editor/minimal.js'))
  *   .withContentElementGroups(
- *     new ContentElementGroup()
+ *     cx.contentElementGroup
  *       .withGroupId('content')
  *       .withLabel('Content')
  *       .withContentElements(
@@ -1575,7 +1575,7 @@ class Design extends AbstractBuilder {
  * This is the builder class to specify content element groups.
  *
  * @example
- * module.exports = new ContentElementGroup()
+ * module.exports = cx.contentElementGroup
  *   .withGroupId('content')
  *   .withLabel('Content')
  *   .withContentElements(
@@ -1672,16 +1672,16 @@ class ContentElementGroup extends AbstractBuilder {
    *
    * @example
    * .withContentElements(
-   *   new ContentElement()
+   *   cx.contentElement
    *     .withElementId('image-with-text')
    *     .withLabel('Image with text')
    *     .withDescription('Displays an image with an optional text.')
    *     .withFile(require('./template.twig'))
    *     .withIcon(Icon.IMAGE)
    *     .withParts(
-   *       new ImagePart()
+   *       cx.part.image
    *         .withLabel('Image'),
-   *       new PlainTextPart()
+   *       cx.part.plainText
    *         .withLabel('Description')))
    * @see {@link withRawContentElements} to set a raw value
    * @see {@link ContentElement}
@@ -2221,7 +2221,7 @@ const PRE = new Format('pre');
  * This is the builder class to specify a HTML editor configuration.
  *
  * @example
- * module.exports = new HtmlEditorConfig()
+ * module.exports = cx.htmlEditorConfig
  *   .withIdentifier('minimal')
  *   .withRawEnterMode('p')
  *   .withFeatures(
@@ -2684,6 +2684,9 @@ class Style extends AbstractBuilder {
 
 
 
+/**
+ * @since Studio 1.1
+ */
 class CssClass extends AbstractBuilder {
   /**
    * @type {string|undefined}
@@ -3010,16 +3013,16 @@ const THREE_COLUMNS = new Icon('three-columns');
  *
  * @example
  * .withContentElements(
- *   new ContentElement()
+ *   cx.contentElement
  *     .withElementId('image-with-text')
  *     .withLabel('Image with text')
  *     .withDescription('Displays an image with an optional text.')
  *     .withFile(require('./template.twig'))
  *     .withIcon(Icon.IMAGE)
  *     .withParts(
- *       new ImagePart()
+ *       cx.part.image
  *         .withLabel('Image'),
- *       new PlainTextPart()
+ *       cx.part.plainText
  *         .withLabel('Description')))
  */
 class ContentElement extends AbstractBuilder {
@@ -3206,17 +3209,17 @@ class ContentElement extends AbstractBuilder {
    * Declare the styles for this content element.
    *
    * @example
-   * let textColorStyle = new Style()
+   * let textColorStyle = cx.style
    *   .withIdentifier('text-color')
    *   .withLabel('Text Color')
    *   .withCssClasses(
-   *     new CssClass()
+   *     cx.cssClass
    *       .withCssClass('blue-text')
    *       .withLabel('Blue'),
-   *     new CssClass()
+   *     cx.cssClass
    *       .withCssClass('red-text')
    *       .withLabel('Red'))
-   *  let textElement = new ContentElement()
+   *  let textElement = cx.contentElement
    *    .withStyleConfigs(
    *      textColorStyle,
    *      require('./styles/background-color'))
@@ -3252,9 +3255,9 @@ class ContentElement extends AbstractBuilder {
    *
    * @example
    * .withParts(
-   *   new ImagePart()
+   *   cx.part.image
    *     .withLabel('Image'),
-   *   new PlainTextPart()
+   *   cx.part.plainText
    *     .withLabel('Description'))
    * @see {@link withRawParts} to set a raw value
    * @param {...AbstractPart} parts - The parts to use.
@@ -4335,11 +4338,12 @@ class Include extends AbstractInclude {
 
 
 
+
 /** @typedef {import('../design/locale').Locale} Locale */
 
 class Translation extends AbstractBuilder {
   /**
-   * @type {Locale|undefined}
+   * @type {Locale|RawValue|undefined}
    * @private
    */
   _locale = undefined;
@@ -4350,7 +4354,7 @@ class Translation extends AbstractBuilder {
   _translation = undefined;
 
   /**
-   * @returns {Locale|undefined}
+   * @returns {Locale|RawValue|undefined}
    */
   get locale() {
     return this._locale;
@@ -4369,6 +4373,15 @@ class Translation extends AbstractBuilder {
    */
   withLocale(locale) {
     this._locale = locale;
+    return this;
+  }
+
+  /**
+   * @param {string} locale
+   * @returns {Translation}
+   */
+  withRawLocale(locale) {
+    this._locale = new RawValue(locale);
     return this;
   }
 
@@ -4423,6 +4436,20 @@ class Translation extends AbstractBuilder {
 
 
 
+/**
+ * The builder class for NLS objects.
+ *
+ * @example
+ * module.exports = cx.nls
+ *   .withIdentifier('action')
+ *   .withTranslations(
+ *     cx.translation
+ *       .withLocale(Locale.WILDCARD)
+ *       .withTranslation('action'),
+ *     cx.translation
+ *       .withLocale(Locale.DE)
+ *       .withTranslation('Aktion'));
+ */
 class NLS extends AbstractBuilder {
   /**
    * @type {string|undefined}
@@ -4545,6 +4572,8 @@ class NLS extends AbstractBuilder {
 
 class PartFactory {
   /**
+   * Get a new background content element part builder instance.
+   *
    * @returns {BackgroundImagePart}
    */
   get backgroundImage() {
@@ -4552,6 +4581,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new checkbox form field content element part builder instance.
+   *
    * @returns {FormCheckboxPart}
    */
   get formCheckbox() {
@@ -4559,6 +4590,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new form field content element part builder instance.
+   *
    * @returns {FormFieldPart}
    */
   get formField() {
@@ -4566,6 +4599,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new form content element part builder instance.
+   *
    * @returns {FormPart}
    */
   get form() {
@@ -4573,6 +4608,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new radio form field content element part builder instance.
+   *
    * @returns {FormRadioPart}
    */
   get formRadio() {
@@ -4580,6 +4617,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new select form field content element part builder instance.
+   *
    * @returns {FormSelectPart}
    */
   get formSelect() {
@@ -4587,6 +4626,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new textarea form field content element part builder instance.
+   *
    * @returns {FormTextareaPart}
    */
   get formTextarea() {
@@ -4594,6 +4635,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new formatted text content element part builder instance.
+   *
    * @returns {FormattedTextPart}
    */
   get formattedText() {
@@ -4601,6 +4644,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new HTML content element part builder instance.
+   *
    * @returns {HtmlPart}
    */
   get html() {
@@ -4608,6 +4653,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new image content element part builder instance.
+   *
    * @returns {ImagePart}
    */
   get image() {
@@ -4615,6 +4662,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new iterator content element part builder instance.
+   *
    * @returns {IteratorPart}
    */
   get iterator() {
@@ -4622,6 +4671,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new link content element part builder instance.
+   *
    * @returns {LinkPart}
    */
   get link() {
@@ -4629,6 +4680,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new news snippet content element part builder instance.
+   *
    * @returns {NewsSnippetsPart}
    */
   get newsSnippet() {
@@ -4636,6 +4689,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new plain text content element part builder instance.
+   *
    * @returns {PlainTextPart}
    */
   get plainText() {
@@ -4643,6 +4698,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new social follow content element part builder instance.
+   *
    * @returns {SocialFollowPart}
    */
   get socialFollow() {
@@ -4650,6 +4707,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new social share content element part builder instance.
+   *
    * @returns {SocialSharePart}
    */
   get socialShare() {
@@ -4657,6 +4716,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new table content element part builder instance.
+   *
    * @returns {TablePart}
    */
   get table() {
@@ -4664,6 +4725,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new URL provider content element part builder instance.
+   *
    * @returns {UrlProviderPart}
    */
   get urlProvider() {
@@ -4671,6 +4734,8 @@ class PartFactory {
   }
 
   /**
+   * Get a new video content element part builder instance.
+   *
    * @returns {VideoPart}
    */
   get video() {
@@ -4679,6 +4744,7 @@ class PartFactory {
 }
 
 ;// CONCATENATED MODULE: ./src/design/design-factory.js
+
 
 
 
@@ -4952,6 +5018,18 @@ class DesignFactory {
    */
   get part() {
     return new PartFactory();
+  }
+
+  /**
+   * @param {Locale|string} localeOrWildcardTranslation
+   * @param {string|undefined} [optionalTranslation=undefined]
+   */
+  t(localeOrWildcardTranslation, optionalTranslation) {
+    let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;
+    let translation = optionalTranslation ?? localeOrWildcardTranslation;
+    let translationObj = this.translation.withTranslation(translation);
+
+    return locale instanceof Locale ? translationObj.withLocale(locale) : translationObj.withRawLocale(locale);
   }
 }
 

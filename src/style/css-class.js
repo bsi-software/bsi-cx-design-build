@@ -2,6 +2,9 @@ import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {identity} from '../browser-utility';
 
+/**
+ * @since Studio 1.1
+ */
 export default class CssClass extends AbstractBuilder {
   /**
    * @type {string|undefined}

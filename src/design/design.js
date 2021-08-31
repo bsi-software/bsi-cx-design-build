@@ -15,7 +15,7 @@ import RawValue from '../raw-value';
  * This is the builder class to specify a design.
  *
  * @example
- * module.exports = new Design()
+ * module.exports = cx.design
  *   .withSchemaVersion(SchemaVersion.V_22_0)
  *   .withTitle('My BSI CX Design')
  *   .withAuthor('John Doe')
@@ -26,7 +26,7 @@ import RawValue from '../raw-value';
  *     require('./configs/html-editor/full.js'),
  *     require('./configs/html-editor/minimal.js'))
  *   .withContentElementGroups(
- *     new ContentElementGroup()
+ *     cx.contentElementGroup
  *       .withGroupId('content')
  *       .withLabel('Content')
  *       .withContentElements(

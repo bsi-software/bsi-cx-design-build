@@ -9,7 +9,7 @@ import RawValue from '../raw-value';
  * This is the builder class to specify content element groups.
  *
  * @example
- * module.exports = new ContentElementGroup()
+ * module.exports = cx.contentElementGroup
  *   .withGroupId('content')
  *   .withLabel('Content')
  *   .withContentElements(
@@ -106,16 +106,16 @@ export default class ContentElementGroup extends AbstractBuilder {
    *
    * @example
    * .withContentElements(
-   *   new ContentElement()
+   *   cx.contentElement
    *     .withElementId('image-with-text')
    *     .withLabel('Image with text')
    *     .withDescription('Displays an image with an optional text.')
    *     .withFile(require('./template.twig'))
    *     .withIcon(Icon.IMAGE)
    *     .withParts(
-   *       new ImagePart()
+   *       cx.part.image
    *         .withLabel('Image'),
-   *       new PlainTextPart()
+   *       cx.part.plainText
    *         .withLabel('Description')))
    * @see {@link withRawContentElements} to set a raw value
    * @see {@link ContentElement}

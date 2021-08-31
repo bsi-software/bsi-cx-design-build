@@ -10,6 +10,7 @@ import CssClass from '../style/css-class';
 import NLS from '../nls/nls';
 import Translation from '../nls/translation';
 import PartFactory from '../content-element/part/part-factory';
+import {Locale, WILDCARD} from './locale';
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -271,5 +272,17 @@ export default class DesignFactory {
    */
   get part() {
     return new PartFactory();
+  }
+
+  /**
+   * @param {Locale|string} localeOrWildcardTranslation
+   * @param {string|undefined} [optionalTranslation=undefined]
+   */
+  t(localeOrWildcardTranslation, optionalTranslation) {
+    let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;
+    let translation = optionalTranslation ?? localeOrWildcardTranslation;
+    let translationObj = this.translation.withTranslation(translation);
+
+    return locale instanceof Locale ? translationObj.withLocale(locale) : translationObj.withRawLocale(locale);
   }
 }

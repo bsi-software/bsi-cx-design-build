@@ -2852,6 +2852,9 @@ declare module "src/design/schema-version" {
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/style/css-class" {
+    /**
+     * @since Studio 1.1
+     */
     export default class CssClass extends AbstractBuilder {
         /**
          * @param {string} cssClass
@@ -3203,16 +3206,16 @@ declare module "src/content-element/content-element" {
      *
      * @example
      * .withContentElements(
-     *   new ContentElement()
+     *   cx.contentElement
      *     .withElementId('image-with-text')
      *     .withLabel('Image with text')
      *     .withDescription('Displays an image with an optional text.')
      *     .withFile(require('./template.twig'))
      *     .withIcon(Icon.IMAGE)
      *     .withParts(
-     *       new ImagePart()
+     *       cx.part.image
      *         .withLabel('Image'),
-     *       new PlainTextPart()
+     *       cx.part.plainText
      *         .withLabel('Description')))
      */
     export default class ContentElement extends AbstractBuilder {
@@ -3350,17 +3353,17 @@ declare module "src/content-element/content-element" {
          * Declare the styles for this content element.
          *
          * @example
-         * let textColorStyle = new Style()
+         * let textColorStyle = cx.style
          *   .withIdentifier('text-color')
          *   .withLabel('Text Color')
          *   .withCssClasses(
-         *     new CssClass()
+         *     cx.cssClass
          *       .withCssClass('blue-text')
          *       .withLabel('Blue'),
-         *     new CssClass()
+         *     cx.cssClass
          *       .withCssClass('red-text')
          *       .withLabel('Red'))
-         *  let textElement = new ContentElement()
+         *  let textElement = cx.contentElement
          *    .withStyleConfigs(
          *      textColorStyle,
          *      require('./styles/background-color'))
@@ -3388,9 +3391,9 @@ declare module "src/content-element/content-element" {
          *
          * @example
          * .withParts(
-         *   new ImagePart()
+         *   cx.part.image
          *     .withLabel('Image'),
-         *   new PlainTextPart()
+         *   cx.part.plainText
          *     .withLabel('Description'))
          * @see {@link withRawParts} to set a raw value
          * @param {...AbstractPart} parts - The parts to use.
@@ -3437,7 +3440,7 @@ declare module "src/content-element/content-element-group" {
      * This is the builder class to specify content element groups.
      *
      * @example
-     * module.exports = new ContentElementGroup()
+     * module.exports = cx.contentElementGroup
      *   .withGroupId('content')
      *   .withLabel('Content')
      *   .withContentElements(
@@ -3509,16 +3512,16 @@ declare module "src/content-element/content-element-group" {
          *
          * @example
          * .withContentElements(
-         *   new ContentElement()
+         *   cx.contentElement
          *     .withElementId('image-with-text')
          *     .withLabel('Image with text')
          *     .withDescription('Displays an image with an optional text.')
          *     .withFile(require('./template.twig'))
          *     .withIcon(Icon.IMAGE)
          *     .withParts(
-         *       new ImagePart()
+         *       cx.part.image
          *         .withLabel('Image'),
-         *       new PlainTextPart()
+         *       cx.part.plainText
          *         .withLabel('Description')))
          * @see {@link withRawContentElements} to set a raw value
          * @see {@link ContentElement}
@@ -3928,7 +3931,7 @@ declare module "src/html-editor-config/html-editor-config" {
      * This is the builder class to specify a HTML editor configuration.
      *
      * @example
-     * module.exports = new HtmlEditorConfig()
+     * module.exports = cx.htmlEditorConfig
      *   .withIdentifier('minimal')
      *   .withRawEnterMode('p')
      *   .withFeatures(
@@ -4240,7 +4243,7 @@ declare module "src/nls/translation" {
          */
         static wildcard(translation: string): Translation;
         /**
-         * @type {Locale|undefined}
+         * @type {Locale|RawValue|undefined}
          * @private
          */
         private _locale;
@@ -4250,9 +4253,9 @@ declare module "src/nls/translation" {
          */
         private _translation;
         /**
-         * @returns {Locale|undefined}
+         * @returns {Locale|RawValue|undefined}
          */
-        get locale(): import("src/design/locale").Locale;
+        get locale(): RawValue | import("src/design/locale").Locale;
         /**
          * @returns {string|undefined}
          */
@@ -4262,6 +4265,11 @@ declare module "src/nls/translation" {
          * @returns {Translation}
          */
         withLocale(locale: Locale): Translation;
+        /**
+         * @param {string} locale
+         * @returns {Translation}
+         */
+        withRawLocale(locale: string): Translation;
         /**
          * @param {string} translation
          * @returns {Translation}
@@ -4275,8 +4283,23 @@ declare module "src/nls/translation" {
     }
     export type Locale = import("src/design/locale").Locale;
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
 }
 declare module "src/nls/nls" {
+    /**
+     * The builder class for NLS objects.
+     *
+     * @example
+     * module.exports = cx.nls
+     *   .withIdentifier('action')
+     *   .withTranslations(
+     *     cx.translation
+     *       .withLocale(Locale.WILDCARD)
+     *       .withTranslation('action'),
+     *     cx.translation
+     *       .withLocale(Locale.DE)
+     *       .withTranslation('Aktion'));
+     */
     export default class NLS extends AbstractBuilder {
         /**
          * @param {string} identifier
@@ -4338,7 +4361,7 @@ declare module "src/design/design" {
      * This is the builder class to specify a design.
      *
      * @example
-     * module.exports = new Design()
+     * module.exports = cx.design
      *   .withSchemaVersion(SchemaVersion.V_22_0)
      *   .withTitle('My BSI CX Design')
      *   .withAuthor('John Doe')
@@ -4349,7 +4372,7 @@ declare module "src/design/design" {
      *     require('./configs/html-editor/full.js'),
      *     require('./configs/html-editor/minimal.js'))
      *   .withContentElementGroups(
-     *     new ContentElementGroup()
+     *     cx.contentElementGroup
      *       .withGroupId('content')
      *       .withLabel('Content')
      *       .withContentElements(
@@ -5208,78 +5231,116 @@ declare module "src/website/include" {
 declare module "src/content-element/part/part-factory" {
     export default class PartFactory {
         /**
+         * Get a new background content element part builder instance.
+         *
          * @returns {BackgroundImagePart}
          */
         get backgroundImage(): BackgroundImagePart;
         /**
+         * Get a new checkbox form field content element part builder instance.
+         *
          * @returns {FormCheckboxPart}
          */
         get formCheckbox(): FormCheckboxPart;
         /**
+         * Get a new form field content element part builder instance.
+         *
          * @returns {FormFieldPart}
          */
         get formField(): FormFieldPart;
         /**
+         * Get a new form content element part builder instance.
+         *
          * @returns {FormPart}
          */
         get form(): FormPart;
         /**
+         * Get a new radio form field content element part builder instance.
+         *
          * @returns {FormRadioPart}
          */
         get formRadio(): FormRadioPart;
         /**
+         * Get a new select form field content element part builder instance.
+         *
          * @returns {FormSelectPart}
          */
         get formSelect(): FormSelectPart;
         /**
+         * Get a new textarea form field content element part builder instance.
+         *
          * @returns {FormTextareaPart}
          */
         get formTextarea(): FormTextareaPart;
         /**
+         * Get a new formatted text content element part builder instance.
+         *
          * @returns {FormattedTextPart}
          */
         get formattedText(): FormattedTextPart;
         /**
+         * Get a new HTML content element part builder instance.
+         *
          * @returns {HtmlPart}
          */
         get html(): HtmlPart;
         /**
+         * Get a new image content element part builder instance.
+         *
          * @returns {ImagePart}
          */
         get image(): ImagePart;
         /**
+         * Get a new iterator content element part builder instance.
+         *
          * @returns {IteratorPart}
          */
         get iterator(): IteratorPart;
         /**
+         * Get a new link content element part builder instance.
+         *
          * @returns {LinkPart}
          */
         get link(): LinkPart;
         /**
+         * Get a new news snippet content element part builder instance.
+         *
          * @returns {NewsSnippetsPart}
          */
         get newsSnippet(): NewsSnippetsPart;
         /**
+         * Get a new plain text content element part builder instance.
+         *
          * @returns {PlainTextPart}
          */
         get plainText(): PlainTextPart;
         /**
+         * Get a new social follow content element part builder instance.
+         *
          * @returns {SocialFollowPart}
          */
         get socialFollow(): SocialFollowPart;
         /**
+         * Get a new social share content element part builder instance.
+         *
          * @returns {SocialSharePart}
          */
         get socialShare(): SocialSharePart;
         /**
+         * Get a new table content element part builder instance.
+         *
          * @returns {TablePart}
          */
         get table(): TablePart;
         /**
+         * Get a new URL provider content element part builder instance.
+         *
          * @returns {UrlProviderPart}
          */
         get urlProvider(): UrlProviderPart;
         /**
+         * Get a new video content element part builder instance.
+         *
          * @returns {VideoPart}
          */
         get video(): VideoPart;
@@ -5531,6 +5592,11 @@ declare module "src/design/design-factory" {
          * @returns {PartFactory}
          */
         get part(): PartFactory;
+        /**
+         * @param {Locale|string} localeOrWildcardTranslation
+         * @param {string|undefined} [optionalTranslation=undefined]
+         */
+        t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): Translation;
     }
     import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
@@ -5544,6 +5610,7 @@ declare module "src/design/design-factory" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
+    import { Locale } from "src/design/locale";
 }
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";

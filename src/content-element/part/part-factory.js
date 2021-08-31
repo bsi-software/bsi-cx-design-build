@@ -20,6 +20,8 @@ import VideoPart from './video-part';
 
 export default class PartFactory {
   /**
+   * Get a new background content element part builder instance.
+   *
    * @returns {BackgroundImagePart}
    */
   get backgroundImage() {
@@ -27,6 +29,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new checkbox form field content element part builder instance.
+   *
    * @returns {FormCheckboxPart}
    */
   get formCheckbox() {
@@ -34,6 +38,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new form field content element part builder instance.
+   *
    * @returns {FormFieldPart}
    */
   get formField() {
@@ -41,6 +47,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new form content element part builder instance.
+   *
    * @returns {FormPart}
    */
   get form() {
@@ -48,6 +56,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new radio form field content element part builder instance.
+   *
    * @returns {FormRadioPart}
    */
   get formRadio() {
@@ -55,6 +65,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new select form field content element part builder instance.
+   *
    * @returns {FormSelectPart}
    */
   get formSelect() {
@@ -62,6 +74,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new textarea form field content element part builder instance.
+   *
    * @returns {FormTextareaPart}
    */
   get formTextarea() {
@@ -69,6 +83,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new formatted text content element part builder instance.
+   *
    * @returns {FormattedTextPart}
    */
   get formattedText() {
@@ -76,6 +92,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new HTML content element part builder instance.
+   *
    * @returns {HtmlPart}
    */
   get html() {
@@ -83,6 +101,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new image content element part builder instance.
+   *
    * @returns {ImagePart}
    */
   get image() {
@@ -90,6 +110,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new iterator content element part builder instance.
+   *
    * @returns {IteratorPart}
    */
   get iterator() {
@@ -97,6 +119,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new link content element part builder instance.
+   *
    * @returns {LinkPart}
    */
   get link() {
@@ -104,6 +128,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new news snippet content element part builder instance.
+   *
    * @returns {NewsSnippetsPart}
    */
   get newsSnippet() {
@@ -111,6 +137,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new plain text content element part builder instance.
+   *
    * @returns {PlainTextPart}
    */
   get plainText() {
@@ -118,6 +146,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new social follow content element part builder instance.
+   *
    * @returns {SocialFollowPart}
    */
   get socialFollow() {
@@ -125,6 +155,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new social share content element part builder instance.
+   *
    * @returns {SocialSharePart}
    */
   get socialShare() {
@@ -132,6 +164,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new table content element part builder instance.
+   *
    * @returns {TablePart}
    */
   get table() {
@@ -139,6 +173,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new URL provider content element part builder instance.
+   *
    * @returns {UrlProviderPart}
    */
   get urlProvider() {
@@ -146,6 +182,8 @@ export default class PartFactory {
   }
 
   /**
+   * Get a new video content element part builder instance.
+   *
    * @returns {VideoPart}
    */
   get video() {

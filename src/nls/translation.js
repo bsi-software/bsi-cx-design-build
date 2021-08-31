@@ -1,11 +1,12 @@
 import AbstractBuilder from '../abstract-builder';
 import {WILDCARD} from '../design/locale';
+import RawValue from '../raw-value';
 
 /** @typedef {import('../design/locale').Locale} Locale */
 
 export default class Translation extends AbstractBuilder {
   /**
-   * @type {Locale|undefined}
+   * @type {Locale|RawValue|undefined}
    * @private
    */
   _locale = undefined;
@@ -16,7 +17,7 @@ export default class Translation extends AbstractBuilder {
   _translation = undefined;
 
   /**
-   * @returns {Locale|undefined}
+   * @returns {Locale|RawValue|undefined}
    */
   get locale() {
     return this._locale;
@@ -35,6 +36,15 @@ export default class Translation extends AbstractBuilder {
    */
   withLocale(locale) {
     this._locale = locale;
+    return this;
+  }
+
+  /**
+   * @param {string} locale
+   * @returns {Translation}
+   */
+  withRawLocale(locale) {
+    this._locale = new RawValue(locale);
     return this;
   }
 

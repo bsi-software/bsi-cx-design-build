@@ -1,6 +1,20 @@
 import AbstractBuilder from '../abstract-builder';
 import Translation from './translation';
 
+/**
+ * The builder class for NLS objects.
+ *
+ * @example
+ * module.exports = cx.nls
+ *   .withIdentifier('action')
+ *   .withTranslations(
+ *     cx.translation
+ *       .withLocale(Locale.WILDCARD)
+ *       .withTranslation('action'),
+ *     cx.translation
+ *       .withLocale(Locale.DE)
+ *       .withTranslation('Aktion'));
+ */
 export default class NLS extends AbstractBuilder {
   /**
    * @type {string|undefined}

@@ -12,7 +12,7 @@ import RawValue from '../raw-value';
  * This is the builder class to specify a HTML editor configuration.
  *
  * @example
- * module.exports = new HtmlEditorConfig()
+ * module.exports = cx.htmlEditorConfig
  *   .withIdentifier('minimal')
  *   .withRawEnterMode('p')
  *   .withFeatures(
