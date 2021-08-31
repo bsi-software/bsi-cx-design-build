@@ -11,6 +11,9 @@ import {buildPublicPath, escapeRegex, toPosixPath, toString} from './utility';
 import DesignJsonProperty from './design-json-property';
 import BuilderObjectNormalizer from './builder-object-normalizer';
 import File from './file';
+import DistFolder from './dist-folder';
+import {uuid} from './browser-utility';
+import slugify from 'slugify';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -33,7 +36,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = /^static\/styles-[0-9a-z]+\.css$/;
+  static STYLES_CSS = new RegExp(`^${DistFolder.STATIC}\/styles-[0-9a-z]+\.css$`);
   /**
    * @type {RegExp}
    */
@@ -67,18 +70,22 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @type {ValidatedBuildConfig}
+   * @private
    */
   _config = undefined;
   /**
    * @type {Compiler}
+   * @private
    */
   _compiler = undefined;
   /**
    * @type {Compilation}
+   * @private
    */
   _compilation = undefined;
   /**
    * @type {WebpackLogger}
+   * @private
    */
   _logger = undefined;
 
@@ -109,9 +116,12 @@ class _BsiCxWebpackPlugin {
 
   apply() {
     try {
-      this._exportDesignJson();
-      this._exportDesignHtml();
-      this._exportPreviewHtml();
+      let designJsonObj = this._importDesignJson();
+      let replaceMap = this._createReplaceMap(designJsonObj);
+
+      this._exportDesignJson(designJsonObj, replaceMap);
+      this._exportDesignHtml(replaceMap);
+      this._exportPreviewHtml(replaceMap);
     } catch (error) {
       if (error instanceof WebpackError) {
         this._compilation.errors.push(error);
@@ -121,31 +131,87 @@ class _BsiCxWebpackPlugin {
     }
   }
 
-  _exportDesignHtml() {
-    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
-    this._updateHtmlTemplate(designHtmlPath, 'design');
-  }
-
-  _exportPreviewHtml() {
-    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
-    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview');
-
-    if (/\.hbs$/.test(previewFilePath)) {
-      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
-    }
-  }
-
-  _exportDesignJson() {
+  /**
+   * @returns {{}}
+   * @private
+   */
+  _importDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     /**
      * @type {*}
      */
     let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
+
+    return BuilderObjectNormalizer.normalize(designJson);
+  }
+
+  /**
+   *
+   * @param {{}} designJsonObj
+   * @returns {Map<string, function(string):string>}
+   * @private
+   */
+  _createReplaceMap(designJsonObj) {
     /**
-     * @type {{}}
+     * @type {Map<string, function(string):string>}
      */
-    let designJsonObj = BuilderObjectNormalizer.normalize(designJson);
+    let replaceMap = new Map();
+
+    designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
+      ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
+        ?.forEach(element => element[DesignJsonProperty.PARTS]
+          ?.filter(part => !!part[DesignJsonProperty.ID])
+          .forEach(part => {
+            /**
+             * @type {string}
+             */
+            let id = part[DesignJsonProperty.ID];
+            /**
+             * @type {string}
+             */
+            let partId = part[DesignJsonProperty.PART_ID];
+            /**
+             * @type {RegExp}
+             */
+            let needle = new RegExp(escapeRegex(id), 'g');
+
+            replaceMap.set(id, haystack => haystack.replace(needle, partId));
+          })));
+
+    return replaceMap;
+  }
+
+  /**
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _exportDesignHtml(replaceMap) {
+    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
+    this._updateHtmlTemplate(designHtmlPath, 'design', replaceMap);
+  }
+
+  /**
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _exportPreviewHtml(replaceMap) {
+    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview', replaceMap);
+
+    if (/\.hbs$/.test(previewFilePath)) {
+      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
+    }
+  }
+
+  /**
+   * @param {{}} designJsonObj
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _exportDesignJson(designJsonObj, replaceMap) {
+    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
@@ -154,10 +220,11 @@ class _BsiCxWebpackPlugin {
 
     contentElementGroups
       .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        .forEach(element => this._handleElement(element)));
+        .forEach(element => this._handleElement(element, replaceMap)));
 
-    Object.values(websiteIncludes)
-      .forEach(include => this._handleInclude(include));
+    for (let [id, include] of Object.entries(websiteIncludes)) {
+      this._handleInclude(id, include, replaceMap);
+    }
 
     let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
@@ -172,19 +239,36 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {{file:{content:string,path:string},parts:[]}} element
+   * @param {Map<string, function(string):string>} replaceMap
    * @private
    */
-  _handleElement(element) {
+  _handleElement(element, replaceMap) {
+    this._importElementFile(element);
     this._sortElementPartsById(element);
-    this._handleElementFile(element);
+    this._handleElementFile(element, replaceMap);
   }
 
   /**
    * @param {{file:{content:string,path:string},parts:[]}} element
    * @private
    */
-  _handleElementFile(element) {
-    element[DesignJsonProperty.FILE] = this._handleTemplateFile(element[DesignJsonProperty.FILE], 'contentElements');
+  _importElementFile(element) {
+    let fileObj = element[DesignJsonProperty.FILE];
+
+    fileObj.content = this._evalTemplateFile(fileObj.content);
+  }
+
+  /**
+   * @param {{file:{content:string,path:string},parts:[]}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _handleElementFile(element, replaceMap) {
+    let fileObj = element[DesignJsonProperty.FILE];
+    let baseFolder = DistFolder.CONTENT_ELEMENTS;
+    let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
+
+    element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
   }
 
   /**
@@ -196,19 +280,18 @@ class _BsiCxWebpackPlugin {
      * @type {Map<string, {id:string}>}
      */
     let idPartMap = new Map();
-    element
-      .parts
-      .filter(part => !!part.id)
+    element[DesignJsonProperty.PARTS]
+      .filter(part => !!part[DesignJsonProperty.ID])
       .forEach(part => {
-        idPartMap.set(part.id, part);
-        delete part.id;
+        idPartMap.set(part[DesignJsonProperty.ID], part);
+        delete part[DesignJsonProperty.ID];
       });
     // abort if not all parts have an ID
-    if (idPartMap.size !== element.parts.length) {
+    if (idPartMap.size !== element[DesignJsonProperty.PARTS].length) {
       return;
     }
 
-    let template = element.file.content;
+    let template = element[DesignJsonProperty.FILE].content;
     let orderedParts = [];
     idPartMap.forEach((part, id) => {
       let index = template.indexOf(id);
@@ -221,38 +304,72 @@ class _BsiCxWebpackPlugin {
     orderedParts = orderedParts.filter(part => !!part);
 
     // abort if not all parts are mapped to the template
-    if (orderedParts.length !== element.parts.length) {
+    if (orderedParts.length !== element[DesignJsonProperty.PARTS].length) {
       return;
     }
 
-    element.parts = orderedParts;
+    element[DesignJsonProperty.PARTS] = orderedParts;
   }
 
   /**
+   * @param {string} id
    * @param {{file:{}}} include
+   * @param {Map<string, function(string):string>} replaceMap
    * @private
    */
-  _handleInclude(include) {
-    include[DesignJsonProperty.FILE] = this._handleTemplateFile(include[DesignJsonProperty.FILE], 'includes');
+  _handleInclude(id, include, replaceMap) {
+    let fileObj = include[DesignJsonProperty.FILE];
+    let baseFolder = DistFolder.INCLUDES;
+
+    include[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, id, replaceMap, true);
+  }
+
+
+  /**
+   * @param {string} rawContent
+   */
+  _evalTemplateFile(rawContent) {
+    return /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
   }
 
   /**
    * @param {{content:string,path:string}} fileObj
    * @param {string} baseFolder
+   * @param {string} filenamePrefix
+   * @param {Map<string, function(string):string>} replaceMap
+   * @param {boolean} evalFirst
    * @returns {string}
    */
-  _handleTemplateFile(fileObj, baseFolder) {
-    let rawContent = fileObj.content;
-    let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
-    let originalExtension = path.extname(fileObj.path);
-    let fileName = path.basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
+  _handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, evalFirst) {
+    let content = fileObj.content;
+
+    if (!!evalFirst) {
+      content = /^module\.exports/.test(content) ? this._eval(content) : content;
+    }
+
     let contentHash = this._createContentHash(content);
     let extension = this._getTemplateFileExtension(fileObj.path);
-    let elementFilePath = `${baseFolder}${path.posix.sep}${fileName}-${contentHash}.${extension}`;
+    let prefix = slugify(filenamePrefix ?? uuid());
+    let filename = prefix + '-' + contentHash + '.' + extension;
+    let elementFilePath = baseFolder + path.posix.sep + filename;
+
+    content = this._applyReplaceMap(content, replaceMap);
 
     this._emitAsset(elementFilePath, content);
 
     return elementFilePath;
+  }
+
+  /**
+   * @param {string} content
+   * @param {Map<string, function(string):string>} replaceMap
+   * @returns {string}
+   * @private
+   */
+  _applyReplaceMap(content, replaceMap) {
+    replaceMap.forEach(replaceFunc => content = replaceFunc(content));
+
+    return content;
   }
 
   /**
@@ -277,13 +394,14 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _getTemplateFileExtension(fileName) {
-    if (/\.hbs\.twig$/.test(fileName)) {
-      return 'hbs';
+    switch (true) {
+      case /\.hbs\.twig$/.test(fileName):
+        return 'hbs';
+      case /\.hbs$/.test(fileName):
+        return 'hbs';
+      default:
+        return 'html';
     }
-    if (/\.hbs$/.test(fileName)) {
-      return 'hbs';
-    }
-    return 'html';
   }
 
   /**
@@ -368,13 +486,15 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} filePath
    * @param {string} name
+   * @param {Map<string, function(string):string>} replaceMap
    * @returns {string}
    */
-  _updateHtmlTemplate(filePath, name) {
+  _updateHtmlTemplate(filePath, name, replaceMap) {
     let templateObj = this._loadAssets(name, filePath);
     let templateStr = this._eval(templateObj.content);
 
     templateStr = templateStr.trim();
+    templateStr = this._applyReplaceMap(templateStr, replaceMap);
     templateStr = this._handleStylesheets(templateStr);
     templateStr = this._handleJavaScriptModules(templateStr);
 
@@ -396,12 +516,13 @@ class _BsiCxWebpackPlugin {
     }
 
     let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
-    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/static/` : './static/';
+    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/${DistFolder.STATIC}/` : `./${DistFolder.STATIC}/`;
+    let staticFolderUrlPattern = new RegExp(`\.\.\/${DistFolder.STATIC}\/`, 'g');
     let asset = this._compilation.getAsset(cssStylesFilename);
     let source = asset.source.source()
       .trim()
       .replace(/\n/g, '')
-      .replace(/\.\.\/static\//g, inlineSourceAssetsUrl);
+      .replace(staticFolderUrlPattern, inlineSourceAssetsUrl);
 
     content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
     content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
@@ -477,7 +598,7 @@ class _BsiCxWebpackPlugin {
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
     let inline = metaInfo.inline;
-    let moduleAssetRegex = new RegExp(`^modules\/${module}\-[0-9a-z]+\.js$`);
+    let moduleAssetRegex = new RegExp(`^${DistFolder.MODULES}\/${module}\-[0-9a-z]+\.js$`);
     let moduleAssetPath = this._getAssetName(moduleAssetRegex);
 
     if (!moduleAssetPath) {
@@ -510,7 +631,7 @@ class _BsiCxWebpackPlugin {
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
+    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS})\/.*\.js$`);
     let assetPaths = this._getAssetNames(assetRegex);
 
     return assetPaths
@@ -521,7 +642,6 @@ class _BsiCxWebpackPlugin {
           let asset = this._compilation.getAsset(assetPath);
           let source = asset.source.source();
           let strSource = toString(source);
-          // noinspection JSUnresolvedVariable
           return `<script>${strSource}</script>`;
         } else {
           let url = buildPublicPath(this._config, assetPath);

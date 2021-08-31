@@ -57,7 +57,34 @@ export default class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @param {string} id
+   * The ID of the part. You can apply an unique identifier to your content element part.
+   * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+   * This property is only for the design build and will not appear in the final build artifacts.
+   * The advantage of using this property is, that you don't have to care about the order of your parts
+   * in your specification. The build will reorder the part definitions in the order they appear in the
+   * corresponding template. This can be very handy in large and complex elements with many parts.
+   *
+   * @example
+   * // template.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+   * </div>
+   *
+   * // title.js
+   * module.exports = new ContentElement()
+   *   .withElementId('title')
+   *   .withLabel('Title')
+   *   .withFile(require('./template.html')
+   *   .withParts(
+   *     new PlainTextPart()
+   *       .withId('539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+   *       .withLabel('Title'));
+   *
+   * // dist/title-4026bb9f6ec6c2284775.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+   * </div>
+   * @param {string} id - The ID to use.
    * @returns {AbstractPart}
    */
   withId(id) {
@@ -66,7 +93,9 @@ export default class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
+   * The set content element part's label.
+   *
+   * @param {string} label - The label to set.
    * @returns {AbstractPart}
    * @since Studio 1.0
    */

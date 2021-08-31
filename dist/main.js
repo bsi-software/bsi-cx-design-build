@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 398:
+/***/ 908:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -2033,7 +2033,86 @@ class File {
   static DESIGN_PROPERTIES = 'design.properties';
 }
 
+;// CONCATENATED MODULE: ./src/dist-folder.js
+class DistFolder {
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'content-elements';
+  /**
+   * @type {string}
+   */
+  static INCLUDES = 'includes';
+  /**
+   * @type {string}
+   */
+  static ASSETS = 'assets';
+  /**
+   * @type {string}
+   */
+  static MODULES = 'modules';
+  /**
+   * @type {string}
+   */
+  static STATIC = 'static';
+  /**
+   * @type {string}
+   */
+  static VENDORS = 'vendors';
+}
+
+;// CONCATENATED MODULE: ./src/browser-utility.js
+/**
+ * @param {[string|number]} arr
+ * @returns {string}
+ */
+function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @template T
+ * @param {T} v
+ * @returns {T}
+ */
+function identity(v) {
+  return v;
+}
+
+/**
+ * @param {AbstractConstant} constant
+ * @returns {string}
+ */
+function constantObjectValue(constant) {
+  return constant.value;
+}
+
+/**
+ * @param {AbstractBuilder} builder
+ * @returns {{}}
+ */
+function builderObjectValue(builder) {
+  return builder.build();
+}
+
+/**
+ * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
+ * (won't work in the browser context).
+ *
+ * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
+ * @returns {string}
+ */
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+
+
+
 
 
 
@@ -2069,7 +2148,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = /^static\/styles-[0-9a-z]+\.css$/;
+  static STYLES_CSS = new RegExp(`^${DistFolder.STATIC}\/styles-[0-9a-z]+\.css$`);
   /**
    * @type {RegExp}
    */
@@ -2103,18 +2182,22 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @type {ValidatedBuildConfig}
+   * @private
    */
   _config = undefined;
   /**
    * @type {Compiler}
+   * @private
    */
   _compiler = undefined;
   /**
    * @type {Compilation}
+   * @private
    */
   _compilation = undefined;
   /**
    * @type {WebpackLogger}
+   * @private
    */
   _logger = undefined;
 
@@ -2145,9 +2228,12 @@ class _BsiCxWebpackPlugin {
 
   apply() {
     try {
-      this._exportDesignJson();
-      this._exportDesignHtml();
-      this._exportPreviewHtml();
+      let designJsonObj = this._importDesignJson();
+      let replaceMap = this._createReplaceMap(designJsonObj);
+
+      this._exportDesignJson(designJsonObj, replaceMap);
+      this._exportDesignHtml(replaceMap);
+      this._exportPreviewHtml(replaceMap);
     } catch (error) {
       if (error instanceof lib_namespaceObject.WebpackError) {
         this._compilation.errors.push(error);
@@ -2157,31 +2243,87 @@ class _BsiCxWebpackPlugin {
     }
   }
 
-  _exportDesignHtml() {
-    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
-    this._updateHtmlTemplate(designHtmlPath, 'design');
-  }
-
-  _exportPreviewHtml() {
-    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
-    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview');
-
-    if (/\.hbs$/.test(previewFilePath)) {
-      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
-    }
-  }
-
-  _exportDesignJson() {
+  /**
+   * @returns {{}}
+   * @private
+   */
+  _importDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
     let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     /**
      * @type {*}
      */
     let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
+
+    return BuilderObjectNormalizer.normalize(designJson);
+  }
+
+  /**
+   *
+   * @param {{}} designJsonObj
+   * @returns {Map<string, function(string):string>}
+   * @private
+   */
+  _createReplaceMap(designJsonObj) {
     /**
-     * @type {{}}
+     * @type {Map<string, function(string):string>}
      */
-    let designJsonObj = BuilderObjectNormalizer.normalize(designJson);
+    let replaceMap = new Map();
+
+    designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
+      ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
+        ?.forEach(element => element[DesignJsonProperty.PARTS]
+          ?.filter(part => !!part[DesignJsonProperty.ID])
+          .forEach(part => {
+            /**
+             * @type {string}
+             */
+            let id = part[DesignJsonProperty.ID];
+            /**
+             * @type {string}
+             */
+            let partId = part[DesignJsonProperty.PART_ID];
+            /**
+             * @type {RegExp}
+             */
+            let needle = new RegExp(escapeRegex(id), 'g');
+
+            replaceMap.set(id, haystack => haystack.replace(needle, partId));
+          })));
+
+    return replaceMap;
+  }
+
+  /**
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _exportDesignHtml(replaceMap) {
+    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
+    this._updateHtmlTemplate(designHtmlPath, 'design', replaceMap);
+  }
+
+  /**
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _exportPreviewHtml(replaceMap) {
+    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview', replaceMap);
+
+    if (/\.hbs$/.test(previewFilePath)) {
+      this._handlePreviewHandlebars(previewFilePath, previewTemplate);
+    }
+  }
+
+  /**
+   * @param {{}} designJsonObj
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _exportDesignJson(designJsonObj, replaceMap) {
+    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
@@ -2190,10 +2332,11 @@ class _BsiCxWebpackPlugin {
 
     contentElementGroups
       .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        .forEach(element => this._handleElement(element)));
+        .forEach(element => this._handleElement(element, replaceMap)));
 
-    Object.values(websiteIncludes)
-      .forEach(include => this._handleInclude(include));
+    for (let [id, include] of Object.entries(websiteIncludes)) {
+      this._handleInclude(id, include, replaceMap);
+    }
 
     let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
@@ -2208,19 +2351,36 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {{file:{content:string,path:string},parts:[]}} element
+   * @param {Map<string, function(string):string>} replaceMap
    * @private
    */
-  _handleElement(element) {
+  _handleElement(element, replaceMap) {
+    this._importElementFile(element);
     this._sortElementPartsById(element);
-    this._handleElementFile(element);
+    this._handleElementFile(element, replaceMap);
   }
 
   /**
    * @param {{file:{content:string,path:string},parts:[]}} element
    * @private
    */
-  _handleElementFile(element) {
-    element[DesignJsonProperty.FILE] = this._handleTemplateFile(element[DesignJsonProperty.FILE], 'contentElements');
+  _importElementFile(element) {
+    let fileObj = element[DesignJsonProperty.FILE];
+
+    fileObj.content = this._evalTemplateFile(fileObj.content);
+  }
+
+  /**
+   * @param {{file:{content:string,path:string},parts:[]}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _handleElementFile(element, replaceMap) {
+    let fileObj = element[DesignJsonProperty.FILE];
+    let baseFolder = DistFolder.CONTENT_ELEMENTS;
+    let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
+
+    element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
   }
 
   /**
@@ -2232,19 +2392,18 @@ class _BsiCxWebpackPlugin {
      * @type {Map<string, {id:string}>}
      */
     let idPartMap = new Map();
-    element
-      .parts
-      .filter(part => !!part.id)
+    element[DesignJsonProperty.PARTS]
+      .filter(part => !!part[DesignJsonProperty.ID])
       .forEach(part => {
-        idPartMap.set(part.id, part);
-        delete part.id;
+        idPartMap.set(part[DesignJsonProperty.ID], part);
+        delete part[DesignJsonProperty.ID];
       });
     // abort if not all parts have an ID
-    if (idPartMap.size !== element.parts.length) {
+    if (idPartMap.size !== element[DesignJsonProperty.PARTS].length) {
       return;
     }
 
-    let template = element.file.content;
+    let template = element[DesignJsonProperty.FILE].content;
     let orderedParts = [];
     idPartMap.forEach((part, id) => {
       let index = template.indexOf(id);
@@ -2257,38 +2416,72 @@ class _BsiCxWebpackPlugin {
     orderedParts = orderedParts.filter(part => !!part);
 
     // abort if not all parts are mapped to the template
-    if (orderedParts.length !== element.parts.length) {
+    if (orderedParts.length !== element[DesignJsonProperty.PARTS].length) {
       return;
     }
 
-    element.parts = orderedParts;
+    element[DesignJsonProperty.PARTS] = orderedParts;
   }
 
   /**
+   * @param {string} id
    * @param {{file:{}}} include
+   * @param {Map<string, function(string):string>} replaceMap
    * @private
    */
-  _handleInclude(include) {
-    include[DesignJsonProperty.FILE] = this._handleTemplateFile(include[DesignJsonProperty.FILE], 'includes');
+  _handleInclude(id, include, replaceMap) {
+    let fileObj = include[DesignJsonProperty.FILE];
+    let baseFolder = DistFolder.INCLUDES;
+
+    include[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, id, replaceMap, true);
+  }
+
+
+  /**
+   * @param {string} rawContent
+   */
+  _evalTemplateFile(rawContent) {
+    return /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
   }
 
   /**
    * @param {{content:string,path:string}} fileObj
    * @param {string} baseFolder
+   * @param {string} filenamePrefix
+   * @param {Map<string, function(string):string>} replaceMap
+   * @param {boolean} evalFirst
    * @returns {string}
    */
-  _handleTemplateFile(fileObj, baseFolder) {
-    let rawContent = fileObj.content;
-    let content = /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
-    let originalExtension = external_path_default().extname(fileObj.path);
-    let fileName = external_path_default().basename(fileObj.path, originalExtension).replace(/\.(hbs)$/, '');
+  _handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, evalFirst) {
+    let content = fileObj.content;
+
+    if (!!evalFirst) {
+      content = /^module\.exports/.test(content) ? this._eval(content) : content;
+    }
+
     let contentHash = this._createContentHash(content);
     let extension = this._getTemplateFileExtension(fileObj.path);
-    let elementFilePath = `${baseFolder}${(external_path_default()).posix.sep}${fileName}-${contentHash}.${extension}`;
+    let prefix = external_slugify_default()(filenamePrefix ?? uuid());
+    let filename = prefix + '-' + contentHash + '.' + extension;
+    let elementFilePath = baseFolder + (external_path_default()).posix.sep + filename;
+
+    content = this._applyReplaceMap(content, replaceMap);
 
     this._emitAsset(elementFilePath, content);
 
     return elementFilePath;
+  }
+
+  /**
+   * @param {string} content
+   * @param {Map<string, function(string):string>} replaceMap
+   * @returns {string}
+   * @private
+   */
+  _applyReplaceMap(content, replaceMap) {
+    replaceMap.forEach((replaceFunc, needle) => content = replaceFunc(content));
+
+    return content;
   }
 
   /**
@@ -2313,13 +2506,14 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _getTemplateFileExtension(fileName) {
-    if (/\.hbs\.twig$/.test(fileName)) {
-      return 'hbs';
+    switch (true) {
+      case /\.hbs\.twig$/.test(fileName):
+        return 'hbs';
+      case /\.hbs$/.test(fileName):
+        return 'hbs';
+      default:
+        return 'html';
     }
-    if (/\.hbs$/.test(fileName)) {
-      return 'hbs';
-    }
-    return 'html';
   }
 
   /**
@@ -2404,13 +2598,15 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} filePath
    * @param {string} name
+   * @param {Map<string, function(string):string>} replaceMap
    * @returns {string}
    */
-  _updateHtmlTemplate(filePath, name) {
+  _updateHtmlTemplate(filePath, name, replaceMap) {
     let templateObj = this._loadAssets(name, filePath);
     let templateStr = this._eval(templateObj.content);
 
     templateStr = templateStr.trim();
+    templateStr = this._applyReplaceMap(templateStr, replaceMap);
     templateStr = this._handleStylesheets(templateStr);
     templateStr = this._handleJavaScriptModules(templateStr);
 
@@ -2432,12 +2628,13 @@ class _BsiCxWebpackPlugin {
     }
 
     let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
-    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/static/` : './static/';
+    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/${DistFolder.STATIC}/` : `./${DistFolder.STATIC}/`;
+    let staticFolderUrlPattern = new RegExp(`\.\.\/${DistFolder.STATIC}\/`, 'g');
     let asset = this._compilation.getAsset(cssStylesFilename);
     let source = asset.source.source()
       .trim()
       .replace(/\n/g, '')
-      .replace(/\.\.\/static\//g, inlineSourceAssetsUrl);
+      .replace(staticFolderUrlPattern, inlineSourceAssetsUrl);
 
     content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
     content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
@@ -2513,7 +2710,7 @@ class _BsiCxWebpackPlugin {
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
     let inline = metaInfo.inline;
-    let moduleAssetRegex = new RegExp(`^modules\/${module}\-[0-9a-z]+\.js$`);
+    let moduleAssetRegex = new RegExp(`^${DistFolder.MODULES}\/${module}\-[0-9a-z]+\.js$`);
     let moduleAssetPath = this._getAssetName(moduleAssetRegex);
 
     if (!moduleAssetPath) {
@@ -2546,7 +2743,7 @@ class _BsiCxWebpackPlugin {
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(modules|vendors)\/.*\.js$`);
+    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS})\/.*\.js$`);
     let assetPaths = this._getAssetNames(assetRegex);
 
     return assetPaths
@@ -2557,7 +2754,6 @@ class _BsiCxWebpackPlugin {
           let asset = this._compilation.getAsset(assetPath);
           let source = asset.source.source();
           let strSource = utility_toString(source);
-          // noinspection JSUnresolvedVariable
           return `<script>${strSource}</script>`;
         } else {
           let url = buildPublicPath(this._config, assetPath);
@@ -2751,54 +2947,6 @@ class JavaPropertyFileBuilder {
   _escapeValue(value) {
     return value;
   }
-}
-
-;// CONCATENATED MODULE: ./src/browser-utility.js
-/**
- * @param {[string|number]} arr
- * @returns {string}
- */
-function scalarArrayToList(arr) {
-  return arr.join(',');
-}
-
-/**
- * @template T
- * @param {T} v
- * @returns {T}
- */
-function identity(v) {
-  return v;
-}
-
-/**
- * @param {AbstractConstant} constant
- * @returns {string}
- */
-function constantObjectValue(constant) {
-  return constant.value;
-}
-
-/**
- * @param {AbstractBuilder} builder
- * @returns {{}}
- */
-function builderObjectValue(builder) {
-  return builder.build();
-}
-
-/**
- * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
- * (won't work in the browser context).
- *
- * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
- * @returns {string}
- */
-function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
 }
 
 ;// CONCATENATED MODULE: ./src/legacy-design-property.js
@@ -4955,6 +5103,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -5051,16 +5200,6 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * The default output path: dist/{name}
-   *
-   * @returns {string}
-   * @private
-   */
-  _getDefaultOutputPath() {
-    return external_path_default().resolve(process.cwd(), 'dist', this.config.name);
-  }
-
-  /**
    * The entry configuration.
    *
    * @returns {{}}
@@ -5146,7 +5285,7 @@ class WebpackConfigBuilder {
 
     return {
       import: importPath,
-      filename: 'modules/[name]-[contenthash].js',
+      filename: `${DistFolder.MODULES}/[name]-[contenthash].js`,
       runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
     };
   }
@@ -5252,20 +5391,43 @@ class WebpackConfigBuilder {
    */
   _getStaticAssetFileExtensions() {
     return [
+      'avif',
       'png',
       'apng',
       'jpg',
       'jpeg',
+      'jfif',
+      'pjpeg',
+      'pjp',
       'webp',
       'gif',
       'bmp',
       'tiff',
+      'tif',
       'raw',
       'svg',
       'eot',
       'ttf',
       'woff',
-      'woff2'
+      'woff2',
+      'pdf',
+      'ico',
+      'cur',
+      'mkv',
+      '3gp',
+      'mp3',
+      'mp4',
+      'm4v',
+      'm4p',
+      'ogv',
+      'webm',
+      'aac',
+      'flac',
+      'mpg',
+      'mpeg',
+      'oga',
+      'ogg',
+      'wav'
     ];
   }
 
@@ -5295,7 +5457,7 @@ class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: 'static/[name]-[contenthash][ext]'
+              filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
             }
           },
         ]
@@ -5314,7 +5476,7 @@ class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: 'static/[name]-[contenthash][ext]'
+          filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
         }
       }
     ];
@@ -5409,7 +5571,7 @@ class WebpackConfigBuilder {
   _getMiniCssExtractPluginConfig() {
     return [
       new (external_mini_css_extract_plugin_default())({
-        filename: 'static/styles-[contenthash].css',
+        filename: `${DistFolder.STATIC}/styles-[contenthash].css`,
       })
     ];
   }
@@ -5427,6 +5589,7 @@ class WebpackConfigBuilder {
         patterns: [
           {
             from: `${copyAssetsFolderPath}/**/*`,
+            to: DistFolder.ASSETS,
             globOptions: {
               dot: true,
               ignore: ['**/.gitkeep', '**/.gitignore']
@@ -5608,7 +5771,7 @@ class WebpackConfigBuilder {
         test: /[\\/]node_modules[\\/]/,
         priority: 10,
         reuseExistingChunk: true,
-        filename: 'vendors/[name]-[chunkhash].js'
+        filename: `${DistFolder.VENDORS}/[name]-[chunkhash].js`
       },
       design: {
         test: module => {
@@ -5792,7 +5955,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[398](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[908](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

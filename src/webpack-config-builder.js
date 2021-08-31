@@ -18,6 +18,7 @@ import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
 import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
 import QueryConstant from './query-constant';
+import DistFolder from './dist-folder';
 
 export default class WebpackConfigBuilder {
   /**
@@ -115,16 +116,6 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * The default output path: dist/{name}
-   *
-   * @returns {string}
-   * @private
-   */
-  _getDefaultOutputPath() {
-    return path.resolve(process.cwd(), 'dist', this.config.name);
-  }
-
-  /**
    * The entry configuration.
    *
    * @returns {{}}
@@ -210,7 +201,7 @@ export default class WebpackConfigBuilder {
 
     return {
       import: importPath,
-      filename: 'modules/[name]-[contenthash].js',
+      filename: `${DistFolder.MODULES}/[name]-[contenthash].js`,
       runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
     };
   }
@@ -316,20 +307,43 @@ export default class WebpackConfigBuilder {
    */
   _getStaticAssetFileExtensions() {
     return [
+      'avif',
       'png',
       'apng',
       'jpg',
       'jpeg',
+      'jfif',
+      'pjpeg',
+      'pjp',
       'webp',
       'gif',
       'bmp',
       'tiff',
+      'tif',
       'raw',
       'svg',
       'eot',
       'ttf',
       'woff',
-      'woff2'
+      'woff2',
+      'pdf',
+      'ico',
+      'cur',
+      'mkv',
+      '3gp',
+      'mp3',
+      'mp4',
+      'm4v',
+      'm4p',
+      'ogv',
+      'webm',
+      'aac',
+      'flac',
+      'mpg',
+      'mpeg',
+      'oga',
+      'ogg',
+      'wav'
     ];
   }
 
@@ -359,7 +373,7 @@ export default class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: 'static/[name]-[contenthash][ext]'
+              filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
             }
           },
         ]
@@ -378,7 +392,7 @@ export default class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: 'static/[name]-[contenthash][ext]'
+          filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
         }
       }
     ];
@@ -473,7 +487,7 @@ export default class WebpackConfigBuilder {
   _getMiniCssExtractPluginConfig() {
     return [
       new MiniCssExtractPlugin({
-        filename: 'static/styles-[contenthash].css',
+        filename: `${DistFolder.STATIC}/styles-[contenthash].css`,
       })
     ];
   }
@@ -491,6 +505,7 @@ export default class WebpackConfigBuilder {
         patterns: [
           {
             from: `${copyAssetsFolderPath}/**/*`,
+            to: DistFolder.ASSETS,
             globOptions: {
               dot: true,
               ignore: ['**/.gitkeep', '**/.gitignore']
@@ -672,7 +687,7 @@ export default class WebpackConfigBuilder {
         test: /[\\/]node_modules[\\/]/,
         priority: 10,
         reuseExistingChunk: true,
-        filename: 'vendors/[name]-[chunkhash].js'
+        filename: `${DistFolder.VENDORS}/[name]-[chunkhash].js`
       },
       design: {
         test: module => {
