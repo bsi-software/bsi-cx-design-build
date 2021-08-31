@@ -209,7 +209,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rules for Twig file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getTwigRuleConfig() {
     return [
@@ -236,7 +236,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for HTML and Handlebars file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getHtmlAndHbsRuleConfig() {
     return [
@@ -253,7 +253,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getStyleRulesConfig() {
     return [
@@ -303,7 +303,7 @@ export default class WebpackConfigBuilder {
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
    *
-   * @returns {[string]}
+   * @returns {string[]}
    */
   _getStaticAssetFileExtensions() {
     return [
@@ -350,7 +350,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for static assets handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
@@ -384,7 +384,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for static Java Script file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getStaticJavaScriptFileRuleConfig() {
     return [
@@ -412,7 +412,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for regular Java Script file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getRegularJavaScriptFileRuleConfig() {
     return [
@@ -448,7 +448,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getCssLoaderChain() {
     return [
@@ -482,7 +482,7 @@ export default class WebpackConfigBuilder {
   /**
    * Mini CSS extract plugin configuration.
    *
-   * @returns {[MiniCssExtractPlugin]}
+   * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
     return [
@@ -495,7 +495,7 @@ export default class WebpackConfigBuilder {
   /**
    * Copy plugin configuration.
    *
-   * @returns {[CopyPlugin]}
+   * @returns {CopyPlugin[]}
    */
   _getCopyPluginConfig() {
     let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
@@ -533,7 +533,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {[BsiCxWebpackPlugin]}
+   * @returns {BsiCxWebpackPlugin[]}
    * @private
    */
   _getBsiCxWebpackPluginConfig() {
@@ -584,7 +584,7 @@ export default class WebpackConfigBuilder {
   /**
    * BSI CX legacy design format plugin config.
    *
-   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   * @returns {BsiCxWebpackLegacyDesignPlugin[]}
    */
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
@@ -655,7 +655,7 @@ export default class WebpackConfigBuilder {
   /**
    * The minimizer configuration.
    *
-   * @returns {[TerserPlugin]}
+   * @returns {TerserPlugin[]}
    */
   _getOptimizationMinimizerConfig() {
     return [

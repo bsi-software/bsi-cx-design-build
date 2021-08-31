@@ -10,7 +10,7 @@ export default class PlainTextPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {PlainTextPart}
    */
   withLabel(label) {

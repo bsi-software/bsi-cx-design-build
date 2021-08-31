@@ -10,7 +10,7 @@ export default class HtmlPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {HtmlPart}
    */
   withLabel(label) {

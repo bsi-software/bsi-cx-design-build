@@ -10,7 +10,7 @@ export default class FormTextareaPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormTextareaPart}
    */
   withLabel(label) {

@@ -10,7 +10,7 @@ export default class LinkPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {LinkPart}
    */
   withLabel(label) {

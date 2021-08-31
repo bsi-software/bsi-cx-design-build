@@ -261,7 +261,7 @@ class AbstractBuilder {
   }
 
   /**
-   * @param {[{}]} arr
+   * @param {{}[]} arr
    * @private
    */
   _applyArrayToObject(arr) {
@@ -1357,7 +1357,7 @@ class BuildConfig {
    */
   _modulesRootPath = undefined;
   /**
-   * @type {[{}]}
+   * @type {{}[]}
    * @private
    */
   _additionalFilesToCopy = [];
@@ -1465,7 +1465,7 @@ class BuildConfig {
   }
 
   /**
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
@@ -1969,8 +1969,8 @@ class BuilderObjectNormalizer {
   }
 
   /**
-   * @param {[*]} arr
-   * @returns {[*]}
+   * @param {*[]} arr
+   * @returns {*[]}
    * @private
    */
   _normalizeArray(arr) {
@@ -2063,7 +2063,7 @@ class DistFolder {
 
 ;// CONCATENATED MODULE: ./src/browser-utility.js
 /**
- * @param {[string|number]} arr
+ * @param {(string|number)[]} arr
  * @returns {string}
  */
 function scalarArrayToList(arr) {
@@ -2479,7 +2479,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyReplaceMap(content, replaceMap) {
-    replaceMap.forEach((replaceFunc, needle) => content = replaceFunc(content));
+    replaceMap.forEach(replaceFunc => content = replaceFunc(content));
 
     return content;
   }
@@ -3423,7 +3423,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendStyleConfig(style, config, properties) {
     /**
-     * @type {[{}]}
+     * @type {{}[]}
      */
     let cssClasses = config[DesignJsonProperty.CSS_CLASSES] || [];
 
@@ -5293,7 +5293,7 @@ class WebpackConfigBuilder {
   /**
    * Rules for Twig file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getTwigRuleConfig() {
     return [
@@ -5320,7 +5320,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for HTML and Handlebars file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getHtmlAndHbsRuleConfig() {
     return [
@@ -5337,7 +5337,7 @@ class WebpackConfigBuilder {
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getStyleRulesConfig() {
     return [
@@ -5387,7 +5387,7 @@ class WebpackConfigBuilder {
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
    *
-   * @returns {[string]}
+   * @returns {string[]}
    */
   _getStaticAssetFileExtensions() {
     return [
@@ -5434,7 +5434,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for static assets handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
@@ -5468,7 +5468,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for static Java Script file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getStaticJavaScriptFileRuleConfig() {
     return [
@@ -5496,7 +5496,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for regular Java Script file handling.
    *
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getRegularJavaScriptFileRuleConfig() {
     return [
@@ -5532,7 +5532,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   _getCssLoaderChain() {
     return [
@@ -5566,7 +5566,7 @@ class WebpackConfigBuilder {
   /**
    * Mini CSS extract plugin configuration.
    *
-   * @returns {[MiniCssExtractPlugin]}
+   * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
     return [
@@ -5579,7 +5579,7 @@ class WebpackConfigBuilder {
   /**
    * Copy plugin configuration.
    *
-   * @returns {[CopyPlugin]}
+   * @returns {CopyPlugin[]}
    */
   _getCopyPluginConfig() {
     let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
@@ -5617,7 +5617,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {[BsiCxWebpackPlugin]}
+   * @returns {BsiCxWebpackPlugin[]}
    * @private
    */
   _getBsiCxWebpackPluginConfig() {
@@ -5668,7 +5668,7 @@ class WebpackConfigBuilder {
   /**
    * BSI CX legacy design format plugin config.
    *
-   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+   * @returns {BsiCxWebpackLegacyDesignPlugin[]}
    */
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
@@ -5739,7 +5739,7 @@ class WebpackConfigBuilder {
   /**
    * The minimizer configuration.
    *
-   * @returns {[TerserPlugin]}
+   * @returns {TerserPlugin[]}
    */
   _getOptimizationMinimizerConfig() {
     return [

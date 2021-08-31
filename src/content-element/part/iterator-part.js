@@ -10,7 +10,7 @@ export default class IteratorPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {IteratorPart}
    */
   withLabel(label) {

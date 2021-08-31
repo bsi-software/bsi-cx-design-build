@@ -10,7 +10,7 @@ export default class SocialSharePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {SocialSharePart}
    */
   withLabel(label) {

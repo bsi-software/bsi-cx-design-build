@@ -1,5 +1,5 @@
 /**
- * @param {[string|number]} arr
+ * @param {(string|number)[]} arr
  * @returns {string}
  */
 export function scalarArrayToList(arr) {

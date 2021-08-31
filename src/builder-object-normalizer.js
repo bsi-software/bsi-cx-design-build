@@ -30,8 +30,8 @@ export default class BuilderObjectNormalizer {
   }
 
   /**
-   * @param {[*]} arr
-   * @returns {[*]}
+   * @param {*[]} arr
+   * @returns {*[]}
    * @private
    */
   _normalizeArray(arr) {

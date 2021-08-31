@@ -10,7 +10,7 @@ export default class FormCheckboxPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormCheckboxPart}
    */
   withLabel(label) {

@@ -10,7 +10,7 @@ export default class VideoPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {VideoPart}
    */
   withLabel(label) {

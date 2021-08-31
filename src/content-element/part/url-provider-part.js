@@ -10,7 +10,7 @@ export default class UrlProviderPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {UrlProviderPart}
    */
   withLabel(label) {

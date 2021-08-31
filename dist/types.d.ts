@@ -124,7 +124,7 @@ declare module "src/abstract-builder" {
          */
         protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean): void;
         /**
-         * @param {[{}]} arr
+         * @param {{}[]} arr
          * @private
          */
         private _applyArrayToObject;
@@ -389,9 +389,9 @@ declare module "src/build-config/build-config-interface" {
          */
         get modulesRootPath(): string;
         /**
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        get additionalFilesToCopy(): [{}];
+        get additionalFilesToCopy(): {}[];
         /**
          * @returns {boolean}
          */
@@ -795,7 +795,7 @@ declare module "src/build-config/build-config" {
          */
         private _modulesRootPath;
         /**
-         * @type {[{}]}
+         * @type {{}[]}
          * @private
          */
         private _additionalFilesToCopy;
@@ -869,9 +869,9 @@ declare module "src/build-config/build-config" {
          */
         get modulesRootPath(): string;
         /**
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        get additionalFilesToCopy(): [{}];
+        get additionalFilesToCopy(): {}[];
         /**
          * @returns {boolean}
          */
@@ -1248,8 +1248,8 @@ declare module "src/builder-object-normalizer" {
          */
         private _normalize;
         /**
-         * @param {[*]} arr
-         * @returns {[*]}
+         * @param {*[]} arr
+         * @returns {*[]}
          * @private
          */
         private _normalizeArray;
@@ -1319,10 +1319,10 @@ declare module "src/dist-folder" {
 }
 declare module "src/browser-utility" {
     /**
-     * @param {[string|number]} arr
+     * @param {(string|number)[]} arr
      * @returns {string}
      */
-    export function scalarArrayToList(arr: [string | number]): string;
+    export function scalarArrayToList(arr: (string | number)[]): string;
     /**
      * @template T
      * @param {T} v
@@ -2317,7 +2317,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: [any];
+                minimizer: any[];
                 splitChunks: {
                     chunks: string;
                     name: Function;
@@ -2365,7 +2365,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: [any];
+                minimizer: any[];
                 splitChunks: {
                     chunks: string;
                     name: Function;
@@ -2410,39 +2410,39 @@ declare module "src/webpack-config-builder" {
         /**
          * Rules for Twig file handling.
          *
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getTwigRuleConfig(): [{}];
+        _getTwigRuleConfig(): {}[];
         /**
          * Rule for HTML and Handlebars file handling.
          *
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getHtmlAndHbsRuleConfig(): [{}];
+        _getHtmlAndHbsRuleConfig(): {}[];
         /**
          * Rules for LESS, SASS/SCSS and CSS file handling.
          *
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getStyleRulesConfig(): [{}];
+        _getStyleRulesConfig(): {}[];
         /**
          * Get all file extensions that should be handled as static assets (e.g. images and fonts).
          *
-         * @returns {[string]}
+         * @returns {string[]}
          */
-        _getStaticAssetFileExtensions(): [string];
+        _getStaticAssetFileExtensions(): string[];
         /**
          * Rule for static assets handling.
          *
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getStaticAssetsRuleConfig(): [{}];
+        _getStaticAssetsRuleConfig(): {}[];
         /**
          * Rule for static Java Script file handling.
          *
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getStaticJavaScriptFileRuleConfig(): [{}];
+        _getStaticJavaScriptFileRuleConfig(): {}[];
         /**
          * @param {string} fileToCheck
          * @returns {boolean}
@@ -2451,9 +2451,9 @@ declare module "src/webpack-config-builder" {
         /**
          * Rule for regular Java Script file handling.
          *
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getRegularJavaScriptFileRuleConfig(): [{}];
+        _getRegularJavaScriptFileRuleConfig(): {}[];
         /**
          * @returns {{}[]}
          * @private
@@ -2464,21 +2464,21 @@ declare module "src/webpack-config-builder" {
          */
         _getTemplateLoader(): string;
         /**
-         * @returns {[{}]}
+         * @returns {{}[]}
          */
-        _getCssLoaderChain(): [{}];
+        _getCssLoaderChain(): {}[];
         /**
          * Mini CSS extract plugin configuration.
          *
-         * @returns {[MiniCssExtractPlugin]}
+         * @returns {MiniCssExtractPlugin[]}
          */
-        _getMiniCssExtractPluginConfig(): [any];
+        _getMiniCssExtractPluginConfig(): any[];
         /**
          * Copy plugin configuration.
          *
-         * @returns {[CopyPlugin]}
+         * @returns {CopyPlugin[]}
          */
-        _getCopyPluginConfig(): [any];
+        _getCopyPluginConfig(): any[];
         /**
          *
          * @returns {BsiCxTwigContextWebpackPlugin[]}
@@ -2486,7 +2486,7 @@ declare module "src/webpack-config-builder" {
          */
         private _getBsiCxTwigContextWebpackPlugin;
         /**
-         * @returns {[BsiCxWebpackPlugin]}
+         * @returns {BsiCxWebpackPlugin[]}
          * @private
          */
         private _getBsiCxWebpackPluginConfig;
@@ -2504,9 +2504,9 @@ declare module "src/webpack-config-builder" {
         /**
          * BSI CX legacy design format plugin config.
          *
-         * @returns {[BsiCxWebpackLegacyDesignPlugin]}
+         * @returns {BsiCxWebpackLegacyDesignPlugin[]}
          */
-        _getBsiCxWebpackLegacyDesignPluginConfig(): [BsiCxWebpackLegacyDesignPlugin];
+        _getBsiCxWebpackLegacyDesignPluginConfig(): BsiCxWebpackLegacyDesignPlugin[];
         /**
          * The dev tool configuration.
          *
@@ -2534,9 +2534,9 @@ declare module "src/webpack-config-builder" {
         /**
          * The minimizer configuration.
          *
-         * @returns {[TerserPlugin]}
+         * @returns {TerserPlugin[]}
          */
-        _getOptimizationMinimizerConfig(): [any];
+        _getOptimizationMinimizerConfig(): any[];
         /**
          * The split chunks name configuration.
          *
@@ -4576,31 +4576,63 @@ declare module "src/content-element/part/plain-text-part" {
 }
 declare module "src/content-element/part/formatted-text-part" {
     /**
+     * @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig
+     */
+    /**
      * @since Studio 1.0
      */
     export default class FormattedTextPart extends AbstractPart {
         constructor();
         /**
-         * @type {HtmlEditorConfig|undefined}
+         * @type {RawValue|HtmlEditorConfig|undefined}
          * @private
          */
         private _htmlEditorConfig;
         /**
-         * @returns {HtmlEditorConfig|undefined}
+         * @returns {RawValue|HtmlEditorConfig|undefined}
          */
-        get htmlEditorConfig(): any;
+        get htmlEditorConfig(): RawValue | import("src/html-editor-config/html-editor-config").default;
         /**
+         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+         * {@link HtmlEditorConfig} object.
+         *
+         * @example
+         * let editorConfig = new HtmlEditorConfig()
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * // ...
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new FormattedTextPart()
+         *       .withLabel('Text')
+         *       .withHtmlEditorConfig(editorConfig))
+         * @see {withRawHtmlEditorConfig} to set a raw value
          * @param {HtmlEditorConfig} htmlEditorConfig
          * @returns {FormattedTextPart}
          */
-        withHtmlEditorConfig(htmlEditorConfig: any): FormattedTextPart;
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+        /**
+         * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
+         *
+         * @see {@link withHtmlEditorConfig}
+         * @param {string} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withRawHtmlEditorConfig(htmlEditorConfig: string): FormattedTextPart;
         /**
          * @param {boolean} [shallow=true]
          * @returns {FormattedTextPart}
          */
         clone(shallow?: boolean): FormattedTextPart;
     }
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
     import AbstractPart from "src/content-element/part/abstract-part";
+    import RawValue from "src/raw-value";
 }
 declare module "src/content-element/part/html-part" {
     /**
@@ -5053,7 +5085,7 @@ declare module "src/nls/nls" {
          */
         private _identifier;
         /**
-         * @type {[Translation]|undefined}
+         * @type {Translation[]|undefined}
          * @private
          */
         private _translations;
@@ -5062,9 +5094,9 @@ declare module "src/nls/nls" {
          */
         get identifier(): string;
         /**
-         * @returns {[Translation]|undefined}
+         * @returns {Translation[]|undefined}
          */
-        get translations(): [Translation];
+        get translations(): Translation[];
         /**
          * @param {string} identifier
          * @returns {NLS}

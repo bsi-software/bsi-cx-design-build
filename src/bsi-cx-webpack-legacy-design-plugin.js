@@ -205,7 +205,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
    */
   _appendStyleConfig(style, config, properties) {
     /**
-     * @type {[{}]}
+     * @type {{}[]}
      */
     let cssClasses = config[DesignJsonProperty.CSS_CLASSES] || [];
 

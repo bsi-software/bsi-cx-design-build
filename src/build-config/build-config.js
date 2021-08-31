@@ -72,7 +72,7 @@ export default class BuildConfig {
    */
   _modulesRootPath = undefined;
   /**
-   * @type {[{}]}
+   * @type {{}[]}
    * @private
    */
   _additionalFilesToCopy = [];
@@ -180,7 +180,7 @@ export default class BuildConfig {
   }
 
   /**
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;

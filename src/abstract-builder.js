@@ -50,7 +50,7 @@ export default class AbstractBuilder {
   }
 
   /**
-   * @param {[{}]} arr
+   * @param {{}[]} arr
    * @private
    */
   _applyArrayToObject(arr) {

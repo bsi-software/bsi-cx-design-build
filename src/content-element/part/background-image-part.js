@@ -10,7 +10,7 @@ export default class BackgroundImagePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {BackgroundImagePart}
    */
   withLabel(label) {

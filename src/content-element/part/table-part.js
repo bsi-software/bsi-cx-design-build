@@ -10,7 +10,7 @@ export default class TablePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {TablePart}
    */
   withLabel(label) {

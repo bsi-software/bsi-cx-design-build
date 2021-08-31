@@ -660,7 +660,7 @@ class AbstractBuilder {
   }
 
   /**
-   * @param {[{}]} arr
+   * @param {{}[]} arr
    * @private
    */
   _applyArrayToObject(arr) {
@@ -719,8 +719,8 @@ class BuilderObjectNormalizer {
   }
 
   /**
-   * @param {[*]} arr
-   * @returns {[*]}
+   * @param {*[]} arr
+   * @returns {*[]}
    * @private
    */
   _normalizeArray(arr) {
@@ -859,7 +859,7 @@ const URL_PROVIDER = new Part('url-provider');
 
 ;// CONCATENATED MODULE: ./src/browser-utility.js
 /**
- * @param {[string|number]} arr
+ * @param {(string|number)[]} arr
  * @returns {string}
  */
 function scalarArrayToList(arr) {
@@ -3404,7 +3404,7 @@ class PlainTextPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {PlainTextPart}
    */
   withLabel(label) {
@@ -3425,12 +3425,17 @@ class PlainTextPart extends AbstractPart {
 
 
 
+
+/**
+ * @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig
+ */
+
 /**
  * @since Studio 1.0
  */
 class FormattedTextPart extends AbstractPart {
   /**
-   * @type {HtmlEditorConfig|undefined}
+   * @type {RawValue|HtmlEditorConfig|undefined}
    * @private
    */
   _htmlEditorConfig = undefined;
@@ -3440,14 +3445,14 @@ class FormattedTextPart extends AbstractPart {
   }
 
   /**
-   * @returns {HtmlEditorConfig|undefined}
+   * @returns {RawValue|HtmlEditorConfig|undefined}
    */
   get htmlEditorConfig() {
     return this._htmlEditorConfig;
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormattedTextPart}
    */
   withLabel(label) {
@@ -3455,11 +3460,42 @@ class FormattedTextPart extends AbstractPart {
   }
 
   /**
+   * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+   * {@link HtmlEditorConfig} object.
+   *
+   * @example
+   * let editorConfig = new HtmlEditorConfig()
+   *   .withIdentifier('minimal')
+   *   .withRawEnterMode('p')
+   *   .withFeatures(
+   *     Feature.BOLD,
+   *     Feature.ITALIC,
+   *     Feature.UNDERLINE);
+   * // ...
+   * let element = new ContentElement()
+   *   .withElementId('element')
+   *   .withParts(
+   *     new FormattedTextPart()
+   *       .withLabel('Text')
+   *       .withHtmlEditorConfig(editorConfig))
+   * @see {withRawHtmlEditorConfig} to set a raw value
    * @param {HtmlEditorConfig} htmlEditorConfig
    * @returns {FormattedTextPart}
    */
   withHtmlEditorConfig(htmlEditorConfig) {
     this._htmlEditorConfig = htmlEditorConfig;
+    return this;
+  }
+
+  /**
+   * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
+   *
+   * @see {@link withHtmlEditorConfig}
+   * @param {string} htmlEditorConfig
+   * @returns {FormattedTextPart}
+   */
+  withRawHtmlEditorConfig(htmlEditorConfig) {
+    this._htmlEditorConfig = new RawValue(htmlEditorConfig);
     return this;
   }
 
@@ -3493,7 +3529,7 @@ class HtmlPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {HtmlPart}
    */
   withLabel(label) {
@@ -3522,7 +3558,7 @@ class VideoPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {VideoPart}
    */
   withLabel(label) {
@@ -3580,7 +3616,7 @@ class BackgroundImagePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {BackgroundImagePart}
    */
   withLabel(label) {
@@ -3609,7 +3645,7 @@ class TablePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {TablePart}
    */
   withLabel(label) {
@@ -3638,7 +3674,7 @@ class IteratorPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {IteratorPart}
    */
   withLabel(label) {
@@ -3667,7 +3703,7 @@ class NewsSnippetsPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {NewsSnippetsPart}
    */
   withLabel(label) {
@@ -3696,7 +3732,7 @@ class FormPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormPart}
    */
   withLabel(label) {
@@ -3725,7 +3761,7 @@ class FormFieldPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormFieldPart}
    */
   withLabel(label) {
@@ -3754,7 +3790,7 @@ class FormCheckboxPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormCheckboxPart}
    */
   withLabel(label) {
@@ -3783,7 +3819,7 @@ class FormTextareaPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormTextareaPart}
    */
   withLabel(label) {
@@ -3812,7 +3848,7 @@ class FormSelectPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormSelectPart}
    */
   withLabel(label) {
@@ -3841,7 +3877,7 @@ class FormRadioPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormRadioPart}
    */
   withLabel(label) {
@@ -3870,7 +3906,7 @@ class LinkPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {LinkPart}
    */
   withLabel(label) {
@@ -3899,7 +3935,7 @@ class SocialFollowPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {SocialFollowPart}
    */
   withLabel(label) {
@@ -3928,7 +3964,7 @@ class SocialSharePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {SocialSharePart}
    */
   withLabel(label) {
@@ -3957,7 +3993,7 @@ class UrlProviderPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {UrlProviderPart}
    */
   withLabel(label) {
@@ -4372,7 +4408,7 @@ class NLS extends AbstractBuilder {
    */
   _identifier = undefined;
   /**
-   * @type {[Translation]|undefined}
+   * @type {Translation[]|undefined}
    * @private
    */
   _translations = undefined;
@@ -4385,7 +4421,7 @@ class NLS extends AbstractBuilder {
   }
 
   /**
-   * @returns {[Translation]|undefined}
+   * @returns {Translation[]|undefined}
    */
   get translations() {
     return this._translations;

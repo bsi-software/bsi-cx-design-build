@@ -10,7 +10,7 @@ export default class FormSelectPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormSelectPart}
    */
   withLabel(label) {

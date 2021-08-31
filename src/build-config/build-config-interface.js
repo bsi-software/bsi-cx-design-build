@@ -69,7 +69,7 @@ export default class BuildConfigInterface {
   }
 
   /**
-   * @returns {[{}]}
+   * @returns {{}[]}
    */
   get additionalFilesToCopy() {
   }

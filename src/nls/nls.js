@@ -8,7 +8,7 @@ export default class NLS extends AbstractBuilder {
    */
   _identifier = undefined;
   /**
-   * @type {[Translation]|undefined}
+   * @type {Translation[]|undefined}
    * @private
    */
   _translations = undefined;
@@ -21,7 +21,7 @@ export default class NLS extends AbstractBuilder {
   }
 
   /**
-   * @returns {[Translation]|undefined}
+   * @returns {Translation[]|undefined}
    */
   get translations() {
     return this._translations;

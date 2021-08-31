@@ -10,7 +10,7 @@ export default class NewsSnippetsPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {NewsSnippetsPart}
    */
   withLabel(label) {

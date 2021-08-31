@@ -10,7 +10,7 @@ export default class FormRadioPart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
+   * @inheritDoc
    * @returns {FormRadioPart}
    */
   withLabel(label) {
