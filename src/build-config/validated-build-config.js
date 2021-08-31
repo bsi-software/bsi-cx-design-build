@@ -1,6 +1,7 @@
-/**
- * @typedef {import('./build-config-interface').default} BuildConfigInterface
- */
+/** @typedef {import('../version').Version} Version */
+/** @typedef {import('../design-type').DesignType} DesignType */
+/** @typedef {import('./module-config').default} ModuleConfig */
+/** @typedef {import('./build-config-interface').default} BuildConfigInterface */
 
 /**
  * @implements {BuildConfigInterface}

@@ -1,8 +1,6 @@
 import ObjectCloner from '../object-cloner';
 
-/**
- * @typedef {import('./build-config').default} BuildConfig
- */
+/** @typedef {import('./build-config').default} BuildConfig */
 
 /**
  * This is the builder class for JavaScript module configurations.

@@ -1,5 +1,10 @@
 import AbstractConstant from '../abstract-constant';
 
+/** @typedef {import('./design').default} Design */
+
+/**
+ * Class to define a locale.
+ */
 export class Locale extends AbstractConstant {
 }
 

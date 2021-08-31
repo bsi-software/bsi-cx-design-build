@@ -3,6 +3,9 @@
   "version": "1.0.0-rc.14",
   "description": "A webpack config builder to create a design for BSI CX.",
   "private": false,
+  "engines": {
+    "node": ">=14.16.0"
+  },
   "browser": "dist/browser.js",
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
@@ -17,7 +20,13 @@
   "bugs": {
     "url": "https://github.com/bsi-software/bsi-cx-design-build/issues"
   },
-  "author": "Oliver Fabel <Oliver.Fabel@bsi-software.com>",
+  "contributors": [
+    {
+      "name": "Oliver Fabel",
+      "email": "oliver.fabel@bsi-software.com",
+      "url": "https://www.bsi-software.com/"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.15.0",

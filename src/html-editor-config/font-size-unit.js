@@ -1,5 +1,7 @@
 import AbstractConstant from '../abstract-constant';
 
+/** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+
 export class FontSizeUnit extends AbstractConstant {
 }
 

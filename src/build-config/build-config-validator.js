@@ -1,18 +1,18 @@
+import fs from 'fs';
+import path from 'path';
+
+import slugify from 'slugify';
+
 import ValidationError from './validation-error';
 import {getAbsolutePath, ucfirst} from '../utility';
 import ObjectCloner from '../object-cloner';
-import slugify from 'slugify';
-import fs from 'fs';
-import path from 'path';
 import ModuleConfig from './module-config';
 import ValidatedBuildConfig from './validated-build-config';
 import {Version} from '../version';
 import {DesignType} from '../design-type';
 import DefaultBuildConfig from './default-build-config';
 
-/**
- * @typedef {import('./build-config').default} BuildConfig
- */
+/** @typedef {import('./build-config').default} BuildConfig */
 
 export default class BuildConfigValidator {
   /**

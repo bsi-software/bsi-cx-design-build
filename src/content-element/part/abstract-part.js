@@ -1,7 +1,8 @@
-import {Part} from './part';
 import AbstractBuilder from '../../abstract-builder';
 import DesignJsonProperty from '../../design-json-property';
 import {constantObjectValue, identity} from '../../browser-utility';
+
+/** @typedef {import('./part').Part} Part */
 
 /**
  * @abstract

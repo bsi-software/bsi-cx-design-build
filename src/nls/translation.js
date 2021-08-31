@@ -1,20 +1,19 @@
 import AbstractBuilder from '../abstract-builder';
-import {Locale, WILDCARD} from '../design/locale';
+import {WILDCARD} from '../design/locale';
+
+/** @typedef {import('../design/locale').Locale} Locale */
 
 export default class Translation extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {Locale|undefined}
-     * @private
-     */
-    this._locale = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._translation = undefined;
-  }
+  /**
+   * @type {Locale|undefined}
+   * @private
+   */
+  _locale = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _translation = undefined;
 
   /**
    * @returns {Locale|undefined}

@@ -12,11 +12,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, {
   "BuildConfig": () => (/* reexport */ BuildConfig),
   "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
-  "DesignType": () => (/* reexport */ design_type_namespaceObject),
   "ModuleConfig": () => (/* reexport */ ModuleConfig),
-  "Version": () => (/* reexport */ version_namespaceObject),
   "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
-  "css": () => (/* reexport */ helper_namespaceObject)
+  "css": () => (/* reexport */ helper_namespaceObject),
+  "designType": () => (/* reexport */ design_type_namespaceObject),
+  "version": () => (/* reexport */ version_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
@@ -47,6 +47,7 @@ __webpack_require__.r(helper_namespaceObject);
 __webpack_require__.d(helper_namespaceObject, {
   "color": () => (color),
   "dataUri": () => (dataUri),
+  "number": () => (number),
   "url": () => (url)
 });
 
@@ -385,13 +386,19 @@ class ObjectCloner {
   }
 }
 
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+;// CONCATENATED MODULE: external "slugify"
+const external_slugify_namespaceObject = require("slugify");
+var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
 ;// CONCATENATED MODULE: ./src/build-config/validation-error.js
 class ValidationError extends Error {
 }
 
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
 ;// CONCATENATED MODULE: ./src/constant.js
 class Constant {
   /**
@@ -536,18 +543,10 @@ function toPosixPath(possibleWin32Path) {
   return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
 }
 
-;// CONCATENATED MODULE: external "slugify"
-const external_slugify_namespaceObject = require("slugify");
-var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
-;// CONCATENATED MODULE: external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// CONCATENATED MODULE: ./src/build-config/module-config.js
 
 
-/**
- * @typedef {import('./build-config').default} BuildConfig
- */
+/** @typedef {import('./build-config').default} BuildConfig */
 
 /**
  * This is the builder class for JavaScript module configurations.
@@ -648,9 +647,10 @@ class ModuleConfig {
 }
 
 ;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
-/**
- * @typedef {import('./build-config-interface').default} BuildConfigInterface
- */
+/** @typedef {import('../version').Version} Version */
+/** @typedef {import('../design-type').DesignType} DesignType */
+/** @typedef {import('./module-config').default} ModuleConfig */
+/** @typedef {import('./build-config-interface').default} BuildConfigInterface */
 
 /**
  * @implements {BuildConfigInterface}
@@ -866,9 +866,7 @@ class ValidatedBuildConfig {
 
 
 
-/**
- * @typedef {import('./build-config-interface').default} BuildConfigInterface
- */
+/** @typedef {import('./build-config-interface').default} BuildConfigInterface */
 
 /**
  * @implements {BuildConfigInterface}
@@ -956,9 +954,9 @@ class DefaultBuildConfig {
 
 
 
-/**
- * @typedef {import('./build-config').default} BuildConfig
- */
+
+
+/** @typedef {import('./build-config').default} BuildConfig */
 
 class BuildConfigValidator {
   /**
@@ -1286,14 +1284,14 @@ class BuildConfigValidator {
 
 
 
-
-
-/**
- * @typedef {import('./module-config').default} ModuleConfig
- * @typedef {import('./default-build-config').default} DefaultBuildConfig
- * @typedef {import('./build-config-interface').default} BuildConfigInterface
- * @typedef {import('./validated-build-config').default} ValidatedBuildConfig
- */
+/** @typedef {import('../version').Version} Version */
+/** @typedef {import('../version').CX_22_0} CX_22_0 */
+/** @typedef {import('../design-type').DesignType} DesignType */
+/** @typedef {import('../design-type').LANDINGPAGE} LANDINGPAGE */
+/** @typedef {import('./module-config').default} ModuleConfig */
+/** @typedef {import('./default-build-config').default} DefaultBuildConfig */
+/** @typedef {import('./build-config-interface').default} BuildConfigInterface */
+/** @typedef {import('./validated-build-config').default} ValidatedBuildConfig */
 
 /**
  * The configuration object for the build of one template.
@@ -4221,7 +4219,6 @@ class AbstractCssProperty {
 
 
 
-
 class CssColor extends AbstractCssProperty {
   /**
    * @type {RegExp}
@@ -4255,7 +4252,7 @@ class CssColor extends AbstractCssProperty {
    * @type {number}
    * @private
    */
-  _alpha = 1;
+  _alpha = 255;
 
   /**
    * @param {number} red
@@ -4384,6 +4381,7 @@ class CssColor extends AbstractCssProperty {
         this._toHex(this.green),
         this._toHex(this.blue)
       ];
+      // hex channel is only required if alpha is lower than 255 (omit adding FF)
       if (this.alpha < 255) {
         channels.push(this._toHex(this.alpha));
       }
@@ -4408,7 +4406,7 @@ class CssColor extends AbstractCssProperty {
    * @private
    */
   _toRgba() {
-    return `rgba(${this.red},${this.green},${this.blue},${this.alpha})`;
+    return `rgba(${this.red},${this.green},${this.blue},${this.alpha / 255})`;
   }
 
   /**
@@ -4436,10 +4434,10 @@ class CssColor extends AbstractCssProperty {
    * @param {number} red
    * @param {number} green
    * @param {number} blue
-   * @param {number} [alpha=255]
+   * @param {number} [alpha=1]
    */
   static fromRGB(red, green, blue, alpha) {
-    return new CssColor(red, green, blue, alpha ?? 255);
+    return new CssColor(red, green, blue, (alpha ?? 1) * 255);
   }
 
   /**
@@ -4452,7 +4450,7 @@ class CssColor extends AbstractCssProperty {
       .split(',')
       .map(channel => parseInt(channel));
 
-    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, alpha ?? 0);
+    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, (alpha ?? 1) * 255);
   }
 
   /**
@@ -4637,6 +4635,7 @@ class CssRaw extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
+    // noinspection JSUnresolvedVariable
     return new (external_sass_default()).types.String(this.value);
   }
 
@@ -4935,6 +4934,8 @@ class CssBool extends AbstractCssProperty {
 
 
 
+
+/** @typedef {import('./abstract-css-property').default} AbstractCssProperty */
 
 class CssPropertyResolver {
   /**
@@ -5851,8 +5852,15 @@ class WebpackConfigBuilder {
 
 
 
+
 /**
- * @param {...string} pathSegments
+ * Create a <code>url()</code> object. The supplied path segments will be passed to <code>path.resolve</code>
+ * to get the correct path. <strong>It is recommended to pass an absolute path.</strong>
+ * Use the <code>__dirname</code constant as first path segment.
+ *
+ * @example
+ * css.url(__dirname, 'static', 'image.png')
+ * @param {...string} pathSegments - The path segments.
  * @returns {CssUrl}
  */
 function url(...pathSegments) {
@@ -5861,7 +5869,12 @@ function url(...pathSegments) {
 }
 
 /**
- * @param {...string} pathSegments
+ * Create a <code>url()</code> containing a base64 encoded data-uri.
+ *
+ * @example
+ * css.dataUri(__dirname, 'static', 'image.png')
+ * @see {@link url} for details
+ * @param {...string} pathSegments - The path segments.
  * @returns {CssUrl}
  */
 function dataUri(...pathSegments) {
@@ -5870,7 +5883,18 @@ function dataUri(...pathSegments) {
 }
 
 /**
- * @param {...string|number} channels
+ * Create a CSS color value. You can pass one, three or four values. Take a look at the examples to find out more
+ * about the accepted input.
+ *
+ * @example
+ * css.color('red'); // color string
+ * css.color('#ff00ff'); // normal hex format
+ * css.color('#ff00ff99'); // rgba as hex
+ * css.color('rgb(255, 0, 255)'); // rgb format
+ * css.color('rgba(255, 0, 255, 0.1)'); // rgba format
+ * css.color(255, 0, 255); // pass each channel as number
+ * css.color(255, 0, 255, 0.5); // pass each channel as numeric value
+ * @param {...string|number} channels - The color definition in one of the allowed forms.
  * @returns {CssColor|string}
  */
 function color(...channels) {
@@ -5885,6 +5909,33 @@ function color(...channels) {
     default:
       throw new Error(`unable to parse color definition [${channels.join(',')}]`);
   }
+}
+
+/**
+ * Create a CSS numeric value with a given unit. Take a look at the examples to find out more about the accepted input.
+ *
+ * @example
+ * css.number('10px');
+ * css.number('10em');
+ * css.number('10ex');
+ * css.number('10ch');
+ * css.number('10rem');
+ * css.number('10in');
+ * css.number('10cm');
+ * css.number('10mm');
+ * css.number('10pc');
+ * css.number('10pt');
+ * css.number('10vw');
+ * css.number('10vh');
+ * css.number('10vmin');
+ * css.number('10vmax');
+ * css.number('10%');
+ * @param {string} value - The value as string.
+ * @returns {CssDimension|string}
+ */
+function number(value) {
+  let parser = CssDimension.getParser(value);
+  return !!parser ? parser(value) : value;
 }
 
 ;// CONCATENATED MODULE: ./export/main.js

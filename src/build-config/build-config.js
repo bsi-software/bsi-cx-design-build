@@ -1,14 +1,14 @@
-import {DesignType, LANDINGPAGE} from '../design-type';
-import {CX_22_0, Version} from '../version';
 import ObjectCloner from '../object-cloner';
 import BuildConfigValidator from './build-config-validator';
 
-/**
- * @typedef {import('./module-config').default} ModuleConfig
- * @typedef {import('./default-build-config').default} DefaultBuildConfig
- * @typedef {import('./build-config-interface').default} BuildConfigInterface
- * @typedef {import('./validated-build-config').default} ValidatedBuildConfig
- */
+/** @typedef {import('../version').Version} Version */
+/** @typedef {import('../version').CX_22_0} CX_22_0 */
+/** @typedef {import('../design-type').DesignType} DesignType */
+/** @typedef {import('../design-type').LANDINGPAGE} LANDINGPAGE */
+/** @typedef {import('./module-config').default} ModuleConfig */
+/** @typedef {import('./default-build-config').default} DefaultBuildConfig */
+/** @typedef {import('./build-config-interface').default} BuildConfigInterface */
+/** @typedef {import('./validated-build-config').default} ValidatedBuildConfig */
 
 /**
  * The configuration object for the build of one template.

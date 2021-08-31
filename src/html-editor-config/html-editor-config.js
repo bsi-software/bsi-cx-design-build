@@ -1,11 +1,12 @@
-import {EnterMode} from './enter-mode';
-import {Feature} from './feature';
-import {Format} from './format';
-import {FontSizeUnit} from './font-size-unit';
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
 import {constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
+
+/** @typedef {import('./enter-mode').EnterMode} EnterMode */
+/** @typedef {import('./feature').Feature} Feature */
+/** @typedef {import('./format').Format} Format */
+/** @typedef {import('./font-size-unit').FontSizeUnit} FontSizeUnit */
 
 /**
  * This is the builder class to specify a HTML editor configuration.

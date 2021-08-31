@@ -1,7 +1,9 @@
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
-import {builderObjectValue, identity} from '../browser-utility';
+import {builderObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
+
+/** @typedef {import('./css-class').default} CssClass */
 
 /**
  * @since Studio 1.1
@@ -11,7 +13,7 @@ export default class Style extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _identifier = undefined;
+  _identifier = uuid();
   /**
    * @type {string|undefined}
    * @private

@@ -1,3 +1,7 @@
+/** @typedef {import('../version').Version} Version */
+/** @typedef {import('../design-type').DesignType} DesignType */
+/** @typedef {import('./module-config').default} ModuleConfig */
+
 /**
  * @interface
  */

@@ -1,25 +1,25 @@
-const {NLS, Translation, Locale} = require('@bsi-cx/design-build');
+const {cx, Locale, NLS, Translation} = require('@bsi-cx/design-build');
 
 /**
  * @type {NLS[]}
  */
 module.exports = [
-  new NLS()
+  cx.nls
     .withIdentifier('action')
     .withTranslations(
-      new Translation()
+      cx.translation
         .withLocale(Locale.WILDCARD)
         .withTranslation('Action'),
-      new Translation()
+      cx.translation
         .withLocale(Locale.DE)
         .withTranslation('Aktion')),
-  new NLS()
+  cx.nls
     .withIdentifier('banner')
     .withTranslations(
-      new Translation()
+      cx.translation
         .withLocale(Locale.WILDCARD)
         .withTranslation('Please support our friends!'),
-      new Translation()
+      cx.translation
         .withLocale(Locale.DE)
         .withTranslation('Bitte unterstütze unsere Freunde!')),
   NLS.create(

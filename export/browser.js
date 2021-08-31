@@ -45,6 +45,17 @@ import PageInclude from '../src/website/page-include';
 import Include from '../src/website/include';
 import NLS from '../src/nls/nls';
 import Translation from '../src/nls/translation';
+import DesignFactory from '../src/design/design-factory';
+import PartFactory from '../src/content-element/part/part-factory';
+
+/**
+ * @type {DesignFactory}
+ */
+const cx = new DesignFactory();
+/**
+ * @type {PartFactory}
+ */
+const part = new PartFactory();
 
 export {
   DesignJsonProperty,
@@ -93,5 +104,6 @@ export {
   PageInclude,
   Include,
   NLS,
-  Translation
+  Translation,
+  cx,
 };

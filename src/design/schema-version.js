@@ -1,5 +1,10 @@
 import AbstractConstant from '../abstract-constant';
 
+/** @typedef {import('./design').default} Design */
+
+/**
+ * Class to define a schema version.
+ */
 export class SchemaVersion extends AbstractConstant {
 }
 

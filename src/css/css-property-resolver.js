@@ -4,6 +4,8 @@ import CssRaw from './css-raw';
 import CssUrl from './css-url';
 import CssBool from './css-bool';
 
+/** @typedef {import('./abstract-css-property').default} AbstractCssProperty */
+
 export default class CssPropertyResolver {
   /**
    * @type {Map<string|number, AbstractCssProperty>}

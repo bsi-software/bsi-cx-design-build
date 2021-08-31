@@ -1,9 +1,7 @@
 import {CX_22_0} from '../version';
 import {LANDINGPAGE} from '../design-type';
 
-/**
- * @typedef {import('./build-config-interface').default} BuildConfigInterface
- */
+/** @typedef {import('./build-config-interface').default} BuildConfigInterface */
 
 /**
  * @implements {BuildConfigInterface}

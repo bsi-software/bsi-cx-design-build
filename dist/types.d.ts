@@ -271,9 +271,7 @@ declare module "src/utility" {
     export function toPosixPath(possibleWin32Path: string): string;
 }
 declare module "src/build-config/module-config" {
-    /**
-     * @typedef {import('./build-config').default} BuildConfig
-     */
+    /** @typedef {import('./build-config').default} BuildConfig */
     /**
      * This is the builder class for JavaScript module configurations.
      * Pass objects of this class to {@link BuildConfig#withModules}.
@@ -340,6 +338,9 @@ declare module "src/build-config/module-config" {
     export type BuildConfig = import("src/build-config/build-config").default;
 }
 declare module "src/build-config/build-config-interface" {
+    /** @typedef {import('../version').Version} Version */
+    /** @typedef {import('../design-type').DesignType} DesignType */
+    /** @typedef {import('./module-config').default} ModuleConfig */
     /**
      * @interface
      */
@@ -355,11 +356,11 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): any;
+        get targetVersion(): import("src/version").Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): any;
+        get designType(): import("src/design-type").DesignType;
         /**
          * @returns {string}
          */
@@ -383,7 +384,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): any[];
+        get modules(): import("src/build-config/module-config").default[];
         /**
          * @returns {string}
          */
@@ -413,11 +414,15 @@ declare module "src/build-config/build-config-interface" {
          */
         get webpackPlugins(): any[];
     }
+    export type Version = import("src/version").Version;
+    export type DesignType = import("src/design-type").DesignType;
+    export type ModuleConfig = import("src/build-config/module-config").default;
 }
 declare module "src/build-config/validated-build-config" {
-    /**
-     * @typedef {import('./build-config-interface').default} BuildConfigInterface
-     */
+    /** @typedef {import('../version').Version} Version */
+    /** @typedef {import('../design-type').DesignType} DesignType */
+    /** @typedef {import('./module-config').default} ModuleConfig */
+    /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
     /**
      * @implements {BuildConfigInterface}
      */
@@ -518,11 +523,11 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): any;
+        get targetVersion(): import("src/version").Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): any;
+        get designType(): import("src/design-type").DesignType;
         /**
          * @returns {string}
          */
@@ -546,7 +551,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): any[];
+        get modules(): import("src/build-config/module-config").default[];
         /**
          * @returns {string}
          */
@@ -576,12 +581,13 @@ declare module "src/build-config/validated-build-config" {
          */
         get webpackRules(): {}[];
     }
+    export type Version = import("src/version").Version;
+    export type DesignType = import("src/design-type").DesignType;
+    export type ModuleConfig = import("src/build-config/module-config").default;
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
 declare module "src/build-config/default-build-config" {
-    /**
-     * @typedef {import('./build-config-interface').default} BuildConfigInterface
-     */
+    /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
     /**
      * @implements {BuildConfigInterface}
      */
@@ -607,9 +613,7 @@ declare module "src/build-config/default-build-config" {
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
 declare module "src/build-config/build-config-validator" {
-    /**
-     * @typedef {import('./build-config').default} BuildConfig
-     */
+    /** @typedef {import('./build-config').default} BuildConfig */
     export default class BuildConfigValidator {
         /**
          * @param {BuildConfig} buildConfig
@@ -727,12 +731,14 @@ declare module "src/build-config/build-config-validator" {
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/build-config/build-config" {
-    /**
-     * @typedef {import('./module-config').default} ModuleConfig
-     * @typedef {import('./default-build-config').default} DefaultBuildConfig
-     * @typedef {import('./build-config-interface').default} BuildConfigInterface
-     * @typedef {import('./validated-build-config').default} ValidatedBuildConfig
-     */
+    /** @typedef {import('../version').Version} Version */
+    /** @typedef {import('../version').CX_22_0} CX_22_0 */
+    /** @typedef {import('../design-type').DesignType} DesignType */
+    /** @typedef {import('../design-type').LANDINGPAGE} LANDINGPAGE */
+    /** @typedef {import('./module-config').default} ModuleConfig */
+    /** @typedef {import('./default-build-config').default} DefaultBuildConfig */
+    /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
+    /** @typedef {import('./validated-build-config').default} ValidatedBuildConfig */
     /**
      * The configuration object for the build of one template.
      *
@@ -835,11 +841,11 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): Version;
+        get targetVersion(): import("src/version").Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): DesignType;
+        get designType(): import("src/design-type").DesignType;
         /**
          * @returns {string}
          */
@@ -1057,12 +1063,14 @@ declare module "src/build-config/build-config" {
          */
         validate(): ValidatedBuildConfig;
     }
+    export type Version = import("src/version").Version;
+    export type CX_22_0 = import("src/version").Version;
+    export type DesignType = import("src/design-type").DesignType;
+    export type LANDINGPAGE = import("src/design-type").DesignType;
     export type ModuleConfig = import("src/build-config/module-config").default;
     export type DefaultBuildConfig = import("src/build-config/default-build-config").default;
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
     export type ValidatedBuildConfig = import("src/build-config/validated-build-config").default;
-    import { Version } from "src/version";
-    import { DesignType } from "src/design-type";
 }
 declare module "src/handlebars-helpers" {
     var _default: {
@@ -1921,7 +1929,7 @@ declare module "src/css/css-color" {
          * @param {number} red
          * @param {number} green
          * @param {number} blue
-         * @param {number} [alpha=255]
+         * @param {number} [alpha=1]
          */
         static fromRGB(red: number, green: number, blue: number, alpha?: number): CssColor;
         /**
@@ -2221,6 +2229,7 @@ declare module "src/css/css-bool" {
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
 declare module "src/css/css-property-resolver" {
+    /** @typedef {import('./abstract-css-property').default} AbstractCssProperty */
     export default class CssPropertyResolver {
         /**
          * @type {Map<string|number, AbstractCssProperty>}
@@ -2233,7 +2242,7 @@ declare module "src/css/css-property-resolver" {
          * @param {T} value
          * @returns {AbstractCssProperty|T}
          */
-        resolve<T>(value: T): any;
+        resolve<T>(value: T): import("src/css/abstract-css-property").default | T;
         /**
          * @param {string|number} value
          * @returns {AbstractCssProperty}
@@ -2241,6 +2250,7 @@ declare module "src/css/css-property-resolver" {
          */
         private _createProperty;
     }
+    export type AbstractCssProperty = import("src/css/abstract-css-property").default;
 }
 declare module "src/build-context" {
     export default class BuildContext {
@@ -2561,32 +2571,78 @@ declare module "src/webpack-config-builder" {
 }
 declare module "src/css/helper" {
     /**
-     * @param {...string} pathSegments
+     * Create a <code>url()</code> object. The supplied path segments will be passed to <code>path.resolve</code>
+     * to get the correct path. <strong>It is recommended to pass an absolute path.</strong>
+     * Use the <code>__dirname</code constant as first path segment.
+     *
+     * @example
+     * css.url(__dirname, 'static', 'image.png')
+     * @param {...string} pathSegments - The path segments.
      * @returns {CssUrl}
      */
     export function url(...pathSegments: string[]): CssUrl;
     /**
-     * @param {...string} pathSegments
+     * Create a <code>url()</code> containing a base64 encoded data-uri.
+     *
+     * @example
+     * css.dataUri(__dirname, 'static', 'image.png')
+     * @see {@link url} for details
+     * @param {...string} pathSegments - The path segments.
      * @returns {CssUrl}
      */
     export function dataUri(...pathSegments: string[]): CssUrl;
     /**
-     * @param {...string|number} channels
+     * Create a CSS color value. You can pass one, three or four values. Take a look at the examples to find out more
+     * about the accepted input.
+     *
+     * @example
+     * css.color('red'); // color string
+     * css.color('#ff00ff'); // normal hex format
+     * css.color('#ff00ff99'); // rgba as hex
+     * css.color('rgb(255, 0, 255)'); // rgb format
+     * css.color('rgba(255, 0, 255, 0.1)'); // rgba format
+     * css.color(255, 0, 255); // pass each channel as number
+     * css.color(255, 0, 255, 0.5); // pass each channel as numeric value
+     * @param {...string|number} channels - The color definition in one of the allowed forms.
      * @returns {CssColor|string}
      */
     export function color(...channels: (string | number)[]): CssColor | string;
+    /**
+     * Create a CSS numeric value with a given unit. Take a look at the examples to find out more about the accepted input.
+     *
+     * @example
+     * css.number('10px');
+     * css.number('10em');
+     * css.number('10ex');
+     * css.number('10ch');
+     * css.number('10rem');
+     * css.number('10in');
+     * css.number('10cm');
+     * css.number('10mm');
+     * css.number('10pc');
+     * css.number('10pt');
+     * css.number('10vw');
+     * css.number('10vh');
+     * css.number('10vmin');
+     * css.number('10vmax');
+     * css.number('10%');
+     * @param {string} value - The value as string.
+     * @returns {CssDimension|string}
+     */
+    export function number(value: string): CssDimension | string;
     import CssUrl from "src/css/css-url";
     import CssColor from "src/css/css-color";
+    import CssDimension from "src/css/css-dimension";
 }
 declare module "export/main" {
-    import * as Version from "src/version";
-    import * as DesignType from "src/design-type";
+    import * as version from "src/version";
+    import * as designType from "src/design-type";
     import BuildConfig from "src/build-config/build-config";
     import ModuleConfig from "src/build-config/module-config";
     import DefaultBuildConfig from "src/build-config/default-build-config";
     import WebpackConfigBuilder from "src/webpack-config-builder";
     import * as css from "src/css/helper";
-    export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
+    export { version, designType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
 }
 declare module "src/content-element/part/part" {
     export class Part extends AbstractConstant {
@@ -2689,6 +2745,7 @@ declare module "src/content-element/part/part" {
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/content-element/part/abstract-part" {
+    /** @typedef {import('./part').Part} Part */
     /**
      * @abstract
      */
@@ -2719,7 +2776,7 @@ declare module "src/content-element/part/abstract-part" {
         /**
          * @returns {Part}
          */
-        get partId(): Part;
+        get partId(): import("src/content-element/part/part").Part;
         /**
          * @returns {string|undefined}
          */
@@ -2765,83 +2822,14 @@ declare module "src/content-element/part/abstract-part" {
          */
         withLabel(label: string): AbstractPart;
     }
+    export type Part = import("src/content-element/part/part").Part;
     import AbstractBuilder from "src/abstract-builder";
-    import { Part } from "src/content-element/part/part";
-}
-declare module "src/design/locale" {
-    export class Locale extends AbstractConstant {
-    }
-    /**
-     * This defines the fallback locale to ues.
-     *
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const WILDCARD: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const EN: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const EN_GB: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const EN_US: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const DE: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const DE_DE: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const DE_CH: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const FR: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const FR_CH: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const IT: Locale;
-    /**
-     * @see {@link Design#withDefaultLocale}
-     * @see {@link Design#withLocales}
-     * @type {Locale}
-     */
-    export const IT_CH: Locale;
-    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/design/schema-version" {
+    /** @typedef {import('./design').default} Design */
+    /**
+     * Class to define a schema version.
+     */
     export class SchemaVersion extends AbstractConstant {
     }
     /**
@@ -2860,389 +2848,115 @@ declare module "src/design/schema-version" {
      * @since 22.0
      */
     export const V_22_0: SchemaVersion;
+    export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
-declare module "src/design/design" {
-    /**
-     * This is the builder class to specify a design.
-     *
-     * @example
-     * module.exports = new Design()
-     *   .withSchemaVersion(SchemaVersion.V_22_0)
-     *   .withTitle('My BSI CX Design')
-     *   .withAuthor('John Doe')
-     *   .withDate('18.8.2021')
-     *   .withPreviewImage(require('./preview.png'))
-     *   .withRawDefaultLocale('en')
-     *   withHtmlEditorConfigs(
-     *     require('./configs/html-editor/full.js'),
-     *     require('./configs/html-editor/minimal.js'))
-     *   .withContentElementGroups(
-     *     new ContentElementGroup()
-     *       .withGroupId('content')
-     *       .withLabel('Content')
-     *       .withContentElements(
-     *         require('./content-elements/content/title'),
-     *         require('./content-elements/content/text')));
-     */
-    export default class Design extends AbstractBuilder {
+declare module "src/style/css-class" {
+    export default class CssClass extends AbstractBuilder {
         /**
-         * @type {RawValue|SchemaVersion|undefined}
-         * @private
+         * @param {string} cssClass
+         * @param {string} label
+         * @returns {CssClass}
          */
-        private _schemaVersion;
+        static create(cssClass: string, label: string): CssClass;
         /**
          * @type {string|undefined}
          * @private
          */
-        private _title;
+        private _cssClass;
         /**
          * @type {string|undefined}
          * @private
          */
-        private _author;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _date;
-        /**
-         * @type {{}|undefined}
-         * @private
-         */
-        private _previewImage;
-        /**
-         * @type {RawValue|Locale|undefined}
-         * @private
-         */
-        private _defaultLocale;
-        /**
-         * @type {RawValue|[Locale]|undefined}
-         * @private
-         */
-        private _locales;
-        /**
-         * @type {RawValue|[ContentElementGroup]|undefined}
-         * @private
-         */
-        private _contentElementGroups;
-        /**
-         * @type {RawValue|[Style]|undefined}
-         * @private
-         */
-        private _styleConfigs;
-        /**
-         * @type {RawValue|[HtmlEditorConfig]|undefined}
-         * @private
-         */
-        private _htmlEditorConfigs;
-        /**
-         * @type {RawValue|Website|undefined}
-         * @private
-         */
-        private _website;
-        /**
-         * @type {RawValue|NLS[]|undefined}
-         * @private
-         */
-        private _nls;
-        /**
-         * @returns {RawValue|SchemaVersion|undefined}
-         */
-        get schemaVersion(): RawValue | SchemaVersion;
+        private _label;
         /**
          * @returns {string|undefined}
          */
-        get title(): string;
+        get cssClass(): string;
         /**
          * @returns {string|undefined}
          */
-        get author(): string;
+        get label(): string;
         /**
-         * @returns {string|undefined}
+         * @param {string} cssClass
+         * @returns {CssClass}
          */
-        get date(): string;
+        withCssClass(cssClass: string): CssClass;
         /**
-         * @returns {{}|undefined}
+         * @param {string} label
+         * @returns {CssClass}
          */
-        get previewImage(): {};
+        withLabel(label: string): CssClass;
         /**
-         * @returns {RawValue|Locale|undefined}
+         * @param {boolean} [shallow=true]
+         * @returns {CssClass}
          */
-        get defaultLocale(): RawValue | Locale;
-        /**
-         * @returns {RawValue|[Locale]|undefined}
-         */
-        get locales(): RawValue | [Locale];
-        /**
-         * @returns {RawValue|ContentElementGroup[]|undefined}
-         */
-        get contentElementGroups(): any[] | RawValue;
-        /**
-         * @returns {RawValue|[Style]|undefined}
-         */
-        get styleConfigs(): RawValue | [any];
-        /**
-         * @returns {RawValue|[HtmlEditorConfig]|undefined}
-         */
-        get htmlEditorConfigs(): RawValue | [any];
-        /**
-         * @returns {RawValue|Website|undefined}
-         */
-        get website(): any;
-        /**
-         * @returns {RawValue|NLS[]|undefined}
-         */
-        get nls(): any[] | RawValue;
-        /**
-         * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
-         *
-         * @example
-         * .withSchemaVersion(SchemaVersion.V_22_0)
-         * @see {@link SchemaVersion} for available versions
-         * @see {@link withRawSchemaVersion} to set a raw value
-         * @param {SchemaVersion} schemaVersion - The schema version to use.
-         * @returns {Design}
-         */
-        withSchemaVersion(schemaVersion: SchemaVersion): Design;
-        /**
-         * Supply a raw schema version.
-         *
-         * @example
-         * .withRawSchemaVersion('22.0')
-         * @see {@link withSchemaVersion}
-         * @param {string} schemaVersion - The schema version to use.
-         * @returns {Design}
-         */
-        withRawSchemaVersion(schemaVersion: string): Design;
-        /**
-         * The title for your design.
-         *
-         * @param {string} title - The design title.
-         * @returns {Design}
-         */
-        withTitle(title: string): Design;
-        /**
-         * The author of your design.
-         *
-         * @param {string} author - The design author.
-         * @returns {Design}
-         */
-        withAuthor(author: string): Design;
-        /**
-         * The creation date of your design e.g. 18.08.2021.
-         *
-         * @example
-         * .withDate('18.08.2021')
-         * @param {string} date - The design date.
-         * @returns {Design}
-         */
-        withDate(date: string): Design;
-        /**
-         * The preview image of your design. Use in combination with require.
-         *
-         * @example
-         * .withPreviewImage(require('./preview-image.png'))
-         * @param {{}} previewImage
-         * @returns {Design}
-         */
-        withPreviewImage(previewImage: {}): Design;
-        /**
-         * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
-         *
-         * @example
-         * .withDefaultLocale(Locale.EN)
-         * @see {@link Locale} for available locales
-         * @see {@link withRawDefaultLocale} to set a raw value
-         * @param {Locale} defaultLocale - The design default locale.
-         * @returns {Design}
-         */
-        withDefaultLocale(defaultLocale: Locale): Design;
-        /**
-         * Set the raw default locale as string.
-         *
-         * @example
-         * .withRawDefaultLocale('en')
-         * @see {@link withDefaultLocale}
-         * @param {string} defaultLocale - The default locale.
-         * @returns {Design}
-         */
-        withRawDefaultLocale(defaultLocale: string): Design;
-        /**
-         * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
-         *
-         * @example
-         * .withLocales(Locale.EN_GB,Locale.DE_CH)
-         * @see {@link Locale} for available locales
-         * @see {@link withRawLocales} to set a raw value
-         * @param {...Locale} locales - The design locales.
-         * @returns {Design}
-         */
-        withLocales(...locales: Locale[]): Design;
-        /**
-         * Set the raw locales as string.
-         *
-         * @example
-         * .withRawLocales('en-GB','de-CH')
-         * @see {@link withLocales}
-         * @param {...string} locales - The design locales.
-         * @returns {Design}
-         */
-        withRawLocales(...locales: string[]): Design;
-        /**
-         * Your design's content element groups.
-         *
-         * @see {@link withRawContentElementGroups} to set a raw value
-         * @param {...ContentElementGroup} contentElementGroups - The content element groups.
-         * @returns {Design}
-         */
-        withContentElementGroups(...contentElementGroups: any[]): Design;
-        /**
-         * Set the content element groups of your design as raw object.
-         *
-         * @example
-         * .withRawContentElementGroups(
-         *   {
-         *     groupId: 'content',
-         *     label: 'Content',
-         *     contentElements: []
-         *   },
-         *   {
-         *     groupId: 'advanced',
-         *     label: 'Advanced',
-         *     contentElements: []
-         *   }
-         * )
-         * @see {@link withContentElementGroups}
-         * @param {...{}} contentElementGroups - The content element groups.
-         * @returns {Design}
-         */
-        withRawContentElementGroups(...contentElementGroups: {}[]): Design;
-        /**
-         * The style configurations of your design.
-         *
-         * @see {@link withRawStyleConfigs} to set a raw value
-         * @param {...Style} styleConfigs - The style configurations.
-         * @returns {Design}
-         */
-        withStyleConfigs(...styleConfigs: any[]): Design;
-        /**
-         * Set the style configurations of your design as raw object.
-         *
-         * @example
-         * .withRawStyleConfigs({
-         *   'background-color': {
-         *     label: 'Background Color',
-         *     cssClasses: [
-         *       { cssClass: 'black-background', label: 'Black' },
-         *       { cssClass: 'blue-background', label: 'Blue' }
-         *     ]
-         *   },
-         *   'text-color': {
-         *     label: 'Text Color',
-         *     cssClasses: [
-         *       { cssClass: 'black-text', label: 'Black' },
-         *       { cssClass: 'blue-text', label: 'Blue' }
-         *     ]
-         *   }
-         * })
-         * @see {@link withStyleConfigs}
-         * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
-         * @returns {Design}
-         */
-        withRawStyleConfigs(styleConfigs: {}): Design;
-        /**
-         * The HTML editor configurations of your design.
-         *
-         * @see {@link withRawHtmlEditorConfigs} to set a raw value
-         * @param {...HtmlEditorConfig} htmlEditorConfigs
-         * @returns {Design}
-         */
-        withHtmlEditorConfigs(...htmlEditorConfigs: any[]): Design;
-        /**
-         * Set the HTML editor configurations as raw object.
-         *
-         * @example
-         * .withRawHtmlEditorConfigs({
-         *   minimal: {
-         *     features: ['italic','bold','underline','strikeThrough']
-         *   }
-         * })
-         * @see {@link withHtmlEditorConfigs}
-         * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
-         * @returns {Design}
-         */
-        withRawHtmlEditorConfigs(htmlEditorConfigs: {}): Design;
-        /**
-         * The website configuration of your design.
-         *
-         * @see {@link withRawWebsite} to set a raw value
-         * @param {Website} website - The website object.
-         * @returns {Design}
-         * @since BSI CX 1.3
-         */
-        withWebsite(website: any): Design;
-        /**
-         * Set the raw website object of your design.
-         *
-         * @example
-         * .withRawWebsite({
-         *   maxNavigationLevel: 2,
-         *   includes: {
-         *     __page__: {
-         *       editable: true,
-         *       file: require('./includes/page.hbs'),
-         *       name: 'Template for content pages'
-         *     },
-         *     footer: {
-         *       editable: true,
-         *       file: require('./includes/footer.html'),
-         *       name: 'Footer'
-         *     }
-         *   }
-         * })
-         * @param {{}} website - The raw <code>website</code> object.
-         * @returns {Design}
-         * @since BSI CX 1.3
-         */
-        withRawWebsite(website: {}): Design;
-        /**
-         * Configure you design's translation support.
-         *
-         * @see {@link withRawNLS} to set a raw value
-         * @param {...NLS} nls
-         * @returns {Design}
-         */
-        withNLS(...nls: any[]): Design;
-        /**
-         * Set the raw value of the <code>nls</code> property.
-         *
-         * @example
-         * .withRawNLS({
-         *   action: { '*': 'action', de: 'Aktion' },
-         *   name: { '*': 'name', de: 'Name' }
-         * })
-         * @see {@link withNLS}
-         * @param {{}} nls - The raw value.
-         * @returns {Design}
-         */
-        withRawNLS(nls: {}): Design;
-        /**
-         * Clone the configuration.
-         *
-         * @example
-         * let design1 = new Design().withName('my first design');
-         * let design2 = design1.clone().withName('my second design');
-         * design1 === design2 // false
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {Design}
-         */
-        clone(shallow?: boolean): Design;
+        clone(shallow?: boolean): CssClass;
     }
     import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/style/style" {
+    /** @typedef {import('./css-class').default} CssClass */
+    /**
+     * @since Studio 1.1
+     */
+    export default class Style extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {RawValue|CssClass[]|undefined}
+         * @private
+         */
+        private _cssClasses;
+        /**
+         * @returns {string|undefined}
+         */
+        get identifier(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @returns {RawValue|[CssClass]|undefined}
+         */
+        get cssClasses(): RawValue | [import("src/style/css-class").default];
+        /**
+         * @param {string} identifier
+         * @returns {Style}
+         */
+        withIdentifier(identifier: string): Style;
+        /**
+         * @param {string} label
+         * @returns {Style}
+         */
+        withLabel(label: string): Style;
+        /**
+         * @param {...CssClass} cssClasses
+         * @returns {Style}
+         */
+        withCssClasses(...cssClasses: CssClass[]): Style;
+        /**
+         * @param {...{}} cssClasses
+         * @returns {Style}
+         */
+        withRawCssClasses(...cssClasses: {}[]): Style;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {Style}
+         */
+        clone(shallow?: boolean): Style;
+    }
+    export type CssClass = import("src/style/css-class").default;
+    import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
-    import { SchemaVersion } from "src/design/schema-version";
-    import { Locale } from "src/design/locale";
 }
 declare module "src/content-element/icon" {
     export class Icon extends AbstractConstant {
@@ -3479,73 +3193,11 @@ declare module "src/content-element/icon" {
     export const THREE_COLUMNS: Icon;
     import AbstractConstant from "src/abstract-constant";
 }
-declare module "src/style/style" {
-    /**
-     * @since Studio 1.1
-     */
-    export default class Style extends AbstractBuilder {
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _identifier;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @type {RawValue|CssClass[]|undefined}
-         * @private
-         */
-        private _cssClasses;
-        /**
-         * @returns {string|undefined}
-         */
-        get identifier(): string;
-        /**
-         * @returns {string|undefined}
-         */
-        get label(): string;
-        /**
-         * @returns {RawValue|[CssClass]|undefined}
-         */
-        get cssClasses(): RawValue | [any];
-        /**
-         * @param {string} identifier
-         * @returns {Style}
-         */
-        withIdentifier(identifier: string): Style;
-        /**
-         * @param {string} label
-         * @returns {Style}
-         */
-        withLabel(label: string): Style;
-        /**
-         * @param {...CssClass} cssClasses
-         * @returns {Style}
-         */
-        withCssClasses(...cssClasses: any[]): Style;
-        /**
-         * @param {...{}} cssClasses
-         * @returns {Style}
-         */
-        withRawCssClasses(...cssClasses: {}[]): Style;
-        /**
-         * @param {boolean} [shallow=true]
-         * @returns {Style}
-         */
-        clone(shallow?: boolean): Style;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-}
 declare module "src/content-element/content-element" {
-    /**
-     * @typedef {import('../style/style').default} Style
-     * @typedef {import('./part/abstract-part').default} AbstractPart
-     * @typedef {import('./content-element-group').default} ContentElementGroup
-     */
+    /** @typedef {import('../style/style').default} Style */
+    /** @typedef {import('./icon').Icon} Icon */
+    /** @typedef {import('./part/abstract-part').default} AbstractPart */
+    /** @typedef {import('./content-element-group').default} ContentElementGroup */
     /**
      * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
      *
@@ -3623,7 +3275,7 @@ declare module "src/content-element/content-element" {
         /**
          * @returns {RawValue|Icon|undefined}
          */
-        get icon(): RawValue | Icon;
+        get icon(): RawValue | import("src/content-element/icon").Icon;
         /**
          * @returns {boolean|undefined}
          */
@@ -3773,16 +3425,14 @@ declare module "src/content-element/content-element" {
         clone(shallow?: boolean): ContentElement;
     }
     export type Style = import("src/style/style").default;
+    export type Icon = import("src/content-element/icon").Icon;
     export type AbstractPart = import("src/content-element/part/abstract-part").default;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
-    import { Icon } from "src/content-element/icon";
 }
 declare module "src/content-element/content-element-group" {
-    /**
-     * @typedef {import('./content-element').default} ContentElement
-     */
+    /** @typedef {import('./content-element').default} ContentElement */
     /**
      * This is the builder class to specify content element groups.
      *
@@ -3907,7 +3557,36 @@ declare module "src/content-element/content-element-group" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
+declare module "src/html-editor-config/enter-mode" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+    export class EnterMode extends AbstractConstant {
+    }
+    /**
+     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const P: EnterMode;
+    /**
+     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const BR: EnterMode;
+    /**
+     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const DIV: EnterMode;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/html-editor-config/feature" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
     export class Feature extends AbstractConstant {
     }
     /**
@@ -4125,82 +3804,11 @@ declare module "src/html-editor-config/feature" {
      * @type {Feature}
      */
     export const HELP: Feature;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/enter-mode" {
-    export class EnterMode extends AbstractConstant {
-    }
-    /**
-     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const P: EnterMode;
-    /**
-     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const BR: EnterMode;
-    /**
-     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const DIV: EnterMode;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/font-size-unit" {
-    export class FontSizeUnit extends AbstractConstant {
-    }
-    /**
-     * Font sizes as pixel values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const PX: FontSizeUnit;
-    /**
-     * Font sizes as em values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const EM: FontSizeUnit;
-    /**
-     * Font sizes as rem values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const REM: FontSizeUnit;
-    /**
-     * Font sizes as pt values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const PT: FontSizeUnit;
-    /**
-     * Font sizes as cm values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const CM: FontSizeUnit;
-    /**
-     * Font sizes as mm values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const MM: FontSizeUnit;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/format" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
     export class Format extends AbstractConstant {
     }
     /**
@@ -4259,9 +3867,63 @@ declare module "src/html-editor-config/format" {
      * @type {Format}
      */
     export const PRE: Format;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/font-size-unit" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+    export class FontSizeUnit extends AbstractConstant {
+    }
+    /**
+     * Font sizes as pixel values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const PX: FontSizeUnit;
+    /**
+     * Font sizes as em values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const EM: FontSizeUnit;
+    /**
+     * Font sizes as rem values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const REM: FontSizeUnit;
+    /**
+     * Font sizes as pt values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const PT: FontSizeUnit;
+    /**
+     * Font sizes as cm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const CM: FontSizeUnit;
+    /**
+     * Font sizes as mm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const MM: FontSizeUnit;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/html-editor-config" {
+    /** @typedef {import('./enter-mode').EnterMode} EnterMode */
+    /** @typedef {import('./feature').Feature} Feature */
+    /** @typedef {import('./format').Format} Format */
+    /** @typedef {import('./font-size-unit').FontSizeUnit} FontSizeUnit */
     /**
      * This is the builder class to specify a HTML editor configuration.
      *
@@ -4332,7 +3994,7 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {RawValue|Feature[]|undefined}
          */
-        get features(): RawValue | Feature[];
+        get features(): RawValue | import("src/html-editor-config/feature").Feature[];
         /**
          * @returns {string[]|undefined}
          */
@@ -4344,7 +4006,7 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {RawValue|Format[]|undefined}
          */
-        get formats(): RawValue | Format[];
+        get formats(): RawValue | import("src/html-editor-config/format").Format[];
         /**
          * @returns {number[]|undefined}
          */
@@ -4352,7 +4014,7 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {RawValue|FontSizeUnit|undefined}
          */
-        get fontSizeUnit(): RawValue | FontSizeUnit;
+        get fontSizeUnit(): RawValue | import("src/html-editor-config/font-size-unit").FontSizeUnit;
         /**
          * @returns {number|undefined}
          */
@@ -4364,7 +4026,7 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {RawValue|EnterMode|undefined}
          */
-        get enterMode(): RawValue | EnterMode;
+        get enterMode(): RawValue | import("src/html-editor-config/enter-mode").EnterMode;
         /**
          * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
          * It is recommended to set the identifier.
@@ -4509,56 +4171,632 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         clone(shallow?: boolean): HtmlEditorConfig;
     }
+    export type EnterMode = import("src/html-editor-config/enter-mode").EnterMode;
+    export type Feature = import("src/html-editor-config/feature").Feature;
+    export type Format = import("src/html-editor-config/format").Format;
+    export type FontSizeUnit = import("src/html-editor-config/font-size-unit").FontSizeUnit;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
-    import { Feature } from "src/html-editor-config/feature";
-    import { Format } from "src/html-editor-config/format";
-    import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
-    import { EnterMode } from "src/html-editor-config/enter-mode";
 }
-declare module "src/style/css-class" {
-    export default class CssClass extends AbstractBuilder {
+declare module "src/website/website" {
+    /**
+     * @since BSI CX 1.3
+     */
+    export default class Website extends AbstractBuilder {
         /**
-         * @param {string} cssClass
-         * @param {string} label
-         * @returns {CssClass}
-         */
-        static create(cssClass: string, label: string): CssClass;
-        /**
-         * @type {string|undefined}
+         * @type {number|undefined}
          * @private
          */
-        private _cssClass;
+        private _maxNavigationLevel;
         /**
-         * @type {string|undefined}
+         * @type {RawValue|AbstractInclude[]|undefined}
          * @private
          */
-        private _label;
+        private _includes;
         /**
-         * @returns {string|undefined}
+         * @returns {number|undefined}
          */
-        get cssClass(): string;
+        get maxNavigationLevel(): number;
         /**
-         * @returns {string|undefined}
+         * @returns {RawValue|AbstractInclude[]|undefined}
          */
-        get label(): string;
+        get includes(): any[] | RawValue;
         /**
-         * @param {string} cssClass
-         * @returns {CssClass}
+         * @param {number} maxNavigationLevel
+         * @returns {Website}
          */
-        withCssClass(cssClass: string): CssClass;
+        withMaxNavigationLevel(maxNavigationLevel: number): Website;
         /**
-         * @param {string} label
-         * @returns {CssClass}
+         * @param {...AbstractInclude} includes
+         * @returns {Website}
          */
-        withLabel(label: string): CssClass;
+        withIncludes(...includes: any[]): Website;
+        /**
+         * @param {{}} includes
+         * @returns {Website}
+         */
+        withRawIncludes(includes: {}): Website;
         /**
          * @param {boolean} [shallow=true]
-         * @returns {CssClass}
+         * @returns {Website}
          */
-        clone(shallow?: boolean): CssClass;
+        clone(shallow?: boolean): Website;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
+declare module "src/nls/translation" {
+    /** @typedef {import('../design/locale').Locale} Locale */
+    export default class Translation extends AbstractBuilder {
+        /**
+         * @param {Locale} locale
+         * @param {string} translation
+         * @returns {Translation}
+         */
+        static create(locale: Locale, translation: string): Translation;
+        /**
+         * @param {string} translation
+         * @returns {Translation}
+         */
+        static wildcard(translation: string): Translation;
+        /**
+         * @type {Locale|undefined}
+         * @private
+         */
+        private _locale;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _translation;
+        /**
+         * @returns {Locale|undefined}
+         */
+        get locale(): import("src/design/locale").Locale;
+        /**
+         * @returns {string|undefined}
+         */
+        get translation(): string;
+        /**
+         * @param {Locale} locale
+         * @returns {Translation}
+         */
+        withLocale(locale: Locale): Translation;
+        /**
+         * @param {string} translation
+         * @returns {Translation}
+         */
+        withTranslation(translation: string): Translation;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {Translation}
+         */
+        clone(shallow?: boolean): Translation;
+    }
+    export type Locale = import("src/design/locale").Locale;
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/nls/nls" {
+    export default class NLS extends AbstractBuilder {
+        /**
+         * @param {string} identifier
+         * @param {...Translation}translations
+         * @returns {NLS}
+         */
+        static create(identifier: string, ...translations: Translation[]): NLS;
+        /**
+         * @param {string} identifier
+         * @param {Map<Locale,string>} map
+         */
+        static fromMap(identifier: string, map: Map<any, string>): NLS;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {Translation[]|undefined}
+         * @private
+         */
+        private _translations;
+        /**
+         * @returns {string|undefined}
+         */
+        get identifier(): string;
+        /**
+         * @returns {Translation[]|undefined}
+         */
+        get translations(): Translation[];
+        /**
+         * @param {string} identifier
+         * @returns {NLS}
+         */
+        withIdentifier(identifier: string): NLS;
+        /**
+         * @param {...Translation} translations
+         * @returns {NLS}
+         */
+        withTranslations(...translations: Translation[]): NLS;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {NLS}
+         */
+        clone(shallow?: boolean): NLS;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import Translation from "src/nls/translation";
+}
+declare module "src/design/design" {
+    /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
+    /** @typedef {import('./locale').Locale} Locale */
+    /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
+    /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
+    /** @typedef {import('../website/website').default} Website */
+    /** @typedef {import('../style/style').default} Style */
+    /** @typedef {import('../nls/nls').default} NLS */
+    /**
+     * This is the builder class to specify a design.
+     *
+     * @example
+     * module.exports = new Design()
+     *   .withSchemaVersion(SchemaVersion.V_22_0)
+     *   .withTitle('My BSI CX Design')
+     *   .withAuthor('John Doe')
+     *   .withDate('18.8.2021')
+     *   .withPreviewImage(require('./preview.png'))
+     *   .withRawDefaultLocale('en')
+     *   .withHtmlEditorConfigs(
+     *     require('./configs/html-editor/full.js'),
+     *     require('./configs/html-editor/minimal.js'))
+     *   .withContentElementGroups(
+     *     new ContentElementGroup()
+     *       .withGroupId('content')
+     *       .withLabel('Content')
+     *       .withContentElements(
+     *         require('./content-elements/content/title'),
+     *         require('./content-elements/content/text')));
+     */
+    export default class Design extends AbstractBuilder {
+        /**
+         * @type {RawValue|SchemaVersion|undefined}
+         * @private
+         */
+        private _schemaVersion;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _title;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _author;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _date;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _previewImage;
+        /**
+         * @type {RawValue|Locale|undefined}
+         * @private
+         */
+        private _defaultLocale;
+        /**
+         * @type {RawValue|[Locale]|undefined}
+         * @private
+         */
+        private _locales;
+        /**
+         * @type {RawValue|[ContentElementGroup]|undefined}
+         * @private
+         */
+        private _contentElementGroups;
+        /**
+         * @type {RawValue|[Style]|undefined}
+         * @private
+         */
+        private _styleConfigs;
+        /**
+         * @type {RawValue|HtmlEditorConfig[]|undefined}
+         * @private
+         */
+        private _htmlEditorConfigs;
+        /**
+         * @type {RawValue|Website|undefined}
+         * @private
+         */
+        private _website;
+        /**
+         * @type {RawValue|NLS[]|undefined}
+         * @private
+         */
+        private _nls;
+        /**
+         * @returns {RawValue|SchemaVersion|undefined}
+         */
+        get schemaVersion(): RawValue | import("src/design/schema-version").SchemaVersion;
+        /**
+         * @returns {string|undefined}
+         */
+        get title(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get author(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get date(): string;
+        /**
+         * @returns {{}|undefined}
+         */
+        get previewImage(): {};
+        /**
+         * @returns {RawValue|Locale|undefined}
+         */
+        get defaultLocale(): RawValue | import("src/design/locale").Locale;
+        /**
+         * @returns {RawValue|[Locale]|undefined}
+         */
+        get locales(): RawValue | [import("src/design/locale").Locale];
+        /**
+         * @returns {RawValue|ContentElementGroup[]|undefined}
+         */
+        get contentElementGroups(): RawValue | import("src/content-element/content-element-group").default[];
+        /**
+         * @returns {RawValue|[Style]|undefined}
+         */
+        get styleConfigs(): RawValue | [import("src/style/style").default];
+        /**
+         * @returns {RawValue|HtmlEditorConfig[]|undefined}
+         */
+        get htmlEditorConfigs(): RawValue | import("src/html-editor-config/html-editor-config").default[];
+        /**
+         * @returns {RawValue|Website|undefined}
+         */
+        get website(): RawValue | import("src/website/website").default;
+        /**
+         * @returns {RawValue|NLS[]|undefined}
+         */
+        get nls(): RawValue | import("src/nls/nls").default[];
+        /**
+         * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withSchemaVersion(SchemaVersion.V_22_0)
+         * @see {@link SchemaVersion} for available versions
+         * @see {@link withRawSchemaVersion} to set a raw value
+         * @param {SchemaVersion} schemaVersion - The schema version to use.
+         * @returns {Design}
+         */
+        withSchemaVersion(schemaVersion: SchemaVersion): Design;
+        /**
+         * Supply a raw schema version.
+         *
+         * @example
+         * .withRawSchemaVersion('22.0')
+         * @see {@link withSchemaVersion}
+         * @param {string} schemaVersion - The schema version to use.
+         * @returns {Design}
+         */
+        withRawSchemaVersion(schemaVersion: string): Design;
+        /**
+         * The title for your design.
+         *
+         * @param {string} title - The design title.
+         * @returns {Design}
+         */
+        withTitle(title: string): Design;
+        /**
+         * The author of your design.
+         *
+         * @param {string} author - The design author.
+         * @returns {Design}
+         */
+        withAuthor(author: string): Design;
+        /**
+         * The creation date of your design e.g. 18.08.2021.
+         *
+         * @example
+         * .withDate('18.08.2021')
+         * @param {string} date - The design date.
+         * @returns {Design}
+         */
+        withDate(date: string): Design;
+        /**
+         * The preview image of your design. Use in combination with require.
+         *
+         * @example
+         * .withPreviewImage(require('./preview-image.png'))
+         * @param {{}} previewImage
+         * @returns {Design}
+         */
+        withPreviewImage(previewImage: {}): Design;
+        /**
+         * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withDefaultLocale(Locale.EN)
+         * @see {@link Locale} for available locales
+         * @see {@link withRawDefaultLocale} to set a raw value
+         * @param {Locale} defaultLocale - The design default locale.
+         * @returns {Design}
+         */
+        withDefaultLocale(defaultLocale: Locale): Design;
+        /**
+         * Set the raw default locale as string.
+         *
+         * @example
+         * .withRawDefaultLocale('en')
+         * @see {@link withDefaultLocale}
+         * @param {string} defaultLocale - The default locale.
+         * @returns {Design}
+         */
+        withRawDefaultLocale(defaultLocale: string): Design;
+        /**
+         * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withLocales(Locale.EN_GB,Locale.DE_CH)
+         * @see {@link Locale} for available locales
+         * @see {@link withRawLocales} to set a raw value
+         * @param {...Locale} locales - The design locales.
+         * @returns {Design}
+         */
+        withLocales(...locales: Locale[]): Design;
+        /**
+         * Set the raw locales as string.
+         *
+         * @example
+         * .withRawLocales('en-GB','de-CH')
+         * @see {@link withLocales}
+         * @param {...string} locales - The design locales.
+         * @returns {Design}
+         */
+        withRawLocales(...locales: string[]): Design;
+        /**
+         * Your design's content element groups.
+         *
+         * @see {@link withRawContentElementGroups} to set a raw value
+         * @param {...ContentElementGroup} contentElementGroups - The content element groups.
+         * @returns {Design}
+         */
+        withContentElementGroups(...contentElementGroups: ContentElementGroup[]): Design;
+        /**
+         * Set the content element groups of your design as raw object.
+         *
+         * @example
+         * .withRawContentElementGroups(
+         *   {
+         *     groupId: 'content',
+         *     label: 'Content',
+         *     contentElements: []
+         *   },
+         *   {
+         *     groupId: 'advanced',
+         *     label: 'Advanced',
+         *     contentElements: []
+         *   }
+         * )
+         * @see {@link withContentElementGroups}
+         * @param {...{}} contentElementGroups - The content element groups.
+         * @returns {Design}
+         */
+        withRawContentElementGroups(...contentElementGroups: {}[]): Design;
+        /**
+         * The style configurations of your design.
+         *
+         * @see {@link withRawStyleConfigs} to set a raw value
+         * @param {...Style} styleConfigs - The style configurations.
+         * @returns {Design}
+         */
+        withStyleConfigs(...styleConfigs: Style[]): Design;
+        /**
+         * Set the style configurations of your design as raw object.
+         *
+         * @example
+         * .withRawStyleConfigs({
+         *   'background-color': {
+         *     label: 'Background Color',
+         *     cssClasses: [
+         *       { cssClass: 'black-background', label: 'Black' },
+         *       { cssClass: 'blue-background', label: 'Blue' }
+         *     ]
+         *   },
+         *   'text-color': {
+         *     label: 'Text Color',
+         *     cssClasses: [
+         *       { cssClass: 'black-text', label: 'Black' },
+         *       { cssClass: 'blue-text', label: 'Blue' }
+         *     ]
+         *   }
+         * })
+         * @see {@link withStyleConfigs}
+         * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
+         * @returns {Design}
+         */
+        withRawStyleConfigs(styleConfigs: {}): Design;
+        /**
+         * The HTML editor configurations of your design.
+         *
+         * @see {@link withRawHtmlEditorConfigs} to set a raw value
+         * @param {...HtmlEditorConfig} htmlEditorConfigs
+         * @returns {Design}
+         */
+        withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig[]): Design;
+        /**
+         * Set the HTML editor configurations as raw object.
+         *
+         * @example
+         * .withRawHtmlEditorConfigs({
+         *   minimal: {
+         *     features: ['italic','bold','underline','strikeThrough']
+         *   }
+         * })
+         * @see {@link withHtmlEditorConfigs}
+         * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
+         * @returns {Design}
+         */
+        withRawHtmlEditorConfigs(htmlEditorConfigs: {}): Design;
+        /**
+         * The website configuration of your design.
+         *
+         * @see {@link withRawWebsite} to set a raw value
+         * @param {Website} website - The website object.
+         * @returns {Design}
+         * @since BSI CX 1.3
+         */
+        withWebsite(website: Website): Design;
+        /**
+         * Set the raw website object of your design.
+         *
+         * @example
+         * .withRawWebsite({
+         *   maxNavigationLevel: 2,
+         *   includes: {
+         *     __page__: {
+         *       editable: true,
+         *       file: require('./includes/page.hbs'),
+         *       name: 'Template for content pages'
+         *     },
+         *     footer: {
+         *       editable: true,
+         *       file: require('./includes/footer.html'),
+         *       name: 'Footer'
+         *     }
+         *   }
+         * })
+         * @param {{}} website - The raw <code>website</code> object.
+         * @returns {Design}
+         * @since BSI CX 1.3
+         */
+        withRawWebsite(website: {}): Design;
+        /**
+         * Configure you design's translation support.
+         *
+         * @see {@link withRawNLS} to set a raw value
+         * @param {...NLS} nls
+         * @returns {Design}
+         */
+        withNLS(...nls: NLS[]): Design;
+        /**
+         * Set the raw value of the <code>nls</code> property.
+         *
+         * @example
+         * .withRawNLS({
+         *   action: { '*': 'action', de: 'Aktion' },
+         *   name: { '*': 'name', de: 'Name' }
+         * })
+         * @see {@link withNLS}
+         * @param {{}} nls - The raw value.
+         * @returns {Design}
+         */
+        withRawNLS(nls: {}): Design;
+        /**
+         * Clone the configuration.
+         *
+         * @example
+         * let design1 = new Design().withName('my first design');
+         * let design2 = design1.clone().withName('my second design');
+         * design1 === design2 // false
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {Design}
+         */
+        clone(shallow?: boolean): Design;
+    }
+    export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
+    export type Locale = import("src/design/locale").Locale;
+    export type ContentElementGroup = import("src/content-element/content-element-group").default;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    export type Website = import("src/website/website").default;
+    export type Style = import("src/style/style").default;
+    export type NLS = import("src/nls/nls").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
+declare module "src/design/locale" {
+    /** @typedef {import('./design').default} Design */
+    /**
+     * Class to define a locale.
+     */
+    export class Locale extends AbstractConstant {
+    }
+    /**
+     * This defines the fallback locale to ues.
+     *
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const WILDCARD: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const EN: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const EN_GB: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const EN_US: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const DE: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const DE_DE: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const DE_CH: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const FR: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const FR_CH: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const IT: Locale;
+    /**
+     * @see {@link Design#withDefaultLocale}
+     * @see {@link Design#withLocales}
+     * @type {Locale}
+     */
+    export const IT_CH: Locale;
+    export type Design = import("src/design/design").default;
+    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/content-element/part/plain-text-part" {
     /**
@@ -4575,9 +4813,7 @@ declare module "src/content-element/part/plain-text-part" {
     import AbstractPart from "src/content-element/part/abstract-part";
 }
 declare module "src/content-element/part/formatted-text-part" {
-    /**
-     * @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig
-     */
+    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
     /**
      * @since Studio 1.0
      */
@@ -4872,53 +5108,6 @@ declare module "src/content-element/part/url-provider-part" {
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
-declare module "src/website/website" {
-    /**
-     * @since BSI CX 1.3
-     */
-    export default class Website extends AbstractBuilder {
-        /**
-         * @type {number|undefined}
-         * @private
-         */
-        private _maxNavigationLevel;
-        /**
-         * @type {RawValue|AbstractInclude[]|undefined}
-         * @private
-         */
-        private _includes;
-        /**
-         * @returns {number|undefined}
-         */
-        get maxNavigationLevel(): number;
-        /**
-         * @returns {RawValue|AbstractInclude[]|undefined}
-         */
-        get includes(): any[] | RawValue;
-        /**
-         * @param {number} maxNavigationLevel
-         * @returns {Website}
-         */
-        withMaxNavigationLevel(maxNavigationLevel: number): Website;
-        /**
-         * @param {...AbstractInclude} includes
-         * @returns {Website}
-         */
-        withIncludes(...includes: any[]): Website;
-        /**
-         * @param {{}} includes
-         * @returns {Website}
-         */
-        withRawIncludes(includes: {}): Website;
-        /**
-         * @param {boolean} [shallow=true]
-         * @returns {Website}
-         */
-        clone(shallow?: boolean): Website;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-}
 declare module "src/website/abstract-include" {
     /**
      * @abstract
@@ -5016,105 +5205,345 @@ declare module "src/website/include" {
     }
     import AbstractInclude from "src/website/abstract-include";
 }
-declare module "src/nls/translation" {
-    export default class Translation extends AbstractBuilder {
+declare module "src/content-element/part/part-factory" {
+    export default class PartFactory {
         /**
-         * @param {Locale} locale
-         * @param {string} translation
-         * @returns {Translation}
+         * @returns {BackgroundImagePart}
          */
-        static create(locale: Locale, translation: string): Translation;
+        get backgroundImage(): BackgroundImagePart;
         /**
-         * @param {string} translation
-         * @returns {Translation}
+         * @returns {FormCheckboxPart}
          */
-        static wildcard(translation: string): Translation;
+        get formCheckbox(): FormCheckboxPart;
         /**
-         * @type {Locale|undefined}
-         * @private
+         * @returns {FormFieldPart}
          */
-        private _locale;
+        get formField(): FormFieldPart;
         /**
-         * @type {string|undefined}
-         * @private
+         * @returns {FormPart}
          */
-        private _translation;
+        get form(): FormPart;
         /**
-         * @returns {Locale|undefined}
+         * @returns {FormRadioPart}
          */
-        get locale(): Locale;
+        get formRadio(): FormRadioPart;
         /**
-         * @returns {string|undefined}
+         * @returns {FormSelectPart}
          */
-        get translation(): string;
+        get formSelect(): FormSelectPart;
         /**
-         * @param {Locale} locale
-         * @returns {Translation}
+         * @returns {FormTextareaPart}
          */
-        withLocale(locale: Locale): Translation;
+        get formTextarea(): FormTextareaPart;
         /**
-         * @param {string} translation
-         * @returns {Translation}
+         * @returns {FormattedTextPart}
          */
-        withTranslation(translation: string): Translation;
+        get formattedText(): FormattedTextPart;
         /**
-         * @param {boolean} [shallow=true]
-         * @returns {Translation}
+         * @returns {HtmlPart}
          */
-        clone(shallow?: boolean): Translation;
+        get html(): HtmlPart;
+        /**
+         * @returns {ImagePart}
+         */
+        get image(): ImagePart;
+        /**
+         * @returns {IteratorPart}
+         */
+        get iterator(): IteratorPart;
+        /**
+         * @returns {LinkPart}
+         */
+        get link(): LinkPart;
+        /**
+         * @returns {NewsSnippetsPart}
+         */
+        get newsSnippet(): NewsSnippetsPart;
+        /**
+         * @returns {PlainTextPart}
+         */
+        get plainText(): PlainTextPart;
+        /**
+         * @returns {SocialFollowPart}
+         */
+        get socialFollow(): SocialFollowPart;
+        /**
+         * @returns {SocialSharePart}
+         */
+        get socialShare(): SocialSharePart;
+        /**
+         * @returns {TablePart}
+         */
+        get table(): TablePart;
+        /**
+         * @returns {UrlProviderPart}
+         */
+        get urlProvider(): UrlProviderPart;
+        /**
+         * @returns {VideoPart}
+         */
+        get video(): VideoPart;
     }
-    import AbstractBuilder from "src/abstract-builder";
-    import { Locale } from "src/design/locale";
+    import BackgroundImagePart from "src/content-element/part/background-image-part";
+    import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
+    import FormFieldPart from "src/content-element/part/form-field-part";
+    import FormPart from "src/content-element/part/form-part";
+    import FormRadioPart from "src/content-element/part/form-radio-part";
+    import FormSelectPart from "src/content-element/part/form-select-part";
+    import FormTextareaPart from "src/content-element/part/form-textarea-part";
+    import FormattedTextPart from "src/content-element/part/formatted-text-part";
+    import HtmlPart from "src/content-element/part/html-part";
+    import ImagePart from "src/content-element/part/image-part";
+    import IteratorPart from "src/content-element/part/iterator-part";
+    import LinkPart from "src/content-element/part/link-part";
+    import NewsSnippetsPart from "src/content-element/part/news-snippets-part";
+    import PlainTextPart from "src/content-element/part/plain-text-part";
+    import SocialFollowPart from "src/content-element/part/social-follow-part";
+    import SocialSharePart from "src/content-element/part/social-share-part";
+    import TablePart from "src/content-element/part/table-part";
+    import UrlProviderPart from "src/content-element/part/url-provider-part";
+    import VideoPart from "src/content-element/part/video-part";
 }
-declare module "src/nls/nls" {
-    export default class NLS extends AbstractBuilder {
+declare module "src/design/design-factory" {
+    /**
+     * Use the design factory to minimize the amount of imports when specifying a design.
+     * The design factory is available under the <code>cx</code> constant.
+     *
+     * @example
+     * const {cx} = require('@bsi-cx/design-build');
+     *
+     * module.exports = cx.design
+     *   .withSchemaVersion(SchemaVersion.V_22_0)
+     *   .withTitle('My BSI CX Design')
+     *   .withAuthor('John Doe')
+     *   .withDate('18.8.2021')
+     *   .withPreviewImage(require('./preview.png'))
+     *   .withRawDefaultLocale('en')
+     *   .withHtmlEditorConfigs(
+     *     require('./configs/html-editor/full.js'),
+     *     require('./configs/html-editor/minimal.js'))
+     *   .withContentElementGroups(
+     *     cx.contentElementGroup
+     *       .withGroupId('content')
+     *       .withLabel('Content')
+     *       .withContentElements(
+     *         require('./content-elements/content/title'),
+     *         require('./content-elements/content/text')));
+     */
+    export default class DesignFactory {
         /**
-         * @param {string} identifier
-         * @param {...Translation}translations
+         * Get a new design builder instance.
+         *
+         * @example
+         * cx.design
+         *   .withSchemaVersion(SchemaVersion.V_22_0)
+         *   .withTitle('My BSI CX Design')
+         *   .withAuthor('John Doe')
+         *   .withDate('18.8.2021')
+         *   .withPreviewImage(require('./preview.png'))
+         *   .withRawDefaultLocale('en')
+         *   .withHtmlEditorConfigs(
+         *     require('./configs/html-editor/full.js'),
+         *     require('./configs/html-editor/minimal.js'))
+         *   .withContentElementGroups(
+         *     cx.contentElementGroup
+         *       .withGroupId('content')
+         *       .withLabel('Content')
+         *       .withContentElements(
+         *         require('./content-elements/content/title'),
+         *         require('./content-elements/content/text')));
+         * @returns {Design}
+         */
+        get design(): Design;
+        /**
+         * Get a new content element group builder instance.
+         *
+         * @example
+         * .withContentElementGroups(
+         *   cx.contentElementGroup
+         *     .withGroupId('content')
+         *     .withLabel('Content')
+         *     .withContentElements(
+         *       require('./content-elements/content/title'),
+         *       require('./content-elements/content/text')));
+         * @returns {ContentElementGroup}
+         */
+        get contentElementGroup(): ContentElementGroup;
+        /**
+         * Get a new content element builder instance.
+         *
+         * @example
+         * .withContentElements(
+         *   cx.contentElement
+         *     .withElementId('image-with-text')
+         *     .withLabel('Image with text')
+         *     .withDescription('Displays an image with an optional text.')
+         *     .withFile(require('./template.twig'))
+         *     .withIcon(Icon.IMAGE)
+         *     .withParts(
+         *       cx.part.image
+         *         .withLabel('Image'),
+         *       cx.part.plainText
+         *         .withLabel('Description')))
+         * @returns {ContentElement}
+         */
+        get contentElement(): ContentElement;
+        /**
+         * Get a new website builder instance.
+         *
+         * @example
+         * .withWebsite(
+         *   cx.website
+         *     .withMaxNavigationLevel(2)
+         *     .withIncludes(
+         *       cx.include
+         *         .withEditable(true)
+         *         .withName('Header')
+         *         .withFile(require('./includes/header.html')),
+         *       cx.include
+         *         .withEditable(true)
+         *         .withName('Footer')
+         *         .withFile(require('./includes/footer.html')))
+         * @returns {Website}
+         */
+        get website(): Website;
+        /**
+         * Get a new website include builder instance.
+         *
+         * @example
+         * .withIncludes(
+         *   cx.include
+         *     .withEditable(true)
+         *     .withName('Header')
+         *     .withFile(require('./includes/header.html')),
+         *   cx.include
+         *     .withEditable(true)
+         *     .withName('Footer')
+         *     .withFile(require('./includes/footer.html')))
+         * @returns {Include}
+         */
+        get include(): Include;
+        /**
+         * Get a new website page include builder instance.
+         *
+         * @example
+         * .withIncludes(
+         *   cx.pageInclude
+         *     .withEditable(true)
+         *     .withName('Template for Content')
+         *     .withFile(require('./includes/page.html')),
+         *   cx.include
+         *     .withEditable(true)
+         *     .withName('Footer')
+         *     .withFile(require('./includes/footer.html')))
+         * @returns {PageInclude}
+         */
+        get pageInclude(): PageInclude;
+        /**
+         * Get a new HTML editor config builder instance.
+         *
+         * @example
+         * module.exports = cx.htmlEditorConfig
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * @returns {HtmlEditorConfig}
+         */
+        get htmlEditorConfig(): HtmlEditorConfig;
+        /**
+         * Get a new style configuration builder instance.
+         *
+         * @example
+         * module.exports = cx.style
+         *   .withIdentifier('text-color')
+         *   .withLabel('Text Color')
+         *   .withCssClasses(
+         *     cx.cssClass
+         *       .withCssClass('text-blue')
+         *       .withLabel('Blue'),
+         *     cx.cssClass
+         *       .withCssClass('text-red')
+         *       .withLabel('Red'));
+         * @returns {Style}
+         */
+        get style(): Style;
+        /**
+         * Get a new css class builder instance.
+         *
+         * @example
+         * .withCssClasses(
+         *   cx.cssClass
+         *     .withCssClass('text-blue')
+         *     .withLabel('Blue'),
+         *   cx.cssClass
+         *     .withCssClass('text-red')
+         *     .withLabel('Red'));
+         * @returns {CssClass}
+         */
+        get cssClass(): CssClass;
+        /**
+         * Get a new NLS builder instance.
+         *
+         * @example
+         * .withNLS(
+         *   cx.nls
+         *     .withIdentifier('action')
+         *     .withTranslation(
+         *       cx.translation
+         *         .withLocale(Locale.WILDCARD)
+         *         .withTranslation('action'),
+         *       cx.translation
+         *         .withLocale(Locale.DE)
+         *         .withTranslation('Aktion')))
          * @returns {NLS}
          */
-        static create(identifier: string, ...translations: Translation[]): NLS;
+        get nls(): NLS;
         /**
-         * @param {string} identifier
-         * @param {Map<Locale,string>} map
+         * Get a new NLS translation builder instance.
+         *
+         * @example
+         * .withTranslation(
+         *   cx.translation
+         *     .withLocale(Locale.WILDCARD)
+         *     .withTranslation('action'),
+         *   cx.translation
+         *     .withLocale(Locale.DE)
+         *     .withTranslation('Aktion'))
+         * @returns {Translation}
          */
-        static fromMap(identifier: string, map: Map<any, string>): NLS;
+        get translation(): Translation;
         /**
-         * @type {string|undefined}
-         * @private
+         * Get a content element part factory instance to create new content element part builder objects.
+         * The content element part factory is also available under the part constant.
+         *
+         * @example
+         * const {cx, part} = require('@bsi-cx/design-build');
+         *
+         * // ...
+         * .withParts(
+         *   cx.part.plainText
+         *     .withLabel('Text'),
+         *   part.image
+         *     .withImage('Image'))
+         * @returns {PartFactory}
          */
-        private _identifier;
-        /**
-         * @type {Translation[]|undefined}
-         * @private
-         */
-        private _translations;
-        /**
-         * @returns {string|undefined}
-         */
-        get identifier(): string;
-        /**
-         * @returns {Translation[]|undefined}
-         */
-        get translations(): Translation[];
-        /**
-         * @param {string} identifier
-         * @returns {NLS}
-         */
-        withIdentifier(identifier: string): NLS;
-        /**
-         * @param {...Translation} translations
-         * @returns {NLS}
-         */
-        withTranslations(...translations: Translation[]): NLS;
-        /**
-         * @param {boolean} [shallow=true]
-         * @returns {NLS}
-         */
-        clone(shallow?: boolean): NLS;
+        get part(): PartFactory;
     }
-    import AbstractBuilder from "src/abstract-builder";
+    import Design from "src/design/design";
+    import ContentElementGroup from "src/content-element/content-element-group";
+    import ContentElement from "src/content-element/content-element";
+    import Website from "src/website/website";
+    import Include from "src/website/include";
+    import PageInclude from "src/website/page-include";
+    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
+    import Style from "src/style/style";
+    import CssClass from "src/style/css-class";
+    import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
+    import PartFactory from "src/content-element/part/part-factory";
 }
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";
@@ -5164,6 +5593,11 @@ declare module "export/browser" {
     import Include from "src/website/include";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
+    /**
+     * @type {DesignFactory}
+     */
+    export const cx: DesignFactory;
+    import DesignFactory from "src/design/design-factory";
     export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {

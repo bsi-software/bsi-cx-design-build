@@ -85,33 +85,8 @@ __webpack_require__.d(__webpack_exports__, {
   "UrlProviderPart": () => (/* reexport */ UrlProviderPart),
   "Version": () => (/* reexport */ version_namespaceObject),
   "VideoPart": () => (/* reexport */ VideoPart),
-  "Website": () => (/* reexport */ Website)
-});
-
-// NAMESPACE OBJECT: ./src/content-element/part/part.js
-var part_namespaceObject = {};
-__webpack_require__.r(part_namespaceObject);
-__webpack_require__.d(part_namespaceObject, {
-  "BACKGROUND_IMAGE": () => (BACKGROUND_IMAGE),
-  "FORM": () => (FORM),
-  "FORMATTED_TEXT": () => (FORMATTED_TEXT),
-  "FORM_CHECKBOX": () => (FORM_CHECKBOX),
-  "FORM_FIELD": () => (FORM_FIELD),
-  "FORM_RADIO": () => (FORM_RADIO),
-  "FORM_SELECT": () => (FORM_SELECT),
-  "FORM_TEXTAREA": () => (FORM_TEXTAREA),
-  "HTML": () => (HTML),
-  "IMAGE": () => (IMAGE),
-  "ITERATOR": () => (ITERATOR),
-  "LINK": () => (LINK),
-  "NEWS_SNIPPETS": () => (NEWS_SNIPPETS),
-  "PLAIN_TEXT": () => (PLAIN_TEXT),
-  "Part": () => (Part),
-  "SOCIAL_FOLLOW": () => (SOCIAL_FOLLOW),
-  "SOCIAL_SHARE": () => (SOCIAL_SHARE),
-  "TABLE": () => (TABLE),
-  "URL_PROVIDER": () => (URL_PROVIDER),
-  "VIDEO": () => (VIDEO)
+  "Website": () => (/* reexport */ Website),
+  "cx": () => (/* binding */ cx)
 });
 
 // NAMESPACE OBJECT: ./src/design/locale.js
@@ -181,7 +156,7 @@ __webpack_require__.d(feature_namespaceObject, {
   "FULLSCREEN": () => (FULLSCREEN),
   "Feature": () => (Feature),
   "HELP": () => (HELP),
-  "HTML": () => (feature_HTML),
+  "HTML": () => (HTML),
   "INDENT": () => (INDENT),
   "INSERT_LINK": () => (INSERT_LINK),
   "ITALIC": () => (ITALIC),
@@ -260,7 +235,7 @@ __webpack_require__.d(icon_namespaceObject, {
   "HEADING": () => (HEADING),
   "HEADSET": () => (HEADSET),
   "HEART": () => (HEART),
-  "IMAGE": () => (icon_IMAGE),
+  "IMAGE": () => (IMAGE),
   "INFO": () => (INFO),
   "Icon": () => (Icon),
   "LIST": () => (LIST),
@@ -278,17 +253,43 @@ __webpack_require__.d(icon_namespaceObject, {
   "SIGNPOST": () => (SIGNPOST),
   "SMILEY": () => (SMILEY),
   "SNIPPET": () => (SNIPPET),
-  "SOCIAL_FOLLOW": () => (icon_SOCIAL_FOLLOW),
-  "SOCIAL_SHARE": () => (icon_SOCIAL_SHARE),
-  "TABLE": () => (icon_TABLE),
+  "SOCIAL_FOLLOW": () => (SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (SOCIAL_SHARE),
+  "TABLE": () => (TABLE),
   "TEXT": () => (TEXT),
   "TEXTAREA": () => (TEXTAREA),
   "TEXT_WITH_IMAGE": () => (TEXT_WITH_IMAGE),
   "THREE_COLUMNS": () => (THREE_COLUMNS),
   "TWITTER": () => (TWITTER),
   "TWO_COLUMNS": () => (TWO_COLUMNS),
-  "VIDEO": () => (icon_VIDEO),
+  "VIDEO": () => (VIDEO),
   "YOUTUBE": () => (YOUTUBE)
+});
+
+// NAMESPACE OBJECT: ./src/content-element/part/part.js
+var part_namespaceObject = {};
+__webpack_require__.r(part_namespaceObject);
+__webpack_require__.d(part_namespaceObject, {
+  "BACKGROUND_IMAGE": () => (BACKGROUND_IMAGE),
+  "FORM": () => (FORM),
+  "FORMATTED_TEXT": () => (FORMATTED_TEXT),
+  "FORM_CHECKBOX": () => (FORM_CHECKBOX),
+  "FORM_FIELD": () => (FORM_FIELD),
+  "FORM_RADIO": () => (FORM_RADIO),
+  "FORM_SELECT": () => (FORM_SELECT),
+  "FORM_TEXTAREA": () => (FORM_TEXTAREA),
+  "HTML": () => (part_HTML),
+  "IMAGE": () => (part_IMAGE),
+  "ITERATOR": () => (ITERATOR),
+  "LINK": () => (LINK),
+  "NEWS_SNIPPETS": () => (NEWS_SNIPPETS),
+  "PLAIN_TEXT": () => (PLAIN_TEXT),
+  "Part": () => (Part),
+  "SOCIAL_FOLLOW": () => (part_SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (part_SOCIAL_SHARE),
+  "TABLE": () => (part_TABLE),
+  "URL_PROVIDER": () => (URL_PROVIDER),
+  "VIDEO": () => (part_VIDEO)
 });
 
 ;// CONCATENATED MODULE: ./src/design-json-property.js
@@ -755,108 +756,6 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part.js
-
-
-class Part extends AbstractConstant {
-}
-
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const PLAIN_TEXT = new Part('plain-text');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORMATTED_TEXT = new Part('formatted-text');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const HTML = new Part('html');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const VIDEO = new Part('video');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const IMAGE = new Part('image');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const BACKGROUND_IMAGE = new Part('background-image');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const TABLE = new Part('table');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const ITERATOR = new Part('iterator');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const NEWS_SNIPPETS = new Part('news-snippets');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM = new Part('form');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_FIELD = new Part('form-field');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_CHECKBOX = new Part('form-checkbox');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_TEXTAREA = new Part('form-textarea');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_SELECT = new Part('form-select');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_RADIO = new Part('form-radio');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const LINK = new Part('link');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const SOCIAL_FOLLOW = new Part('social-follow');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const SOCIAL_SHARE = new Part('social-share');
-/**
- * @type {Part}
- * @since 22.0
- */
-const URL_PROVIDER = new Part('url-provider');
-
 ;// CONCATENATED MODULE: ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
@@ -910,6 +809,7 @@ function uuid() {
 
 
 
+/** @typedef {import('./part').Part} Part */
 
 /**
  * @abstract
@@ -1026,6 +926,11 @@ class AbstractPart extends AbstractBuilder {
 ;// CONCATENATED MODULE: ./src/design/locale.js
 
 
+/** @typedef {import('./design').default} Design */
+
+/**
+ * Class to define a locale.
+ */
 class Locale extends AbstractConstant {
 }
 
@@ -1101,6 +1006,11 @@ const IT_CH = new Locale('it-CH');
 ;// CONCATENATED MODULE: ./src/design/schema-version.js
 
 
+/** @typedef {import('./design').default} Design */
+
+/**
+ * Class to define a schema version.
+ */
 class SchemaVersion extends AbstractConstant {
 }
 
@@ -1127,7 +1037,13 @@ const V_22_0 = new SchemaVersion('22.0');
 
 
 
-
+/** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
+/** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
+/** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
+/** @typedef {import('../website/website').default} Website */
+/** @typedef {import('../style/style').default} Style */
+/** @typedef {import('../nls/nls').default} NLS */
 
 /**
  * This is the builder class to specify a design.
@@ -1140,7 +1056,7 @@ const V_22_0 = new SchemaVersion('22.0');
  *   .withDate('18.8.2021')
  *   .withPreviewImage(require('./preview.png'))
  *   .withRawDefaultLocale('en')
- *   withHtmlEditorConfigs(
+ *   .withHtmlEditorConfigs(
  *     require('./configs/html-editor/full.js'),
  *     require('./configs/html-editor/minimal.js'))
  *   .withContentElementGroups(
@@ -1198,7 +1114,7 @@ class Design extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[HtmlEditorConfig]|undefined}
+   * @type {RawValue|HtmlEditorConfig[]|undefined}
    * @private
    */
   _htmlEditorConfigs = undefined;
@@ -1277,7 +1193,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|[HtmlEditorConfig]|undefined}
+   * @returns {RawValue|HtmlEditorConfig[]|undefined}
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
@@ -1653,9 +1569,7 @@ class Design extends AbstractBuilder {
 
 
 
-/**
- * @typedef {import('./content-element').default} ContentElement
- */
+/** @typedef {import('./content-element').default} ContentElement */
 
 /**
  * This is the builder class to specify content element groups.
@@ -1925,6 +1839,8 @@ const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
 
+/** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+
 class Feature extends AbstractConstant {
 }
 
@@ -2135,7 +2051,7 @@ const SELECT_ALL = new Feature('selectAll');
  * @see {@link HtmlEditorConfig#withFeatures}
  * @type {Feature}
  */
-const feature_HTML = new Feature('html');
+const HTML = new Feature('html');
 /**
  * Show the editor help.
  *
@@ -2146,6 +2062,8 @@ const HELP = new Feature('help');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
 
+
+/** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
 
 class EnterMode extends AbstractConstant {
 }
@@ -2174,6 +2092,8 @@ const DIV = new EnterMode('div');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
 
+
+/** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
 
 class FontSizeUnit extends AbstractConstant {
 }
@@ -2223,6 +2143,8 @@ const MM = new FontSizeUnit('mm');
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/format.js
 
+
+/** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
 
 class Format extends AbstractConstant {
 }
@@ -2290,9 +2212,10 @@ const PRE = new Format('pre');
 
 
 
-
-
-
+/** @typedef {import('./enter-mode').EnterMode} EnterMode */
+/** @typedef {import('./feature').Feature} Feature */
+/** @typedef {import('./format').Format} Format */
+/** @typedef {import('./font-size-unit').FontSizeUnit} FontSizeUnit */
 
 /**
  * This is the builder class to specify a HTML editor configuration.
@@ -2656,6 +2579,8 @@ class HtmlEditorConfig extends AbstractBuilder {
 
 
 
+/** @typedef {import('./css-class').default} CssClass */
+
 /**
  * @since Studio 1.1
  */
@@ -2664,7 +2589,7 @@ class Style extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _identifier = undefined;
+  _identifier = uuid();
   /**
    * @type {string|undefined}
    * @private
@@ -2857,12 +2782,12 @@ const TEXT_WITH_IMAGE = new Icon('text-with-image');
  * @type {Icon}
  * @since Studio 1.0
  */
-const icon_IMAGE = new Icon('image');
+const IMAGE = new Icon('image');
 /**
  * @type {Icon}
  * @since Studio 1.0
  */
-const icon_TABLE = new Icon('table');
+const TABLE = new Icon('table');
 /**
  * @type {Icon}
  * @since Studio 1.0
@@ -2872,7 +2797,7 @@ const LIST = new Icon('list');
  * @type {Icon}
  * @since Studio 1.0
  */
-const icon_VIDEO = new Icon('video');
+const VIDEO = new Icon('video');
 /**
  * @type {Icon}
  * @since Studio 1.0
@@ -2882,12 +2807,12 @@ const MEGAPHONE = new Icon('megaphone');
  * @type {Icon}
  * @since Studio 1.0
  */
-const icon_SOCIAL_FOLLOW = new Icon('social-follow');
+const SOCIAL_FOLLOW = new Icon('social-follow');
 /**
  * @type {Icon}
  * @since Studio 1.0
  */
-const icon_SOCIAL_SHARE = new Icon('social-share');
+const SOCIAL_SHARE = new Icon('social-share');
 /**
  * @type {Icon}
  * @since Studio 1.0
@@ -3075,12 +3000,10 @@ const THREE_COLUMNS = new Icon('three-columns');
 
 
 
-
-/**
- * @typedef {import('../style/style').default} Style
- * @typedef {import('./part/abstract-part').default} AbstractPart
- * @typedef {import('./content-element-group').default} ContentElementGroup
- */
+/** @typedef {import('../style/style').default} Style */
+/** @typedef {import('./icon').Icon} Icon */
+/** @typedef {import('./part/abstract-part').default} AbstractPart */
+/** @typedef {import('./content-element-group').default} ContentElementGroup */
 
 /**
  * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
@@ -3391,6 +3314,108 @@ class ContentElement extends AbstractBuilder {
   }
 }
 
+;// CONCATENATED MODULE: ./src/content-element/part/part.js
+
+
+class Part extends AbstractConstant {
+}
+
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const PLAIN_TEXT = new Part('plain-text');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORMATTED_TEXT = new Part('formatted-text');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_HTML = new Part('html');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_VIDEO = new Part('video');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_IMAGE = new Part('image');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const BACKGROUND_IMAGE = new Part('background-image');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_TABLE = new Part('table');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const ITERATOR = new Part('iterator');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const NEWS_SNIPPETS = new Part('news-snippets');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM = new Part('form');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_FIELD = new Part('form-field');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_CHECKBOX = new Part('form-checkbox');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_TEXTAREA = new Part('form-textarea');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_SELECT = new Part('form-select');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_RADIO = new Part('form-radio');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const LINK = new Part('link');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_SOCIAL_FOLLOW = new Part('social-follow');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_SOCIAL_SHARE = new Part('social-share');
+/**
+ * @type {Part}
+ * @since 22.0
+ */
+const URL_PROVIDER = new Part('url-provider');
+
 ;// CONCATENATED MODULE: ./src/content-element/part/plain-text-part.js
 
 
@@ -3426,9 +3451,7 @@ class PlainTextPart extends AbstractPart {
 
 
 
-/**
- * @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig
- */
+/** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 
 /**
  * @since Studio 1.0
@@ -3525,7 +3548,7 @@ class FormattedTextPart extends AbstractPart {
  */
 class HtmlPart extends AbstractPart {
   constructor() {
-    super(HTML);
+    super(part_HTML);
   }
 
   /**
@@ -3554,7 +3577,7 @@ class HtmlPart extends AbstractPart {
  */
 class VideoPart extends AbstractPart {
   constructor() {
-    super(VIDEO);
+    super(part_VIDEO);
   }
 
   /**
@@ -3583,7 +3606,7 @@ class VideoPart extends AbstractPart {
  */
 class ImagePart extends AbstractPart {
   constructor() {
-    super(IMAGE);
+    super(part_IMAGE);
   }
 
   /**
@@ -3641,7 +3664,7 @@ class BackgroundImagePart extends AbstractPart {
  */
 class TablePart extends AbstractPart {
   constructor() {
-    super(TABLE);
+    super(part_TABLE);
   }
 
   /**
@@ -3931,7 +3954,7 @@ class LinkPart extends AbstractPart {
  */
 class SocialFollowPart extends AbstractPart {
   constructor() {
-    super(SOCIAL_FOLLOW);
+    super(part_SOCIAL_FOLLOW);
   }
 
   /**
@@ -3960,7 +3983,7 @@ class SocialFollowPart extends AbstractPart {
  */
 class SocialSharePart extends AbstractPart {
   constructor() {
-    super(SOCIAL_SHARE);
+    super(part_SOCIAL_SHARE);
   }
 
   /**
@@ -4312,20 +4335,19 @@ class Include extends AbstractInclude {
 
 
 
+/** @typedef {import('../design/locale').Locale} Locale */
+
 class Translation extends AbstractBuilder {
-  constructor() {
-    super();
-    /**
-     * @type {Locale|undefined}
-     * @private
-     */
-    this._locale = undefined;
-    /**
-     * @type {string|undefined}
-     * @private
-     */
-    this._translation = undefined;
-  }
+  /**
+   * @type {Locale|undefined}
+   * @private
+   */
+  _locale = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _translation = undefined;
 
   /**
    * @returns {Locale|undefined}
@@ -4500,6 +4522,439 @@ class NLS extends AbstractBuilder {
   }
 }
 
+;// CONCATENATED MODULE: ./src/content-element/part/part-factory.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class PartFactory {
+  /**
+   * @returns {BackgroundImagePart}
+   */
+  get backgroundImage() {
+    return new BackgroundImagePart();
+  }
+
+  /**
+   * @returns {FormCheckboxPart}
+   */
+  get formCheckbox() {
+    return new FormCheckboxPart();
+  }
+
+  /**
+   * @returns {FormFieldPart}
+   */
+  get formField() {
+    return new FormFieldPart();
+  }
+
+  /**
+   * @returns {FormPart}
+   */
+  get form() {
+    return new FormPart();
+  }
+
+  /**
+   * @returns {FormRadioPart}
+   */
+  get formRadio() {
+    return new FormRadioPart();
+  }
+
+  /**
+   * @returns {FormSelectPart}
+   */
+  get formSelect() {
+    return new FormSelectPart();
+  }
+
+  /**
+   * @returns {FormTextareaPart}
+   */
+  get formTextarea() {
+    return new FormTextareaPart();
+  }
+
+  /**
+   * @returns {FormattedTextPart}
+   */
+  get formattedText() {
+    return new FormattedTextPart();
+  }
+
+  /**
+   * @returns {HtmlPart}
+   */
+  get html() {
+    return new HtmlPart();
+  }
+
+  /**
+   * @returns {ImagePart}
+   */
+  get image() {
+    return new ImagePart();
+  }
+
+  /**
+   * @returns {IteratorPart}
+   */
+  get iterator() {
+    return new IteratorPart();
+  }
+
+  /**
+   * @returns {LinkPart}
+   */
+  get link() {
+    return new LinkPart();
+  }
+
+  /**
+   * @returns {NewsSnippetsPart}
+   */
+  get newsSnippet() {
+    return new NewsSnippetsPart();
+  }
+
+  /**
+   * @returns {PlainTextPart}
+   */
+  get plainText() {
+    return new PlainTextPart();
+  }
+
+  /**
+   * @returns {SocialFollowPart}
+   */
+  get socialFollow() {
+    return new SocialFollowPart();
+  }
+
+  /**
+   * @returns {SocialSharePart}
+   */
+  get socialShare() {
+    return new SocialSharePart();
+  }
+
+  /**
+   * @returns {TablePart}
+   */
+  get table() {
+    return new TablePart();
+  }
+
+  /**
+   * @returns {UrlProviderPart}
+   */
+  get urlProvider() {
+    return new UrlProviderPart();
+  }
+
+  /**
+   * @returns {VideoPart}
+   */
+  get video() {
+    return new VideoPart();
+  }
+}
+
+;// CONCATENATED MODULE: ./src/design/design-factory.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Use the design factory to minimize the amount of imports when specifying a design.
+ * The design factory is available under the <code>cx</code> constant.
+ *
+ * @example
+ * const {cx} = require('@bsi-cx/design-build');
+ *
+ * module.exports = cx.design
+ *   .withSchemaVersion(SchemaVersion.V_22_0)
+ *   .withTitle('My BSI CX Design')
+ *   .withAuthor('John Doe')
+ *   .withDate('18.8.2021')
+ *   .withPreviewImage(require('./preview.png'))
+ *   .withRawDefaultLocale('en')
+ *   .withHtmlEditorConfigs(
+ *     require('./configs/html-editor/full.js'),
+ *     require('./configs/html-editor/minimal.js'))
+ *   .withContentElementGroups(
+ *     cx.contentElementGroup
+ *       .withGroupId('content')
+ *       .withLabel('Content')
+ *       .withContentElements(
+ *         require('./content-elements/content/title'),
+ *         require('./content-elements/content/text')));
+ */
+class DesignFactory {
+  /**
+   * Get a new design builder instance.
+   *
+   * @example
+   * cx.design
+   *   .withSchemaVersion(SchemaVersion.V_22_0)
+   *   .withTitle('My BSI CX Design')
+   *   .withAuthor('John Doe')
+   *   .withDate('18.8.2021')
+   *   .withPreviewImage(require('./preview.png'))
+   *   .withRawDefaultLocale('en')
+   *   .withHtmlEditorConfigs(
+   *     require('./configs/html-editor/full.js'),
+   *     require('./configs/html-editor/minimal.js'))
+   *   .withContentElementGroups(
+   *     cx.contentElementGroup
+   *       .withGroupId('content')
+   *       .withLabel('Content')
+   *       .withContentElements(
+   *         require('./content-elements/content/title'),
+   *         require('./content-elements/content/text')));
+   * @returns {Design}
+   */
+  get design() {
+    return new Design();
+  }
+
+  /**
+   * Get a new content element group builder instance.
+   *
+   * @example
+   * .withContentElementGroups(
+   *   cx.contentElementGroup
+   *     .withGroupId('content')
+   *     .withLabel('Content')
+   *     .withContentElements(
+   *       require('./content-elements/content/title'),
+   *       require('./content-elements/content/text')));
+   * @returns {ContentElementGroup}
+   */
+  get contentElementGroup() {
+    return new ContentElementGroup();
+  }
+
+  /**
+   * Get a new content element builder instance.
+   *
+   * @example
+   * .withContentElements(
+   *   cx.contentElement
+   *     .withElementId('image-with-text')
+   *     .withLabel('Image with text')
+   *     .withDescription('Displays an image with an optional text.')
+   *     .withFile(require('./template.twig'))
+   *     .withIcon(Icon.IMAGE)
+   *     .withParts(
+   *       cx.part.image
+   *         .withLabel('Image'),
+   *       cx.part.plainText
+   *         .withLabel('Description')))
+   * @returns {ContentElement}
+   */
+  get contentElement() {
+    return new ContentElement();
+  }
+
+  /**
+   * Get a new website builder instance.
+   *
+   * @example
+   * .withWebsite(
+   *   cx.website
+   *     .withMaxNavigationLevel(2)
+   *     .withIncludes(
+   *       cx.include
+   *         .withEditable(true)
+   *         .withName('Header')
+   *         .withFile(require('./includes/header.html')),
+   *       cx.include
+   *         .withEditable(true)
+   *         .withName('Footer')
+   *         .withFile(require('./includes/footer.html')))
+   * @returns {Website}
+   */
+  get website() {
+    return new Website();
+  }
+
+  /**
+   * Get a new website include builder instance.
+   *
+   * @example
+   * .withIncludes(
+   *   cx.include
+   *     .withEditable(true)
+   *     .withName('Header')
+   *     .withFile(require('./includes/header.html')),
+   *   cx.include
+   *     .withEditable(true)
+   *     .withName('Footer')
+   *     .withFile(require('./includes/footer.html')))
+   * @returns {Include}
+   */
+  get include() {
+    return new Include();
+  }
+
+  /**
+   * Get a new website page include builder instance.
+   *
+   * @example
+   * .withIncludes(
+   *   cx.pageInclude
+   *     .withEditable(true)
+   *     .withName('Template for Content')
+   *     .withFile(require('./includes/page.html')),
+   *   cx.include
+   *     .withEditable(true)
+   *     .withName('Footer')
+   *     .withFile(require('./includes/footer.html')))
+   * @returns {PageInclude}
+   */
+  get pageInclude() {
+    return new PageInclude();
+  }
+
+  /**
+   * Get a new HTML editor config builder instance.
+   *
+   * @example
+   * module.exports = cx.htmlEditorConfig
+   *   .withIdentifier('minimal')
+   *   .withRawEnterMode('p')
+   *   .withFeatures(
+   *     Feature.BOLD,
+   *     Feature.ITALIC,
+   *     Feature.UNDERLINE);
+   * @returns {HtmlEditorConfig}
+   */
+  get htmlEditorConfig() {
+    return new HtmlEditorConfig();
+  }
+
+  /**
+   * Get a new style configuration builder instance.
+   *
+   * @example
+   * module.exports = cx.style
+   *   .withIdentifier('text-color')
+   *   .withLabel('Text Color')
+   *   .withCssClasses(
+   *     cx.cssClass
+   *       .withCssClass('text-blue')
+   *       .withLabel('Blue'),
+   *     cx.cssClass
+   *       .withCssClass('text-red')
+   *       .withLabel('Red'));
+   * @returns {Style}
+   */
+  get style() {
+    return new Style();
+  }
+
+  /**
+   * Get a new css class builder instance.
+   *
+   * @example
+   * .withCssClasses(
+   *   cx.cssClass
+   *     .withCssClass('text-blue')
+   *     .withLabel('Blue'),
+   *   cx.cssClass
+   *     .withCssClass('text-red')
+   *     .withLabel('Red'));
+   * @returns {CssClass}
+   */
+  get cssClass() {
+    return new CssClass();
+  }
+
+  /**
+   * Get a new NLS builder instance.
+   *
+   * @example
+   * .withNLS(
+   *   cx.nls
+   *     .withIdentifier('action')
+   *     .withTranslation(
+   *       cx.translation
+   *         .withLocale(Locale.WILDCARD)
+   *         .withTranslation('action'),
+   *       cx.translation
+   *         .withLocale(Locale.DE)
+   *         .withTranslation('Aktion')))
+   * @returns {NLS}
+   */
+  get nls() {
+    return new NLS();
+  }
+
+  /**
+   * Get a new NLS translation builder instance.
+   *
+   * @example
+   * .withTranslation(
+   *   cx.translation
+   *     .withLocale(Locale.WILDCARD)
+   *     .withTranslation('action'),
+   *   cx.translation
+   *     .withLocale(Locale.DE)
+   *     .withTranslation('Aktion'))
+   * @returns {Translation}
+   */
+  get translation() {
+    return new Translation();
+  }
+
+  /**
+   * Get a content element part factory instance to create new content element part builder objects.
+   * The content element part factory is also available under the part constant.
+   *
+   * @example
+   * const {cx, part} = require('@bsi-cx/design-build');
+   *
+   * // ...
+   * .withParts(
+   *   cx.part.plainText
+   *     .withLabel('Text'),
+   *   part.image
+   *     .withImage('Image'))
+   * @returns {PartFactory}
+   */
+  get part() {
+    return new PartFactory();
+  }
+}
+
 ;// CONCATENATED MODULE: ./export/browser.js
 
 
@@ -4548,6 +5003,17 @@ class NLS extends AbstractBuilder {
 
 
 
+
+
+
+/**
+ * @type {DesignFactory}
+ */
+const cx = new DesignFactory();
+/**
+ * @type {PartFactory}
+ */
+const part = new PartFactory();
 
 
 

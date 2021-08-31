@@ -3,9 +3,7 @@ import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 
-/**
- * @typedef {import('./content-element').default} ContentElement
- */
+/** @typedef {import('./content-element').default} ContentElement */
 
 /**
  * This is the builder class to specify content element groups.

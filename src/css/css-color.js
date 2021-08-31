@@ -1,5 +1,4 @@
 import sass from 'sass';
-
 import Color from 'less/lib/less/tree/color';
 import colors from 'less/lib/less/data/colors';
 
@@ -38,7 +37,7 @@ export default class CssColor extends AbstractCssProperty {
    * @type {number}
    * @private
    */
-  _alpha = 1;
+  _alpha = 255;
 
   /**
    * @param {number} red
@@ -167,6 +166,7 @@ export default class CssColor extends AbstractCssProperty {
         this._toHex(this.green),
         this._toHex(this.blue)
       ];
+      // hex channel is only required if alpha is lower than 255 (omit adding FF)
       if (this.alpha < 255) {
         channels.push(this._toHex(this.alpha));
       }
@@ -191,7 +191,7 @@ export default class CssColor extends AbstractCssProperty {
    * @private
    */
   _toRgba() {
-    return `rgba(${this.red},${this.green},${this.blue},${this.alpha})`;
+    return `rgba(${this.red},${this.green},${this.blue},${this.alpha / 255})`;
   }
 
   /**
@@ -219,10 +219,10 @@ export default class CssColor extends AbstractCssProperty {
    * @param {number} red
    * @param {number} green
    * @param {number} blue
-   * @param {number} [alpha=255]
+   * @param {number} [alpha=1]
    */
   static fromRGB(red, green, blue, alpha) {
-    return new CssColor(red, green, blue, alpha ?? 255);
+    return new CssColor(red, green, blue, (alpha ?? 1) * 255);
   }
 
   /**
@@ -235,7 +235,7 @@ export default class CssColor extends AbstractCssProperty {
       .split(',')
       .map(channel => parseInt(channel));
 
-    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, alpha ?? 0);
+    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, (alpha ?? 1) * 255);
   }
 
   /**

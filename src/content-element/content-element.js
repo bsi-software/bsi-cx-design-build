@@ -1,14 +1,12 @@
 import AbstractBuilder from '../abstract-builder';
-import {Icon} from './icon';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 
-/**
- * @typedef {import('../style/style').default} Style
- * @typedef {import('./part/abstract-part').default} AbstractPart
- * @typedef {import('./content-element-group').default} ContentElementGroup
- */
+/** @typedef {import('../style/style').default} Style */
+/** @typedef {import('./icon').Icon} Icon */
+/** @typedef {import('./part/abstract-part').default} AbstractPart */
+/** @typedef {import('./content-element-group').default} ContentElementGroup */
 
 /**
  * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.

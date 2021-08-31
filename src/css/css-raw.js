@@ -39,6 +39,7 @@ export default class CssRaw extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
+    // noinspection JSUnresolvedVariable
     return new sass.types.String(this.value);
   }
 

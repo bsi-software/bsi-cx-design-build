@@ -8,6 +8,7 @@
     "declarationMap": true,
     "allowJs": true,
     "outFile": "dist/types.ts",
-    "module": "system"
+    "module": "system",
+    "esModuleInterop": true
   }
 }

@@ -1,9 +1,9 @@
-const {ContentElementGroup, Design, Locale, SchemaVersion, Website, Include, PageInclude} = require('@bsi-cx/design-build');
+const {cx, Locale, SchemaVersion} = require('@bsi-cx/design-build');
 
 /**
  * @type {Design}
  */
-module.exports = new Design()
+module.exports = cx.design
   .withSchemaVersion(SchemaVersion.V_22_0)
   .withTitle('Landingpage Template Test')
   .withAuthor('Oliver Fabel')
@@ -16,7 +16,7 @@ module.exports = new Design()
     Locale.DE_DE,
     Locale.DE_CH)
   .withContentElementGroups(
-    new ContentElementGroup()
+    cx.contentElementGroup
       .withGroupId('content')
       .withLabel('Inhalt')
       .withContentElements(
@@ -29,24 +29,24 @@ module.exports = new Design()
     require('./html-editor-configs/full'),
     require('./html-editor-configs/normal'))
   .withWebsite(
-    new Website()
+    cx.website
       .withMaxNavigationLevel(2)
       .withIncludes(
-        new PageInclude()
+        cx.pageInclude
           .withName('Vorlage für Inhaltsseiten')
           .withEditable(true)
           .withFile(require('./includes/page.html')),
-        new Include()
+        cx.include
           .withIdentifier('footer')
           .withName('Fusszeile')
           .withEditable(true)
           .withFile(require('./includes/footer.twig')),
-        new Include()
+        cx.include
           .withIdentifier('header')
           .withName('Kopfzeile')
           .withEditable(true)
           .withFile(require('./includes/header.twig')),
-        new Include()
+        cx.include
           .withIdentifier('navigation')
           .withName('Navigation')
           .withEditable(false)

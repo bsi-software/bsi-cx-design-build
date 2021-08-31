@@ -3,9 +3,7 @@ import AbstractPart from './abstract-part';
 import DesignJsonProperty from '../../design-json-property';
 import RawValue from '../../raw-value';
 
-/**
- * @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig
- */
+/** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 
 /**
  * @since Studio 1.0

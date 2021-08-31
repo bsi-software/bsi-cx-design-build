@@ -1,9 +1,15 @@
 import AbstractBuilder from '../abstract-builder';
-import {SchemaVersion} from './schema-version';
-import {Locale} from './locale';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
+
+/** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
+/** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
+/** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
+/** @typedef {import('../website/website').default} Website */
+/** @typedef {import('../style/style').default} Style */
+/** @typedef {import('../nls/nls').default} NLS */
 
 /**
  * This is the builder class to specify a design.
@@ -16,7 +22,7 @@ import RawValue from '../raw-value';
  *   .withDate('18.8.2021')
  *   .withPreviewImage(require('./preview.png'))
  *   .withRawDefaultLocale('en')
- *   withHtmlEditorConfigs(
+ *   .withHtmlEditorConfigs(
  *     require('./configs/html-editor/full.js'),
  *     require('./configs/html-editor/minimal.js'))
  *   .withContentElementGroups(
@@ -74,7 +80,7 @@ export default class Design extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[HtmlEditorConfig]|undefined}
+   * @type {RawValue|HtmlEditorConfig[]|undefined}
    * @private
    */
   _htmlEditorConfigs = undefined;
@@ -153,7 +159,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|[HtmlEditorConfig]|undefined}
+   * @returns {RawValue|HtmlEditorConfig[]|undefined}
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
