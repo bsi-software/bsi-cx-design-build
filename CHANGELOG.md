@@ -9,6 +9,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+## [1.0.0-rc.14] - 31.08.2021
+
+### Added
+
 * Support for inline assets with `data-uri`
 * Boolean support for CSS properties
 * URL support for CSS properties
@@ -139,7 +143,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.13...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.14...HEAD
+
+[1.0.0-rc.14]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.13...1.0.0-rc.14
 
 [1.0.0-rc.13]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.12...1.0.0-rc.13
 
