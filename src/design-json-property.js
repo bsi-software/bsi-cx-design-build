@@ -2,6 +2,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ID = 'id';
+  /**
+   * @type {string}
+   */
   static SCHEMA_VERSION = 'schemaVersion';
   /**
    * @type {string}

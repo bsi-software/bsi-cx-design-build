@@ -1781,6 +1781,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ID = 'id';
+  /**
+   * @type {string}
+   */
   static SCHEMA_VERSION = 'schemaVersion';
   /**
    * @type {string}
@@ -2203,11 +2207,61 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {{file:{}}} element
+   * @param {{file:{content:string,path:string},parts:[]}} element
    * @private
    */
   _handleElement(element) {
+    this._sortElementPartsById(element);
+    this._handleElementFile(element);
+  }
+
+  /**
+   * @param {{file:{content:string,path:string},parts:[]}} element
+   * @private
+   */
+  _handleElementFile(element) {
     element[DesignJsonProperty.FILE] = this._handleTemplateFile(element[DesignJsonProperty.FILE], 'contentElements');
+  }
+
+  /**
+   * @param {{file:{content:string,path:string},parts:[{id:string}]}} element
+   * @private
+   */
+  _sortElementPartsById(element) {
+    /**
+     * @type {Map<string, {id:string}>}
+     */
+    let idPartMap = new Map();
+    element
+      .parts
+      .filter(part => !!part.id)
+      .forEach(part => {
+        idPartMap.set(part.id, part);
+        delete part.id;
+      });
+    // abort if not all parts have an ID
+    if (idPartMap.size !== element.parts.length) {
+      return;
+    }
+
+    let template = element.file.content;
+    let orderedParts = [];
+    idPartMap.forEach((part, id) => {
+      let index = template.indexOf(id);
+      if (index !== -1) {
+        orderedParts[index] = part;
+      }
+    });
+
+    // filter all the empty array slots
+    orderedParts = orderedParts.filter(part => !!part);
+
+    // abort if not all parts are mapped to the template
+    if (orderedParts.length !== element.parts.length) {
+      return;
+    }
+
+    element.parts = orderedParts;
   }
 
   /**

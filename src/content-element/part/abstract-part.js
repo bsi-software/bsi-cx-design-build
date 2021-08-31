@@ -8,6 +8,11 @@ import {constantObjectValue, identity} from '../../browser-utility';
  */
 export default class AbstractPart extends AbstractBuilder {
   /**
+   * @type {string}
+   * @private
+   */
+  _id = undefined;
+  /**
    * @type {Part}
    * @private
    */
@@ -31,6 +36,13 @@ export default class AbstractPart extends AbstractBuilder {
   }
 
   /**
+   * @returns {string}
+   */
+  get id() {
+    return this._id;
+  }
+
+  /**
    * @returns {Part}
    */
   get partId() {
@@ -42,6 +54,15 @@ export default class AbstractPart extends AbstractBuilder {
    */
   get label() {
     return this._label;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {AbstractPart}
+   */
+  withId(id) {
+    this._id = id;
+    return this;
   }
 
   /**
@@ -57,6 +78,7 @@ export default class AbstractPart extends AbstractBuilder {
   build() {
     let config = {};
 
+    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
 

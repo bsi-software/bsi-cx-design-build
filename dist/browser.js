@@ -296,6 +296,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ID = 'id';
+  /**
+   * @type {string}
+   */
   static SCHEMA_VERSION = 'schemaVersion';
   /**
    * @type {string}
@@ -912,6 +916,11 @@ function uuid() {
  */
 class AbstractPart extends AbstractBuilder {
   /**
+   * @type {string}
+   * @private
+   */
+  _id = undefined;
+  /**
    * @type {Part}
    * @private
    */
@@ -935,6 +944,13 @@ class AbstractPart extends AbstractBuilder {
   }
 
   /**
+   * @returns {string}
+   */
+  get id() {
+    return this._id;
+  }
+
+  /**
    * @returns {Part}
    */
   get partId() {
@@ -946,6 +962,15 @@ class AbstractPart extends AbstractBuilder {
    */
   get label() {
     return this._label;
+  }
+
+  /**
+   * @param {string} id
+   * @returns {AbstractPart}
+   */
+  withId(id) {
+    this._id = id;
+    return this;
   }
 
   /**
@@ -961,6 +986,7 @@ class AbstractPart extends AbstractBuilder {
   build() {
     let config = {};
 
+    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
 

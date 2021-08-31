@@ -1075,6 +1075,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static ID: string;
+        /**
+         * @type {string}
+         */
         static SCHEMA_VERSION: string;
         /**
          * @type {string}
@@ -2673,6 +2677,11 @@ declare module "src/content-element/part/abstract-part" {
          */
         constructor(partId: Part);
         /**
+         * @type {string}
+         * @private
+         */
+        private _id;
+        /**
          * @type {Part}
          * @private
          */
@@ -2683,6 +2692,10 @@ declare module "src/content-element/part/abstract-part" {
          */
         private _label;
         /**
+         * @returns {string}
+         */
+        get id(): string;
+        /**
          * @returns {Part}
          */
         get partId(): Part;
@@ -2690,6 +2703,11 @@ declare module "src/content-element/part/abstract-part" {
          * @returns {string|undefined}
          */
         get label(): string;
+        /**
+         * @param {string} id
+         * @returns {AbstractPart}
+         */
+        withId(id: string): AbstractPart;
         /**
          * @param {string} label
          * @returns {AbstractPart}
