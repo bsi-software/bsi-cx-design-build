@@ -11,7 +11,7 @@ export default class FormTextareaPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {FormTextareaPart}
+   * @returns {FormTextareaPart}
    */
   withLabel(label) {
     return /** @type {FormTextareaPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class FormTextareaPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {FormTextareaPart}
+   * @returns {FormTextareaPart}
    */
   clone(shallow) {
     return this._clone(new FormTextareaPart(), shallow);

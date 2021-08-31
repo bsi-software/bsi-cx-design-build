@@ -11,7 +11,7 @@ export default class PageInclude extends AbstractInclude {
 
   /**
    * @param {boolean} editable
-   * @return {PageInclude}
+   * @returns {PageInclude}
    */
   withEditable(editable) {
     return /** @type {PageInclude} */ super.withEditable(editable);
@@ -19,7 +19,7 @@ export default class PageInclude extends AbstractInclude {
 
   /**
    * @param {{}} file
-   * @return {PageInclude}
+   * @returns {PageInclude}
    */
   withFile(file) {
     return /** @type {PageInclude} */ super.withFile(file);
@@ -27,7 +27,7 @@ export default class PageInclude extends AbstractInclude {
 
   /**
    * @param {string} name
-   * @return {PageInclude}
+   * @returns {PageInclude}
    */
   withName(name) {
     return /** @type {PageInclude} */ super.withName(name);
@@ -35,7 +35,7 @@ export default class PageInclude extends AbstractInclude {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {PageInclude}
+   * @returns {PageInclude}
    */
   clone(shallow) {
     return this._clone(new PageInclude(), shallow);

@@ -11,7 +11,7 @@ export default class BackgroundImagePart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {BackgroundImagePart}
+   * @returns {BackgroundImagePart}
    */
   withLabel(label) {
     return /** @type {BackgroundImagePart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class BackgroundImagePart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {BackgroundImagePart}
+   * @returns {BackgroundImagePart}
    */
   clone(shallow) {
     return this._clone(new BackgroundImagePart(), shallow);

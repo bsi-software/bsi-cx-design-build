@@ -1,17 +1,38 @@
 import AbstractBuilder from '../abstract-builder';
-import Style from '../style/style';
 import {Icon} from './icon';
-import AbstractPart from './part/abstract-part';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, constantObjectValue, identity} from '../browser-utility';
+import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 
+/**
+ * @typedef {import('../style/style').default} Style
+ * @typedef {import('./part/abstract-part').default} AbstractPart
+ * @typedef {import('./content-element-group').default} ContentElementGroup
+ */
+
+/**
+ * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
+ *
+ * @example
+ * .withContentElements(
+ *   new ContentElement()
+ *     .withElementId('image-with-text')
+ *     .withLabel('Image with text')
+ *     .withDescription('Displays an image with an optional text.')
+ *     .withFile(require('./template.twig'))
+ *     .withIcon(Icon.IMAGE)
+ *     .withParts(
+ *       new ImagePart()
+ *         .withLabel('Image'),
+ *       new PlainTextPart()
+ *         .withLabel('Description')))
+ */
 export default class ContentElement extends AbstractBuilder {
   /**
    * @type {string|undefined}
    * @private
    */
-  _elementId = undefined;
+  _elementId = uuid();
   /**
    * @type {string|undefined}
    * @private
@@ -28,7 +49,7 @@ export default class ContentElement extends AbstractBuilder {
    */
   _file = undefined;
   /**
-   * @type {Icon|undefined}
+   * @type {RawValue|Icon|undefined}
    * @private
    */
   _icon = undefined;
@@ -49,64 +70,66 @@ export default class ContentElement extends AbstractBuilder {
   _parts = undefined;
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get elementId() {
     return this._elementId;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get description() {
     return this._description;
   }
 
   /**
-   * @return {{}|undefined}
+   * @returns {{}|undefined}
    */
   get file() {
     return this._file;
   }
 
   /**
-   * @return {Icon|undefined}
+   * @returns {RawValue|Icon|undefined}
    */
   get icon() {
     return this._icon;
   }
 
   /**
-   * @return {boolean|undefined}
+   * @returns {boolean|undefined}
    */
   get hidden() {
     return this._hidden;
   }
 
   /**
-   * @return {RawValue|Style[]|undefined}
+   * @returns {RawValue|Style[]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
   }
 
   /**
-   * @return {RawValue|AbstractPart[]|undefined}
+   * @returns {RawValue|AbstractPart[]|undefined}
    */
   get parts() {
     return this._parts;
   }
 
   /**
-   * @param {string} elementId
-   * @return {ContentElement}
+   * Set the ID of this content element.
+   *
+   * @param {string} elementId - The content element's ID.
+   * @returns {ContentElement}
    * @since Studio 1.0
    */
   withElementId(elementId) {
@@ -115,8 +138,10 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
-   * @return {ContentElement}
+   * Set the label of the content element.
+   *
+   * @param {string} label - The label of the content element.
+   * @returns {ContentElement}
    * @since Studio 1.0
    */
   withLabel(label) {
@@ -125,8 +150,12 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {string} file
-   * @return {ContentElement}
+   * Set the template to use for this content element. Be aware, that you have to require the template.
+   *
+   * @example
+   * .withFile(require('./template.twig'))
+   * @param {string} file - The reference to the required template.
+   * @returns {ContentElement}
    * @since Studio 1.0
    */
   withFile(file) {
@@ -135,8 +164,14 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {Icon} icon
-   * @return {ContentElement}
+   * Set the icon for this content element.
+   *
+   * @example
+   * .withIcon(Icon.IMAGE)
+   * @see {@link Icon} for available icons
+   * @see {@link withRawIcon} to set a raw value
+   * @param {Icon} icon - The icon for this content element.
+   * @returns {ContentElement}
    * @since Studio 1.0
    */
   withIcon(icon) {
@@ -145,8 +180,26 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} hidden
-   * @return {ContentElement}
+   * Set the icon for this content element as raw value.
+   *
+   * @example
+   * .withRawIcon('image')
+   * @see {@link withIcon}
+   * @param {string} icon - The raw icon for this content element.
+   * @returns {ContentElement}
+   */
+  withRawIcon(icon) {
+    this._icon = new RawValue(icon);
+    return this;
+  }
+
+  /**
+   * Declare this content element as hidden.
+   *
+   * @example
+   * .withHidden(true)
+   * @param {boolean} hidden - The hidden state.
+   * @returns {ContentElement}
    * @since BSI CX 1.3
    */
   withHidden(hidden) {
@@ -155,8 +208,26 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {...Style} styleConfigs
-   * @return {ContentElement}
+   * Declare the styles for this content element.
+   *
+   * @example
+   * let textColorStyle = new Style()
+   *   .withIdentifier('text-color')
+   *   .withLabel('Text Color')
+   *   .withCssClasses(
+   *     new CssClass()
+   *       .withCssClass('blue-text')
+   *       .withLabel('Blue'),
+   *     new CssClass()
+   *       .withCssClass('red-text')
+   *       .withLabel('Red'))
+   *  let textElement = new ContentElement()
+   *    .withStyleConfigs(
+   *      textColorStyle,
+   *      require('./styles/background-color'))
+   * @see {@link withRawStyleConfigs} to set a raw value
+   * @param {...Style} styleConfigs - Styles for this content element.
+   * @returns {ContentElement}
    * @since Studio 1.1
    */
   withStyleConfigs(...styleConfigs) {
@@ -165,8 +236,15 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {...string} styleConfigs
-   * @return {ContentElement}
+   * Declare the styles for this content element as raw value. Be aware, that you just pass the name of the referenced
+   * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
+   * in your design specification.
+   *
+   * @example
+   * .withRawStyleConfigs('text-color', 'background-color')
+   * @see {@link withStyleConfigs}
+   * @param {...string} styleConfigs - Style config identifiers.
+   * @returns {ContentElement}
    * @since Studio 1.1
    */
   withRawStyleConfigs(...styleConfigs) {
@@ -175,8 +253,17 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {...AbstractPart} parts
-   * @return {ContentElement}
+   * Specify the parts of your content element.
+   *
+   * @example
+   * .withParts(
+   *   new ImagePart()
+   *     .withLabel('Image'),
+   *   new PlainTextPart()
+   *     .withLabel('Description'))
+   * @see {@link withRawParts} to set a raw value
+   * @param {...AbstractPart} parts - The parts to use.
+   * @returns {ContentElement}
    * @since Studio 1.0
    */
   withParts(...parts) {
@@ -185,8 +272,22 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @param {...{}} parts
-   * @return {ContentElement}
+   * Set the parts of your content element as raw value.
+   *
+   * @example
+   * .withRawParts(
+   *   {
+   *     partId: 'image',
+   *     label: 'Image'
+   *   },
+   *   {
+   *     partId: 'plain-text',
+   *     label: 'Description'
+   *   }
+   * )
+   * @see {@link withParts}
+   * @param {...{}} parts - The parts as raw value.
+   * @returns {ContentElement}
    * @since Studio 1.0
    */
   withRawParts(...parts) {
@@ -211,7 +312,7 @@ export default class ContentElement extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {ContentElement}
+   * @returns {ContentElement}
    */
   clone(shallow) {
     return this._clone(new ContentElement(), shallow);

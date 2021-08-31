@@ -1,8 +1,6 @@
-import Node from 'less/lib/less/tree/node';
-
 export default class AbstractCssProperty {
   /**
-   * @return {Node}
+   * @returns {*}
    * @abstract
    */
   getLessNode() {
@@ -10,7 +8,7 @@ export default class AbstractCssProperty {
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    * @abstract
    */
   getSassObject() {
@@ -20,7 +18,7 @@ export default class AbstractCssProperty {
   /**
    * Will be used in Twig files.
    *
-   * @return {string}
+   * @returns {string}
    * @abstract
    */
   toString() {
@@ -28,8 +26,8 @@ export default class AbstractCssProperty {
   }
 
   /**
-   * @param {string|number} value
-   * @return {function(string|number):AbstractCssProperty|undefined}
+   * @param {*} value
+   * @returns {function(*):AbstractCssProperty|undefined}
    */
   static getParser(value) {
     throw new Error('not implemented');

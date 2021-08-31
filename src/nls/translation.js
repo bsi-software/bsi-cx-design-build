@@ -17,14 +17,14 @@ export default class Translation extends AbstractBuilder {
   }
 
   /**
-   * @return {Locale|undefined}
+   * @returns {Locale|undefined}
    */
   get locale() {
     return this._locale;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get translation() {
     return this._translation;
@@ -32,7 +32,7 @@ export default class Translation extends AbstractBuilder {
 
   /**
    * @param {Locale} locale
-   * @return {Translation}
+   * @returns {Translation}
    */
   withLocale(locale) {
     this._locale = locale;
@@ -41,7 +41,7 @@ export default class Translation extends AbstractBuilder {
 
   /**
    * @param {string} translation
-   * @return {Translation}
+   * @returns {Translation}
    */
   withTranslation(translation) {
     this._translation = translation;
@@ -58,7 +58,7 @@ export default class Translation extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {Translation}
+   * @returns {Translation}
    */
   clone(shallow) {
     return this._clone(new Translation(), shallow);
@@ -67,7 +67,7 @@ export default class Translation extends AbstractBuilder {
   /**
    * @param {Locale} locale
    * @param {string} translation
-   * @return {Translation}
+   * @returns {Translation}
    */
   static create(locale, translation) {
     return new Translation()
@@ -77,7 +77,7 @@ export default class Translation extends AbstractBuilder {
 
   /**
    * @param {string} translation
-   * @return {Translation}
+   * @returns {Translation}
    */
   static wildcard(translation) {
     return new Translation()

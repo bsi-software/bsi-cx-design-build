@@ -11,7 +11,7 @@ export default class RawValue {
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   get value() {
     return this._value;

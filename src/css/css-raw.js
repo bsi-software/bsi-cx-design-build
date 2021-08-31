@@ -22,28 +22,28 @@ export default class CssRaw extends AbstractCssProperty {
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getLessNode() {
     return this.value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
     return new sass.types.String(this.value);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   toString() {
     return `${this.value}`;
@@ -51,7 +51,7 @@ export default class CssRaw extends AbstractCssProperty {
 
   /**
    * @param {*} value
-   * @return {CssRaw}
+   * @returns {CssRaw}
    */
   static fromAny(value) {
     return new CssRaw(value);
@@ -59,7 +59,7 @@ export default class CssRaw extends AbstractCssProperty {
 
   /**
    * @param {*} value
-   * @return {function(*): CssRaw}
+   * @returns {function(*): CssRaw}
    */
   static getParser(value) {
     return CssRaw.fromAny;

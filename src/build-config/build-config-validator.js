@@ -4,12 +4,15 @@ import ObjectCloner from '../object-cloner';
 import slugify from 'slugify';
 import fs from 'fs';
 import path from 'path';
-import BuildConfig from './build-config';
 import ModuleConfig from './module-config';
 import ValidatedBuildConfig from './validated-build-config';
 import {Version} from '../version';
 import {DesignType} from '../design-type';
 import DefaultBuildConfig from './default-build-config';
+
+/**
+ * @typedef {import('./build-config').default} BuildConfig
+ */
 
 export default class BuildConfigValidator {
   /**
@@ -50,21 +53,21 @@ export default class BuildConfigValidator {
   }
 
   /**
-   * @return {DefaultBuildConfig}
+   * @returns {DefaultBuildConfig}
    */
   get defaultBuildConfig() {
     return this._defaultBuildConfig;
   }
 
   /**
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   get buildConfig() {
     return this._buildConfig;
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get validatedConfig() {
     return this._validatedConfig;
@@ -128,7 +131,7 @@ export default class BuildConfigValidator {
   /**
    * @param {string} name
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateName(name, property) {
@@ -144,7 +147,7 @@ export default class BuildConfigValidator {
   /**
    * @param {string} version
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateVersion(version, property) {
@@ -160,7 +163,7 @@ export default class BuildConfigValidator {
   /**
    * @param {string} rootPath
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateRootPath(rootPath, property) {
@@ -299,7 +302,7 @@ export default class BuildConfigValidator {
    * @param {string|undefined} originalPath
    * @param {string} configuredPath
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateRelativeOrAbsoluteFolderPath(originalPath, configuredPath, property) {
@@ -322,7 +325,7 @@ export default class BuildConfigValidator {
 
   /**
    * @param {BuildConfig} buildConfig
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   static validate(buildConfig) {
     let validator = new BuildConfigValidator(buildConfig);

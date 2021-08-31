@@ -72,70 +72,70 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   _enterMode = undefined;
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @return {RawValue|Feature[]|undefined}
+   * @returns {RawValue|Feature[]|undefined}
    */
   get features() {
     return this._features;
   }
 
   /**
-   * @return {string[]|undefined}
+   * @returns {string[]|undefined}
    */
   get textColors() {
     return this._textColors;
   }
 
   /**
-   * @return {string[]|undefined}
+   * @returns {string[]|undefined}
    */
   get backgroundColors() {
     return this._backgroundColors;
   }
 
   /**
-   * @return {RawValue|Format[]|undefined}
+   * @returns {RawValue|Format[]|undefined}
    */
   get formats() {
     return this._formats;
   }
 
   /**
-   * @return {number[]|undefined}
+   * @returns {number[]|undefined}
    */
   get fontSizes() {
     return this._fontSizes;
   }
 
   /**
-   * @return {RawValue|FontSizeUnit|undefined}
+   * @returns {RawValue|FontSizeUnit|undefined}
    */
   get fontSizeUnit() {
     return this._fontSizeUnit;
   }
 
   /**
-   * @return {number|undefined}
+   * @returns {number|undefined}
    */
   get fontSizeDefault() {
     return this._fontSizeDefault;
   }
 
   /**
-   * @return {number[]|undefined}
+   * @returns {number[]|undefined}
    */
   get lineHeights() {
     return this._lineHeights;
   }
 
   /**
-   * @return {RawValue|EnterMode|undefined}
+   * @returns {RawValue|EnterMode|undefined}
    */
   get enterMode() {
     return this._enterMode;
@@ -146,7 +146,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * It is recommended to set the identifier.
    *
    * @param {string} identifier - The unique identifier for this editor config.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -161,7 +161,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * @see {@link Feature} for available features
    * @see {@link withRawFeatures} to set a raw value
    * @param {...Feature} features - The features to enable.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withFeatures(...features) {
     this._features = features;
@@ -175,7 +175,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withRawFeatures('bold', 'italic', 'underline')
    * @see {@link withFeatures}
    * @param {...string} features - The raw features to enable.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withRawFeatures(...features) {
     this._features = new RawValue(features);
@@ -189,7 +189,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withTextColors('#ff00ff', '#ff0000', '#00ff00')
    * @see {@link TEXT_COLOR} to enable the feature
    * @param {...string} textColors - The text colors to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withTextColors(...textColors) {
     this._textColors = textColors;
@@ -203,7 +203,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withBackgroundColors('#ff00ff', '#ff0000', '#00ff00')
    * @see {@link BACKGROUND_COLOR} to enable the feature
    * @param {...string} backgroundColors - The background colors to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withBackgroundColors(...backgroundColors) {
     this._backgroundColors = backgroundColors;
@@ -218,7 +218,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * @see {@link Format} for available formats
    * @see {@link withRawFormats} to set a raw value
    * @param {...Format} formats - The formats to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withFormats(...formats) {
     this._formats = formats;
@@ -232,7 +232,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withRawFormats('p', 'pre')
    * @see {@link withFormats}
    * @param {...string} formats - The raw formats to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withRawFormats(...formats) {
     this._formats = new RawValue(formats);
@@ -246,7 +246,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withFontSizes(12, 13, 14, 15, 16)
    * @see {@link FONT_SIZE} to enable this feature
    * @param {...number} fontSizes - The font sizes to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizes(...fontSizes) {
     this._fontSizes = fontSizes;
@@ -260,7 +260,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withFontSizeUnit(FontSizeUnit.PX)
    * @see {@link withRawFontSizeUnit} to set the raw value
    * @param {FontSizeUnit} fontSizeUnit - The font size unit to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = fontSizeUnit;
@@ -274,7 +274,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withRawFontSizeUnit('px')
    * @see {@link withFontSizeUnit}
    * @param {string} fontSizeUnit - The raw font size unit to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withRawFontSizeUnit(fontSizeUnit) {
     this._fontSizeUnit = new RawValue(fontSizeUnit);
@@ -287,7 +287,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * @example
    * .withFontSizeDefault(16)
    * @param {number} fontSizeDefault - The default font size to set.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withFontSizeDefault(fontSizeDefault) {
     this._fontSizeDefault = fontSizeDefault;
@@ -301,7 +301,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withLineHeights(1, 1.15 , 1.5, 2)
    * @see {@link LINE_HEIGHT} to enable this feature
    * @param {...number} lineHeights - The line heights.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withLineHeights(...lineHeights) {
     this._lineHeights = lineHeights;
@@ -315,7 +315,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * .withEnterMode(EnterMode.P)
    * @see {@link withRawEnterMode} to set the raw value
    * @param {EnterMode} enterMode - The enter mode.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withEnterMode(enterMode) {
     this._enterMode = enterMode;
@@ -328,7 +328,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
    * @example
    * .withRawEnterMode('p')
    * @param {string} enterMode - The raw enter mode.
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   withRawEnterMode(enterMode) {
     this._enterMode = new RawValue(enterMode);
@@ -356,7 +356,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {HtmlEditorConfig}
+   * @returns {HtmlEditorConfig}
    */
   clone(shallow) {
     return this._clone(new HtmlEditorConfig(), shallow);

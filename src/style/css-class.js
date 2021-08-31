@@ -15,14 +15,14 @@ export default class CssClass extends AbstractBuilder {
   _label = undefined;
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get cssClass() {
     return this._cssClass;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get label() {
     return this._label;
@@ -30,7 +30,7 @@ export default class CssClass extends AbstractBuilder {
 
   /**
    * @param {string} cssClass
-   * @return {CssClass}
+   * @returns {CssClass}
    */
   withCssClass(cssClass) {
     this._cssClass = cssClass;
@@ -39,7 +39,7 @@ export default class CssClass extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @return {CssClass}
+   * @returns {CssClass}
    */
   withLabel(label) {
     this._label = label;
@@ -57,7 +57,7 @@ export default class CssClass extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {CssClass}
+   * @returns {CssClass}
    */
   clone(shallow) {
     return this._clone(new CssClass(), shallow);
@@ -66,7 +66,7 @@ export default class CssClass extends AbstractBuilder {
   /**
    * @param {string} cssClass
    * @param {string} label
-   * @return {CssClass}
+   * @returns {CssClass}
    */
   static create(cssClass, label) {
     return new CssClass()

@@ -13,5 +13,4 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withModules(
       new ModuleConfig()
         .withName('main')
-        .withPath('main.js'))
-);
+        .withPath('main.js')));

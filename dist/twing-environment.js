@@ -115,14 +115,14 @@ class AbstractConstant {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   getValue() {
     return this.value;
@@ -154,7 +154,6 @@ const EMAIL = new DesignType('email');
 const design_type_WEBSITE = new DesignType('website');
 
 ;// CONCATENATED MODULE: ./src/utility.js
-
 
 
 
@@ -196,7 +195,7 @@ function buildPublicPath(config, suffix) {
 
 /**
  * @param {*} obj
- * @return {string}
+ * @returns {string}
  */
 function utility_toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
@@ -205,7 +204,7 @@ function utility_toString(obj) {
 /**
  * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
  * @param {string} input
- * @return {string}
+ * @returns {string}
  */
 function escapeRegex(input) {
   let pattern = /[-\/\\^$*+?.()|[\]{}]/g
@@ -214,7 +213,7 @@ function escapeRegex(input) {
 
 /**
  * @param {string} str
- * @return {string}
+ * @returns {string}
  */
 function ucfirst(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
@@ -223,7 +222,7 @@ function ucfirst(str) {
 /**
  * @param {string} mayRelativePath
  * @param {string|undefined} [basePathWhenRelative=undefined]
- * @return {string}
+ * @returns {string}
  */
 function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
   let absolutePath = mayRelativePath;
@@ -256,7 +255,7 @@ function findStringSimilarities(str1, str2) {
 
 /**
  * @param {string} possibleWin32Path
- * @return {string}
+ * @returns {string}
  */
 function toPosixPath(possibleWin32Path) {
   return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
@@ -273,7 +272,7 @@ function toPosixPath(possibleWin32Path) {
 
 /**
  * @param {string} resolve
- * @return {Promise<string>}
+ * @returns {Promise<string>}
  */
 function strToPromise(resolve) {
   return Promise.resolve(resolve);
@@ -283,7 +282,7 @@ function strToPromise(resolve) {
  * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
  * @param {boolean} inline
- * @return {Promise<string>}
+ * @returns {Promise<string>}
  */
 function bsiCxJsModuleImport(template, config, inline) {
   let templatePath = template.source.getResolvedName();

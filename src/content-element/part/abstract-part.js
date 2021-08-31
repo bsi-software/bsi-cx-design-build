@@ -31,14 +31,14 @@ export default class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @return {Part}
+   * @returns {Part}
    */
   get partId() {
     return this._partId;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get label() {
     return this._label;
@@ -46,7 +46,7 @@ export default class AbstractPart extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @return {AbstractPart}
+   * @returns {AbstractPart}
    * @since Studio 1.0
    */
   withLabel(label) {

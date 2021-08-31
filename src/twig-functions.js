@@ -8,7 +8,7 @@ import {toPosixPath} from './utility';
 
 /**
  * @param {string} resolve
- * @return {Promise<string>}
+ * @returns {Promise<string>}
  */
 function strToPromise(resolve) {
   return Promise.resolve(resolve);
@@ -18,7 +18,7 @@ function strToPromise(resolve) {
  * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
  * @param {boolean} inline
- * @return {Promise<string>}
+ * @returns {Promise<string>}
  */
 function bsiCxJsModuleImport(template, config, inline) {
   let templatePath = template.source.getResolvedName();

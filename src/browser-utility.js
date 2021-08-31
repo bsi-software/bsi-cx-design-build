@@ -1,9 +1,6 @@
-import AbstractBuilder from './abstract-builder';
-import AbstractConstant from './abstract-constant';
-
 /**
  * @param {[string|number]} arr
- * @return {string}
+ * @returns {string}
  */
 export function scalarArrayToList(arr) {
   return arr.join(',');
@@ -12,7 +9,7 @@ export function scalarArrayToList(arr) {
 /**
  * @template T
  * @param {T} v
- * @return {T}
+ * @returns {T}
  */
 export function identity(v) {
   return v;
@@ -20,7 +17,7 @@ export function identity(v) {
 
 /**
  * @param {AbstractConstant} constant
- * @return {string}
+ * @returns {string}
  */
 export function constantObjectValue(constant) {
   return constant.value;
@@ -28,7 +25,7 @@ export function constantObjectValue(constant) {
 
 /**
  * @param {AbstractBuilder} builder
- * @return {{}}
+ * @returns {{}}
  */
 export function builderObjectValue(builder) {
   return builder.build();
@@ -39,7 +36,7 @@ export function builderObjectValue(builder) {
  * (won't work in the browser context).
  *
  * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
- * @return {string}
+ * @returns {string}
  */
 export function uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {

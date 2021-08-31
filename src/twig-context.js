@@ -51,14 +51,14 @@ export default class TwigContext {
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @return {ModuleLoader}
+   * @returns {ModuleLoader}
    */
   get propertiesModule() {
     return this._propertiesModule;
@@ -67,7 +67,7 @@ export default class TwigContext {
   /**
    * Get the original properties object without the proxy.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   get properties() {
     return this._properties;
@@ -76,14 +76,14 @@ export default class TwigContext {
   /**
    * Get the properties object, guarded by a proxy.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   get propertiesProxy() {
     return this._propertiesProxy;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get propertiesReloadRequired() {
     return this._propertiesReloadRequired;
@@ -94,14 +94,14 @@ export default class TwigContext {
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   hasPropertiesFilePath() {
     return !!this._propertiesFilePath;
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _getPropertiesProxy() {
@@ -111,7 +111,7 @@ export default class TwigContext {
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _getProxyHandler() {
@@ -126,7 +126,7 @@ export default class TwigContext {
   /**
    * @param {{}} target
    * @param {string} property
-   * @return {*}
+   * @returns {*}
    * @private
    */
   _get(target, property) {

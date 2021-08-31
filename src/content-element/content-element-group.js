@@ -1,8 +1,11 @@
 import AbstractBuilder from '../abstract-builder';
-import ContentElement from './content-element';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
+
+/**
+ * @typedef {import('./content-element').default} ContentElement
+ */
 
 /**
  * This is the builder class to specify content element groups.
@@ -38,28 +41,28 @@ export default class ContentElementGroup extends AbstractBuilder {
   _contentElements = undefined;
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get groupId() {
     return this._groupId;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @return {boolean|undefined}
+   * @returns {boolean|undefined}
    */
   get hidden() {
     return this._hidden;
   }
 
   /**
-   * @return {RawValue|[ContentElement]|undefined}
+   * @returns {RawValue|[ContentElement]|undefined}
    */
   get contentElements() {
     return this._contentElements;
@@ -67,10 +70,10 @@ export default class ContentElementGroup extends AbstractBuilder {
 
   /**
    * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
-   * It is recommended to set the group identifier.
+   * <strong>It is recommended to set the group identifier.</strong>
    *
-   * @param {string} groupId
-   * @return {ContentElementGroup}
+   * @param {string} groupId - The group ID.
+   * @returns {ContentElementGroup}
    */
   withGroupId(groupId) {
     this._groupId = groupId;
@@ -78,8 +81,10 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {string} label
-   * @return {ContentElementGroup}
+   * The label for this content element group.
+   *
+   * @param {string} label - The group label.
+   * @returns {ContentElementGroup}
    */
   withLabel(label) {
     this._label = label;
@@ -87,8 +92,11 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {boolean} hidden
-   * @return {ContentElementGroup}
+   * Declare this content element group as hidden. It is not required to set this property.
+   * Groups are visible per default.
+   *
+   * @param {boolean} hidden - Hide this group.
+   * @returns {ContentElementGroup}
    */
   withHidden(hidden) {
     this._hidden = hidden;
@@ -96,8 +104,25 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {...ContentElement} contentElements
-   * @return {ContentElementGroup}
+   * Set the content elements of your group.
+   *
+   * @example
+   * .withContentElements(
+   *   new ContentElement()
+   *     .withElementId('image-with-text')
+   *     .withLabel('Image with text')
+   *     .withDescription('Displays an image with an optional text.')
+   *     .withFile(require('./template.twig'))
+   *     .withIcon(Icon.IMAGE)
+   *     .withParts(
+   *       new ImagePart()
+   *         .withLabel('Image'),
+   *       new PlainTextPart()
+   *         .withLabel('Description')))
+   * @see {@link withRawContentElements} to set a raw value
+   * @see {@link ContentElement}
+   * @param {...ContentElement} contentElements - The content elements to use.
+   * @returns {ContentElementGroup}
    */
   withContentElements(...contentElements) {
     this._contentElements = contentElements;
@@ -105,8 +130,24 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @param {...{}} contentElements
-   * @return {ContentElementGroup}
+   * Set the content elements of your group as raw value.
+   *
+   * @example
+   * .withRawContentElements({
+   *   elementId: 'title',
+   *   file: require('./title/template.twig'),
+   *   icon 'heading',
+   *   label: 'Title',
+   *   parts: [
+   *     {
+   *       partId: 'plain-text',
+   *       label: 'Title'
+   *     }
+   *   ]
+   * })
+   * @see {@link withContentElements}
+   * @param {...{}} contentElements - The content elements as raw value.
+   * @returns {ContentElementGroup}
    */
   withRawContentElements(...contentElements) {
     this._contentElements = new RawValue(contentElements);
@@ -126,7 +167,7 @@ export default class ContentElementGroup extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {ContentElementGroup}
+   * @returns {ContentElementGroup}
    */
   clone(shallow) {
     return this._clone(new ContentElementGroup(), shallow);

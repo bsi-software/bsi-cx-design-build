@@ -32,14 +32,14 @@ export class Version extends AbstractConstant {
   }
 
   /**
-   * @return {DesignType[]}
+   * @returns {DesignType[]}
    */
   get allowedTypes() {
     return this._allowedTypes;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get legacyFormat() {
     return this._legacyFormat;

@@ -3,103 +3,103 @@
  */
 export default class BuildConfigInterface {
   /**
-   * @return {string}
+   * @returns {string}
    */
   get name() {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get version() {
   }
 
   /**
-   * @return {Version}
+   * @returns {Version}
    */
   get targetVersion() {
   }
 
   /**
-   * @return {DesignType}
+   * @returns {DesignType}
    */
   get designType() {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rootPath() {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get outputPath() {
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get propertiesFilePath() {
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get devServerPort() {
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get hashZipFiles() {
   }
 
   /**
-   * @return {ModuleConfig[]}
+   * @returns {ModuleConfig[]}
    */
   get modules() {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get modulesRootPath() {
   }
 
   /**
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   get additionalFilesToCopy() {
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get sourceMapEnabled() {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get staticFileFolderPath() {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get copyAssetsFolderPath() {
   }
 
   /**
-   * @return {{}[]}
+   * @returns {{}[]}
    */
   get webpackRules() {
   }
 
   /**
-   * @return {Object[]}
+   * @returns {Object[]}
    */
   get webpackPlugins() {
   }

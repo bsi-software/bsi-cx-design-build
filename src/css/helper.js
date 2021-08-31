@@ -5,7 +5,7 @@ import CssUrl from './css-url';
 
 /**
  * @param {...string} pathSegments
- * @return {CssUrl}
+ * @returns {CssUrl}
  */
 export function url(...pathSegments) {
   let resolvedPath = path.resolve(...pathSegments);
@@ -14,7 +14,7 @@ export function url(...pathSegments) {
 
 /**
  * @param {...string} pathSegments
- * @return {CssUrl}
+ * @returns {CssUrl}
  */
 export function dataUri(...pathSegments) {
   let resolvedPath = path.resolve(...pathSegments);
@@ -23,7 +23,7 @@ export function dataUri(...pathSegments) {
 
 /**
  * @param {...string|number} channels
- * @return {CssColor|string}
+ * @returns {CssColor|string}
  */
 export function color(...channels) {
   switch (channels.length) {

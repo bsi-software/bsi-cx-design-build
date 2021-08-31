@@ -13,9 +13,6 @@ import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
 import File from './file';
 import {buildPublicPath, findStringSimilarities, getZipArchiveName, toPosixPath} from './utility';
-import BuildConfig from './build-config/build-config';
-import ValidatedBuildConfig from './build-config/validated-build-config';
-import TwigContext from './twig-context';
 import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
@@ -49,21 +46,21 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {BuildContext}
+   * @returns {BuildContext}
    */
   get context() {
     return this._context;
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get config() {
     return this.context.config;
   }
 
   /**
-   * @return {TwigContext}
+   * @returns {TwigContext}
    */
   get twigContext() {
     return this.context.properties;
@@ -120,7 +117,7 @@ export default class WebpackConfigBuilder {
   /**
    * The default output path: dist/{name}
    *
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getDefaultOutputPath() {
@@ -130,7 +127,7 @@ export default class WebpackConfigBuilder {
   /**
    * The entry configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getEntryConfig() {
     return {
@@ -153,7 +150,7 @@ export default class WebpackConfigBuilder {
    * Get the entry configuration for a template.
    *
    * @param {string} name
-   * @return {{}}
+   * @returns {{}}
    */
   _evaluateEntryTemplate(name) {
     let twigFilePath = path.resolve(this.config.rootPath, `${name}.twig`);
@@ -167,7 +164,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getDesignJsFilePath() {
@@ -177,7 +174,7 @@ export default class WebpackConfigBuilder {
   /**
    * Get the entry configurations for the Java Script modules.
    *
-   * @return {[{}]}
+   * @returns {{}}
    */
   _getJavaScriptModuleEntries() {
     let entries = {};
@@ -192,7 +189,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * @param {ModuleConfig} config
-   * @return {{filename: string, import: string, runtime: string}}
+   * @returns {{filename: string, import: string, runtime: string}}
    * @private
    */
   _getJavaScriptModuleEntry(config) {
@@ -221,7 +218,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rules for Twig file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getTwigRuleConfig() {
     return [
@@ -248,7 +245,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for HTML and Handlebars file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getHtmlAndHbsRuleConfig() {
     return [
@@ -265,7 +262,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getStyleRulesConfig() {
     return [
@@ -315,7 +312,7 @@ export default class WebpackConfigBuilder {
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
    *
-   * @return {[string]}
+   * @returns {[string]}
    */
   _getStaticAssetFileExtensions() {
     return [
@@ -339,7 +336,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for static assets handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
@@ -373,7 +370,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for static Java Script file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getStaticJavaScriptFileRuleConfig() {
     return [
@@ -389,7 +386,7 @@ export default class WebpackConfigBuilder {
 
   /**
    * @param {string} fileToCheck
-   * @return {boolean}
+   * @returns {boolean}
    */
   _isStaticJavaScriptFile(fileToCheck) {
     let staticFilePath = path.resolve(this.config.staticFileFolderPath) + path.sep;
@@ -401,7 +398,7 @@ export default class WebpackConfigBuilder {
   /**
    * Rule for regular Java Script file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getRegularJavaScriptFileRuleConfig() {
     return [
@@ -422,7 +419,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {{}[]}
+   * @returns {{}[]}
    * @private
    */
   _getAdditionalRules() {
@@ -430,14 +427,14 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   _getTemplateLoader() {
     return `${packageJson.name}/dist/template-loader`;
   }
 
   /**
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getCssLoaderChain() {
     return [
@@ -471,7 +468,7 @@ export default class WebpackConfigBuilder {
   /**
    * Mini CSS extract plugin configuration.
    *
-   * @return {[MiniCssExtractPlugin]}
+   * @returns {[MiniCssExtractPlugin]}
    */
   _getMiniCssExtractPluginConfig() {
     return [
@@ -484,7 +481,7 @@ export default class WebpackConfigBuilder {
   /**
    * Copy plugin configuration.
    *
-   * @return {[CopyPlugin]}
+   * @returns {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
     let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
@@ -511,7 +508,7 @@ export default class WebpackConfigBuilder {
 
   /**
    *
-   * @return {BsiCxTwigContextWebpackPlugin[]}
+   * @returns {BsiCxTwigContextWebpackPlugin[]}
    * @private
    */
   _getBsiCxTwigContextWebpackPlugin() {
@@ -521,7 +518,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {[BsiCxWebpackPlugin]}
+   * @returns {[BsiCxWebpackPlugin]}
    * @private
    */
   _getBsiCxWebpackPluginConfig() {
@@ -533,11 +530,11 @@ export default class WebpackConfigBuilder {
   /**
    * Webpack ZIP plugin configuration.
    *
-   * @return {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+   * @returns {[]}
    */
   _getZipPluginConfig() {
     /**
-     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+     * @type {[]}
      */
     let plugins = [
       new ZipPlugin({
@@ -562,7 +559,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @return {Object[]}
+   * @returns {Object[]}
    * @private
    */
   _getAdditionalPlugins() {
@@ -572,7 +569,7 @@ export default class WebpackConfigBuilder {
   /**
    * BSI CX legacy design format plugin config.
    *
-   * @return {[BsiCxWebpackLegacyDesignPlugin]}
+   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
    */
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
@@ -587,7 +584,7 @@ export default class WebpackConfigBuilder {
   /**
    * The dev tool configuration.
    *
-   * @return {string|boolean}
+   * @returns {string|boolean}
    */
   _getDevToolConfig() {
     return this.config.sourceMapEnabled ? 'source-map' : false;
@@ -596,7 +593,7 @@ export default class WebpackConfigBuilder {
   /**
    * Development server configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getDevServerConfig() {
     let zipRegEx = /\.zip$/i;
@@ -614,7 +611,7 @@ export default class WebpackConfigBuilder {
   /**
    * The stats configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getStatsConfig() {
     return {
@@ -626,7 +623,7 @@ export default class WebpackConfigBuilder {
   /**
    * The performance configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getPerformanceConfig() {
     let excludedAssets = [
@@ -643,7 +640,7 @@ export default class WebpackConfigBuilder {
   /**
    * The minimizer configuration.
    *
-   * @return {[TerserPlugin]}
+   * @returns {[TerserPlugin]}
    */
   _getOptimizationMinimizerConfig() {
     return [
@@ -656,7 +653,7 @@ export default class WebpackConfigBuilder {
   /**
    * The split chunks name configuration.
    *
-   * @return {function}
+   * @returns {function}
    */
   _getOptimizationSplitChunksNameConfig() {
     return (module, _, cacheGroupKey) => {
@@ -667,7 +664,7 @@ export default class WebpackConfigBuilder {
   /**
    * The chache groups configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getOptimizationCacheGroupsConfig() {
     return {
@@ -700,7 +697,7 @@ export default class WebpackConfigBuilder {
   /**
    * The output configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getOutputConfig() {
     return {

@@ -1,7 +1,6 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity} from '../browser-utility';
-import AbstractInclude from './abstract-include';
 import RawValue from '../raw-value';
 
 /**
@@ -20,14 +19,14 @@ export default class Website extends AbstractBuilder {
   _includes = undefined;
 
   /**
-   * @return {number|undefined}
+   * @returns {number|undefined}
    */
   get maxNavigationLevel() {
     return this._maxNavigationLevel;
   }
 
   /**
-   * @return {RawValue|AbstractInclude[]|undefined}
+   * @returns {RawValue|AbstractInclude[]|undefined}
    */
   get includes() {
     return this._includes;
@@ -35,7 +34,7 @@ export default class Website extends AbstractBuilder {
 
   /**
    * @param {number} maxNavigationLevel
-   * @return {Website}
+   * @returns {Website}
    */
   withMaxNavigationLevel(maxNavigationLevel) {
     this._maxNavigationLevel = maxNavigationLevel;
@@ -44,7 +43,7 @@ export default class Website extends AbstractBuilder {
 
   /**
    * @param {...AbstractInclude} includes
-   * @return {Website}
+   * @returns {Website}
    */
   withIncludes(...includes) {
     this._includes = includes;
@@ -53,7 +52,7 @@ export default class Website extends AbstractBuilder {
 
   /**
    * @param {{}} includes
-   * @return {Website}
+   * @returns {Website}
    */
   withRawIncludes(includes) {
     this._includes = new RawValue(includes);
@@ -71,7 +70,7 @@ export default class Website extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {Website}
+   * @returns {Website}
    */
   clone(shallow) {
     return this._clone(new Website(), shallow);

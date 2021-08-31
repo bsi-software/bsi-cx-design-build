@@ -1,5 +1,4 @@
 import path from 'path';
-import ValidatedBuildConfig from './build-config/validated-build-config';
 import Constant from './constant';
 import {WEBSITE} from './design-type';
 
@@ -40,7 +39,7 @@ export function buildPublicPath(config, suffix) {
 
 /**
  * @param {*} obj
- * @return {string}
+ * @returns {string}
  */
 export function toString(obj) {
   return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
@@ -49,7 +48,7 @@ export function toString(obj) {
 /**
  * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
  * @param {string} input
- * @return {string}
+ * @returns {string}
  */
 export function escapeRegex(input) {
   let pattern = /[-\/\\^$*+?.()|[\]{}]/g
@@ -58,7 +57,7 @@ export function escapeRegex(input) {
 
 /**
  * @param {string} str
- * @return {string}
+ * @returns {string}
  */
 export function ucfirst(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
@@ -67,7 +66,7 @@ export function ucfirst(str) {
 /**
  * @param {string} mayRelativePath
  * @param {string|undefined} [basePathWhenRelative=undefined]
- * @return {string}
+ * @returns {string}
  */
 export function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
   let absolutePath = mayRelativePath;
@@ -100,7 +99,7 @@ export function findStringSimilarities(str1, str2) {
 
 /**
  * @param {string} possibleWin32Path
- * @return {string}
+ * @returns {string}
  */
 export function toPosixPath(possibleWin32Path) {
   return possibleWin32Path.replace(/\\/g, path.posix.sep);

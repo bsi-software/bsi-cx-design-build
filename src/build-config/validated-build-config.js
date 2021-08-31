@@ -1,4 +1,6 @@
-import BuildConfigInterface from './build-config-interface';
+/**
+ * @typedef {import('./build-config-interface').default} BuildConfigInterface
+ */
 
 /**
  * @implements {BuildConfigInterface}
@@ -60,7 +62,7 @@ export default class ValidatedBuildConfig {
    */
   _modulesRootPath = undefined;
   /**
-   * @type {[{}]}
+   * @type {{}[]}
    * @private
    */
   _additionalFilesToCopy = undefined;
@@ -91,119 +93,119 @@ export default class ValidatedBuildConfig {
   _webpackRules = undefined;
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get version() {
     return this._version;
   }
 
   /**
-   * @return {Version}
+   * @returns {Version}
    */
   get targetVersion() {
     return this._targetVersion;
   }
 
   /**
-   * @return {DesignType}
+   * @returns {DesignType}
    */
   get designType() {
     return this._designType;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rootPath() {
     return this._rootPath;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get devServerPort() {
     return this._devServerPort;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get hashZipFiles() {
     return this._hashZipFiles;
   }
 
   /**
-   * @return {ModuleConfig[]}
+   * @returns {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get modulesRootPath() {
     return this._modulesRootPath;
   }
 
   /**
-   * @return {[{}]}
+   * @returns {{}[]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get staticFileFolderPath() {
     return this._staticFileFolderPath;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
   }
 
   /**
-   * @return {Object[]}
+   * @returns {Object[]}
    */
   get webpackPlugins() {
     return this._webpackPlugins;
   }
 
   /**
-   * @return {{}[]}
+   * @returns {{}[]}
    */
   get webpackRules() {
     return this._webpackRules;

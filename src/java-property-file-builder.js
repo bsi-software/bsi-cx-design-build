@@ -6,7 +6,7 @@ export default class JavaPropertyFileBuilder {
   /**
    * @param {string} key
    * @param {string} value
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   append(key, value) {
     this._properties.push([key, value]);
@@ -15,7 +15,7 @@ export default class JavaPropertyFileBuilder {
 
   /**
    * @param {string} comment
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   appendComment(comment) {
     this._properties.push(comment);
@@ -24,7 +24,7 @@ export default class JavaPropertyFileBuilder {
 
   /**
    * @param {string} section
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   appendCommentSection(section) {
     let border = '#'.repeat(section.length + 4);
@@ -38,7 +38,7 @@ export default class JavaPropertyFileBuilder {
   }
 
   /**
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   appendBlank() {
     this._properties.push('');
@@ -46,7 +46,7 @@ export default class JavaPropertyFileBuilder {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   build() {
     return this._properties
@@ -56,7 +56,7 @@ export default class JavaPropertyFileBuilder {
 
   /**
    * @param {string} line
-   * @return {string}
+   * @returns {string}
    */
   _printLine(line) {
     if (line instanceof Array) {
@@ -69,7 +69,7 @@ export default class JavaPropertyFileBuilder {
 
   /**
    * @param {string} key
-   * @return {string}
+   * @returns {string}
    */
   _escapeKey(key) {
     return key;
@@ -77,7 +77,7 @@ export default class JavaPropertyFileBuilder {
 
   /**
    * @param {string} value
-   * @return {string}
+   * @returns {string}
    */
   _escapeValue(value) {
     return value;

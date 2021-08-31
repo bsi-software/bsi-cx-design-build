@@ -1,6 +1,5 @@
 import sass from 'sass';
 
-import Node from 'less/lib/less/tree/node';
 import Color from 'less/lib/less/tree/color';
 import colors from 'less/lib/less/data/colors';
 
@@ -72,68 +71,70 @@ export default class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get red() {
     return this._red;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get green() {
     return this._green;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get blue() {
     return this._blue;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get alpha() {
     return this._alpha;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get hex() {
     return this._toHex();
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rgb() {
     return this._toRgb();
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rgba() {
     return this._toRgba();
   }
 
   /**
-   * @return {Node}
+   * @returns {Color}
    */
   getLessNode() {
     let rgb = [this.red, this.green, this.blue];
     let alpha = this.alpha / 255;
 
+    // noinspection JSValidateTypes
     return new Color(rgb, alpha);
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
+    // noinspection JSUnresolvedVariable
     return new sass.types.Color(this.red, this.green, this.blue, this.alpha);
   }
 
@@ -143,7 +144,7 @@ export default class CssColor extends AbstractCssProperty {
 
   /**
    * @param {number} color
-   * @return {number}
+   * @returns {number}
    * @private
    */
   _assertColor(color) {
@@ -156,7 +157,7 @@ export default class CssColor extends AbstractCssProperty {
 
   /**
    * @param {number|undefined} [color=undefined]
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _toHex(color) {
@@ -178,7 +179,7 @@ export default class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _toRgb() {
@@ -186,7 +187,7 @@ export default class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _toRgba() {
@@ -195,7 +196,7 @@ export default class CssColor extends AbstractCssProperty {
 
   /**
    * @param {string} hex
-   * @return {CssColor}
+   * @returns {CssColor}
    */
   static fromHex(hex) {
     let color = hex.replace(/^#/, '');
@@ -226,7 +227,7 @@ export default class CssColor extends AbstractCssProperty {
 
   /**
    * @param {string} str
-   * @return {CssColor}
+   * @returns {CssColor}
    */
   static fromRGBString(str) {
     let match = CssColor.RGBA.exec(str);
@@ -239,7 +240,7 @@ export default class CssColor extends AbstractCssProperty {
 
   /**
    * @param {string} color
-   * @return {CssColor}
+   * @returns {CssColor}
    */
   static fromKeyword(color) {
     if (CssColor.COLORS.hasOwnProperty(color)) {
@@ -250,8 +251,8 @@ export default class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @param {string|number} value
-   * @return {function(string|number):CssColor|undefined}
+   * @param {*} value
+   * @returns {function(*):CssColor|undefined}
    */
   static getParser(value) {
     switch (true) {

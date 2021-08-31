@@ -7,7 +7,7 @@ export default class ObjectCloner {
    * @param {T} source
    * @param {T} target
    * @param {boolean} shallow
-   * @return {T}
+   * @returns {T}
    * @private
    */
   _clone(source, target, shallow) {
@@ -21,7 +21,7 @@ export default class ObjectCloner {
   /**
    * @template T
    * @param {T} value
-   * @return {T}
+   * @returns {T}
    * @private
    */
   _cloneValue(value) {
@@ -53,7 +53,7 @@ export default class ObjectCloner {
 
   /**
    * @param {[]} arr
-   * @return {[]}
+   * @returns {[]}
    * @private
    */
   _cloneArray(arr) {
@@ -62,7 +62,7 @@ export default class ObjectCloner {
 
   /**
    * @param {{}} obj
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _cloneObject(obj) {
@@ -78,7 +78,7 @@ export default class ObjectCloner {
    * @param {T} source
    * @param {T} target
    * @param {boolean|undefined} [shallow=true]
-   * @return {T}
+   * @returns {T}
    */
   static clone(source, target, shallow) {
     let shallowOpt = shallow === undefined ? true : !!shallow;
@@ -88,7 +88,7 @@ export default class ObjectCloner {
   /**
    * @template T
    * @param {T} value
-   * @return {T}
+   * @returns {T}
    */
   static cloneValue(value) {
     return new ObjectCloner()._cloneValue(value);

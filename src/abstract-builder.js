@@ -6,10 +6,10 @@ import ObjectCloner from './object-cloner';
  */
 export default class AbstractBuilder {
   /**
-   * Build the configuration.
+   * Build the configuration. Normally, there is no need to invoke this method manually.
    *
    * @abstract
-   * @return {{}}
+   * @returns {{}}
    */
   build() {
     throw new Error('not implemented');
@@ -68,7 +68,7 @@ export default class AbstractBuilder {
    * @template T
    * @param {T} newObj
    * @param {boolean|undefined} [shallow=true]
-   * @return {T}
+   * @returns {T}
    * @protected
    */
   _clone(newObj, shallow) {

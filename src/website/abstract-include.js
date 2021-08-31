@@ -41,28 +41,28 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @return {boolean|undefined}
+   * @returns {boolean|undefined}
    */
   get editable() {
     return this._editable;
   }
 
   /**
-   * @return {{}|undefined}
+   * @returns {{}|undefined}
    */
   get file() {
     return this._file;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get name() {
     return this._name;
@@ -70,7 +70,7 @@ export default class AbstractInclude extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @return {AbstractInclude}
+   * @returns {AbstractInclude}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -79,7 +79,7 @@ export default class AbstractInclude extends AbstractBuilder {
 
   /**
    * @param {boolean} editable
-   * @return {AbstractInclude}
+   * @returns {AbstractInclude}
    */
   withEditable(editable) {
     this._editable = editable;
@@ -88,7 +88,7 @@ export default class AbstractInclude extends AbstractBuilder {
 
   /**
    * @param {{}} file
-   * @return {AbstractInclude}
+   * @returns {AbstractInclude}
    */
   withFile(file) {
     this._file = file;
@@ -97,7 +97,7 @@ export default class AbstractInclude extends AbstractBuilder {
 
   /**
    * @param {string} name
-   * @return {AbstractInclude}
+   * @returns {AbstractInclude}
    */
   withName(name) {
     this._name = name;

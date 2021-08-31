@@ -1,11 +1,6 @@
 import AbstractBuilder from '../abstract-builder';
 import {SchemaVersion} from './schema-version';
 import {Locale} from './locale';
-import ContentElementGroup from '../content-element/content-element-group';
-import Style from '../style/style';
-import HtmlEditorConfig from '../html-editor-config/html-editor-config';
-import Website from '../website/website';
-import NLS from '../nls/nls';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
@@ -95,84 +90,84 @@ export default class Design extends AbstractBuilder {
   _nls = undefined;
 
   /**
-   * @return {RawValue|SchemaVersion|undefined}
+   * @returns {RawValue|SchemaVersion|undefined}
    */
   get schemaVersion() {
     return this._schemaVersion;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get title() {
     return this._title;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get author() {
     return this._author;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get date() {
     return this._date;
   }
 
   /**
-   * @return {{}|undefined}
+   * @returns {{}|undefined}
    */
   get previewImage() {
     return this._previewImage;
   }
 
   /**
-   * @return {RawValue|Locale|undefined}
+   * @returns {RawValue|Locale|undefined}
    */
   get defaultLocale() {
     return this._defaultLocale;
   }
 
   /**
-   * @return {RawValue|[Locale]|undefined}
+   * @returns {RawValue|[Locale]|undefined}
    */
   get locales() {
     return this._locales;
   }
 
   /**
-   * @return {RawValue|ContentElementGroup[]|undefined}
+   * @returns {RawValue|ContentElementGroup[]|undefined}
    */
   get contentElementGroups() {
     return this._contentElementGroups;
   }
 
   /**
-   * @return {RawValue|[Style]|undefined}
+   * @returns {RawValue|[Style]|undefined}
    */
   get styleConfigs() {
     return this._styleConfigs;
   }
 
   /**
-   * @return {RawValue|[HtmlEditorConfig]|undefined}
+   * @returns {RawValue|[HtmlEditorConfig]|undefined}
    */
   get htmlEditorConfigs() {
     return this._htmlEditorConfigs;
   }
 
   /**
-   * @return {RawValue|Website|undefined}
+   * @returns {RawValue|Website|undefined}
    */
   get website() {
     return this._website;
   }
 
   /**
-   * @return {RawValue|NLS[]|undefined}
+   * @returns {RawValue|NLS[]|undefined}
    */
   get nls() {
     return this._nls;
@@ -186,7 +181,7 @@ export default class Design extends AbstractBuilder {
    * @see {@link SchemaVersion} for available versions
    * @see {@link withRawSchemaVersion} to set a raw value
    * @param {SchemaVersion} schemaVersion - The schema version to use.
-   * @return {Design}
+   * @returns {Design}
    */
   withSchemaVersion(schemaVersion) {
     this._schemaVersion = schemaVersion;
@@ -200,7 +195,7 @@ export default class Design extends AbstractBuilder {
    * .withRawSchemaVersion('22.0')
    * @see {@link withSchemaVersion}
    * @param {string} schemaVersion - The schema version to use.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawSchemaVersion(schemaVersion) {
     this._schemaVersion = new RawValue(schemaVersion);
@@ -211,7 +206,7 @@ export default class Design extends AbstractBuilder {
    * The title for your design.
    *
    * @param {string} title - The design title.
-   * @return {Design}
+   * @returns {Design}
    */
   withTitle(title) {
     this._title = title;
@@ -222,7 +217,7 @@ export default class Design extends AbstractBuilder {
    * The author of your design.
    *
    * @param {string} author - The design author.
-   * @return {Design}
+   * @returns {Design}
    */
   withAuthor(author) {
     this._author = author;
@@ -235,7 +230,7 @@ export default class Design extends AbstractBuilder {
    * @example
    * .withDate('18.08.2021')
    * @param {string} date - The design date.
-   * @return {Design}
+   * @returns {Design}
    */
   withDate(date) {
     this._date = date;
@@ -248,7 +243,7 @@ export default class Design extends AbstractBuilder {
    * @example
    * .withPreviewImage(require('./preview-image.png'))
    * @param {{}} previewImage
-   * @return {Design}
+   * @returns {Design}
    */
   withPreviewImage(previewImage) {
     this._previewImage = previewImage;
@@ -263,7 +258,7 @@ export default class Design extends AbstractBuilder {
    * @see {@link Locale} for available locales
    * @see {@link withRawDefaultLocale} to set a raw value
    * @param {Locale} defaultLocale - The design default locale.
-   * @return {Design}
+   * @returns {Design}
    */
   withDefaultLocale(defaultLocale) {
     this._defaultLocale = defaultLocale;
@@ -277,7 +272,7 @@ export default class Design extends AbstractBuilder {
    * .withRawDefaultLocale('en')
    * @see {@link withDefaultLocale}
    * @param {string} defaultLocale - The default locale.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawDefaultLocale(defaultLocale) {
     this._defaultLocale = new RawValue(defaultLocale);
@@ -292,7 +287,7 @@ export default class Design extends AbstractBuilder {
    * @see {@link Locale} for available locales
    * @see {@link withRawLocales} to set a raw value
    * @param {...Locale} locales - The design locales.
-   * @return {Design}
+   * @returns {Design}
    */
   withLocales(...locales) {
     this._locales = locales;
@@ -306,7 +301,7 @@ export default class Design extends AbstractBuilder {
    * .withRawLocales('en-GB','de-CH')
    * @see {@link withLocales}
    * @param {...string} locales - The design locales.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawLocales(...locales) {
     this._locales = new RawValue(locales);
@@ -318,7 +313,7 @@ export default class Design extends AbstractBuilder {
    *
    * @see {@link withRawContentElementGroups} to set a raw value
    * @param {...ContentElementGroup} contentElementGroups - The content element groups.
-   * @return {Design}
+   * @returns {Design}
    */
   withContentElementGroups(...contentElementGroups) {
     this._contentElementGroups = contentElementGroups;
@@ -343,7 +338,7 @@ export default class Design extends AbstractBuilder {
    * )
    * @see {@link withContentElementGroups}
    * @param {...{}} contentElementGroups - The content element groups.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawContentElementGroups(...contentElementGroups) {
     this._contentElementGroups = new RawValue(contentElementGroups);
@@ -355,7 +350,7 @@ export default class Design extends AbstractBuilder {
    *
    * @see {@link withRawStyleConfigs} to set a raw value
    * @param {...Style} styleConfigs - The style configurations.
-   * @return {Design}
+   * @returns {Design}
    */
   withStyleConfigs(...styleConfigs) {
     this._styleConfigs = styleConfigs;
@@ -384,7 +379,7 @@ export default class Design extends AbstractBuilder {
    * })
    * @see {@link withStyleConfigs}
    * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawStyleConfigs(styleConfigs) {
     this._styleConfigs = new RawValue(styleConfigs);
@@ -396,7 +391,7 @@ export default class Design extends AbstractBuilder {
    *
    * @see {@link withRawHtmlEditorConfigs} to set a raw value
    * @param {...HtmlEditorConfig} htmlEditorConfigs
-   * @return {Design}
+   * @returns {Design}
    */
   withHtmlEditorConfigs(...htmlEditorConfigs) {
     this._htmlEditorConfigs = htmlEditorConfigs;
@@ -414,7 +409,7 @@ export default class Design extends AbstractBuilder {
    * })
    * @see {@link withHtmlEditorConfigs}
    * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawHtmlEditorConfigs(htmlEditorConfigs) {
     this._htmlEditorConfigs = new RawValue(htmlEditorConfigs);
@@ -426,7 +421,7 @@ export default class Design extends AbstractBuilder {
    *
    * @see {@link withRawWebsite} to set a raw value
    * @param {Website} website - The website object.
-   * @return {Design}
+   * @returns {Design}
    * @since BSI CX 1.3
    */
   withWebsite(website) {
@@ -454,7 +449,7 @@ export default class Design extends AbstractBuilder {
    *   }
    * })
    * @param {{}} website - The raw <code>website</code> object.
-   * @return {Design}
+   * @returns {Design}
    * @since BSI CX 1.3
    */
   withRawWebsite(website) {
@@ -467,7 +462,7 @@ export default class Design extends AbstractBuilder {
    *
    * @see {@link withRawNLS} to set a raw value
    * @param {...NLS} nls
-   * @return {Design}
+   * @returns {Design}
    */
   withNLS(...nls) {
     this._nls = nls;
@@ -484,7 +479,7 @@ export default class Design extends AbstractBuilder {
    * })
    * @see {@link withNLS}
    * @param {{}} nls - The raw value.
-   * @return {Design}
+   * @returns {Design}
    */
   withRawNLS(nls) {
     this._nls = new RawValue(nls);
@@ -521,7 +516,7 @@ export default class Design extends AbstractBuilder {
    * let design2 = design1.clone().withName('my second design');
    * design1 === design2 // false
    * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @return {Design}
+   * @returns {Design}
    */
   clone(shallow) {
     return this._clone(new Design(), shallow);

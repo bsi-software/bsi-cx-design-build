@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 715:
+/***/ 398:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -75,14 +75,14 @@ class AbstractConstant {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   getValue() {
     return this.value;
@@ -148,14 +148,14 @@ class Version extends AbstractConstant {
   }
 
   /**
-   * @return {DesignType[]}
+   * @returns {DesignType[]}
    */
   get allowedTypes() {
     return this._allowedTypes;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get legacyFormat() {
     return this._legacyFormat;
@@ -201,7 +201,7 @@ class RawValue {
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   get value() {
     return this._value;
@@ -217,10 +217,10 @@ class RawValue {
  */
 class AbstractBuilder {
   /**
-   * Build the configuration.
+   * Build the configuration. Normally, there is no need to invoke this method manually.
    *
    * @abstract
-   * @return {{}}
+   * @returns {{}}
    */
   build() {
     throw new Error('not implemented');
@@ -279,7 +279,7 @@ class AbstractBuilder {
    * @template T
    * @param {T} newObj
    * @param {boolean|undefined} [shallow=true]
-   * @return {T}
+   * @returns {T}
    * @protected
    */
   _clone(newObj, shallow) {
@@ -297,7 +297,7 @@ class ObjectCloner {
    * @param {T} source
    * @param {T} target
    * @param {boolean} shallow
-   * @return {T}
+   * @returns {T}
    * @private
    */
   _clone(source, target, shallow) {
@@ -311,7 +311,7 @@ class ObjectCloner {
   /**
    * @template T
    * @param {T} value
-   * @return {T}
+   * @returns {T}
    * @private
    */
   _cloneValue(value) {
@@ -343,7 +343,7 @@ class ObjectCloner {
 
   /**
    * @param {[]} arr
-   * @return {[]}
+   * @returns {[]}
    * @private
    */
   _cloneArray(arr) {
@@ -352,7 +352,7 @@ class ObjectCloner {
 
   /**
    * @param {{}} obj
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _cloneObject(obj) {
@@ -368,7 +368,7 @@ class ObjectCloner {
    * @param {T} source
    * @param {T} target
    * @param {boolean|undefined} [shallow=true]
-   * @return {T}
+   * @returns {T}
    */
   static clone(source, target, shallow) {
     let shallowOpt = shallow === undefined ? true : !!shallow;
@@ -378,17 +378,190 @@ class ObjectCloner {
   /**
    * @template T
    * @param {T} value
-   * @return {T}
+   * @returns {T}
    */
   static cloneValue(value) {
     return new ObjectCloner()._cloneValue(value);
   }
 }
 
+;// CONCATENATED MODULE: ./src/build-config/validation-error.js
+class ValidationError extends Error {
+}
+
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+;// CONCATENATED MODULE: ./src/constant.js
+class Constant {
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+};
+
+;// CONCATENATED MODULE: ./src/utility.js
+
+
+
+
+/**
+ *
+ * @param {string} name
+ * @param {string} version
+ * @param {string} [suffix='']
+ */
+function getZipArchiveName(name, version, suffix) {
+  let filename = [name, version, suffix]
+    .filter(value => !!value)
+    .join('-');
+  return `${filename}.zip`;
+}
+
+/**
+ * @param {ValidatedBuildConfig} config
+ * @param {string|undefined} [suffix=undefined]
+ */
+function buildPublicPath(config, suffix) {
+  let path = '/';
+
+  if (suffix) {
+    path += suffix
+      .trim()
+      .replace(/^\//, '');
+  }
+
+  let pathSuffix = suffix ? path : '';
+
+  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+    return '.' + pathSuffix;
+  } else {
+    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+  }
+}
+
+/**
+ * @param {*} obj
+ * @returns {string}
+ */
+function utility_toString(obj) {
+  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
+}
+
+/**
+ * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
+ * @param {string} input
+ * @returns {string}
+ */
+function escapeRegex(input) {
+  let pattern = /[-\/\\^$*+?.()|[\]{}]/g
+  return input.replace(pattern, '\\$&');
+}
+
+/**
+ * @param {string} str
+ * @returns {string}
+ */
+function ucfirst(str) {
+  return str.charAt(0).toUpperCase() + str.substring(1);
+}
+
+/**
+ * @param {string} mayRelativePath
+ * @param {string|undefined} [basePathWhenRelative=undefined]
+ * @returns {string}
+ */
+function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
+  let absolutePath = mayRelativePath;
+
+  if (!external_path_default().isAbsolute(absolutePath)) {
+    let basePath = basePathWhenRelative || process.cwd();
+    absolutePath = external_path_default().resolve(basePath, mayRelativePath);
+  }
+
+  return absolutePath;
+}
+
+/**
+ * @param {string} str1
+ * @param {string} str2
+ */
+function findStringSimilarities(str1, str2) {
+  let length = Math.min(str1.length, str2.length);
+  let similarPart = '';
+
+  for (let index = 0; index < length; index++) {
+    let charToCheck = str1.charAt(index);
+    if (charToCheck === str2.charAt(index)) {
+      similarPart += charToCheck;
+    }
+  }
+
+  return similarPart;
+}
+
+/**
+ * @param {string} possibleWin32Path
+ * @returns {string}
+ */
+function toPosixPath(possibleWin32Path) {
+  return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
+}
+
+;// CONCATENATED MODULE: external "slugify"
+const external_slugify_namespaceObject = require("slugify");
+var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// CONCATENATED MODULE: ./src/build-config/module-config.js
 
 
+/**
+ * @typedef {import('./build-config').default} BuildConfig
+ */
 
+/**
+ * This is the builder class for JavaScript module configurations.
+ * Pass objects of this class to {@link BuildConfig#withModules}.
+ *
+ * @example
+ * .withModules(
+ *   new ModuleConfig()
+ *     .withName('main')
+ *     .withPath('main.js'),
+ *   new ModuleConfig()
+ *     .withName('app')
+ *     .withPath(path.resolve(__dirname,'lib','app.js')))
+ */
 class ModuleConfig {
   /**
    * @type {string|undefined}
@@ -419,14 +592,14 @@ class ModuleConfig {
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get path() {
     return this._path;
@@ -438,7 +611,7 @@ class ModuleConfig {
    * in the Webpack configuration.
    *
    * @param {string} name - The module name.
-   * @return {ModuleConfig}
+   * @returns {ModuleConfig}
    */
   withName(name) {
     this._name = name;
@@ -449,7 +622,7 @@ class ModuleConfig {
    * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
    *
    * @param {string} path - The path to the module.
-   * @return {ModuleConfig}
+   * @returns {ModuleConfig}
    */
   withPath(path) {
     this._path = path;
@@ -457,7 +630,7 @@ class ModuleConfig {
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    */
   build() {
     let config = {};
@@ -467,16 +640,235 @@ class ModuleConfig {
 
   /**
    * @param {boolean|undefined} [shallow=true]
-   * @return {ModuleConfig}
+   * @returns {ModuleConfig}
    */
   clone(shallow) {
     return ObjectCloner.clone(this, new ModuleConfig(), shallow);
   }
 }
 
+;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
+/**
+ * @typedef {import('./build-config-interface').default} BuildConfigInterface
+ */
+
+/**
+ * @implements {BuildConfigInterface}
+ */
+class ValidatedBuildConfig {
+  /**
+   * @type {string}
+   * @private
+   */
+  _name = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _version = undefined;
+  /**
+   * @type {Version}
+   * @private
+   */
+  _targetVersion = undefined;
+  /**
+   * @type {DesignType}
+   * @private
+   */
+  _designType = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _rootPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _outputPath = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _propertiesFilePath = undefined;
+  /**
+   * @type {number}
+   * @private
+   */
+  _devServerPort = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _hashZipFiles = undefined;
+  /**
+   * @type {ModuleConfig[]}
+   * @private
+   */
+  _modules = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _modulesRootPath = undefined;
+  /**
+   * @type {{}[]}
+   * @private
+   */
+  _additionalFilesToCopy = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _sourceMapEnabled = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _staticFileFolderPath = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _copyAssetsFolderPath = undefined;
+  /**
+   * @type {Object[]}
+   * @private
+   */
+  _webpackPlugins = undefined;
+  /**
+   * @type {{}[]}
+   * @private
+   */
+  _webpackRules = undefined;
+
+  /**
+   * @returns {string}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get version() {
+    return this._version;
+  }
+
+  /**
+   * @returns {Version}
+   */
+  get targetVersion() {
+    return this._targetVersion;
+  }
+
+  /**
+   * @returns {DesignType}
+   */
+  get designType() {
+    return this._designType;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get rootPath() {
+    return this._rootPath;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get outputPath() {
+    return this._outputPath;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get propertiesFilePath() {
+    return this._propertiesFilePath;
+  }
+
+  /**
+   * @returns {number}
+   */
+  get devServerPort() {
+    return this._devServerPort;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get hashZipFiles() {
+    return this._hashZipFiles;
+  }
+
+  /**
+   * @returns {ModuleConfig[]}
+   */
+  get modules() {
+    return this._modules;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get modulesRootPath() {
+    return this._modulesRootPath;
+  }
+
+  /**
+   * @returns {{}[]}
+   */
+  get additionalFilesToCopy() {
+    return this._additionalFilesToCopy;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get sourceMapEnabled() {
+    return this._sourceMapEnabled;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get staticFileFolderPath() {
+    return this._staticFileFolderPath;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get copyAssetsFolderPath() {
+    return this._copyAssetsFolderPath;
+  }
+
+  /**
+   * @returns {Object[]}
+   */
+  get webpackPlugins() {
+    return this._webpackPlugins;
+  }
+
+  /**
+   * @returns {{}[]}
+   */
+  get webpackRules() {
+    return this._webpackRules;
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
 
 
+
+/**
+ * @typedef {import('./build-config-interface').default} BuildConfigInterface
+ */
 
 /**
  * @implements {BuildConfigInterface}
@@ -551,377 +943,6 @@ class DefaultBuildConfig {
   }
 }
 
-;// CONCATENATED MODULE: ./src/build-config/validation-error.js
-class ValidationError extends Error {
-}
-
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
-;// CONCATENATED MODULE: ./src/constant.js
-class Constant {
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
-};
-
-;// CONCATENATED MODULE: ./src/utility.js
-
-
-
-
-
-/**
- *
- * @param {string} name
- * @param {string} version
- * @param {string} [suffix='']
- */
-function getZipArchiveName(name, version, suffix) {
-  let filename = [name, version, suffix]
-    .filter(value => !!value)
-    .join('-');
-  return `${filename}.zip`;
-}
-
-/**
- * @param {ValidatedBuildConfig} config
- * @param {string|undefined} [suffix=undefined]
- */
-function buildPublicPath(config, suffix) {
-  let path = '/';
-
-  if (suffix) {
-    path += suffix
-      .trim()
-      .replace(/^\//, '');
-  }
-
-  let pathSuffix = suffix ? path : '';
-
-  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
-    return '.' + pathSuffix;
-  } else {
-    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
-  }
-}
-
-/**
- * @param {*} obj
- * @return {string}
- */
-function utility_toString(obj) {
-  return typeof obj === 'string' || obj instanceof String ? obj : obj.toString();
-}
-
-/**
- * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
- * @param {string} input
- * @return {string}
- */
-function escapeRegex(input) {
-  let pattern = /[-\/\\^$*+?.()|[\]{}]/g
-  return input.replace(pattern, '\\$&');
-}
-
-/**
- * @param {string} str
- * @return {string}
- */
-function ucfirst(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1);
-}
-
-/**
- * @param {string} mayRelativePath
- * @param {string|undefined} [basePathWhenRelative=undefined]
- * @return {string}
- */
-function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
-  let absolutePath = mayRelativePath;
-
-  if (!external_path_default().isAbsolute(absolutePath)) {
-    let basePath = basePathWhenRelative || process.cwd();
-    absolutePath = external_path_default().resolve(basePath, mayRelativePath);
-  }
-
-  return absolutePath;
-}
-
-/**
- * @param {string} str1
- * @param {string} str2
- */
-function findStringSimilarities(str1, str2) {
-  let length = Math.min(str1.length, str2.length);
-  let similarPart = '';
-
-  for (let index = 0; index < length; index++) {
-    let charToCheck = str1.charAt(index);
-    if (charToCheck === str2.charAt(index)) {
-      similarPart += charToCheck;
-    }
-  }
-
-  return similarPart;
-}
-
-/**
- * @param {string} possibleWin32Path
- * @return {string}
- */
-function toPosixPath(possibleWin32Path) {
-  return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
-}
-
-;// CONCATENATED MODULE: external "slugify"
-const external_slugify_namespaceObject = require("slugify");
-var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
-;// CONCATENATED MODULE: external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
-
-
-/**
- * @implements {BuildConfigInterface}
- */
-class ValidatedBuildConfig {
-  /**
-   * @type {string}
-   * @private
-   */
-  _name = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _version = undefined;
-  /**
-   * @type {Version}
-   * @private
-   */
-  _targetVersion = undefined;
-  /**
-   * @type {DesignType}
-   * @private
-   */
-  _designType = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _rootPath = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _outputPath = undefined;
-  /**
-   * @type {string|undefined}
-   * @private
-   */
-  _propertiesFilePath = undefined;
-  /**
-   * @type {number}
-   * @private
-   */
-  _devServerPort = undefined;
-  /**
-   * @type {boolean}
-   * @private
-   */
-  _hashZipFiles = undefined;
-  /**
-   * @type {ModuleConfig[]}
-   * @private
-   */
-  _modules = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _modulesRootPath = undefined;
-  /**
-   * @type {[{}]}
-   * @private
-   */
-  _additionalFilesToCopy = undefined;
-  /**
-   * @type {boolean}
-   * @private
-   */
-  _sourceMapEnabled = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _staticFileFolderPath = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-  _copyAssetsFolderPath = undefined;
-  /**
-   * @type {Object[]}
-   * @private
-   */
-  _webpackPlugins = undefined;
-  /**
-   * @type {{}[]}
-   * @private
-   */
-  _webpackRules = undefined;
-
-  /**
-   * @return {string}
-   */
-  get name() {
-    return this._name;
-  }
-
-  /**
-   * @return {string}
-   */
-  get version() {
-    return this._version;
-  }
-
-  /**
-   * @return {Version}
-   */
-  get targetVersion() {
-    return this._targetVersion;
-  }
-
-  /**
-   * @return {DesignType}
-   */
-  get designType() {
-    return this._designType;
-  }
-
-  /**
-   * @return {string}
-   */
-  get rootPath() {
-    return this._rootPath;
-  }
-
-  /**
-   * @return {string}
-   */
-  get outputPath() {
-    return this._outputPath;
-  }
-
-  /**
-   * @return {string|undefined}
-   */
-  get propertiesFilePath() {
-    return this._propertiesFilePath;
-  }
-
-  /**
-   * @return {number}
-   */
-  get devServerPort() {
-    return this._devServerPort;
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get hashZipFiles() {
-    return this._hashZipFiles;
-  }
-
-  /**
-   * @return {ModuleConfig[]}
-   */
-  get modules() {
-    return this._modules;
-  }
-
-  /**
-   * @return {string}
-   */
-  get modulesRootPath() {
-    return this._modulesRootPath;
-  }
-
-  /**
-   * @return {[{}]}
-   */
-  get additionalFilesToCopy() {
-    return this._additionalFilesToCopy;
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get sourceMapEnabled() {
-    return this._sourceMapEnabled;
-  }
-
-  /**
-   * @return {string}
-   */
-  get staticFileFolderPath() {
-    return this._staticFileFolderPath;
-  }
-
-  /**
-   * @return {string}
-   */
-  get copyAssetsFolderPath() {
-    return this._copyAssetsFolderPath;
-  }
-
-  /**
-   * @return {Object[]}
-   */
-  get webpackPlugins() {
-    return this._webpackPlugins;
-  }
-
-  /**
-   * @return {{}[]}
-   */
-  get webpackRules() {
-    return this._webpackRules;
-  }
-}
-
 ;// CONCATENATED MODULE: ./src/build-config/build-config-validator.js
 
 
@@ -935,6 +956,9 @@ class ValidatedBuildConfig {
 
 
 
+/**
+ * @typedef {import('./build-config').default} BuildConfig
+ */
 
 class BuildConfigValidator {
   /**
@@ -975,21 +999,21 @@ class BuildConfigValidator {
   }
 
   /**
-   * @return {DefaultBuildConfig}
+   * @returns {DefaultBuildConfig}
    */
   get defaultBuildConfig() {
     return this._defaultBuildConfig;
   }
 
   /**
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   get buildConfig() {
     return this._buildConfig;
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get validatedConfig() {
     return this._validatedConfig;
@@ -1053,7 +1077,7 @@ class BuildConfigValidator {
   /**
    * @param {string} name
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateName(name, property) {
@@ -1069,7 +1093,7 @@ class BuildConfigValidator {
   /**
    * @param {string} version
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateVersion(version, property) {
@@ -1085,7 +1109,7 @@ class BuildConfigValidator {
   /**
    * @param {string} rootPath
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateRootPath(rootPath, property) {
@@ -1224,7 +1248,7 @@ class BuildConfigValidator {
    * @param {string|undefined} originalPath
    * @param {string} configuredPath
    * @param {string} property
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _validateRelativeOrAbsoluteFolderPath(originalPath, configuredPath, property) {
@@ -1247,7 +1271,7 @@ class BuildConfigValidator {
 
   /**
    * @param {BuildConfig} buildConfig
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   static validate(buildConfig) {
     let validator = new BuildConfigValidator(buildConfig);
@@ -1264,9 +1288,12 @@ class BuildConfigValidator {
 
 
 
-
-
-
+/**
+ * @typedef {import('./module-config').default} ModuleConfig
+ * @typedef {import('./default-build-config').default} DefaultBuildConfig
+ * @typedef {import('./build-config-interface').default} BuildConfigInterface
+ * @typedef {import('./validated-build-config').default} ValidatedBuildConfig
+ */
 
 /**
  * The configuration object for the build of one template.
@@ -1361,119 +1388,119 @@ class BuildConfig {
   _webpackPlugins = [];
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get version() {
     return this._version;
   }
 
   /**
-   * @return {Version}
+   * @returns {Version}
    */
   get targetVersion() {
     return this._targetVersion;
   }
 
   /**
-   * @return {DesignType}
+   * @returns {DesignType}
    */
   get designType() {
     return this._designType;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rootPath() {
     return this._rootPath;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get devServerPort() {
     return this._devServerPort;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get hashZipFiles() {
     return this._hashZipFiles;
   }
 
   /**
-   * @return {ModuleConfig[]}
+   * @returns {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get modulesRootPath() {
     return this._modulesRootPath;
   }
 
   /**
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get staticFileFolderPath() {
     return this._staticFileFolderPath;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
   }
 
   /**
-   * @return {{}[]}
+   * @returns {{}[]}
    */
   get webpackRules() {
     return this._webpackRules;
   }
 
   /**
-   * @return {Object[]}
+   * @returns {Object[]}
    */
   get webpackPlugins() {
     return this._webpackPlugins;
@@ -1484,7 +1511,7 @@ class BuildConfig {
    * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
    *
    * @param {string} name - The name of your template.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withName(name) {
     this._name = name;
@@ -1496,7 +1523,7 @@ class BuildConfig {
    *
    * @see {@link https://semver.org/spec/v2.0.0.html}
    * @param {string} version - The version for this template. It is recommended to use a semantic version string.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withVersion(version) {
     this._version = version;
@@ -1508,7 +1535,7 @@ class BuildConfig {
    *
    * @see {@link Version} for available versions
    * @param {Version} version - The BSI CX version. Default will be {@link CX_22_0}
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withTargetVersion(version) {
     this._targetVersion = version;
@@ -1520,7 +1547,7 @@ class BuildConfig {
    *
    * @see {@link DesignType} for available types
    * @param {DesignType} type - The design type to use. Default will be {@link LANDINGPAGE}
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withDesignType(type) {
     this._designType = type;
@@ -1532,7 +1559,7 @@ class BuildConfig {
    * An absolute path is recommended. If the path is relative, it will be resolved in relation to the current working directory.
    *
    * @param {string} rootPath - The path to your template root. An absolute path is recommended.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withRootPath(rootPath) {
     this._rootPath = rootPath;
@@ -1547,7 +1574,7 @@ class BuildConfig {
    *
    * @see {@link https://git-scm.com/docs/gitignore}
    * @param {string} outputPath - The path to your output folder. An absolute path is recommended.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withOutputPath(outputPath) {
     this._outputPath = outputPath;
@@ -1560,7 +1587,7 @@ class BuildConfig {
    * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
    *
    * @param {string} propertiesFilePath - The path to your properties file.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withPropertiesFilePath(propertiesFilePath) {
     this._propertiesFilePath = propertiesFilePath;
@@ -1573,7 +1600,7 @@ class BuildConfig {
    * Only the first configuration will be considered.
    *
    * @param {number} devServerPort - The development server port number.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
     this._devServerPort = devServerPort;
@@ -1584,7 +1611,7 @@ class BuildConfig {
    * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
    *
    * @param {boolean} hashZipFiles - Enable or disable this feature. Default is <code>true</code>.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withHashZipFiles(hashZipFiles) {
     this._hashZipFiles = !!hashZipFiles;
@@ -1597,7 +1624,7 @@ class BuildConfig {
    * Use {@link withModulesRootPath} to set a custom modules root path.
    *
    * @param {...ModuleConfig} modules - Pass objects of the {@link BuildConfig} class.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withModules(...modules) {
     this._modules = modules;
@@ -1609,7 +1636,7 @@ class BuildConfig {
    * Relative paths will be resolved in relation to your {@link withRootPath|template root} configuration.
    *
    * @param {string} modulesRootPath - The path to your modules root folder.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withModulesRootPath(modulesRootPath) {
     this._modulesRootPath = modulesRootPath;
@@ -1624,7 +1651,7 @@ class BuildConfig {
    *
    * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
    * @param {...{}} additionalFilesToCopy - Pattern configuration object.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withAdditionalFilesToCopy(...additionalFilesToCopy) {
     this._additionalFilesToCopy = additionalFilesToCopy;
@@ -1638,7 +1665,7 @@ class BuildConfig {
    * should not be used in production environments. Enabling source maps will also have a slight performance impact.
    *
    * @param {boolean} sourceMapEnabled - Enable or disable the feature. Enabled by default.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withSourceMapEnabled(sourceMapEnabled) {
     this._sourceMapEnabled = sourceMapEnabled;
@@ -1651,7 +1678,7 @@ class BuildConfig {
    * Use {@link withRootPath} to set the template root folder.
    *
    * @param {string} staticFileFolderPath - The path to the static assets folder.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withStaticFileFolderPath(staticFileFolderPath) {
     this._staticFileFolderPath = staticFileFolderPath;
@@ -1665,7 +1692,7 @@ class BuildConfig {
    * Use {@link withRootPath} to set the template root folder.
    *
    * @param {string} copyAssetsFolderPath - The path to the copy assets folder.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withCopyAssetsFolderPath(copyAssetsFolderPath) {
     this._copyAssetsFolderPath = copyAssetsFolderPath;
@@ -1677,7 +1704,7 @@ class BuildConfig {
    *
    * @see {@link https://webpack.js.org/configuration/module/#rule}
    * @param {...{}} rules - Webpack rules objects.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withWebpackRules(...rules) {
     this._webpackRules = rules;
@@ -1689,7 +1716,7 @@ class BuildConfig {
    *
    * @see {@link https://webpack.js.org/configuration/plugins/}
    * @param {...Object} plugins - Instances of Webpack plugins.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withWebpackPlugins(...plugins) {
     this._webpackPlugins = plugins;
@@ -1701,7 +1728,7 @@ class BuildConfig {
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   clone(shallow) {
     return ObjectCloner.clone(this, new BuildConfig(), shallow);
@@ -1711,7 +1738,7 @@ class BuildConfig {
    * Validate the build configuration. <strong>There is no need to call this method.</strong>
    * The {@link WebpackConfigBuilder.fromConfigs|WebpackConfigBuilder} will do this for you.
    *
-   * @return {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
+   * @returns {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
    */
   validate() {
     return BuildConfigValidator.validate(this);
@@ -1909,7 +1936,7 @@ class DesignJsonProperty {
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
-   * @return {*}
+   * @returns {*}
    * @private
    */
   _normalize(obj) {
@@ -1939,7 +1966,7 @@ class BuilderObjectNormalizer {
 
   /**
    * @param {[*]} arr
-   * @return {[*]}
+   * @returns {[*]}
    * @private
    */
   _normalizeArray(arr) {
@@ -1948,7 +1975,7 @@ class BuilderObjectNormalizer {
 
   /**
    * @param {{}} obj
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _normalizeObject(obj) {
@@ -1967,7 +1994,7 @@ class BuilderObjectNormalizer {
    * Such values cannot be checked with instanceof.
    *
    * @param {*} obj
-   * @return {*}
+   * @returns {*}
    */
   static normalize(obj) {
     return new BuilderObjectNormalizer()._normalize(obj);
@@ -2003,7 +2030,6 @@ class File {
 }
 
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
-
 
 
 
@@ -2195,7 +2221,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{content:string,path:string}} fileObj
    * @param {string} baseFolder
-   * @return {string}
+   * @returns {string}
    */
   _handleTemplateFile(fileObj, baseFolder) {
     let rawContent = fileObj.content;
@@ -2230,7 +2256,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} fileName
-   * @return {string}
+   * @returns {string}
    */
   _getTemplateFileExtension(fileName) {
     if (/\.hbs\.twig$/.test(fileName)) {
@@ -2244,7 +2270,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx
-   * @return {string[]}
+   * @returns {string[]}
    */
   _getAssetNames(nameRegEx) {
     /**
@@ -2256,7 +2282,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {RegExp} nameRegEx
-   * @return {string}
+   * @returns {string}
    */
   _getAssetName(nameRegEx) {
     return this._getAssetNames(nameRegEx).shift();
@@ -2281,7 +2307,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} scope
    * @param {...string} assetNames
-   * @return {*}
+   * @returns {*}
    */
   _loadAssets(scope, ...assetNames) {
     let context = {
@@ -2324,7 +2350,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} filePath
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   _updateHtmlTemplate(filePath, name) {
     let templateObj = this._loadAssets(name, filePath);
@@ -2341,7 +2367,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @return {string}
+   * @returns {string}
    */
   _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
@@ -2367,7 +2393,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @return {string}
+   * @returns {string}
    */
   _handleJavaScriptModules(content) {
     let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
@@ -2406,7 +2432,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} content
    * @param {RegExpMatchArray} match
    * @param {string[]} importedModules
-   * @return {string}
+   * @returns {string}
    */
   _handleFoundJavaScriptModule(content, match, importedModules) {
     /**
@@ -2428,7 +2454,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
    * @param {string[]} importedModules
-   * @return {string}
+   * @returns {string}
    */
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
@@ -2462,7 +2488,7 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{template:string,module:string,chunks:boolean|undefined,attributes:{}|undefined,inline:boolean}} metaInfo
    * @param {string[]} importedModules
-   * @return {string}
+   * @returns {string}
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
@@ -2490,7 +2516,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} message
    * @param {string} details
    * @param {string|undefined} [location=undefined]
-   * @return {WebpackError}
+   * @returns {WebpackError}
    */
   _webpackError(message, details, location) {
     let error = new lib_namespaceObject.WebpackError(message);
@@ -2511,7 +2537,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} content
-   * @return {string}
+   * @returns {string}
    */
   _createContentHash(content) {
     return (0,external_crypto_namespaceObject.createHash)('sha256')
@@ -2521,14 +2547,14 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @return {Handlebars}
+   * @returns {Handlebars}
    */
   _getHandlebarsParser() {
     return external_handlebars_default().create();
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    */
   _getHandlebarsHelpers() {
     let helpersObj = {};
@@ -2541,7 +2567,7 @@ class _BsiCxWebpackPlugin {
 
   /**
    * @param {string} url
-   * @return {string}
+   * @returns {string}
    */
   _removeDesignBaseUrl(url) {
     return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
@@ -2595,7 +2621,7 @@ class JavaPropertyFileBuilder {
   /**
    * @param {string} key
    * @param {string} value
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   append(key, value) {
     this._properties.push([key, value]);
@@ -2604,7 +2630,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} comment
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   appendComment(comment) {
     this._properties.push(comment);
@@ -2613,7 +2639,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} section
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   appendCommentSection(section) {
     let border = '#'.repeat(section.length + 4);
@@ -2627,7 +2653,7 @@ class JavaPropertyFileBuilder {
   }
 
   /**
-   * @return {JavaPropertyFileBuilder}
+   * @returns {JavaPropertyFileBuilder}
    */
   appendBlank() {
     this._properties.push('');
@@ -2635,7 +2661,7 @@ class JavaPropertyFileBuilder {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   build() {
     return this._properties
@@ -2645,7 +2671,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} line
-   * @return {string}
+   * @returns {string}
    */
   _printLine(line) {
     if (line instanceof Array) {
@@ -2658,7 +2684,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} key
-   * @return {string}
+   * @returns {string}
    */
   _escapeKey(key) {
     return key;
@@ -2666,7 +2692,7 @@ class JavaPropertyFileBuilder {
 
   /**
    * @param {string} value
-   * @return {string}
+   * @returns {string}
    */
   _escapeValue(value) {
     return value;
@@ -2674,12 +2700,9 @@ class JavaPropertyFileBuilder {
 }
 
 ;// CONCATENATED MODULE: ./src/browser-utility.js
-
-
-
 /**
  * @param {[string|number]} arr
- * @return {string}
+ * @returns {string}
  */
 function scalarArrayToList(arr) {
   return arr.join(',');
@@ -2688,7 +2711,7 @@ function scalarArrayToList(arr) {
 /**
  * @template T
  * @param {T} v
- * @return {T}
+ * @returns {T}
  */
 function identity(v) {
   return v;
@@ -2696,7 +2719,7 @@ function identity(v) {
 
 /**
  * @param {AbstractConstant} constant
- * @return {string}
+ * @returns {string}
  */
 function constantObjectValue(constant) {
   return constant.value;
@@ -2704,7 +2727,7 @@ function constantObjectValue(constant) {
 
 /**
  * @param {AbstractBuilder} builder
- * @return {{}}
+ * @returns {{}}
  */
 function builderObjectValue(builder) {
   return builder.build();
@@ -2715,7 +2738,7 @@ function builderObjectValue(builder) {
  * (won't work in the browser context).
  *
  * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
- * @return {string}
+ * @returns {string}
  */
 function uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -2832,7 +2855,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} group
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementGroupLabel(group) {
     return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
@@ -2840,7 +2863,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementLabel(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._LABEL;
@@ -2848,7 +2871,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementDescription(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._DESCRIPTION;
@@ -2856,7 +2879,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementIcon(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._ICON;
@@ -2864,7 +2887,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementStyles(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._STYLES;
@@ -2874,7 +2897,7 @@ class LegacyDesignProperty {
    * @param {string} element
    * @param {string} part
    * @param {number} index
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementPartLabel(element, part, index) {
     return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._LABEL;
@@ -2884,7 +2907,7 @@ class LegacyDesignProperty {
    * @param {string} element
    * @param {string} part
    * @param {number} index
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementPartHtmlEditorConfig(element, part, index) {
     return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._HTML_EDITOR_CONFIG;
@@ -2894,7 +2917,7 @@ class LegacyDesignProperty {
    * @param {string} element
    * @param {string} part
    * @param {number} index
-   * @return {string}
+   * @returns {string}
    */
   static _getContentElementPart(element, part, index) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._PARTS + '.' + part + '[' + index + ']';
@@ -2902,7 +2925,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getStyleLabel(name) {
     return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._LABEL;
@@ -2911,7 +2934,7 @@ class LegacyDesignProperty {
   /**
    * @param {string} name
    * @param {string} cssClass
-   * @return {string}
+   * @returns {string}
    */
   static getStyleClassLabel(name, cssClass) {
     return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._CLASS + '.' + cssClass + '.' + LegacyDesignProperty._LABEL
@@ -2919,7 +2942,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFeatures(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FEATURES;
@@ -2927,7 +2950,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigTextColors(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._TEXT_COLORS;
@@ -2935,7 +2958,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigBackgroundColors(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._BACKGROUND_COLORS;
@@ -2943,7 +2966,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFormats(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FORMATS;
@@ -2951,7 +2974,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFontSizes(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZES;
@@ -2959,7 +2982,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFontSizeUnit(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_UNIT;
@@ -2967,7 +2990,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFontSizeDefault(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_DEFAULT;
@@ -2975,7 +2998,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigLineHeights(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._LINE_HEIGHTS;
@@ -2983,7 +3006,7 @@ class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigEnter(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._ENTER;
@@ -2991,7 +3014,6 @@ class LegacyDesignProperty {
 }
 
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
-
 
 
 
@@ -3076,7 +3098,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _getDesignJsonObject() {
@@ -3099,7 +3121,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} designJson
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
@@ -3115,7 +3137,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} group
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _renderContentElementsGroup(group) {
@@ -3130,7 +3152,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} element
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _renderContentElement(element) {
@@ -3603,14 +3625,14 @@ class ModuleLoader {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get modulePath() {
     return this._modulePath;
   }
 
   /**
-   * @return {Set<string>}
+   * @returns {Set<string>}
    */
   get dependencies() {
     return this._dependencies;
@@ -3618,7 +3640,7 @@ class ModuleLoader {
 
   /**
    *
-   * @return {Module}
+   * @returns {Module}
    */
   load() {
     let moduleRequire = external_module_default().createRequire(this.modulePath);
@@ -3710,14 +3732,14 @@ class TwigContext {
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @return {ModuleLoader}
+   * @returns {ModuleLoader}
    */
   get propertiesModule() {
     return this._propertiesModule;
@@ -3726,7 +3748,7 @@ class TwigContext {
   /**
    * Get the original properties object without the proxy.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   get properties() {
     return this._properties;
@@ -3735,14 +3757,14 @@ class TwigContext {
   /**
    * Get the properties object, guarded by a proxy.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   get propertiesProxy() {
     return this._propertiesProxy;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get propertiesReloadRequired() {
     return this._propertiesReloadRequired;
@@ -3753,14 +3775,14 @@ class TwigContext {
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   hasPropertiesFilePath() {
     return !!this._propertiesFilePath;
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _getPropertiesProxy() {
@@ -3770,7 +3792,7 @@ class TwigContext {
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _getProxyHandler() {
@@ -3785,7 +3807,7 @@ class TwigContext {
   /**
    * @param {{}} target
    * @param {string} property
-   * @return {*}
+   * @returns {*}
    * @private
    */
   _get(target, property) {
@@ -3845,44 +3867,102 @@ class BsiCxTwigContextWebpackPlugin {
   }
 }
 
-;// CONCATENATED MODULE: external "less/lib/less/tree/node"
-const node_namespaceObject = require("less/lib/less/tree/node");
-;// CONCATENATED MODULE: ./src/css/abstract-css-property.js
-
-
-class AbstractCssProperty {
+;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
+/**
+ * @abstract
+ */
+class AbstractPropertyPlugin {
   /**
-   * @return {Node}
-   * @abstract
+   * @type {CssPropertyResolver}
+   * @protected
    */
-  getLessNode() {
-    throw new Error('not implemented');
+  _propertyResolver = undefined;
+  /**
+   * @type {{}}
+   * @protected
+   */
+  _properties = undefined;
+
+  /**
+   * @param {BuildContext} context
+   */
+  constructor(context) {
+    /**
+     * @type {{}}
+     * @private
+     */
+    this._properties = context.properties.propertiesProxy;
+    /**
+     * @type {CssPropertyResolver}
+     * @private
+     */
+    this._propertyResolver = context.cssPropertyResolver;
   }
 
   /**
-   * @return {*}
-   * @abstract
+   * @param {*} property
+   * @returns {*}
    */
-  getSassObject() {
-    throw new Error('not implemented');
+  getProperty(property) {
+    let segments = property.split('.');
+    let scope = this._properties;
+
+    for (let segment of segments) {
+      scope = scope[segment];
+      if (typeof scope === 'undefined') {
+        throw new Error(`Property ${property} not found.`);
+      }
+    }
+
+    return this._propertyResolver.resolve(scope);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+
+
+class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+  /**
+   * @returns {number[]}
+   */
+  get minVersion() {
+    return [3, 0, 0];
   }
 
   /**
-   * Will be used in Twig files.
-   *
-   * @return {string}
-   * @abstract
+   * @param {*} propertyNode
+   * @returns {*}
    */
-  toString() {
-    throw new Error('not implemented');
+  getProperty(propertyNode) {
+    if (!propertyNode) {
+      throw new Error('Property argument is required.');
+    }
+
+    if (typeof propertyNode.value === 'undefined') {
+      throw new Error('Property must be instanceof Node and have a value attribute.');
+    }
+
+    if (typeof propertyNode.value !== 'string') {
+      throw new Error('Property must be a string.');
+    }
+
+    /**
+     * @type {string}
+     */
+    let property = propertyNode.value;
+
+    let value = super.getProperty(property);
+
+    return value.getLessNode();
   }
 
   /**
-   * @param {string|number} value
-   * @return {function(string|number):AbstractCssProperty|undefined}
+   * @param lessInstance
+   * @param pluginManager
+   * @param functions
    */
-  static getParser(value) {
-    throw new Error('not implemented');
+  install(lessInstance, pluginManager, functions) {
+    functions.add('bsiProperty', (property) => this.getProperty(property));
   }
 }
 
@@ -3895,8 +3975,44 @@ var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
 ;// CONCATENATED MODULE: external "less/lib/less/data/colors"
 const colors_namespaceObject = require("less/lib/less/data/colors");
 var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
-;// CONCATENATED MODULE: ./src/css/css-color.js
+;// CONCATENATED MODULE: ./src/css/abstract-css-property.js
+class AbstractCssProperty {
+  /**
+   * @returns {*}
+   * @abstract
+   */
+  getLessNode() {
+    throw new Error('not implemented');
+  }
 
+  /**
+   * @returns {*}
+   * @abstract
+   */
+  getSassObject() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * Will be used in Twig files.
+   *
+   * @returns {string}
+   * @abstract
+   */
+  toString() {
+    throw new Error('not implemented');
+  }
+
+  /**
+   * @param {*} value
+   * @returns {function(*):AbstractCssProperty|undefined}
+   */
+  static getParser(value) {
+    throw new Error('not implemented');
+  }
+}
+
+;// CONCATENATED MODULE: ./src/css/css-color.js
 
 
 
@@ -3970,68 +4086,70 @@ class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get red() {
     return this._red;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get green() {
     return this._green;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get blue() {
     return this._blue;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get alpha() {
     return this._alpha;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get hex() {
     return this._toHex();
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rgb() {
     return this._toRgb();
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rgba() {
     return this._toRgba();
   }
 
   /**
-   * @return {Node}
+   * @returns {Color}
    */
   getLessNode() {
     let rgb = [this.red, this.green, this.blue];
     let alpha = this.alpha / 255;
 
+    // noinspection JSValidateTypes
     return new (color_default())(rgb, alpha);
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
+    // noinspection JSUnresolvedVariable
     return new (external_sass_default()).types.Color(this.red, this.green, this.blue, this.alpha);
   }
 
@@ -4041,7 +4159,7 @@ class CssColor extends AbstractCssProperty {
 
   /**
    * @param {number} color
-   * @return {number}
+   * @returns {number}
    * @private
    */
   _assertColor(color) {
@@ -4054,7 +4172,7 @@ class CssColor extends AbstractCssProperty {
 
   /**
    * @param {number|undefined} [color=undefined]
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _toHex(color) {
@@ -4076,7 +4194,7 @@ class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _toRgb() {
@@ -4084,7 +4202,7 @@ class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _toRgba() {
@@ -4093,7 +4211,7 @@ class CssColor extends AbstractCssProperty {
 
   /**
    * @param {string} hex
-   * @return {CssColor}
+   * @returns {CssColor}
    */
   static fromHex(hex) {
     let color = hex.replace(/^#/, '');
@@ -4124,7 +4242,7 @@ class CssColor extends AbstractCssProperty {
 
   /**
    * @param {string} str
-   * @return {CssColor}
+   * @returns {CssColor}
    */
   static fromRGBString(str) {
     let match = CssColor.RGBA.exec(str);
@@ -4137,7 +4255,7 @@ class CssColor extends AbstractCssProperty {
 
   /**
    * @param {string} color
-   * @return {CssColor}
+   * @returns {CssColor}
    */
   static fromKeyword(color) {
     if (CssColor.COLORS.hasOwnProperty(color)) {
@@ -4148,8 +4266,8 @@ class CssColor extends AbstractCssProperty {
   }
 
   /**
-   * @param {string|number} value
-   * @return {function(string|number):CssColor|undefined}
+   * @param {*} value
+   * @returns {function(*):CssColor|undefined}
    */
   static getParser(value) {
     switch (true) {
@@ -4169,7 +4287,6 @@ class CssColor extends AbstractCssProperty {
 const dimension_namespaceObject = require("less/lib/less/tree/dimension");
 var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceObject);
 ;// CONCATENATED MODULE: ./src/css/css-dimension.js
-
 
 
 
@@ -4211,30 +4328,32 @@ class CssDimension extends AbstractCssProperty {
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get unit() {
     return this._unit;
   }
 
   /**
-   * @return {Node}
+   * @returns {*}
    */
   getLessNode() {
+    // noinspection JSValidateTypes
     return new (dimension_default())(this.value, this.unit);
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
+    // noinspection JSUnresolvedVariable
     return new (external_sass_default()).types.Number(this.value, this.unit);
   }
 
@@ -4252,15 +4371,15 @@ class CssDimension extends AbstractCssProperty {
 
   /**
    * @param {number} num
-   * @return {CssDimension}
+   * @returns {CssDimension}
    */
   static fromNumber(num) {
     return new CssDimension(num);
   }
 
   /**
-   * @param {string|number} value
-   * @return {function(string|number):CssDimension|undefined}
+   * @param {*} value
+   * @returns {function(*):CssDimension|undefined}
    */
   static getParser(value) {
     switch (true) {
@@ -4299,28 +4418,28 @@ class CssRaw extends AbstractCssProperty {
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getLessNode() {
     return this.value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
     return new (external_sass_default()).types.String(this.value);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   toString() {
     return `${this.value}`;
@@ -4328,7 +4447,7 @@ class CssRaw extends AbstractCssProperty {
 
   /**
    * @param {*} value
-   * @return {CssRaw}
+   * @returns {CssRaw}
    */
   static fromAny(value) {
     return new CssRaw(value);
@@ -4336,7 +4455,7 @@ class CssRaw extends AbstractCssProperty {
 
   /**
    * @param {*} value
-   * @return {function(*): CssRaw}
+   * @returns {function(*): CssRaw}
    */
   static getParser(value) {
     return CssRaw.fromAny;
@@ -4388,119 +4507,119 @@ class CssUrl extends AbstractCssProperty {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rawUrl() {
     return this._url;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalUrl() {
     return this.rawUrl;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineUrl() {
     return this._getInlineUrl();
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get url() {
     return this.inline ? this.inlineUrl : this.rawUrl;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get ref() {
     return this._getRef(this.url);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineRef() {
     return this._getRef(this.inlineUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalRef() {
     return this._getRef(this.rawUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get css() {
     return this._getCss(this.url);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineCss() {
     return this._getCss(this.inlineUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineRefCss() {
     return this._getCss(this.inlineRef);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalCss() {
     return this._getCss(this.rawUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalRefCss() {
     return this._getCss(this.externalRef);
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get inline() {
     return this._inline;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getLessNode() {
     return this.css;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
     return new (external_sass_default()).types.String(this.css);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   toString() {
     return `url(${this.ref})`;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getInlineUrl() {
@@ -4509,7 +4628,7 @@ class CssUrl extends AbstractCssProperty {
 
   /**
    * @param {string} url
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getRef(url) {
@@ -4518,7 +4637,7 @@ class CssUrl extends AbstractCssProperty {
 
   /**
    * @param {string} url
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getCss(url) {
@@ -4527,7 +4646,7 @@ class CssUrl extends AbstractCssProperty {
 
   /**
    * @param {string|number} value
-   * @return {undefined}
+   * @returns {undefined}
    */
   static getParser(value) {
     return undefined;
@@ -4559,28 +4678,28 @@ class CssBool extends AbstractCssProperty {
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getLessNode() {
     return this.value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
     return !!this.value ? (external_sass_default()).types.Boolean.TRUE : (external_sass_default()).types.Boolean.FALSE;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   toString() {
     return JSON.stringify(this.value);
@@ -4588,15 +4707,15 @@ class CssBool extends AbstractCssProperty {
 
   /**
    * @param {boolean} value
-   * @return {CssBool}
+   * @returns {CssBool}
    */
   static fromBoolean(value) {
     return new CssBool(!!value);
   }
 
   /**
-   * @param {string|number|boolean} value
-   * @return {(function(boolean): CssBool)|undefined}
+   * @param {*} value
+   * @returns {(function(*): CssBool)|undefined}
    */
   static getParser(value) {
     switch (true) {
@@ -4609,7 +4728,6 @@ class CssBool extends AbstractCssProperty {
 }
 
 ;// CONCATENATED MODULE: ./src/css/css-property-resolver.js
-
 
 
 
@@ -4630,7 +4748,7 @@ class CssPropertyResolver {
   /**
    * @template T
    * @param {T} value
-   * @return {AbstractCssProperty|T}
+   * @returns {AbstractCssProperty|T}
    */
   resolve(value) {
     if (typeof value.getLessNode === 'function') {
@@ -4650,7 +4768,7 @@ class CssPropertyResolver {
 
   /**
    * @param {string|number} value
-   * @return {AbstractCssProperty}
+   * @returns {AbstractCssProperty}
    * @private
    */
   _createProperty(value) {
@@ -4680,7 +4798,6 @@ class CssPropertyResolver {
 }
 
 ;// CONCATENATED MODULE: ./src/build-context.js
-
 
 
 
@@ -4718,140 +4835,34 @@ class BuildContext {
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get config() {
     return this._config;
   }
 
   /**
-   * @return {TwigContext}
+   * @returns {TwigContext}
    */
   get properties() {
     return this._properties;
   }
 
   /**
-   * @return {CssPropertyResolver}
+   * @returns {CssPropertyResolver}
    */
   get cssPropertyResolver() {
     return this._cssPropertyResolver;
   }
 }
 
-;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
-
-
-
-
-/**
- * @abstract
- */
-class AbstractPropertyPlugin {
-  /**
-   * @type {CssPropertyResolver}
-   * @protected
-   */
-  _propertyResolver = undefined;
-  /**
-   * @type {{}}
-   * @protected
-   */
-  _properties = undefined;
-
-  /**
-   * @param {BuildContext} context
-   */
-  constructor(context) {
-    /**
-     * @type {{}}
-     * @private
-     */
-    this._properties = context.properties.propertiesProxy;
-    /**
-     * @type {CssPropertyResolver}
-     * @private
-     */
-    this._propertyResolver = context.cssPropertyResolver;
-  }
-
-  /**
-   * @template T
-   * @param {T} property
-   * @return {AbstractCssProperty|T}
-   */
-  getProperty(property) {
-    let segments = property.split('.');
-    let scope = this._properties;
-
-    for (let segment of segments) {
-      scope = scope[segment];
-      if (typeof scope === 'undefined') {
-        throw new Error(`Property ${property} not found.`);
-      }
-    }
-
-    return this._propertyResolver.resolve(scope);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
-
-
-class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
-  /**
-   * @return {number[]}
-   */
-  get minVersion() {
-    return [3, 0, 0];
-  }
-
-  /**
-   * @param {*} propertyNode
-   * @return {*}
-   */
-  getProperty(propertyNode) {
-    if (!propertyNode) {
-      throw new Error('Property argument is required.');
-    }
-
-    if (typeof propertyNode.value === 'undefined') {
-      throw new Error('Property must be instanceof Node and have a value attribute.');
-    }
-
-    if (typeof propertyNode.value !== 'string') {
-      throw new Error('Property must be a string.');
-    }
-
-    /**
-     * @type {string}
-     */
-    let property = propertyNode.value;
-
-    let value = super.getProperty(property);
-
-    return value.getLessNode();
-  }
-
-  /**
-   * @param lessInstance
-   * @param pluginManager
-   * @param functions
-   */
-  install(lessInstance, pluginManager, functions) {
-    functions.add('bsiProperty', (property) => this.getProperty(property));
-  }
-}
-
 ;// CONCATENATED MODULE: ./src/bsi-sass-property-plugin.js
-
-
 
 
 class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   /**
-   * @param {sass.types.String} property
-   * @return {AbstractCssProperty|T}
+   * @param {*} property
+   * @returns {*}
    */
   getProperty(property) {
     let propertyName = property.getValue();
@@ -4869,9 +4880,6 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 }
 
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
-
-
-
 
 
 
@@ -4920,21 +4928,21 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {BuildContext}
+   * @returns {BuildContext}
    */
   get context() {
     return this._context;
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get config() {
     return this.context.config;
   }
 
   /**
-   * @return {TwigContext}
+   * @returns {TwigContext}
    */
   get twigContext() {
     return this.context.properties;
@@ -4991,7 +4999,7 @@ class WebpackConfigBuilder {
   /**
    * The default output path: dist/{name}
    *
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getDefaultOutputPath() {
@@ -5001,7 +5009,7 @@ class WebpackConfigBuilder {
   /**
    * The entry configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getEntryConfig() {
     return {
@@ -5024,7 +5032,7 @@ class WebpackConfigBuilder {
    * Get the entry configuration for a template.
    *
    * @param {string} name
-   * @return {{}}
+   * @returns {{}}
    */
   _evaluateEntryTemplate(name) {
     let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
@@ -5038,7 +5046,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getDesignJsFilePath() {
@@ -5048,7 +5056,7 @@ class WebpackConfigBuilder {
   /**
    * Get the entry configurations for the Java Script modules.
    *
-   * @return {[{}]}
+   * @returns {{}}
    */
   _getJavaScriptModuleEntries() {
     let entries = {};
@@ -5063,7 +5071,7 @@ class WebpackConfigBuilder {
 
   /**
    * @param {ModuleConfig} config
-   * @return {{filename: string, import: string, runtime: string}}
+   * @returns {{filename: string, import: string, runtime: string}}
    * @private
    */
   _getJavaScriptModuleEntry(config) {
@@ -5092,7 +5100,7 @@ class WebpackConfigBuilder {
   /**
    * Rules for Twig file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getTwigRuleConfig() {
     return [
@@ -5119,7 +5127,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for HTML and Handlebars file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getHtmlAndHbsRuleConfig() {
     return [
@@ -5136,7 +5144,7 @@ class WebpackConfigBuilder {
   /**
    * Rules for LESS, SASS/SCSS and CSS file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getStyleRulesConfig() {
     return [
@@ -5186,7 +5194,7 @@ class WebpackConfigBuilder {
   /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
    *
-   * @return {[string]}
+   * @returns {[string]}
    */
   _getStaticAssetFileExtensions() {
     return [
@@ -5210,7 +5218,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for static assets handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getStaticAssetsRuleConfig() {
     let fileExtensions = this._getStaticAssetFileExtensions().join('|');
@@ -5244,7 +5252,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for static Java Script file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getStaticJavaScriptFileRuleConfig() {
     return [
@@ -5260,7 +5268,7 @@ class WebpackConfigBuilder {
 
   /**
    * @param {string} fileToCheck
-   * @return {boolean}
+   * @returns {boolean}
    */
   _isStaticJavaScriptFile(fileToCheck) {
     let staticFilePath = external_path_default().resolve(this.config.staticFileFolderPath) + (external_path_default()).sep;
@@ -5272,7 +5280,7 @@ class WebpackConfigBuilder {
   /**
    * Rule for regular Java Script file handling.
    *
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getRegularJavaScriptFileRuleConfig() {
     return [
@@ -5293,7 +5301,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {{}[]}
+   * @returns {{}[]}
    * @private
    */
   _getAdditionalRules() {
@@ -5301,14 +5309,14 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   _getTemplateLoader() {
     return `${package_namespaceObject.u2}/dist/template-loader`;
   }
 
   /**
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   _getCssLoaderChain() {
     return [
@@ -5342,7 +5350,7 @@ class WebpackConfigBuilder {
   /**
    * Mini CSS extract plugin configuration.
    *
-   * @return {[MiniCssExtractPlugin]}
+   * @returns {[MiniCssExtractPlugin]}
    */
   _getMiniCssExtractPluginConfig() {
     return [
@@ -5355,7 +5363,7 @@ class WebpackConfigBuilder {
   /**
    * Copy plugin configuration.
    *
-   * @return {[CopyPlugin]}
+   * @returns {[CopyPlugin]}
    */
   _getCopyPluginConfig() {
     let copyAssetsFolderPath = toPosixPath(this.config.copyAssetsFolderPath);
@@ -5382,7 +5390,7 @@ class WebpackConfigBuilder {
 
   /**
    *
-   * @return {BsiCxTwigContextWebpackPlugin[]}
+   * @returns {BsiCxTwigContextWebpackPlugin[]}
    * @private
    */
   _getBsiCxTwigContextWebpackPlugin() {
@@ -5392,7 +5400,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {[BsiCxWebpackPlugin]}
+   * @returns {[BsiCxWebpackPlugin]}
    * @private
    */
   _getBsiCxWebpackPluginConfig() {
@@ -5404,11 +5412,11 @@ class WebpackConfigBuilder {
   /**
    * Webpack ZIP plugin configuration.
    *
-   * @return {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+   * @returns {[]}
    */
   _getZipPluginConfig() {
     /**
-     * @type {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+     * @type {[]}
      */
     let plugins = [
       new (external_zip_webpack_plugin_default())({
@@ -5433,7 +5441,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @return {Object[]}
+   * @returns {Object[]}
    * @private
    */
   _getAdditionalPlugins() {
@@ -5443,7 +5451,7 @@ class WebpackConfigBuilder {
   /**
    * BSI CX legacy design format plugin config.
    *
-   * @return {[BsiCxWebpackLegacyDesignPlugin]}
+   * @returns {[BsiCxWebpackLegacyDesignPlugin]}
    */
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
@@ -5458,7 +5466,7 @@ class WebpackConfigBuilder {
   /**
    * The dev tool configuration.
    *
-   * @return {string|boolean}
+   * @returns {string|boolean}
    */
   _getDevToolConfig() {
     return this.config.sourceMapEnabled ? 'source-map' : false;
@@ -5467,7 +5475,7 @@ class WebpackConfigBuilder {
   /**
    * Development server configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getDevServerConfig() {
     let zipRegEx = /\.zip$/i;
@@ -5485,7 +5493,7 @@ class WebpackConfigBuilder {
   /**
    * The stats configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getStatsConfig() {
     return {
@@ -5497,7 +5505,7 @@ class WebpackConfigBuilder {
   /**
    * The performance configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getPerformanceConfig() {
     let excludedAssets = [
@@ -5514,7 +5522,7 @@ class WebpackConfigBuilder {
   /**
    * The minimizer configuration.
    *
-   * @return {[TerserPlugin]}
+   * @returns {[TerserPlugin]}
    */
   _getOptimizationMinimizerConfig() {
     return [
@@ -5527,7 +5535,7 @@ class WebpackConfigBuilder {
   /**
    * The split chunks name configuration.
    *
-   * @return {function}
+   * @returns {function}
    */
   _getOptimizationSplitChunksNameConfig() {
     return (module, _, cacheGroupKey) => {
@@ -5538,7 +5546,7 @@ class WebpackConfigBuilder {
   /**
    * The chache groups configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getOptimizationCacheGroupsConfig() {
     return {
@@ -5571,7 +5579,7 @@ class WebpackConfigBuilder {
   /**
    * The output configuration.
    *
-   * @return {{}}
+   * @returns {{}}
    */
   _getOutputConfig() {
     return {
@@ -5628,7 +5636,7 @@ class WebpackConfigBuilder {
 
 /**
  * @param {...string} pathSegments
- * @return {CssUrl}
+ * @returns {CssUrl}
  */
 function url(...pathSegments) {
   let resolvedPath = external_path_default().resolve(...pathSegments);
@@ -5637,7 +5645,7 @@ function url(...pathSegments) {
 
 /**
  * @param {...string} pathSegments
- * @return {CssUrl}
+ * @returns {CssUrl}
  */
 function dataUri(...pathSegments) {
   let resolvedPath = external_path_default().resolve(...pathSegments);
@@ -5646,7 +5654,7 @@ function dataUri(...pathSegments) {
 
 /**
  * @param {...string|number} channels
- * @return {CssColor|string}
+ * @returns {CssColor|string}
  */
 function color(...channels) {
   switch (channels.length) {
@@ -5730,7 +5738,7 @@ function color(...channels) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[715](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[398](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

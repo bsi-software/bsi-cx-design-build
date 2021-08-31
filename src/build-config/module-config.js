@@ -1,6 +1,22 @@
-import BuildConfig from './build-config';
 import ObjectCloner from '../object-cloner';
 
+/**
+ * @typedef {import('./build-config').default} BuildConfig
+ */
+
+/**
+ * This is the builder class for JavaScript module configurations.
+ * Pass objects of this class to {@link BuildConfig#withModules}.
+ *
+ * @example
+ * .withModules(
+ *   new ModuleConfig()
+ *     .withName('main')
+ *     .withPath('main.js'),
+ *   new ModuleConfig()
+ *     .withName('app')
+ *     .withPath(path.resolve(__dirname,'lib','app.js')))
+ */
 export default class ModuleConfig {
   /**
    * @type {string|undefined}
@@ -31,14 +47,14 @@ export default class ModuleConfig {
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get path() {
     return this._path;
@@ -50,7 +66,7 @@ export default class ModuleConfig {
    * in the Webpack configuration.
    *
    * @param {string} name - The module name.
-   * @return {ModuleConfig}
+   * @returns {ModuleConfig}
    */
   withName(name) {
     this._name = name;
@@ -61,7 +77,7 @@ export default class ModuleConfig {
    * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
    *
    * @param {string} path - The path to the module.
-   * @return {ModuleConfig}
+   * @returns {ModuleConfig}
    */
   withPath(path) {
     this._path = path;
@@ -69,7 +85,7 @@ export default class ModuleConfig {
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    */
   build() {
     let config = {};
@@ -79,7 +95,7 @@ export default class ModuleConfig {
 
   /**
    * @param {boolean|undefined} [shallow=true]
-   * @return {ModuleConfig}
+   * @returns {ModuleConfig}
    */
   clone(shallow) {
     return ObjectCloner.clone(this, new ModuleConfig(), shallow);

@@ -10,7 +10,7 @@ export default class Include extends AbstractInclude {
 
   /**
    * @param {string} identifier
-   * @return {Include}
+   * @returns {Include}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -19,7 +19,7 @@ export default class Include extends AbstractInclude {
 
   /**
    * @param {boolean} editable
-   * @return {Include}
+   * @returns {Include}
    */
   withEditable(editable) {
     return /** @type {Include} */ super.withEditable(editable);
@@ -27,7 +27,7 @@ export default class Include extends AbstractInclude {
 
   /**
    * @param {{}} file
-   * @return {Include}
+   * @returns {Include}
    */
   withFile(file) {
     return /** @type {Include} */ super.withFile(file);
@@ -35,7 +35,7 @@ export default class Include extends AbstractInclude {
 
   /**
    * @param {string} name
-   * @return {Include}
+   * @returns {Include}
    */
   withName(name) {
     return /** @type {Include} */ super.withName(name);
@@ -43,7 +43,7 @@ export default class Include extends AbstractInclude {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {Include}
+   * @returns {Include}
    */
   clone(shallow) {
     return this._clone(new Include(), shallow);

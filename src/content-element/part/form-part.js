@@ -11,7 +11,7 @@ export default class FormPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {FormPart}
+   * @returns {FormPart}
    */
   withLabel(label) {
     return /** @type {FormPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class FormPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {FormPart}
+   * @returns {FormPart}
    */
   clone(shallow) {
     return this._clone(new FormPart(), shallow);

@@ -1,6 +1,5 @@
 import DesignJsonProperty from '../design-json-property';
 import AbstractBuilder from '../abstract-builder';
-import CssClass from './css-class';
 import {builderObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
 
@@ -25,21 +24,21 @@ export default class Style extends AbstractBuilder {
   _cssClasses = undefined;
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @return {RawValue|[CssClass]|undefined}
+   * @returns {RawValue|[CssClass]|undefined}
    */
   get cssClasses() {
     return this._cssClasses;
@@ -47,7 +46,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @return {Style}
+   * @returns {Style}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -56,7 +55,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {string} label
-   * @return {Style}
+   * @returns {Style}
    */
   withLabel(label) {
     this._label = label;
@@ -65,7 +64,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {...CssClass} cssClasses
-   * @return {Style}
+   * @returns {Style}
    */
   withCssClasses(...cssClasses) {
     this._cssClasses = cssClasses;
@@ -74,7 +73,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {...{}} cssClasses
-   * @return {Style}
+   * @returns {Style}
    */
   withRawCssClasses(...cssClasses) {
     this._cssClasses = new RawValue(cssClasses);
@@ -95,7 +94,7 @@ export default class Style extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {Style}
+   * @returns {Style}
    */
   clone(shallow) {
     return this._clone(new Style(), shallow);

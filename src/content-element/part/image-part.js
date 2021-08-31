@@ -11,7 +11,7 @@ export default class ImagePart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {ImagePart}
+   * @returns {ImagePart}
    */
   withLabel(label) {
     return /** @type {ImagePart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class ImagePart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {ImagePart}
+   * @returns {ImagePart}
    */
   clone(shallow) {
     return this._clone(new ImagePart(), shallow);

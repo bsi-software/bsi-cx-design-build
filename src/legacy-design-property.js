@@ -105,7 +105,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} group
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementGroupLabel(group) {
     return LegacyDesignProperty._GROUP + '.' + group + '.' + LegacyDesignProperty._LABEL;
@@ -113,7 +113,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementLabel(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._LABEL;
@@ -121,7 +121,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementDescription(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._DESCRIPTION;
@@ -129,7 +129,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementIcon(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._ICON;
@@ -137,7 +137,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} element
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementStyles(element) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._STYLES;
@@ -147,7 +147,7 @@ export default class LegacyDesignProperty {
    * @param {string} element
    * @param {string} part
    * @param {number} index
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementPartLabel(element, part, index) {
     return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._LABEL;
@@ -157,7 +157,7 @@ export default class LegacyDesignProperty {
    * @param {string} element
    * @param {string} part
    * @param {number} index
-   * @return {string}
+   * @returns {string}
    */
   static getContentElementPartHtmlEditorConfig(element, part, index) {
     return LegacyDesignProperty._getContentElementPart(element, part, index) + '.' + LegacyDesignProperty._HTML_EDITOR_CONFIG;
@@ -167,7 +167,7 @@ export default class LegacyDesignProperty {
    * @param {string} element
    * @param {string} part
    * @param {number} index
-   * @return {string}
+   * @returns {string}
    */
   static _getContentElementPart(element, part, index) {
     return LegacyDesignProperty._ELEMENT + '.' + element + '.' + LegacyDesignProperty._PARTS + '.' + part + '[' + index + ']';
@@ -175,7 +175,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getStyleLabel(name) {
     return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._LABEL;
@@ -184,7 +184,7 @@ export default class LegacyDesignProperty {
   /**
    * @param {string} name
    * @param {string} cssClass
-   * @return {string}
+   * @returns {string}
    */
   static getStyleClassLabel(name, cssClass) {
     return LegacyDesignProperty._STYLE + '.' + name + '.' + LegacyDesignProperty._CLASS + '.' + cssClass + '.' + LegacyDesignProperty._LABEL
@@ -192,7 +192,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFeatures(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FEATURES;
@@ -200,7 +200,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigTextColors(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._TEXT_COLORS;
@@ -208,7 +208,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigBackgroundColors(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._BACKGROUND_COLORS;
@@ -216,7 +216,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFormats(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FORMATS;
@@ -224,7 +224,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFontSizes(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZES;
@@ -232,7 +232,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFontSizeUnit(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_UNIT;
@@ -240,7 +240,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigFontSizeDefault(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._FONT_SIZE_DEFAULT;
@@ -248,7 +248,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigLineHeights(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._LINE_HEIGHTS;
@@ -256,7 +256,7 @@ export default class LegacyDesignProperty {
 
   /**
    * @param {string} name
-   * @return {string}
+   * @returns {string}
    */
   static getHtmlEditorConfigEnter(name) {
     return LegacyDesignProperty._HTML_EDITOR_CONFIG + '.' + name + '.' + LegacyDesignProperty._ENTER;

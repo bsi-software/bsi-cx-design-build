@@ -1,11 +1,14 @@
 import {DesignType, LANDINGPAGE} from '../design-type';
 import {CX_22_0, Version} from '../version';
 import ObjectCloner from '../object-cloner';
-import ModuleConfig from './module-config';
-import DefaultBuildConfig from './default-build-config';
-import BuildConfigInterface from './build-config-interface';
-import ValidatedBuildConfig from './validated-build-config';
 import BuildConfigValidator from './build-config-validator';
+
+/**
+ * @typedef {import('./module-config').default} ModuleConfig
+ * @typedef {import('./default-build-config').default} DefaultBuildConfig
+ * @typedef {import('./build-config-interface').default} BuildConfigInterface
+ * @typedef {import('./validated-build-config').default} ValidatedBuildConfig
+ */
 
 /**
  * The configuration object for the build of one template.
@@ -100,119 +103,119 @@ export default class BuildConfig {
   _webpackPlugins = [];
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get name() {
     return this._name;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get version() {
     return this._version;
   }
 
   /**
-   * @return {Version}
+   * @returns {Version}
    */
   get targetVersion() {
     return this._targetVersion;
   }
 
   /**
-   * @return {DesignType}
+   * @returns {DesignType}
    */
   get designType() {
     return this._designType;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rootPath() {
     return this._rootPath;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get outputPath() {
     return this._outputPath;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get propertiesFilePath() {
     return this._propertiesFilePath;
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get devServerPort() {
     return this._devServerPort;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get hashZipFiles() {
     return this._hashZipFiles;
   }
 
   /**
-   * @return {ModuleConfig[]}
+   * @returns {ModuleConfig[]}
    */
   get modules() {
     return this._modules;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get modulesRootPath() {
     return this._modulesRootPath;
   }
 
   /**
-   * @return {[{}]}
+   * @returns {[{}]}
    */
   get additionalFilesToCopy() {
     return this._additionalFilesToCopy;
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get sourceMapEnabled() {
     return this._sourceMapEnabled;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get staticFileFolderPath() {
     return this._staticFileFolderPath;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
   }
 
   /**
-   * @return {{}[]}
+   * @returns {{}[]}
    */
   get webpackRules() {
     return this._webpackRules;
   }
 
   /**
-   * @return {Object[]}
+   * @returns {Object[]}
    */
   get webpackPlugins() {
     return this._webpackPlugins;
@@ -223,7 +226,7 @@ export default class BuildConfig {
    * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
    *
    * @param {string} name - The name of your template.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withName(name) {
     this._name = name;
@@ -235,7 +238,7 @@ export default class BuildConfig {
    *
    * @see {@link https://semver.org/spec/v2.0.0.html}
    * @param {string} version - The version for this template. It is recommended to use a semantic version string.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withVersion(version) {
     this._version = version;
@@ -247,7 +250,7 @@ export default class BuildConfig {
    *
    * @see {@link Version} for available versions
    * @param {Version} version - The BSI CX version. Default will be {@link CX_22_0}
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withTargetVersion(version) {
     this._targetVersion = version;
@@ -259,7 +262,7 @@ export default class BuildConfig {
    *
    * @see {@link DesignType} for available types
    * @param {DesignType} type - The design type to use. Default will be {@link LANDINGPAGE}
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withDesignType(type) {
     this._designType = type;
@@ -271,7 +274,7 @@ export default class BuildConfig {
    * An absolute path is recommended. If the path is relative, it will be resolved in relation to the current working directory.
    *
    * @param {string} rootPath - The path to your template root. An absolute path is recommended.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withRootPath(rootPath) {
     this._rootPath = rootPath;
@@ -286,7 +289,7 @@ export default class BuildConfig {
    *
    * @see {@link https://git-scm.com/docs/gitignore}
    * @param {string} outputPath - The path to your output folder. An absolute path is recommended.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withOutputPath(outputPath) {
     this._outputPath = outputPath;
@@ -299,7 +302,7 @@ export default class BuildConfig {
    * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
    *
    * @param {string} propertiesFilePath - The path to your properties file.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withPropertiesFilePath(propertiesFilePath) {
     this._propertiesFilePath = propertiesFilePath;
@@ -312,7 +315,7 @@ export default class BuildConfig {
    * Only the first configuration will be considered.
    *
    * @param {number} devServerPort - The development server port number.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
     this._devServerPort = devServerPort;
@@ -323,7 +326,7 @@ export default class BuildConfig {
    * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
    *
    * @param {boolean} hashZipFiles - Enable or disable this feature. Default is <code>true</code>.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withHashZipFiles(hashZipFiles) {
     this._hashZipFiles = !!hashZipFiles;
@@ -336,7 +339,7 @@ export default class BuildConfig {
    * Use {@link withModulesRootPath} to set a custom modules root path.
    *
    * @param {...ModuleConfig} modules - Pass objects of the {@link BuildConfig} class.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withModules(...modules) {
     this._modules = modules;
@@ -348,7 +351,7 @@ export default class BuildConfig {
    * Relative paths will be resolved in relation to your {@link withRootPath|template root} configuration.
    *
    * @param {string} modulesRootPath - The path to your modules root folder.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withModulesRootPath(modulesRootPath) {
     this._modulesRootPath = modulesRootPath;
@@ -363,7 +366,7 @@ export default class BuildConfig {
    *
    * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
    * @param {...{}} additionalFilesToCopy - Pattern configuration object.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withAdditionalFilesToCopy(...additionalFilesToCopy) {
     this._additionalFilesToCopy = additionalFilesToCopy;
@@ -377,7 +380,7 @@ export default class BuildConfig {
    * should not be used in production environments. Enabling source maps will also have a slight performance impact.
    *
    * @param {boolean} sourceMapEnabled - Enable or disable the feature. Enabled by default.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withSourceMapEnabled(sourceMapEnabled) {
     this._sourceMapEnabled = sourceMapEnabled;
@@ -390,7 +393,7 @@ export default class BuildConfig {
    * Use {@link withRootPath} to set the template root folder.
    *
    * @param {string} staticFileFolderPath - The path to the static assets folder.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withStaticFileFolderPath(staticFileFolderPath) {
     this._staticFileFolderPath = staticFileFolderPath;
@@ -404,7 +407,7 @@ export default class BuildConfig {
    * Use {@link withRootPath} to set the template root folder.
    *
    * @param {string} copyAssetsFolderPath - The path to the copy assets folder.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withCopyAssetsFolderPath(copyAssetsFolderPath) {
     this._copyAssetsFolderPath = copyAssetsFolderPath;
@@ -416,7 +419,7 @@ export default class BuildConfig {
    *
    * @see {@link https://webpack.js.org/configuration/module/#rule}
    * @param {...{}} rules - Webpack rules objects.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withWebpackRules(...rules) {
     this._webpackRules = rules;
@@ -428,7 +431,7 @@ export default class BuildConfig {
    *
    * @see {@link https://webpack.js.org/configuration/plugins/}
    * @param {...Object} plugins - Instances of Webpack plugins.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   withWebpackPlugins(...plugins) {
     this._webpackPlugins = plugins;
@@ -440,7 +443,7 @@ export default class BuildConfig {
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @return {BuildConfig}
+   * @returns {BuildConfig}
    */
   clone(shallow) {
     return ObjectCloner.clone(this, new BuildConfig(), shallow);
@@ -450,7 +453,7 @@ export default class BuildConfig {
    * Validate the build configuration. <strong>There is no need to call this method.</strong>
    * The {@link WebpackConfigBuilder.fromConfigs|WebpackConfigBuilder} will do this for you.
    *
-   * @return {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
+   * @returns {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
    */
   validate() {
     return BuildConfigValidator.validate(this);

@@ -1,7 +1,7 @@
 export default class BuilderObjectNormalizer {
   /**
    * @param {*} obj
-   * @return {*}
+   * @returns {*}
    * @private
    */
   _normalize(obj) {
@@ -31,7 +31,7 @@ export default class BuilderObjectNormalizer {
 
   /**
    * @param {[*]} arr
-   * @return {[*]}
+   * @returns {[*]}
    * @private
    */
   _normalizeArray(arr) {
@@ -40,7 +40,7 @@ export default class BuilderObjectNormalizer {
 
   /**
    * @param {{}} obj
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _normalizeObject(obj) {
@@ -59,7 +59,7 @@ export default class BuilderObjectNormalizer {
    * Such values cannot be checked with instanceof.
    *
    * @param {*} obj
-   * @return {*}
+   * @returns {*}
    */
   static normalize(obj) {
     return new BuilderObjectNormalizer()._normalize(obj);

@@ -1,6 +1,5 @@
 import {FORMATTED_TEXT} from './part';
 import AbstractPart from './abstract-part';
-import HtmlEditorConfig from '../../html-editor-config/html-editor-config';
 import DesignJsonProperty from '../../design-json-property';
 
 /**
@@ -18,7 +17,7 @@ export default class FormattedTextPart extends AbstractPart {
   }
 
   /**
-   * @return {HtmlEditorConfig|undefined}
+   * @returns {HtmlEditorConfig|undefined}
    */
   get htmlEditorConfig() {
     return this._htmlEditorConfig;
@@ -26,7 +25,7 @@ export default class FormattedTextPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {FormattedTextPart}
+   * @returns {FormattedTextPart}
    */
   withLabel(label) {
     return /** @type {FormattedTextPart} */ super.withLabel(label);
@@ -34,7 +33,7 @@ export default class FormattedTextPart extends AbstractPart {
 
   /**
    * @param {HtmlEditorConfig} htmlEditorConfig
-   * @return {FormattedTextPart}
+   * @returns {FormattedTextPart}
    */
   withHtmlEditorConfig(htmlEditorConfig) {
     this._htmlEditorConfig = htmlEditorConfig;
@@ -51,7 +50,7 @@ export default class FormattedTextPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {FormattedTextPart}
+   * @returns {FormattedTextPart}
    */
   clone(shallow) {
     return this._clone(new FormattedTextPart(), shallow);

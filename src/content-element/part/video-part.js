@@ -11,7 +11,7 @@ export default class VideoPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {VideoPart}
+   * @returns {VideoPart}
    */
   withLabel(label) {
     return /** @type {VideoPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class VideoPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {VideoPart}
+   * @returns {VideoPart}
    */
   clone(shallow) {
     return this._clone(new VideoPart(), shallow);

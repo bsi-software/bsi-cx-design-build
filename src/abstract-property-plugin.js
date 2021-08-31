@@ -1,7 +1,3 @@
-import AbstractCssProperty from './css/abstract-css-property';
-import BuildContext from './build-context';
-import CssPropertyResolver from './css/css-property-resolver';
-
 /**
  * @abstract
  */
@@ -34,9 +30,8 @@ export default class AbstractPropertyPlugin {
   }
 
   /**
-   * @template T
-   * @param {T} property
-   * @return {AbstractCssProperty|T}
+   * @param {*} property
+   * @returns {*}
    */
   getProperty(property) {
     let segments = property.split('.');

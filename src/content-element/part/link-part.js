@@ -11,7 +11,7 @@ export default class LinkPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {LinkPart}
+   * @returns {LinkPart}
    */
   withLabel(label) {
     return /** @type {LinkPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class LinkPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {LinkPart}
+   * @returns {LinkPart}
    */
   clone(shallow) {
     return this._clone(new LinkPart(), shallow);

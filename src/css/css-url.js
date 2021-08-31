@@ -34,119 +34,119 @@ export default class CssUrl extends AbstractCssProperty {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get rawUrl() {
     return this._url;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalUrl() {
     return this.rawUrl;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineUrl() {
     return this._getInlineUrl();
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get url() {
     return this.inline ? this.inlineUrl : this.rawUrl;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get ref() {
     return this._getRef(this.url);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineRef() {
     return this._getRef(this.inlineUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalRef() {
     return this._getRef(this.rawUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get css() {
     return this._getCss(this.url);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineCss() {
     return this._getCss(this.inlineUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get inlineRefCss() {
     return this._getCss(this.inlineRef);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalCss() {
     return this._getCss(this.rawUrl);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get externalRefCss() {
     return this._getCss(this.externalRef);
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get inline() {
     return this._inline;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getLessNode() {
     return this.css;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
     return new sass.types.String(this.css);
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   toString() {
     return `url(${this.ref})`;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getInlineUrl() {
@@ -155,7 +155,7 @@ export default class CssUrl extends AbstractCssProperty {
 
   /**
    * @param {string} url
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getRef(url) {
@@ -164,7 +164,7 @@ export default class CssUrl extends AbstractCssProperty {
 
   /**
    * @param {string} url
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _getCss(url) {
@@ -173,7 +173,7 @@ export default class CssUrl extends AbstractCssProperty {
 
   /**
    * @param {string|number} value
-   * @return {undefined}
+   * @returns {undefined}
    */
   static getParser(value) {
     return undefined;

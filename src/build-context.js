@@ -1,4 +1,3 @@
-import ValidatedBuildConfig from './build-config/validated-build-config';
 import TwigContext from './twig-context';
 import CssPropertyResolver from './css/css-property-resolver';
 
@@ -36,21 +35,21 @@ export default class BuildContext {
   }
 
   /**
-   * @return {ValidatedBuildConfig}
+   * @returns {ValidatedBuildConfig}
    */
   get config() {
     return this._config;
   }
 
   /**
-   * @return {TwigContext}
+   * @returns {TwigContext}
    */
   get properties() {
     return this._properties;
   }
 
   /**
-   * @return {CssPropertyResolver}
+   * @returns {CssPropertyResolver}
    */
   get cssPropertyResolver() {
     return this._cssPropertyResolver;

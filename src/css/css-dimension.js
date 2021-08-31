@@ -1,5 +1,4 @@
 import sass from 'sass';
-import Node from 'less/lib/less/tree/node';
 import Dimension from 'less/lib/less/tree/dimension';
 
 import AbstractCssProperty from './abstract-css-property';
@@ -40,30 +39,32 @@ export default class CssDimension extends AbstractCssProperty {
   }
 
   /**
-   * @return {number}
+   * @returns {number}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get unit() {
     return this._unit;
   }
 
   /**
-   * @return {Node}
+   * @returns {*}
    */
   getLessNode() {
+    // noinspection JSValidateTypes
     return new Dimension(this.value, this.unit);
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
+    // noinspection JSUnresolvedVariable
     return new sass.types.Number(this.value, this.unit);
   }
 
@@ -81,15 +82,15 @@ export default class CssDimension extends AbstractCssProperty {
 
   /**
    * @param {number} num
-   * @return {CssDimension}
+   * @returns {CssDimension}
    */
   static fromNumber(num) {
     return new CssDimension(num);
   }
 
   /**
-   * @param {string|number} value
-   * @return {function(string|number):CssDimension|undefined}
+   * @param {*} value
+   * @returns {function(*):CssDimension|undefined}
    */
   static getParser(value) {
     switch (true) {

@@ -11,7 +11,7 @@ export default class FormRadioPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {FormRadioPart}
+   * @returns {FormRadioPart}
    */
   withLabel(label) {
     return /** @type {FormRadioPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class FormRadioPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {FormRadioPart}
+   * @returns {FormRadioPart}
    */
   clone(shallow) {
     return this._clone(new FormRadioPart(), shallow);

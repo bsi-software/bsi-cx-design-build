@@ -1,4 +1,3 @@
-import AbstractCssProperty from './abstract-css-property';
 import CssColor from './css-color';
 import CssDimension from './css-dimension';
 import CssRaw from './css-raw';
@@ -19,7 +18,7 @@ export default class CssPropertyResolver {
   /**
    * @template T
    * @param {T} value
-   * @return {AbstractCssProperty|T}
+   * @returns {AbstractCssProperty|T}
    */
   resolve(value) {
     if (typeof value.getLessNode === 'function') {
@@ -39,7 +38,7 @@ export default class CssPropertyResolver {
 
   /**
    * @param {string|number} value
-   * @return {AbstractCssProperty}
+   * @returns {AbstractCssProperty}
    * @private
    */
   _createProperty(value) {

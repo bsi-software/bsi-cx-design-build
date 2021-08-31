@@ -14,14 +14,14 @@ export default class NLS extends AbstractBuilder {
   _translations = undefined;
 
   /**
-   * @return {string|undefined}
+   * @returns {string|undefined}
    */
   get identifier() {
     return this._identifier;
   }
 
   /**
-   * @return {[Translation]|undefined}
+   * @returns {[Translation]|undefined}
    */
   get translations() {
     return this._translations;
@@ -29,7 +29,7 @@ export default class NLS extends AbstractBuilder {
 
   /**
    * @param {string} identifier
-   * @return {NLS}
+   * @returns {NLS}
    */
   withIdentifier(identifier) {
     this._identifier = identifier;
@@ -38,7 +38,7 @@ export default class NLS extends AbstractBuilder {
 
   /**
    * @param {...Translation} translations
-   * @return {NLS}
+   * @returns {NLS}
    */
   withTranslations(...translations) {
     this._translations = translations;
@@ -64,7 +64,7 @@ export default class NLS extends AbstractBuilder {
   /**
    * @param {string} identifier
    * @param {...Translation}translations
-   * @return {NLS}
+   * @returns {NLS}
    */
   static create(identifier, ...translations) {
     return new NLS()
@@ -93,7 +93,7 @@ export default class NLS extends AbstractBuilder {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {NLS}
+   * @returns {NLS}
    */
   clone(shallow) {
     return this._clone(new NLS(), shallow);

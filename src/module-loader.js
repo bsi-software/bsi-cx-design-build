@@ -25,14 +25,14 @@ export class ModuleLoader {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get modulePath() {
     return this._modulePath;
   }
 
   /**
-   * @return {Set<string>}
+   * @returns {Set<string>}
    */
   get dependencies() {
     return this._dependencies;
@@ -40,7 +40,7 @@ export class ModuleLoader {
 
   /**
    *
-   * @return {Module}
+   * @returns {Module}
    */
   load() {
     let moduleRequire = Module.createRequire(this.modulePath);

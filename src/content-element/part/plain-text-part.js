@@ -11,7 +11,7 @@ export default class PlainTextPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {PlainTextPart}
+   * @returns {PlainTextPart}
    */
   withLabel(label) {
     return /** @type {PlainTextPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class PlainTextPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {PlainTextPart}
+   * @returns {PlainTextPart}
    */
   clone(shallow) {
     return this._clone(new PlainTextPart(), shallow);

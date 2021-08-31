@@ -11,7 +11,7 @@ export default class IteratorPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {IteratorPart}
+   * @returns {IteratorPart}
    */
   withLabel(label) {
     return /** @type {IteratorPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class IteratorPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {IteratorPart}
+   * @returns {IteratorPart}
    */
   clone(shallow) {
     return this._clone(new IteratorPart(), shallow);

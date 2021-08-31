@@ -14,11 +14,11 @@ declare module "src/abstract-constant" {
          */
         private _value;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get value(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         getValue(): string;
     }
@@ -55,11 +55,11 @@ declare module "src/version" {
         _allowedTypes: DesignType[];
         _legacyFormat: boolean;
         /**
-         * @return {DesignType[]}
+         * @returns {DesignType[]}
          */
         get allowedTypes(): DesignType[];
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get legacyFormat(): boolean;
     }
@@ -98,7 +98,7 @@ declare module "src/raw-value" {
          */
         private _value;
         /**
-         * @return {*}
+         * @returns {*}
          */
         get value(): any;
     }
@@ -109,10 +109,10 @@ declare module "src/abstract-builder" {
      */
     export default class AbstractBuilder {
         /**
-         * Build the configuration.
+         * Build the configuration. Normally, there is no need to invoke this method manually.
          *
          * @abstract
-         * @return {{}}
+         * @returns {{}}
          */
         build(): {};
         /**
@@ -132,7 +132,7 @@ declare module "src/abstract-builder" {
          * @template T
          * @param {T} newObj
          * @param {boolean|undefined} [shallow=true]
-         * @return {T}
+         * @returns {T}
          * @protected
          */
         protected _clone<T>(newObj: T, shallow?: boolean | undefined): T;
@@ -145,13 +145,13 @@ declare module "src/object-cloner" {
          * @param {T} source
          * @param {T} target
          * @param {boolean|undefined} [shallow=true]
-         * @return {T}
+         * @returns {T}
          */
         static clone<T>(source: T, target: T, shallow?: boolean | undefined): T;
         /**
          * @template T
          * @param {T} value
-         * @return {T}
+         * @returns {T}
          */
         static cloneValue<T_1>(value: T_1): T_1;
         /**
@@ -159,32 +159,134 @@ declare module "src/object-cloner" {
          * @param {T} source
          * @param {T} target
          * @param {boolean} shallow
-         * @return {T}
+         * @returns {T}
          * @private
          */
         private _clone;
         /**
          * @template T
          * @param {T} value
-         * @return {T}
+         * @returns {T}
          * @private
          */
         private _cloneValue;
         /**
          * @param {[]} arr
-         * @return {[]}
+         * @returns {[]}
          * @private
          */
         private _cloneArray;
         /**
          * @param {{}} obj
-         * @return {{}}
+         * @returns {{}}
          * @private
          */
         private _cloneObject;
     }
 }
+declare module "src/build-config/validation-error" {
+    export default class ValidationError extends Error {
+    }
+}
+declare module "src/constant" {
+    export default class Constant {
+        /**
+         * @type {string}
+         */
+        static BSI_CX_CSS_HREF: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_CSS_INLINE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_DESIGN_BASE_URL: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_PATH: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_HREF: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_INLINE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_MODULE_START: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_MODULE_END: string;
+    }
+}
+declare module "src/utility" {
+    /**
+     *
+     * @param {string} name
+     * @param {string} version
+     * @param {string} [suffix='']
+     */
+    export function getZipArchiveName(name: string, version: string, suffix?: string): string;
+    /**
+     * @param {ValidatedBuildConfig} config
+     * @param {string|undefined} [suffix=undefined]
+     */
+    export function buildPublicPath(config: any, suffix?: string | undefined): string;
+    /**
+     * @param {*} obj
+     * @returns {string}
+     */
+    export function toString(obj: any): string;
+    /**
+     * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
+     * @param {string} input
+     * @returns {string}
+     */
+    export function escapeRegex(input: string): string;
+    /**
+     * @param {string} str
+     * @returns {string}
+     */
+    export function ucfirst(str: string): string;
+    /**
+     * @param {string} mayRelativePath
+     * @param {string|undefined} [basePathWhenRelative=undefined]
+     * @returns {string}
+     */
+    export function getAbsolutePath(mayRelativePath: string, basePathWhenRelative?: string | undefined): string;
+    /**
+     * @param {string} str1
+     * @param {string} str2
+     */
+    export function findStringSimilarities(str1: string, str2: string): string;
+    /**
+     * @param {string} possibleWin32Path
+     * @returns {string}
+     */
+    export function toPosixPath(possibleWin32Path: string): string;
+}
 declare module "src/build-config/module-config" {
+    /**
+     * @typedef {import('./build-config').default} BuildConfig
+     */
+    /**
+     * This is the builder class for JavaScript module configurations.
+     * Pass objects of this class to {@link BuildConfig#withModules}.
+     *
+     * @example
+     * .withModules(
+     *   new ModuleConfig()
+     *     .withName('main')
+     *     .withPath('main.js'),
+     *   new ModuleConfig()
+     *     .withName('app')
+     *     .withPath(path.resolve(__dirname,'lib','app.js')))
+     */
     export default class ModuleConfig {
         /**
          * @param {string|undefined} [name=undefined]
@@ -202,11 +304,11 @@ declare module "src/build-config/module-config" {
          */
         private _path;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get name(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get path(): string;
         /**
@@ -215,50 +317,27 @@ declare module "src/build-config/module-config" {
          * in the Webpack configuration.
          *
          * @param {string} name - The module name.
-         * @return {ModuleConfig}
+         * @returns {ModuleConfig}
          */
         withName(name: string): ModuleConfig;
         /**
          * Path to the entry module file. The path can either be an absolute one or relative to the path specified with {@link BuildConfig#withRootPath}.
          *
          * @param {string} path - The path to the module.
-         * @return {ModuleConfig}
+         * @returns {ModuleConfig}
          */
         withPath(path: string): ModuleConfig;
         /**
-         * @return {{}}
+         * @returns {{}}
          */
         build(): {};
         /**
          * @param {boolean|undefined} [shallow=true]
-         * @return {ModuleConfig}
+         * @returns {ModuleConfig}
          */
         clone(shallow?: boolean | undefined): ModuleConfig;
     }
-}
-declare module "src/build-config/default-build-config" {
-    /**
-     * @implements {BuildConfigInterface}
-     */
-    export default class DefaultBuildConfig implements BuildConfigInterface {
-        get additionalFilesToCopy(): any[];
-        get copyAssetsFolderPath(): string;
-        get designType(): import("src/design-type").DesignType;
-        get devServerPort(): number;
-        get hashZipFiles(): boolean;
-        get modules(): any[];
-        get modulesRootPath(): string;
-        get name(): any;
-        get outputPath(): string;
-        get propertiesFilePath(): any;
-        get rootPath(): any;
-        get sourceMapEnabled(): boolean;
-        get staticFileFolderPath(): string;
-        get targetVersion(): import("src/version").Version;
-        get version(): string;
-        get webpackPlugins(): any[];
-        get webpackRules(): any[];
-    }
+    export type BuildConfig = import("src/build-config/build-config").default;
 }
 declare module "src/build-config/build-config-interface" {
     /**
@@ -266,76 +345,79 @@ declare module "src/build-config/build-config-interface" {
      */
     export default class BuildConfigInterface {
         /**
-         * @return {string}
+         * @returns {string}
          */
         get name(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get version(): string;
         /**
-         * @return {Version}
+         * @returns {Version}
          */
         get targetVersion(): any;
         /**
-         * @return {DesignType}
+         * @returns {DesignType}
          */
         get designType(): any;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get rootPath(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get outputPath(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get devServerPort(): number;
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get hashZipFiles(): boolean;
         /**
-         * @return {ModuleConfig[]}
+         * @returns {ModuleConfig[]}
          */
         get modules(): any[];
         /**
-         * @return {string}
+         * @returns {string}
          */
         get modulesRootPath(): string;
         /**
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         get additionalFilesToCopy(): [{}];
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get sourceMapEnabled(): boolean;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get staticFileFolderPath(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get copyAssetsFolderPath(): string;
         /**
-         * @return {{}[]}
+         * @returns {{}[]}
          */
         get webpackRules(): {}[];
         /**
-         * @return {Object[]}
+         * @returns {Object[]}
          */
         get webpackPlugins(): any[];
     }
 }
 declare module "src/build-config/validated-build-config" {
+    /**
+     * @typedef {import('./build-config-interface').default} BuildConfigInterface
+     */
     /**
      * @implements {BuildConfigInterface}
      */
@@ -396,7 +478,7 @@ declare module "src/build-config/validated-build-config" {
          */
         private _modulesRootPath;
         /**
-         * @type {[{}]}
+         * @type {{}[]}
          * @private
          */
         private _additionalFilesToCopy;
@@ -426,168 +508,112 @@ declare module "src/build-config/validated-build-config" {
          */
         private _webpackRules;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get name(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get version(): string;
         /**
-         * @return {Version}
+         * @returns {Version}
          */
         get targetVersion(): any;
         /**
-         * @return {DesignType}
+         * @returns {DesignType}
          */
         get designType(): any;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get rootPath(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get outputPath(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get devServerPort(): number;
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get hashZipFiles(): boolean;
         /**
-         * @return {ModuleConfig[]}
+         * @returns {ModuleConfig[]}
          */
         get modules(): any[];
         /**
-         * @return {string}
+         * @returns {string}
          */
         get modulesRootPath(): string;
         /**
-         * @return {[{}]}
+         * @returns {{}[]}
          */
-        get additionalFilesToCopy(): [{}];
+        get additionalFilesToCopy(): {}[];
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get sourceMapEnabled(): boolean;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get staticFileFolderPath(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get copyAssetsFolderPath(): string;
         /**
-         * @return {Object[]}
+         * @returns {Object[]}
          */
         get webpackPlugins(): any[];
         /**
-         * @return {{}[]}
+         * @returns {{}[]}
          */
         get webpackRules(): {}[];
     }
-    import BuildConfigInterface from "src/build-config/build-config-interface";
+    export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
-declare module "src/build-config/validation-error" {
-    export default class ValidationError extends Error {
+declare module "src/build-config/default-build-config" {
+    /**
+     * @typedef {import('./build-config-interface').default} BuildConfigInterface
+     */
+    /**
+     * @implements {BuildConfigInterface}
+     */
+    export default class DefaultBuildConfig implements BuildConfigInterface {
+        get additionalFilesToCopy(): any[];
+        get copyAssetsFolderPath(): string;
+        get designType(): import("src/design-type").DesignType;
+        get devServerPort(): number;
+        get hashZipFiles(): boolean;
+        get modules(): any[];
+        get modulesRootPath(): string;
+        get name(): any;
+        get outputPath(): string;
+        get propertiesFilePath(): any;
+        get rootPath(): any;
+        get sourceMapEnabled(): boolean;
+        get staticFileFolderPath(): string;
+        get targetVersion(): import("src/version").Version;
+        get version(): string;
+        get webpackPlugins(): any[];
+        get webpackRules(): any[];
     }
-}
-declare module "src/constant" {
-    export default class Constant {
-        /**
-         * @type {string}
-         */
-        static BSI_CX_CSS_HREF: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_CSS_INLINE: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_DESIGN_BASE_URL: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_PATH: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_HREF: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_INLINE: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_MODULE_START: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_MODULE_END: string;
-    }
-}
-declare module "src/utility" {
-    /**
-     *
-     * @param {string} name
-     * @param {string} version
-     * @param {string} [suffix='']
-     */
-    export function getZipArchiveName(name: string, version: string, suffix?: string): string;
-    /**
-     * @param {ValidatedBuildConfig} config
-     * @param {string|undefined} [suffix=undefined]
-     */
-    export function buildPublicPath(config: ValidatedBuildConfig, suffix?: string | undefined): string;
-    /**
-     * @param {*} obj
-     * @return {string}
-     */
-    export function toString(obj: any): string;
-    /**
-     * @see {@link https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript#answer-3561711}
-     * @param {string} input
-     * @return {string}
-     */
-    export function escapeRegex(input: string): string;
-    /**
-     * @param {string} str
-     * @return {string}
-     */
-    export function ucfirst(str: string): string;
-    /**
-     * @param {string} mayRelativePath
-     * @param {string|undefined} [basePathWhenRelative=undefined]
-     * @return {string}
-     */
-    export function getAbsolutePath(mayRelativePath: string, basePathWhenRelative?: string | undefined): string;
-    /**
-     * @param {string} str1
-     * @param {string} str2
-     */
-    export function findStringSimilarities(str1: string, str2: string): string;
-    /**
-     * @param {string} possibleWin32Path
-     * @return {string}
-     */
-    export function toPosixPath(possibleWin32Path: string): string;
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
+    export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
 declare module "src/build-config/build-config-validator" {
+    /**
+     * @typedef {import('./build-config').default} BuildConfig
+     */
     export default class BuildConfigValidator {
         /**
          * @param {BuildConfig} buildConfig
-         * @return {ValidatedBuildConfig}
+         * @returns {ValidatedBuildConfig}
          */
         static validate(buildConfig: BuildConfig): ValidatedBuildConfig;
         /**
@@ -610,15 +636,15 @@ declare module "src/build-config/build-config-validator" {
          */
         private _validatedConfig;
         /**
-         * @return {DefaultBuildConfig}
+         * @returns {DefaultBuildConfig}
          */
         get defaultBuildConfig(): DefaultBuildConfig;
         /**
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
-        get buildConfig(): BuildConfig;
+        get buildConfig(): import("src/build-config/build-config").default;
         /**
-         * @return {ValidatedBuildConfig}
+         * @returns {ValidatedBuildConfig}
          */
         get validatedConfig(): ValidatedBuildConfig;
         /**
@@ -633,21 +659,21 @@ declare module "src/build-config/build-config-validator" {
         /**
          * @param {string} name
          * @param {string} property
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _validateName;
         /**
          * @param {string} version
          * @param {string} property
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _validateVersion;
         /**
          * @param {string} rootPath
          * @param {string} property
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _validateRootPath;
@@ -691,16 +717,22 @@ declare module "src/build-config/build-config-validator" {
          * @param {string|undefined} originalPath
          * @param {string} configuredPath
          * @param {string} property
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _validateRelativeOrAbsoluteFolderPath;
     }
+    export type BuildConfig = import("src/build-config/build-config").default;
     import DefaultBuildConfig from "src/build-config/default-build-config";
-    import BuildConfig from "src/build-config/build-config";
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/build-config/build-config" {
+    /**
+     * @typedef {import('./module-config').default} ModuleConfig
+     * @typedef {import('./default-build-config').default} DefaultBuildConfig
+     * @typedef {import('./build-config-interface').default} BuildConfigInterface
+     * @typedef {import('./validated-build-config').default} ValidatedBuildConfig
+     */
     /**
      * The configuration object for the build of one template.
      *
@@ -793,71 +825,71 @@ declare module "src/build-config/build-config" {
          */
         private _webpackPlugins;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get name(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get version(): string;
         /**
-         * @return {Version}
+         * @returns {Version}
          */
         get targetVersion(): Version;
         /**
-         * @return {DesignType}
+         * @returns {DesignType}
          */
         get designType(): DesignType;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get rootPath(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get outputPath(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get devServerPort(): number;
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get hashZipFiles(): boolean;
         /**
-         * @return {ModuleConfig[]}
+         * @returns {ModuleConfig[]}
          */
-        get modules(): ModuleConfig[];
+        get modules(): import("src/build-config/module-config").default[];
         /**
-         * @return {string}
+         * @returns {string}
          */
         get modulesRootPath(): string;
         /**
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         get additionalFilesToCopy(): [{}];
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get sourceMapEnabled(): boolean;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get staticFileFolderPath(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get copyAssetsFolderPath(): string;
         /**
-         * @return {{}[]}
+         * @returns {{}[]}
          */
         get webpackRules(): {}[];
         /**
-         * @return {Object[]}
+         * @returns {Object[]}
          */
         get webpackPlugins(): any[];
         /**
@@ -865,7 +897,7 @@ declare module "src/build-config/build-config" {
          * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
          *
          * @param {string} name - The name of your template.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withName(name: string): BuildConfig;
         /**
@@ -873,7 +905,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link https://semver.org/spec/v2.0.0.html}
          * @param {string} version - The version for this template. It is recommended to use a semantic version string.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withVersion(version: string): BuildConfig;
         /**
@@ -881,7 +913,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link Version} for available versions
          * @param {Version} version - The BSI CX version. Default will be {@link CX_22_0}
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withTargetVersion(version: Version): BuildConfig;
         /**
@@ -889,7 +921,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link DesignType} for available types
          * @param {DesignType} type - The design type to use. Default will be {@link LANDINGPAGE}
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withDesignType(type: DesignType): BuildConfig;
         /**
@@ -897,7 +929,7 @@ declare module "src/build-config/build-config" {
          * An absolute path is recommended. If the path is relative, it will be resolved in relation to the current working directory.
          *
          * @param {string} rootPath - The path to your template root. An absolute path is recommended.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withRootPath(rootPath: string): BuildConfig;
         /**
@@ -908,7 +940,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link https://git-scm.com/docs/gitignore}
          * @param {string} outputPath - The path to your output folder. An absolute path is recommended.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withOutputPath(outputPath: string): BuildConfig;
         /**
@@ -917,7 +949,7 @@ declare module "src/build-config/build-config" {
          * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
          *
          * @param {string} propertiesFilePath - The path to your properties file.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withPropertiesFilePath(propertiesFilePath: string): BuildConfig;
         /**
@@ -926,14 +958,14 @@ declare module "src/build-config/build-config" {
          * Only the first configuration will be considered.
          *
          * @param {number} devServerPort - The development server port number.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withDevServerPort(devServerPort: number): BuildConfig;
         /**
          * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
          *
          * @param {boolean} hashZipFiles - Enable or disable this feature. Default is <code>true</code>.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withHashZipFiles(hashZipFiles: boolean): BuildConfig;
         /**
@@ -942,7 +974,7 @@ declare module "src/build-config/build-config" {
          * Use {@link withModulesRootPath} to set a custom modules root path.
          *
          * @param {...ModuleConfig} modules - Pass objects of the {@link BuildConfig} class.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withModules(...modules: ModuleConfig[]): BuildConfig;
         /**
@@ -950,7 +982,7 @@ declare module "src/build-config/build-config" {
          * Relative paths will be resolved in relation to your {@link withRootPath|template root} configuration.
          *
          * @param {string} modulesRootPath - The path to your modules root folder.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withModulesRootPath(modulesRootPath: string): BuildConfig;
         /**
@@ -961,7 +993,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link https://github.com/webpack-contrib/copy-webpack-plugin#patterns}
          * @param {...{}} additionalFilesToCopy - Pattern configuration object.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withAdditionalFilesToCopy(...additionalFilesToCopy: {}[]): BuildConfig;
         /**
@@ -971,7 +1003,7 @@ declare module "src/build-config/build-config" {
          * should not be used in production environments. Enabling source maps will also have a slight performance impact.
          *
          * @param {boolean} sourceMapEnabled - Enable or disable the feature. Enabled by default.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withSourceMapEnabled(sourceMapEnabled: boolean): BuildConfig;
         /**
@@ -980,7 +1012,7 @@ declare module "src/build-config/build-config" {
          * Use {@link withRootPath} to set the template root folder.
          *
          * @param {string} staticFileFolderPath - The path to the static assets folder.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withStaticFileFolderPath(staticFileFolderPath: string): BuildConfig;
         /**
@@ -990,7 +1022,7 @@ declare module "src/build-config/build-config" {
          * Use {@link withRootPath} to set the template root folder.
          *
          * @param {string} copyAssetsFolderPath - The path to the copy assets folder.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withCopyAssetsFolderPath(copyAssetsFolderPath: string): BuildConfig;
         /**
@@ -998,7 +1030,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link https://webpack.js.org/configuration/module/#rule}
          * @param {...{}} rules - Webpack rules objects.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withWebpackRules(...rules: {}[]): BuildConfig;
         /**
@@ -1006,7 +1038,7 @@ declare module "src/build-config/build-config" {
          *
          * @see {@link https://webpack.js.org/configuration/plugins/}
          * @param {...Object} plugins - Instances of Webpack plugins.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         withWebpackPlugins(...plugins: any[]): BuildConfig;
         /**
@@ -1014,22 +1046,23 @@ declare module "src/build-config/build-config" {
          * A shallow clone will be created by default. This means nested objects will still reference the same origin.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @return {BuildConfig}
+         * @returns {BuildConfig}
          */
         clone(shallow?: boolean): BuildConfig;
         /**
          * Validate the build configuration. <strong>There is no need to call this method.</strong>
          * The {@link WebpackConfigBuilder.fromConfigs|WebpackConfigBuilder} will do this for you.
          *
-         * @return {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
+         * @returns {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
          */
         validate(): ValidatedBuildConfig;
     }
-    import BuildConfigInterface from "src/build-config/build-config-interface";
+    export type ModuleConfig = import("src/build-config/module-config").default;
+    export type DefaultBuildConfig = import("src/build-config/default-build-config").default;
+    export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
+    export type ValidatedBuildConfig = import("src/build-config/validated-build-config").default;
     import { Version } from "src/version";
     import { DesignType } from "src/design-type";
-    import ModuleConfig from "src/build-config/module-config";
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/handlebars-helpers" {
     var _default: {
@@ -1201,24 +1234,24 @@ declare module "src/builder-object-normalizer" {
          * Such values cannot be checked with instanceof.
          *
          * @param {*} obj
-         * @return {*}
+         * @returns {*}
          */
         static normalize(obj: any): any;
         /**
          * @param {*} obj
-         * @return {*}
+         * @returns {*}
          * @private
          */
         private _normalize;
         /**
          * @param {[*]} arr
-         * @return {[*]}
+         * @returns {[*]}
          * @private
          */
         private _normalizeArray;
         /**
          * @param {{}} obj
-         * @return {{}}
+         * @returns {{}}
          * @private
          */
         private _normalizeObject;
@@ -1261,7 +1294,7 @@ declare module "src/bsi-cx-webpack-plugin" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: ValidatedBuildConfig);
+        constructor(config: any);
         /**
          * @type {ValidatedBuildConfig}
          * @private
@@ -1269,7 +1302,6 @@ declare module "src/bsi-cx-webpack-plugin" {
         private _config;
         apply(compiler: any): void;
     }
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/java-property-file-builder" {
     export default class JavaPropertyFileBuilder {
@@ -1277,40 +1309,40 @@ declare module "src/java-property-file-builder" {
         /**
          * @param {string} key
          * @param {string} value
-         * @return {JavaPropertyFileBuilder}
+         * @returns {JavaPropertyFileBuilder}
          */
         append(key: string, value: string): JavaPropertyFileBuilder;
         /**
          * @param {string} comment
-         * @return {JavaPropertyFileBuilder}
+         * @returns {JavaPropertyFileBuilder}
          */
         appendComment(comment: string): JavaPropertyFileBuilder;
         /**
          * @param {string} section
-         * @return {JavaPropertyFileBuilder}
+         * @returns {JavaPropertyFileBuilder}
          */
         appendCommentSection(section: string): JavaPropertyFileBuilder;
         /**
-         * @return {JavaPropertyFileBuilder}
+         * @returns {JavaPropertyFileBuilder}
          */
         appendBlank(): JavaPropertyFileBuilder;
         /**
-         * @return {string}
+         * @returns {string}
          */
         build(): string;
         /**
          * @param {string} line
-         * @return {string}
+         * @returns {string}
          */
         _printLine(line: string): string;
         /**
          * @param {string} key
-         * @return {string}
+         * @returns {string}
          */
         _escapeKey(key: string): string;
         /**
          * @param {string} value
-         * @return {string}
+         * @returns {string}
          */
         _escapeValue(value: string): string;
     }
@@ -1318,35 +1350,33 @@ declare module "src/java-property-file-builder" {
 declare module "src/browser-utility" {
     /**
      * @param {[string|number]} arr
-     * @return {string}
+     * @returns {string}
      */
     export function scalarArrayToList(arr: [string | number]): string;
     /**
      * @template T
      * @param {T} v
-     * @return {T}
+     * @returns {T}
      */
     export function identity<T>(v: T): T;
     /**
      * @param {AbstractConstant} constant
-     * @return {string}
+     * @returns {string}
      */
-    export function constantObjectValue(constant: AbstractConstant): string;
+    export function constantObjectValue(constant: any): string;
     /**
      * @param {AbstractBuilder} builder
-     * @return {{}}
+     * @returns {{}}
      */
-    export function builderObjectValue(builder: AbstractBuilder): {};
+    export function builderObjectValue(builder: any): {};
     /**
      * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
      * (won't work in the browser context).
      *
      * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
-     * @return {string}
+     * @returns {string}
      */
     export function uuid(): string;
-    import AbstractConstant from "src/abstract-constant";
-    import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/legacy-design-property" {
     export default class LegacyDesignProperty {
@@ -1455,104 +1485,104 @@ declare module "src/legacy-design-property" {
         private static _ENTER;
         /**
          * @param {string} group
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementGroupLabel(group: string): string;
         /**
          * @param {string} element
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementLabel(element: string): string;
         /**
          * @param {string} element
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementDescription(element: string): string;
         /**
          * @param {string} element
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementIcon(element: string): string;
         /**
          * @param {string} element
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementStyles(element: string): string;
         /**
          * @param {string} element
          * @param {string} part
          * @param {number} index
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementPartLabel(element: string, part: string, index: number): string;
         /**
          * @param {string} element
          * @param {string} part
          * @param {number} index
-         * @return {string}
+         * @returns {string}
          */
         static getContentElementPartHtmlEditorConfig(element: string, part: string, index: number): string;
         /**
          * @param {string} element
          * @param {string} part
          * @param {number} index
-         * @return {string}
+         * @returns {string}
          */
         static _getContentElementPart(element: string, part: string, index: number): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getStyleLabel(name: string): string;
         /**
          * @param {string} name
          * @param {string} cssClass
-         * @return {string}
+         * @returns {string}
          */
         static getStyleClassLabel(name: string, cssClass: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigFeatures(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigTextColors(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigBackgroundColors(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigFormats(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigFontSizes(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigFontSizeUnit(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigFontSizeDefault(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigLineHeights(name: string): string;
         /**
          * @param {string} name
-         * @return {string}
+         * @returns {string}
          */
         static getHtmlEditorConfigEnter(name: string): string;
     }
@@ -1566,7 +1596,7 @@ declare module "src/bsi-cx-webpack-legacy-design-plugin" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: ValidatedBuildConfig);
+        constructor(config: any);
         /**
          * @type {ValidatedBuildConfig}
          * @private
@@ -1574,7 +1604,6 @@ declare module "src/bsi-cx-webpack-legacy-design-plugin" {
         private _config;
         apply(compiler: any): void;
     }
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/bsi-cx-webpack-zip-hash-plugin" {
     export default class BsiCxWebpackZipHashPlugin {
@@ -1644,16 +1673,16 @@ declare module "src/module-loader" {
          */
         private _dependencies;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get modulePath(): string;
         /**
-         * @return {Set<string>}
+         * @returns {Set<string>}
          */
         get dependencies(): Set<string>;
         /**
          *
-         * @return {Module}
+         * @returns {Module}
          */
         load(): Module;
         /**
@@ -1699,48 +1728,48 @@ declare module "src/twig-context" {
          */
         private _propertiesReloadRequired;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get propertiesFilePath(): string;
         /**
-         * @return {ModuleLoader}
+         * @returns {ModuleLoader}
          */
         get propertiesModule(): ModuleLoader;
         /**
          * Get the original properties object without the proxy.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         get properties(): {};
         /**
          * Get the properties object, guarded by a proxy.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         get propertiesProxy(): {};
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get propertiesReloadRequired(): boolean;
         forcePropertiesReload(): void;
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         hasPropertiesFilePath(): boolean;
         /**
-         * @return {{}}
+         * @returns {{}}
          * @private
          */
         private _getPropertiesProxy;
         /**
-         * @return {{}}
+         * @returns {{}}
          * @private
          */
         private _getProxyHandler;
         /**
          * @param {{}} target
          * @param {string} property
-         * @return {*}
+         * @returns {*}
          * @private
          */
         private _get;
@@ -1770,27 +1799,68 @@ declare module "src/bsi-cx-twig-context-webpack-plugin" {
     }
     import TwigContext from "src/twig-context";
 }
+declare module "src/abstract-property-plugin" {
+    /**
+     * @abstract
+     */
+    export default class AbstractPropertyPlugin {
+        /**
+         * @param {BuildContext} context
+         */
+        constructor(context: any);
+        /**
+         * @type {CssPropertyResolver}
+         * @protected
+         */
+        protected _propertyResolver: any;
+        /**
+         * @type {{}}
+         * @protected
+         */
+        protected _properties: {};
+        /**
+         * @param {*} property
+         * @returns {*}
+         */
+        getProperty(property: any): any;
+    }
+}
+declare module "src/bsi-less-property-plugin" {
+    export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+        /**
+         * @returns {number[]}
+         */
+        get minVersion(): number[];
+        /**
+         * @param lessInstance
+         * @param pluginManager
+         * @param functions
+         */
+        install(lessInstance: any, pluginManager: any, functions: any): void;
+    }
+    import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
 declare module "src/css/abstract-css-property" {
     export default class AbstractCssProperty {
         /**
-         * @param {string|number} value
-         * @return {function(string|number):AbstractCssProperty|undefined}
+         * @param {*} value
+         * @returns {function(*):AbstractCssProperty|undefined}
          */
-        static getParser(value: string | number): (arg0: string | number) => AbstractCssProperty | undefined;
+        static getParser(value: any): (arg0: any) => AbstractCssProperty | undefined;
         /**
-         * @return {Node}
+         * @returns {*}
          * @abstract
          */
         getLessNode(): any;
         /**
-         * @return {*}
+         * @returns {*}
          * @abstract
          */
         getSassObject(): any;
         /**
          * Will be used in Twig files.
          *
-         * @return {string}
+         * @returns {string}
          * @abstract
          */
         toString(): string;
@@ -1812,7 +1882,7 @@ declare module "src/css/css-color" {
         static COLORS: {};
         /**
          * @param {string} hex
-         * @return {CssColor}
+         * @returns {CssColor}
          */
         static fromHex(hex: string): CssColor;
         /**
@@ -1824,19 +1894,19 @@ declare module "src/css/css-color" {
         static fromRGB(red: number, green: number, blue: number, alpha?: number): CssColor;
         /**
          * @param {string} str
-         * @return {CssColor}
+         * @returns {CssColor}
          */
         static fromRGBString(str: string): CssColor;
         /**
          * @param {string} color
-         * @return {CssColor}
+         * @returns {CssColor}
          */
         static fromKeyword(color: string): CssColor;
         /**
-         * @param {string|number} value
-         * @return {function(string|number):CssColor|undefined}
+         * @param {*} value
+         * @returns {function(*):CssColor|undefined}
          */
-        static getParser(value: string | number): (arg0: string | number) => CssColor | undefined;
+        static getParser(value: any): (arg0: any) => CssColor | undefined;
         /**
          * @param {number} red
          * @param {number} green
@@ -1865,52 +1935,52 @@ declare module "src/css/css-color" {
          */
         private _alpha;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get red(): number;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get green(): number;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get blue(): number;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get alpha(): number;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get hex(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get rgb(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get rgba(): string;
         /**
          * @param {number} color
-         * @return {number}
+         * @returns {number}
          * @private
          */
         private _assertColor;
         /**
          * @param {number|undefined} [color=undefined]
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _toHex;
         /**
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _toRgb;
         /**
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _toRgba;
@@ -1926,14 +1996,14 @@ declare module "src/css/css-dimension" {
         static fromString(str: any): CssDimension;
         /**
          * @param {number} num
-         * @return {CssDimension}
+         * @returns {CssDimension}
          */
         static fromNumber(num: number): CssDimension;
         /**
-         * @param {string|number} value
-         * @return {function(string|number):CssDimension|undefined}
+         * @param {*} value
+         * @returns {function(*):CssDimension|undefined}
          */
-        static getParser(value: string | number): (arg0: string | number) => CssDimension | undefined;
+        static getParser(value: any): (arg0: any) => CssDimension | undefined;
         /**
          * @param {number} value
          * @param {string|undefined} [unit=undefined]
@@ -1950,11 +2020,11 @@ declare module "src/css/css-dimension" {
          */
         private _unit;
         /**
-         * @return {number}
+         * @returns {number}
          */
         get value(): number;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get unit(): string;
     }
@@ -1964,12 +2034,12 @@ declare module "src/css/css-raw" {
     export default class CssRaw extends AbstractCssProperty {
         /**
          * @param {*} value
-         * @return {CssRaw}
+         * @returns {CssRaw}
          */
         static fromAny(value: any): CssRaw;
         /**
          * @param {*} value
-         * @return {function(*): CssRaw}
+         * @returns {function(*): CssRaw}
          */
         static getParser(value: any): (arg0: any) => CssRaw;
         /**
@@ -1982,7 +2052,7 @@ declare module "src/css/css-raw" {
          */
         private _value;
         /**
-         * @return {*}
+         * @returns {*}
          */
         get value(): any;
     }
@@ -2000,7 +2070,7 @@ declare module "src/css/css-url" {
     export default class CssUrl extends AbstractCssProperty {
         /**
          * @param {string|number} value
-         * @return {undefined}
+         * @returns {undefined}
          */
         static getParser(value: string | number): undefined;
         /**
@@ -2019,71 +2089,71 @@ declare module "src/css/css-url" {
          */
         private _inline;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get rawUrl(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get externalUrl(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get inlineUrl(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get url(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get ref(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get inlineRef(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get externalRef(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get css(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get inlineCss(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get inlineRefCss(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get externalCss(): string;
         /**
-         * @return {string}
+         * @returns {string}
          */
         get externalRefCss(): string;
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get inline(): boolean;
         /**
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _getInlineUrl;
         /**
          * @param {string} url
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _getRef;
         /**
          * @param {string} url
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _getCss;
@@ -2094,14 +2164,14 @@ declare module "src/css/css-bool" {
     export default class CssBool extends AbstractCssProperty {
         /**
          * @param {boolean} value
-         * @return {CssBool}
+         * @returns {CssBool}
          */
         static fromBoolean(value: boolean): CssBool;
         /**
-         * @param {string|number|boolean} value
-         * @return {(function(boolean): CssBool)|undefined}
+         * @param {*} value
+         * @returns {(function(*): CssBool)|undefined}
          */
-        static getParser(value: string | number | boolean): ((arg0: boolean) => CssBool) | undefined;
+        static getParser(value: any): ((arg0: any) => CssBool) | undefined;
         /**
          * @param {boolean} value
          */
@@ -2112,7 +2182,7 @@ declare module "src/css/css-bool" {
          */
         private _value;
         /**
-         * @return {boolean}
+         * @returns {boolean}
          */
         get value(): boolean;
     }
@@ -2129,24 +2199,23 @@ declare module "src/css/css-property-resolver" {
         /**
          * @template T
          * @param {T} value
-         * @return {AbstractCssProperty|T}
+         * @returns {AbstractCssProperty|T}
          */
-        resolve<T>(value: T): AbstractCssProperty | T;
+        resolve<T>(value: T): any;
         /**
          * @param {string|number} value
-         * @return {AbstractCssProperty}
+         * @returns {AbstractCssProperty}
          * @private
          */
         private _createProperty;
     }
-    import AbstractCssProperty from "src/css/abstract-css-property";
 }
 declare module "src/build-context" {
     export default class BuildContext {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: ValidatedBuildConfig);
+        constructor(config: any);
         /**
          * @type {ValidatedBuildConfig}
          * @private
@@ -2163,66 +2232,20 @@ declare module "src/build-context" {
          */
         private _cssPropertyResolver;
         /**
-         * @return {ValidatedBuildConfig}
+         * @returns {ValidatedBuildConfig}
          */
-        get config(): ValidatedBuildConfig;
+        get config(): any;
         /**
-         * @return {TwigContext}
+         * @returns {TwigContext}
          */
         get properties(): TwigContext;
         /**
-         * @return {CssPropertyResolver}
+         * @returns {CssPropertyResolver}
          */
         get cssPropertyResolver(): CssPropertyResolver;
     }
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
     import TwigContext from "src/twig-context";
     import CssPropertyResolver from "src/css/css-property-resolver";
-}
-declare module "src/abstract-property-plugin" {
-    /**
-     * @abstract
-     */
-    export default class AbstractPropertyPlugin {
-        /**
-         * @param {BuildContext} context
-         */
-        constructor(context: BuildContext);
-        /**
-         * @type {CssPropertyResolver}
-         * @protected
-         */
-        protected _propertyResolver: CssPropertyResolver;
-        /**
-         * @type {{}}
-         * @protected
-         */
-        protected _properties: {};
-        /**
-         * @template T
-         * @param {T} property
-         * @return {AbstractCssProperty|T}
-         */
-        getProperty<T>(property: T): AbstractCssProperty | T;
-    }
-    import CssPropertyResolver from "src/css/css-property-resolver";
-    import AbstractCssProperty from "src/css/abstract-css-property";
-    import BuildContext from "src/build-context";
-}
-declare module "src/bsi-less-property-plugin" {
-    export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
-        /**
-         * @return {number[]}
-         */
-        get minVersion(): number[];
-        /**
-         * @param lessInstance
-         * @param pluginManager
-         * @param functions
-         */
-        install(lessInstance: any, pluginManager: any, functions: any): void;
-    }
-    import AbstractPropertyPlugin from "src/abstract-property-plugin";
 }
 declare module "src/bsi-sass-property-plugin" {
     export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
@@ -2247,10 +2270,10 @@ declare module "src/webpack-config-builder" {
          *
          * @param  {...BuildConfig} configs
          */
-        static fromConfigs(...configs: BuildConfig[]): {
+        static fromConfigs(...configs: any[]): {
             entry: {};
-            name: string;
-            context: string;
+            name: any;
+            context: any;
             target: string;
             module: {
                 rules: {}[];
@@ -2277,28 +2300,28 @@ declare module "src/webpack-config-builder" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: ValidatedBuildConfig);
+        constructor(config: any);
         /**
          * @type {BuildContext}
          * @private
          */
         private _context;
         /**
-         * @return {BuildContext}
+         * @returns {BuildContext}
          */
         get context(): BuildContext;
         /**
-         * @return {ValidatedBuildConfig}
+         * @returns {ValidatedBuildConfig}
          */
-        get config(): ValidatedBuildConfig;
+        get config(): any;
         /**
-         * @return {TwigContext}
+         * @returns {TwigContext}
          */
-        get twigContext(): TwigContext;
+        get twigContext(): any;
         build(): {
             entry: {};
-            name: string;
-            context: string;
+            name: any;
+            context: any;
             target: string;
             module: {
                 rules: {}[];
@@ -2325,210 +2348,206 @@ declare module "src/webpack-config-builder" {
         /**
          * The default output path: dist/{name}
          *
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _getDefaultOutputPath;
         /**
          * The entry configuration.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         _getEntryConfig(): {};
         /**
          * Get the entry configuration for a template.
          *
          * @param {string} name
-         * @return {{}}
+         * @returns {{}}
          */
         _evaluateEntryTemplate(name: string): {};
         /**
-         * @return {string}
+         * @returns {string}
          * @private
          */
         private _getDesignJsFilePath;
         /**
          * Get the entry configurations for the Java Script modules.
          *
-         * @return {[{}]}
+         * @returns {{}}
          */
-        _getJavaScriptModuleEntries(): [{}];
+        _getJavaScriptModuleEntries(): {};
         /**
          * @param {ModuleConfig} config
-         * @return {{filename: string, import: string, runtime: string}}
+         * @returns {{filename: string, import: string, runtime: string}}
          * @private
          */
         private _getJavaScriptModuleEntry;
         /**
          * Rules for Twig file handling.
          *
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getTwigRuleConfig(): [{}];
         /**
          * Rule for HTML and Handlebars file handling.
          *
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getHtmlAndHbsRuleConfig(): [{}];
         /**
          * Rules for LESS, SASS/SCSS and CSS file handling.
          *
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getStyleRulesConfig(): [{}];
         /**
          * Get all file extensions that should be handled as static assets (e.g. images and fonts).
          *
-         * @return {[string]}
+         * @returns {[string]}
          */
         _getStaticAssetFileExtensions(): [string];
         /**
          * Rule for static assets handling.
          *
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getStaticAssetsRuleConfig(): [{}];
         /**
          * Rule for static Java Script file handling.
          *
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getStaticJavaScriptFileRuleConfig(): [{}];
         /**
          * @param {string} fileToCheck
-         * @return {boolean}
+         * @returns {boolean}
          */
         _isStaticJavaScriptFile(fileToCheck: string): boolean;
         /**
          * Rule for regular Java Script file handling.
          *
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getRegularJavaScriptFileRuleConfig(): [{}];
         /**
-         * @return {{}[]}
+         * @returns {{}[]}
          * @private
          */
         private _getAdditionalRules;
         /**
-         * @return {string}
+         * @returns {string}
          */
         _getTemplateLoader(): string;
         /**
-         * @return {[{}]}
+         * @returns {[{}]}
          */
         _getCssLoaderChain(): [{}];
         /**
          * Mini CSS extract plugin configuration.
          *
-         * @return {[MiniCssExtractPlugin]}
+         * @returns {[MiniCssExtractPlugin]}
          */
         _getMiniCssExtractPluginConfig(): [any];
         /**
          * Copy plugin configuration.
          *
-         * @return {[CopyPlugin]}
+         * @returns {[CopyPlugin]}
          */
         _getCopyPluginConfig(): [any];
         /**
          *
-         * @return {BsiCxTwigContextWebpackPlugin[]}
+         * @returns {BsiCxTwigContextWebpackPlugin[]}
          * @private
          */
         private _getBsiCxTwigContextWebpackPlugin;
         /**
-         * @return {[BsiCxWebpackPlugin]}
+         * @returns {[BsiCxWebpackPlugin]}
          * @private
          */
         private _getBsiCxWebpackPluginConfig;
         /**
          * Webpack ZIP plugin configuration.
          *
-         * @return {[ZipPlugin|BsiCxWebpackZipHashPlugin]}
+         * @returns {[]}
          */
-        _getZipPluginConfig(): [any | BsiCxWebpackZipHashPlugin];
+        _getZipPluginConfig(): [];
         /**
-         * @return {Object[]}
+         * @returns {Object[]}
          * @private
          */
         private _getAdditionalPlugins;
         /**
          * BSI CX legacy design format plugin config.
          *
-         * @return {[BsiCxWebpackLegacyDesignPlugin]}
+         * @returns {[BsiCxWebpackLegacyDesignPlugin]}
          */
         _getBsiCxWebpackLegacyDesignPluginConfig(): [BsiCxWebpackLegacyDesignPlugin];
         /**
          * The dev tool configuration.
          *
-         * @return {string|boolean}
+         * @returns {string|boolean}
          */
         _getDevToolConfig(): string | boolean;
         /**
          * Development server configuration.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         _getDevServerConfig(): {};
         /**
          * The stats configuration.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         _getStatsConfig(): {};
         /**
          * The performance configuration.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         _getPerformanceConfig(): {};
         /**
          * The minimizer configuration.
          *
-         * @return {[TerserPlugin]}
+         * @returns {[TerserPlugin]}
          */
         _getOptimizationMinimizerConfig(): [any];
         /**
          * The split chunks name configuration.
          *
-         * @return {function}
+         * @returns {function}
          */
         _getOptimizationSplitChunksNameConfig(): Function;
         /**
          * The chache groups configuration.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         _getOptimizationCacheGroupsConfig(): {};
         /**
          * The output configuration.
          *
-         * @return {{}}
+         * @returns {{}}
          */
         _getOutputConfig(): {};
     }
     import BuildContext from "src/build-context";
-    import ValidatedBuildConfig from "src/build-config/validated-build-config";
-    import TwigContext from "src/twig-context";
-    import BsiCxWebpackZipHashPlugin from "src/bsi-cx-webpack-zip-hash-plugin";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
-    import BuildConfig from "src/build-config/build-config";
 }
 declare module "src/css/helper" {
     /**
      * @param {...string} pathSegments
-     * @return {CssUrl}
+     * @returns {CssUrl}
      */
     export function url(...pathSegments: string[]): CssUrl;
     /**
      * @param {...string} pathSegments
-     * @return {CssUrl}
+     * @returns {CssUrl}
      */
     export function dataUri(...pathSegments: string[]): CssUrl;
     /**
      * @param {...string|number} channels
-     * @return {CssColor|string}
+     * @returns {CssColor|string}
      */
     export function color(...channels: (string | number)[]): CssColor | string;
     import CssUrl from "src/css/css-url";
@@ -2664,16 +2683,16 @@ declare module "src/content-element/part/abstract-part" {
          */
         private _label;
         /**
-         * @return {Part}
+         * @returns {Part}
          */
         get partId(): Part;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get label(): string;
         /**
          * @param {string} label
-         * @return {AbstractPart}
+         * @returns {AbstractPart}
          * @since Studio 1.0
          */
         withLabel(label: string): AbstractPart;
@@ -2775,111 +2794,387 @@ declare module "src/design/schema-version" {
     export const V_22_0: SchemaVersion;
     import AbstractConstant from "src/abstract-constant";
 }
-declare module "src/style/css-class" {
-    export default class CssClass extends AbstractBuilder {
-        /**
-         * @param {string} cssClass
-         * @param {string} label
-         * @return {CssClass}
-         */
-        static create(cssClass: string, label: string): CssClass;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _cssClass;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @return {string|undefined}
-         */
-        get cssClass(): string;
-        /**
-         * @return {string|undefined}
-         */
-        get label(): string;
-        /**
-         * @param {string} cssClass
-         * @return {CssClass}
-         */
-        withCssClass(cssClass: string): CssClass;
-        /**
-         * @param {string} label
-         * @return {CssClass}
-         */
-        withLabel(label: string): CssClass;
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {CssClass}
-         */
-        clone(shallow?: boolean): CssClass;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-}
-declare module "src/style/style" {
+declare module "src/design/design" {
     /**
-     * @since Studio 1.1
+     * This is the builder class to specify a design.
+     *
+     * @example
+     * module.exports = new Design()
+     *   .withSchemaVersion(SchemaVersion.V_22_0)
+     *   .withTitle('My BSI CX Design')
+     *   .withAuthor('John Doe')
+     *   .withDate('18.8.2021')
+     *   .withPreviewImage(require('./preview.png'))
+     *   .withRawDefaultLocale('en')
+     *   withHtmlEditorConfigs(
+     *     require('./configs/html-editor/full.js'),
+     *     require('./configs/html-editor/minimal.js'))
+     *   .withContentElementGroups(
+     *     new ContentElementGroup()
+     *       .withGroupId('content')
+     *       .withLabel('Content')
+     *       .withContentElements(
+     *         require('./content-elements/content/title'),
+     *         require('./content-elements/content/text')));
      */
-    export default class Style extends AbstractBuilder {
+    export default class Design extends AbstractBuilder {
+        /**
+         * @type {RawValue|SchemaVersion|undefined}
+         * @private
+         */
+        private _schemaVersion;
         /**
          * @type {string|undefined}
          * @private
          */
-        private _identifier;
+        private _title;
         /**
          * @type {string|undefined}
          * @private
          */
-        private _label;
+        private _author;
         /**
-         * @type {RawValue|CssClass[]|undefined}
+         * @type {string|undefined}
          * @private
          */
-        private _cssClasses;
+        private _date;
         /**
-         * @return {string|undefined}
+         * @type {{}|undefined}
+         * @private
          */
-        get identifier(): string;
+        private _previewImage;
         /**
-         * @return {string|undefined}
+         * @type {RawValue|Locale|undefined}
+         * @private
          */
-        get label(): string;
+        private _defaultLocale;
         /**
-         * @return {RawValue|[CssClass]|undefined}
+         * @type {RawValue|[Locale]|undefined}
+         * @private
          */
-        get cssClasses(): RawValue | [CssClass];
+        private _locales;
         /**
-         * @param {string} identifier
-         * @return {Style}
+         * @type {RawValue|[ContentElementGroup]|undefined}
+         * @private
          */
-        withIdentifier(identifier: string): Style;
+        private _contentElementGroups;
         /**
-         * @param {string} label
-         * @return {Style}
+         * @type {RawValue|[Style]|undefined}
+         * @private
          */
-        withLabel(label: string): Style;
+        private _styleConfigs;
         /**
-         * @param {...CssClass} cssClasses
-         * @return {Style}
+         * @type {RawValue|[HtmlEditorConfig]|undefined}
+         * @private
          */
-        withCssClasses(...cssClasses: CssClass[]): Style;
+        private _htmlEditorConfigs;
         /**
-         * @param {...{}} cssClasses
-         * @return {Style}
+         * @type {RawValue|Website|undefined}
+         * @private
          */
-        withRawCssClasses(...cssClasses: {}[]): Style;
+        private _website;
         /**
-         * @param {boolean} [shallow=true]
-         * @return {Style}
+         * @type {RawValue|NLS[]|undefined}
+         * @private
          */
-        clone(shallow?: boolean): Style;
+        private _nls;
+        /**
+         * @returns {RawValue|SchemaVersion|undefined}
+         */
+        get schemaVersion(): RawValue | SchemaVersion;
+        /**
+         * @returns {string|undefined}
+         */
+        get title(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get author(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get date(): string;
+        /**
+         * @returns {{}|undefined}
+         */
+        get previewImage(): {};
+        /**
+         * @returns {RawValue|Locale|undefined}
+         */
+        get defaultLocale(): RawValue | Locale;
+        /**
+         * @returns {RawValue|[Locale]|undefined}
+         */
+        get locales(): RawValue | [Locale];
+        /**
+         * @returns {RawValue|ContentElementGroup[]|undefined}
+         */
+        get contentElementGroups(): any[] | RawValue;
+        /**
+         * @returns {RawValue|[Style]|undefined}
+         */
+        get styleConfigs(): RawValue | [any];
+        /**
+         * @returns {RawValue|[HtmlEditorConfig]|undefined}
+         */
+        get htmlEditorConfigs(): RawValue | [any];
+        /**
+         * @returns {RawValue|Website|undefined}
+         */
+        get website(): any;
+        /**
+         * @returns {RawValue|NLS[]|undefined}
+         */
+        get nls(): any[] | RawValue;
+        /**
+         * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withSchemaVersion(SchemaVersion.V_22_0)
+         * @see {@link SchemaVersion} for available versions
+         * @see {@link withRawSchemaVersion} to set a raw value
+         * @param {SchemaVersion} schemaVersion - The schema version to use.
+         * @returns {Design}
+         */
+        withSchemaVersion(schemaVersion: SchemaVersion): Design;
+        /**
+         * Supply a raw schema version.
+         *
+         * @example
+         * .withRawSchemaVersion('22.0')
+         * @see {@link withSchemaVersion}
+         * @param {string} schemaVersion - The schema version to use.
+         * @returns {Design}
+         */
+        withRawSchemaVersion(schemaVersion: string): Design;
+        /**
+         * The title for your design.
+         *
+         * @param {string} title - The design title.
+         * @returns {Design}
+         */
+        withTitle(title: string): Design;
+        /**
+         * The author of your design.
+         *
+         * @param {string} author - The design author.
+         * @returns {Design}
+         */
+        withAuthor(author: string): Design;
+        /**
+         * The creation date of your design e.g. 18.08.2021.
+         *
+         * @example
+         * .withDate('18.08.2021')
+         * @param {string} date - The design date.
+         * @returns {Design}
+         */
+        withDate(date: string): Design;
+        /**
+         * The preview image of your design. Use in combination with require.
+         *
+         * @example
+         * .withPreviewImage(require('./preview-image.png'))
+         * @param {{}} previewImage
+         * @returns {Design}
+         */
+        withPreviewImage(previewImage: {}): Design;
+        /**
+         * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withDefaultLocale(Locale.EN)
+         * @see {@link Locale} for available locales
+         * @see {@link withRawDefaultLocale} to set a raw value
+         * @param {Locale} defaultLocale - The design default locale.
+         * @returns {Design}
+         */
+        withDefaultLocale(defaultLocale: Locale): Design;
+        /**
+         * Set the raw default locale as string.
+         *
+         * @example
+         * .withRawDefaultLocale('en')
+         * @see {@link withDefaultLocale}
+         * @param {string} defaultLocale - The default locale.
+         * @returns {Design}
+         */
+        withRawDefaultLocale(defaultLocale: string): Design;
+        /**
+         * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
+         *
+         * @example
+         * .withLocales(Locale.EN_GB,Locale.DE_CH)
+         * @see {@link Locale} for available locales
+         * @see {@link withRawLocales} to set a raw value
+         * @param {...Locale} locales - The design locales.
+         * @returns {Design}
+         */
+        withLocales(...locales: Locale[]): Design;
+        /**
+         * Set the raw locales as string.
+         *
+         * @example
+         * .withRawLocales('en-GB','de-CH')
+         * @see {@link withLocales}
+         * @param {...string} locales - The design locales.
+         * @returns {Design}
+         */
+        withRawLocales(...locales: string[]): Design;
+        /**
+         * Your design's content element groups.
+         *
+         * @see {@link withRawContentElementGroups} to set a raw value
+         * @param {...ContentElementGroup} contentElementGroups - The content element groups.
+         * @returns {Design}
+         */
+        withContentElementGroups(...contentElementGroups: any[]): Design;
+        /**
+         * Set the content element groups of your design as raw object.
+         *
+         * @example
+         * .withRawContentElementGroups(
+         *   {
+         *     groupId: 'content',
+         *     label: 'Content',
+         *     contentElements: []
+         *   },
+         *   {
+         *     groupId: 'advanced',
+         *     label: 'Advanced',
+         *     contentElements: []
+         *   }
+         * )
+         * @see {@link withContentElementGroups}
+         * @param {...{}} contentElementGroups - The content element groups.
+         * @returns {Design}
+         */
+        withRawContentElementGroups(...contentElementGroups: {}[]): Design;
+        /**
+         * The style configurations of your design.
+         *
+         * @see {@link withRawStyleConfigs} to set a raw value
+         * @param {...Style} styleConfigs - The style configurations.
+         * @returns {Design}
+         */
+        withStyleConfigs(...styleConfigs: any[]): Design;
+        /**
+         * Set the style configurations of your design as raw object.
+         *
+         * @example
+         * .withRawStyleConfigs({
+         *   'background-color': {
+         *     label: 'Background Color',
+         *     cssClasses: [
+         *       { cssClass: 'black-background', label: 'Black' },
+         *       { cssClass: 'blue-background', label: 'Blue' }
+         *     ]
+         *   },
+         *   'text-color': {
+         *     label: 'Text Color',
+         *     cssClasses: [
+         *       { cssClass: 'black-text', label: 'Black' },
+         *       { cssClass: 'blue-text', label: 'Blue' }
+         *     ]
+         *   }
+         * })
+         * @see {@link withStyleConfigs}
+         * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
+         * @returns {Design}
+         */
+        withRawStyleConfigs(styleConfigs: {}): Design;
+        /**
+         * The HTML editor configurations of your design.
+         *
+         * @see {@link withRawHtmlEditorConfigs} to set a raw value
+         * @param {...HtmlEditorConfig} htmlEditorConfigs
+         * @returns {Design}
+         */
+        withHtmlEditorConfigs(...htmlEditorConfigs: any[]): Design;
+        /**
+         * Set the HTML editor configurations as raw object.
+         *
+         * @example
+         * .withRawHtmlEditorConfigs({
+         *   minimal: {
+         *     features: ['italic','bold','underline','strikeThrough']
+         *   }
+         * })
+         * @see {@link withHtmlEditorConfigs}
+         * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
+         * @returns {Design}
+         */
+        withRawHtmlEditorConfigs(htmlEditorConfigs: {}): Design;
+        /**
+         * The website configuration of your design.
+         *
+         * @see {@link withRawWebsite} to set a raw value
+         * @param {Website} website - The website object.
+         * @returns {Design}
+         * @since BSI CX 1.3
+         */
+        withWebsite(website: any): Design;
+        /**
+         * Set the raw website object of your design.
+         *
+         * @example
+         * .withRawWebsite({
+         *   maxNavigationLevel: 2,
+         *   includes: {
+         *     __page__: {
+         *       editable: true,
+         *       file: require('./includes/page.hbs'),
+         *       name: 'Template for content pages'
+         *     },
+         *     footer: {
+         *       editable: true,
+         *       file: require('./includes/footer.html'),
+         *       name: 'Footer'
+         *     }
+         *   }
+         * })
+         * @param {{}} website - The raw <code>website</code> object.
+         * @returns {Design}
+         * @since BSI CX 1.3
+         */
+        withRawWebsite(website: {}): Design;
+        /**
+         * Configure you design's translation support.
+         *
+         * @see {@link withRawNLS} to set a raw value
+         * @param {...NLS} nls
+         * @returns {Design}
+         */
+        withNLS(...nls: any[]): Design;
+        /**
+         * Set the raw value of the <code>nls</code> property.
+         *
+         * @example
+         * .withRawNLS({
+         *   action: { '*': 'action', de: 'Aktion' },
+         *   name: { '*': 'name', de: 'Name' }
+         * })
+         * @see {@link withNLS}
+         * @param {{}} nls - The raw value.
+         * @returns {Design}
+         */
+        withRawNLS(nls: {}): Design;
+        /**
+         * Clone the configuration.
+         *
+         * @example
+         * let design1 = new Design().withName('my first design');
+         * let design2 = design1.clone().withName('my second design');
+         * design1 === design2 // false
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {Design}
+         */
+        clone(shallow?: boolean): Design;
     }
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
-    import CssClass from "src/style/css-class";
+    import { SchemaVersion } from "src/design/schema-version";
+    import { Locale } from "src/design/locale";
 }
 declare module "src/content-element/icon" {
     export class Icon extends AbstractConstant {
@@ -3116,7 +3411,90 @@ declare module "src/content-element/icon" {
     export const THREE_COLUMNS: Icon;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/style/style" {
+    /**
+     * @since Studio 1.1
+     */
+    export default class Style extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {RawValue|CssClass[]|undefined}
+         * @private
+         */
+        private _cssClasses;
+        /**
+         * @returns {string|undefined}
+         */
+        get identifier(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @returns {RawValue|[CssClass]|undefined}
+         */
+        get cssClasses(): RawValue | [any];
+        /**
+         * @param {string} identifier
+         * @returns {Style}
+         */
+        withIdentifier(identifier: string): Style;
+        /**
+         * @param {string} label
+         * @returns {Style}
+         */
+        withLabel(label: string): Style;
+        /**
+         * @param {...CssClass} cssClasses
+         * @returns {Style}
+         */
+        withCssClasses(...cssClasses: any[]): Style;
+        /**
+         * @param {...{}} cssClasses
+         * @returns {Style}
+         */
+        withRawCssClasses(...cssClasses: {}[]): Style;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {Style}
+         */
+        clone(shallow?: boolean): Style;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
 declare module "src/content-element/content-element" {
+    /**
+     * @typedef {import('../style/style').default} Style
+     * @typedef {import('./part/abstract-part').default} AbstractPart
+     * @typedef {import('./content-element-group').default} ContentElementGroup
+     */
+    /**
+     * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
+     *
+     * @example
+     * .withContentElements(
+     *   new ContentElement()
+     *     .withElementId('image-with-text')
+     *     .withLabel('Image with text')
+     *     .withDescription('Displays an image with an optional text.')
+     *     .withFile(require('./template.twig'))
+     *     .withIcon(Icon.IMAGE)
+     *     .withParts(
+     *       new ImagePart()
+     *         .withLabel('Image'),
+     *       new PlainTextPart()
+     *         .withLabel('Description')))
+     */
     export default class ContentElement extends AbstractBuilder {
         /**
          * @type {string|undefined}
@@ -3139,7 +3517,7 @@ declare module "src/content-element/content-element" {
          */
         private _file;
         /**
-         * @type {Icon|undefined}
+         * @type {RawValue|Icon|undefined}
          * @private
          */
         private _icon;
@@ -3159,104 +3537,184 @@ declare module "src/content-element/content-element" {
          */
         private _parts;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get elementId(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get label(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get description(): string;
         /**
-         * @return {{}|undefined}
+         * @returns {{}|undefined}
          */
         get file(): {};
         /**
-         * @return {Icon|undefined}
+         * @returns {RawValue|Icon|undefined}
          */
-        get icon(): Icon;
+        get icon(): RawValue | Icon;
         /**
-         * @return {boolean|undefined}
+         * @returns {boolean|undefined}
          */
         get hidden(): boolean;
         /**
-         * @return {RawValue|Style[]|undefined}
+         * @returns {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): RawValue | Style[];
+        get styleConfigs(): RawValue | import("src/style/style").default[];
         /**
-         * @return {RawValue|AbstractPart[]|undefined}
+         * @returns {RawValue|AbstractPart[]|undefined}
          */
-        get parts(): RawValue | AbstractPart[];
+        get parts(): RawValue | import("src/content-element/part/abstract-part").default[];
         /**
-         * @param {string} elementId
-         * @return {ContentElement}
+         * Set the ID of this content element.
+         *
+         * @param {string} elementId - The content element's ID.
+         * @returns {ContentElement}
          * @since Studio 1.0
          */
         withElementId(elementId: string): ContentElement;
         /**
-         * @param {string} label
-         * @return {ContentElement}
+         * Set the label of the content element.
+         *
+         * @param {string} label - The label of the content element.
+         * @returns {ContentElement}
          * @since Studio 1.0
          */
         withLabel(label: string): ContentElement;
         /**
-         * @param {string} file
-         * @return {ContentElement}
+         * Set the template to use for this content element. Be aware, that you have to require the template.
+         *
+         * @example
+         * .withFile(require('./template.twig'))
+         * @param {string} file - The reference to the required template.
+         * @returns {ContentElement}
          * @since Studio 1.0
          */
         withFile(file: string): ContentElement;
         /**
-         * @param {Icon} icon
-         * @return {ContentElement}
+         * Set the icon for this content element.
+         *
+         * @example
+         * .withIcon(Icon.IMAGE)
+         * @see {@link Icon} for available icons
+         * @see {@link withRawIcon} to set a raw value
+         * @param {Icon} icon - The icon for this content element.
+         * @returns {ContentElement}
          * @since Studio 1.0
          */
         withIcon(icon: Icon): ContentElement;
         /**
-         * @param {boolean} hidden
-         * @return {ContentElement}
+         * Set the icon for this content element as raw value.
+         *
+         * @example
+         * .withRawIcon('image')
+         * @see {@link withIcon}
+         * @param {string} icon - The raw icon for this content element.
+         * @returns {ContentElement}
+         */
+        withRawIcon(icon: string): ContentElement;
+        /**
+         * Declare this content element as hidden.
+         *
+         * @example
+         * .withHidden(true)
+         * @param {boolean} hidden - The hidden state.
+         * @returns {ContentElement}
          * @since BSI CX 1.3
          */
         withHidden(hidden: boolean): ContentElement;
         /**
-         * @param {...Style} styleConfigs
-         * @return {ContentElement}
+         * Declare the styles for this content element.
+         *
+         * @example
+         * let textColorStyle = new Style()
+         *   .withIdentifier('text-color')
+         *   .withLabel('Text Color')
+         *   .withCssClasses(
+         *     new CssClass()
+         *       .withCssClass('blue-text')
+         *       .withLabel('Blue'),
+         *     new CssClass()
+         *       .withCssClass('red-text')
+         *       .withLabel('Red'))
+         *  let textElement = new ContentElement()
+         *    .withStyleConfigs(
+         *      textColorStyle,
+         *      require('./styles/background-color'))
+         * @see {@link withRawStyleConfigs} to set a raw value
+         * @param {...Style} styleConfigs - Styles for this content element.
+         * @returns {ContentElement}
          * @since Studio 1.1
          */
         withStyleConfigs(...styleConfigs: Style[]): ContentElement;
         /**
-         * @param {...string} styleConfigs
-         * @return {ContentElement}
+         * Declare the styles for this content element as raw value. Be aware, that you just pass the name of the referenced
+         * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
+         * in your design specification.
+         *
+         * @example
+         * .withRawStyleConfigs('text-color', 'background-color')
+         * @see {@link withStyleConfigs}
+         * @param {...string} styleConfigs - Style config identifiers.
+         * @returns {ContentElement}
          * @since Studio 1.1
          */
         withRawStyleConfigs(...styleConfigs: string[]): ContentElement;
         /**
-         * @param {...AbstractPart} parts
-         * @return {ContentElement}
+         * Specify the parts of your content element.
+         *
+         * @example
+         * .withParts(
+         *   new ImagePart()
+         *     .withLabel('Image'),
+         *   new PlainTextPart()
+         *     .withLabel('Description'))
+         * @see {@link withRawParts} to set a raw value
+         * @param {...AbstractPart} parts - The parts to use.
+         * @returns {ContentElement}
          * @since Studio 1.0
          */
         withParts(...parts: AbstractPart[]): ContentElement;
         /**
-         * @param {...{}} parts
-         * @return {ContentElement}
+         * Set the parts of your content element as raw value.
+         *
+         * @example
+         * .withRawParts(
+         *   {
+         *     partId: 'image',
+         *     label: 'Image'
+         *   },
+         *   {
+         *     partId: 'plain-text',
+         *     label: 'Description'
+         *   }
+         * )
+         * @see {@link withParts}
+         * @param {...{}} parts - The parts as raw value.
+         * @returns {ContentElement}
          * @since Studio 1.0
          */
         withRawParts(...parts: {}[]): ContentElement;
         /**
          * @param {boolean} [shallow=true]
-         * @return {ContentElement}
+         * @returns {ContentElement}
          */
         clone(shallow?: boolean): ContentElement;
     }
+    export type Style = import("src/style/style").default;
+    export type AbstractPart = import("src/content-element/part/abstract-part").default;
+    export type ContentElementGroup = import("src/content-element/content-element-group").default;
     import AbstractBuilder from "src/abstract-builder";
-    import { Icon } from "src/content-element/icon";
     import RawValue from "src/raw-value";
-    import Style from "src/style/style";
-    import AbstractPart from "src/content-element/part/abstract-part";
+    import { Icon } from "src/content-element/icon";
 }
 declare module "src/content-element/content-element-group" {
+    /**
+     * @typedef {import('./content-element').default} ContentElement
+     */
     /**
      * This is the builder class to specify content element groups.
      *
@@ -3290,84 +3748,96 @@ declare module "src/content-element/content-element-group" {
          */
         private _contentElements;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get groupId(): string;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get label(): string;
         /**
-         * @return {boolean|undefined}
+         * @returns {boolean|undefined}
          */
         get hidden(): boolean;
         /**
-         * @return {RawValue|[ContentElement]|undefined}
+         * @returns {RawValue|[ContentElement]|undefined}
          */
-        get contentElements(): RawValue | [ContentElement];
+        get contentElements(): RawValue | [import("src/content-element/content-element").default];
         /**
          * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
-         * It is recommended to set the group identifier.
+         * <strong>It is recommended to set the group identifier.</strong>
          *
-         * @param {string} groupId
-         * @return {ContentElementGroup}
+         * @param {string} groupId - The group ID.
+         * @returns {ContentElementGroup}
          */
         withGroupId(groupId: string): ContentElementGroup;
         /**
-         * @param {string} label
-         * @return {ContentElementGroup}
+         * The label for this content element group.
+         *
+         * @param {string} label - The group label.
+         * @returns {ContentElementGroup}
          */
         withLabel(label: string): ContentElementGroup;
         /**
-         * @param {boolean} hidden
-         * @return {ContentElementGroup}
+         * Declare this content element group as hidden. It is not required to set this property.
+         * Groups are visible per default.
+         *
+         * @param {boolean} hidden - Hide this group.
+         * @returns {ContentElementGroup}
          */
         withHidden(hidden: boolean): ContentElementGroup;
         /**
-         * @param {...ContentElement} contentElements
-         * @return {ContentElementGroup}
+         * Set the content elements of your group.
+         *
+         * @example
+         * .withContentElements(
+         *   new ContentElement()
+         *     .withElementId('image-with-text')
+         *     .withLabel('Image with text')
+         *     .withDescription('Displays an image with an optional text.')
+         *     .withFile(require('./template.twig'))
+         *     .withIcon(Icon.IMAGE)
+         *     .withParts(
+         *       new ImagePart()
+         *         .withLabel('Image'),
+         *       new PlainTextPart()
+         *         .withLabel('Description')))
+         * @see {@link withRawContentElements} to set a raw value
+         * @see {@link ContentElement}
+         * @param {...ContentElement} contentElements - The content elements to use.
+         * @returns {ContentElementGroup}
          */
         withContentElements(...contentElements: ContentElement[]): ContentElementGroup;
         /**
-         * @param {...{}} contentElements
-         * @return {ContentElementGroup}
+         * Set the content elements of your group as raw value.
+         *
+         * @example
+         * .withRawContentElements({
+         *   elementId: 'title',
+         *   file: require('./title/template.twig'),
+         *   icon 'heading',
+         *   label: 'Title',
+         *   parts: [
+         *     {
+         *       partId: 'plain-text',
+         *       label: 'Title'
+         *     }
+         *   ]
+         * })
+         * @see {@link withContentElements}
+         * @param {...{}} contentElements - The content elements as raw value.
+         * @returns {ContentElementGroup}
          */
         withRawContentElements(...contentElements: {}[]): ContentElementGroup;
         /**
          * @param {boolean} [shallow=true]
-         * @return {ContentElementGroup}
+         * @returns {ContentElementGroup}
          */
         clone(shallow?: boolean): ContentElementGroup;
     }
+    export type ContentElement = import("src/content-element/content-element").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
-    import ContentElement from "src/content-element/content-element";
-}
-declare module "src/html-editor-config/enter-mode" {
-    export class EnterMode extends AbstractConstant {
-    }
-    /**
-     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const P: EnterMode;
-    /**
-     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const BR: EnterMode;
-    /**
-     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const DIV: EnterMode;
-    import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/feature" {
     export class Feature extends AbstractConstant {
@@ -3589,6 +4059,79 @@ declare module "src/html-editor-config/feature" {
     export const HELP: Feature;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/html-editor-config/enter-mode" {
+    export class EnterMode extends AbstractConstant {
+    }
+    /**
+     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const P: EnterMode;
+    /**
+     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const BR: EnterMode;
+    /**
+     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const DIV: EnterMode;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/font-size-unit" {
+    export class FontSizeUnit extends AbstractConstant {
+    }
+    /**
+     * Font sizes as pixel values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const PX: FontSizeUnit;
+    /**
+     * Font sizes as em values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const EM: FontSizeUnit;
+    /**
+     * Font sizes as rem values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const REM: FontSizeUnit;
+    /**
+     * Font sizes as pt values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const PT: FontSizeUnit;
+    /**
+     * Font sizes as cm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const CM: FontSizeUnit;
+    /**
+     * Font sizes as mm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const MM: FontSizeUnit;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/html-editor-config/format" {
     export class Format extends AbstractConstant {
     }
@@ -3648,53 +4191,6 @@ declare module "src/html-editor-config/format" {
      * @type {Format}
      */
     export const PRE: Format;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/font-size-unit" {
-    export class FontSizeUnit extends AbstractConstant {
-    }
-    /**
-     * Font sizes as pixel values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const PX: FontSizeUnit;
-    /**
-     * Font sizes as em values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const EM: FontSizeUnit;
-    /**
-     * Font sizes as rem values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const REM: FontSizeUnit;
-    /**
-     * Font sizes as pt values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const PT: FontSizeUnit;
-    /**
-     * Font sizes as cm values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const CM: FontSizeUnit;
-    /**
-     * Font sizes as mm values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const MM: FontSizeUnit;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/html-editor-config/html-editor-config" {
@@ -3762,43 +4258,43 @@ declare module "src/html-editor-config/html-editor-config" {
          */
         private _enterMode;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get identifier(): string;
         /**
-         * @return {RawValue|Feature[]|undefined}
+         * @returns {RawValue|Feature[]|undefined}
          */
         get features(): RawValue | Feature[];
         /**
-         * @return {string[]|undefined}
+         * @returns {string[]|undefined}
          */
         get textColors(): string[];
         /**
-         * @return {string[]|undefined}
+         * @returns {string[]|undefined}
          */
         get backgroundColors(): string[];
         /**
-         * @return {RawValue|Format[]|undefined}
+         * @returns {RawValue|Format[]|undefined}
          */
         get formats(): RawValue | Format[];
         /**
-         * @return {number[]|undefined}
+         * @returns {number[]|undefined}
          */
         get fontSizes(): number[];
         /**
-         * @return {RawValue|FontSizeUnit|undefined}
+         * @returns {RawValue|FontSizeUnit|undefined}
          */
         get fontSizeUnit(): RawValue | FontSizeUnit;
         /**
-         * @return {number|undefined}
+         * @returns {number|undefined}
          */
         get fontSizeDefault(): number;
         /**
-         * @return {number[]|undefined}
+         * @returns {number[]|undefined}
          */
         get lineHeights(): number[];
         /**
-         * @return {RawValue|EnterMode|undefined}
+         * @returns {RawValue|EnterMode|undefined}
          */
         get enterMode(): RawValue | EnterMode;
         /**
@@ -3806,7 +4302,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * It is recommended to set the identifier.
          *
          * @param {string} identifier - The unique identifier for this editor config.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withIdentifier(identifier: string): HtmlEditorConfig;
         /**
@@ -3817,7 +4313,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * @see {@link Feature} for available features
          * @see {@link withRawFeatures} to set a raw value
          * @param {...Feature} features - The features to enable.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withFeatures(...features: Feature[]): HtmlEditorConfig;
         /**
@@ -3827,7 +4323,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withRawFeatures('bold', 'italic', 'underline')
          * @see {@link withFeatures}
          * @param {...string} features - The raw features to enable.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withRawFeatures(...features: string[]): HtmlEditorConfig;
         /**
@@ -3837,7 +4333,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withTextColors('#ff00ff', '#ff0000', '#00ff00')
          * @see {@link TEXT_COLOR} to enable the feature
          * @param {...string} textColors - The text colors to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withTextColors(...textColors: string[]): HtmlEditorConfig;
         /**
@@ -3847,7 +4343,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withBackgroundColors('#ff00ff', '#ff0000', '#00ff00')
          * @see {@link BACKGROUND_COLOR} to enable the feature
          * @param {...string} backgroundColors - The background colors to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withBackgroundColors(...backgroundColors: string[]): HtmlEditorConfig;
         /**
@@ -3858,7 +4354,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * @see {@link Format} for available formats
          * @see {@link withRawFormats} to set a raw value
          * @param {...Format} formats - The formats to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withFormats(...formats: Format[]): HtmlEditorConfig;
         /**
@@ -3868,7 +4364,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withRawFormats('p', 'pre')
          * @see {@link withFormats}
          * @param {...string} formats - The raw formats to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withRawFormats(...formats: string[]): HtmlEditorConfig;
         /**
@@ -3878,7 +4374,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withFontSizes(12, 13, 14, 15, 16)
          * @see {@link FONT_SIZE} to enable this feature
          * @param {...number} fontSizes - The font sizes to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withFontSizes(...fontSizes: number[]): HtmlEditorConfig;
         /**
@@ -3888,7 +4384,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withFontSizeUnit(FontSizeUnit.PX)
          * @see {@link withRawFontSizeUnit} to set the raw value
          * @param {FontSizeUnit} fontSizeUnit - The font size unit to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
         /**
@@ -3898,7 +4394,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withRawFontSizeUnit('px')
          * @see {@link withFontSizeUnit}
          * @param {string} fontSizeUnit - The raw font size unit to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withRawFontSizeUnit(fontSizeUnit: string): HtmlEditorConfig;
         /**
@@ -3907,7 +4403,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * @example
          * .withFontSizeDefault(16)
          * @param {number} fontSizeDefault - The default font size to set.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
         /**
@@ -3917,7 +4413,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withLineHeights(1, 1.15 , 1.5, 2)
          * @see {@link LINE_HEIGHT} to enable this feature
          * @param {...number} lineHeights - The line heights.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withLineHeights(...lineHeights: number[]): HtmlEditorConfig;
         /**
@@ -3927,7 +4423,7 @@ declare module "src/html-editor-config/html-editor-config" {
          * .withEnterMode(EnterMode.P)
          * @see {@link withRawEnterMode} to set the raw value
          * @param {EnterMode} enterMode - The enter mode.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
         /**
@@ -3936,12 +4432,12 @@ declare module "src/html-editor-config/html-editor-config" {
          * @example
          * .withRawEnterMode('p')
          * @param {string} enterMode - The raw enter mode.
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         withRawEnterMode(enterMode: string): HtmlEditorConfig;
         /**
          * @param {boolean} [shallow=true]
-         * @return {HtmlEditorConfig}
+         * @returns {HtmlEditorConfig}
          */
         clone(shallow?: boolean): HtmlEditorConfig;
     }
@@ -3951,6 +4447,377 @@ declare module "src/html-editor-config/html-editor-config" {
     import { Format } from "src/html-editor-config/format";
     import { FontSizeUnit } from "src/html-editor-config/font-size-unit";
     import { EnterMode } from "src/html-editor-config/enter-mode";
+}
+declare module "src/style/css-class" {
+    export default class CssClass extends AbstractBuilder {
+        /**
+         * @param {string} cssClass
+         * @param {string} label
+         * @returns {CssClass}
+         */
+        static create(cssClass: string, label: string): CssClass;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _cssClass;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @returns {string|undefined}
+         */
+        get cssClass(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @param {string} cssClass
+         * @returns {CssClass}
+         */
+        withCssClass(cssClass: string): CssClass;
+        /**
+         * @param {string} label
+         * @returns {CssClass}
+         */
+        withLabel(label: string): CssClass;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {CssClass}
+         */
+        clone(shallow?: boolean): CssClass;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/content-element/part/plain-text-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class PlainTextPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {PlainTextPart}
+         */
+        clone(shallow?: boolean): PlainTextPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/formatted-text-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormattedTextPart extends AbstractPart {
+        constructor();
+        /**
+         * @type {HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
+         * @returns {HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): any;
+        /**
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: any): FormattedTextPart;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormattedTextPart}
+         */
+        clone(shallow?: boolean): FormattedTextPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/html-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class HtmlPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {HtmlPart}
+         */
+        clone(shallow?: boolean): HtmlPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/video-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class VideoPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {VideoPart}
+         */
+        clone(shallow?: boolean): VideoPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/image-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class ImagePart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {ImagePart}
+         */
+        clone(shallow?: boolean): ImagePart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/background-image-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class BackgroundImagePart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {BackgroundImagePart}
+         */
+        clone(shallow?: boolean): BackgroundImagePart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/table-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class TablePart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {TablePart}
+         */
+        clone(shallow?: boolean): TablePart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/iterator-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class IteratorPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {IteratorPart}
+         */
+        clone(shallow?: boolean): IteratorPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/news-snippets-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class NewsSnippetsPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {NewsSnippetsPart}
+         */
+        clone(shallow?: boolean): NewsSnippetsPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormPart}
+         */
+        clone(shallow?: boolean): FormPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-field-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormFieldPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormFieldPart}
+         */
+        clone(shallow?: boolean): FormFieldPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-checkbox-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormCheckboxPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormCheckboxPart}
+         */
+        clone(shallow?: boolean): FormCheckboxPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-textarea-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormTextareaPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormTextareaPart}
+         */
+        clone(shallow?: boolean): FormTextareaPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-select-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormSelectPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormSelectPart}
+         */
+        clone(shallow?: boolean): FormSelectPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/form-radio-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormRadioPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {FormRadioPart}
+         */
+        clone(shallow?: boolean): FormRadioPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/link-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class LinkPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {LinkPart}
+         */
+        clone(shallow?: boolean): LinkPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/social-follow-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class SocialFollowPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {SocialFollowPart}
+         */
+        clone(shallow?: boolean): SocialFollowPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/social-share-part" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class SocialSharePart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {SocialSharePart}
+         */
+        clone(shallow?: boolean): SocialSharePart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/content-element/part/url-provider-part" {
+    /**
+     * @since 22.0
+     */
+    export default class UrlProviderPart extends AbstractPart {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {UrlProviderPart}
+         */
+        clone(shallow?: boolean): UrlProviderPart;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
+declare module "src/website/website" {
+    /**
+     * @since BSI CX 1.3
+     */
+    export default class Website extends AbstractBuilder {
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _maxNavigationLevel;
+        /**
+         * @type {RawValue|AbstractInclude[]|undefined}
+         * @private
+         */
+        private _includes;
+        /**
+         * @returns {number|undefined}
+         */
+        get maxNavigationLevel(): number;
+        /**
+         * @returns {RawValue|AbstractInclude[]|undefined}
+         */
+        get includes(): any[] | RawValue;
+        /**
+         * @param {number} maxNavigationLevel
+         * @returns {Website}
+         */
+        withMaxNavigationLevel(maxNavigationLevel: number): Website;
+        /**
+         * @param {...AbstractInclude} includes
+         * @returns {Website}
+         */
+        withIncludes(...includes: any[]): Website;
+        /**
+         * @param {{}} includes
+         * @returns {Website}
+         */
+        withRawIncludes(includes: {}): Website;
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {Website}
+         */
+        clone(shallow?: boolean): Website;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
 }
 declare module "src/website/abstract-include" {
     /**
@@ -3983,90 +4850,70 @@ declare module "src/website/abstract-include" {
          */
         protected _name: string | undefined;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get identifier(): string;
         /**
-         * @return {boolean|undefined}
+         * @returns {boolean|undefined}
          */
         get editable(): boolean;
         /**
-         * @return {{}|undefined}
+         * @returns {{}|undefined}
          */
         get file(): {};
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get name(): string;
         /**
          * @param {string} identifier
-         * @return {AbstractInclude}
+         * @returns {AbstractInclude}
          */
         withIdentifier(identifier: string): AbstractInclude;
         /**
          * @param {boolean} editable
-         * @return {AbstractInclude}
+         * @returns {AbstractInclude}
          */
         withEditable(editable: boolean): AbstractInclude;
         /**
          * @param {{}} file
-         * @return {AbstractInclude}
+         * @returns {AbstractInclude}
          */
         withFile(file: {}): AbstractInclude;
         /**
          * @param {string} name
-         * @return {AbstractInclude}
+         * @returns {AbstractInclude}
          */
         withName(name: string): AbstractInclude;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
-declare module "src/website/website" {
+declare module "src/website/page-include" {
     /**
      * @since BSI CX 1.3
      */
-    export default class Website extends AbstractBuilder {
-        /**
-         * @type {number|undefined}
-         * @private
-         */
-        private _maxNavigationLevel;
-        /**
-         * @type {RawValue|AbstractInclude[]|undefined}
-         * @private
-         */
-        private _includes;
-        /**
-         * @return {number|undefined}
-         */
-        get maxNavigationLevel(): number;
-        /**
-         * @return {RawValue|AbstractInclude[]|undefined}
-         */
-        get includes(): RawValue | AbstractInclude[];
-        /**
-         * @param {number} maxNavigationLevel
-         * @return {Website}
-         */
-        withMaxNavigationLevel(maxNavigationLevel: number): Website;
-        /**
-         * @param {...AbstractInclude} includes
-         * @return {Website}
-         */
-        withIncludes(...includes: AbstractInclude[]): Website;
-        /**
-         * @param {{}} includes
-         * @return {Website}
-         */
-        withRawIncludes(includes: {}): Website;
+    export default class PageInclude extends AbstractInclude {
+        constructor();
         /**
          * @param {boolean} [shallow=true]
-         * @return {Website}
+         * @returns {PageInclude}
          */
-        clone(shallow?: boolean): Website;
+        clone(shallow?: boolean): PageInclude;
     }
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
+    import AbstractInclude from "src/website/abstract-include";
+}
+declare module "src/website/include" {
+    /**
+     * @since BSI CX 1.3
+     */
+    export default class Include extends AbstractInclude {
+        constructor();
+        /**
+         * @param {boolean} [shallow=true]
+         * @returns {Include}
+         */
+        clone(shallow?: boolean): Include;
+    }
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "src/nls/translation" {
@@ -4074,12 +4921,12 @@ declare module "src/nls/translation" {
         /**
          * @param {Locale} locale
          * @param {string} translation
-         * @return {Translation}
+         * @returns {Translation}
          */
         static create(locale: Locale, translation: string): Translation;
         /**
          * @param {string} translation
-         * @return {Translation}
+         * @returns {Translation}
          */
         static wildcard(translation: string): Translation;
         /**
@@ -4093,26 +4940,26 @@ declare module "src/nls/translation" {
          */
         private _translation;
         /**
-         * @return {Locale|undefined}
+         * @returns {Locale|undefined}
          */
         get locale(): Locale;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get translation(): string;
         /**
          * @param {Locale} locale
-         * @return {Translation}
+         * @returns {Translation}
          */
         withLocale(locale: Locale): Translation;
         /**
          * @param {string} translation
-         * @return {Translation}
+         * @returns {Translation}
          */
         withTranslation(translation: string): Translation;
         /**
          * @param {boolean} [shallow=true]
-         * @return {Translation}
+         * @returns {Translation}
          */
         clone(shallow?: boolean): Translation;
     }
@@ -4124,7 +4971,7 @@ declare module "src/nls/nls" {
         /**
          * @param {string} identifier
          * @param {...Translation}translations
-         * @return {NLS}
+         * @returns {NLS}
          */
         static create(identifier: string, ...translations: Translation[]): NLS;
         /**
@@ -4143,727 +4990,31 @@ declare module "src/nls/nls" {
          */
         private _translations;
         /**
-         * @return {string|undefined}
+         * @returns {string|undefined}
          */
         get identifier(): string;
         /**
-         * @return {[Translation]|undefined}
+         * @returns {[Translation]|undefined}
          */
         get translations(): [Translation];
         /**
          * @param {string} identifier
-         * @return {NLS}
+         * @returns {NLS}
          */
         withIdentifier(identifier: string): NLS;
         /**
          * @param {...Translation} translations
-         * @return {NLS}
+         * @returns {NLS}
          */
         withTranslations(...translations: Translation[]): NLS;
         /**
          * @param {boolean} [shallow=true]
-         * @return {NLS}
+         * @returns {NLS}
          */
         clone(shallow?: boolean): NLS;
     }
     import AbstractBuilder from "src/abstract-builder";
     import Translation from "src/nls/translation";
-}
-declare module "src/design/design" {
-    /**
-     * This is the builder class to specify a design.
-     *
-     * @example
-     * module.exports = new Design()
-     *   .withSchemaVersion(SchemaVersion.V_22_0)
-     *   .withTitle('My BSI CX Design')
-     *   .withAuthor('John Doe')
-     *   .withDate('18.8.2021')
-     *   .withPreviewImage(require('./preview.png'))
-     *   .withRawDefaultLocale('en')
-     *   withHtmlEditorConfigs(
-     *     require('./configs/html-editor/full.js'),
-     *     require('./configs/html-editor/minimal.js'))
-     *   .withContentElementGroups(
-     *     new ContentElementGroup()
-     *       .withGroupId('content')
-     *       .withLabel('Content')
-     *       .withContentElements(
-     *         require('./content-elements/content/title'),
-     *         require('./content-elements/content/text')));
-     */
-    export default class Design extends AbstractBuilder {
-        /**
-         * @type {RawValue|SchemaVersion|undefined}
-         * @private
-         */
-        private _schemaVersion;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _title;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _author;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _date;
-        /**
-         * @type {{}|undefined}
-         * @private
-         */
-        private _previewImage;
-        /**
-         * @type {RawValue|Locale|undefined}
-         * @private
-         */
-        private _defaultLocale;
-        /**
-         * @type {RawValue|[Locale]|undefined}
-         * @private
-         */
-        private _locales;
-        /**
-         * @type {RawValue|[ContentElementGroup]|undefined}
-         * @private
-         */
-        private _contentElementGroups;
-        /**
-         * @type {RawValue|[Style]|undefined}
-         * @private
-         */
-        private _styleConfigs;
-        /**
-         * @type {RawValue|[HtmlEditorConfig]|undefined}
-         * @private
-         */
-        private _htmlEditorConfigs;
-        /**
-         * @type {RawValue|Website|undefined}
-         * @private
-         */
-        private _website;
-        /**
-         * @type {RawValue|NLS[]|undefined}
-         * @private
-         */
-        private _nls;
-        /**
-         * @return {RawValue|SchemaVersion|undefined}
-         */
-        get schemaVersion(): RawValue | SchemaVersion;
-        /**
-         * @return {string|undefined}
-         */
-        get title(): string;
-        /**
-         * @return {string|undefined}
-         */
-        get author(): string;
-        /**
-         * @return {string|undefined}
-         */
-        get date(): string;
-        /**
-         * @return {{}|undefined}
-         */
-        get previewImage(): {};
-        /**
-         * @return {RawValue|Locale|undefined}
-         */
-        get defaultLocale(): RawValue | Locale;
-        /**
-         * @return {RawValue|[Locale]|undefined}
-         */
-        get locales(): RawValue | [Locale];
-        /**
-         * @return {RawValue|ContentElementGroup[]|undefined}
-         */
-        get contentElementGroups(): RawValue | ContentElementGroup[];
-        /**
-         * @return {RawValue|[Style]|undefined}
-         */
-        get styleConfigs(): RawValue | [Style];
-        /**
-         * @return {RawValue|[HtmlEditorConfig]|undefined}
-         */
-        get htmlEditorConfigs(): RawValue | [HtmlEditorConfig];
-        /**
-         * @return {RawValue|Website|undefined}
-         */
-        get website(): RawValue | Website;
-        /**
-         * @return {RawValue|NLS[]|undefined}
-         */
-        get nls(): RawValue | NLS[];
-        /**
-         * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
-         *
-         * @example
-         * .withSchemaVersion(SchemaVersion.V_22_0)
-         * @see {@link SchemaVersion} for available versions
-         * @see {@link withRawSchemaVersion} to set a raw value
-         * @param {SchemaVersion} schemaVersion - The schema version to use.
-         * @return {Design}
-         */
-        withSchemaVersion(schemaVersion: SchemaVersion): Design;
-        /**
-         * Supply a raw schema version.
-         *
-         * @example
-         * .withRawSchemaVersion('22.0')
-         * @see {@link withSchemaVersion}
-         * @param {string} schemaVersion - The schema version to use.
-         * @return {Design}
-         */
-        withRawSchemaVersion(schemaVersion: string): Design;
-        /**
-         * The title for your design.
-         *
-         * @param {string} title - The design title.
-         * @return {Design}
-         */
-        withTitle(title: string): Design;
-        /**
-         * The author of your design.
-         *
-         * @param {string} author - The design author.
-         * @return {Design}
-         */
-        withAuthor(author: string): Design;
-        /**
-         * The creation date of your design e.g. 18.08.2021.
-         *
-         * @example
-         * .withDate('18.08.2021')
-         * @param {string} date - The design date.
-         * @return {Design}
-         */
-        withDate(date: string): Design;
-        /**
-         * The preview image of your design. Use in combination with require.
-         *
-         * @example
-         * .withPreviewImage(require('./preview-image.png'))
-         * @param {{}} previewImage
-         * @return {Design}
-         */
-        withPreviewImage(previewImage: {}): Design;
-        /**
-         * The default locale for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
-         *
-         * @example
-         * .withDefaultLocale(Locale.EN)
-         * @see {@link Locale} for available locales
-         * @see {@link withRawDefaultLocale} to set a raw value
-         * @param {Locale} defaultLocale - The design default locale.
-         * @return {Design}
-         */
-        withDefaultLocale(defaultLocale: Locale): Design;
-        /**
-         * Set the raw default locale as string.
-         *
-         * @example
-         * .withRawDefaultLocale('en')
-         * @see {@link withDefaultLocale}
-         * @param {string} defaultLocale - The default locale.
-         * @return {Design}
-         */
-        withRawDefaultLocale(defaultLocale: string): Design;
-        /**
-         * The available locales for your design. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
-         *
-         * @example
-         * .withLocales(Locale.EN_GB,Locale.DE_CH)
-         * @see {@link Locale} for available locales
-         * @see {@link withRawLocales} to set a raw value
-         * @param {...Locale} locales - The design locales.
-         * @return {Design}
-         */
-        withLocales(...locales: Locale[]): Design;
-        /**
-         * Set the raw locales as string.
-         *
-         * @example
-         * .withRawLocales('en-GB','de-CH')
-         * @see {@link withLocales}
-         * @param {...string} locales - The design locales.
-         * @return {Design}
-         */
-        withRawLocales(...locales: string[]): Design;
-        /**
-         * Your design's content element groups.
-         *
-         * @see {@link withRawContentElementGroups} to set a raw value
-         * @param {...ContentElementGroup} contentElementGroups - The content element groups.
-         * @return {Design}
-         */
-        withContentElementGroups(...contentElementGroups: ContentElementGroup[]): Design;
-        /**
-         * Set the content element groups of your design as raw object.
-         *
-         * @example
-         * .withRawContentElementGroups(
-         *   {
-         *     groupId: 'content',
-         *     label: 'Content',
-         *     contentElements: []
-         *   },
-         *   {
-         *     groupId: 'advanced',
-         *     label: 'Advanced',
-         *     contentElements: []
-         *   }
-         * )
-         * @see {@link withContentElementGroups}
-         * @param {...{}} contentElementGroups - The content element groups.
-         * @return {Design}
-         */
-        withRawContentElementGroups(...contentElementGroups: {}[]): Design;
-        /**
-         * The style configurations of your design.
-         *
-         * @see {@link withRawStyleConfigs} to set a raw value
-         * @param {...Style} styleConfigs - The style configurations.
-         * @return {Design}
-         */
-        withStyleConfigs(...styleConfigs: Style[]): Design;
-        /**
-         * Set the style configurations of your design as raw object.
-         *
-         * @example
-         * .withRawStyleConfigs({
-         *   'background-color': {
-         *     label: 'Background Color',
-         *     cssClasses: [
-         *       { cssClass: 'black-background', label: 'Black' },
-         *       { cssClass: 'blue-background', label: 'Blue' }
-         *     ]
-         *   },
-         *   'text-color': {
-         *     label: 'Text Color',
-         *     cssClasses: [
-         *       { cssClass: 'black-text', label: 'Black' },
-         *       { cssClass: 'blue-text', label: 'Blue' }
-         *     ]
-         *   }
-         * })
-         * @see {@link withStyleConfigs}
-         * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
-         * @return {Design}
-         */
-        withRawStyleConfigs(styleConfigs: {}): Design;
-        /**
-         * The HTML editor configurations of your design.
-         *
-         * @see {@link withRawHtmlEditorConfigs} to set a raw value
-         * @param {...HtmlEditorConfig} htmlEditorConfigs
-         * @return {Design}
-         */
-        withHtmlEditorConfigs(...htmlEditorConfigs: HtmlEditorConfig[]): Design;
-        /**
-         * Set the HTML editor configurations as raw object.
-         *
-         * @example
-         * .withRawHtmlEditorConfigs({
-         *   minimal: {
-         *     features: ['italic','bold','underline','strikeThrough']
-         *   }
-         * })
-         * @see {@link withHtmlEditorConfigs}
-         * @param {{}} htmlEditorConfigs - The <code>htmlEditorConfigs</code> object.
-         * @return {Design}
-         */
-        withRawHtmlEditorConfigs(htmlEditorConfigs: {}): Design;
-        /**
-         * The website configuration of your design.
-         *
-         * @see {@link withRawWebsite} to set a raw value
-         * @param {Website} website - The website object.
-         * @return {Design}
-         * @since BSI CX 1.3
-         */
-        withWebsite(website: Website): Design;
-        /**
-         * Set the raw website object of your design.
-         *
-         * @example
-         * .withRawWebsite({
-         *   maxNavigationLevel: 2,
-         *   includes: {
-         *     __page__: {
-         *       editable: true,
-         *       file: require('./includes/page.hbs'),
-         *       name: 'Template for content pages'
-         *     },
-         *     footer: {
-         *       editable: true,
-         *       file: require('./includes/footer.html'),
-         *       name: 'Footer'
-         *     }
-         *   }
-         * })
-         * @param {{}} website - The raw <code>website</code> object.
-         * @return {Design}
-         * @since BSI CX 1.3
-         */
-        withRawWebsite(website: {}): Design;
-        /**
-         * Configure you design's translation support.
-         *
-         * @see {@link withRawNLS} to set a raw value
-         * @param {...NLS} nls
-         * @return {Design}
-         */
-        withNLS(...nls: NLS[]): Design;
-        /**
-         * Set the raw value of the <code>nls</code> property.
-         *
-         * @example
-         * .withRawNLS({
-         *   action: { '*': 'action', de: 'Aktion' },
-         *   name: { '*': 'name', de: 'Name' }
-         * })
-         * @see {@link withNLS}
-         * @param {{}} nls - The raw value.
-         * @return {Design}
-         */
-        withRawNLS(nls: {}): Design;
-        /**
-         * Clone the configuration.
-         *
-         * @example
-         * let design1 = new Design().withName('my first design');
-         * let design2 = design1.clone().withName('my second design');
-         * design1 === design2 // false
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @return {Design}
-         */
-        clone(shallow?: boolean): Design;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-    import { SchemaVersion } from "src/design/schema-version";
-    import { Locale } from "src/design/locale";
-    import ContentElementGroup from "src/content-element/content-element-group";
-    import Style from "src/style/style";
-    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
-    import Website from "src/website/website";
-    import NLS from "src/nls/nls";
-}
-declare module "src/content-element/part/plain-text-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class PlainTextPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {PlainTextPart}
-         */
-        clone(shallow?: boolean): PlainTextPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/formatted-text-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormattedTextPart extends AbstractPart {
-        constructor();
-        /**
-         * @type {HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @return {HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): HtmlEditorConfig;
-        /**
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @return {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormattedTextPart}
-         */
-        clone(shallow?: boolean): FormattedTextPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
-}
-declare module "src/content-element/part/html-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class HtmlPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {HtmlPart}
-         */
-        clone(shallow?: boolean): HtmlPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/video-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class VideoPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {VideoPart}
-         */
-        clone(shallow?: boolean): VideoPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/image-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class ImagePart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {ImagePart}
-         */
-        clone(shallow?: boolean): ImagePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/background-image-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class BackgroundImagePart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {BackgroundImagePart}
-         */
-        clone(shallow?: boolean): BackgroundImagePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/table-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class TablePart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {TablePart}
-         */
-        clone(shallow?: boolean): TablePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/iterator-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class IteratorPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {IteratorPart}
-         */
-        clone(shallow?: boolean): IteratorPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/news-snippets-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class NewsSnippetsPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {NewsSnippetsPart}
-         */
-        clone(shallow?: boolean): NewsSnippetsPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormPart}
-         */
-        clone(shallow?: boolean): FormPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-field-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormFieldPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormFieldPart}
-         */
-        clone(shallow?: boolean): FormFieldPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-checkbox-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormCheckboxPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormCheckboxPart}
-         */
-        clone(shallow?: boolean): FormCheckboxPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-textarea-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormTextareaPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormTextareaPart}
-         */
-        clone(shallow?: boolean): FormTextareaPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-select-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormSelectPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormSelectPart}
-         */
-        clone(shallow?: boolean): FormSelectPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-radio-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormRadioPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {FormRadioPart}
-         */
-        clone(shallow?: boolean): FormRadioPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/link-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class LinkPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {LinkPart}
-         */
-        clone(shallow?: boolean): LinkPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/social-follow-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class SocialFollowPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {SocialFollowPart}
-         */
-        clone(shallow?: boolean): SocialFollowPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/social-share-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class SocialSharePart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {SocialSharePart}
-         */
-        clone(shallow?: boolean): SocialSharePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/url-provider-part" {
-    /**
-     * @since 22.0
-     */
-    export default class UrlProviderPart extends AbstractPart {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {UrlProviderPart}
-         */
-        clone(shallow?: boolean): UrlProviderPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/website/page-include" {
-    /**
-     * @since BSI CX 1.3
-     */
-    export default class PageInclude extends AbstractInclude {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {PageInclude}
-         */
-        clone(shallow?: boolean): PageInclude;
-    }
-    import AbstractInclude from "src/website/abstract-include";
-}
-declare module "src/website/include" {
-    /**
-     * @since BSI CX 1.3
-     */
-    export default class Include extends AbstractInclude {
-        constructor();
-        /**
-         * @param {boolean} [shallow=true]
-         * @return {Include}
-         */
-        clone(shallow?: boolean): Include;
-    }
-    import AbstractInclude from "src/website/abstract-include";
 }
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";

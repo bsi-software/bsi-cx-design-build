@@ -2,7 +2,7 @@ import AbstractPropertyPlugin from './abstract-property-plugin';
 
 export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
   /**
-   * @return {number[]}
+   * @returns {number[]}
    */
   get minVersion() {
     return [3, 0, 0];
@@ -10,7 +10,7 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
 
   /**
    * @param {*} propertyNode
-   * @return {*}
+   * @returns {*}
    */
   getProperty(propertyNode) {
     if (!propertyNode) {

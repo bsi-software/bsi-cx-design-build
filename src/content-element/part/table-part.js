@@ -11,7 +11,7 @@ export default class TablePart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {TablePart}
+   * @returns {TablePart}
    */
   withLabel(label) {
     return /** @type {TablePart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class TablePart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {TablePart}
+   * @returns {TablePart}
    */
   clone(shallow) {
     return this._clone(new TablePart(), shallow);

@@ -20,14 +20,14 @@ export default class AbstractConstant {
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   getValue() {
     return this.value;

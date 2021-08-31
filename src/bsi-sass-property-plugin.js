@@ -1,11 +1,9 @@
-import sass from 'sass';
-
 import AbstractPropertyPlugin from './abstract-property-plugin';
 
 export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   /**
-   * @param {sass.types.String} property
-   * @return {AbstractCssProperty|T}
+   * @param {*} property
+   * @returns {*}
    */
   getProperty(property) {
     let propertyName = property.getValue();

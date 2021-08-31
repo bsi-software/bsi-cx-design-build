@@ -7,7 +7,6 @@ import {identity, scalarArrayToList} from './browser-utility';
 import {toString} from './utility';
 import LegacyDesignProperty from './legacy-design-property';
 import DesignJsonProperty from './design-json-property';
-import ValidatedBuildConfig from './build-config/validated-build-config';
 
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
@@ -83,7 +82,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
   }
 
   /**
-   * @return {{}}
+   * @returns {{}}
    * @private
    */
   _getDesignJsonObject() {
@@ -106,7 +105,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} designJson
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _createAndEmitContentElementsHtml(designJson) {
@@ -122,7 +121,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} group
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _renderContentElementsGroup(group) {
@@ -137,7 +136,7 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
   /**
    * @param {{}} element
-   * @return {string}
+   * @returns {string}
    * @private
    */
   _renderContentElement(element) {

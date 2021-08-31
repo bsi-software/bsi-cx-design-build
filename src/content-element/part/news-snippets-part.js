@@ -11,7 +11,7 @@ export default class NewsSnippetsPart extends AbstractPart {
 
   /**
    * @param {String} label
-   * @return {NewsSnippetsPart}
+   * @returns {NewsSnippetsPart}
    */
   withLabel(label) {
     return /** @type {NewsSnippetsPart} */ super.withLabel(label);
@@ -19,7 +19,7 @@ export default class NewsSnippetsPart extends AbstractPart {
 
   /**
    * @param {boolean} [shallow=true]
-   * @return {NewsSnippetsPart}
+   * @returns {NewsSnippetsPart}
    */
   clone(shallow) {
     return this._clone(new NewsSnippetsPart(), shallow);

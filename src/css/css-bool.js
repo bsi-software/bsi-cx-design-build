@@ -22,28 +22,28 @@ export default class CssBool extends AbstractCssProperty {
   }
 
   /**
-   * @return {boolean}
+   * @returns {boolean}
    */
   get value() {
     return this._value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getLessNode() {
     return this.value;
   }
 
   /**
-   * @return {*}
+   * @returns {*}
    */
   getSassObject() {
     return !!this.value ? sass.types.Boolean.TRUE : sass.types.Boolean.FALSE;
   }
 
   /**
-   * @return {string}
+   * @returns {string}
    */
   toString() {
     return JSON.stringify(this.value);
@@ -51,15 +51,15 @@ export default class CssBool extends AbstractCssProperty {
 
   /**
    * @param {boolean} value
-   * @return {CssBool}
+   * @returns {CssBool}
    */
   static fromBoolean(value) {
     return new CssBool(!!value);
   }
 
   /**
-   * @param {string|number|boolean} value
-   * @return {(function(boolean): CssBool)|undefined}
+   * @param {*} value
+   * @returns {(function(*): CssBool)|undefined}
    */
   static getParser(value) {
     switch (true) {
