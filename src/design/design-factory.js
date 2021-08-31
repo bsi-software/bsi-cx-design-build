@@ -10,7 +10,7 @@ import CssClass from '../style/css-class';
 import NLS from '../nls/nls';
 import Translation from '../nls/translation';
 import PartFactory from '../content-element/part/part-factory';
-import {Locale, WILDCARD} from './locale';
+import DesignHelper from './design-helper';
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -275,52 +275,16 @@ export default class DesignFactory {
   }
 
   /**
-   * Shortcut to create a {@link NLS} object. See example for usage.
+   * Get a collection of various helper methods.
    *
    * @example
-   * module.exports = [
-   *   cx.n(
-   *     'action',
-   *     cx.t('action'),
-   *     cx.t('de', 'Aktion'),
-   *     cx.t(Locale.DE_CH, 'Aktion')),
-   *   cx.n(
-   *     'contact',
-   *     cx.t('contact'),
-   *     cx.t('de', 'Kontakt'),
-   *     cx.t(Locale.DE_CH, 'Kontakt'))
-   * ];
-   * @see {@link t}
-   * @param {string} identifier
-   * @param {Translation} translations
-   * @returns {NLS}
+   * cx.h.nls(
+   *   'action',
+   *   cx.h.t('action'),
+   *   cx.h.t('de','Aktion'))
+   * @returns {DesignHelper}
    */
-  n(identifier, ...translations) {
-    return this.nls
-      .withIdentifier(identifier)
-      .withTranslations(...translations);
-  }
-
-  /**
-   * Shortcut to create a {@link Translation} object. See example for usage.
-   *
-   * @example
-   * cx.nls
-   *   .withIdentifier('action')
-   *   .withTranslations(
-   *     cx.t('action'), // wildcard translation
-   *     cx.t('de', 'Aktion'), // translation with raw locale
-   *     cx.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
-   * @see {@link n}
-   * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
-   * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
-   * @returns {Translation}
-   */
-  t(localeOrWildcardTranslation, optionalTranslation) {
-    let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;
-    let translation = optionalTranslation ?? localeOrWildcardTranslation;
-    let translationObj = this.translation.withTranslation(translation);
-
-    return locale instanceof Locale ? translationObj.withLocale(locale) : translationObj.withRawLocale(locale);
+  get h() {
+    return new DesignHelper(this);
   }
 }

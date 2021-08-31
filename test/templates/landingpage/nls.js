@@ -22,7 +22,7 @@ module.exports = [
       cx.translation
         .withLocale(Locale.DE)
         .withTranslation('Bitte unterstütze unsere Freunde!'),
-      cx.t(Locale.DE_CH, 'Unterstütz üsi fründe!')),
+      cx.h.t(Locale.DE_CH, 'Unterstütz üsi fründe!')),
   NLS.create(
     'column',
     Translation.wildcard('Column'),

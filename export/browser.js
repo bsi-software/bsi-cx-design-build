@@ -49,10 +49,14 @@ import DesignFactory from '../src/design/design-factory';
 import PartFactory from '../src/content-element/part/part-factory';
 
 /**
+ * A collection of various builder factory methods.
+ *
  * @type {DesignFactory}
  */
 const cx = new DesignFactory();
 /**
+ * A collection of all part builders.
+ *
  * @type {PartFactory}
  */
 const part = new PartFactory();

@@ -4365,11 +4365,11 @@ declare module "src/nls/translation" {
      *         .withLocale(Locale.DE)
      *         .withTranslation('Aktion')),
      *   // using factory shortcuts
-     *   cx.n(
+     *   cx.h.nls(
      *     'contact',
-     *     cx.t('contact'),
-     *     cx.t('de', 'Kontakt'),
-     *     cx.t(Locale.DE_CH, 'Kontakt'))
+     *     cx.h.t('contact'),
+     *     cx.h.t('de', 'Kontakt'),
+     *     cx.h.t(Locale.DE_CH, 'Kontakt'))
      * ];
      */
     export default class Translation extends AbstractBuilder {
@@ -4466,11 +4466,11 @@ declare module "src/nls/nls" {
      *         .withLocale(Locale.DE)
      *         .withTranslation('Aktion')),
      *   // using factory shortcuts
-     *   cx.n(
+     *   cx.h.nls(
      *     'contact',
-     *     cx.t('contact'),
-     *     cx.t('de', 'Kontakt'),
-     *     cx.t(Locale.DE_CH, 'Kontakt'))
+     *     cx.h.t('contact'),
+     *     cx.h.t('de', 'Kontakt'),
+     *     cx.h.t(Locale.DE_CH, 'Kontakt'))
      * ];
      */
     export default class NLS extends AbstractBuilder {
@@ -5651,6 +5651,101 @@ declare module "src/content-element/part/part-factory" {
     import UrlProviderPart from "src/content-element/part/url-provider-part";
     import VideoPart from "src/content-element/part/video-part";
 }
+declare module "src/design/design-helper" {
+    /** @typedef {import('./design-factory').default} DesignFactory */
+    /** @typedef {import('../style/css-class').default} CssClass */
+    /**
+     * A collection of various helper methods.
+     *
+     * @example
+     * cx.h.nls(
+     *   'action',
+     *   cx.h.t('action'),
+     *   cx.h.t('de','Aktion'))
+     */
+    export default class DesignHelper {
+        /**
+         * @param {DesignFactory} factory
+         */
+        constructor(factory: DesignFactory);
+        /**
+         * @type {DesignFactory}
+         * @private
+         */
+        private _factory;
+        /**
+         * Shortcut to create a new {@link Style} object. See example for usage.
+         *
+         * @example
+         * module.exports = cx.h.style(
+         *   'text-color',
+         *   'Text Color',
+         *   cx.h.cssClass('text-red','Red'),
+         *   cx.h.cssClass('text-blue','Blue'));
+         * @param {string} identifier
+         * @param {string} label
+         * @param {...CssClass} cssClasses
+         */
+        style(identifier: string, label: string, ...cssClasses: CssClass[]): import("export/browser").Style;
+        /**
+         * Shortcut to create a new {@link CssClass} instance. See example for usage.
+         *
+         * @example
+         * module.exports = cx.style
+         *   .withIdentifier('text-color')
+         *   .withLabel('Text Color')
+         *   .withCssClasses(
+         *     cx.h.cssClass('text-red','Red'),
+         *     cx.h.cssClass('text-blue','Blue'));
+         * @param {string} cssClass
+         * @param {string} label
+         * @returns {CssClass}
+         */
+        cssClass(cssClass: string, label: string): CssClass;
+        /**
+         * Shortcut to create a {@link NLS} object. See example for usage.
+         *
+         * @example
+         * module.exports = [
+         *   cx.h.nls(
+         *     'action',
+         *     cx.h.t('action'),
+         *     cx.h.t('de', 'Aktion'),
+         *     cx.h.t(Locale.DE_CH, 'Aktion')),
+         *   cx.h.nls(
+         *     'contact',
+         *     cx.h.t('contact'),
+         *     cx.h.t('de', 'Kontakt'),
+         *     cx.h.t(Locale.DE_CH, 'Kontakt'))
+         * ];
+         * @see {@link t}
+         * @param {string} identifier
+         * @param {Translation} translations
+         * @returns {NLS}
+         */
+        nls(identifier: string, ...translations: any): any;
+        /**
+         * Shortcut to create a {@link Translation} object. See example for usage.
+         *
+         * @example
+         * cx.nls
+         *   .withIdentifier('action')
+         *   .withTranslations(
+         *     cx.h.t('action'), // wildcard translation
+         *     cx.h.t('de', 'Aktion'), // translation with raw locale
+         *     cx.h.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
+         * @see {@link n}
+         * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
+         * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
+         * @returns {Translation}
+         */
+        t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): any;
+        #private;
+    }
+    export type DesignFactory = import("src/design/design-factory").default;
+    export type CssClass = import("src/style/css-class").default;
+    import { Locale } from "src/design/locale";
+}
 declare module "src/design/design-factory" {
     /**
      * Use the design factory to minimize the amount of imports when specifying a design.
@@ -5879,43 +5974,16 @@ declare module "src/design/design-factory" {
          */
         get part(): PartFactory;
         /**
-         * Shortcut to create a {@link NLS} object. See example for usage.
+         * Get a collection of various helper methods.
          *
          * @example
-         * module.exports = [
-         *   cx.n(
-         *     'action',
-         *     cx.t('action'),
-         *     cx.t('de', 'Aktion'),
-         *     cx.t(Locale.DE_CH, 'Aktion')),
-         *   cx.n(
-         *     'contact',
-         *     cx.t('contact'),
-         *     cx.t('de', 'Kontakt'),
-         *     cx.t(Locale.DE_CH, 'Kontakt'))
-         * ];
-         * @see {@link t}
-         * @param {string} identifier
-         * @param {Translation} translations
-         * @returns {NLS}
+         * cx.h.nls(
+         *   'action',
+         *   cx.h.t('action'),
+         *   cx.h.t('de','Aktion'))
+         * @returns {DesignHelper}
          */
-        n(identifier: string, ...translations: Translation): NLS;
-        /**
-         * Shortcut to create a {@link Translation} object. See example for usage.
-         *
-         * @example
-         * cx.nls
-         *   .withIdentifier('action')
-         *   .withTranslations(
-         *     cx.t('action'), // wildcard translation
-         *     cx.t('de', 'Aktion'), // translation with raw locale
-         *     cx.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
-         * @see {@link n}
-         * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
-         * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
-         * @returns {Translation}
-         */
-        t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): Translation;
+        get h(): DesignHelper;
     }
     import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
@@ -5929,7 +5997,7 @@ declare module "src/design/design-factory" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
-    import { Locale } from "src/design/locale";
+    import DesignHelper from "src/design/design-helper";
 }
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";
@@ -5980,6 +6048,8 @@ declare module "export/browser" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     /**
+     * A collection of various builder factory methods.
+     *
      * @type {DesignFactory}
      */
     export const cx: DesignFactory;

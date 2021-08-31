@@ -17,11 +17,11 @@ import Translation from './translation';
  *         .withLocale(Locale.DE)
  *         .withTranslation('Aktion')),
  *   // using factory shortcuts
- *   cx.n(
+ *   cx.h.nls(
  *     'contact',
- *     cx.t('contact'),
- *     cx.t('de', 'Kontakt'),
- *     cx.t(Locale.DE_CH, 'Kontakt'))
+ *     cx.h.t('contact'),
+ *     cx.h.t('de', 'Kontakt'),
+ *     cx.h.t(Locale.DE_CH, 'Kontakt'))
  * ];
  */
 export default class NLS extends AbstractBuilder {
