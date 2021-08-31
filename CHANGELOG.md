@@ -9,6 +9,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+## [1.0.0] - 31.08.2021
+
+### Added
+
 * Factory classes
 * Helper classes
 * More JSDoc
@@ -147,7 +151,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.14...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0...HEAD
+
+[1.0.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.14...1.0.0
 
 [1.0.0-rc.14]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0-rc.13...1.0.0-rc.14
 
