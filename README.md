@@ -1,77 +1,64 @@
-# Readme
+[![node >= 14.16.0](https://img.shields.io/badge/node-%3E%3D14.16.0-brightgreen)](https://nodejs.org/)
+[![BSI Studio >= 1.0.0](https://img.shields.io/badge/BSI%20Studio-%3E%3D1.0.0-brightgreen)](https://www.bsi-software.com/cx)
+[![BSI CX >= 1.3.0](https://img.shields.io/badge/BSI%20CX-%3E%3D1.3.0-brightgreen)](https://www.bsi-software.com/cx)
+[![Install size](https://img.shields.io/github/repo-size/bsi-software/bsi-cx-design-build?label=install%20size)](https://github.com/bsi-software/bsi-cx-design-build/releases)
+[![Latest available version](https://img.shields.io/github/v/tag/bsi-software/bsi-cx-design-build?label=npm)](https://github.com/bsi-software/bsi-cx-design-build/releases)
 
-Build design ZIP files for BSI CX using a standard Webpack build.
-Take a look at the `webpack.config.js` file to start your project.
+[![Open GitHub issues](https://img.shields.io/github/issues/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/issues)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/commits)
+[![GitHub last commit](https://img.shields.io/github/last-commit/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/commits)
+[![GitHub contributors](https://img.shields.io/github/contributors/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/graphs/contributors)
 
-## Create a new template
+[![Webpack](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/webpack)](https://www.npmjs.com/package/webpack)
+[![Sass](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/sass)](https://www.npmjs.com/package/sass)
+[![Less](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/less)](https://www.npmjs.com/package/less)
+[![Twing](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/twing)](https://www.npmjs.com/package/twing)
 
-To create a new template proceed with the following steps:
+# @bsi-cx/design-build
 
-1. Create a new folder with the name of your template inside the `/template` folder.
-2. Create a file named `design.js` inside your new folder.
-3. Create a new file named `design.twig` or `design.hbs.twig` in your new folder.
-4. Create a new file named `preview.twig` or `preview.hbs.twig` in your new folder.
-5. Register your new template in the central `webpack.config.js` Webpack configuration file.
+Build design ZIP files for BSI CX using a standard Webpack build. Checkout the documentation
+on [GitHub Wiki](https://github.com/bsi-software/bsi-cx-design-build/wiki) or visit
+the [BSI Software](https://www.bsi-software.com/cx) website for more information about BSI CX. If you need more
+information about BSI CX designs, you can read our [online documentation](https://bsi-software.github.io/bsi-cx-docs/).
+To start a new BSI CX design project, we recommend you to use
+our [scaffold design](https://github.com/bsi-software/bsi-cx-scaffold-design).
 
-## Create a new content element
+## Requirements
 
-To create a new content element for one of your templates proceed with the following steps:
+To use this package you have to fulfill the following requirements:
 
-1. Create a new folder with the name of your new content element somewhere suitable.
-2. Create a Java Script file inside your new folder (e.g. `index.js`).
-3. Create a `.html`, `.twig` or `.hbs.twig` file beside your new Java Script file. This will be your template for the content element.
-4. Require the template file in your Java Script file under the key `file`.
-4. Require your content element's Java Script file inside your template's `design.js` file in one of the `contentElements` sections.
-5. If you have any assets specific for this content element (like LESS or CSS files) you can require them in your Java Script file.
+* [Node](https://nodejs.org/) >= 14.16.0
+* [NPM](https://nodejs.org/) >= 6.14.4
+* A code editor e.g. [Visual Studio Code](https://code.visualstudio.com/), [IntelliJ](https://www.jetbrains.com/idea/)
+  or [Web Storm](https://www.jetbrains.com/webstorm/)
+* To test your design, you need access to [BSI CX](https://www.bsi-software.com/cx)
 
-### Example content element
+## Installation
 
-```javascript {data-filename="index.js"}
-require('./styles.scss');
+Fulfill the requirements and run the following command in your project folder:
 
-module.exports = {
-  elementId: 'image',
-  icon: 'image',
-  label: 'Bild',
-  file: require('./template.hbs.twig'),
-  parts: [
-    {
-      partId: 'image',
-      label: 'Bild'
-    },
-    {
-      partId: 'plain-text',
-      label: 'Label'
-    }
-  ]
-};
-```
+````shell script
+npm install --save-dev github:bsi-software/bsi-cx-design-build#semver:^1.0.0
+````
 
-```twig {data-filename="template.hbs.twig"}
-{% set _caption = caption ?: 'lorem ipsum' %}
-<figure data-bsi-element="image" class="element image">
-  <img src="{{ bsi_cx_asset('./placeholder.png') }}" alt="{{ _caption }}" data-bsi-element-part="image" />
-  <figcaption data-bsi-element-part="plain-text">{{ _caption }}</figcaption>
-</figure>
-```
+Or add the following lines to the `devDependencies` section in your `package.json`:
 
-## NPM scripts
+````json
+"@bsi-cx/design-build": "github:bsi-software/bsi-cx-design-build#semver:^1.0.0"
+````
 
-The following NPM scripts are available:
+## Documentation
 
-npm run build
-: Run once and build the templates in production mode.
+Checkout the [Wiki](https://github.com/bsi-software/bsi-cx-design-build/wiki) for more information on this package and
+how to use it.
 
-npm run watch
-: Start the file watcher and build the templates in development mode. Update the bundles when file changes are detected.
+## Issues
 
-npm run serve
-: Start the file watcher and the development server. Build the templates in development mode and update the bundles when file changes are detected.
+If you have any problems using this package or found a bug,
+please [create a new issue](https://github.com/bsi-software/bsi-cx-design-build/issues) in this repository on GitHub.
 
-## Template file resolution
+## Contributing
 
-The `design` and `preview` file must have a `.twig` or `.hbs.twig` extension.
-The `.twig` files will result in a `.html` file inside the bundle.
-The `.hbs.twig` files will result in a `.hbs` file inside the bundle.
-Except for the `preview` file. This will always result in a `.html` file.
-If the `preview` file has a `.hbs.twig` extension, the BSI CX Webpack Plugin will also apply a Handlebars parser after the Twig parser.
+If you like to contribute to this project, feel free to fork it and create a pull request. For further information,
+checkout our [contribution guideline](https://github.com/bsi-software/bsi-cx-design-build/wiki/Contributing) in the
+Wiki.
