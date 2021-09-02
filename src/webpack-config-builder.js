@@ -163,7 +163,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * Get the entry configurations for the Java Script modules.
+   * Get the entry configurations for the JavaScript modules.
    *
    * @returns {{}}
    */
@@ -382,7 +382,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * Rule for static Java Script file handling.
+   * Rule for static JavaScript file handling.
    *
    * @returns {{}[]}
    */
@@ -410,7 +410,7 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * Rule for regular Java Script file handling.
+   * Rule for regular JavaScript file handling.
    *
    * @returns {{}[]}
    */
