@@ -20,18 +20,20 @@ export default class AbstractBuilder {
    * @param {{}} targetObj
    * @param {function} extractFunc
    * @param {boolean} [arrayToObject=false]
+   * @param {boolean} [setMetaProperty=false]
    * @protected
    */
-  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject, setMetaProperty) {
     if (typeof this[property] === 'undefined') {
       return;
     }
 
     let value = this[property];
     let computedValue;
+    let isRawValue = value instanceof RawValue;
 
     switch (true) {
-      case value instanceof RawValue:
+      case isRawValue:
         computedValue = value.value;
         break;
       case value instanceof Array:
@@ -42,11 +44,34 @@ export default class AbstractBuilder {
         break;
     }
 
-    if (!!arrayToObject && !(value instanceof RawValue)) {
+    if (!!arrayToObject && !isRawValue) {
       computedValue = this._applyArrayToObject(computedValue);
     }
 
+    if (!!setMetaProperty && !isRawValue) {
+      this._applyMetaPropertyFromValue(property, targetObj, value);
+    }
+
     targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {AbstractBuilder|AbstractBuilder[]} value
+   * @private
+   */
+  _applyMetaPropertyFromValue(property, targetObj, value) {
+    let computedValue;
+    let metaProperty = `_${property}`;
+
+    if (value instanceof Array) {
+      computedValue = value.map(item => item.build());
+    } else {
+      computedValue = value.build();
+    }
+
+    targetObj[metaProperty] = computedValue;
   }
 
   /**

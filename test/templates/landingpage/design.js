@@ -22,11 +22,7 @@ module.exports = cx.design
       .withContentElements(
         require('./content-elements/content/title'),
         require('./content-elements/content/text')))
-  .withStyleConfigs(
-    require('./styles/background-color'),
-    require('./styles/text-color'))
   .withHtmlEditorConfigs(
-    require('./html-editor-configs/full'),
     require('./html-editor-configs/normal'))
   .withWebsite(
     cx.website

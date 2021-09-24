@@ -303,7 +303,7 @@ export default class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
 
     return config;
   }

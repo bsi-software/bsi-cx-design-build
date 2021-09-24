@@ -120,9 +120,17 @@ declare module "src/abstract-builder" {
          * @param {{}} targetObj
          * @param {function} extractFunc
          * @param {boolean} [arrayToObject=false]
+         * @param {boolean} [setMetaProperty=false]
          * @protected
          */
-        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean): void;
+        protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean, setMetaProperty?: boolean): void;
+        /**
+         * @param {string} property
+         * @param {{}} targetObj
+         * @param {AbstractBuilder|AbstractBuilder[]} value
+         * @private
+         */
+        private _applyMetaPropertyFromValue;
         /**
          * @param {{}[]} arr
          * @private
@@ -1242,7 +1250,7 @@ declare module "src/builder-object-normalizer" {
     export default class BuilderObjectNormalizer {
         /**
          * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
-         * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
+         * This method normally operates on imported values from executed JavaScript assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
          * Such values cannot be checked with instanceof.
          *
          * @param {*} obj
@@ -2406,7 +2414,7 @@ declare module "src/webpack-config-builder" {
          */
         private _getDesignJsFilePath;
         /**
-         * Get the entry configurations for the Java Script modules.
+         * Get the entry configurations for the JavaScript modules.
          *
          * @returns {{}}
          */
@@ -2448,7 +2456,7 @@ declare module "src/webpack-config-builder" {
          */
         _getStaticAssetsRuleConfig(): {}[];
         /**
-         * Rule for static Java Script file handling.
+         * Rule for static JavaScript file handling.
          *
          * @returns {{}[]}
          */
@@ -2459,7 +2467,7 @@ declare module "src/webpack-config-builder" {
          */
         _isStaticJavaScriptFile(fileToCheck: string): boolean;
         /**
-         * Rule for regular Java Script file handling.
+         * Rule for regular JavaScript file handling.
          *
          * @returns {{}[]}
          */

@@ -232,18 +232,20 @@ class AbstractBuilder {
    * @param {{}} targetObj
    * @param {function} extractFunc
    * @param {boolean} [arrayToObject=false]
+   * @param {boolean} [setMetaProperty=false]
    * @protected
    */
-  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject, setMetaProperty) {
     if (typeof this[property] === 'undefined') {
       return;
     }
 
     let value = this[property];
     let computedValue;
+    let isRawValue = value instanceof RawValue;
 
     switch (true) {
-      case value instanceof RawValue:
+      case isRawValue:
         computedValue = value.value;
         break;
       case value instanceof Array:
@@ -254,11 +256,34 @@ class AbstractBuilder {
         break;
     }
 
-    if (!!arrayToObject && !(value instanceof RawValue)) {
+    if (!!arrayToObject && !isRawValue) {
       computedValue = this._applyArrayToObject(computedValue);
     }
 
+    if (!!setMetaProperty && !isRawValue) {
+      this._applyMetaPropertyFromValue(property, targetObj, value);
+    }
+
     targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {AbstractBuilder|AbstractBuilder[]} value
+   * @private
+   */
+  _applyMetaPropertyFromValue(property, targetObj, value) {
+    let computedValue;
+    let metaProperty = `_${property}`;
+
+    if (value instanceof Array) {
+      computedValue = value.map(item => item.build());
+    } else {
+      computedValue = value.build();
+    }
+
+    targetObj[metaProperty] = computedValue;
   }
 
   /**
@@ -1992,7 +2017,7 @@ class BuilderObjectNormalizer {
 
   /**
    * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
-   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
+   * This method normally operates on imported values from executed JavaScript assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
    * Such values cannot be checked with instanceof.
    *
    * @param {*} obj
@@ -2325,12 +2350,18 @@ class _BsiCxWebpackPlugin {
     let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
+    let metaPropertyMap = new Map([
+      [DesignJsonProperty.HTML_EDITOR_CONFIG, {}],
+      [DesignJsonProperty.STYLE_CONFIGS, {}]
+    ]);
 
     this._handleDesignPreviewImage(designJsonObj);
 
     contentElementGroups
       .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        .forEach(element => this._handleElement(element, replaceMap)));
+        .forEach(element => this._handleElement(element, replaceMap, metaPropertyMap)));
+
+    this._applyExtractedMetaProperties(designJsonObj, metaPropertyMap);
 
     for (let [id, include] of Object.entries(websiteIncludes)) {
       this._handleInclude(id, include, replaceMap);
@@ -2350,12 +2381,15 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{file:{content:string,path:string},parts:[]}} element
    * @param {Map<string, function(string):string>} replaceMap
+   * @param {Map<string, {}>} metaPropertyMap
    * @private
    */
-  _handleElement(element, replaceMap) {
+  _handleElement(element, replaceMap, metaPropertyMap) {
     this._importElementFile(element);
     this._sortElementPartsById(element);
     this._handleElementFile(element, replaceMap);
+    this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
+    this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
   }
 
   /**
@@ -2379,6 +2413,60 @@ class _BsiCxWebpackPlugin {
     let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
     element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+  }
+
+  /**
+   * @param {{}} targetObj
+   * @param {string} property
+   * @param {Map<string, {}>} metaPropertyMap
+   * @private
+   */
+  _extractMetaConfigProperties(targetObj, property, metaPropertyMap) {
+    let metaProperty = `_${property}`;
+    let rawMetaConfigs = targetObj[metaProperty] ?? [];
+    let metaConfigs = Array.isArray(rawMetaConfigs) ? rawMetaConfigs : [rawMetaConfigs];
+    let configMap = metaPropertyMap.get(property);
+
+    metaConfigs.forEach(metaConfig => {
+      let name = Object.keys(metaConfig).pop();
+
+      configMap[name] = metaConfig[name];
+    });
+
+    delete targetObj[metaProperty];
+  }
+
+  /**
+   * @param {{parts:[]}} element
+   * @param {Map<string, {}>} metaPropertyMap
+   * @private
+   */
+  _extractMetaConfigPropertiesFromParts(element, metaPropertyMap) {
+    element[DesignJsonProperty.PARTS]
+      .forEach(part => this._extractMetaConfigProperties(part, DesignJsonProperty.HTML_EDITOR_CONFIG, metaPropertyMap));
+  }
+
+  /**
+   * @param {{}} designJsonObj
+   * @param {Map<string, Map<string, {}>>} metaPropertyMap
+   * @private
+   */
+  _applyExtractedMetaProperties(designJsonObj, metaPropertyMap) {
+    let styleConfigs = metaPropertyMap.get(DesignJsonProperty.STYLE_CONFIGS);
+    let htmlEditorConfigs = metaPropertyMap.get(DesignJsonProperty.HTML_EDITOR_CONFIG);
+
+    this._applyExtractedMetaProperty(designJsonObj, DesignJsonProperty.STYLE_CONFIGS, styleConfigs);
+    this._applyExtractedMetaProperty(designJsonObj, DesignJsonProperty.HTML_EDITOR_CONFIGS, htmlEditorConfigs);
+  }
+
+  /**
+   * @param {{}} designJsonObj
+   * @param {string} property
+   * @param {{}} configs
+   * @private
+   */
+  _applyExtractedMetaProperty(designJsonObj, property, configs) {
+    designJsonObj[property] = Object.assign({}, configs, designJsonObj[property] ?? {});
   }
 
   /**
@@ -5248,7 +5336,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * Get the entry configurations for the Java Script modules.
+   * Get the entry configurations for the JavaScript modules.
    *
    * @returns {{}}
    */
@@ -5467,7 +5555,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * Rule for static Java Script file handling.
+   * Rule for static JavaScript file handling.
    *
    * @returns {{}[]}
    */
@@ -5495,7 +5583,7 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * Rule for regular Java Script file handling.
+   * Rule for regular JavaScript file handling.
    *
    * @returns {{}[]}
    */

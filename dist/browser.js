@@ -631,18 +631,20 @@ class AbstractBuilder {
    * @param {{}} targetObj
    * @param {function} extractFunc
    * @param {boolean} [arrayToObject=false]
+   * @param {boolean} [setMetaProperty=false]
    * @protected
    */
-  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject) {
+  _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject, setMetaProperty) {
     if (typeof this[property] === 'undefined') {
       return;
     }
 
     let value = this[property];
     let computedValue;
+    let isRawValue = value instanceof RawValue;
 
     switch (true) {
-      case value instanceof RawValue:
+      case isRawValue:
         computedValue = value.value;
         break;
       case value instanceof Array:
@@ -653,11 +655,34 @@ class AbstractBuilder {
         break;
     }
 
-    if (!!arrayToObject && !(value instanceof RawValue)) {
+    if (!!arrayToObject && !isRawValue) {
       computedValue = this._applyArrayToObject(computedValue);
     }
 
+    if (!!setMetaProperty && !isRawValue) {
+      this._applyMetaPropertyFromValue(property, targetObj, value);
+    }
+
     targetObj[property] = computedValue;
+  }
+
+  /**
+   * @param {string} property
+   * @param {{}} targetObj
+   * @param {AbstractBuilder|AbstractBuilder[]} value
+   * @private
+   */
+  _applyMetaPropertyFromValue(property, targetObj, value) {
+    let computedValue;
+    let metaProperty = `_${property}`;
+
+    if (value instanceof Array) {
+      computedValue = value.map(item => item.build());
+    } else {
+      computedValue = value.build();
+    }
+
+    targetObj[metaProperty] = computedValue;
   }
 
   /**
@@ -745,7 +770,7 @@ class BuilderObjectNormalizer {
 
   /**
    * Convert a builder object into a standard object by invoking the build method on a builder object or just return the provided object.
-   * This method normally operates on imported values from executed Java Script assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
+   * This method normally operates on imported values from executed JavaScript assets, see {@link _BsiCxWebpackPlugin#_loadAssets}.
    * Such values cannot be checked with instanceof.
    *
    * @param {*} obj
@@ -3380,7 +3405,7 @@ class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
 
     return config;
   }
@@ -3609,7 +3634,7 @@ class FormattedTextPart extends AbstractPart {
   build() {
     let config = super.build();
 
-    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier);
+    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
 
     return config;
   }
