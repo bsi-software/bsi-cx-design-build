@@ -2616,7 +2616,7 @@ declare module "src/css/helper" {
      */
     export function color(...channels: (string | number)[]): CssColor | string;
     /**
-     * Create a CSS numeric value with a given unit. Take a look at the examples to find out more about the accepted input.
+     * Create a CSS numeric value with a given unit. Take a look at the example to find out more about the accepted input.
      *
      * @example
      * css.number('10px');
@@ -5753,7 +5753,7 @@ declare module "src/design/design-helper" {
          *   .withTranslations(
          *     cx.h.t('action'), // wildcard translation
          *     cx.h.t('de', 'Aktion'), // translation with raw locale
-         *     cx.h.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
+         *     cx.h.t(Locale.DE_CH, 'Ägschen')) // translation with locale as constant
          * @see {@link n}
          * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
          * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.

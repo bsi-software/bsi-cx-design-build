@@ -10,7 +10,8 @@ module.exports = {
     alternateColor: css.color('#abc'),
     mainColor: '#ff00ff',
     background: css.url(__dirname, 'content-elements', 'content', 'title', 'placeholder.png'),
+    foreground: css.dataUri(__dirname, 'content-elements', 'content', 'title', 'placeholder.png'),
     flag: true,
-    margin: '10px'
+    margin: css.number('10px')
   }
 };

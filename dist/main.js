@@ -6000,7 +6000,7 @@ function color(...channels) {
 }
 
 /**
- * Create a CSS numeric value with a given unit. Take a look at the examples to find out more about the accepted input.
+ * Create a CSS numeric value with a given unit. Take a look at the example to find out more about the accepted input.
  *
  * @example
  * css.number('10px');

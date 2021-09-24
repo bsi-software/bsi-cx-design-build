@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - XX.XX.2021
+## [Unreleased]
+
+## [1.1.0] - 24.09.2021
 
 ### Changed
 
@@ -159,7 +161,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.0...HEAD
+
+[1.1.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.1...1.1.0
 
 [1.0.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.0...1.0.1
 

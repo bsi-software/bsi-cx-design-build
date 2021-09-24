@@ -109,7 +109,7 @@ export default class DesignHelper {
    *   .withTranslations(
    *     cx.h.t('action'), // wildcard translation
    *     cx.h.t('de', 'Aktion'), // translation with raw locale
-   *     cx.h.t(Locale.DE_CH, 'Aktion')) // translation with locale as constant
+   *     cx.h.t(Locale.DE_CH, 'Ägschen')) // translation with locale as constant
    * @see {@link n}
    * @param {Locale|string} localeOrWildcardTranslation - Locale (as string or constant) or translation string.
    * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
