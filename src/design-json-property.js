@@ -154,5 +154,9 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static NAME = 'name';
+  /**
+   * @type {string}
+   */
   static PAGE_INCLUDE = '__page__';
 }

@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.1] - 24.09.2021
+
+### Fixed
+
+* Fix NPE in BSI CX webpack plugin when content element has no parts.
+* Fix missing name property for website includes.
+
 ## [1.1.0] - 24.09.2021
 
 ### Changed
@@ -161,7 +168,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.1...HEAD
+
+[1.1.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.0...1.1.1
 
 [1.1.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.0.1...1.1.0
 

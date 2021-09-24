@@ -1956,6 +1956,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static NAME = 'name';
+  /**
+   * @type {string}
+   */
   static PAGE_INCLUDE = '__page__';
 }
 
@@ -2478,14 +2482,15 @@ class _BsiCxWebpackPlugin {
      * @type {Map<string, {id:string}>}
      */
     let idPartMap = new Map();
-    element[DesignJsonProperty.PARTS]
+    let parts = element[DesignJsonProperty.PARTS] ?? [];
+    parts
       .filter(part => !!part[DesignJsonProperty.ID])
       .forEach(part => {
         idPartMap.set(part[DesignJsonProperty.ID], part);
         delete part[DesignJsonProperty.ID];
       });
     // abort if not all parts have an ID
-    if (idPartMap.size !== element[DesignJsonProperty.PARTS].length) {
+    if (idPartMap.size !== parts.length) {
       return;
     }
 
@@ -2502,7 +2507,7 @@ class _BsiCxWebpackPlugin {
     orderedParts = orderedParts.filter(part => !!part);
 
     // abort if not all parts are mapped to the template
-    if (orderedParts.length !== element[DesignJsonProperty.PARTS].length) {
+    if (orderedParts.length !== parts.length) {
       return;
     }
 

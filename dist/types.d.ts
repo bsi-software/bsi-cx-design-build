@@ -1243,6 +1243,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static NAME: string;
+        /**
+         * @type {string}
+         */
         static PAGE_INCLUDE: string;
     }
 }
