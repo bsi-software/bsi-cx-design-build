@@ -3,6 +3,7 @@ import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 
+/** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
 /** @typedef {import('./part/abstract-part').default} AbstractPart */
@@ -206,7 +207,8 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * Declare the styles for this content element.
+   * Declare the styles for this content element. You don't have to register the used styles in the design object
+   * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
    *
    * @example
    * let textColorStyle = cx.style
@@ -236,7 +238,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * Declare the styles for this content element as raw value. Be aware, that you just pass the name of the referenced
    * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
-   * in your design specification.
+   * in your design specification. Use {@link Design#withStyleConfigs} to do so.
    *
    * @example
    * .withRawStyleConfigs('text-color', 'background-color')

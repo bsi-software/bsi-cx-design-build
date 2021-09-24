@@ -1064,6 +1064,8 @@ const V_22_0 = new SchemaVersion('22.0');
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
 /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 /** @typedef {import('../website/website').default} Website */
@@ -1081,9 +1083,6 @@ const V_22_0 = new SchemaVersion('22.0');
  *   .withDate('18.8.2021')
  *   .withPreviewImage(require('./preview.png'))
  *   .withRawDefaultLocale('en')
- *   .withHtmlEditorConfigs(
- *     require('./configs/html-editor/full.js'),
- *     require('./configs/html-editor/minimal.js'))
  *   .withContentElementGroups(
  *     cx.contentElementGroup
  *       .withGroupId('content')
@@ -1411,7 +1410,9 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * The style configurations of your design.
+   * The style configurations of your design. This is only necessary if you use
+   * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
+   * Otherwise you don't have to register your styles here.
    *
    * @see {@link withRawStyleConfigs} to set a raw value
    * @param {...Style} styleConfigs - The style configurations.
@@ -1452,7 +1453,9 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * The HTML editor configurations of your design.
+   * The HTML editor configurations of your design. This is only necessary if you use
+   * {@link FormattedTextPart#withRawHtmlEditorConfig} to reference your HTML editor configuration.
+   * Otherwise you don't have to register your configurations here.
    *
    * @see {@link withRawHtmlEditorConfigs} to set a raw value
    * @param {...HtmlEditorConfig} htmlEditorConfigs
@@ -3105,6 +3108,7 @@ const THREE_COLUMNS = new Icon('three-columns');
 
 
 
+/** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
 /** @typedef {import('./part/abstract-part').default} AbstractPart */
@@ -3308,7 +3312,8 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * Declare the styles for this content element.
+   * Declare the styles for this content element. You don't have to register the used styles in the design object
+   * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
    *
    * @example
    * let textColorStyle = cx.style
@@ -3338,7 +3343,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * Declare the styles for this content element as raw value. Be aware, that you just pass the name of the referenced
    * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
-   * in your design specification.
+   * in your design specification. Use {@link Design#withStyleConfigs} to do so.
    *
    * @example
    * .withRawStyleConfigs('text-color', 'background-color')
@@ -3560,6 +3565,7 @@ class PlainTextPart extends AbstractPart {
 
 
 
+/** @typedef {import('../../design/design').default} Design */
 /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 
 /**
@@ -3593,7 +3599,8 @@ class FormattedTextPart extends AbstractPart {
 
   /**
    * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-   * {@link HtmlEditorConfig} object.
+   * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+   * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
    *
    * @example
    * let editorConfig = new HtmlEditorConfig()
@@ -3621,6 +3628,7 @@ class FormattedTextPart extends AbstractPart {
 
   /**
    * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
+   * Be aware, that you also have to register your HTML editor configuration with {@link Design#withHtmlEditorConfigs}.
    *
    * @see {@link withHtmlEditorConfig}
    * @param {string} htmlEditorConfig

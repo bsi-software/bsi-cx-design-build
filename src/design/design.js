@@ -5,6 +5,8 @@ import RawValue from '../raw-value';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
 /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 /** @typedef {import('../website/website').default} Website */
@@ -22,9 +24,6 @@ import RawValue from '../raw-value';
  *   .withDate('18.8.2021')
  *   .withPreviewImage(require('./preview.png'))
  *   .withRawDefaultLocale('en')
- *   .withHtmlEditorConfigs(
- *     require('./configs/html-editor/full.js'),
- *     require('./configs/html-editor/minimal.js'))
  *   .withContentElementGroups(
  *     cx.contentElementGroup
  *       .withGroupId('content')
@@ -352,7 +351,9 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * The style configurations of your design.
+   * The style configurations of your design. This is only necessary if you use
+   * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
+   * Otherwise you don't have to register your styles here.
    *
    * @see {@link withRawStyleConfigs} to set a raw value
    * @param {...Style} styleConfigs - The style configurations.
@@ -393,7 +394,9 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * The HTML editor configurations of your design.
+   * The HTML editor configurations of your design. This is only necessary if you use
+   * {@link FormattedTextPart#withRawHtmlEditorConfig} to reference your HTML editor configuration.
+   * Otherwise you don't have to register your configurations here.
    *
    * @see {@link withRawHtmlEditorConfigs} to set a raw value
    * @param {...HtmlEditorConfig} htmlEditorConfigs

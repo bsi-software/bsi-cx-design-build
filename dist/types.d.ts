@@ -3277,7 +3277,136 @@ declare module "src/content-element/icon" {
     export const THREE_COLUMNS: Icon;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/content-element/content-element-group" {
+    /** @typedef {import('./content-element').default} ContentElement */
+    /**
+     * This is the builder class to specify content element groups.
+     *
+     * @example
+     * module.exports = cx.contentElementGroup
+     *   .withGroupId('content')
+     *   .withLabel('Content')
+     *   .withContentElements(
+     *     require('./content-elements/content/title'),
+     *     require('./content-elements/content/text')));
+     */
+    export default class ContentElementGroup extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _groupId;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _hidden;
+        /**
+         * @type {RawValue|[ContentElement]|undefined}
+         * @private
+         */
+        private _contentElements;
+        /**
+         * @returns {string|undefined}
+         */
+        get groupId(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get label(): string;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get hidden(): boolean;
+        /**
+         * @returns {RawValue|[ContentElement]|undefined}
+         */
+        get contentElements(): RawValue | [import("src/content-element/content-element").default];
+        /**
+         * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
+         * <strong>It is recommended to set the group identifier.</strong>
+         *
+         * @param {string} groupId - The group ID.
+         * @returns {ContentElementGroup}
+         */
+        withGroupId(groupId: string): ContentElementGroup;
+        /**
+         * The label for this content element group.
+         *
+         * @param {string} label - The group label.
+         * @returns {ContentElementGroup}
+         */
+        withLabel(label: string): ContentElementGroup;
+        /**
+         * Declare this content element group as hidden. It is not required to set this property.
+         * Groups are visible per default.
+         *
+         * @param {boolean} hidden - Hide this group.
+         * @returns {ContentElementGroup}
+         */
+        withHidden(hidden: boolean): ContentElementGroup;
+        /**
+         * Set the content elements of your group.
+         *
+         * @example
+         * .withContentElements(
+         *   cx.contentElement
+         *     .withElementId('image-with-text')
+         *     .withLabel('Image with text')
+         *     .withDescription('Displays an image with an optional text.')
+         *     .withFile(require('./template.twig'))
+         *     .withIcon(Icon.IMAGE)
+         *     .withParts(
+         *       cx.part.image
+         *         .withLabel('Image'),
+         *       cx.part.plainText
+         *         .withLabel('Description')))
+         * @see {@link withRawContentElements} to set a raw value
+         * @see {@link ContentElement}
+         * @param {...ContentElement} contentElements - The content elements to use.
+         * @returns {ContentElementGroup}
+         */
+        withContentElements(...contentElements: ContentElement[]): ContentElementGroup;
+        /**
+         * Set the content elements of your group as raw value.
+         *
+         * @example
+         * .withRawContentElements({
+         *   elementId: 'title',
+         *   file: require('./title/template.twig'),
+         *   icon 'heading',
+         *   label: 'Title',
+         *   parts: [
+         *     {
+         *       partId: 'plain-text',
+         *       label: 'Title'
+         *     }
+         *   ]
+         * })
+         * @see {@link withContentElements}
+         * @param {...{}} contentElements - The content elements as raw value.
+         * @returns {ContentElementGroup}
+         */
+        withRawContentElements(...contentElements: {}[]): ContentElementGroup;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {ContentElementGroup}
+         */
+        clone(shallow?: boolean): ContentElementGroup;
+    }
+    export type ContentElement = import("src/content-element/content-element").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
 declare module "src/content-element/content-element" {
+    /** @typedef {import('../design/design').default} Design */
     /** @typedef {import('../style/style').default} Style */
     /** @typedef {import('./icon').Icon} Icon */
     /** @typedef {import('./part/abstract-part').default} AbstractPart */
@@ -3431,7 +3560,8 @@ declare module "src/content-element/content-element" {
          */
         withHidden(hidden: boolean): ContentElement;
         /**
-         * Declare the styles for this content element.
+         * Declare the styles for this content element. You don't have to register the used styles in the design object
+         * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
          *
          * @example
          * let textColorStyle = cx.style
@@ -3457,7 +3587,7 @@ declare module "src/content-element/content-element" {
         /**
          * Declare the styles for this content element as raw value. Be aware, that you just pass the name of the referenced
          * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
-         * in your design specification.
+         * in your design specification. Use {@link Design#withStyleConfigs} to do so.
          *
          * @example
          * .withRawStyleConfigs('text-color', 'background-color')
@@ -3510,138 +3640,11 @@ declare module "src/content-element/content-element" {
          */
         clone(shallow?: boolean): ContentElement;
     }
+    export type Design = import("src/design/design").default;
     export type Style = import("src/style/style").default;
     export type Icon = import("src/content-element/icon").Icon;
     export type AbstractPart = import("src/content-element/part/abstract-part").default;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-}
-declare module "src/content-element/content-element-group" {
-    /** @typedef {import('./content-element').default} ContentElement */
-    /**
-     * This is the builder class to specify content element groups.
-     *
-     * @example
-     * module.exports = cx.contentElementGroup
-     *   .withGroupId('content')
-     *   .withLabel('Content')
-     *   .withContentElements(
-     *     require('./content-elements/content/title'),
-     *     require('./content-elements/content/text')));
-     */
-    export default class ContentElementGroup extends AbstractBuilder {
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _groupId;
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @type {boolean|undefined}
-         * @private
-         */
-        private _hidden;
-        /**
-         * @type {RawValue|[ContentElement]|undefined}
-         * @private
-         */
-        private _contentElements;
-        /**
-         * @returns {string|undefined}
-         */
-        get groupId(): string;
-        /**
-         * @returns {string|undefined}
-         */
-        get label(): string;
-        /**
-         * @returns {boolean|undefined}
-         */
-        get hidden(): boolean;
-        /**
-         * @returns {RawValue|[ContentElement]|undefined}
-         */
-        get contentElements(): RawValue | [import("src/content-element/content-element").default];
-        /**
-         * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
-         * <strong>It is recommended to set the group identifier.</strong>
-         *
-         * @param {string} groupId - The group ID.
-         * @returns {ContentElementGroup}
-         */
-        withGroupId(groupId: string): ContentElementGroup;
-        /**
-         * The label for this content element group.
-         *
-         * @param {string} label - The group label.
-         * @returns {ContentElementGroup}
-         */
-        withLabel(label: string): ContentElementGroup;
-        /**
-         * Declare this content element group as hidden. It is not required to set this property.
-         * Groups are visible per default.
-         *
-         * @param {boolean} hidden - Hide this group.
-         * @returns {ContentElementGroup}
-         */
-        withHidden(hidden: boolean): ContentElementGroup;
-        /**
-         * Set the content elements of your group.
-         *
-         * @example
-         * .withContentElements(
-         *   cx.contentElement
-         *     .withElementId('image-with-text')
-         *     .withLabel('Image with text')
-         *     .withDescription('Displays an image with an optional text.')
-         *     .withFile(require('./template.twig'))
-         *     .withIcon(Icon.IMAGE)
-         *     .withParts(
-         *       cx.part.image
-         *         .withLabel('Image'),
-         *       cx.part.plainText
-         *         .withLabel('Description')))
-         * @see {@link withRawContentElements} to set a raw value
-         * @see {@link ContentElement}
-         * @param {...ContentElement} contentElements - The content elements to use.
-         * @returns {ContentElementGroup}
-         */
-        withContentElements(...contentElements: ContentElement[]): ContentElementGroup;
-        /**
-         * Set the content elements of your group as raw value.
-         *
-         * @example
-         * .withRawContentElements({
-         *   elementId: 'title',
-         *   file: require('./title/template.twig'),
-         *   icon 'heading',
-         *   label: 'Title',
-         *   parts: [
-         *     {
-         *       partId: 'plain-text',
-         *       label: 'Title'
-         *     }
-         *   ]
-         * })
-         * @see {@link withContentElements}
-         * @param {...{}} contentElements - The content elements as raw value.
-         * @returns {ContentElementGroup}
-         */
-        withRawContentElements(...contentElements: {}[]): ContentElementGroup;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {ContentElementGroup}
-         */
-        clone(shallow?: boolean): ContentElementGroup;
-    }
-    export type ContentElement = import("src/content-element/content-element").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
@@ -4268,6 +4271,70 @@ declare module "src/html-editor-config/html-editor-config" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
+declare module "src/content-element/part/formatted-text-part" {
+    /** @typedef {import('../../design/design').default} Design */
+    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
+    /**
+     * @since Studio 1.0
+     */
+    export default class FormattedTextPart extends AbstractPart {
+        constructor();
+        /**
+         * @type {RawValue|HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
+         * @returns {RawValue|HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): RawValue | import("src/html-editor-config/html-editor-config").default;
+        /**
+         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
+         *
+         * @example
+         * let editorConfig = new HtmlEditorConfig()
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * // ...
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new FormattedTextPart()
+         *       .withLabel('Text')
+         *       .withHtmlEditorConfig(editorConfig))
+         * @see {withRawHtmlEditorConfig} to set a raw value
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+        /**
+         * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
+         * Be aware, that you also have to register your HTML editor configuration with {@link Design#withHtmlEditorConfigs}.
+         *
+         * @see {@link withHtmlEditorConfig}
+         * @param {string} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withRawHtmlEditorConfig(htmlEditorConfig: string): FormattedTextPart;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {FormattedTextPart}
+         */
+        clone(shallow?: boolean): FormattedTextPart;
+    }
+    export type Design = import("src/design/design").default;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractPart from "src/content-element/part/abstract-part";
+    import RawValue from "src/raw-value";
+}
 declare module "src/website/website" {
     /**
      * This is the builder class for website objects.
@@ -4570,6 +4637,8 @@ declare module "src/nls/nls" {
 declare module "src/design/design" {
     /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
     /** @typedef {import('./locale').Locale} Locale */
+    /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
     /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
     /** @typedef {import('../website/website').default} Website */
@@ -4586,9 +4655,6 @@ declare module "src/design/design" {
      *   .withDate('18.8.2021')
      *   .withPreviewImage(require('./preview.png'))
      *   .withRawDefaultLocale('en')
-     *   .withHtmlEditorConfigs(
-     *     require('./configs/html-editor/full.js'),
-     *     require('./configs/html-editor/minimal.js'))
      *   .withContentElementGroups(
      *     cx.contentElementGroup
      *       .withGroupId('content')
@@ -4831,7 +4897,9 @@ declare module "src/design/design" {
          */
         withRawContentElementGroups(...contentElementGroups: {}[]): Design;
         /**
-         * The style configurations of your design.
+         * The style configurations of your design. This is only necessary if you use
+         * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
+         * Otherwise you don't have to register your styles here.
          *
          * @see {@link withRawStyleConfigs} to set a raw value
          * @param {...Style} styleConfigs - The style configurations.
@@ -4864,7 +4932,9 @@ declare module "src/design/design" {
          */
         withRawStyleConfigs(styleConfigs: {}): Design;
         /**
-         * The HTML editor configurations of your design.
+         * The HTML editor configurations of your design. This is only necessary if you use
+         * {@link FormattedTextPart#withRawHtmlEditorConfig} to reference your HTML editor configuration.
+         * Otherwise you don't have to register your configurations here.
          *
          * @see {@link withRawHtmlEditorConfigs} to set a raw value
          * @param {...HtmlEditorConfig} htmlEditorConfigs
@@ -4953,6 +5023,8 @@ declare module "src/design/design" {
     }
     export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
     export type Locale = import("src/design/locale").Locale;
+    export type ContentElement = import("src/content-element/content-element").default;
+    export type FormattedTextPart = import("src/content-element/part/formatted-text-part").default;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
     export type Website = import("src/website/website").default;
@@ -5054,66 +5126,6 @@ declare module "src/content-element/part/plain-text-part" {
         clone(shallow?: boolean): PlainTextPart;
     }
     import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/formatted-text-part" {
-    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormattedTextPart extends AbstractPart {
-        constructor();
-        /**
-         * @type {RawValue|HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @returns {RawValue|HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): RawValue | import("src/html-editor-config/html-editor-config").default;
-        /**
-         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-         * {@link HtmlEditorConfig} object.
-         *
-         * @example
-         * let editorConfig = new HtmlEditorConfig()
-         *   .withIdentifier('minimal')
-         *   .withRawEnterMode('p')
-         *   .withFeatures(
-         *     Feature.BOLD,
-         *     Feature.ITALIC,
-         *     Feature.UNDERLINE);
-         * // ...
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new FormattedTextPart()
-         *       .withLabel('Text')
-         *       .withHtmlEditorConfig(editorConfig))
-         * @see {withRawHtmlEditorConfig} to set a raw value
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
-         *
-         * @see {@link withHtmlEditorConfig}
-         * @param {string} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withRawHtmlEditorConfig(htmlEditorConfig: string): FormattedTextPart;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormattedTextPart}
-         */
-        clone(shallow?: boolean): FormattedTextPart;
-    }
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractPart from "src/content-element/part/abstract-part";
-    import RawValue from "src/raw-value";
 }
 declare module "src/content-element/part/html-part" {
     /**
