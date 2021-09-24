@@ -1,13 +1,13 @@
 require('./styles.scss');
 
-const {ContentElement, FormattedTextPart, PlainTextPart, Icon} = require('@bsi-cx/design-build');
+const {ContentElement, PlainTextPart, Icon, cx} = require('@bsi-cx/design-build');
 
 const full = require('../../../html-editor-configs/full');
 
 /**
  * @type {ContentElement}
  */
-module.exports = new ContentElement()
+module.exports = cx.contentElement
   .withElementId('title')
   .withIcon(Icon.HEADING)
   .withLabel('Titel')
@@ -16,7 +16,7 @@ module.exports = new ContentElement()
     require('../../../styles/background-color'))
   .withFile(require('./template.hbs.twig'))
   .withParts(
-    new FormattedTextPart()
+    cx.part.formattedText
       .withId('22235837-cf9e-49e9-8918-294b22e2854d')
       .withLabel('Text')
       .withHtmlEditorConfig(full),

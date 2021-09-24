@@ -1,21 +1,21 @@
-const {Style, CssClass} = require('@bsi-cx/design-build');
+const {cx, Style} = require('@bsi-cx/design-build');
 
 /**
  * @type {Style}
  */
-module.exports = new Style()
+module.exports = cx.style
   .withIdentifier('background-color')
   .withLabel('Hintergrundfarbe')
   .withCssClasses(
-    new CssClass()
+    cx.cssClass
       .withLabel('Schwarz')
       .withCssClass('black-background'),
-    new CssClass()
+    cx.cssClass
       .withLabel('Blau')
       .withCssClass('blue-background'),
-    new CssClass()
+    cx.cssClass
       .withLabel('Rot')
       .withCssClass('red-background'),
-    new CssClass()
+    cx.cssClass
       .withLabel('Weiss')
       .withCssClass('white-background'));
