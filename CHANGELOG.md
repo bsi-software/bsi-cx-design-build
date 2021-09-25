@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.2.3] - 25.09.2021
+
+### Fixed
+
+* Adjusted chunk optimization and cache group configuration to fix import of 3th party libraries.
+
 ## [1.2.2] - 25.09.2021
 
 ### Fixed
@@ -191,7 +197,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.2...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.3...HEAD
+
+[1.2.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.2...1.2.3
 
 [1.2.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.1...1.2.2
 
