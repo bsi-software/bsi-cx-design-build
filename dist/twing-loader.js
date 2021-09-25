@@ -78,7 +78,7 @@ class constant_Constant {
   /**
    * @type {string}
    */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
   /**
    * @type {string}
    */
@@ -103,6 +103,10 @@ class QueryConstant {
    * @type {string}
    */
   static INLINE = 'inline';
+  /**
+   * @type {string}
+   */
+  static ASSET = 'asset';
 }
 
 ;// CONCATENATED MODULE: ./src/abstract-constant.js

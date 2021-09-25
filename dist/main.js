@@ -441,7 +441,7 @@ class Constant {
   /**
    * @type {string}
    */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
   /**
    * @type {string}
    */
@@ -2126,6 +2126,10 @@ class DistFolder {
    * @type {string}
    */
   static VENDORS = 'vendors';
+  /**
+   * @type {string}
+   */
+  static SHARED = 'shared';
 }
 
 ;// CONCATENATED MODULE: ./src/browser-utility.js
@@ -2997,7 +3001,7 @@ class _BsiCxWebpackPlugin {
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS})\/.*\.js$`);
+    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS}|${DistFolder.SHARED})\/.*\.js$`);
     let assetPaths = this._getAssetNames(assetRegex);
 
     return assetPaths
@@ -4925,6 +4929,10 @@ class QueryConstant {
    * @type {string}
    */
   static INLINE = 'inline';
+  /**
+   * @type {string}
+   */
+  static ASSET = 'asset';
 }
 
 ;// CONCATENATED MODULE: ./src/css/css-url.js
@@ -5420,6 +5428,7 @@ class WebpackConfigBuilder {
           ...this._getHtmlAndHbsRuleConfig(),
           ...this._getStyleRulesConfig(),
           ...this._getStaticAssetsRuleConfig(),
+          ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
           ...this._getAdditionalRules()
@@ -5443,7 +5452,6 @@ class WebpackConfigBuilder {
         minimizer: this._getOptimizationMinimizerConfig(),
         splitChunks: {
           chunks: 'all',
-          name: this._getOptimizationSplitChunksNameConfig(),
           cacheGroups: {
             ...this._getOptimizationCacheGroupsConfig(),
           }
@@ -5641,6 +5649,27 @@ class WebpackConfigBuilder {
   }
 
   /**
+   * Rule for node module assets.
+   *
+   * @returns {{}[]}
+   * @private
+   */
+  _getNodeModuleAssetsRule() {
+    let assetQueryRegex = new RegExp(QueryConstant.ASSET);
+
+    return [
+      {
+        test: /[\\/]node_modules[\\/]/,
+        resourceQuery: assetQueryRegex,
+        type: 'asset/resource',
+        generator: {
+          filename: `${DistFolder.VENDORS}/[contenthash][ext]`
+        }
+      }
+    ];
+  }
+
+  /**
    * Get all file extensions that should be handled as static assets (e.g. images and fonts).
    *
    * @returns {string[]}
@@ -5702,7 +5731,7 @@ class WebpackConfigBuilder {
         test: testRegex,
         oneOf: [
           {
-            resourceQuery: /inline/,
+            resourceQuery: inlineQueryRegex,
             type: 'asset/inline'
           },
           {
@@ -5763,7 +5792,7 @@ class WebpackConfigBuilder {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: ['@babel/plugin-transform-runtime'],
             cacheDirectory: true
           }
@@ -6021,28 +6050,23 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * The split chunks name configuration.
-   *
-   * @returns {function}
-   */
-  _getOptimizationSplitChunksNameConfig() {
-    return (module, _, cacheGroupKey) => {
-      return cacheGroupKey !== 'vendors' ? false : (module.rawRequest || false);
-    };
-  }
-
-  /**
    * The chache groups configuration.
    *
    * @returns {{}}
    */
   _getOptimizationCacheGroupsConfig() {
     return {
-      vendors: {
+      default: {
+        priority: 0,
+        minChunks: 2,
+        reuseExistingChunk: true,
+        filename: `${DistFolder.SHARED}/[chunkhash].js`
+      },
+      defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
         priority: 10,
         reuseExistingChunk: true,
-        filename: `${DistFolder.VENDORS}/[name]-[chunkhash].js`
+        filename: `${DistFolder.VENDORS}/[chunkhash].js`
       },
       design: {
         test: module => {

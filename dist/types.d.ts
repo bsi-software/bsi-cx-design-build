@@ -1366,6 +1366,10 @@ declare module "src/dist-folder" {
          * @type {string}
          */
         static VENDORS: string;
+        /**
+         * @type {string}
+         */
+        static SHARED: string;
     }
 }
 declare module "src/browser-utility" {
@@ -2207,6 +2211,10 @@ declare module "src/query-constant" {
          * @type {string}
          */
         static INLINE: string;
+        /**
+         * @type {string}
+         */
+        static ASSET: string;
     }
 }
 declare module "src/css/css-url" {
@@ -2433,7 +2441,6 @@ declare module "src/webpack-config-builder" {
                 minimizer: any[];
                 splitChunks: {
                     chunks: string;
-                    name: Function;
                     cacheGroups: {};
                 };
             };
@@ -2481,7 +2488,6 @@ declare module "src/webpack-config-builder" {
                 minimizer: any[];
                 splitChunks: {
                     chunks: string;
-                    name: Function;
                     cacheGroups: {};
                 };
             };
@@ -2538,6 +2544,13 @@ declare module "src/webpack-config-builder" {
          * @returns {{}[]}
          */
         _getStyleRulesConfig(): {}[];
+        /**
+         * Rule for node module assets.
+         *
+         * @returns {{}[]}
+         * @private
+         */
+        private _getNodeModuleAssetsRule;
         /**
          * Get all file extensions that should be handled as static assets (e.g. images and fonts).
          *
@@ -2657,12 +2670,6 @@ declare module "src/webpack-config-builder" {
          * @returns {TerserPlugin[]}
          */
         _getOptimizationMinimizerConfig(): any[];
-        /**
-         * The split chunks name configuration.
-         *
-         * @returns {function}
-         */
-        _getOptimizationSplitChunksNameConfig(): Function;
         /**
          * The chache groups configuration.
          *

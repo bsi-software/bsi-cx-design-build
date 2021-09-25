@@ -23,4 +23,8 @@ export default class DistFolder {
    * @type {string}
    */
   static VENDORS = 'vendors';
+  /**
+   * @type {string}
+   */
+  static SHARED = 'shared';
 }

@@ -758,7 +758,7 @@ class _BsiCxWebpackPlugin {
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS})\/.*\.js$`);
+    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS}|${DistFolder.SHARED})\/.*\.js$`);
     let assetPaths = this._getAssetNames(assetRegex);
 
     return assetPaths

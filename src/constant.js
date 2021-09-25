@@ -14,7 +14,7 @@ export default class Constant {
   /**
    * @type {string}
    */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'modules/runtime';
+  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
   /**
    * @type {string}
    */
