@@ -29,7 +29,7 @@ export default class DesignHelper {
   /**
    * @returns {DesignFactory}
    */
-  get #factory() {
+  get _factory() {
     return this._factory;
   }
 
@@ -47,7 +47,7 @@ export default class DesignHelper {
    * @param {...CssClass} cssClasses
    */
   style(identifier, label, ...cssClasses) {
-    return this.#factory.style
+    return this._factory.style
       .withIdentifier(identifier)
       .withLabel(label)
       .withCssClasses(...cssClasses);
@@ -68,7 +68,7 @@ export default class DesignHelper {
    * @returns {CssClass}
    */
   cssClass(cssClass, label) {
-    return this.#factory.cssClass
+    return this._factory.cssClass
       .withCssClass(cssClass)
       .withLabel(label);
   }
@@ -95,7 +95,7 @@ export default class DesignHelper {
    * @returns {NLS}
    */
   nls(identifier, ...translations) {
-    return this.#factory.nls
+    return this._factory.nls
       .withIdentifier(identifier)
       .withTranslations(...translations);
   }
@@ -118,7 +118,7 @@ export default class DesignHelper {
   t(localeOrWildcardTranslation, optionalTranslation) {
     let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;
     let translation = optionalTranslation ?? localeOrWildcardTranslation;
-    let translationObj = this.#factory.translation.withTranslation(translation);
+    let translationObj = this._factory.translation.withTranslation(translation);
 
     return locale instanceof Locale ? translationObj.withLocale(locale) : translationObj.withRawLocale(locale);
   }

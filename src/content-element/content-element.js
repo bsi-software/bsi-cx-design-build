@@ -2,12 +2,14 @@ import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
+import DesignJsonPropertyExtension from '../design-json-property-extension';
 
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
 /** @typedef {import('./part/abstract-part').default} AbstractPart */
 /** @typedef {import('./content-element-group').default} ContentElementGroup */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
 /**
  * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
@@ -67,6 +69,11 @@ export default class ContentElement extends AbstractBuilder {
    * @private
    */
   _parts = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
 
   /**
    * @returns {string|undefined}
@@ -122,6 +129,13 @@ export default class ContentElement extends AbstractBuilder {
    */
   get parts() {
     return this._parts;
+  }
+
+  /**
+   * @return {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
   }
 
   /**
@@ -295,6 +309,31 @@ export default class ContentElement extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Define the dropzones of this include.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The dropzones of this include.
+   * @return {ContentElement}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -306,6 +345,7 @@ export default class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
 
     return config;
   }

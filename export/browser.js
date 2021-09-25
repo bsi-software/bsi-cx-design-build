@@ -15,6 +15,7 @@ import * as Feature from '../src/html-editor-config/feature';
 import * as EnterMode from '../src/html-editor-config/enter-mode';
 import * as FontSizeUnit from '../src/html-editor-config/font-size-unit';
 import * as Format from '../src/html-editor-config/format';
+import Dropzone from '../src/dropzone/dropzone';
 import HtmlEditorConfig from '../src/html-editor-config/html-editor-config';
 import Style from '../src/style/style';
 import CssClass from '../src/style/css-class';
@@ -73,6 +74,7 @@ export {
   SchemaVersion,
   Design,
   ContentElementGroup,
+  Dropzone,
   Version,
   DesignType,
   Feature,

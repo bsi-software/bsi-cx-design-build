@@ -2837,6 +2837,38 @@ declare module "src/content-element/part/abstract-part" {
     export type Part = import("src/content-element/part/part").Part;
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/design-json-property-extension" {
+    export default class DesignJsonPropertyExtension {
+        /**
+         * @type {string}
+         */
+        static DROPZONES: string;
+        /**
+         * @type {string}
+         */
+        static DROPZONE: string;
+        /**
+         * @type {string}
+         */
+        static ALLOWED_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static MAX_ALLOWED_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static REMOVE_ALLOWED: string;
+        /**
+         * @type {string}
+         */
+        static COPY_ALLOWED: string;
+        /**
+         * @type {string}
+         */
+        static MOVE_ALLOWED: string;
+    }
+}
 declare module "src/design/schema-version" {
     /** @typedef {import('./design').default} Design */
     /**
@@ -3409,12 +3441,154 @@ declare module "src/content-element/content-element-group" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
+declare module "src/dropzone/dropzone" {
+    /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /**
+     * This is the builder class to specify a dropzone.
+     *
+     * @example
+     * .withDropzones(
+     *   cx.dropzone
+     *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+     *     .withAllowedElements(
+     *       require('./content-elements/basic/text'),
+     *       require('./content-elements/basic/image'))
+     *     .withMaxAllowedElements(1),
+     *   cx.dropzone
+     *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+     *     .withAllowedElements(
+     *       require('./content-elements/basic/text'),
+     *       require('./content-elements/basic/image'))
+     *     .withMaxAllowedElements(1))
+     */
+    export default class Dropzone extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _dropzone;
+        /**
+         * @type {RawValue|[ContentElement]|undefined}
+         * @private
+         */
+        private _allowedElements;
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _maxAllowedElements;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _removeAllowed;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _copyAllowed;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _moveAllowed;
+        /**
+         * @returns {string|undefined}
+         */
+        get dropzone(): string;
+        /**
+         * @returns {RawValue|ContentElement[]|undefined}
+         */
+        get allowedElements(): RawValue | import("src/content-element/content-element").default[];
+        /**
+         * @returns {number|undefined}
+         */
+        get maxAllowedElements(): number;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get removeAllowed(): boolean;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get copyAllowed(): boolean;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get moveAllowed(): boolean;
+        /**
+         * Set the identifier of this dropzone. <strong>It is highly recommended to use a
+         * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+         *
+         * @param {string} dropzone - The dropzone name.
+         * @returns {Dropzone}
+         */
+        withDropzone(dropzone: string): Dropzone;
+        /**
+         * Set the allowed elements.
+         *
+         * @example
+         * .withAllowedElements(
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {...ContentElement} allowedElements - The allowed elements.
+         * @returns {Dropzone}
+         */
+        withAllowedElements(...allowedElements: ContentElement[]): Dropzone;
+        /**
+         * Set the allowed elements as raw value.
+         *
+         * @param {...string} allowedElements - The allowed elements.
+         * @return {Dropzone}
+         */
+        withRawAllowedElements(...allowedElements: string[]): Dropzone;
+        /**
+         * Set the number of maximum allowed elements.
+         *
+         * @param {number} maxAllowedElements - The number of maximum allowed elements.
+         * @return {Dropzone}
+         */
+        withMaxAllowedElements(maxAllowedElements: number): Dropzone;
+        /**
+         * Enable or disable the remove button on dropzone elements.
+         *
+         * @param {boolean} removeAllowed - Enable or disable the remove button.
+         * @return {Dropzone}
+         */
+        withRemoveAllowed(removeAllowed: boolean): Dropzone;
+        /**
+         * Enable or disable the copy button on dropzone elements.
+         *
+         * @param {boolean} copyAllowed - Enable or disable the copy button.
+         * @return {Dropzone}
+         */
+        withCopyAllowed(copyAllowed: boolean): Dropzone;
+        /**
+         * Enable or disable the move button on dropzone elements.
+         *
+         * @param {boolean} moveAllowed - Enable or disable the move button.
+         * @return {Dropzone}
+         */
+        withMoveAllowed(moveAllowed: boolean): Dropzone;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {Dropzone}
+         */
+        clone(shallow?: boolean): Dropzone;
+    }
+    export type ContentElement = import("src/content-element/content-element").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
 declare module "src/content-element/content-element" {
     /** @typedef {import('../design/design').default} Design */
     /** @typedef {import('../style/style').default} Style */
     /** @typedef {import('./icon').Icon} Icon */
     /** @typedef {import('./part/abstract-part').default} AbstractPart */
     /** @typedef {import('./content-element-group').default} ContentElementGroup */
+    /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
      * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
      *
@@ -3474,6 +3648,11 @@ declare module "src/content-element/content-element" {
          */
         private _parts;
         /**
+         * @type {Dropzone[]|undefined}
+         * @private
+         */
+        private _dropzones;
+        /**
          * @returns {string|undefined}
          */
         get elementId(): string;
@@ -3505,6 +3684,10 @@ declare module "src/content-element/content-element" {
          * @returns {RawValue|AbstractPart[]|undefined}
          */
         get parts(): RawValue | import("src/content-element/part/abstract-part").default[];
+        /**
+         * @return {Dropzone[]|undefined}
+         */
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * Set the ID of this content element.
          *
@@ -3637,6 +3820,27 @@ declare module "src/content-element/content-element" {
          */
         withRawParts(...parts: {}[]): ContentElement;
         /**
+         * Define the dropzones of this include.
+         *
+         * @example
+         * .withDropzones(
+         *   cx.dropzone
+         *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1),
+         *   cx.dropzone
+         *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1))
+         * @param {...Dropzone} dropzones - The dropzones of this include.
+         * @return {ContentElement}
+         */
+        withDropzones(...dropzones: Dropzone[]): ContentElement;
+        /**
          * Clone the configuration.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -3649,6 +3853,7 @@ declare module "src/content-element/content-element" {
     export type Icon = import("src/content-element/icon").Icon;
     export type AbstractPart = import("src/content-element/part/abstract-part").default;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
+    export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
@@ -4644,6 +4849,7 @@ declare module "src/design/design" {
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
+    /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
     /** @typedef {import('../website/website').default} Website */
     /** @typedef {import('../style/style').default} Style */
@@ -4709,6 +4915,11 @@ declare module "src/design/design" {
          */
         private _contentElementGroups;
         /**
+         * @type {Dropzone[]|undefined}
+         * @private
+         */
+        private _dropzones;
+        /**
          * @type {RawValue|[Style]|undefined}
          * @private
          */
@@ -4760,6 +4971,10 @@ declare module "src/design/design" {
          * @returns {RawValue|ContentElementGroup[]|undefined}
          */
         get contentElementGroups(): RawValue | import("src/content-element/content-element-group").default[];
+        /**
+         * @return {Dropzone[]|undefined}
+         */
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * @returns {RawValue|[Style]|undefined}
          */
@@ -4901,6 +5116,27 @@ declare module "src/design/design" {
          */
         withRawContentElementGroups(...contentElementGroups: {}[]): Design;
         /**
+         * Define the root dropzones of this template.
+         *
+         * @example
+         * .withDropzones(
+         *   cx.dropzone
+         *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1),
+         *   cx.dropzone
+         *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1))
+         * @param {...Dropzone} dropzones - The root dropzones.
+         * @return {Design}
+         */
+        withDropzones(...dropzones: Dropzone[]): Design;
+        /**
          * The style configurations of your design. This is only necessary if you use
          * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
          * Otherwise you don't have to register your styles here.
@@ -5030,6 +5266,7 @@ declare module "src/design/design" {
     export type ContentElement = import("src/content-element/content-element").default;
     export type FormattedTextPart = import("src/content-element/part/formatted-text-part").default;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
+    export type Dropzone = import("src/dropzone/dropzone").default;
     export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
     export type Website = import("src/website/website").default;
     export type Style = import("src/style/style").default;
@@ -5404,6 +5641,7 @@ declare module "src/content-element/part/url-provider-part" {
     import AbstractPart from "src/content-element/part/abstract-part";
 }
 declare module "src/website/abstract-include" {
+    /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
      * @abstract
      * @since BSI CX 1.3
@@ -5434,6 +5672,11 @@ declare module "src/website/abstract-include" {
          */
         protected _name: string | undefined;
         /**
+         * @type {Dropzone[]|undefined}
+         * @private
+         */
+        private _dropzones;
+        /**
          * @returns {string|undefined}
          */
         get identifier(): string;
@@ -5449,6 +5692,10 @@ declare module "src/website/abstract-include" {
          * @returns {string|undefined}
          */
         get name(): string;
+        /**
+         * @return {Dropzone[]|undefined}
+         */
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * Enable or disable edit mode on this include.
          *
@@ -5469,11 +5716,33 @@ declare module "src/website/abstract-include" {
         /**
          * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
          *
-         * @param {string} name -
+         * @param {string} name - The name of this include.
          * @returns {AbstractInclude}
          */
         withName(name: string): AbstractInclude;
+        /**
+         * Define the dropzones of this include.
+         *
+         * @example
+         * .withDropzones(
+         *   cx.dropzone
+         *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1),
+         *   cx.dropzone
+         *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1))
+         * @param {...Dropzone} dropzones - The dropzones of this include.
+         * @return {AbstractInclude}
+         */
+        withDropzones(...dropzones: Dropzone[]): AbstractInclude;
     }
+    export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/website/page-include" {
@@ -5501,6 +5770,7 @@ declare module "src/website/page-include" {
 }
 declare module "src/website/include" {
     /** @typedef {import('./website').default} Website */
+    /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
      * This is the builder class for {@link Website|website} includes.
      *
@@ -5536,6 +5806,7 @@ declare module "src/website/include" {
         clone(shallow?: boolean): Include;
     }
     export type Website = import("src/website/website").default;
+    export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractInclude from "src/website/abstract-include";
 }
 declare module "src/content-element/part/part-factory" {
@@ -5764,7 +6035,6 @@ declare module "src/design/design-helper" {
          * @returns {Translation}
          */
         t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): any;
-        #private;
     }
     export type DesignFactory = import("src/design/design-factory").default;
     export type CssClass = import("src/style/css-class").default;
@@ -5890,6 +6160,26 @@ declare module "src/design/design-factory" {
          */
         get include(): Include;
         /**
+         * Get a new dropzone builder instance.
+         *
+         * @example
+         * .withDropzones(
+         *   cx.dropzone
+         *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1),
+         *   cx.dropzone
+         *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+         *     .withAllowedElements(
+         *       require('./content-elements/basic/text'),
+         *       require('./content-elements/basic/image'))
+         *     .withMaxAllowedElements(1))
+         * @return {Dropzone}
+         */
+        get dropzone(): Dropzone;
+        /**
          * Get a new website page include builder instance.
          *
          * @example
@@ -6014,6 +6304,7 @@ declare module "src/design/design-factory" {
     import ContentElement from "src/content-element/content-element";
     import Website from "src/website/website";
     import Include from "src/website/include";
+    import Dropzone from "src/dropzone/dropzone";
     import PageInclude from "src/website/page-include";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
@@ -6035,6 +6326,7 @@ declare module "export/browser" {
     import * as SchemaVersion from "src/design/schema-version";
     import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
+    import Dropzone from "src/dropzone/dropzone";
     import * as Version from "src/version";
     import * as DesignType from "src/design-type";
     import * as Feature from "src/html-editor-config/feature";
@@ -6078,7 +6370,7 @@ declare module "export/browser" {
      */
     export const cx: DesignFactory;
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

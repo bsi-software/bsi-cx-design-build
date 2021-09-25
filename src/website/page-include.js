@@ -43,6 +43,15 @@ export default class PageInclude extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
+   * @param {...Dropzone} dropzones
+   * @return {PageInclude}
+   */
+  withDropzones(...dropzones) {
+    return /** @type {PageInclude} */ super.withDropzones(...dropzones);
+  }
+
+  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

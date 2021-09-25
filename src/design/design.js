@@ -2,12 +2,14 @@ import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
+import DesignJsonPropertyExtension from '../design-json-property-extension';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 /** @typedef {import('../website/website').default} Website */
 /** @typedef {import('../style/style').default} Style */
@@ -73,6 +75,11 @@ export default class Design extends AbstractBuilder {
    * @private
    */
   _contentElementGroups = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
   /**
    * @type {RawValue|[Style]|undefined}
    * @private
@@ -148,6 +155,13 @@ export default class Design extends AbstractBuilder {
    */
   get contentElementGroups() {
     return this._contentElementGroups;
+  }
+
+  /**
+   * @return {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
   }
 
   /**
@@ -351,6 +365,31 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * Define the root dropzones of this template.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The root dropzones.
+   * @return {Design}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
+    return this;
+  }
+
+  /**
    * The style configurations of your design. This is only necessary if you use
    * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
    * Otherwise you don't have to register your styles here.
@@ -509,6 +548,7 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.DEFAULT_LOCALE, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.LOCALES, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);

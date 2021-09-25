@@ -1,6 +1,7 @@
 import AbstractInclude from './abstract-include';
 
 /** @typedef {import('./website').default} Website */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
 /**
  * This is the builder class for {@link Website|website} includes.
@@ -60,6 +61,15 @@ export default class Include extends AbstractInclude {
    */
   withName(name) {
     return /** @type {Include} */ super.withName(name);
+  }
+
+  /**
+   * @inheritDoc
+   * @param {...Dropzone} dropzones
+   * @return {Include}
+   */
+  withDropzones(...dropzones) {
+    return /** @type {Include} */ super.withDropzones(...dropzones);
   }
 
   /**

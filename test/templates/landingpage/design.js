@@ -22,6 +22,12 @@ module.exports = cx.design
       .withContentElements(
         require('./content-elements/content/title'),
         require('./content-elements/content/text')))
+  .withDropzones(
+    cx.dropzone
+      .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')
+      .withAllowedElements(
+        require('./content-elements/content/title'),
+        require('./content-elements/content/text')))
   .withHtmlEditorConfigs(
     require('./html-editor-configs/normal'))
   .withWebsite(

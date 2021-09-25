@@ -50,6 +50,7 @@ __webpack_require__.d(__webpack_exports__, {
   "Design": () => (/* reexport */ Design),
   "DesignJsonProperty": () => (/* reexport */ DesignJsonProperty),
   "DesignType": () => (/* reexport */ design_type_namespaceObject),
+  "Dropzone": () => (/* reexport */ Dropzone),
   "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
   "Feature": () => (/* reexport */ feature_namespaceObject),
   "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
@@ -1060,7 +1061,40 @@ const V_1_0 = new SchemaVersion('1.0');
  */
 const V_22_0 = new SchemaVersion('22.0');
 
+;// CONCATENATED MODULE: ./src/design-json-property-extension.js
+class DesignJsonPropertyExtension {
+  /**
+   * @type {string}
+   */
+  static DROPZONES = 'dropzones';
+  /**
+   * @type {string}
+   */
+  static DROPZONE = 'dropzone';
+  /**
+   * @type {string}
+   */
+  static ALLOWED_ELEMENTS = 'allowedElements';
+  /**
+   * @type {string}
+   */
+  static MAX_ALLOWED_ELEMENTS = 'maxAllowedElements';
+  /**
+   * @type {string}
+   */
+  static REMOVE_ALLOWED = 'removeAllowed';
+  /**
+   * @type {string}
+   */
+  static COPY_ALLOWED = 'copyAllowed';
+  /**
+   * @type {string}
+   */
+  static MOVE_ALLOWED = 'moveAllowed';
+}
+
 ;// CONCATENATED MODULE: ./src/design/design.js
+
 
 
 
@@ -1071,6 +1105,7 @@ const V_22_0 = new SchemaVersion('22.0');
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 /** @typedef {import('../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 /** @typedef {import('../website/website').default} Website */
 /** @typedef {import('../style/style').default} Style */
@@ -1136,6 +1171,11 @@ class Design extends AbstractBuilder {
    * @private
    */
   _contentElementGroups = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
   /**
    * @type {RawValue|[Style]|undefined}
    * @private
@@ -1211,6 +1251,13 @@ class Design extends AbstractBuilder {
    */
   get contentElementGroups() {
     return this._contentElementGroups;
+  }
+
+  /**
+   * @return {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
   }
 
   /**
@@ -1414,6 +1461,31 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Define the root dropzones of this template.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The root dropzones.
+   * @return {Design}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
+    return this;
+  }
+
+  /**
    * The style configurations of your design. This is only necessary if you use
    * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
    * Otherwise you don't have to register your styles here.
@@ -1572,6 +1644,7 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.DEFAULT_LOCALE, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.LOCALES, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
@@ -2239,6 +2312,212 @@ const H6 = new Format('h6');
  * @type {Format}
  */
 const PRE = new Format('pre');
+
+;// CONCATENATED MODULE: ./src/dropzone/dropzone.js
+
+
+
+
+
+/** @typedef {import('../content-element/content-element').default} ContentElement */
+
+/**
+ * This is the builder class to specify a dropzone.
+ *
+ * @example
+ * .withDropzones(
+ *   cx.dropzone
+ *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+ *     .withAllowedElements(
+ *       require('./content-elements/basic/text'),
+ *       require('./content-elements/basic/image'))
+ *     .withMaxAllowedElements(1),
+ *   cx.dropzone
+ *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+ *     .withAllowedElements(
+ *       require('./content-elements/basic/text'),
+ *       require('./content-elements/basic/image'))
+ *     .withMaxAllowedElements(1))
+ */
+class Dropzone extends AbstractBuilder {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _dropzone = undefined;
+  /**
+   * @type {RawValue|[ContentElement]|undefined}
+   * @private
+   */
+  _allowedElements = undefined;
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _maxAllowedElements = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _removeAllowed = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _copyAllowed = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _moveAllowed = undefined;
+
+  /**
+   * @returns {string|undefined}
+   */
+  get dropzone() {
+    return this._dropzone;
+  }
+
+  /**
+   * @returns {RawValue|ContentElement[]|undefined}
+   */
+  get allowedElements() {
+    return this._allowedElements;
+  }
+
+  /**
+   * @returns {number|undefined}
+   */
+  get maxAllowedElements() {
+    return this._maxAllowedElements;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get removeAllowed() {
+    return this._removeAllowed;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get copyAllowed() {
+    return this._copyAllowed;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get moveAllowed() {
+    return this._moveAllowed;
+  }
+
+  /**
+   * Set the identifier of this dropzone. <strong>It is highly recommended to use a
+   * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+   *
+   * @param {string} dropzone - The dropzone name.
+   * @returns {Dropzone}
+   */
+  withDropzone(dropzone) {
+    this._dropzone = dropzone;
+    return this;
+  }
+
+  /**
+   * Set the allowed elements.
+   *
+   * @example
+   * .withAllowedElements(
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {...ContentElement} allowedElements - The allowed elements.
+   * @returns {Dropzone}
+   */
+  withAllowedElements(...allowedElements) {
+    this._allowedElements = allowedElements;
+    return this;
+  }
+
+  /**
+   * Set the allowed elements as raw value.
+   *
+   * @param {...string} allowedElements - The allowed elements.
+   * @return {Dropzone}
+   */
+  withRawAllowedElements(...allowedElements) {
+    this._allowedElements = new RawValue(allowedElements);
+    return this;
+  }
+
+  /**
+   * Set the number of maximum allowed elements.
+   *
+   * @param {number} maxAllowedElements - The number of maximum allowed elements.
+   * @return {Dropzone}
+   */
+  withMaxAllowedElements(maxAllowedElements) {
+    this._maxAllowedElements = maxAllowedElements;
+    return this;
+  }
+
+  /**
+   * Enable or disable the remove button on dropzone elements.
+   *
+   * @param {boolean} removeAllowed - Enable or disable the remove button.
+   * @return {Dropzone}
+   */
+  withRemoveAllowed(removeAllowed) {
+    this._removeAllowed = removeAllowed;
+    return this;
+  }
+
+  /**
+   * Enable or disable the copy button on dropzone elements.
+   *
+   * @param {boolean} copyAllowed - Enable or disable the copy button.
+   * @return {Dropzone}
+   */
+  withCopyAllowed(copyAllowed) {
+    this._copyAllowed = copyAllowed;
+    return this;
+  }
+
+  /**
+   * Enable or disable the move button on dropzone elements.
+   *
+   * @param {boolean} moveAllowed - Enable or disable the move button.
+   * @return {Dropzone}
+   */
+  withMoveAllowed(moveAllowed) {
+    this._moveAllowed = moveAllowed;
+    return this;
+  }
+
+  build() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.ALLOWED_ELEMENTS, config, v => v.elementId);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS, config, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.REMOVE_ALLOWED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.COPY_ALLOWED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MOVE_ALLOWED, config, identity);
+
+    return config;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {Dropzone}
+   */
+  clone(shallow) {
+    return this._clone(new Dropzone(), shallow);
+  }
+}
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
 
@@ -3112,11 +3391,13 @@ const THREE_COLUMNS = new Icon('three-columns');
 
 
 
+
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
 /** @typedef {import('./part/abstract-part').default} AbstractPart */
 /** @typedef {import('./content-element-group').default} ContentElementGroup */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
 /**
  * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
@@ -3176,6 +3457,11 @@ class ContentElement extends AbstractBuilder {
    * @private
    */
   _parts = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
 
   /**
    * @returns {string|undefined}
@@ -3231,6 +3517,13 @@ class ContentElement extends AbstractBuilder {
    */
   get parts() {
     return this._parts;
+  }
+
+  /**
+   * @return {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
   }
 
   /**
@@ -3404,6 +3697,31 @@ class ContentElement extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Define the dropzones of this include.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The dropzones of this include.
+   * @return {ContentElement}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
+    return this;
+  }
+
   build() {
     let config = {};
 
@@ -3415,6 +3733,7 @@ class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
 
     return config;
   }
@@ -4314,6 +4633,9 @@ class Website extends AbstractBuilder {
 
 
 
+
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
+
 /**
  * @abstract
  * @since BSI CX 1.3
@@ -4339,6 +4661,11 @@ class AbstractInclude extends AbstractBuilder {
    * @protected
    */
   _name = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
 
   /**
    * @param {string|undefined} identifier
@@ -4381,6 +4708,13 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
+   * @return {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
+  }
+
+  /**
    * Enable or disable edit mode on this include.
    *
    * @param {boolean} editable - The editable flag.
@@ -4408,11 +4742,36 @@ class AbstractInclude extends AbstractBuilder {
   /**
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
-   * @param {string} name -
+   * @param {string} name - The name of this include.
    * @returns {AbstractInclude}
    */
   withName(name) {
     this._name = name;
+    return this;
+  }
+
+  /**
+   * Define the dropzones of this include.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The dropzones of this include.
+   * @return {AbstractInclude}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
     return this;
   }
 
@@ -4425,6 +4784,7 @@ class AbstractInclude extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);
 
     return config;
   }
@@ -4476,6 +4836,15 @@ class PageInclude extends AbstractInclude {
   }
 
   /**
+   * @inheritDoc
+   * @param {...Dropzone} dropzones
+   * @return {PageInclude}
+   */
+  withDropzones(...dropzones) {
+    return /** @type {PageInclude} */ super.withDropzones(...dropzones);
+  }
+
+  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4490,6 +4859,7 @@ class PageInclude extends AbstractInclude {
 
 
 /** @typedef {import('./website').default} Website */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
 /**
  * This is the builder class for {@link Website|website} includes.
@@ -4549,6 +4919,15 @@ class Include extends AbstractInclude {
    */
   withName(name) {
     return /** @type {Include} */ super.withName(name);
+  }
+
+  /**
+   * @inheritDoc
+   * @param {...Dropzone} dropzones
+   * @return {Include}
+   */
+  withDropzones(...dropzones) {
+    return /** @type {Include} */ super.withDropzones(...dropzones);
   }
 
   /**
@@ -5106,7 +5485,7 @@ class DesignHelper {
   /**
    * @returns {DesignFactory}
    */
-  get #factory() {
+  get _factory() {
     return this._factory;
   }
 
@@ -5124,7 +5503,7 @@ class DesignHelper {
    * @param {...CssClass} cssClasses
    */
   style(identifier, label, ...cssClasses) {
-    return this.#factory.style
+    return this._factory.style
       .withIdentifier(identifier)
       .withLabel(label)
       .withCssClasses(...cssClasses);
@@ -5145,7 +5524,7 @@ class DesignHelper {
    * @returns {CssClass}
    */
   cssClass(cssClass, label) {
-    return this.#factory.cssClass
+    return this._factory.cssClass
       .withCssClass(cssClass)
       .withLabel(label);
   }
@@ -5172,7 +5551,7 @@ class DesignHelper {
    * @returns {NLS}
    */
   nls(identifier, ...translations) {
-    return this.#factory.nls
+    return this._factory.nls
       .withIdentifier(identifier)
       .withTranslations(...translations);
   }
@@ -5195,13 +5574,14 @@ class DesignHelper {
   t(localeOrWildcardTranslation, optionalTranslation) {
     let locale = optionalTranslation === undefined ? WILDCARD : localeOrWildcardTranslation;
     let translation = optionalTranslation ?? localeOrWildcardTranslation;
-    let translationObj = this.#factory.translation.withTranslation(translation);
+    let translationObj = this._factory.translation.withTranslation(translation);
 
     return locale instanceof Locale ? translationObj.withLocale(locale) : translationObj.withRawLocale(locale);
   }
 }
 
 ;// CONCATENATED MODULE: ./src/design/design-factory.js
+
 
 
 
@@ -5350,6 +5730,29 @@ class DesignFactory {
   }
 
   /**
+   * Get a new dropzone builder instance.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @return {Dropzone}
+   */
+  get dropzone() {
+    return new Dropzone();
+  }
+
+  /**
    * Get a new website page include builder instance.
    *
    * @example
@@ -5494,6 +5897,7 @@ class DesignFactory {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
 
 
 

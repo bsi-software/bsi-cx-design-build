@@ -11,6 +11,7 @@ import NLS from '../nls/nls';
 import Translation from '../nls/translation';
 import PartFactory from '../content-element/part/part-factory';
 import DesignHelper from './design-helper';
+import Dropzone from '../dropzone/dropzone';
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -143,6 +144,29 @@ export default class DesignFactory {
    */
   get include() {
     return new Include();
+  }
+
+  /**
+   * Get a new dropzone builder instance.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @return {Dropzone}
+   */
+  get dropzone() {
+    return new Dropzone();
   }
 
   /**

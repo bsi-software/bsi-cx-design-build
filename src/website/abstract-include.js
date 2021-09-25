@@ -1,6 +1,9 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
-import {identity, uuid} from '../browser-utility';
+import {builderObjectValue, identity, uuid} from '../browser-utility';
+import DesignJsonPropertyExtension from '../design-json-property-extension';
+
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
 /**
  * @abstract
@@ -27,6 +30,11 @@ export default class AbstractInclude extends AbstractBuilder {
    * @protected
    */
   _name = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
 
   /**
    * @param {string|undefined} identifier
@@ -69,6 +77,13 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
+   * @return {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
+  }
+
+  /**
    * Enable or disable edit mode on this include.
    *
    * @param {boolean} editable - The editable flag.
@@ -96,11 +111,36 @@ export default class AbstractInclude extends AbstractBuilder {
   /**
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
-   * @param {string} name -
+   * @param {string} name - The name of this include.
    * @returns {AbstractInclude}
    */
   withName(name) {
     this._name = name;
+    return this;
+  }
+
+  /**
+   * Define the dropzones of this include.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./content-elements/basic/text'),
+   *       require('./content-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The dropzones of this include.
+   * @return {AbstractInclude}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
     return this;
   }
 
@@ -113,6 +153,7 @@ export default class AbstractInclude extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);
 
     return config;
   }
