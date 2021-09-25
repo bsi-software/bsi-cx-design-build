@@ -47,7 +47,6 @@ import Include from '../src/website/include';
 import NLS from '../src/nls/nls';
 import Translation from '../src/nls/translation';
 import DesignFactory from '../src/design/design-factory';
-import PartFactory from '../src/content-element/part/part-factory';
 
 /**
  * A collection of various builder factory methods.
@@ -55,12 +54,6 @@ import PartFactory from '../src/content-element/part/part-factory';
  * @type {DesignFactory}
  */
 const cx = new DesignFactory();
-/**
- * A collection of all part builders.
- *
- * @type {PartFactory}
- */
-const part = new PartFactory();
 
 export {
   DesignJsonProperty,
