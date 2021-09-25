@@ -7,12 +7,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.2.0] - 25.09.2021
+
+### Added
+
+* Builder for dropzones
+* Set dropzone attributes in templates according to the corresponding dropzone builder object.
+
 ## [1.1.1] - 24.09.2021
 
 ### Fixed
 
-* Fix NPE in BSI CX webpack plugin when content element has no parts.
-* Fix missing name property for website includes.
+* NPE in BSI CX webpack plugin when content element has no parts
+* Missing name property for website includes
 
 ## [1.1.0] - 24.09.2021
 
@@ -168,7 +175,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.1...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.0...HEAD
+
+[1.2.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.1...1.2.0
 
 [1.1.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.1.0...1.1.1
 

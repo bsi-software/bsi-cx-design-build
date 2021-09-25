@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 908:
+/***/ 738:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -2136,7 +2136,69 @@ function uuid() {
   });
 }
 
+;// CONCATENATED MODULE: ./src/design-json-property-extension.js
+class DesignJsonPropertyExtension {
+  /**
+   * @type {string}
+   */
+  static DROPZONES = 'dropzones';
+  /**
+   * @type {string}
+   */
+  static DROPZONE = 'dropzone';
+  /**
+   * @type {string}
+   */
+  static ALLOWED_ELEMENTS = 'allowedElements';
+  /**
+   * @type {string}
+   */
+  static MAX_ALLOWED_ELEMENTS = 'maxAllowedElements';
+  /**
+   * @type {string}
+   */
+  static REMOVE_ALLOWED = 'removeAllowed';
+  /**
+   * @type {string}
+   */
+  static COPY_ALLOWED = 'copyAllowed';
+  /**
+   * @type {string}
+   */
+  static MOVE_ALLOWED = 'moveAllowed';
+}
+
+;// CONCATENATED MODULE: ./src/bsi-html-attributes.js
+class BsiHtmlAttributes {
+  /**
+   * @type {string}
+   */
+  static DROPZONE = 'data-bsi-dropzone';
+  /**
+   * @type {string}
+   */
+  static DROPZONE_ALLOWED_ELEMENTS = 'data-bsi-dropzone-allowed-elements';
+  /**
+   * @type {string}
+   */
+  static DROPZONE_MAX_NUMBER_OF_ELEMENTS = 'data-bsi-dropzone-max-number-of-elements';
+  /**
+   * @type {string}
+   */
+  static HIDE_MOVE_BUTTON = 'data-bsi-hide-move-button';
+  /**
+   * @type {string}
+   */
+  static HIDE_COPY_BUTTON = 'data-bsi-hide-copy-button';
+  /**
+   * @type {string}
+   */
+  static HIDE_REMOVE_BUTTON = 'data-bsi-hide-remove-button';
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+
+
 
 
 
@@ -2297,28 +2359,89 @@ class _BsiCxWebpackPlugin {
      */
     let replaceMap = new Map();
 
+    this._addDropzonesToReplaceMap(designJsonObj, replaceMap);
+
     designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
       ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.forEach(element => element[DesignJsonProperty.PARTS]
-          ?.filter(part => !!part[DesignJsonProperty.ID])
-          .forEach(part => {
-            /**
-             * @type {string}
-             */
-            let id = part[DesignJsonProperty.ID];
-            /**
-             * @type {string}
-             */
-            let partId = part[DesignJsonProperty.PART_ID];
-            /**
-             * @type {RegExp}
-             */
-            let needle = new RegExp(escapeRegex(id), 'g');
+        ?.forEach(element => this._addElementToReplaceMap(element, replaceMap)));
 
-            replaceMap.set(id, haystack => haystack.replace(needle, partId));
-          })));
+    Object.values(designJsonObj[DesignJsonProperty.INCLUDES] ?? {})
+      .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap));
 
     return replaceMap;
+  }
+
+  /**
+   * @param {{}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _addElementToReplaceMap(element, replaceMap) {
+    this._addDropzonesToReplaceMap(element, replaceMap);
+
+    element[DesignJsonProperty.PARTS]
+      ?.filter(part => !!part[DesignJsonProperty.ID])
+      .forEach(part => {
+        /**
+         * @type {string}
+         */
+        let id = part[DesignJsonProperty.ID];
+        /**
+         * @type {string}
+         */
+        let partId = part[DesignJsonProperty.PART_ID];
+        /**
+         * @type {RegExp}
+         */
+        let needle = new RegExp(escapeRegex(id), 'g');
+
+        replaceMap.set(id, haystack => haystack.replace(needle, partId));
+      });
+  }
+
+  /**
+   * @param {{}} objScope
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _addDropzonesToReplaceMap(objScope, replaceMap) {
+    /**
+     * @type {{}[]}
+     */
+    let dropzones = objScope[DesignJsonPropertyExtension.DROPZONES] ?? [];
+
+    dropzones.forEach(dropzone => {
+      let dropzoneId = dropzone[DesignJsonPropertyExtension.DROPZONE];
+      let allowedElements = dropzone[DesignJsonPropertyExtension.ALLOWED_ELEMENTS]?.join(' ');
+      let maxElements = dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
+      let removeAllowed = dropzone[DesignJsonPropertyExtension.REMOVE_ALLOWED];
+      let moveAllowed = dropzone[DesignJsonPropertyExtension.MOVE_ALLOWED];
+      let copyAllowed = dropzone[DesignJsonPropertyExtension.COPY_ALLOWED];
+
+      if (dropzoneId === undefined) {
+        return;
+      }
+
+      let replacement = [
+        [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined],
+        [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined],
+        [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined],
+        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === true],
+        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === true],
+        [copyAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === true],
+      ].map(prop => {
+        let [value, attribute, check] = prop;
+
+        return !!check(value) ? `${attribute}="${value}"` : undefined;
+      }).filter(attribute => attribute !== undefined).join(' ');
+
+      let dropzoneAttr = `${BsiHtmlAttributes.DROPZONE}="${dropzoneId}"`;
+      let needle = new RegExp(escapeRegex(dropzoneAttr), 'g');
+
+      replaceMap.set(dropzoneId, haystack => haystack.replace(needle, replacement));
+    });
+
+    delete objScope[DesignJsonPropertyExtension.DROPZONES];
   }
 
   /**
@@ -6099,7 +6222,7 @@ function number(value) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[908](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[738](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });

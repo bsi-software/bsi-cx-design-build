@@ -1368,6 +1368,66 @@ declare module "src/browser-utility" {
      */
     export function uuid(): string;
 }
+declare module "src/design-json-property-extension" {
+    export default class DesignJsonPropertyExtension {
+        /**
+         * @type {string}
+         */
+        static DROPZONES: string;
+        /**
+         * @type {string}
+         */
+        static DROPZONE: string;
+        /**
+         * @type {string}
+         */
+        static ALLOWED_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static MAX_ALLOWED_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static REMOVE_ALLOWED: string;
+        /**
+         * @type {string}
+         */
+        static COPY_ALLOWED: string;
+        /**
+         * @type {string}
+         */
+        static MOVE_ALLOWED: string;
+    }
+}
+declare module "src/bsi-html-attributes" {
+    export default class BsiHtmlAttributes {
+        /**
+         * @type {string}
+         */
+        static DROPZONE: string;
+        /**
+         * @type {string}
+         */
+        static DROPZONE_ALLOWED_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static DROPZONE_MAX_NUMBER_OF_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static HIDE_MOVE_BUTTON: string;
+        /**
+         * @type {string}
+         */
+        static HIDE_COPY_BUTTON: string;
+        /**
+         * @type {string}
+         */
+        static HIDE_REMOVE_BUTTON: string;
+    }
+}
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
         /**
@@ -2836,38 +2896,6 @@ declare module "src/content-element/part/abstract-part" {
     }
     export type Part = import("src/content-element/part/part").Part;
     import AbstractBuilder from "src/abstract-builder";
-}
-declare module "src/design-json-property-extension" {
-    export default class DesignJsonPropertyExtension {
-        /**
-         * @type {string}
-         */
-        static DROPZONES: string;
-        /**
-         * @type {string}
-         */
-        static DROPZONE: string;
-        /**
-         * @type {string}
-         */
-        static ALLOWED_ELEMENTS: string;
-        /**
-         * @type {string}
-         */
-        static MAX_ALLOWED_ELEMENTS: string;
-        /**
-         * @type {string}
-         */
-        static REMOVE_ALLOWED: string;
-        /**
-         * @type {string}
-         */
-        static COPY_ALLOWED: string;
-        /**
-         * @type {string}
-         */
-        static MOVE_ALLOWED: string;
-    }
 }
 declare module "src/design/schema-version" {
     /** @typedef {import('./design').default} Design */

@@ -14,6 +14,8 @@ import File from './file';
 import DistFolder from './dist-folder';
 import {uuid} from './browser-utility';
 import slugify from 'slugify';
+import DesignJsonPropertyExtension from './design-json-property-extension';
+import BsiHtmlAttributes from './bsi-html-attributes';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -158,28 +160,89 @@ class _BsiCxWebpackPlugin {
      */
     let replaceMap = new Map();
 
+    this._addDropzonesToReplaceMap(designJsonObj, replaceMap);
+
     designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
       ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.forEach(element => element[DesignJsonProperty.PARTS]
-          ?.filter(part => !!part[DesignJsonProperty.ID])
-          .forEach(part => {
-            /**
-             * @type {string}
-             */
-            let id = part[DesignJsonProperty.ID];
-            /**
-             * @type {string}
-             */
-            let partId = part[DesignJsonProperty.PART_ID];
-            /**
-             * @type {RegExp}
-             */
-            let needle = new RegExp(escapeRegex(id), 'g');
+        ?.forEach(element => this._addElementToReplaceMap(element, replaceMap)));
 
-            replaceMap.set(id, haystack => haystack.replace(needle, partId));
-          })));
+    Object.values(designJsonObj[DesignJsonProperty.INCLUDES] ?? {})
+      .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap));
 
     return replaceMap;
+  }
+
+  /**
+   * @param {{}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _addElementToReplaceMap(element, replaceMap) {
+    this._addDropzonesToReplaceMap(element, replaceMap);
+
+    element[DesignJsonProperty.PARTS]
+      ?.filter(part => !!part[DesignJsonProperty.ID])
+      .forEach(part => {
+        /**
+         * @type {string}
+         */
+        let id = part[DesignJsonProperty.ID];
+        /**
+         * @type {string}
+         */
+        let partId = part[DesignJsonProperty.PART_ID];
+        /**
+         * @type {RegExp}
+         */
+        let needle = new RegExp(escapeRegex(id), 'g');
+
+        replaceMap.set(id, haystack => haystack.replace(needle, partId));
+      });
+  }
+
+  /**
+   * @param {{}} objScope
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _addDropzonesToReplaceMap(objScope, replaceMap) {
+    /**
+     * @type {{}[]}
+     */
+    let dropzones = objScope[DesignJsonPropertyExtension.DROPZONES] ?? [];
+
+    dropzones.forEach(dropzone => {
+      let dropzoneId = dropzone[DesignJsonPropertyExtension.DROPZONE];
+      let allowedElements = dropzone[DesignJsonPropertyExtension.ALLOWED_ELEMENTS]?.join(' ');
+      let maxElements = dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
+      let removeAllowed = dropzone[DesignJsonPropertyExtension.REMOVE_ALLOWED];
+      let moveAllowed = dropzone[DesignJsonPropertyExtension.MOVE_ALLOWED];
+      let copyAllowed = dropzone[DesignJsonPropertyExtension.COPY_ALLOWED];
+
+      if (dropzoneId === undefined) {
+        return;
+      }
+
+      let replacement = [
+        [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined],
+        [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined],
+        [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined],
+        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === true],
+        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === true],
+        [copyAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === true],
+      ].map(prop => {
+        let [value, attribute, check] = prop;
+
+        return !!check(value) ? `${attribute}="${value}"` : undefined;
+      }).filter(attribute => attribute !== undefined).join(' ');
+
+      let dropzoneAttr = `${BsiHtmlAttributes.DROPZONE}="${dropzoneId}"`;
+      let needle = new RegExp(escapeRegex(dropzoneAttr), 'g');
+
+      replaceMap.set(dropzoneId, haystack => haystack.replace(needle, replacement));
+    });
+
+    delete objScope[DesignJsonPropertyExtension.DROPZONES];
   }
 
   /**

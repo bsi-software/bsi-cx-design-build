@@ -5947,19 +5947,12 @@ class DesignFactory {
 
 
 
-
 /**
  * A collection of various builder factory methods.
  *
  * @type {DesignFactory}
  */
 const cx = new DesignFactory();
-/**
- * A collection of all part builders.
- *
- * @type {PartFactory}
- */
-const part = new PartFactory();
 
 
 
