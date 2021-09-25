@@ -33,21 +33,34 @@
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ twing_environment)
+  "default": () => (/* binding */ twing_loader)
 });
 
+;// CONCATENATED MODULE: external "path"
+const external_path_namespaceObject = require("path");
+var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
 ;// CONCATENATED MODULE: external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
 ;// CONCATENATED MODULE: external "twing"
 const external_twing_namespaceObject = require("twing");
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
 ;// CONCATENATED MODULE: ./src/constant.js
 class constant_Constant {
   /**
@@ -384,23 +397,76 @@ const bsiCxJsModuleRuntimeInline = new external_twing_namespaceObject.TwingFunct
 
 
 
-let twing = new external_twing_namespaceObject.TwingEnvironment(
-  new external_twing_namespaceObject.TwingLoaderRelativeFilesystem()
-);
+/* harmony default export */ function twing_environment() {
+  let twing = new external_twing_namespaceObject.TwingEnvironment(
+    new external_twing_namespaceObject.TwingLoaderRelativeFilesystem()
+  );
 
-twing.addFunction(bsiCxAsset);
-twing.addFunction(bsiCxCssHref);
-twing.addFunction(bsiCxCssInline);
-twing.addFunction(bsiCxJsModuleHref);
-twing.addFunction(bsiCxJsModuleInline);
-twing.addFunction(bsiCxJsModuleMissingChunksImport);
-twing.addFunction(bsiCxJsModuleMissingChunksInline);
-twing.addFunction(bsiCxJsModuleRuntimeHref);
-twing.addFunction(bsiCxJsModuleRuntimeInline);
+  twing.addFunction(bsiCxAsset);
+  twing.addFunction(bsiCxCssHref);
+  twing.addFunction(bsiCxCssInline);
+  twing.addFunction(bsiCxJsModuleHref);
+  twing.addFunction(bsiCxJsModuleInline);
+  twing.addFunction(bsiCxJsModuleMissingChunksImport);
+  twing.addFunction(bsiCxJsModuleMissingChunksInline);
+  twing.addFunction(bsiCxJsModuleRuntimeHref);
+  twing.addFunction(bsiCxJsModuleRuntimeInline);
 
-/* harmony default export */ const twing_environment = (twing);
+  return twing;
+}
 
-module.exports = __webpack_exports__.default;
+;// CONCATENATED MODULE: ./src/twing-loader.js
+
+
+
+/**
+ * Quick and dirty workaround to use slash.
+ *
+ * @see {@link https://www.npmjs.com/package/slash}
+ * @param {string} pathToConvert
+ * @returns {string}
+ */
+function slash(pathToConvert) {
+  const isExtendedLengthPath = /^\\\\\?\\/.test(pathToConvert);
+  const hasNonAscii = /[^\u0000-\u0080]+/.test(pathToConvert); // eslint-disable-line no-control-regex
+
+  if (isExtendedLengthPath || hasNonAscii) {
+    return pathToConvert;
+  }
+
+  return pathToConvert.replace(/\\/g, '/');
+}
+
+/**
+ * Since the original twing-loader does not support Webpack 5 (not working property, memory leaks, ...).
+ *
+ * @param {string} source
+ */
+/* harmony default export */ function twing_loader(source) {
+  let callback = this.async();
+  let options = this.getOptions();
+  let currentEnvironment = twing_environment();
+  let renderContext = options.renderContext;
+  let resourcePath = slash(this.resourcePath);
+
+  // FIXME add caching
+
+  currentEnvironment.on('template', async (name, from) => {
+    let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
+    let resolvedPath = external_path_default().resolve(sourceContext.getResolvedName());
+    this.addDependency(resolvedPath);
+  });
+
+  currentEnvironment.render(resourcePath, renderContext).then((result) => {
+    callback(null, `module.exports = ${JSON.stringify(result)};`);
+  }).catch((error) => {
+    callback(error);
+  });
+};
+
+var __webpack_export_target__ = exports;
+for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
-//# sourceMappingURL=twing-environment.js.map
+//# sourceMappingURL=twing-loader.js.map

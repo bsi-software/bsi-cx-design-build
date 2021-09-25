@@ -5560,9 +5560,8 @@ class WebpackConfigBuilder {
           this._getTemplateLoader(),
           'ref-loader',
           {
-            loader: 'twing-loader',
+            loader: this._getTwingLoader(),
             options: {
-              environmentModulePath: `${package_namespaceObject.u2}/dist/twing-environment.js`,
               renderContext: {
                 properties: this.twigContext.propertiesProxy,
                 designBaseUrl: buildPublicPath(this.config)
@@ -5783,13 +5782,23 @@ class WebpackConfigBuilder {
 
   /**
    * @returns {string}
+   * @private
    */
   _getTemplateLoader() {
     return `${package_namespaceObject.u2}/dist/template-loader`;
   }
 
   /**
+   * @returns {string}
+   * @private
+   */
+  _getTwingLoader() {
+    return `${package_namespaceObject.u2}/dist/twing-loader`;
+  }
+
+  /**
    * @returns {{}[]}
+   * @private
    */
   _getCssLoaderChain() {
     let chain = [

@@ -2574,12 +2574,19 @@ declare module "src/webpack-config-builder" {
         private _getAdditionalRules;
         /**
          * @returns {string}
+         * @private
          */
-        _getTemplateLoader(): string;
+        private _getTemplateLoader;
+        /**
+         * @returns {string}
+         * @private
+         */
+        private _getTwingLoader;
         /**
          * @returns {{}[]}
+         * @private
          */
-        _getCssLoaderChain(): {}[];
+        private _getCssLoaderChain;
         /**
          * Mini CSS extract plugin configuration.
          *

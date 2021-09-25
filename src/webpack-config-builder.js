@@ -219,9 +219,8 @@ export default class WebpackConfigBuilder {
           this._getTemplateLoader(),
           'ref-loader',
           {
-            loader: 'twing-loader',
+            loader: this._getTwingLoader(),
             options: {
-              environmentModulePath: `${packageJson.name}/dist/twing-environment.js`,
               renderContext: {
                 properties: this.twigContext.propertiesProxy,
                 designBaseUrl: buildPublicPath(this.config)
@@ -442,13 +441,23 @@ export default class WebpackConfigBuilder {
 
   /**
    * @returns {string}
+   * @private
    */
   _getTemplateLoader() {
     return `${packageJson.name}/dist/template-loader`;
   }
 
   /**
+   * @returns {string}
+   * @private
+   */
+  _getTwingLoader() {
+    return `${packageJson.name}/dist/twing-loader`;
+  }
+
+  /**
    * @returns {{}[]}
+   * @private
    */
   _getCssLoaderChain() {
     let chain = [

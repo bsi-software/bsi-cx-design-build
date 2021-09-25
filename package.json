@@ -10,8 +10,8 @@
   "main": "dist/main.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "build": "webpack --config webpack.config.js --mode production",
-    "watch": "webpack --config webpack.config.js --mode production --watch",
+    "build": "webpack --config webpack.config.js --mode production --progress",
+    "watch": "webpack --config webpack.config.js --mode production --watch --progress",
     "pretest": "npx ./test/install.js",
     "posttest": "npx ./test/uninstall.js",
     "test": "cd test && webpack --config webpack.config.js --mode production --progress"
@@ -54,7 +54,6 @@
     "source-map-support": "^0.5.19",
     "terser-webpack-plugin": "^5.1.4",
     "twing": "^5.0.2",
-    "twing-loader": "github:ofabel/twing-loader#bugfix/issue_25_30",
     "webpack": "^5.50.0",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.0.0",

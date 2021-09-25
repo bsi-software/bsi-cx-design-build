@@ -25,11 +25,10 @@ module.exports = {
         type: 'commonjs'
       }
     },
-    'twing-environment': {
-      import: path.resolve(__dirname, 'src', 'twing-environment.js'),
+    'twing-loader': {
+      import: path.resolve(__dirname, 'src', 'twing-loader.js'),
       library: {
-        type: 'commonjs2',
-        export: 'default'
+        type: 'commonjs'
       }
     }
   },
