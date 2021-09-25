@@ -1254,7 +1254,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @return {Dropzone[]|undefined}
+   * @returns {Dropzone[]|undefined}
    */
   get dropzones() {
     return this._dropzones;
@@ -1478,7 +1478,7 @@ class Design extends AbstractBuilder {
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
    * @param {...Dropzone} dropzones - The root dropzones.
-   * @return {Design}
+   * @returns {Design}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
@@ -2444,7 +2444,7 @@ class Dropzone extends AbstractBuilder {
    * Set the allowed elements as raw value.
    *
    * @param {...string} allowedElements - The allowed elements.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withRawAllowedElements(...allowedElements) {
     this._allowedElements = new RawValue(allowedElements);
@@ -2455,7 +2455,7 @@ class Dropzone extends AbstractBuilder {
    * Set the number of maximum allowed elements.
    *
    * @param {number} maxAllowedElements - The number of maximum allowed elements.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withMaxAllowedElements(maxAllowedElements) {
     this._maxAllowedElements = maxAllowedElements;
@@ -2466,7 +2466,7 @@ class Dropzone extends AbstractBuilder {
    * Enable or disable the remove button on dropzone elements.
    *
    * @param {boolean} removeAllowed - Enable or disable the remove button.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withRemoveAllowed(removeAllowed) {
     this._removeAllowed = removeAllowed;
@@ -2477,7 +2477,7 @@ class Dropzone extends AbstractBuilder {
    * Enable or disable the copy button on dropzone elements.
    *
    * @param {boolean} copyAllowed - Enable or disable the copy button.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withCopyAllowed(copyAllowed) {
     this._copyAllowed = copyAllowed;
@@ -2488,7 +2488,7 @@ class Dropzone extends AbstractBuilder {
    * Enable or disable the move button on dropzone elements.
    *
    * @param {boolean} moveAllowed - Enable or disable the move button.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
@@ -3520,7 +3520,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @return {Dropzone[]|undefined}
+   * @returns {Dropzone[]|undefined}
    */
   get dropzones() {
     return this._dropzones;
@@ -3715,7 +3715,7 @@ class ContentElement extends AbstractBuilder {
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
    * @param {...Dropzone} dropzones - The dropzones of this include.
-   * @return {ContentElement}
+   * @returns {ContentElement}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
@@ -4708,7 +4708,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @return {Dropzone[]|undefined}
+   * @returns {Dropzone[]|undefined}
    */
   get dropzones() {
     return this._dropzones;
@@ -4768,7 +4768,7 @@ class AbstractInclude extends AbstractBuilder {
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
    * @param {...Dropzone} dropzones - The dropzones of this include.
-   * @return {AbstractInclude}
+   * @returns {AbstractInclude}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
@@ -4838,7 +4838,7 @@ class PageInclude extends AbstractInclude {
   /**
    * @inheritDoc
    * @param {...Dropzone} dropzones
-   * @return {PageInclude}
+   * @returns {PageInclude}
    */
   withDropzones(...dropzones) {
     return /** @type {PageInclude} */ super.withDropzones(...dropzones);
@@ -4924,7 +4924,7 @@ class Include extends AbstractInclude {
   /**
    * @inheritDoc
    * @param {...Dropzone} dropzones
-   * @return {Include}
+   * @returns {Include}
    */
   withDropzones(...dropzones) {
     return /** @type {Include} */ super.withDropzones(...dropzones);
@@ -5746,7 +5746,7 @@ class DesignFactory {
    *       require('./content-elements/basic/text'),
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   get dropzone() {
     return new Dropzone();

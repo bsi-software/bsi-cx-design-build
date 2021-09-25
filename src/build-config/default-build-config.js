@@ -52,7 +52,7 @@ export default class DefaultBuildConfig {
   }
 
   get sourceMapEnabled() {
-    return true;
+    return false;
   }
 
   get staticFileFolderPath() {
@@ -73,5 +73,9 @@ export default class DefaultBuildConfig {
 
   get webpackRules() {
     return [];
+  }
+
+  get postcssEnabled() {
+    return false;
   }
 }

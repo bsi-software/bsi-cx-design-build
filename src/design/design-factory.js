@@ -163,7 +163,7 @@ export default class DesignFactory {
    *       require('./content-elements/basic/text'),
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   get dropzone() {
     return new Dropzone();

@@ -66,7 +66,7 @@ export default class Include extends AbstractInclude {
   /**
    * @inheritDoc
    * @param {...Dropzone} dropzones
-   * @return {Include}
+   * @returns {Include}
    */
   withDropzones(...dropzones) {
     return /** @type {Include} */ super.withDropzones(...dropzones);

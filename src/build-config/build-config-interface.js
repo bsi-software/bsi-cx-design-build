@@ -107,4 +107,10 @@ export default class BuildConfigInterface {
    */
   get webpackPlugins() {
   }
+
+  /**
+   * @returns {boolean}
+   */
+  get postcssEnabled() {
+  }
 }

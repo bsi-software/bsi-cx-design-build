@@ -101,6 +101,11 @@ export default class BuildConfig {
    * @private
    */
   _webpackPlugins = [];
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _postcssEnabled = undefined;
 
   /**
    * @returns {string}
@@ -219,6 +224,14 @@ export default class BuildConfig {
    */
   get webpackPlugins() {
     return this._webpackPlugins;
+  }
+
+  /**
+   * @returns {boolean}
+   * @private
+   */
+  get postcssEnabled() {
+    return this._postcssEnabled;
   }
 
   /**
@@ -435,6 +448,17 @@ export default class BuildConfig {
    */
   withWebpackPlugins(...plugins) {
     this._webpackPlugins = plugins;
+    return this;
+  }
+
+  /**
+   * Enable or disable PostCSS for the Webpack configuration.
+   *
+   * @param {boolean} postcssEnabled - Enable or disable PostCSS.
+   * @returns {BuildConfig}
+   */
+  withPostcssEnabled(postcssEnabled) {
+    this._postcssEnabled = postcssEnabled;
     return this;
   }
 

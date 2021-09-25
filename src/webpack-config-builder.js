@@ -451,7 +451,7 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getCssLoaderChain() {
-    return [
+    let chain = [
       {
         loader: MiniCssExtractPlugin.loader,
         options: {
@@ -463,8 +463,11 @@ export default class WebpackConfigBuilder {
         options: {
           sourceMap: true,
         }
-      },
-      {
+      }
+    ];
+
+    if (this.config.postcssEnabled) {
+      chain.push({
         loader: 'postcss-loader',
         options: {
           sourceMap: true,
@@ -475,8 +478,10 @@ export default class WebpackConfigBuilder {
             ]
           }
         }
-      }
-    ];
+      });
+    }
+
+    return chain;
   }
 
   /**

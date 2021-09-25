@@ -92,6 +92,11 @@ export default class ValidatedBuildConfig {
    * @private
    */
   _webpackRules = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _postcssEnabled = undefined;
 
   /**
    * @returns {string}
@@ -210,5 +215,12 @@ export default class ValidatedBuildConfig {
    */
   get webpackRules() {
     return this._webpackRules;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get postcssEnabled() {
+    return this._postcssEnabled;
   }
 }

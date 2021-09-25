@@ -128,7 +128,7 @@ export default class Dropzone extends AbstractBuilder {
    * Set the allowed elements as raw value.
    *
    * @param {...string} allowedElements - The allowed elements.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withRawAllowedElements(...allowedElements) {
     this._allowedElements = new RawValue(allowedElements);
@@ -139,7 +139,7 @@ export default class Dropzone extends AbstractBuilder {
    * Set the number of maximum allowed elements.
    *
    * @param {number} maxAllowedElements - The number of maximum allowed elements.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withMaxAllowedElements(maxAllowedElements) {
     this._maxAllowedElements = maxAllowedElements;
@@ -150,7 +150,7 @@ export default class Dropzone extends AbstractBuilder {
    * Enable or disable the remove button on dropzone elements.
    *
    * @param {boolean} removeAllowed - Enable or disable the remove button.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withRemoveAllowed(removeAllowed) {
     this._removeAllowed = removeAllowed;
@@ -161,7 +161,7 @@ export default class Dropzone extends AbstractBuilder {
    * Enable or disable the copy button on dropzone elements.
    *
    * @param {boolean} copyAllowed - Enable or disable the copy button.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withCopyAllowed(copyAllowed) {
     this._copyAllowed = copyAllowed;
@@ -172,7 +172,7 @@ export default class Dropzone extends AbstractBuilder {
    * Enable or disable the move button on dropzone elements.
    *
    * @param {boolean} moveAllowed - Enable or disable the move button.
-   * @return {Dropzone}
+   * @returns {Dropzone}
    */
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;

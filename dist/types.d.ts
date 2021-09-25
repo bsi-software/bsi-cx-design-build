@@ -421,6 +421,10 @@ declare module "src/build-config/build-config-interface" {
          * @returns {Object[]}
          */
         get webpackPlugins(): any[];
+        /**
+         * @returns {boolean}
+         */
+        get postcssEnabled(): boolean;
     }
     export type Version = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
@@ -521,6 +525,11 @@ declare module "src/build-config/validated-build-config" {
          */
         private _webpackRules;
         /**
+         * @type {boolean}
+         * @private
+         */
+        private _postcssEnabled;
+        /**
          * @returns {string}
          */
         get name(): string;
@@ -588,6 +597,10 @@ declare module "src/build-config/validated-build-config" {
          * @returns {{}[]}
          */
         get webpackRules(): {}[];
+        /**
+         * @returns {boolean}
+         */
+        get postcssEnabled(): boolean;
     }
     export type Version = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
@@ -617,6 +630,7 @@ declare module "src/build-config/default-build-config" {
         get version(): string;
         get webpackPlugins(): any[];
         get webpackRules(): any[];
+        get postcssEnabled(): boolean;
     }
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
@@ -839,6 +853,11 @@ declare module "src/build-config/build-config" {
          */
         private _webpackPlugins;
         /**
+         * @type {boolean}
+         * @private
+         */
+        private _postcssEnabled;
+        /**
          * @returns {string}
          */
         get name(): string;
@@ -906,6 +925,11 @@ declare module "src/build-config/build-config" {
          * @returns {Object[]}
          */
         get webpackPlugins(): any[];
+        /**
+         * @returns {boolean}
+         * @private
+         */
+        private get postcssEnabled();
         /**
          * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
          * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
@@ -1055,6 +1079,13 @@ declare module "src/build-config/build-config" {
          * @returns {BuildConfig}
          */
         withWebpackPlugins(...plugins: any[]): BuildConfig;
+        /**
+         * Enable or disable PostCSS for the Webpack configuration.
+         *
+         * @param {boolean} postcssEnabled - Enable or disable PostCSS.
+         * @returns {BuildConfig}
+         */
+        withPostcssEnabled(postcssEnabled: boolean): BuildConfig;
         /**
          * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
          * A shallow clone will be created by default. This means nested objects will still reference the same origin.
@@ -3567,35 +3598,35 @@ declare module "src/dropzone/dropzone" {
          * Set the allowed elements as raw value.
          *
          * @param {...string} allowedElements - The allowed elements.
-         * @return {Dropzone}
+         * @returns {Dropzone}
          */
         withRawAllowedElements(...allowedElements: string[]): Dropzone;
         /**
          * Set the number of maximum allowed elements.
          *
          * @param {number} maxAllowedElements - The number of maximum allowed elements.
-         * @return {Dropzone}
+         * @returns {Dropzone}
          */
         withMaxAllowedElements(maxAllowedElements: number): Dropzone;
         /**
          * Enable or disable the remove button on dropzone elements.
          *
          * @param {boolean} removeAllowed - Enable or disable the remove button.
-         * @return {Dropzone}
+         * @returns {Dropzone}
          */
         withRemoveAllowed(removeAllowed: boolean): Dropzone;
         /**
          * Enable or disable the copy button on dropzone elements.
          *
          * @param {boolean} copyAllowed - Enable or disable the copy button.
-         * @return {Dropzone}
+         * @returns {Dropzone}
          */
         withCopyAllowed(copyAllowed: boolean): Dropzone;
         /**
          * Enable or disable the move button on dropzone elements.
          *
          * @param {boolean} moveAllowed - Enable or disable the move button.
-         * @return {Dropzone}
+         * @returns {Dropzone}
          */
         withMoveAllowed(moveAllowed: boolean): Dropzone;
         /**
@@ -3713,7 +3744,7 @@ declare module "src/content-element/content-element" {
          */
         get parts(): RawValue | import("src/content-element/part/abstract-part").default[];
         /**
-         * @return {Dropzone[]|undefined}
+         * @returns {Dropzone[]|undefined}
          */
         get dropzones(): import("src/dropzone/dropzone").default[];
         /**
@@ -3865,7 +3896,7 @@ declare module "src/content-element/content-element" {
          *       require('./content-elements/basic/image'))
          *     .withMaxAllowedElements(1))
          * @param {...Dropzone} dropzones - The dropzones of this include.
-         * @return {ContentElement}
+         * @returns {ContentElement}
          */
         withDropzones(...dropzones: Dropzone[]): ContentElement;
         /**
@@ -5000,7 +5031,7 @@ declare module "src/design/design" {
          */
         get contentElementGroups(): RawValue | import("src/content-element/content-element-group").default[];
         /**
-         * @return {Dropzone[]|undefined}
+         * @returns {Dropzone[]|undefined}
          */
         get dropzones(): import("src/dropzone/dropzone").default[];
         /**
@@ -5161,7 +5192,7 @@ declare module "src/design/design" {
          *       require('./content-elements/basic/image'))
          *     .withMaxAllowedElements(1))
          * @param {...Dropzone} dropzones - The root dropzones.
-         * @return {Design}
+         * @returns {Design}
          */
         withDropzones(...dropzones: Dropzone[]): Design;
         /**
@@ -5721,7 +5752,7 @@ declare module "src/website/abstract-include" {
          */
         get name(): string;
         /**
-         * @return {Dropzone[]|undefined}
+         * @returns {Dropzone[]|undefined}
          */
         get dropzones(): import("src/dropzone/dropzone").default[];
         /**
@@ -5766,7 +5797,7 @@ declare module "src/website/abstract-include" {
          *       require('./content-elements/basic/image'))
          *     .withMaxAllowedElements(1))
          * @param {...Dropzone} dropzones - The dropzones of this include.
-         * @return {AbstractInclude}
+         * @returns {AbstractInclude}
          */
         withDropzones(...dropzones: Dropzone[]): AbstractInclude;
     }
@@ -6204,7 +6235,7 @@ declare module "src/design/design-factory" {
          *       require('./content-elements/basic/text'),
          *       require('./content-elements/basic/image'))
          *     .withMaxAllowedElements(1))
-         * @return {Dropzone}
+         * @returns {Dropzone}
          */
         get dropzone(): Dropzone;
         /**

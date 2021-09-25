@@ -766,6 +766,11 @@ class ValidatedBuildConfig {
    * @private
    */
   _webpackRules = undefined;
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _postcssEnabled = undefined;
 
   /**
    * @returns {string}
@@ -885,6 +890,13 @@ class ValidatedBuildConfig {
   get webpackRules() {
     return this._webpackRules;
   }
+
+  /**
+   * @returns {boolean}
+   */
+  get postcssEnabled() {
+    return this._postcssEnabled;
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
@@ -942,7 +954,7 @@ class DefaultBuildConfig {
   }
 
   get sourceMapEnabled() {
-    return true;
+    return false;
   }
 
   get staticFileFolderPath() {
@@ -963,6 +975,10 @@ class DefaultBuildConfig {
 
   get webpackRules() {
     return [];
+  }
+
+  get postcssEnabled() {
+    return false;
   }
 }
 
@@ -1409,6 +1425,11 @@ class BuildConfig {
    * @private
    */
   _webpackPlugins = [];
+  /**
+   * @type {boolean}
+   * @private
+   */
+  _postcssEnabled = undefined;
 
   /**
    * @returns {string}
@@ -1527,6 +1548,14 @@ class BuildConfig {
    */
   get webpackPlugins() {
     return this._webpackPlugins;
+  }
+
+  /**
+   * @returns {boolean}
+   * @private
+   */
+  get postcssEnabled() {
+    return this._postcssEnabled;
   }
 
   /**
@@ -1743,6 +1772,17 @@ class BuildConfig {
    */
   withWebpackPlugins(...plugins) {
     this._webpackPlugins = plugins;
+    return this;
+  }
+
+  /**
+   * Enable or disable PostCSS for the Webpack configuration.
+   *
+   * @param {boolean} postcssEnabled - Enable or disable PostCSS.
+   * @returns {BuildConfig}
+   */
+  withPostcssEnabled(postcssEnabled) {
+    this._postcssEnabled = postcssEnabled;
     return this;
   }
 
@@ -5752,7 +5792,7 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getCssLoaderChain() {
-    return [
+    let chain = [
       {
         loader: (external_mini_css_extract_plugin_default()).loader,
         options: {
@@ -5764,8 +5804,11 @@ class WebpackConfigBuilder {
         options: {
           sourceMap: true,
         }
-      },
-      {
+      }
+    ];
+
+    if (this.config.postcssEnabled) {
+      chain.push({
         loader: 'postcss-loader',
         options: {
           sourceMap: true,
@@ -5776,8 +5819,10 @@ class WebpackConfigBuilder {
             ]
           }
         }
-      }
-    ];
+      });
+    }
+
+    return chain;
   }
 
   /**

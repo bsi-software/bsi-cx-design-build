@@ -45,7 +45,7 @@ export default class PageInclude extends AbstractInclude {
   /**
    * @inheritDoc
    * @param {...Dropzone} dropzones
-   * @return {PageInclude}
+   * @returns {PageInclude}
    */
   withDropzones(...dropzones) {
     return /** @type {PageInclude} */ super.withDropzones(...dropzones);

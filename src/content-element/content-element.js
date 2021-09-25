@@ -132,7 +132,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @return {Dropzone[]|undefined}
+   * @returns {Dropzone[]|undefined}
    */
   get dropzones() {
     return this._dropzones;
@@ -327,7 +327,7 @@ export default class ContentElement extends AbstractBuilder {
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
    * @param {...Dropzone} dropzones - The dropzones of this include.
-   * @return {ContentElement}
+   * @returns {ContentElement}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
