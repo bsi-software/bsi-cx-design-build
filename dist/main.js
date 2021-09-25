@@ -6002,8 +6002,7 @@ class WebpackConfigBuilder {
       contentBase: this.config.outputPath,
       publicPath: '/',
       compress: true,
-      writeToDisk: filePath => zipRegEx.test(filePath),
-      inline: false
+      writeToDisk: filePath => zipRegEx.test(filePath)
     };
   }
 
