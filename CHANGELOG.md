@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.3.1] - 26.09.2021
+
+## Fixed
+
+* Twig template cache replaced with own implementation (to cope with webpack require).
+
 ## [1.3.0] - 26.09.2021
 
 ## Fixed
@@ -224,7 +230,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.3.1...HEAD
+
+[1.3.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.3.0...1.3.1
 
 [1.3.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.5...1.3.0
 

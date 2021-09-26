@@ -1,7 +1,9 @@
-import packageJson from '../package.json';
-
-import {TwingEnvironment, TwingLoaderRelativeFilesystem} from 'twing';
+import fs from 'fs';
+import path from 'path';
+import {TwingCacheFilesystem, TwingEnvironment, TwingLoaderRelativeFilesystem} from 'twing';
 import findCacheDir from 'find-cache-dir';
+
+import packageJson from '../package.json';
 
 import {
   bsiCxAsset,
@@ -21,9 +23,34 @@ let cacheFolder = findCacheDir({
   thunk: true
 })('twing');
 
+class FilesystemCache extends TwingCacheFilesystem {
+  /**
+   * @param {string} key
+   * @return {Promise<*>}
+   */
+  load(key) {
+    let modulePath = path.resolve(key);
+    let requireFunc = __non_webpack_require__;
+
+    return new Promise((resolve) => {
+      fs.stat(modulePath, (error) => {
+        if (error) {
+          resolve(() => new Map);
+        } else {
+          let cache = requireFunc.cache;
+          delete cache[requireFunc.resolve(modulePath)];
+          resolve(requireFunc(modulePath));
+        }
+      });
+    });
+  }
+}
+
+let cache = new FilesystemCache(cacheFolder);
+
 export default function () {
   let opts = {
-    cache: cacheFolder
+    cache: cache
   };
   let twing = new TwingEnvironment(
     new TwingLoaderRelativeFilesystem(),

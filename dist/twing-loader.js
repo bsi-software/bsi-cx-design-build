@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 465:
+/***/ 26:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -18,13 +18,16 @@ const register_namespaceObject = require("source-map-support/register");
 ;// CONCATENATED MODULE: external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
-;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// CONCATENATED MODULE: external "twing"
 const external_twing_namespaceObject = require("twing");
 ;// CONCATENATED MODULE: external "find-cache-dir"
 const external_find_cache_dir_namespaceObject = require("find-cache-dir");
 var external_find_cache_dir_default = /*#__PURE__*/__webpack_require__.n(external_find_cache_dir_namespaceObject);
+;// CONCATENATED MODULE: ./package.json
+const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
 ;// CONCATENATED MODULE: ./src/constant.js
 class constant_Constant {
   /**
@@ -366,15 +369,42 @@ const bsiCxJsModuleRuntimeInline = new external_twing_namespaceObject.TwingFunct
 
 
 
+
+
 let cacheFolder = external_find_cache_dir_default()({
   name: package_namespaceObject.u2,
   create: true,
   thunk: true
 })('twing');
 
+class FilesystemCache extends external_twing_namespaceObject.TwingCacheFilesystem {
+  /**
+   * @param {string} key
+   * @return {Promise<*>}
+   */
+  load(key) {
+    let modulePath = external_path_default().resolve(key);
+    let requireFunc = require;
+
+    return new Promise((resolve) => {
+      external_fs_default().stat(modulePath, (error) => {
+        if (error) {
+          resolve(() => new Map);
+        } else {
+          let cache = requireFunc.cache;
+          delete cache[requireFunc.resolve(modulePath)];
+          resolve(requireFunc(modulePath));
+        }
+      });
+    });
+  }
+}
+
+let cache = new FilesystemCache(cacheFolder);
+
 /* harmony default export */ function twing_environment() {
   let opts = {
-    cache: cacheFolder
+    cache: cache
   };
   let twing = new external_twing_namespaceObject.TwingEnvironment(
     new external_twing_namespaceObject.TwingLoaderRelativeFilesystem(),
@@ -429,8 +459,6 @@ function slash(pathToConvert) {
   let currentEnvironment = twing_environment();
   let renderContext = options.renderContext;
   let resourcePath = slash(this.resourcePath);
-
-  // FIXME add caching
 
   currentEnvironment.on('template', async (name, from) => {
     let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
@@ -500,7 +528,7 @@ function slash(pathToConvert) {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module doesn't tell about it's top-level declarations so it can't be inlined
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[465](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__[26](0, __webpack_exports__, __webpack_require__);
 /******/ 	var __webpack_export_target__ = exports;
 /******/ 	for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 /******/ 	if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
