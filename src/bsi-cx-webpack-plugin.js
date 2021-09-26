@@ -770,10 +770,10 @@ class _BsiCxWebpackPlugin {
           let asset = this._compilation.getAsset(assetPath);
           let source = asset.source.source();
           let strSource = toString(source);
-          return `<script>${strSource}</script>`;
+          return `<script data-bsi-remove-if="draft">${strSource}</script>`;
         } else {
           let url = buildPublicPath(this._config, assetPath);
-          return `<script src="${url}" defer="defer"></script>`;
+          return `<script src="${url}" defer="defer" data-bsi-remove-if="draft"></script>`;
         }
       }).join('');
   }
