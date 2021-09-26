@@ -479,7 +479,7 @@ function slash(pathToConvert) {
       let resolvedPath = external_path_default().resolve(sourceContext.getResolvedName());
       this.addDependency(resolvedPath);
     } catch (error) {
-      callback(error);
+      // NOP
     }
   });
 

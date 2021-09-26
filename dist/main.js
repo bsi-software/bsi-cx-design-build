@@ -1068,7 +1068,7 @@ class BuildConfigValidator {
     this._validateProperty('targetVersion', Version);
     this._validateProperty('designType', DesignType);
     this._validateProperty('rootPath', String);
-    this._validateProperty('outputPath', String);
+    this._validateProperty('outputPath', String, false);
     this._validateProperty('propertiesFilePath', String);
     this._validateProperty('devServerPort', Number);
     this._validateProperty('hashZipFiles', Boolean);
@@ -1085,8 +1085,9 @@ class BuildConfigValidator {
   /**
    * @param {string} name
    * @param {object} type
+   * @param {boolean} [applyDefaultConfig=true]
    */
-  _validateProperty(name, type) {
+  _validateProperty(name, type, applyDefaultConfig) {
     let property = '_' + name;
     let value = this.buildConfig[name];
     let defaultValue = this.defaultBuildConfig[name];
@@ -1100,7 +1101,7 @@ class BuildConfigValidator {
       throw new ValidationError(`${name} is required and can not be empty`);
     }
 
-    if (value === undefined) {
+    if ((applyDefaultConfig === undefined || !!applyDefaultConfig) && value === undefined) {
       value = defaultValue;
     }
 

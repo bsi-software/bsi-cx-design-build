@@ -41,7 +41,7 @@ export default function (source) {
       let resolvedPath = path.resolve(sourceContext.getResolvedName());
       this.addDependency(resolvedPath);
     } catch (error) {
-      callback(error);
+      // NOP
     }
   });
 

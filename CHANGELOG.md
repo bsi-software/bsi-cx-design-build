@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.4.2] - 26.09.2021
+
+## Fixed
+
+* Don't log template not found errors during twig compilation twice.
+* Correct output path: `dist/{template}` instead of `dist`.
+
 ## [1.4.1] - 26.09.2021
 
 ## Fixed
@@ -249,7 +256,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.1...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.2...HEAD
+
+[1.4.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.1...1.4.2
 
 [1.4.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.0...1.4.1
 
