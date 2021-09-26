@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Fixed
 
 * Return type of formatted text part `withId` method.
+* Removal of dropzone control buttons.
 
 ## Changed
 

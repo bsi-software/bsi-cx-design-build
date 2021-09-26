@@ -228,9 +228,9 @@ class _BsiCxWebpackPlugin {
         [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined],
         [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined],
         [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined],
-        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === true],
-        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === true],
-        [copyAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === true],
+        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === false],
+        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === false],
+        [copyAllowed, BsiHtmlAttributes.HIDE_COPY_BUTTON, v => v === false],
       ].map(prop => {
         let [value, attribute, check] = prop;
 
