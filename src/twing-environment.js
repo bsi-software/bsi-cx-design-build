@@ -9,7 +9,8 @@ import {
   bsiCxJsModuleMissingChunksImport,
   bsiCxJsModuleMissingChunksInline,
   bsiCxJsModuleRuntimeHref,
-  bsiCxJsModuleRuntimeInline
+  bsiCxJsModuleRuntimeInline,
+  bsiCxLorem
 } from './twig-functions';
 
 export default function () {
@@ -26,6 +27,7 @@ export default function () {
   twing.addFunction(bsiCxJsModuleMissingChunksInline);
   twing.addFunction(bsiCxJsModuleRuntimeHref);
   twing.addFunction(bsiCxJsModuleRuntimeInline);
+  twing.addFunction(bsiCxLorem);
 
   return twing;
 }
