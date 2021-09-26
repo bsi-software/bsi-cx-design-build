@@ -474,9 +474,13 @@ function slash(pathToConvert) {
   this.cacheable(false);
 
   currentEnvironment.on('template', async (name, from) => {
-    let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
-    let resolvedPath = external_path_default().resolve(sourceContext.getResolvedName());
-    this.addDependency(resolvedPath);
+    try {
+      let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
+      let resolvedPath = external_path_default().resolve(sourceContext.getResolvedName());
+      this.addDependency(resolvedPath);
+    } catch (error) {
+      callback(error);
+    }
   });
 
   currentEnvironment.render(resourcePath, renderContext).then((result) => {

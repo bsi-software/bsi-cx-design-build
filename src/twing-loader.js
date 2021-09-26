@@ -36,9 +36,13 @@ export default function (source) {
   this.cacheable(false);
 
   currentEnvironment.on('template', async (name, from) => {
-    let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
-    let resolvedPath = path.resolve(sourceContext.getResolvedName());
-    this.addDependency(resolvedPath);
+    try {
+      let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
+      let resolvedPath = path.resolve(sourceContext.getResolvedName());
+      this.addDependency(resolvedPath);
+    } catch (error) {
+      callback(error);
+    }
   });
 
   currentEnvironment.render(resourcePath, renderContext).then((result) => {
