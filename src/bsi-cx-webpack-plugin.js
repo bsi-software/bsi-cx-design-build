@@ -166,7 +166,8 @@ class _BsiCxWebpackPlugin {
       ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
         ?.forEach(element => this._addElementToReplaceMap(element, replaceMap)));
 
-    Object.values(designJsonObj[DesignJsonProperty.INCLUDES] ?? {})
+    let website = designJsonObj[DesignJsonProperty.WEBSITE] ?? {};
+    Object.values(website[DesignJsonProperty.INCLUDES] ?? {})
       .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap));
 
     return replaceMap;
