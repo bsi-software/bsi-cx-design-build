@@ -33,6 +33,8 @@ export default function (source) {
   let renderContext = options.renderContext;
   let resourcePath = slash(this.resourcePath);
 
+  this.cacheable(false);
+
   currentEnvironment.on('template', async (name, from) => {
     let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
     let resolvedPath = path.resolve(sourceContext.getResolvedName());

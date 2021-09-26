@@ -225,16 +225,16 @@ class _BsiCxWebpackPlugin {
       }
 
       let replacement = [
-        [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined],
-        [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined],
-        [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined],
-        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === false],
-        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === false],
-        [copyAllowed, BsiHtmlAttributes.HIDE_COPY_BUTTON, v => v === false],
+        [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined, v => v],
+        [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined, v => v],
+        [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined, v => v],
+        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === false, () => ''],
+        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === false, () => ''],
+        [copyAllowed, BsiHtmlAttributes.HIDE_COPY_BUTTON, v => v === false, () => ''],
       ].map(prop => {
-        let [value, attribute, check] = prop;
+        let [value, attribute, check, converter] = prop;
 
-        return !!check(value) ? `${attribute}="${value}"` : undefined;
+        return !!check(value) ? `${attribute}="${converter(value)}"` : undefined;
       }).filter(attribute => attribute !== undefined).join(' ');
 
       let dropzoneAttr = `${BsiHtmlAttributes.DROPZONE}="${dropzoneId}"`;
