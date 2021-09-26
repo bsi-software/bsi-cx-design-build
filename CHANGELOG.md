@@ -7,6 +7,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## Fixed
+
+* Return type of formatted text part `withId` method.
+
+## Changed
+
+* Include `<script>` tags with `data-bsi-remove-if="draft"` attribute.
+
 ## [1.2.5] - 26.09.2021
 
 ### Fixed
