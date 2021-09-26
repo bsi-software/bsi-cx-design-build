@@ -1,3 +1,5 @@
+import 'source-map-support/register';
+
 import path from 'path';
 import environment from './twing-environment';
 
@@ -30,8 +32,6 @@ export default function (source) {
   let currentEnvironment = environment();
   let renderContext = options.renderContext;
   let resourcePath = slash(this.resourcePath);
-
-  // FIXME add caching
 
   currentEnvironment.on('template', async (name, from) => {
     let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);

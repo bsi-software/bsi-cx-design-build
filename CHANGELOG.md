@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.2.6] - 26.09.2021
+
 ## Fixed
 
 * Return type of formatted text part `withId` method.
@@ -15,6 +17,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Changed
 
 * Include `<script>` tags with `data-bsi-remove-if="draft"` attribute.
+
+### Added
+
+* Build cache configuration for twig templates.
 
 ## [1.2.5] - 26.09.2021
 
@@ -218,7 +224,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.5...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.6...HEAD
+
+[1.2.6]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.5...1.2.6
 
 [1.2.5]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.2.4...1.2.5
 
