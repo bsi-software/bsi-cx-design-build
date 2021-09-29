@@ -2927,17 +2927,17 @@ declare module "src/content-element/part/abstract-part" {
          *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
          * </div>
          * @param {string} id - The ID to use.
-         * @returns {AbstractPart}
+         * @returns {this}
          */
-        withId(id: string): AbstractPart;
+        withId(id: string): this;
         /**
          * The set content element part's label.
          *
          * @param {string} label - The label to set.
-         * @returns {AbstractPart}
+         * @returns {this}
          * @since Studio 1.0
          */
-        withLabel(label: string): AbstractPart;
+        withLabel(label: string): this;
     }
     export type Part = import("src/content-element/part/part").Part;
     import AbstractBuilder from "src/abstract-builder";

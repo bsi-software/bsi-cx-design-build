@@ -923,7 +923,7 @@ class AbstractPart extends AbstractBuilder {
    *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
    * </div>
    * @param {string} id - The ID to use.
-   * @returns {AbstractPart}
+   * @returns {this}
    */
   withId(id) {
     this._id = id;
@@ -934,7 +934,7 @@ class AbstractPart extends AbstractBuilder {
    * The set content element part's label.
    *
    * @param {string} label - The label to set.
-   * @returns {AbstractPart}
+   * @returns {this}
    * @since Studio 1.0
    */
   withLabel(label) {
