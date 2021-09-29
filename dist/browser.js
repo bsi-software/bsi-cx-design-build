@@ -4566,7 +4566,7 @@ class AbstractInclude extends AbstractBuilder {
    * Enable or disable edit mode on this include.
    *
    * @param {boolean} editable - The editable flag.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withEditable(editable) {
     this._editable = editable;
@@ -4580,7 +4580,7 @@ class AbstractInclude extends AbstractBuilder {
    * @example
    * .withFile(require('./footer.html'))
    * @param {{}} file - The file object. Just pass the response of your require statement.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withFile(file) {
     this._file = file;
@@ -4591,7 +4591,7 @@ class AbstractInclude extends AbstractBuilder {
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
    * @param {string} name - The name of this include.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withName(name) {
     this._name = name;
@@ -4616,7 +4616,7 @@ class AbstractInclude extends AbstractBuilder {
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
    * @param {...Dropzone} dropzones - The dropzones of this include.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
@@ -4655,41 +4655,6 @@ class AbstractInclude extends AbstractBuilder {
 class PageInclude extends AbstractInclude {
   constructor() {
     super(DesignJsonProperty.PAGE_INCLUDE);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {boolean} editable
-   * @returns {PageInclude}
-   */
-  withEditable(editable) {
-    return /** @type {PageInclude} */ super.withEditable(editable);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {{}} file
-   * @returns {PageInclude}
-   */
-  withFile(file) {
-    return /** @type {PageInclude} */ super.withFile(file);
-  }
-
-  /**
-   * @param {string} name
-   * @returns {PageInclude}
-   */
-  withName(name) {
-    return /** @type {PageInclude} */ super.withName(name);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {...Dropzone} dropzones
-   * @returns {PageInclude}
-   */
-  withDropzones(...dropzones) {
-    return /** @type {PageInclude} */ super.withDropzones(...dropzones);
   }
 
   /**
@@ -4740,42 +4705,6 @@ class Include extends AbstractInclude {
   withIdentifier(identifier) {
     this._identifier = identifier;
     return this;
-  }
-
-  /**
-   * @inheritDoc
-   * @param {boolean} editable
-   * @returns {Include}
-   */
-  withEditable(editable) {
-    return /** @type {Include} */ super.withEditable(editable);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {{}} file
-   * @returns {Include}
-   */
-  withFile(file) {
-    return /** @type {Include} */ super.withFile(file);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {string} name
-   * @returns {Include}
-   */
-  withName(name) {
-    return /** @type {Include} */ super.withName(name);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {...Dropzone} dropzones
-   * @returns {Include}
-   */
-  withDropzones(...dropzones) {
-    return /** @type {Include} */ super.withDropzones(...dropzones);
   }
 
   /**

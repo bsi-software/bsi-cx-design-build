@@ -17,41 +17,6 @@ export default class PageInclude extends AbstractInclude {
   }
 
   /**
-   * @inheritDoc
-   * @param {boolean} editable
-   * @returns {PageInclude}
-   */
-  withEditable(editable) {
-    return /** @type {PageInclude} */ super.withEditable(editable);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {{}} file
-   * @returns {PageInclude}
-   */
-  withFile(file) {
-    return /** @type {PageInclude} */ super.withFile(file);
-  }
-
-  /**
-   * @param {string} name
-   * @returns {PageInclude}
-   */
-  withName(name) {
-    return /** @type {PageInclude} */ super.withName(name);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {...Dropzone} dropzones
-   * @returns {PageInclude}
-   */
-  withDropzones(...dropzones) {
-    return /** @type {PageInclude} */ super.withDropzones(...dropzones);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

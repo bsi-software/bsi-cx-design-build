@@ -87,7 +87,7 @@ export default class AbstractInclude extends AbstractBuilder {
    * Enable or disable edit mode on this include.
    *
    * @param {boolean} editable - The editable flag.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withEditable(editable) {
     this._editable = editable;
@@ -101,7 +101,7 @@ export default class AbstractInclude extends AbstractBuilder {
    * @example
    * .withFile(require('./footer.html'))
    * @param {{}} file - The file object. Just pass the response of your require statement.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withFile(file) {
     this._file = file;
@@ -112,7 +112,7 @@ export default class AbstractInclude extends AbstractBuilder {
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
    * @param {string} name - The name of this include.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withName(name) {
     this._name = name;
@@ -137,7 +137,7 @@ export default class AbstractInclude extends AbstractBuilder {
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
    * @param {...Dropzone} dropzones - The dropzones of this include.
-   * @returns {AbstractInclude}
+   * @returns {this}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;

@@ -5773,9 +5773,9 @@ declare module "src/website/abstract-include" {
          * Enable or disable edit mode on this include.
          *
          * @param {boolean} editable - The editable flag.
-         * @returns {AbstractInclude}
+         * @returns {this}
          */
-        withEditable(editable: boolean): AbstractInclude;
+        withEditable(editable: boolean): this;
         /**
          * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
          * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
@@ -5783,16 +5783,16 @@ declare module "src/website/abstract-include" {
          * @example
          * .withFile(require('./footer.html'))
          * @param {{}} file - The file object. Just pass the response of your require statement.
-         * @returns {AbstractInclude}
+         * @returns {this}
          */
-        withFile(file: {}): AbstractInclude;
+        withFile(file: {}): this;
         /**
          * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
          *
          * @param {string} name - The name of this include.
-         * @returns {AbstractInclude}
+         * @returns {this}
          */
-        withName(name: string): AbstractInclude;
+        withName(name: string): this;
         /**
          * Define the dropzones of this include.
          *
@@ -5811,9 +5811,9 @@ declare module "src/website/abstract-include" {
          *       require('./content-elements/basic/image'))
          *     .withMaxAllowedElements(1))
          * @param {...Dropzone} dropzones - The dropzones of this include.
-         * @returns {AbstractInclude}
+         * @returns {this}
          */
-        withDropzones(...dropzones: Dropzone[]): AbstractInclude;
+        withDropzones(...dropzones: Dropzone[]): this;
     }
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";

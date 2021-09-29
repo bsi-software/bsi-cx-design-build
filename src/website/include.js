@@ -37,42 +37,6 @@ export default class Include extends AbstractInclude {
   }
 
   /**
-   * @inheritDoc
-   * @param {boolean} editable
-   * @returns {Include}
-   */
-  withEditable(editable) {
-    return /** @type {Include} */ super.withEditable(editable);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {{}} file
-   * @returns {Include}
-   */
-  withFile(file) {
-    return /** @type {Include} */ super.withFile(file);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {string} name
-   * @returns {Include}
-   */
-  withName(name) {
-    return /** @type {Include} */ super.withName(name);
-  }
-
-  /**
-   * @inheritDoc
-   * @param {...Dropzone} dropzones
-   * @returns {Include}
-   */
-  withDropzones(...dropzones) {
-    return /** @type {Include} */ super.withDropzones(...dropzones);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
