@@ -228,7 +228,6 @@ export default class BuildConfig {
 
   /**
    * @returns {boolean}
-   * @private
    */
   get postcssEnabled() {
     return this._postcssEnabled;

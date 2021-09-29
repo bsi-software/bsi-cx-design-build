@@ -928,9 +928,8 @@ declare module "src/build-config/build-config" {
         get webpackPlugins(): any[];
         /**
          * @returns {boolean}
-         * @private
          */
-        private get postcssEnabled();
+        get postcssEnabled(): boolean;
         /**
          * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
          * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.

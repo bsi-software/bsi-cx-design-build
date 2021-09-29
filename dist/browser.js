@@ -927,7 +927,7 @@ class AbstractPart extends AbstractBuilder {
    */
   withId(id) {
     this._id = id;
-    return this;
+    return this; // FIXME return correct type in sub classes
   }
 
   /**
@@ -939,7 +939,7 @@ class AbstractPart extends AbstractBuilder {
    */
   withLabel(label) {
     this._label = label;
-    return this;
+    return this; // FIXME return correct type in sub classes
   }
 
   build() {
