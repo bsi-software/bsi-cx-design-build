@@ -10,14 +10,6 @@ export default class NewsSnippetsPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {NewsSnippetsPart}
-   */
-  withLabel(label) {
-    return /** @type {NewsSnippetsPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

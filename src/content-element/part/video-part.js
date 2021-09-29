@@ -10,14 +10,6 @@ export default class VideoPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {VideoPart}
-   */
-  withLabel(label) {
-    return /** @type {VideoPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

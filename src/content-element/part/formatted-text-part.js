@@ -28,22 +28,6 @@ export default class FormattedTextPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormattedTextPart}
-   */
-  withId(id) {
-    return /** @type {FormattedTextPart} */ super.withId(id);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {FormattedTextPart}
-   */
-  withLabel(label) {
-    return /** @type {FormattedTextPart} */ super.withLabel(label);
-  }
-
-  /**
    * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
    * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
    * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.

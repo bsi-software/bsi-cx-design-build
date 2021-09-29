@@ -10,14 +10,6 @@ export default class SocialFollowPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {SocialFollowPart}
-   */
-  withLabel(label) {
-    return /** @type {SocialFollowPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

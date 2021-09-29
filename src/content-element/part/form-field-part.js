@@ -10,14 +10,6 @@ export default class FormFieldPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormFieldPart}
-   */
-  withLabel(label) {
-    return /** @type {FormFieldPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

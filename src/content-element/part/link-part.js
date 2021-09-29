@@ -10,14 +10,6 @@ export default class LinkPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {LinkPart}
-   */
-  withLabel(label) {
-    return /** @type {LinkPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

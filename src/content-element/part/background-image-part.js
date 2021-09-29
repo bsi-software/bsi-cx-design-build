@@ -10,14 +10,6 @@ export default class BackgroundImagePart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {BackgroundImagePart}
-   */
-  withLabel(label) {
-    return /** @type {BackgroundImagePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

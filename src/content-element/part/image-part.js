@@ -10,14 +10,6 @@ export default class ImagePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
-   * @returns {ImagePart}
-   */
-  withLabel(label) {
-    return /** @type {ImagePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

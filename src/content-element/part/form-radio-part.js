@@ -10,14 +10,6 @@ export default class FormRadioPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormRadioPart}
-   */
-  withLabel(label) {
-    return /** @type {FormRadioPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

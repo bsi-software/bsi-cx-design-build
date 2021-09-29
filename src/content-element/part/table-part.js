@@ -10,14 +10,6 @@ export default class TablePart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {TablePart}
-   */
-  withLabel(label) {
-    return /** @type {TablePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

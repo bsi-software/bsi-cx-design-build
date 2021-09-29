@@ -10,14 +10,6 @@ export default class PlainTextPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {PlainTextPart}
-   */
-  withLabel(label) {
-    return /** @type {PlainTextPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

@@ -10,14 +10,6 @@ export default class FormSelectPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormSelectPart}
-   */
-  withLabel(label) {
-    return /** @type {FormSelectPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

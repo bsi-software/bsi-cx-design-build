@@ -10,14 +10,6 @@ export default class SocialSharePart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {SocialSharePart}
-   */
-  withLabel(label) {
-    return /** @type {SocialSharePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

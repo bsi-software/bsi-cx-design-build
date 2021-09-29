@@ -10,14 +10,6 @@ export default class IteratorPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {IteratorPart}
-   */
-  withLabel(label) {
-    return /** @type {IteratorPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

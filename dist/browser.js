@@ -3864,14 +3864,6 @@ class PlainTextPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {PlainTextPart}
-   */
-  withLabel(label) {
-    return /** @type {PlainTextPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -3910,22 +3902,6 @@ class FormattedTextPart extends AbstractPart {
    */
   get htmlEditorConfig() {
     return this._htmlEditorConfig;
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {FormattedTextPart}
-   */
-  withId(id) {
-    return /** @type {FormattedTextPart} */ super.withId(id);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {FormattedTextPart}
-   */
-  withLabel(label) {
-    return /** @type {FormattedTextPart} */ super.withLabel(label);
   }
 
   /**
@@ -4002,14 +3978,6 @@ class HtmlPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {HtmlPart}
-   */
-  withLabel(label) {
-    return /** @type {HtmlPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4030,14 +3998,6 @@ class HtmlPart extends AbstractPart {
 class VideoPart extends AbstractPart {
   constructor() {
     super(part_VIDEO);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {VideoPart}
-   */
-  withLabel(label) {
-    return /** @type {VideoPart} */ super.withLabel(label);
   }
 
   /**
@@ -4064,14 +4024,6 @@ class ImagePart extends AbstractPart {
   }
 
   /**
-   * @param {String} label
-   * @returns {ImagePart}
-   */
-  withLabel(label) {
-    return /** @type {ImagePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4092,14 +4044,6 @@ class ImagePart extends AbstractPart {
 class BackgroundImagePart extends AbstractPart {
   constructor() {
     super(BACKGROUND_IMAGE);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {BackgroundImagePart}
-   */
-  withLabel(label) {
-    return /** @type {BackgroundImagePart} */ super.withLabel(label);
   }
 
   /**
@@ -4126,14 +4070,6 @@ class TablePart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {TablePart}
-   */
-  withLabel(label) {
-    return /** @type {TablePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4154,14 +4090,6 @@ class TablePart extends AbstractPart {
 class IteratorPart extends AbstractPart {
   constructor() {
     super(ITERATOR);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {IteratorPart}
-   */
-  withLabel(label) {
-    return /** @type {IteratorPart} */ super.withLabel(label);
   }
 
   /**
@@ -4188,14 +4116,6 @@ class NewsSnippetsPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {NewsSnippetsPart}
-   */
-  withLabel(label) {
-    return /** @type {NewsSnippetsPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4216,14 +4136,6 @@ class NewsSnippetsPart extends AbstractPart {
 class FormPart extends AbstractPart {
   constructor() {
     super(FORM);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {FormPart}
-   */
-  withLabel(label) {
-    return /** @type {FormPart} */ super.withLabel(label);
   }
 
   /**
@@ -4250,14 +4162,6 @@ class FormFieldPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormFieldPart}
-   */
-  withLabel(label) {
-    return /** @type {FormFieldPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4278,14 +4182,6 @@ class FormFieldPart extends AbstractPart {
 class FormCheckboxPart extends AbstractPart {
   constructor() {
     super(FORM_CHECKBOX);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {FormCheckboxPart}
-   */
-  withLabel(label) {
-    return /** @type {FormCheckboxPart} */ super.withLabel(label);
   }
 
   /**
@@ -4312,14 +4208,6 @@ class FormTextareaPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormTextareaPart}
-   */
-  withLabel(label) {
-    return /** @type {FormTextareaPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4340,14 +4228,6 @@ class FormTextareaPart extends AbstractPart {
 class FormSelectPart extends AbstractPart {
   constructor() {
     super(FORM_SELECT);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {FormSelectPart}
-   */
-  withLabel(label) {
-    return /** @type {FormSelectPart} */ super.withLabel(label);
   }
 
   /**
@@ -4374,14 +4254,6 @@ class FormRadioPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormRadioPart}
-   */
-  withLabel(label) {
-    return /** @type {FormRadioPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4402,14 +4274,6 @@ class FormRadioPart extends AbstractPart {
 class LinkPart extends AbstractPart {
   constructor() {
     super(LINK);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {LinkPart}
-   */
-  withLabel(label) {
-    return /** @type {LinkPart} */ super.withLabel(label);
   }
 
   /**
@@ -4436,14 +4300,6 @@ class SocialFollowPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {SocialFollowPart}
-   */
-  withLabel(label) {
-    return /** @type {SocialFollowPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4467,14 +4323,6 @@ class SocialSharePart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {SocialSharePart}
-   */
-  withLabel(label) {
-    return /** @type {SocialSharePart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4495,14 +4343,6 @@ class SocialSharePart extends AbstractPart {
 class UrlProviderPart extends AbstractPart {
   constructor() {
     super(URL_PROVIDER);
-  }
-
-  /**
-   * @inheritDoc
-   * @returns {UrlProviderPart}
-   */
-  withLabel(label) {
-    return /** @type {UrlProviderPart} */ super.withLabel(label);
   }
 
   /**

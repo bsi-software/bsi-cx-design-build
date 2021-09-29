@@ -10,14 +10,6 @@ export default class FormTextareaPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {FormTextareaPart}
-   */
-  withLabel(label) {
-    return /** @type {FormTextareaPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.

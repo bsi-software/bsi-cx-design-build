@@ -10,14 +10,6 @@ export default class UrlProviderPart extends AbstractPart {
   }
 
   /**
-   * @inheritDoc
-   * @returns {UrlProviderPart}
-   */
-  withLabel(label) {
-    return /** @type {UrlProviderPart} */ super.withLabel(label);
-  }
-
-  /**
    * Clone the configuration.
    *
    * @param {boolean} [shallow=true] - Create a shallow clone.
