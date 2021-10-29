@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.4.4] - 29.10.2021
+
+## Fixed
+
+* Handle `json5` files as static files 
+
 ## [1.4.3] - 29.09.2021
 
 ## Fixed
@@ -263,7 +269,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.3...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.4...HEAD
+
+[1.4.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.3...1.4.4
 
 [1.4.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.2...1.4.3
 

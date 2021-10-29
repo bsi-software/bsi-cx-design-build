@@ -5713,7 +5713,8 @@ class WebpackConfigBuilder {
       'mpeg',
       'oga',
       'ogg',
-      'wav'
+      'wav',
+      'json5'
     ];
   }
 
