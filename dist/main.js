@@ -6001,11 +6001,16 @@ class WebpackConfigBuilder {
 
     return {
       port: this.config.devServerPort,
-      contentBase: this.config.outputPath,
-      publicPath: '/',
-      compress: true,
-      writeToDisk: filePath => zipRegEx.test(filePath),
-      inline: false
+      magicHtml: false,
+      hot: false,
+      liveReload: false,
+      static: {
+        directory: this.config.outputPath,
+      },
+      client: false,
+      devMiddleware: {
+        writeToDisk: filePath => zipRegEx.test(filePath),
+      }
     };
   }
 
@@ -6124,9 +6129,9 @@ class WebpackConfigBuilder {
     buildConfigs.forEach((config, index) => {
       if (index === 0) {
         commonDevServerPort = config.devServer.port;
-        commonContentBase = config.devServer.contentBase;
+        commonContentBase = config.devServer.static.directory;
       } else {
-        commonContentBase = findStringSimilarities(commonContentBase, config.devServer.contentBase);
+        commonContentBase = findStringSimilarities(commonContentBase, config.devServer.static.directory);
       }
 
       if (index > 0) {
@@ -6136,7 +6141,7 @@ class WebpackConfigBuilder {
 
     let devServerConfig = buildConfigs[0].devServer;
     devServerConfig.port = commonDevServerPort;
-    devServerConfig.contentBase = commonContentBase;
+    devServerConfig.static.directory = commonContentBase;
 
     return buildConfigs;
   }

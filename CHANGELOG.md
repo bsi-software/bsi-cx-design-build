@@ -12,6 +12,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 * Updated dependencies to fix various vulnerabilities.
+* Updated webpack-dev-server to the latest version.
+* Fix development web server.
 
 ## [1.4.4] - 29.10.2021
 
