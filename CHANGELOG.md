@@ -7,7 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.5.0] - 21.01.2022
+## [1.4.5] - 21.01.2022
 
 ### Fixed
 
@@ -277,9 +277,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.5...HEAD
 
-[1.5.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.4...1.5.0
+[1.4.5]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.4...1.4.5
 
 [1.4.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.3...1.4.4
 
