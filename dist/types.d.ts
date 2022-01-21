@@ -244,7 +244,7 @@ declare module "src/utility" {
      * @param {ValidatedBuildConfig} config
      * @param {string|undefined} [suffix=undefined]
      */
-    export function buildPublicPath(config: any, suffix?: string | undefined): string;
+    export function buildPublicPath(config: ValidatedBuildConfig, suffix?: string | undefined): string;
     /**
      * @param {*} obj
      * @returns {string}
@@ -1388,12 +1388,12 @@ declare module "src/browser-utility" {
      * @param {AbstractConstant} constant
      * @returns {string}
      */
-    export function constantObjectValue(constant: any): string;
+    export function constantObjectValue(constant: AbstractConstant): string;
     /**
      * @param {AbstractBuilder} builder
      * @returns {{}}
      */
-    export function builderObjectValue(builder: any): {};
+    export function builderObjectValue(builder: AbstractBuilder): {};
     /**
      * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
      * (won't work in the browser context).
@@ -1472,7 +1472,7 @@ declare module "src/bsi-cx-webpack-plugin" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: any);
+        constructor(config: ValidatedBuildConfig);
         /**
          * @type {ValidatedBuildConfig}
          * @private
@@ -1743,7 +1743,7 @@ declare module "src/bsi-cx-webpack-legacy-design-plugin" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: any);
+        constructor(config: ValidatedBuildConfig);
         /**
          * @type {ValidatedBuildConfig}
          * @private
@@ -1793,7 +1793,7 @@ declare module "src/bsi-cx-webpack-zip-hash-plugin" {
          * @param {Compilation} compilation
          * @param {Asset} asset
          */
-        _handleZipAsset(compilation: any, asset: any): void;
+        _handleZipAsset(compilation: Compilation, asset: Asset): void;
         /**
          * @param {Compiler} compiler
          * @private
@@ -1954,12 +1954,12 @@ declare module "src/abstract-property-plugin" {
         /**
          * @param {BuildContext} context
          */
-        constructor(context: any);
+        constructor(context: BuildContext);
         /**
          * @type {CssPropertyResolver}
          * @protected
          */
-        protected _propertyResolver: any;
+        protected _propertyResolver: CssPropertyResolver;
         /**
          * @type {{}}
          * @protected
@@ -2368,7 +2368,7 @@ declare module "src/build-context" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: any);
+        constructor(config: ValidatedBuildConfig);
         /**
          * @type {ValidatedBuildConfig}
          * @private
@@ -2387,7 +2387,7 @@ declare module "src/build-context" {
         /**
          * @returns {ValidatedBuildConfig}
          */
-        get config(): any;
+        get config(): ValidatedBuildConfig;
         /**
          * @returns {TwigContext}
          */
@@ -2423,7 +2423,7 @@ declare module "src/webpack-config-builder" {
          *
          * @param  {...BuildConfig} configs
          */
-        static fromConfigs(...configs: any[]): {
+        static fromConfigs(...configs: BuildConfig[]): {
             entry: {};
             name: any;
             context: any;
@@ -2438,7 +2438,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: any[];
+                minimizer: TerserPlugin[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -2452,7 +2452,7 @@ declare module "src/webpack-config-builder" {
         /**
          * @param {ValidatedBuildConfig} config
          */
-        constructor(config: any);
+        constructor(config: ValidatedBuildConfig);
         /**
          * @type {BuildContext}
          * @private
@@ -2465,11 +2465,11 @@ declare module "src/webpack-config-builder" {
         /**
          * @returns {ValidatedBuildConfig}
          */
-        get config(): any;
+        get config(): ValidatedBuildConfig;
         /**
          * @returns {TwigContext}
          */
-        get twigContext(): any;
+        get twigContext(): TwigContext;
         build(): {
             entry: {};
             name: any;
@@ -2485,7 +2485,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: any[];
+                minimizer: TerserPlugin[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -2605,13 +2605,13 @@ declare module "src/webpack-config-builder" {
          *
          * @returns {MiniCssExtractPlugin[]}
          */
-        _getMiniCssExtractPluginConfig(): any[];
+        _getMiniCssExtractPluginConfig(): MiniCssExtractPlugin[];
         /**
          * Copy plugin configuration.
          *
          * @returns {CopyPlugin[]}
          */
-        _getCopyPluginConfig(): any[];
+        _getCopyPluginConfig(): CopyPlugin[];
         /**
          *
          * @returns {BsiCxTwigContextWebpackPlugin[]}
@@ -2669,7 +2669,7 @@ declare module "src/webpack-config-builder" {
          *
          * @returns {TerserPlugin[]}
          */
-        _getOptimizationMinimizerConfig(): any[];
+        _getOptimizationMinimizerConfig(): TerserPlugin[];
         /**
          * The chache groups configuration.
          *
@@ -4650,7 +4650,7 @@ declare module "src/website/website" {
         /**
          * @returns {RawValue|AbstractInclude[]|undefined}
          */
-        get includes(): any[] | RawValue;
+        get includes(): RawValue | AbstractInclude[];
         /**
          * Define the maximum navigation level.
          *
@@ -4672,7 +4672,7 @@ declare module "src/website/website" {
          * @param {...AbstractInclude} includes
          * @returns {Website}
          */
-        withIncludes(...includes: any[]): Website;
+        withIncludes(...includes: AbstractInclude[]): Website;
         /**
          * Define the includes for this website as raw value.
          *
@@ -4851,7 +4851,7 @@ declare module "src/nls/nls" {
          * @param {string} identifier
          * @param {Map<Locale,string>} map
          */
-        static fromMap(identifier: string, map: Map<any, string>): NLS;
+        static fromMap(identifier: string, map: Map<Locale, string>): NLS;
         /**
          * @type {string|undefined}
          * @private
@@ -6091,7 +6091,7 @@ declare module "src/design/design-helper" {
          * @param {Translation} translations
          * @returns {NLS}
          */
-        nls(identifier: string, ...translations: any): any;
+        nls(identifier: string, ...translations: Translation): NLS;
         /**
          * Shortcut to create a {@link Translation} object. See example for usage.
          *
@@ -6107,7 +6107,7 @@ declare module "src/design/design-helper" {
          * @param {string|undefined} [optionalTranslation=undefined] - The translation, only required if the first parameter is a locale.
          * @returns {Translation}
          */
-        t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): any;
+        t(localeOrWildcardTranslation: Locale | string, optionalTranslation?: string | undefined): Translation;
     }
     export type DesignFactory = import("src/design/design-factory").default;
     export type CssClass = import("src/style/css-class").default;

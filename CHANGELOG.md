@@ -7,59 +7,65 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.5.0] - 21.01.2022
+
+### Fixed
+
+* Updated dependencies to fix various vulnerabilities.
+
 ## [1.4.4] - 29.10.2021
 
-## Fixed
+### Fixed
 
-* Handle `json5` files as static files 
+* Handle `json5` files as static files
 
 ## [1.4.3] - 29.09.2021
 
-## Fixed
+### Fixed
 
 * Visibility for `BuildConfig#postcssEnabled` attribute
 * Fix return type of chainable methods with `@returns {this}` in the super class.
 
 ## [1.4.2] - 26.09.2021
 
-## Fixed
+### Fixed
 
 * Don't log template not found errors during twig compilation twice.
 * Correct output path: `dist/{template}` instead of `dist`.
 
 ## [1.4.1] - 26.09.2021
 
-## Fixed
+### Fixed
 
 * Error handling in twing loader.
 
 ## [1.4.0] - 26.09.2021
 
-## Added
+### Added
 
 * Lorem ipsum placeholder text generator.
 
 ## [1.3.2] - 26.09.2021
 
-## Fixed
+### Fixed
 
 * Removed twig template cache and configured `twing-loader` as not cacheable.
 * Dropzone control attributes with correct values.
 
 ## [1.3.1] - 26.09.2021
 
-## Fixed
+### Fixed
 
 * Twig template cache replaced with own implementation (to cope with webpack require).
 
 ## [1.3.0] - 26.09.2021
 
-## Fixed
+### Fixed
 
 * Return type of formatted text part `withId` method.
 * Removal of dropzone control buttons.
 
-## Changed
+### Changed
 
 * Include `<script>` tags with `data-bsi-remove-if="draft"` attribute.
 
@@ -269,7 +275,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.4...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.0...HEAD
+
+[1.5.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.4...1.5.0
 
 [1.4.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.3...1.4.4
 
