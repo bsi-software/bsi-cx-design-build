@@ -111,7 +111,7 @@ export function toPosixPath(possibleWin32Path) {
  * @returns {string}
  */
 export function findNodeModulesFolder(startFolder) {
-  let nodeModulesFolder = path.resolve(startFolder, 'node_modules');
+  let nodeModulesFolder = path.join(startFolder, 'node_modules');
 
   if (fs.existsSync(nodeModulesFolder)) {
     return nodeModulesFolder;

@@ -574,7 +574,7 @@ function toPosixPath(possibleWin32Path) {
  * @returns {string}
  */
 function findNodeModulesFolder(startFolder) {
-  let nodeModulesFolder = external_path_default().resolve(startFolder, 'node_modules');
+  let nodeModulesFolder = external_path_default().join(startFolder, 'node_modules');
 
   if (external_fs_default().existsSync(nodeModulesFolder)) {
     return nodeModulesFolder;
@@ -5369,7 +5369,6 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 }
 
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
-var webpack_config_builder_dirname = "/";
 
 
 
@@ -5447,7 +5446,7 @@ class WebpackConfigBuilder {
       target: 'web',
       resolve: {
         alias: {
-          '~': findNodeModulesFolder(webpack_config_builder_dirname)
+          '~': findNodeModulesFolder(this.config.rootPath)
         }
       },
       module: {

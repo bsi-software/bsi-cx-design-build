@@ -81,7 +81,7 @@ export default class WebpackConfigBuilder {
       target: 'web',
       resolve: {
         alias: {
-          '~': findNodeModulesFolder(__dirname)
+          '~': findNodeModulesFolder(this.config.rootPath)
         }
       },
       module: {
