@@ -109,6 +109,8 @@ class QueryConstant {
   static ASSET = 'asset';
 }
 
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = require("fs");
 ;// CONCATENATED MODULE: ./src/abstract-constant.js
 /**
  * @abstract
@@ -171,6 +173,7 @@ const EMAIL = new DesignType('email');
 const design_type_WEBSITE = new DesignType('website');
 
 ;// CONCATENATED MODULE: ./src/utility.js
+
 
 
 
@@ -276,6 +279,26 @@ function findStringSimilarities(str1, str2) {
  */
 function toPosixPath(possibleWin32Path) {
   return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
+}
+
+/**
+ * @param {string} startFolder
+ * @returns {string}
+ */
+function findNodeModulesFolder(startFolder) {
+  let nodeModulesFolder = path.resolve(startFolder, 'node_modules');
+
+  if (fs.existsSync(nodeModulesFolder)) {
+    return nodeModulesFolder;
+  }
+
+  let parentFolder = path.dirname(startFolder);
+
+  if (startFolder === parentFolder) {
+    throw new Error('node_modules folder not found');
+  }
+
+  return findNodeModulesFolder(parentFolder);
 }
 
 ;// CONCATENATED MODULE: ./src/twig-functions.js

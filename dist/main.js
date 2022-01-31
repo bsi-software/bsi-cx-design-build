@@ -465,6 +465,7 @@ class Constant {
 
 
 
+
 /**
  *
  * @param {string} name
@@ -566,6 +567,26 @@ function findStringSimilarities(str1, str2) {
  */
 function toPosixPath(possibleWin32Path) {
   return possibleWin32Path.replace(/\\/g, (external_path_default()).posix.sep);
+}
+
+/**
+ * @param {string} startFolder
+ * @returns {string}
+ */
+function findNodeModulesFolder(startFolder) {
+  let nodeModulesFolder = external_path_default().resolve(startFolder, 'node_modules');
+
+  if (external_fs_default().existsSync(nodeModulesFolder)) {
+    return nodeModulesFolder;
+  }
+
+  let parentFolder = external_path_default().dirname(startFolder);
+
+  if (startFolder === parentFolder) {
+    throw new Error('node_modules folder not found');
+  }
+
+  return findNodeModulesFolder(parentFolder);
 }
 
 ;// CONCATENATED MODULE: ./src/build-config/module-config.js
@@ -5348,6 +5369,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 }
 
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+var webpack_config_builder_dirname = "/";
 
 
 
@@ -5423,6 +5445,11 @@ class WebpackConfigBuilder {
       name: this.config.name,
       context: this.config.rootPath,
       target: 'web',
+      resolve: {
+        alias: {
+          '~': findNodeModulesFolder(webpack_config_builder_dirname)
+        }
+      },
       module: {
         rules: [
           ...this._getTwigRuleConfig(),

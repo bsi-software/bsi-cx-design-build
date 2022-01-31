@@ -277,6 +277,11 @@ declare module "src/utility" {
      * @returns {string}
      */
     export function toPosixPath(possibleWin32Path: string): string;
+    /**
+     * @param {string} startFolder
+     * @returns {string}
+     */
+    export function findNodeModulesFolder(startFolder: string): string;
 }
 declare module "src/build-config/module-config" {
     /** @typedef {import('./build-config').default} BuildConfig */
@@ -2428,6 +2433,11 @@ declare module "src/webpack-config-builder" {
             name: any;
             context: any;
             target: string;
+            resolve: {
+                alias: {
+                    '~': string;
+                };
+            };
             module: {
                 rules: {}[];
             };
@@ -2475,6 +2485,11 @@ declare module "src/webpack-config-builder" {
             name: any;
             context: any;
             target: string;
+            resolve: {
+                alias: {
+                    '~': string;
+                };
+            };
             module: {
                 rules: {}[];
             };
