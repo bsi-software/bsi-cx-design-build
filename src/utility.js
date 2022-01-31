@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import Constant from './constant';
 import {WEBSITE} from './design-type';
 
@@ -103,4 +104,24 @@ export function findStringSimilarities(str1, str2) {
  */
 export function toPosixPath(possibleWin32Path) {
   return possibleWin32Path.replace(/\\/g, path.posix.sep);
+}
+
+/**
+ * @param {string} startFolder
+ * @returns {string}
+ */
+export function findNodeModulesFolder(startFolder) {
+  let nodeModulesFolder = path.resolve(startFolder, 'node_modules');
+
+  if (fs.existsSync(nodeModulesFolder)) {
+    return nodeModulesFolder;
+  }
+
+  let parentFolder = path.dirname(startFolder);
+
+  if (startFolder === parentFolder) {
+    throw new Error('node_modules folder not found');
+  }
+
+  return findNodeModulesFolder(parentFolder);
 }

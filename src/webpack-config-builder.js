@@ -12,7 +12,13 @@ import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugi
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
 import File from './file';
-import {buildPublicPath, findStringSimilarities, getZipArchiveName, toPosixPath} from './utility';
+import {
+  buildPublicPath,
+  findNodeModulesFolder,
+  findStringSimilarities,
+  getZipArchiveName,
+  toPosixPath
+} from './utility';
 import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
@@ -73,6 +79,11 @@ export default class WebpackConfigBuilder {
       name: this.config.name,
       context: this.config.rootPath,
       target: 'web',
+      resolve: {
+        alias: {
+          '~': findNodeModulesFolder(__dirname)
+        }
+      },
       module: {
         rules: [
           ...this._getTwigRuleConfig(),

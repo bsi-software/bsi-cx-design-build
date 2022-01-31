@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+* Resolve `~` as `node_modules` to simplify includes.
+
 ## [1.4.5] - 21.01.2022
 
 ### Fixed
