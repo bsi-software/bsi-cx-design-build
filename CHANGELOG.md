@@ -7,9 +7,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.5.0] - 01.02.2022
+
 ### Added
 
-* Add file system loader to Twing environment to load from `node_modules/@bsi-cx`.
+* Add file system loader to Twing environment to load from `node_modules/@bsi-cx/*`.
+
+### Fixed
+
+* Updated dependencies to the latest versions.
 
 ## [1.4.5] - 21.01.2022
 
@@ -281,7 +287,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.5...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.0...HEAD
+
+[1.5.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.5...1.5.0
 
 [1.4.5]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.4...1.4.5
 
