@@ -111,6 +111,7 @@ class QueryConstant {
 
 ;// CONCATENATED MODULE: external "fs"
 const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// CONCATENATED MODULE: ./src/abstract-constant.js
 /**
  * @abstract
@@ -286,13 +287,13 @@ function toPosixPath(possibleWin32Path) {
  * @returns {string}
  */
 function findNodeModulesFolder(startFolder) {
-  let nodeModulesFolder = path.join(startFolder, 'node_modules');
+  let nodeModulesFolder = external_path_default().join(startFolder, 'node_modules');
 
-  if (fs.existsSync(nodeModulesFolder)) {
+  if (external_fs_default().existsSync(nodeModulesFolder)) {
     return nodeModulesFolder;
   }
 
-  let parentFolder = path.dirname(startFolder);
+  let parentFolder = external_path_default().dirname(startFolder);
 
   if (startFolder === parentFolder) {
     throw new Error('node_modules folder not found');
@@ -439,10 +440,16 @@ const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lore
 
 
 
+
+
 /* harmony default export */ function twing_environment() {
-  let twing = new external_twing_namespaceObject.TwingEnvironment(
-    new external_twing_namespaceObject.TwingLoaderRelativeFilesystem()
-  );
+  let relativeFilesystemLoader = new external_twing_namespaceObject.TwingLoaderRelativeFilesystem();
+  let filesystemLoader = new external_twing_namespaceObject.TwingLoaderFilesystem();
+  let bsiCxScopePath = external_path_default().join(findNodeModulesFolder(__dirname), '@bsi-cx');
+
+  filesystemLoader.addPath(bsiCxScopePath, 'bsi-cx');
+
+  let twing = new external_twing_namespaceObject.TwingEnvironment(new external_twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader]));
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);

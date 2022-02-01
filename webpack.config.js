@@ -44,6 +44,10 @@ module.exports = {
   optimization: {
     minimize: false
   },
+  node: {
+    __filename: false,
+    __dirname: false
+  },
   plugins: [
     new webpack.SourceMapDevToolPlugin({
       filename: '[name].js.map',

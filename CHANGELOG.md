@@ -9,7 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-* Resolve `~` as `node_modules` to simplify includes.
+* Add file system loader to Twing environment to load from `node_modules/@bsi-cx`.
 
 ## [1.4.5] - 21.01.2022
 

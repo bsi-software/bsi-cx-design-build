@@ -1,4 +1,5 @@
-import {TwingEnvironment, TwingLoaderRelativeFilesystem} from 'twing';
+import path from 'path';
+import {TwingEnvironment, TwingLoaderChain, TwingLoaderFilesystem, TwingLoaderRelativeFilesystem} from 'twing';
 
 import {
   bsiCxAsset,
@@ -12,11 +13,16 @@ import {
   bsiCxJsModuleRuntimeInline,
   bsiCxLorem
 } from './twig-functions';
+import {findNodeModulesFolder} from './utility';
 
 export default function () {
-  let twing = new TwingEnvironment(
-    new TwingLoaderRelativeFilesystem()
-  );
+  let relativeFilesystemLoader = new TwingLoaderRelativeFilesystem();
+  let filesystemLoader = new TwingLoaderFilesystem();
+  let bsiCxScopePath = path.join(findNodeModulesFolder(__dirname), '@bsi-cx');
+
+  filesystemLoader.addPath(bsiCxScopePath, 'bsi-cx');
+
+  let twing = new TwingEnvironment(new TwingLoaderChain([relativeFilesystemLoader, filesystemLoader]));
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);

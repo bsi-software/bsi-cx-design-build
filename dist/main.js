@@ -574,13 +574,13 @@ function toPosixPath(possibleWin32Path) {
  * @returns {string}
  */
 function findNodeModulesFolder(startFolder) {
-  let nodeModulesFolder = external_path_default().join(startFolder, 'node_modules');
+  let nodeModulesFolder = path.join(startFolder, 'node_modules');
 
-  if (external_fs_default().existsSync(nodeModulesFolder)) {
+  if (fs.existsSync(nodeModulesFolder)) {
     return nodeModulesFolder;
   }
 
-  let parentFolder = external_path_default().dirname(startFolder);
+  let parentFolder = path.dirname(startFolder);
 
   if (startFolder === parentFolder) {
     throw new Error('node_modules folder not found');
@@ -5444,11 +5444,6 @@ class WebpackConfigBuilder {
       name: this.config.name,
       context: this.config.rootPath,
       target: 'web',
-      resolve: {
-        alias: {
-          '~': findNodeModulesFolder(this.config.rootPath)
-        }
-      },
       module: {
         rules: [
           ...this._getTwigRuleConfig(),

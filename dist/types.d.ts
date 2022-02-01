@@ -2433,11 +2433,6 @@ declare module "src/webpack-config-builder" {
             name: any;
             context: any;
             target: string;
-            resolve: {
-                alias: {
-                    '~': string;
-                };
-            };
             module: {
                 rules: {}[];
             };
@@ -2485,11 +2480,6 @@ declare module "src/webpack-config-builder" {
             name: any;
             context: any;
             target: string;
-            resolve: {
-                alias: {
-                    '~': string;
-                };
-            };
             module: {
                 rules: {}[];
             };
