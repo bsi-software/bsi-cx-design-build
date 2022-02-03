@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.5.1] - 03.02.2022
+
+### Fixed
+
+* Adjusted Webpack Dev Server configuration to always write files to disk.
+* Updated dependencies to the latest versions.
+
 ## [1.5.0] - 01.02.2022
 
 ### Added
@@ -287,7 +294,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.1...HEAD
+
+[1.5.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.0...1.5.1
 
 [1.5.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.4.5...1.5.0
 

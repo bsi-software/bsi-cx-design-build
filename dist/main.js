@@ -6018,8 +6018,6 @@ class WebpackConfigBuilder {
    * @returns {{}}
    */
   _getDevServerConfig() {
-    let zipRegEx = /\.zip$/i;
-
     return {
       port: this.config.devServerPort,
       magicHtml: false,
@@ -6030,7 +6028,7 @@ class WebpackConfigBuilder {
       },
       client: false,
       devMiddleware: {
-        writeToDisk: filePath => zipRegEx.test(filePath),
+        writeToDisk: true,
       }
     };
   }
