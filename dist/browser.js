@@ -3551,6 +3551,18 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * Set the description of the content element.
+   *
+   * @param {string} description - The description of the content element.
+   * @returns {ContentElement}
+   * @since Studio 1.0
+   */
+  withDescription(description) {
+    this._description = description;
+    return this;
+  }
+
+  /**
    * Set the template to use for this content element. Be aware, that you have to require the template.
    *
    * @example

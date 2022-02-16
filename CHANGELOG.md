@@ -7,6 +7,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.5.2] - 16.02.2022
+
+### Added
+
+* Setter `withDescription` for content element description.
+
+### Fixed
+
+* Updated dependencies to the latest versions.
+
 ## [1.5.1] - 03.02.2022
 
 ### Fixed
@@ -294,7 +304,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.1...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.2...HEAD
+
+[1.5.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.1...1.5.2
 
 [1.5.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.0...1.5.1
 

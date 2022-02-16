@@ -3783,6 +3783,14 @@ declare module "src/content-element/content-element" {
          */
         withLabel(label: string): ContentElement;
         /**
+         * Set the description of the content element.
+         *
+         * @param {string} description - The description of the content element.
+         * @returns {ContentElement}
+         * @since Studio 1.0
+         */
+        withDescription(description: string): ContentElement;
+        /**
          * Set the template to use for this content element. Be aware, that you have to require the template.
          *
          * @example
