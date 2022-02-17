@@ -4424,20 +4424,35 @@ class AbstractPropertyPlugin {
 
   /**
    * @param {*} property
+   * @param {*} fallback
    * @returns {*}
    */
-  getProperty(property) {
+  getProperty(property, fallback) {
     let segments = property.split('.');
     let scope = this._properties;
 
     for (let segment of segments) {
       scope = scope[segment];
       if (typeof scope === 'undefined') {
-        throw new Error(`Property ${property} not found.`);
+        return this._handleNotFoundProperty(property, fallback);
       }
     }
 
     return this._propertyResolver.resolve(scope);
+  }
+
+  /**
+   * @param {*} property
+   * @param {*} fallback
+   * @returns {*}
+   * @private
+   */
+  _handleNotFoundProperty(property, fallback) {
+    if (typeof fallback === 'undefined') {
+      throw new Error(`Property ${property} not found.`);
+    }
+
+    return fallback;
   }
 }
 
@@ -4454,9 +4469,10 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
 
   /**
    * @param {*} propertyNode
+   * @param {*} fallback
    * @returns {*}
    */
-  getProperty(propertyNode) {
+  getProperty(propertyNode, fallback) {
     if (!propertyNode) {
       throw new Error('Property argument is required.');
     }
@@ -4474,9 +4490,9 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
      */
     let property = propertyNode.value;
 
-    let value = super.getProperty(property);
+    let value = super.getProperty(property, fallback);
 
-    return value.getLessNode();
+    return typeof value.getLessNode === 'function' ? value.getLessNode() : value;
   }
 
   /**
@@ -4485,7 +4501,7 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @param functions
    */
   install(lessInstance, pluginManager, functions) {
-    functions.add('bsiProperty', (property) => this.getProperty(property));
+    functions.add('bsiProperty', (property, fallback) => this.getProperty(property, fallback));
   }
 }
 
@@ -5392,19 +5408,20 @@ class BuildContext {
 class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   /**
    * @param {*} property
+   * @param {*} fallback
    * @returns {*}
    */
-  getProperty(property) {
+  getProperty(property, fallback) {
     let propertyName = property.getValue();
 
-    let value = super.getProperty(propertyName);
+    let value = super.getProperty(propertyName, fallback);
 
-    return value.getSassObject();
+    return typeof value.getSassObject === 'function' ? value.getSassObject() : value;
   }
 
   getFunction() {
     return {
-      'bsiProperty($property)': this.getProperty.bind(this)
+      'bsiProperty($property, $fallback: null)': this.getProperty.bind(this)
     }
   }
 }

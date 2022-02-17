@@ -10,9 +10,10 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
 
   /**
    * @param {*} propertyNode
+   * @param {*} fallback
    * @returns {*}
    */
-  getProperty(propertyNode) {
+  getProperty(propertyNode, fallback) {
     if (!propertyNode) {
       throw new Error('Property argument is required.');
     }
@@ -30,9 +31,9 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
      */
     let property = propertyNode.value;
 
-    let value = super.getProperty(property);
+    let value = super.getProperty(property, fallback);
 
-    return value.getLessNode();
+    return typeof value.getLessNode === 'function' ? value.getLessNode() : value;
   }
 
   /**
@@ -41,6 +42,6 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @param functions
    */
   install(lessInstance, pluginManager, functions) {
-    functions.add('bsiProperty', (property) => this.getProperty(property));
+    functions.add('bsiProperty', (property, fallback) => this.getProperty(property, fallback));
   }
 }

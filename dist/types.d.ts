@@ -1972,9 +1972,17 @@ declare module "src/abstract-property-plugin" {
         protected _properties: {};
         /**
          * @param {*} property
+         * @param {*} fallback
          * @returns {*}
          */
-        getProperty(property: any): any;
+        getProperty(property: any, fallback: any): any;
+        /**
+         * @param {*} property
+         * @param {*} fallback
+         * @returns {*}
+         * @private
+         */
+        private _handleNotFoundProperty;
     }
 }
 declare module "src/bsi-less-property-plugin" {
@@ -2408,7 +2416,7 @@ declare module "src/build-context" {
 declare module "src/bsi-sass-property-plugin" {
     export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
         getFunction(): {
-            'bsiProperty($property)': any;
+            'bsiProperty($property, $fallback: null)': any;
         };
     }
     import AbstractPropertyPlugin from "src/abstract-property-plugin";

@@ -31,19 +31,34 @@ export default class AbstractPropertyPlugin {
 
   /**
    * @param {*} property
+   * @param {*} fallback
    * @returns {*}
    */
-  getProperty(property) {
+  getProperty(property, fallback) {
     let segments = property.split('.');
     let scope = this._properties;
 
     for (let segment of segments) {
       scope = scope[segment];
       if (typeof scope === 'undefined') {
-        throw new Error(`Property ${property} not found.`);
+        return this._handleNotFoundProperty(property, fallback);
       }
     }
 
     return this._propertyResolver.resolve(scope);
+  }
+
+  /**
+   * @param {*} property
+   * @param {*} fallback
+   * @returns {*}
+   * @private
+   */
+  _handleNotFoundProperty(property, fallback) {
+    if (typeof fallback === 'undefined') {
+      throw new Error(`Property ${property} not found.`);
+    }
+
+    return fallback;
   }
 }

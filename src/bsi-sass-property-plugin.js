@@ -3,19 +3,20 @@ import AbstractPropertyPlugin from './abstract-property-plugin';
 export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   /**
    * @param {*} property
+   * @param {*} fallback
    * @returns {*}
    */
-  getProperty(property) {
+  getProperty(property, fallback) {
     let propertyName = property.getValue();
 
-    let value = super.getProperty(propertyName);
+    let value = super.getProperty(propertyName, fallback);
 
-    return value.getSassObject();
+    return typeof value.getSassObject === 'function' ? value.getSassObject() : value;
   }
 
   getFunction() {
     return {
-      'bsiProperty($property)': this.getProperty.bind(this)
+      'bsiProperty($property, $fallback: null)': this.getProperty.bind(this)
     }
   }
 }

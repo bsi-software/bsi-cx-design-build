@@ -1,6 +1,6 @@
 {
   "name": "@bsi-cx/design-build",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "A webpack config builder to create a design for BSI CX.",
   "private": false,
   "engines": {
@@ -47,7 +47,7 @@
     "mini-css-extract-plugin": "^2.5.3",
     "postcss": "^8.4.6",
     "postcss-loader": "^6.2.1",
-    "postcss-preset-env": "^7.3.3",
+    "postcss-preset-env": "^7.4.0",
     "ref-loader": "^1.0.3",
     "sass": "^1.49.7",
     "sass-loader": "^12.6.0",
