@@ -1,4 +1,9 @@
-const {cx, Locale, SchemaVersion} = require('@bsi-cx/design-build');
+const {cx, Locale, SchemaVersion, bsiProperty} = require('@bsi-cx/design-build');
+
+/**
+ * @type {string}
+ */
+const author = bsiProperty('author');
 
 /**
  * @type {Design}
@@ -6,7 +11,7 @@ const {cx, Locale, SchemaVersion} = require('@bsi-cx/design-build');
 module.exports = cx.design
   .withSchemaVersion(SchemaVersion.V_22_0)
   .withTitle('Landingpage Template Test')
-  .withAuthor('Oliver Fabel')
+  .withAuthor(author)
   .withDate('18.08.2021')
   .withPreviewImage(require('./thumbnail.png'))
   .withDefaultLocale(Locale.EN)

@@ -1,4 +1,4 @@
-import TwigContext from './twig-context';
+import PropertyContext from './property-context';
 import CssPropertyResolver from './css/css-property-resolver';
 
 export default class BuildContext {
@@ -8,7 +8,7 @@ export default class BuildContext {
    */
   _config = undefined;
   /**
-   * @type {TwigContext}
+   * @type {PropertyContext}
    * @private
    */
   _properties = undefined;
@@ -28,10 +28,10 @@ export default class BuildContext {
      */
     this._config = config;
     /**
-     * @type {TwigContext}
+     * @type {PropertyContext}
      * @private
      */
-    this._properties = new TwigContext(config.propertiesFilePath);
+    this._properties = new PropertyContext(config.propertiesFilePath);
   }
 
   /**
@@ -42,7 +42,7 @@ export default class BuildContext {
   }
 
   /**
-   * @returns {TwigContext}
+   * @returns {PropertyContext}
    */
   get properties() {
     return this._properties;

@@ -230,6 +230,10 @@ declare module "src/constant" {
          * @type {string}
          */
         static BSI_CX_JS_MODULE_END: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_PROPERTY_PLUGIN: string;
     }
 }
 declare module "src/utility" {
@@ -1468,6 +1472,45 @@ declare module "src/bsi-html-attributes" {
         static HIDE_REMOVE_BUTTON: string;
     }
 }
+declare module "src/abstract-property-plugin" {
+    /**
+     * @abstract
+     */
+    export default class AbstractPropertyPlugin {
+        /**
+         * @param {BuildContext} context
+         */
+        constructor(context: BuildContext);
+        /**
+         * @type {CssPropertyResolver}
+         * @protected
+         */
+        protected _propertyResolver: CssPropertyResolver;
+        /**
+         * @type {{}}
+         * @protected
+         */
+        protected _properties: {};
+        /**
+         * @param {*} property
+         * @param {*} fallback
+         * @returns {*}
+         */
+        getProperty(property: any, fallback: any): any;
+        /**
+         * @param {*} property
+         * @param {*} fallback
+         * @returns {*}
+         * @private
+         */
+        private _handleNotFoundProperty;
+    }
+}
+declare module "src/bsi-js-property-plugin" {
+    export default class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
+    }
+    import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {
         /**
@@ -1475,14 +1518,14 @@ declare module "src/bsi-cx-webpack-plugin" {
          */
         static PLUGIN_NAME: string;
         /**
-         * @param {ValidatedBuildConfig} config
+         * @param {BuildContext} context
          */
-        constructor(config: ValidatedBuildConfig);
+        constructor(context: BuildContext);
         /**
-         * @type {ValidatedBuildConfig}
+         * @type {BuildContext}
          * @private
          */
-        private _config;
+        private _context;
         apply(compiler: any): void;
     }
 }
@@ -1848,8 +1891,8 @@ declare module "src/module-loader" {
     }
     import Module from "module";
 }
-declare module "src/twig-context" {
-    export default class TwigContext {
+declare module "src/property-context" {
+    export default class PropertyContext {
         /**
          * @param {string|undefined} propertiesFilePath
          */
@@ -1873,7 +1916,7 @@ declare module "src/twig-context" {
          * @type {{}}
          * @private
          */
-        private _propertiesProxy;
+        private _proxy;
         /**
          * @type {boolean}
          * @private
@@ -1898,7 +1941,7 @@ declare module "src/twig-context" {
          *
          * @returns {{}}
          */
-        get propertiesProxy(): {};
+        get proxy(): {};
         /**
          * @returns {boolean}
          */
@@ -1939,51 +1982,17 @@ declare module "src/bsi-cx-twig-context-webpack-plugin" {
          */
         static PLUGIN_NAME: string;
         /**
-         * @param {TwigContext} twigContext
+         * @param {PropertyContext} propertyContext
          */
-        constructor(twigContext: TwigContext);
+        constructor(propertyContext: PropertyContext);
         /**
-         * @type {TwigContext}
+         * @type {PropertyContext}
          * @private
          */
-        private _twigContext;
+        private _propertyContext;
         apply(compiler: any): void;
     }
-    import TwigContext from "src/twig-context";
-}
-declare module "src/abstract-property-plugin" {
-    /**
-     * @abstract
-     */
-    export default class AbstractPropertyPlugin {
-        /**
-         * @param {BuildContext} context
-         */
-        constructor(context: BuildContext);
-        /**
-         * @type {CssPropertyResolver}
-         * @protected
-         */
-        protected _propertyResolver: CssPropertyResolver;
-        /**
-         * @type {{}}
-         * @protected
-         */
-        protected _properties: {};
-        /**
-         * @param {*} property
-         * @param {*} fallback
-         * @returns {*}
-         */
-        getProperty(property: any, fallback: any): any;
-        /**
-         * @param {*} property
-         * @param {*} fallback
-         * @returns {*}
-         * @private
-         */
-        private _handleNotFoundProperty;
-    }
+    import PropertyContext from "src/property-context";
 }
 declare module "src/bsi-less-property-plugin" {
     export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
@@ -2024,6 +2033,12 @@ declare module "src/css/abstract-css-property" {
          * @abstract
          */
         toString(): string;
+        /**
+         * Will be used inside JS files to generate the design.json file.
+         *
+         * @returns {number|string|undefined}
+         */
+        toJSON(): number | string | undefined;
     }
 }
 declare module "src/css/css-color" {
@@ -2388,7 +2403,7 @@ declare module "src/build-context" {
          */
         private _config;
         /**
-         * @type {TwigContext}
+         * @type {PropertyContext}
          * @private
          */
         private _properties;
@@ -2402,15 +2417,15 @@ declare module "src/build-context" {
          */
         get config(): ValidatedBuildConfig;
         /**
-         * @returns {TwigContext}
+         * @returns {PropertyContext}
          */
-        get properties(): TwigContext;
+        get properties(): PropertyContext;
         /**
          * @returns {CssPropertyResolver}
          */
         get cssPropertyResolver(): CssPropertyResolver;
     }
-    import TwigContext from "src/twig-context";
+    import PropertyContext from "src/property-context";
     import CssPropertyResolver from "src/css/css-property-resolver";
 }
 declare module "src/bsi-sass-property-plugin" {
@@ -2480,9 +2495,9 @@ declare module "src/webpack-config-builder" {
          */
         get config(): ValidatedBuildConfig;
         /**
-         * @returns {TwigContext}
+         * @returns {PropertyContext}
          */
-        get twigContext(): TwigContext;
+        get properties(): PropertyContext;
         build(): {
             entry: {};
             name: any;
@@ -2697,6 +2712,7 @@ declare module "src/webpack-config-builder" {
         _getOutputConfig(): {};
     }
     import BuildContext from "src/build-context";
+    import PropertyContext from "src/property-context";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
 }
 declare module "src/css/helper" {
@@ -6408,6 +6424,14 @@ declare module "src/design/design-factory" {
     import PartFactory from "src/content-element/part/part-factory";
     import DesignHelper from "src/design/design-helper";
 }
+declare module "src/bsi-property" {
+    /**
+     * @param {string} property
+     * @param {*} [fallback]
+     * @returns {*}
+     */
+    export default function bsiProperty(property: string, fallback?: any): any;
+}
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";
     import AbstractBuilder from "src/abstract-builder";
@@ -6463,8 +6487,9 @@ declare module "export/browser" {
      * @type {DesignFactory}
      */
     export const cx: DesignFactory;
+    import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

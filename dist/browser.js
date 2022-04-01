@@ -16,6 +16,18 @@
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -87,6 +99,7 @@ __webpack_require__.d(__webpack_exports__, {
   "Version": () => (/* reexport */ version_namespaceObject),
   "VideoPart": () => (/* reexport */ VideoPart),
   "Website": () => (/* reexport */ Website),
+  "bsiProperty": () => (/* reexport */ bsiProperty),
   "cx": () => (/* binding */ cx)
 });
 
@@ -5685,7 +5698,69 @@ class DesignFactory {
   }
 }
 
+;// CONCATENATED MODULE: ./src/constant.js
+class Constant {
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
+};
+
+;// CONCATENATED MODULE: ./src/bsi-property.js
+
+
+/**
+ * @param {string} property
+ * @param {*} [fallback]
+ * @returns {*}
+ */
+function bsiProperty(property, fallback) {
+  /**
+   * @type {BsiJsPropertyPlugin}
+   */
+  const plugin = __webpack_require__.g[Constant.BSI_CX_JS_PROPERTY_PLUGIN];
+
+  if (typeof plugin === 'undefined') {
+    throw new Error('bsi property plugin not found');
+  }
+
+  return plugin.getProperty(property, fallback);
+}
+
 ;// CONCATENATED MODULE: ./export/browser.js
+
 
 
 

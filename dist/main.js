@@ -499,6 +499,10 @@ class Constant {
    * @type {string}
    */
   static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
 };
 
 ;// CONCATENATED MODULE: ./src/utility.js
@@ -2302,7 +2306,80 @@ class BsiHtmlAttributes {
   static HIDE_REMOVE_BUTTON = 'data-bsi-hide-remove-button';
 }
 
+;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
+/**
+ * @abstract
+ */
+class AbstractPropertyPlugin {
+  /**
+   * @type {CssPropertyResolver}
+   * @protected
+   */
+  _propertyResolver = undefined;
+  /**
+   * @type {{}}
+   * @protected
+   */
+  _properties = undefined;
+
+  /**
+   * @param {BuildContext} context
+   */
+  constructor(context) {
+    /**
+     * @type {{}}
+     * @private
+     */
+    this._properties = context.properties.proxy;
+    /**
+     * @type {CssPropertyResolver}
+     * @private
+     */
+    this._propertyResolver = context.cssPropertyResolver;
+  }
+
+  /**
+   * @param {*} property
+   * @param {*} fallback
+   * @returns {*}
+   */
+  getProperty(property, fallback) {
+    let segments = property.split('.');
+    let scope = this._properties;
+
+    for (let segment of segments) {
+      scope = scope[segment];
+      if (typeof scope === 'undefined') {
+        return this._handleNotFoundProperty(property, fallback);
+      }
+    }
+
+    return this._propertyResolver.resolve(scope);
+  }
+
+  /**
+   * @param {*} property
+   * @param {*} fallback
+   * @returns {*}
+   * @private
+   */
+  _handleNotFoundProperty(property, fallback) {
+    if (typeof fallback === 'undefined') {
+      throw new Error(`Property ${property} not found.`);
+    }
+
+    return fallback;
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-js-property-plugin.js
+
+
+class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+
 
 
 
@@ -2395,18 +2472,23 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _logger = undefined;
+  /**
+   * @type {BsiJsPropertyPlugin}
+   * @private
+   */
+  _propertyPlugin = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {BuildContext} context
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
-  constructor(config, compiler, compilation, logger) {
+  constructor(context, compiler, compilation, logger) {
     /**
      * @type {ValidatedBuildConfig}
      */
-    this._config = config;
+    this._config = context.config;
     /**
      * @type {Compiler}
      */
@@ -2419,6 +2501,10 @@ class _BsiCxWebpackPlugin {
      * @type {WebpackLogger}
      */
     this._logger = logger;
+    /**
+     * @type {BsiJsPropertyPlugin}
+     */
+    this._propertyPlugin = new BsiJsPropertyPlugin(context);
   }
 
   apply() {
@@ -2883,6 +2969,8 @@ class _BsiCxWebpackPlugin {
       self: {}
     };
 
+    context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
+
     external_vm_default().createContext(context);
 
     for (let assetName of assetNames) {
@@ -3152,20 +3240,20 @@ class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @type {ValidatedBuildConfig}
+   * @type {BuildContext}
    * @private
    */
-  _config = undefined;
+  _context = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {BuildContext} context
    */
-  constructor(config) {
+  constructor(context) {
     /**
-     * @type {ValidatedBuildConfig}
+     * @type {BuildContext}
      * @private
      */
-    this._config = config;
+    this._context = context;
   }
 
   apply(compiler) {
@@ -3177,7 +3265,7 @@ class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
         })
     });
   }
@@ -4201,10 +4289,10 @@ class ModuleLoader {
   }
 }
 
-;// CONCATENATED MODULE: ./src/twig-context.js
+;// CONCATENATED MODULE: ./src/property-context.js
 
 
-class TwigContext {
+class PropertyContext {
   /**
    * @type {string|undefined}
    * @private
@@ -4224,7 +4312,7 @@ class TwigContext {
    * @type {{}}
    * @private
    */
-  _propertiesProxy = undefined;
+  _proxy = undefined;
   /**
    * @type {boolean}
    * @private
@@ -4249,7 +4337,7 @@ class TwigContext {
      * @type {{}}
      * @private
      */
-    this._propertiesProxy = this._getPropertiesProxy();
+    this._proxy = this._getPropertiesProxy();
 
     this._reloadPropertiesIfRequired();
   }
@@ -4282,8 +4370,8 @@ class TwigContext {
    *
    * @returns {{}}
    */
-  get propertiesProxy() {
-    return this._propertiesProxy;
+  get proxy() {
+    return this._proxy;
   }
 
   /**
@@ -4366,93 +4454,27 @@ class BsiCxTwigContextWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxTwigContextWebpackPlugin';
 
   /**
-   * @type {TwigContext}
+   * @type {PropertyContext}
    * @private
    */
-  _twigContext = undefined;
+  _propertyContext = undefined;
 
   /**
-   * @param {TwigContext} twigContext
+   * @param {PropertyContext} propertyContext
    */
-  constructor(twigContext) {
+  constructor(propertyContext) {
     /**
-     * @type {TwigContext}
+     * @type {PropertyContext}
      * @private
      */
-    this._twigContext = twigContext;
+    this._propertyContext = propertyContext;
   }
 
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
-      this._twigContext.forcePropertiesReload();
-      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
+      this._propertyContext.forcePropertiesReload();
+      compilation.fileDependencies.addAll(this._propertyContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
     });
-  }
-}
-
-;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
-/**
- * @abstract
- */
-class AbstractPropertyPlugin {
-  /**
-   * @type {CssPropertyResolver}
-   * @protected
-   */
-  _propertyResolver = undefined;
-  /**
-   * @type {{}}
-   * @protected
-   */
-  _properties = undefined;
-
-  /**
-   * @param {BuildContext} context
-   */
-  constructor(context) {
-    /**
-     * @type {{}}
-     * @private
-     */
-    this._properties = context.properties.propertiesProxy;
-    /**
-     * @type {CssPropertyResolver}
-     * @private
-     */
-    this._propertyResolver = context.cssPropertyResolver;
-  }
-
-  /**
-   * @param {*} property
-   * @param {*} fallback
-   * @returns {*}
-   */
-  getProperty(property, fallback) {
-    let segments = property.split('.');
-    let scope = this._properties;
-
-    for (let segment of segments) {
-      scope = scope[segment];
-      if (typeof scope === 'undefined') {
-        return this._handleNotFoundProperty(property, fallback);
-      }
-    }
-
-    return this._propertyResolver.resolve(scope);
-  }
-
-  /**
-   * @param {*} property
-   * @param {*} fallback
-   * @returns {*}
-   * @private
-   */
-  _handleNotFoundProperty(property, fallback) {
-    if (typeof fallback === 'undefined') {
-      throw new Error(`Property ${property} not found.`);
-    }
-
-    return fallback;
   }
 }
 
@@ -4540,6 +4562,15 @@ class AbstractCssProperty {
    */
   toString() {
     throw new Error('not implemented');
+  }
+
+  /**
+   * Will be used inside JS files to generate the design.json file.
+   *
+   * @returns {number|string|undefined}
+   */
+  toJSON() {
+    return this.toString();
   }
 
   /**
@@ -5354,7 +5385,7 @@ class BuildContext {
    */
   _config = undefined;
   /**
-   * @type {TwigContext}
+   * @type {PropertyContext}
    * @private
    */
   _properties = undefined;
@@ -5374,10 +5405,10 @@ class BuildContext {
      */
     this._config = config;
     /**
-     * @type {TwigContext}
+     * @type {PropertyContext}
      * @private
      */
-    this._properties = new TwigContext(config.propertiesFilePath);
+    this._properties = new PropertyContext(config.propertiesFilePath);
   }
 
   /**
@@ -5388,7 +5419,7 @@ class BuildContext {
   }
 
   /**
-   * @returns {TwigContext}
+   * @returns {PropertyContext}
    */
   get properties() {
     return this._properties;
@@ -5427,6 +5458,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 }
 
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
 
 
 
@@ -5490,9 +5522,9 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {TwigContext}
+   * @returns {PropertyContext}
    */
-  get twigContext() {
+  get properties() {
     return this.context.properties;
   }
 
@@ -5651,7 +5683,7 @@ class WebpackConfigBuilder {
             loader: this._getTwingLoader(),
             options: {
               renderContext: {
-                properties: this.twigContext.propertiesProxy,
+                properties: this.properties.proxy,
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -5993,7 +6025,7 @@ class WebpackConfigBuilder {
    */
   _getBsiCxTwigContextWebpackPlugin() {
     return [
-      new BsiCxTwigContextWebpackPlugin(this.twigContext)
+      new BsiCxTwigContextWebpackPlugin(this.properties)
     ]
   }
 
@@ -6003,7 +6035,7 @@ class WebpackConfigBuilder {
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin(this.config)
+      new BsiCxWebpackPlugin(this.context)
     ];
   }
 

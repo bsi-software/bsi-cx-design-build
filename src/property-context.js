@@ -1,6 +1,6 @@
 import {ModuleLoader} from './module-loader';
 
-export default class TwigContext {
+export default class PropertyContext {
   /**
    * @type {string|undefined}
    * @private
@@ -20,7 +20,7 @@ export default class TwigContext {
    * @type {{}}
    * @private
    */
-  _propertiesProxy = undefined;
+  _proxy = undefined;
   /**
    * @type {boolean}
    * @private
@@ -45,7 +45,7 @@ export default class TwigContext {
      * @type {{}}
      * @private
      */
-    this._propertiesProxy = this._getPropertiesProxy();
+    this._proxy = this._getPropertiesProxy();
 
     this._reloadPropertiesIfRequired();
   }
@@ -78,8 +78,8 @@ export default class TwigContext {
    *
    * @returns {{}}
    */
-  get propertiesProxy() {
-    return this._propertiesProxy;
+  get proxy() {
+    return this._proxy;
   }
 
   /**

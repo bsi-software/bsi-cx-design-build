@@ -47,6 +47,7 @@ import Include from '../src/website/include';
 import NLS from '../src/nls/nls';
 import Translation from '../src/nls/translation';
 import DesignFactory from '../src/design/design-factory';
+import bsiProperty from '../src/bsi-property';
 
 /**
  * A collection of various builder factory methods.
@@ -105,4 +106,5 @@ export {
   NLS,
   Translation,
   cx,
+  bsiProperty
 };

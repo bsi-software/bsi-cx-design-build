@@ -21,7 +21,7 @@ export default class AbstractPropertyPlugin {
      * @type {{}}
      * @private
      */
-    this._properties = context.properties.propertiesProxy;
+    this._properties = context.properties.proxy;
     /**
      * @type {CssPropertyResolver}
      * @private

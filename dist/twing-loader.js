@@ -95,6 +95,10 @@ class constant_Constant {
    * @type {string}
    */
   static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
 };
 
 ;// CONCATENATED MODULE: ./src/query-constant.js

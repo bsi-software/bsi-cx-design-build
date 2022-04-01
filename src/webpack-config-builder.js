@@ -61,9 +61,9 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {TwigContext}
+   * @returns {PropertyContext}
    */
-  get twigContext() {
+  get properties() {
     return this.context.properties;
   }
 
@@ -222,7 +222,7 @@ export default class WebpackConfigBuilder {
             loader: this._getTwingLoader(),
             options: {
               renderContext: {
-                properties: this.twigContext.propertiesProxy,
+                properties: this.properties.proxy,
                 designBaseUrl: buildPublicPath(this.config)
               }
             }
@@ -564,7 +564,7 @@ export default class WebpackConfigBuilder {
    */
   _getBsiCxTwigContextWebpackPlugin() {
     return [
-      new BsiCxTwigContextWebpackPlugin(this.twigContext)
+      new BsiCxTwigContextWebpackPlugin(this.properties)
     ]
   }
 
@@ -574,7 +574,7 @@ export default class WebpackConfigBuilder {
    */
   _getBsiCxWebpackPluginConfig() {
     return [
-      new BsiCxWebpackPlugin(this.config)
+      new BsiCxWebpackPlugin(this.context)
     ];
   }
 

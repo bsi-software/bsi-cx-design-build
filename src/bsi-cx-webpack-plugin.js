@@ -16,6 +16,7 @@ import {uuid} from './browser-utility';
 import slugify from 'slugify';
 import DesignJsonPropertyExtension from './design-json-property-extension';
 import BsiHtmlAttributes from './bsi-html-attributes';
+import BsiJsPropertyPlugin from './bsi-js-property-plugin';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -90,18 +91,23 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _logger = undefined;
+  /**
+   * @type {BsiJsPropertyPlugin}
+   * @private
+   */
+  _propertyPlugin = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {BuildContext} context
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {WebpackLogger} logger
    */
-  constructor(config, compiler, compilation, logger) {
+  constructor(context, compiler, compilation, logger) {
     /**
      * @type {ValidatedBuildConfig}
      */
-    this._config = config;
+    this._config = context.config;
     /**
      * @type {Compiler}
      */
@@ -114,6 +120,10 @@ class _BsiCxWebpackPlugin {
      * @type {WebpackLogger}
      */
     this._logger = logger;
+    /**
+     * @type {BsiJsPropertyPlugin}
+     */
+    this._propertyPlugin = new BsiJsPropertyPlugin(context);
   }
 
   apply() {
@@ -578,6 +588,8 @@ class _BsiCxWebpackPlugin {
       self: {}
     };
 
+    context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
+
     vm.createContext(context);
 
     for (let assetName of assetNames) {
@@ -847,20 +859,20 @@ export default class BsiCxWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxWebpackPlugin';
 
   /**
-   * @type {ValidatedBuildConfig}
+   * @type {BuildContext}
    * @private
    */
-  _config = undefined;
+  _context = undefined;
 
   /**
-   * @param {ValidatedBuildConfig} config
+   * @param {BuildContext} context
    */
-  constructor(config) {
+  constructor(context) {
     /**
-     * @type {ValidatedBuildConfig}
+     * @type {BuildContext}
      * @private
      */
-    this._config = config;
+    this._context = context;
   }
 
   apply(compiler) {
@@ -872,7 +884,7 @@ export default class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._config, compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
         })
     });
   }

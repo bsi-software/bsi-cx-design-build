@@ -1,5 +1,3 @@
-import TwigContext from './twig-context';
-
 export default class BsiCxTwigContextWebpackPlugin {
   /**
    * @type {string}
@@ -7,26 +5,26 @@ export default class BsiCxTwigContextWebpackPlugin {
   static PLUGIN_NAME = 'BsiCxTwigContextWebpackPlugin';
 
   /**
-   * @type {TwigContext}
+   * @type {PropertyContext}
    * @private
    */
-  _twigContext = undefined;
+  _propertyContext = undefined;
 
   /**
-   * @param {TwigContext} twigContext
+   * @param {PropertyContext} propertyContext
    */
-  constructor(twigContext) {
+  constructor(propertyContext) {
     /**
-     * @type {TwigContext}
+     * @type {PropertyContext}
      * @private
      */
-    this._twigContext = twigContext;
+    this._propertyContext = propertyContext;
   }
 
   apply(compiler) {
     compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
-      this._twigContext.forcePropertiesReload();
-      compilation.fileDependencies.addAll(this._twigContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
+      this._propertyContext.forcePropertiesReload();
+      compilation.fileDependencies.addAll(this._propertyContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
     });
   }
 }
