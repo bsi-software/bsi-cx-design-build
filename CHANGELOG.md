@@ -7,6 +7,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.7.0] - 01.04.2022
+
+### Added
+
+* Support for `bsiProperty()` function in JavaScript files.
+
+### Fixed
+
+* Updated dependencies to the latest versions.
+
 ## [1.6.0] - 17.02.2022
 
 ### Added
@@ -314,7 +324,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.7.0...HEAD
+
+[1.7.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.6.0...1.7.0
 
 [1.6.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.5.2...1.6.0
 
