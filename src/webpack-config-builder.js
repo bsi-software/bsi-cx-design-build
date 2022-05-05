@@ -5,6 +5,7 @@ import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import {DefinePlugin} from 'webpack';
 
 import packageJson from '../package.json';
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
@@ -93,6 +94,7 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
+        ...this._getDefinePluginConfig(),
         ...this._getAdditionalPlugins()
       ],
       devtool: this._getDevToolConfig(),
@@ -617,6 +619,20 @@ export default class WebpackConfigBuilder {
     );
 
     return plugins;
+  }
+
+  /**
+   * @returns {[]}
+   * @private
+   */
+  _getDefinePluginConfig() {
+    const definitions = {};
+
+    definitions[Constant.BSI_CX_TARGET_VERSION] = this.config.targetVersion.valueOf();
+
+    return [
+      new DefinePlugin(definitions)
+    ]
   }
 
   /**

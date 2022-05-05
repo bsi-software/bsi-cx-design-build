@@ -152,7 +152,7 @@ export default class ContentElementGroup extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.GROUP_ID, config, identity);

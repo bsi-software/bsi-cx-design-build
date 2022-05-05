@@ -1,6 +1,6 @@
 import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, constantObjectValue, constantObjectValueOf, identity, uuid} from '../browser-utility';
+import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 
@@ -399,7 +399,11 @@ export default class ContentElement extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  isCompatible() {
+    return super.isCompatible() && !this._hasIncompatibleParts();
+  }
+
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
@@ -411,8 +415,6 @@ export default class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MIN_VERSION, config, constantObjectValueOf);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MAX_VERSION, config, constantObjectValueOf);
 
     return config;
   }
@@ -425,5 +427,15 @@ export default class ContentElement extends AbstractBuilder {
    */
   clone(shallow) {
     return this._clone(new ContentElement(), shallow);
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  _hasIncompatibleParts() {
+    const parts = this.parts ?? [];
+
+    return parts.findIndex(part => part instanceof AbstractBuilder ? !part.isCompatible() : false) !== -1;
   }
 }

@@ -536,7 +536,7 @@ export default class Design extends AbstractBuilder {
   /**
    * @inheritDoc
    */
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.SCHEMA_VERSION, config, constantObjectValue);

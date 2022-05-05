@@ -69,8 +69,8 @@ export default class FormattedTextPart extends AbstractPart {
     return this;
   }
 
-  build() {
-    let config = super.build();
+  _buildInternal() {
+    let config = super._buildInternal();
 
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
 

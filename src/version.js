@@ -1,5 +1,6 @@
 import {DesignType, EMAIL, LANDINGPAGE, WEBSITE} from './design-type';
 import AbstractConstant from './abstract-constant';
+import Constant from './constant';
 
 /**
  * @type {DesignType[]}
@@ -117,4 +118,4 @@ export const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
 /**
  * @type {Version}
  */
-export const TARGET = undefined;
+export const TARGET = global[Constant.BSI_CX_TARGET_VERSION];

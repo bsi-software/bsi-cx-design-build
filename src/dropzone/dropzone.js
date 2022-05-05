@@ -179,7 +179,7 @@ export default class Dropzone extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONE, config, identity);

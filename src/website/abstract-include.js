@@ -144,7 +144,7 @@ export default class AbstractInclude extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
     let include = {};
 

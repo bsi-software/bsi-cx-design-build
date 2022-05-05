@@ -97,7 +97,7 @@ export default class Website extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, identity);

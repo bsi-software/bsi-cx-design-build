@@ -336,9 +336,9 @@ export default class HtmlEditorConfig extends AbstractBuilder {
     return this;
   }
 
-  build() {
-    let editorConfig = {};
+  _buildInternal() {
     let config = {};
+    let editorConfig = {};
 
     config[this.identifier] = editorConfig;
 

@@ -105,7 +105,7 @@ export default class NLS extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
     let translation = {};
 

@@ -126,7 +126,7 @@ export default class Style extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
     let style = {};
 

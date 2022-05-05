@@ -92,7 +92,7 @@ export default class Translation extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     config[this.locale?.value] = this.translation;

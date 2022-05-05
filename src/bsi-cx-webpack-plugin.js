@@ -155,7 +155,7 @@ class _BsiCxWebpackPlugin {
      */
     let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
 
-    return BuilderObjectNormalizer.normalize(designJson);
+    return BuilderObjectNormalizer.normalize(designJson, this._config.targetVersion);
   }
 
   /**
@@ -336,9 +336,6 @@ class _BsiCxWebpackPlugin {
     this._handleElementFile(element, replaceMap);
     this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
     this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
-
-    // delete element[DesignJsonPropertyExtension.MIN_VERSION];
-    // delete element[DesignJsonPropertyExtension.MAX_VERSION];
   }
 
   /**

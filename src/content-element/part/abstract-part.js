@@ -105,7 +105,7 @@ export default class AbstractPart extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);

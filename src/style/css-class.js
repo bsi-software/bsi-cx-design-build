@@ -70,7 +70,7 @@ export default class CssClass extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);

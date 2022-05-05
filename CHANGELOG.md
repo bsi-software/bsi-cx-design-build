@@ -13,6 +13,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 * Version check inside Twig templates with `CX.Version.TARGET` and in design specification with `Version.TARGET`.
   Version object is comparable: `CX.Version.CX_1_3 < CX.Version.CX_22_0` equals `true`.
+* Content elements with incompatible parts will be excluded from the build. Introduced `minVersion` and `maxVersion`
+  property on `AbstractBuilder` to determine compatible version.
 
 ### Changed
 

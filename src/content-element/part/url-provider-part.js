@@ -1,5 +1,6 @@
 import {URL_PROVIDER} from './part';
 import AbstractPart from './abstract-part';
+import {CX_22_0} from '../../version';
 
 /**
  * @since 22.0
@@ -7,6 +8,10 @@ import AbstractPart from './abstract-part';
 export default class UrlProviderPart extends AbstractPart {
   constructor() {
     super(URL_PROVIDER);
+  }
+
+  get minVersion() {
+    return CX_22_0;
   }
 
   /**

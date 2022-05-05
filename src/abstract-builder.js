@@ -1,18 +1,60 @@
 import RawValue from './raw-value';
 import ObjectCloner from './object-cloner';
+import {STUDIO_1_0, TARGET} from './version';
+
+/** @typedef {import('./version').Version} Version */
 
 /**
  * @abstract
  */
 export default class AbstractBuilder {
   /**
+   * @returns {Version}
+   */
+  get minVersion() {
+    return STUDIO_1_0;
+  }
+
+  /**
+   * @returns {Version}
+   */
+  get maxVersion() {
+    return undefined;
+  }
+
+  /**
    * Build the configuration. Normally, there is no need to invoke this method manually.
    *
-   * @abstract
-   * @returns {{}}
+   * @returns {{}|undefined}
    */
   build() {
+    if (!this.isCompatible()) {
+      return undefined;
+    }
+
+    return this._buildInternal();
+  }
+
+  /**
+   * @abstract
+   * @returns {{}}
+   * @protected
+   */
+  _buildInternal() {
     throw new Error('not implemented');
+  }
+
+  /**
+   * Check if this builder part is compatible with the defined target version.
+   *
+   * @returns {boolean}
+   */
+  isCompatible() {
+    if (this.minVersion && TARGET < this.minVersion) {
+      return false;
+    }
+
+    return this.maxVersion !== undefined ? TARGET > this.maxVersion : true;
   }
 
   /**
@@ -37,10 +79,12 @@ export default class AbstractBuilder {
         computedValue = value.value;
         break;
       case value instanceof Array:
-        computedValue = value.map(item => extractFunc(item));
+        computedValue = value.filter(item => this._checkCompatibility(item))
+          .map(item => extractFunc(item))
+          .filter(item => item !== undefined);
         break;
       default:
-        computedValue = extractFunc(value);
+        computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
     }
 
@@ -50,6 +94,10 @@ export default class AbstractBuilder {
 
     if (!!setMetaProperty && !isRawValue) {
       this._applyMetaPropertyFromValue(property, targetObj, value);
+    }
+
+    if (computedValue === undefined) {
+      return;
     }
 
     targetObj[property] = computedValue;
@@ -66,12 +114,14 @@ export default class AbstractBuilder {
     let metaProperty = `_${property}`;
 
     if (value instanceof Array) {
-      computedValue = value.map(item => item.build());
+      computedValue = value.map(item => item.build()).filter(item => item !== undefined);
     } else {
       computedValue = value.build();
     }
 
-    targetObj[metaProperty] = computedValue;
+    if (computedValue !== undefined) {
+      targetObj[metaProperty] = computedValue;
+    }
   }
 
   /**
@@ -80,13 +130,22 @@ export default class AbstractBuilder {
    */
   _applyArrayToObject(arr) {
     let obj = {};
-    for (let item of arr) {
+    for (let item of arr ?? []) {
       obj = {
         ...obj,
         ...item
       };
     }
     return obj;
+  }
+
+  /**
+   * @param {*} value
+   * @return {boolean}
+   * @private
+   */
+  _checkCompatibility(value) {
+    return value instanceof AbstractBuilder ? value.isCompatible() : true;
   }
 
   /**
