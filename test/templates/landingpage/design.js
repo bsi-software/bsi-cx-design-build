@@ -9,7 +9,6 @@ const author = bsiProperty('author');
  * @type {Design}
  */
 module.exports = cx.design
-  .withSchemaVersion(SchemaVersion.V_22_0)
   .withTitle('Landingpage Template Test')
   .withAuthor(author)
   .withDate('18.08.2021')

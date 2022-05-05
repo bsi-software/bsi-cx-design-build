@@ -9,9 +9,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.8.0] - 05.05.2022
 
-### Added
+### Changed
 
 * Don't include `design.json` in legacy templates (except websites in CX 1.3).
+* Made `withSchemaVersion()` obsolete, correct version will be determined by the value from `withTargetVersion()` in
+  the `webpack.config.js` file.
 
 ## [1.7.0] - 01.04.2022
 

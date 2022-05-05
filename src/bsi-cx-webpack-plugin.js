@@ -294,6 +294,7 @@ class _BsiCxWebpackPlugin {
       [DesignJsonProperty.STYLE_CONFIGS, {}]
     ]);
 
+    this._adjustDesignJsonSchemaVersion(designJsonObj);
     this._handleDesignPreviewImage(designJsonObj);
 
     contentElementGroups
@@ -309,6 +310,12 @@ class _BsiCxWebpackPlugin {
     let jsonStr = JSON.stringify(designJsonObj, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
     this._deleteAsset(designJsonChunkPath);
+  }
+
+  _adjustDesignJsonSchemaVersion(designJsonObj) {
+    if (typeof designJsonObj[DesignJsonProperty.SCHEMA_VERSION] === 'undefined') {
+      designJsonObj[DesignJsonProperty.SCHEMA_VERSION] = this._config.targetVersion.schemaVersion;
+    }
   }
 
   _handleDesignPreviewImage(designJsonObj) {

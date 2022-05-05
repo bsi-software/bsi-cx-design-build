@@ -21,7 +21,6 @@ import Dropzone from '../dropzone/dropzone';
  * const {cx} = require('@bsi-cx/design-build');
  *
  * module.exports = cx.design
- *   .withSchemaVersion(SchemaVersion.V_22_0)
  *   .withTitle('My BSI CX Design')
  *   .withAuthor('John Doe')
  *   .withDate('18.8.2021')
@@ -44,7 +43,6 @@ export default class DesignFactory {
    *
    * @example
    * cx.design
-   *   .withSchemaVersion(SchemaVersion.V_22_0)
    *   .withTitle('My BSI CX Design')
    *   .withAuthor('John Doe')
    *   .withDate('18.8.2021')

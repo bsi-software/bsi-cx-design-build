@@ -20,7 +20,6 @@ import DesignJsonPropertyExtension from '../design-json-property-extension';
  *
  * @example
  * module.exports = cx.design
- *   .withSchemaVersion(SchemaVersion.V_22_0)
  *   .withTitle('My BSI CX Design')
  *   .withAuthor('John Doe')
  *   .withDate('18.8.2021')
