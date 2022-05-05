@@ -27,4 +27,12 @@ export default class DesignJsonPropertyExtension {
    * @type {string}
    */
   static MOVE_ALLOWED = 'moveAllowed';
+  /**
+   @type {string}
+   */
+  static MIN_VERSION = 'minVersion';
+  /**
+   @type {string}
+   */
+  static MAX_VERSION = 'maxVersion';
 }

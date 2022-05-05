@@ -32,4 +32,11 @@ export default class AbstractConstant {
   getValue() {
     return this.value;
   }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return this.value;
+  }
 }

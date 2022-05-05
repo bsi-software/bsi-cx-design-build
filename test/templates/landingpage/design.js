@@ -1,4 +1,4 @@
-const {cx, Locale, SchemaVersion, bsiProperty} = require('@bsi-cx/design-build');
+const {cx, Locale, bsiProperty} = require('@bsi-cx/design-build');
 
 /**
  * @type {string}

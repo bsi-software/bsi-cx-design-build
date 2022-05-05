@@ -336,6 +336,9 @@ class _BsiCxWebpackPlugin {
     this._handleElementFile(element, replaceMap);
     this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
     this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
+
+    // delete element[DesignJsonPropertyExtension.MIN_VERSION];
+    // delete element[DesignJsonPropertyExtension.MAX_VERSION];
   }
 
   /**
@@ -596,6 +599,7 @@ class _BsiCxWebpackPlugin {
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
+    context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion;
 
     vm.createContext(context);
 

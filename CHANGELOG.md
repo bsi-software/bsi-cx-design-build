@@ -9,6 +9,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.8.0] - 05.05.2022
 
+### Added
+
+* Version check inside Twig templates with `CX.Version.TARGET` and in design specification with `Version.TARGET`.
+  Version object is comparable: `CX.Version.CX_1_3 < CX.Version.CX_22_0` equals `true`.
+
 ### Changed
 
 * Don't include `design.json` in legacy templates (except websites in CX 1.3).

@@ -35,4 +35,8 @@ export default class Constant {
    * @type {string}
    */
   static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_VERSION = '###BSI_CX_TARGET_VERSION###';
 };

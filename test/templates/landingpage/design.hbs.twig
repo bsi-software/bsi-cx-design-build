@@ -7,4 +7,7 @@
   {{ properties.test }}<br/>
   {{ properties.other.test.alternateColor.rgb }}
   {{ bsi_cx_lorem(10) }}
+  {% if CX.Version.TARGET >= CX.Version.CX_22_0 %}
+    {{ '' ~ CX.Version.TARGET }}
+  {% endif %}
 {% endblock %}

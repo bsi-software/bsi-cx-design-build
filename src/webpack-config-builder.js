@@ -19,6 +19,7 @@ import BuildContext from './build-context';
 import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
 import QueryConstant from './query-constant';
 import DistFolder from './dist-folder';
+import * as Version from './version';
 
 export default class WebpackConfigBuilder {
   /**
@@ -212,6 +213,12 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getTwigRuleConfig() {
+    const versions = {};
+
+    for (const [name, version] of Object.entries(Version)) {
+      versions[name] = name === 'TARGET' ? this.config.targetVersion : version;
+    }
+
     return [
       {
         test: /\.twig$/i,
@@ -223,7 +230,10 @@ export default class WebpackConfigBuilder {
             options: {
               renderContext: {
                 properties: this.properties.proxy,
-                designBaseUrl: buildPublicPath(this.config)
+                designBaseUrl: buildPublicPath(this.config),
+                CX: {
+                  Version: versions
+                }
               }
             }
           }
