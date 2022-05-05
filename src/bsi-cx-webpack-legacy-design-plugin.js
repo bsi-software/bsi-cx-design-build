@@ -7,6 +7,7 @@ import {identity, scalarArrayToList} from './browser-utility';
 import {toString} from './utility';
 import LegacyDesignProperty from './legacy-design-property';
 import DesignJsonProperty from './design-json-property';
+import {WEBSITE} from './design-type';
 
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
@@ -79,6 +80,10 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
     this._createAndEmitContentElementsHtml(designJson);
     this._createAndEmitDesignProperties(designJson);
+
+    if (this._mustRemoveDesignJson()) {
+      this._removeDesignJson();
+    }
   }
 
   /**
@@ -427,6 +432,21 @@ class _BsiCxWebpackLegacyDesignPlugin {
     let value = valueExtractor(rawValue);
 
     properties.append(key, value);
+  }
+
+  /**
+   * @returns {boolean}
+   * @private
+   */
+  _mustRemoveDesignJson() {
+    return this._config.designType !== WEBSITE;
+  }
+
+  /**
+   * @private
+   */
+  _removeDesignJson() {
+    this._compilation.deleteAsset(File.DESIGN_JSON);
   }
 }
 

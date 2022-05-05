@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.8.0] - 05.05.2022
+
+### Added
+
+* Don't include `design.json` in legacy templates (except websites in CX 1.3).
+
 ## [1.7.0] - 01.04.2022
 
 ### Added
@@ -324,7 +330,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.7.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.0...HEAD
+
+[1.8.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.7.0...1.8.0
 
 [1.7.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.6.0...1.7.0
 
