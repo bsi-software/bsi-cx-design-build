@@ -15,6 +15,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Made `withSchemaVersion()` obsolete, correct version will be determined by the value from `withTargetVersion()` in
   the `webpack.config.js` file.
 
+### Fixed
+
+* Don't prefix paths with `{{designBaseUrl}}` in landingpage and email templates.
+
 ## [1.7.0] - 01.04.2022
 
 ### Added

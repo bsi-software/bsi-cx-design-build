@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import Constant from './constant';
-import {WEBSITE} from './design-type';
+import {EMAIL, LANDINGPAGE, WEBSITE} from './design-type';
 
 /**
  *
@@ -31,7 +31,7 @@ export function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+  if (config.designType === LANDINGPAGE || config.designType === EMAIL || (config.targetVersion.legacyFormat && config.designType !== WEBSITE)) {
     return '.' + pathSuffix;
   } else {
     return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
