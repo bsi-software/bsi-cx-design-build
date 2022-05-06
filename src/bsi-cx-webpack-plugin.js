@@ -155,7 +155,7 @@ class _BsiCxWebpackPlugin {
      */
     let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
 
-    return BuilderObjectNormalizer.normalize(designJson, this._config.targetVersion);
+    return BuilderObjectNormalizer.normalize(designJson);
   }
 
   /**
@@ -602,7 +602,8 @@ class _BsiCxWebpackPlugin {
    */
   _loadAssets(scope, ...assetNames) {
     let context = {
-      self: {}
+      self: {},
+      console: console
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
