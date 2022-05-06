@@ -28,6 +28,18 @@
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -64,9 +76,12 @@ __webpack_require__.d(__webpack_exports__, {
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
+  "ALL_TYPES": () => (ALL_TYPES),
   "DesignType": () => (DesignType),
   "EMAIL": () => (EMAIL),
   "LANDINGPAGE": () => (LANDINGPAGE),
+  "LEGACY_TYPES": () => (LEGACY_TYPES),
+  "TARGET": () => (TARGET),
   "WEBSITE": () => (WEBSITE)
 });
 
@@ -79,6 +94,7 @@ __webpack_require__.d(version_namespaceObject, {
   "STUDIO_1_0": () => (STUDIO_1_0),
   "STUDIO_1_1": () => (STUDIO_1_1),
   "STUDIO_1_2": () => (STUDIO_1_2),
+  "TARGET": () => (version_TARGET),
   "Version": () => (Version)
 });
 
@@ -129,12 +145,71 @@ class AbstractConstant {
   getValue() {
     return this.value;
   }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return this.value;
+  }
 }
+
+;// CONCATENATED MODULE: ./src/constant.js
+class Constant {
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_VERSION = '###BSI_CX_TARGET_VERSION###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
+};
 
 ;// CONCATENATED MODULE: ./src/design-type.js
 
 
+
 class DesignType extends AbstractConstant {
+  valueOf() {
+    return this.value;
+  }
 }
 
 /**
@@ -155,10 +230,6 @@ const EMAIL = new DesignType('email');
  */
 const WEBSITE = new DesignType('website');
 
-;// CONCATENATED MODULE: ./src/version.js
-
-
-
 /**
  * @type {DesignType[]}
  */
@@ -176,17 +247,40 @@ const ALL_TYPES = [
   WEBSITE
 ];
 
+/**
+ * @type {DesignType}
+ */
+const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
+
+;// CONCATENATED MODULE: ./src/version.js
+
+
+
+
+/** @typedef {import('./design-type').DesignType} DesignType */
+
 class Version extends AbstractConstant {
   /**
    *
-   * @param {string} version
+   * @param {[major:number,minor:number,patch:number]} version
    * @param {DesignType[]} allowedTypes
    * @param {boolean} legacyFormat
+   * @param {string|undefined} [schemaVersion]
    */
-  constructor(version, allowedTypes, legacyFormat) {
-    super(version);
+  constructor(version, allowedTypes, legacyFormat, schemaVersion) {
+    super(version.join('.'));
+
+    this._version = version;
     this._allowedTypes = allowedTypes;
     this._legacyFormat = legacyFormat;
+    this._schemaVersion = schemaVersion;
+  }
+
+  /**
+   * @return {[major:number,minor:number,patch:number]}
+   */
+  get version() {
+    return [...this._version];
   }
 
   /**
@@ -202,32 +296,69 @@ class Version extends AbstractConstant {
   get legacyFormat() {
     return this._legacyFormat;
   }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get schemaVersion() {
+    return this._schemaVersion;
+  }
+
+  /**
+   * @param {Version} version
+   * @returns {number}
+   */
+  compareTo(version) {
+    for (let i = 0; i < this._version.length; i++) {
+      const left = this._version[i];
+      const right = version.version?.[i] ?? 0;
+      const diff = left - right;
+      if (diff !== 0) {
+        return diff;
+      }
+    }
+
+    return 0;
+  }
+
+  /**
+   * Make versions comparable by calculating an integer value.
+   * @return {number}
+   */
+  valueOf() {
+    return this._version.reduce((p, v, i, a) => p + v * Math.pow(10000, a.length - i), 0);
+  }
 }
 
 /**
  * @type {Version}
  */
-const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
+const STUDIO_1_0 = new Version([1, 0, 0], LEGACY_TYPES, true);
 
 /**
  * @type {Version}
  */
-const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
+const STUDIO_1_1 = new Version([1, 1, 0], LEGACY_TYPES, true);
 
 /**
  * @type {Version}
  */
-const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
+const STUDIO_1_2 = new Version([1, 2, 0], LEGACY_TYPES, true);
 
 /**
  * @type {Version}
  */
-const CX_1_3 = new Version('1.3', ALL_TYPES, true);
+const CX_1_3 = new Version([1, 3, 0], ALL_TYPES, true, '1.0');
 
 /**
  * @type {Version}
  */
-const CX_22_0 = new Version('22.0', ALL_TYPES, false);
+const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
+
+/**
+ * @type {Version}
+ */
+const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
 ;// CONCATENATED MODULE: ./src/raw-value.js
 class RawValue {
@@ -254,18 +385,130 @@ class RawValue {
 
 
 
+
+
+/** @typedef {import('./version').Version} Version */
+/** @typedef {import('./design-type').DesignType} DesignType */
+
 /**
  * @abstract
  */
 class AbstractBuilder {
   /**
+   * @type {Version|undefined}
+   * @private
+   */
+  _minVersion = STUDIO_1_0;
+  /**
+   * @type {Version|undefined}
+   * @private
+   */
+  _maxVersion = undefined;
+  /**
+   * @type {DesignType[]}
+   * @private
+   */
+  _allowedTypes = ALL_TYPES;
+
+  /**
+   * @return {Version}
+   */
+  get minVersion() {
+    return this._minVersion;
+  }
+
+  /**
+   * @return {Version|undefined}
+   */
+  get maxVersion() {
+    return this._maxVersion;
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return [...this._allowedTypes];
+  }
+
+  /**
+   * Define a minimum CX version. Will be excluded from builds targeting a lower version.
+   *
+   * @example
+   * .withMinVersion(Version.CX_22_0)
+   * @see {@link withMaxVersion}
+   * @param {Version} minVersion
+   * @returns {this}
+   */
+  withMinVersion(minVersion) {
+    this._minVersion = minVersion;
+    return this;
+  }
+
+  /**
+   * Define a maximum CX version. Will be excluded from builds targeting a higher version.
+   *
+   * @example
+   * .withMaxVersion(Version.CX_22_0)
+   * @see {@link withMinVersion}
+   * @param {Version} maxVersion
+   * @returns {this}
+   */
+  withMaxVersion(maxVersion) {
+    this._maxVersion = maxVersion;
+    return this;
+  }
+
+  /**
+   * Define allowed template types. Will be excluded from builds targeting other types.
+   *
+   * @example
+   * .withAllowedTypes(DesignType.EMAIL,DesignType.LANDINGPAGE)
+   * @param {...DesignType} types
+   * @returns {this}
+   */
+  withAllowedTypes(...types) {
+    this._allowedTypes = types;
+    return this;
+  }
+
+  /**
    * Build the configuration. Normally, there is no need to invoke this method manually.
    *
-   * @abstract
-   * @returns {{}}
+   * @returns {{}|undefined}
    */
   build() {
+    if (!this.isCompatible()) {
+      return undefined;
+    }
+
+    return this._buildInternal();
+  }
+
+  /**
+   * @abstract
+   * @returns {{}}
+   * @protected
+   */
+  _buildInternal() {
     throw new Error('not implemented');
+  }
+
+  /**
+   * Check if this builder part is compatible with the defined target version.
+   *
+   * @returns {boolean}
+   */
+  isCompatible() {
+    if (this.minVersion && version_TARGET < this.minVersion) {
+      return false;
+    }
+
+    if (this.maxVersion && version_TARGET > this.maxVersion) {
+      return false;
+    }
+
+    return this.allowedTypes !== undefined ? this.allowedTypes.findIndex(type => type.value === TARGET.value) !== -1 : true;
   }
 
   /**
@@ -290,10 +533,12 @@ class AbstractBuilder {
         computedValue = value.value;
         break;
       case value instanceof Array:
-        computedValue = value.map(item => extractFunc(item));
+        computedValue = value.filter(item => this._checkCompatibility(item))
+          .map(item => extractFunc(item))
+          .filter(item => item !== undefined);
         break;
       default:
-        computedValue = extractFunc(value);
+        computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
     }
 
@@ -303,6 +548,10 @@ class AbstractBuilder {
 
     if (!!setMetaProperty && !isRawValue) {
       this._applyMetaPropertyFromValue(property, targetObj, value);
+    }
+
+    if (computedValue === undefined) {
+      return;
     }
 
     targetObj[property] = computedValue;
@@ -319,12 +568,14 @@ class AbstractBuilder {
     let metaProperty = `_${property}`;
 
     if (value instanceof Array) {
-      computedValue = value.map(item => item.build());
+      computedValue = value.map(item => item.build()).filter(item => item !== undefined);
     } else {
       computedValue = value.build();
     }
 
-    targetObj[metaProperty] = computedValue;
+    if (computedValue !== undefined) {
+      targetObj[metaProperty] = computedValue;
+    }
   }
 
   /**
@@ -333,13 +584,22 @@ class AbstractBuilder {
    */
   _applyArrayToObject(arr) {
     let obj = {};
-    for (let item of arr) {
+    for (let item of arr ?? []) {
       obj = {
         ...obj,
         ...item
       };
     }
     return obj;
+  }
+
+  /**
+   * @param {*} value
+   * @return {boolean}
+   * @private
+   */
+  _checkCompatibility(value) {
+    return value instanceof AbstractBuilder ? value.isCompatible() : true;
   }
 
   /**
@@ -465,46 +725,6 @@ var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugi
 class ValidationError extends Error {
 }
 
-;// CONCATENATED MODULE: ./src/constant.js
-class Constant {
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
-};
-
 ;// CONCATENATED MODULE: ./src/utility.js
 
 
@@ -539,7 +759,7 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+  if (config.designType === LANDINGPAGE || config.designType === EMAIL || (config.targetVersion.legacyFormat && config.designType !== WEBSITE)) {
     return '.' + pathSuffix;
   } else {
     return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
@@ -2536,7 +2756,7 @@ class _BsiCxWebpackPlugin {
      */
     let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
 
-    return BuilderObjectNormalizer.normalize(designJson);
+    return BuilderObjectNormalizer.normalize(designJson, this._config.targetVersion);
   }
 
   /**
@@ -2675,6 +2895,7 @@ class _BsiCxWebpackPlugin {
       [DesignJsonProperty.STYLE_CONFIGS, {}]
     ]);
 
+    this._adjustDesignJsonSchemaVersion(designJsonObj);
     this._handleDesignPreviewImage(designJsonObj);
 
     contentElementGroups
@@ -2687,9 +2908,25 @@ class _BsiCxWebpackPlugin {
       this._handleInclude(id, include, replaceMap);
     }
 
-    let jsonStr = JSON.stringify(designJsonObj, null, 2);
+    const {
+      schemaVersion,
+      ...rest
+    } = designJsonObj;
+
+    const json = {
+      schemaVersion: schemaVersion,
+      ...rest
+    };
+
+    let jsonStr = JSON.stringify(json, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
     this._deleteAsset(designJsonChunkPath);
+  }
+
+  _adjustDesignJsonSchemaVersion(designJsonObj) {
+    if (typeof designJsonObj[DesignJsonProperty.SCHEMA_VERSION] === 'undefined') {
+      designJsonObj[DesignJsonProperty.SCHEMA_VERSION] = this._config.targetVersion.schemaVersion;
+    }
   }
 
   _handleDesignPreviewImage(designJsonObj) {
@@ -2970,6 +3207,8 @@ class _BsiCxWebpackPlugin {
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
+    context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion;
+    context[Constant.BSI_CX_TARGET_TYPE] = this._config.designType;
 
     external_vm_default().createContext(context);
 
@@ -3635,6 +3874,7 @@ class LegacyDesignProperty {
 
 
 
+
 class _BsiCxWebpackLegacyDesignPlugin {
   /**
    * @type {ValidatedBuildConfig}
@@ -3706,6 +3946,10 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
     this._createAndEmitContentElementsHtml(designJson);
     this._createAndEmitDesignProperties(designJson);
+
+    if (this._mustRemoveDesignJson()) {
+      this._removeDesignJson();
+    }
   }
 
   /**
@@ -4055,6 +4299,21 @@ class _BsiCxWebpackLegacyDesignPlugin {
 
     properties.append(key, value);
   }
+
+  /**
+   * @returns {boolean}
+   * @private
+   */
+  _mustRemoveDesignJson() {
+    return this._config.designType !== WEBSITE;
+  }
+
+  /**
+   * @private
+   */
+  _removeDesignJson() {
+    this._compilation.deleteAsset(File.DESIGN_JSON);
+  }
 }
 
 class BsiCxWebpackLegacyDesignPlugin {
@@ -4204,6 +4463,87 @@ class BsiCxWebpackZipHashPlugin {
     });
   }
 };
+
+;// CONCATENATED MODULE: ./src/bsi-cx-twig-context-webpack-plugin.js
+class BsiCxTwigContextWebpackPlugin {
+  /**
+   * @type {string}
+   */
+  static PLUGIN_NAME = 'BsiCxTwigContextWebpackPlugin';
+
+  /**
+   * @type {PropertyContext}
+   * @private
+   */
+  _propertyContext = undefined;
+
+  /**
+   * @param {PropertyContext} propertyContext
+   */
+  constructor(propertyContext) {
+    /**
+     * @type {PropertyContext}
+     * @private
+     */
+    this._propertyContext = propertyContext;
+  }
+
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
+      this._propertyContext.forcePropertiesReload();
+      compilation.fileDependencies.addAll(this._propertyContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
+    });
+  }
+}
+
+;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+
+
+class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+  /**
+   * @returns {number[]}
+   */
+  get minVersion() {
+    return [3, 0, 0];
+  }
+
+  /**
+   * @param {*} propertyNode
+   * @param {*} fallback
+   * @returns {*}
+   */
+  getProperty(propertyNode, fallback) {
+    if (!propertyNode) {
+      throw new Error('Property argument is required.');
+    }
+
+    if (typeof propertyNode.value === 'undefined') {
+      throw new Error('Property must be instanceof Node and have a value attribute.');
+    }
+
+    if (typeof propertyNode.value !== 'string') {
+      throw new Error('Property must be a string.');
+    }
+
+    /**
+     * @type {string}
+     */
+    let property = propertyNode.value;
+
+    let value = super.getProperty(property, fallback);
+
+    return typeof value.getLessNode === 'function' ? value.getLessNode() : value;
+  }
+
+  /**
+   * @param lessInstance
+   * @param pluginManager
+   * @param functions
+   */
+  install(lessInstance, pluginManager, functions) {
+    functions.add('bsiProperty', (property, fallback) => this.getProperty(property, fallback));
+  }
+}
 
 ;// CONCATENATED MODULE: external "module"
 const external_module_namespaceObject = require("module");
@@ -4441,89 +4781,6 @@ class PropertyContext {
     }
 
     this._propertiesReloadRequired = false;
-  }
-}
-
-;// CONCATENATED MODULE: ./src/bsi-cx-twig-context-webpack-plugin.js
-
-
-class BsiCxTwigContextWebpackPlugin {
-  /**
-   * @type {string}
-   */
-  static PLUGIN_NAME = 'BsiCxTwigContextWebpackPlugin';
-
-  /**
-   * @type {PropertyContext}
-   * @private
-   */
-  _propertyContext = undefined;
-
-  /**
-   * @param {PropertyContext} propertyContext
-   */
-  constructor(propertyContext) {
-    /**
-     * @type {PropertyContext}
-     * @private
-     */
-    this._propertyContext = propertyContext;
-  }
-
-  apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxTwigContextWebpackPlugin.PLUGIN_NAME, compilation => {
-      this._propertyContext.forcePropertiesReload();
-      compilation.fileDependencies.addAll(this._propertyContext.propertiesModule.dependencies); // FIXME: add file paths from CssUrl to dependencies
-    });
-  }
-}
-
-;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
-
-
-class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
-  /**
-   * @returns {number[]}
-   */
-  get minVersion() {
-    return [3, 0, 0];
-  }
-
-  /**
-   * @param {*} propertyNode
-   * @param {*} fallback
-   * @returns {*}
-   */
-  getProperty(propertyNode, fallback) {
-    if (!propertyNode) {
-      throw new Error('Property argument is required.');
-    }
-
-    if (typeof propertyNode.value === 'undefined') {
-      throw new Error('Property must be instanceof Node and have a value attribute.');
-    }
-
-    if (typeof propertyNode.value !== 'string') {
-      throw new Error('Property must be a string.');
-    }
-
-    /**
-     * @type {string}
-     */
-    let property = propertyNode.value;
-
-    let value = super.getProperty(property, fallback);
-
-    return typeof value.getLessNode === 'function' ? value.getLessNode() : value;
-  }
-
-  /**
-   * @param lessInstance
-   * @param pluginManager
-   * @param functions
-   */
-  install(lessInstance, pluginManager, functions) {
-    functions.add('bsiProperty', (property, fallback) => this.getProperty(property, fallback));
   }
 }
 
@@ -5481,6 +5738,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -5673,6 +5931,17 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getTwigRuleConfig() {
+    const versions = {};
+    const designs = {};
+
+    for (const [name, version] of Object.entries(version_namespaceObject)) {
+      versions[name] = name === 'TARGET' ? this.config.targetVersion : version;
+    }
+
+    for (const [name, type] of Object.entries(design_type_namespaceObject)) {
+      designs[name] = name === 'TARGET' ? this.config.designType : type;
+    }
+
     return [
       {
         test: /\.twig$/i,
@@ -5684,7 +5953,11 @@ class WebpackConfigBuilder {
             options: {
               renderContext: {
                 properties: this.properties.proxy,
-                designBaseUrl: buildPublicPath(this.config)
+                designBaseUrl: buildPublicPath(this.config),
+                cx: {
+                  version: versions,
+                  design: designs
+                }
               }
             }
           }
@@ -6148,7 +6421,7 @@ class WebpackConfigBuilder {
 
     return {
       assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
-      hints: 'warning'
+      hints: false
     };
   }
 

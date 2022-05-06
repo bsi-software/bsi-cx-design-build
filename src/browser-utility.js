@@ -24,14 +24,6 @@ export function constantObjectValue(constant) {
 }
 
 /**
- * @param {AbstractConstant} constant
- * @returns {*}
- */
-export function constantObjectValueOf(constant) {
-  return constant.valueOf();
-}
-
-/**
  * @param {AbstractBuilder} builder
  * @returns {{}}
  */

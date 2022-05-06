@@ -1,23 +1,8 @@
-import {DesignType, EMAIL, LANDINGPAGE, WEBSITE} from './design-type';
+import {ALL_TYPES, LEGACY_TYPES} from './design-type';
 import AbstractConstant from './abstract-constant';
 import Constant from './constant';
 
-/**
- * @type {DesignType[]}
- */
-const LEGACY_TYPES = [
-  LANDINGPAGE,
-  EMAIL
-];
-
-/**
- * @type {DesignType[]}
- */
-const ALL_TYPES = [
-  LANDINGPAGE,
-  EMAIL,
-  WEBSITE
-];
+/** @typedef {import('./design-type').DesignType} DesignType */
 
 export class Version extends AbstractConstant {
   /**

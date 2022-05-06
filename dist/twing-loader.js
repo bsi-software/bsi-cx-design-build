@@ -28,6 +28,18 @@
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -99,6 +111,14 @@ class constant_Constant {
    * @type {string}
    */
   static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_VERSION = '###BSI_CX_TARGET_VERSION###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
 };
 
 ;// CONCATENATED MODULE: ./src/query-constant.js
@@ -151,31 +171,64 @@ class AbstractConstant {
   getValue() {
     return this.value;
   }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return this.value;
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/design-type.js
 
 
+
 class DesignType extends AbstractConstant {
+  valueOf() {
+    return this.value;
+  }
 }
 
 /**
  * @type {DesignType}
  * @since Studio 1.0
  */
-const LANDINGPAGE = new DesignType('landingpage');
+const design_type_LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
  * @since Studio 1.0
  */
-const EMAIL = new DesignType('email');
+const design_type_EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
  * @since BSI CX 1.3
  */
 const design_type_WEBSITE = new DesignType('website');
+
+/**
+ * @type {DesignType[]}
+ */
+const LEGACY_TYPES = [
+  design_type_LANDINGPAGE,
+  design_type_EMAIL
+];
+
+/**
+ * @type {DesignType[]}
+ */
+const ALL_TYPES = [
+  design_type_LANDINGPAGE,
+  design_type_EMAIL,
+  design_type_WEBSITE
+];
+
+/**
+ * @type {DesignType}
+ */
+const TARGET = __webpack_require__.g[constant_Constant.BSI_CX_TARGET_TYPE];
 
 ;// CONCATENATED MODULE: ./src/utility.js
 
@@ -211,7 +264,7 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.targetVersion.legacyFormat && config.designType !== WEBSITE) {
+  if (config.designType === LANDINGPAGE || config.designType === EMAIL || (config.targetVersion.legacyFormat && config.designType !== WEBSITE)) {
     return '.' + pathSuffix;
   } else {
     return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;

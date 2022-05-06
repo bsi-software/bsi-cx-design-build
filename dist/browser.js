@@ -103,6 +103,32 @@ __webpack_require__.d(__webpack_exports__, {
   "cx": () => (/* binding */ cx)
 });
 
+// NAMESPACE OBJECT: ./src/design-type.js
+var design_type_namespaceObject = {};
+__webpack_require__.r(design_type_namespaceObject);
+__webpack_require__.d(design_type_namespaceObject, {
+  "ALL_TYPES": () => (ALL_TYPES),
+  "DesignType": () => (DesignType),
+  "EMAIL": () => (EMAIL),
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "LEGACY_TYPES": () => (LEGACY_TYPES),
+  "TARGET": () => (TARGET),
+  "WEBSITE": () => (WEBSITE)
+});
+
+// NAMESPACE OBJECT: ./src/version.js
+var version_namespaceObject = {};
+__webpack_require__.r(version_namespaceObject);
+__webpack_require__.d(version_namespaceObject, {
+  "CX_1_3": () => (CX_1_3),
+  "CX_22_0": () => (CX_22_0),
+  "STUDIO_1_0": () => (STUDIO_1_0),
+  "STUDIO_1_1": () => (STUDIO_1_1),
+  "STUDIO_1_2": () => (STUDIO_1_2),
+  "TARGET": () => (version_TARGET),
+  "Version": () => (Version)
+});
+
 // NAMESPACE OBJECT: ./src/design/locale.js
 var locale_namespaceObject = {};
 __webpack_require__.r(locale_namespaceObject);
@@ -128,28 +154,6 @@ __webpack_require__.d(schema_version_namespaceObject, {
   "SchemaVersion": () => (SchemaVersion),
   "V_1_0": () => (V_1_0),
   "V_22_0": () => (V_22_0)
-});
-
-// NAMESPACE OBJECT: ./src/design-type.js
-var design_type_namespaceObject = {};
-__webpack_require__.r(design_type_namespaceObject);
-__webpack_require__.d(design_type_namespaceObject, {
-  "DesignType": () => (DesignType),
-  "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (LANDINGPAGE),
-  "WEBSITE": () => (WEBSITE)
-});
-
-// NAMESPACE OBJECT: ./src/version.js
-var version_namespaceObject = {};
-__webpack_require__.r(version_namespaceObject);
-__webpack_require__.d(version_namespaceObject, {
-  "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (CX_22_0),
-  "STUDIO_1_0": () => (STUDIO_1_0),
-  "STUDIO_1_1": () => (STUDIO_1_1),
-  "STUDIO_1_2": () => (STUDIO_1_2),
-  "Version": () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -526,6 +530,13 @@ class AbstractConstant {
   getValue() {
     return this.value;
   }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return this.value;
+  }
 }
 
 ;// CONCATENATED MODULE: ./src/object-cloner.js
@@ -626,22 +637,340 @@ class ObjectCloner {
   }
 }
 
+;// CONCATENATED MODULE: ./src/constant.js
+class Constant {
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_VERSION = '###BSI_CX_TARGET_VERSION###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
+};
+
+;// CONCATENATED MODULE: ./src/design-type.js
+
+
+
+class DesignType extends AbstractConstant {
+  valueOf() {
+    return this.value;
+  }
+}
+
+/**
+ * @type {DesignType}
+ * @since Studio 1.0
+ */
+const LANDINGPAGE = new DesignType('landingpage');
+
+/**
+ * @type {DesignType}
+ * @since Studio 1.0
+ */
+const EMAIL = new DesignType('email');
+
+/**
+ * @type {DesignType}
+ * @since BSI CX 1.3
+ */
+const WEBSITE = new DesignType('website');
+
+/**
+ * @type {DesignType[]}
+ */
+const LEGACY_TYPES = [
+  LANDINGPAGE,
+  EMAIL
+];
+
+/**
+ * @type {DesignType[]}
+ */
+const ALL_TYPES = [
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
+];
+
+/**
+ * @type {DesignType}
+ */
+const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
+
+;// CONCATENATED MODULE: ./src/version.js
+
+
+
+
+/** @typedef {import('./design-type').DesignType} DesignType */
+
+class Version extends AbstractConstant {
+  /**
+   *
+   * @param {[major:number,minor:number,patch:number]} version
+   * @param {DesignType[]} allowedTypes
+   * @param {boolean} legacyFormat
+   * @param {string|undefined} [schemaVersion]
+   */
+  constructor(version, allowedTypes, legacyFormat, schemaVersion) {
+    super(version.join('.'));
+
+    this._version = version;
+    this._allowedTypes = allowedTypes;
+    this._legacyFormat = legacyFormat;
+    this._schemaVersion = schemaVersion;
+  }
+
+  /**
+   * @return {[major:number,minor:number,patch:number]}
+   */
+  get version() {
+    return [...this._version];
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return this._allowedTypes;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  get legacyFormat() {
+    return this._legacyFormat;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get schemaVersion() {
+    return this._schemaVersion;
+  }
+
+  /**
+   * @param {Version} version
+   * @returns {number}
+   */
+  compareTo(version) {
+    for (let i = 0; i < this._version.length; i++) {
+      const left = this._version[i];
+      const right = version.version?.[i] ?? 0;
+      const diff = left - right;
+      if (diff !== 0) {
+        return diff;
+      }
+    }
+
+    return 0;
+  }
+
+  /**
+   * Make versions comparable by calculating an integer value.
+   * @return {number}
+   */
+  valueOf() {
+    return this._version.reduce((p, v, i, a) => p + v * Math.pow(10000, a.length - i), 0);
+  }
+}
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_0 = new Version([1, 0, 0], LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_1 = new Version([1, 1, 0], LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const STUDIO_1_2 = new Version([1, 2, 0], LEGACY_TYPES, true);
+
+/**
+ * @type {Version}
+ */
+const CX_1_3 = new Version([1, 3, 0], ALL_TYPES, true, '1.0');
+
+/**
+ * @type {Version}
+ */
+const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
+
+/**
+ * @type {Version}
+ */
+const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
+
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
 
 
+
+
+
+/** @typedef {import('./version').Version} Version */
+/** @typedef {import('./design-type').DesignType} DesignType */
 
 /**
  * @abstract
  */
 class AbstractBuilder {
   /**
+   * @type {Version|undefined}
+   * @private
+   */
+  _minVersion = STUDIO_1_0;
+  /**
+   * @type {Version|undefined}
+   * @private
+   */
+  _maxVersion = undefined;
+  /**
+   * @type {DesignType[]}
+   * @private
+   */
+  _allowedTypes = ALL_TYPES;
+
+  /**
+   * @return {Version}
+   */
+  get minVersion() {
+    return this._minVersion;
+  }
+
+  /**
+   * @return {Version|undefined}
+   */
+  get maxVersion() {
+    return this._maxVersion;
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return [...this._allowedTypes];
+  }
+
+  /**
+   * Define a minimum CX version. Will be excluded from builds targeting a lower version.
+   *
+   * @example
+   * .withMinVersion(Version.CX_22_0)
+   * @see {@link withMaxVersion}
+   * @param {Version} minVersion
+   * @returns {this}
+   */
+  withMinVersion(minVersion) {
+    this._minVersion = minVersion;
+    return this;
+  }
+
+  /**
+   * Define a maximum CX version. Will be excluded from builds targeting a higher version.
+   *
+   * @example
+   * .withMaxVersion(Version.CX_22_0)
+   * @see {@link withMinVersion}
+   * @param {Version} maxVersion
+   * @returns {this}
+   */
+  withMaxVersion(maxVersion) {
+    this._maxVersion = maxVersion;
+    return this;
+  }
+
+  /**
+   * Define allowed template types. Will be excluded from builds targeting other types.
+   *
+   * @example
+   * .withAllowedTypes(DesignType.EMAIL,DesignType.LANDINGPAGE)
+   * @param {...DesignType} types
+   * @returns {this}
+   */
+  withAllowedTypes(...types) {
+    this._allowedTypes = types;
+    return this;
+  }
+
+  /**
    * Build the configuration. Normally, there is no need to invoke this method manually.
    *
-   * @abstract
-   * @returns {{}}
+   * @returns {{}|undefined}
    */
   build() {
+    if (!this.isCompatible()) {
+      return undefined;
+    }
+
+    return this._buildInternal();
+  }
+
+  /**
+   * @abstract
+   * @returns {{}}
+   * @protected
+   */
+  _buildInternal() {
     throw new Error('not implemented');
+  }
+
+  /**
+   * Check if this builder part is compatible with the defined target version.
+   *
+   * @returns {boolean}
+   */
+  isCompatible() {
+    if (this.minVersion && version_TARGET < this.minVersion) {
+      return false;
+    }
+
+    if (this.maxVersion && version_TARGET > this.maxVersion) {
+      return false;
+    }
+
+    return this.allowedTypes !== undefined ? this.allowedTypes.findIndex(type => type.value === TARGET.value) !== -1 : true;
   }
 
   /**
@@ -666,10 +995,12 @@ class AbstractBuilder {
         computedValue = value.value;
         break;
       case value instanceof Array:
-        computedValue = value.map(item => extractFunc(item));
+        computedValue = value.filter(item => this._checkCompatibility(item))
+          .map(item => extractFunc(item))
+          .filter(item => item !== undefined);
         break;
       default:
-        computedValue = extractFunc(value);
+        computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
     }
 
@@ -679,6 +1010,10 @@ class AbstractBuilder {
 
     if (!!setMetaProperty && !isRawValue) {
       this._applyMetaPropertyFromValue(property, targetObj, value);
+    }
+
+    if (computedValue === undefined) {
+      return;
     }
 
     targetObj[property] = computedValue;
@@ -695,12 +1030,14 @@ class AbstractBuilder {
     let metaProperty = `_${property}`;
 
     if (value instanceof Array) {
-      computedValue = value.map(item => item.build());
+      computedValue = value.map(item => item.build()).filter(item => item !== undefined);
     } else {
       computedValue = value.build();
     }
 
-    targetObj[metaProperty] = computedValue;
+    if (computedValue !== undefined) {
+      targetObj[metaProperty] = computedValue;
+    }
   }
 
   /**
@@ -709,13 +1046,22 @@ class AbstractBuilder {
    */
   _applyArrayToObject(arr) {
     let obj = {};
-    for (let item of arr) {
+    for (let item of arr ?? []) {
       obj = {
         ...obj,
         ...item
       };
     }
     return obj;
+  }
+
+  /**
+   * @param {*} value
+   * @return {boolean}
+   * @private
+   */
+  _checkCompatibility(value) {
+    return value instanceof AbstractBuilder ? value.isCompatible() : true;
   }
 
   /**
@@ -955,7 +1301,7 @@ class AbstractPart extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
@@ -1129,7 +1475,6 @@ class DesignJsonPropertyExtension {
  *
  * @example
  * module.exports = cx.design
- *   .withSchemaVersion(SchemaVersion.V_22_0)
  *   .withTitle('My BSI CX Design')
  *   .withAuthor('John Doe')
  *   .withDate('18.8.2021')
@@ -1646,7 +1991,7 @@ class Design extends AbstractBuilder {
   /**
    * @inheritDoc
    */
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.SCHEMA_VERSION, config, constantObjectValue);
@@ -1836,7 +2181,7 @@ class ContentElementGroup extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.GROUP_ID, config, identity);
@@ -1857,104 +2202,6 @@ class ContentElementGroup extends AbstractBuilder {
     return this._clone(new ContentElementGroup(), shallow);
   }
 }
-
-;// CONCATENATED MODULE: ./src/design-type.js
-
-
-class DesignType extends AbstractConstant {
-}
-
-/**
- * @type {DesignType}
- * @since Studio 1.0
- */
-const LANDINGPAGE = new DesignType('landingpage');
-
-/**
- * @type {DesignType}
- * @since Studio 1.0
- */
-const EMAIL = new DesignType('email');
-
-/**
- * @type {DesignType}
- * @since BSI CX 1.3
- */
-const WEBSITE = new DesignType('website');
-
-;// CONCATENATED MODULE: ./src/version.js
-
-
-
-/**
- * @type {DesignType[]}
- */
-const LEGACY_TYPES = [
-  LANDINGPAGE,
-  EMAIL
-];
-
-/**
- * @type {DesignType[]}
- */
-const ALL_TYPES = [
-  LANDINGPAGE,
-  EMAIL,
-  WEBSITE
-];
-
-class Version extends AbstractConstant {
-  /**
-   *
-   * @param {string} version
-   * @param {DesignType[]} allowedTypes
-   * @param {boolean} legacyFormat
-   */
-  constructor(version, allowedTypes, legacyFormat) {
-    super(version);
-    this._allowedTypes = allowedTypes;
-    this._legacyFormat = legacyFormat;
-  }
-
-  /**
-   * @returns {DesignType[]}
-   */
-  get allowedTypes() {
-    return this._allowedTypes;
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  get legacyFormat() {
-    return this._legacyFormat;
-  }
-}
-
-/**
- * @type {Version}
- */
-const STUDIO_1_0 = new Version('1.0', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_1 = new Version('1.1', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const STUDIO_1_2 = new Version('1.2', LEGACY_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_1_3 = new Version('1.3', ALL_TYPES, true);
-
-/**
- * @type {Version}
- */
-const CX_22_0 = new Version('22.0', ALL_TYPES, false);
 
 ;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
@@ -2508,7 +2755,7 @@ class Dropzone extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONE, config, identity);
@@ -2871,9 +3118,9 @@ class HtmlEditorConfig extends AbstractBuilder {
     return this;
   }
 
-  build() {
-    let editorConfig = {};
+  _buildInternal() {
     let config = {};
+    let editorConfig = {};
 
     config[this.identifier] = editorConfig;
 
@@ -3030,7 +3277,7 @@ class Style extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
     let style = {};
 
@@ -3126,7 +3373,7 @@ class CssClass extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
@@ -3747,7 +3994,11 @@ class ContentElement extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  isCompatible() {
+    return super.isCompatible() && !this._hasIncompatibleParts();
+  }
+
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
@@ -3771,6 +4022,16 @@ class ContentElement extends AbstractBuilder {
    */
   clone(shallow) {
     return this._clone(new ContentElement(), shallow);
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  _hasIncompatibleParts() {
+    const parts = this.parts ?? [];
+
+    return parts.findIndex(part => part instanceof AbstractBuilder ? !part.isCompatible() : false) !== -1;
   }
 }
 
@@ -3971,8 +4232,8 @@ class FormattedTextPart extends AbstractPart {
     return this;
   }
 
-  build() {
-    let config = super.build();
+  _buildInternal() {
+    let config = super._buildInternal();
 
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
 
@@ -4362,12 +4623,17 @@ class SocialSharePart extends AbstractPart {
 
 
 
+
 /**
  * @since 22.0
  */
 class UrlProviderPart extends AbstractPart {
   constructor() {
     super(URL_PROVIDER);
+  }
+
+  get minVersion() {
+    return CX_22_0;
   }
 
   /**
@@ -4382,6 +4648,8 @@ class UrlProviderPart extends AbstractPart {
 }
 
 ;// CONCATENATED MODULE: ./src/website/website.js
+
+
 
 
 
@@ -4425,6 +4693,14 @@ class Website extends AbstractBuilder {
    */
   get includes() {
     return this._includes;
+  }
+
+  get minVersion() {
+    return CX_1_3;
+  }
+
+  get allowedTypes() {
+    return [WEBSITE];
   }
 
   /**
@@ -4481,7 +4757,7 @@ class Website extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, identity);
@@ -4502,6 +4778,8 @@ class Website extends AbstractBuilder {
 }
 
 ;// CONCATENATED MODULE: ./src/website/abstract-include.js
+
+
 
 
 
@@ -4587,6 +4865,14 @@ class AbstractInclude extends AbstractBuilder {
     return this._dropzones;
   }
 
+  get minVersion() {
+    return CX_1_3;
+  }
+
+  get allowedTypes() {
+    return [WEBSITE];
+  }
+
   /**
    * Enable or disable edit mode on this include.
    *
@@ -4648,7 +4934,7 @@ class AbstractInclude extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
     let include = {};
 
@@ -4838,7 +5124,7 @@ class Translation extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
 
     config[this.locale?.value] = this.translation;
@@ -4994,7 +5280,7 @@ class NLS extends AbstractBuilder {
     return this;
   }
 
-  build() {
+  _buildInternal() {
     let config = {};
     let translation = {};
 
@@ -5406,7 +5692,6 @@ class DesignHelper {
  * const {cx} = require('@bsi-cx/design-build');
  *
  * module.exports = cx.design
- *   .withSchemaVersion(SchemaVersion.V_22_0)
  *   .withTitle('My BSI CX Design')
  *   .withAuthor('John Doe')
  *   .withDate('18.8.2021')
@@ -5429,7 +5714,6 @@ class DesignFactory {
    *
    * @example
    * cx.design
-   *   .withSchemaVersion(SchemaVersion.V_22_0)
    *   .withTitle('My BSI CX Design')
    *   .withAuthor('John Doe')
    *   .withDate('18.8.2021')
@@ -5697,46 +5981,6 @@ class DesignFactory {
     return new DesignHelper(this);
   }
 }
-
-;// CONCATENATED MODULE: ./src/constant.js
-class Constant {
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_HREF = '###BSI_CX_CSS_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_CSS_INLINE = '###BSI_CX_CSS_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_DESIGN_BASE_URL = '{{designBaseUrl}}';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_PATH = 'shared/runtime';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_HREF = '###BSI_CX_MODULE_RUNTIME_HREF###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_MODULE_RUNTIME_INLINE = '###BSI_CX_MODULE_RUNTIME_INLINE###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_START = '###BSI_CX_JS_MODULE_START###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_MODULE_END = '###BSI_CX_JS_MODULE_END###';
-  /**
-   * @type {string}
-   */
-  static BSI_CX_JS_PROPERTY_PLUGIN = '###BSI_CX_JS_PROPERTY_PLUGIN###';
-};
 
 ;// CONCATENATED MODULE: ./src/bsi-property.js
 

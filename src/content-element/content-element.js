@@ -10,7 +10,6 @@ import DesignJsonPropertyExtension from '../design-json-property-extension';
 /** @typedef {import('./part/abstract-part').default} AbstractPart */
 /** @typedef {import('./content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
-/** @typedef {import('../version').Version} Version */
 
 /**
  * This is the builder class for content elements. Pass objects of this class to {@link ContentElementGroup#withContentElements}.
@@ -75,16 +74,6 @@ export default class ContentElement extends AbstractBuilder {
    * @private
    */
   _dropzones = undefined;
-  /**
-   * @type {Version|undefined}
-   * @private
-   */
-  _minVersion = undefined;
-  /**
-   * @type {Version|undefined}
-   * @private
-   */
-  _maxVersion = undefined;
 
   /**
    * @returns {string|undefined}
@@ -147,20 +136,6 @@ export default class ContentElement extends AbstractBuilder {
    */
   get dropzones() {
     return this._dropzones;
-  }
-
-  /**
-   * @return {Version|undefined}
-   */
-  get minVersion() {
-    return this._minVersion;
-  }
-
-  /**
-   * @return {Version|undefined}
-   */
-  get maxVersion() {
-    return this._maxVersion;
   }
 
   /**
@@ -368,34 +343,6 @@ export default class ContentElement extends AbstractBuilder {
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
-    return this;
-  }
-
-  /**
-   * Define a minimum CX version for this element. The element will be excluded from builds targeting a lower version.
-   *
-   * @example
-   * .withMinVersion(Version.CX_22_0)
-   * @see {@link withMaxVersion}
-   * @param {Version} minVersion
-   * @returns {ContentElement}
-   */
-  withMinVersion(minVersion) {
-    this._minVersion = minVersion;
-    return this;
-  }
-
-  /**
-   * Define a maximum CX version for this element. The element will be excluded from builds targeting a higher version.
-   *
-   * @example
-   * .withMaxVersion(Version.CX_22_0)
-   * @see {@link withMinVersion}
-   * @param {Version} maxVersion
-   * @returns {ContentElement}
-   */
-  withMaxVersion(maxVersion) {
-    this._maxVersion = maxVersion;
     return this;
   }
 

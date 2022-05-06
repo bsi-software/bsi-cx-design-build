@@ -307,7 +307,17 @@ class _BsiCxWebpackPlugin {
       this._handleInclude(id, include, replaceMap);
     }
 
-    let jsonStr = JSON.stringify(designJsonObj, null, 2);
+    const {
+      schemaVersion,
+      ...rest
+    } = designJsonObj;
+
+    const json = {
+      schemaVersion: schemaVersion,
+      ...rest
+    };
+
+    let jsonStr = JSON.stringify(json, null, 2);
     this._updateAsset(designJsonPath, jsonStr);
     this._deleteAsset(designJsonChunkPath);
   }
@@ -597,6 +607,7 @@ class _BsiCxWebpackPlugin {
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
     context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion;
+    context[Constant.BSI_CX_TARGET_TYPE] = this._config.designType;
 
     vm.createContext(context);
 

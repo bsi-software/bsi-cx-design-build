@@ -2,6 +2,8 @@ import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity, uuid} from '../browser-utility';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
+import {CX_1_3} from '../version';
+import {WEBSITE} from '../design-type';
 
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
@@ -81,6 +83,14 @@ export default class AbstractInclude extends AbstractBuilder {
    */
   get dropzones() {
     return this._dropzones;
+  }
+
+  get minVersion() {
+    return CX_1_3;
+  }
+
+  get allowedTypes() {
+    return [WEBSITE];
   }
 
   /**

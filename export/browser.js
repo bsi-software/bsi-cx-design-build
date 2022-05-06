@@ -9,7 +9,7 @@ import * as Locale from '../src/design/locale';
 import * as SchemaVersion from '../src/design/schema-version';
 import Design from '../src/design/design';
 import ContentElementGroup from '../src/content-element/content-element-group';
-import * as _Version from '../src/version';
+import * as Version from '../src/version';
 import * as DesignType from '../src/design-type';
 import * as Feature from '../src/html-editor-config/feature';
 import * as EnterMode from '../src/html-editor-config/enter-mode';
@@ -48,7 +48,6 @@ import NLS from '../src/nls/nls';
 import Translation from '../src/nls/translation';
 import DesignFactory from '../src/design/design-factory';
 import bsiProperty from '../src/bsi-property';
-import Constant from '../src/constant';
 
 /**
  * A collection of various builder factory methods.
@@ -56,14 +55,6 @@ import Constant from '../src/constant';
  * @type {DesignFactory}
  */
 const cx = new DesignFactory();
-
-/**
- * @type {{TARGET: Version, CX_1_3: Version, Version: Version, CX_22_0: Version, STUDIO_1_1: Version, STUDIO_1_2: Version, STUDIO_1_0: Version}}
- */
-const Version = {
-  ..._Version,
-  TARGET: global[Constant.BSI_CX_TARGET_VERSION]
-};
 
 export {
   DesignJsonProperty,

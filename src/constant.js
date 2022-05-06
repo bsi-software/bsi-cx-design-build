@@ -39,4 +39,8 @@ export default class Constant {
    * @type {string}
    */
   static BSI_CX_TARGET_VERSION = '###BSI_CX_TARGET_VERSION###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
 };

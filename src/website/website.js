@@ -2,6 +2,8 @@ import AbstractBuilder from '../abstract-builder';
 import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, identity} from '../browser-utility';
 import RawValue from '../raw-value';
+import {CX_1_3} from '../version';
+import {WEBSITE} from '../design-type';
 
 /**
  * This is the builder class for website objects.
@@ -41,6 +43,14 @@ export default class Website extends AbstractBuilder {
    */
   get includes() {
     return this._includes;
+  }
+
+  get minVersion() {
+    return CX_1_3;
+  }
+
+  get allowedTypes() {
+    return [WEBSITE];
   }
 
   /**

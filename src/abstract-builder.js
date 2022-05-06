@@ -1,25 +1,91 @@
 import RawValue from './raw-value';
 import ObjectCloner from './object-cloner';
-import {STUDIO_1_0, TARGET} from './version';
+import {STUDIO_1_0, TARGET as TARGET_VERSION} from './version';
+import {ALL_TYPES, TARGET as TARGET_TYPE} from './design-type';
 
 /** @typedef {import('./version').Version} Version */
+/** @typedef {import('./design-type').DesignType} DesignType */
 
 /**
  * @abstract
  */
 export default class AbstractBuilder {
   /**
-   * @returns {Version}
+   * @type {Version|undefined}
+   * @private
+   */
+  _minVersion = STUDIO_1_0;
+  /**
+   * @type {Version|undefined}
+   * @private
+   */
+  _maxVersion = undefined;
+  /**
+   * @type {DesignType[]}
+   * @private
+   */
+  _allowedTypes = ALL_TYPES;
+
+  /**
+   * @return {Version}
    */
   get minVersion() {
-    return STUDIO_1_0;
+    return this._minVersion;
   }
 
   /**
-   * @returns {Version}
+   * @return {Version|undefined}
    */
   get maxVersion() {
-    return undefined;
+    return this._maxVersion;
+  }
+
+  /**
+   * @returns {DesignType[]}
+   */
+  get allowedTypes() {
+    return [...this._allowedTypes];
+  }
+
+  /**
+   * Define a minimum CX version. Will be excluded from builds targeting a lower version.
+   *
+   * @example
+   * .withMinVersion(Version.CX_22_0)
+   * @see {@link withMaxVersion}
+   * @param {Version} minVersion
+   * @returns {this}
+   */
+  withMinVersion(minVersion) {
+    this._minVersion = minVersion;
+    return this;
+  }
+
+  /**
+   * Define a maximum CX version. Will be excluded from builds targeting a higher version.
+   *
+   * @example
+   * .withMaxVersion(Version.CX_22_0)
+   * @see {@link withMinVersion}
+   * @param {Version} maxVersion
+   * @returns {this}
+   */
+  withMaxVersion(maxVersion) {
+    this._maxVersion = maxVersion;
+    return this;
+  }
+
+  /**
+   * Define allowed template types. Will be excluded from builds targeting other types.
+   *
+   * @example
+   * .withAllowedTypes(DesignType.EMAIL,DesignType.LANDINGPAGE)
+   * @param {...DesignType} types
+   * @returns {this}
+   */
+  withAllowedTypes(...types) {
+    this._allowedTypes = types;
+    return this;
   }
 
   /**
@@ -50,11 +116,15 @@ export default class AbstractBuilder {
    * @returns {boolean}
    */
   isCompatible() {
-    if (this.minVersion && TARGET < this.minVersion) {
+    if (this.minVersion && TARGET_VERSION < this.minVersion) {
       return false;
     }
 
-    return this.maxVersion !== undefined ? TARGET > this.maxVersion : true;
+    if (this.maxVersion && TARGET_VERSION > this.maxVersion) {
+      return false;
+    }
+
+    return this.allowedTypes !== undefined ? this.allowedTypes.findIndex(type => type.value === TARGET_TYPE.value) !== -1 : true;
   }
 
   /**

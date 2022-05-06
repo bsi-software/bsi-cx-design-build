@@ -21,10 +21,63 @@ declare module "src/abstract-constant" {
          * @returns {string}
          */
         getValue(): string;
+        /**
+         * @return {string}
+         */
+        toString(): string;
+    }
+}
+declare module "src/constant" {
+    export default class Constant {
+        /**
+         * @type {string}
+         */
+        static BSI_CX_CSS_HREF: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_CSS_INLINE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_DESIGN_BASE_URL: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_PATH: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_HREF: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_MODULE_RUNTIME_INLINE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_MODULE_START: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_MODULE_END: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_JS_PROPERTY_PLUGIN: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_TARGET_VERSION: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_TARGET_TYPE: string;
     }
 }
 declare module "src/design-type" {
     export class DesignType extends AbstractConstant {
+        valueOf(): string;
     }
     /**
      * @type {DesignType}
@@ -41,27 +94,61 @@ declare module "src/design-type" {
      * @since BSI CX 1.3
      */
     export const WEBSITE: DesignType;
+    /**
+     * @type {DesignType[]}
+     */
+    export const LEGACY_TYPES: DesignType[];
+    /**
+     * @type {DesignType[]}
+     */
+    export const ALL_TYPES: DesignType[];
+    /**
+     * @type {DesignType}
+     */
+    export const TARGET: DesignType;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/version" {
+    /** @typedef {import('./design-type').DesignType} DesignType */
     export class Version extends AbstractConstant {
         /**
          *
-         * @param {string} version
+         * @param {[major:number,minor:number,patch:number]} version
          * @param {DesignType[]} allowedTypes
          * @param {boolean} legacyFormat
+         * @param {string|undefined} [schemaVersion]
          */
-        constructor(version: string, allowedTypes: DesignType[], legacyFormat: boolean);
-        _allowedTypes: DesignType[];
+        constructor(version: [major: number, minor: number, patch: number], allowedTypes: DesignType[], legacyFormat: boolean, schemaVersion?: string | undefined);
+        _version: [major: number, minor: number, patch: number];
+        _allowedTypes: import("src/design-type").DesignType[];
         _legacyFormat: boolean;
+        _schemaVersion: string;
+        /**
+         * @return {[major:number,minor:number,patch:number]}
+         */
+        get version(): [major: number, minor: number, patch: number];
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): DesignType[];
+        get allowedTypes(): import("src/design-type").DesignType[];
         /**
          * @returns {boolean}
          */
         get legacyFormat(): boolean;
+        /**
+         * @returns {string|undefined}
+         */
+        get schemaVersion(): string;
+        /**
+         * @param {Version} version
+         * @returns {number}
+         */
+        compareTo(version: Version): number;
+        /**
+         * Make versions comparable by calculating an integer value.
+         * @return {number}
+         */
+        valueOf(): number;
     }
     /**
      * @type {Version}
@@ -83,8 +170,12 @@ declare module "src/version" {
      * @type {Version}
      */
     export const CX_22_0: Version;
+    /**
+     * @type {Version}
+     */
+    export const TARGET: Version;
+    export type DesignType = import("src/design-type").DesignType;
     import AbstractConstant from "src/abstract-constant";
-    import { DesignType } from "src/design-type";
 }
 declare module "src/raw-value" {
     export default class RawValue {
@@ -104,17 +195,86 @@ declare module "src/raw-value" {
     }
 }
 declare module "src/abstract-builder" {
+    /** @typedef {import('./version').Version} Version */
+    /** @typedef {import('./design-type').DesignType} DesignType */
     /**
      * @abstract
      */
     export default class AbstractBuilder {
         /**
+         * @type {Version|undefined}
+         * @private
+         */
+        private _minVersion;
+        /**
+         * @type {Version|undefined}
+         * @private
+         */
+        private _maxVersion;
+        /**
+         * @type {DesignType[]}
+         * @private
+         */
+        private _allowedTypes;
+        /**
+         * @return {Version}
+         */
+        get minVersion(): import("src/version").Version;
+        /**
+         * @return {Version|undefined}
+         */
+        get maxVersion(): import("src/version").Version;
+        /**
+         * @returns {DesignType[]}
+         */
+        get allowedTypes(): import("src/design-type").DesignType[];
+        /**
+         * Define a minimum CX version. Will be excluded from builds targeting a lower version.
+         *
+         * @example
+         * .withMinVersion(Version.CX_22_0)
+         * @see {@link withMaxVersion}
+         * @param {Version} minVersion
+         * @returns {this}
+         */
+        withMinVersion(minVersion: Version): this;
+        /**
+         * Define a maximum CX version. Will be excluded from builds targeting a higher version.
+         *
+         * @example
+         * .withMaxVersion(Version.CX_22_0)
+         * @see {@link withMinVersion}
+         * @param {Version} maxVersion
+         * @returns {this}
+         */
+        withMaxVersion(maxVersion: Version): this;
+        /**
+         * Define allowed template types. Will be excluded from builds targeting other types.
+         *
+         * @example
+         * .withAllowedTypes(DesignType.EMAIL,DesignType.LANDINGPAGE)
+         * @param {...DesignType} types
+         * @returns {this}
+         */
+        withAllowedTypes(...types: DesignType[]): this;
+        /**
          * Build the configuration. Normally, there is no need to invoke this method manually.
          *
+         * @returns {{}|undefined}
+         */
+        build(): {} | undefined;
+        /**
          * @abstract
          * @returns {{}}
+         * @protected
          */
-        build(): {};
+        protected _buildInternal(): {};
+        /**
+         * Check if this builder part is compatible with the defined target version.
+         *
+         * @returns {boolean}
+         */
+        isCompatible(): boolean;
         /**
          * @param {string} property
          * @param {{}} targetObj
@@ -137,6 +297,12 @@ declare module "src/abstract-builder" {
          */
         private _applyArrayToObject;
         /**
+         * @param {*} value
+         * @return {boolean}
+         * @private
+         */
+        private _checkCompatibility;
+        /**
          * @template T
          * @param {T} newObj
          * @param {boolean|undefined} [shallow=true]
@@ -145,6 +311,8 @@ declare module "src/abstract-builder" {
          */
         protected _clone<T>(newObj: T, shallow?: boolean | undefined): T;
     }
+    export type Version = import("src/version").Version;
+    export type DesignType = import("src/design-type").DesignType;
 }
 declare module "src/object-cloner" {
     export default class ObjectCloner {
@@ -194,46 +362,6 @@ declare module "src/object-cloner" {
 }
 declare module "src/build-config/validation-error" {
     export default class ValidationError extends Error {
-    }
-}
-declare module "src/constant" {
-    export default class Constant {
-        /**
-         * @type {string}
-         */
-        static BSI_CX_CSS_HREF: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_CSS_INLINE: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_DESIGN_BASE_URL: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_PATH: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_HREF: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_MODULE_RUNTIME_INLINE: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_MODULE_START: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_MODULE_END: string;
-        /**
-         * @type {string}
-         */
-        static BSI_CX_JS_PROPERTY_PLUGIN: string;
     }
 }
 declare module "src/utility" {
@@ -1850,6 +1978,39 @@ declare module "src/bsi-cx-webpack-zip-hash-plugin" {
         apply(compiler: any): void;
     }
 }
+declare module "src/bsi-cx-twig-context-webpack-plugin" {
+    export default class BsiCxTwigContextWebpackPlugin {
+        /**
+         * @type {string}
+         */
+        static PLUGIN_NAME: string;
+        /**
+         * @param {PropertyContext} propertyContext
+         */
+        constructor(propertyContext: PropertyContext);
+        /**
+         * @type {PropertyContext}
+         * @private
+         */
+        private _propertyContext;
+        apply(compiler: any): void;
+    }
+}
+declare module "src/bsi-less-property-plugin" {
+    export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+        /**
+         * @returns {number[]}
+         */
+        get minVersion(): number[];
+        /**
+         * @param lessInstance
+         * @param pluginManager
+         * @param functions
+         */
+        install(lessInstance: any, pluginManager: any, functions: any): void;
+    }
+    import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
 declare module "src/module-loader" {
     export class ModuleLoader {
         static NODE_MODULES: RegExp;
@@ -1974,40 +2135,6 @@ declare module "src/property-context" {
         private _reloadPropertiesIfRequired;
     }
     import { ModuleLoader } from "src/module-loader";
-}
-declare module "src/bsi-cx-twig-context-webpack-plugin" {
-    export default class BsiCxTwigContextWebpackPlugin {
-        /**
-         * @type {string}
-         */
-        static PLUGIN_NAME: string;
-        /**
-         * @param {PropertyContext} propertyContext
-         */
-        constructor(propertyContext: PropertyContext);
-        /**
-         * @type {PropertyContext}
-         * @private
-         */
-        private _propertyContext;
-        apply(compiler: any): void;
-    }
-    import PropertyContext from "src/property-context";
-}
-declare module "src/bsi-less-property-plugin" {
-    export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
-        /**
-         * @returns {number[]}
-         */
-        get minVersion(): number[];
-        /**
-         * @param lessInstance
-         * @param pluginManager
-         * @param functions
-         */
-        install(lessInstance: any, pluginManager: any, functions: any): void;
-    }
-    import AbstractPropertyPlugin from "src/abstract-property-plugin";
 }
 declare module "src/css/abstract-css-property" {
     export default class AbstractCssProperty {
@@ -2712,7 +2839,6 @@ declare module "src/webpack-config-builder" {
         _getOutputConfig(): {};
     }
     import BuildContext from "src/build-context";
-    import PropertyContext from "src/property-context";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
 }
 declare module "src/css/helper" {
@@ -3957,6 +4083,11 @@ declare module "src/content-element/content-element" {
          * @returns {ContentElement}
          */
         clone(shallow?: boolean): ContentElement;
+        /**
+         * @return {boolean}
+         * @private
+         */
+        private _hasIncompatibleParts;
     }
     export type Design = import("src/design/design").default;
     export type Style = import("src/style/style").default;
@@ -4969,7 +5100,6 @@ declare module "src/design/design" {
      *
      * @example
      * module.exports = cx.design
-     *   .withSchemaVersion(SchemaVersion.V_22_0)
      *   .withTitle('My BSI CX Design')
      *   .withAuthor('John Doe')
      *   .withDate('18.8.2021')
@@ -6159,7 +6289,6 @@ declare module "src/design/design-factory" {
      * const {cx} = require('@bsi-cx/design-build');
      *
      * module.exports = cx.design
-     *   .withSchemaVersion(SchemaVersion.V_22_0)
      *   .withTitle('My BSI CX Design')
      *   .withAuthor('John Doe')
      *   .withDate('18.8.2021')
@@ -6182,7 +6311,6 @@ declare module "src/design/design-factory" {
          *
          * @example
          * cx.design
-         *   .withSchemaVersion(SchemaVersion.V_22_0)
          *   .withTitle('My BSI CX Design')
          *   .withAuthor('John Doe')
          *   .withDate('18.8.2021')

@@ -5,7 +5,6 @@ import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import {DefinePlugin} from 'webpack';
 
 import packageJson from '../package.json';
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
@@ -21,6 +20,7 @@ import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
 import QueryConstant from './query-constant';
 import DistFolder from './dist-folder';
 import * as Version from './version';
+import * as DesignType from './design-type';
 
 export default class WebpackConfigBuilder {
   /**
@@ -94,7 +94,6 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getDefinePluginConfig(),
         ...this._getAdditionalPlugins()
       ],
       devtool: this._getDevToolConfig(),
@@ -216,9 +215,14 @@ export default class WebpackConfigBuilder {
    */
   _getTwigRuleConfig() {
     const versions = {};
+    const designs = {};
 
     for (const [name, version] of Object.entries(Version)) {
       versions[name] = name === 'TARGET' ? this.config.targetVersion : version;
+    }
+
+    for (const [name, type] of Object.entries(DesignType)) {
+      designs[name] = name === 'TARGET' ? this.config.designType : type;
     }
 
     return [
@@ -233,8 +237,9 @@ export default class WebpackConfigBuilder {
               renderContext: {
                 properties: this.properties.proxy,
                 designBaseUrl: buildPublicPath(this.config),
-                CX: {
-                  Version: versions
+                cx: {
+                  version: versions,
+                  design: designs
                 }
               }
             }
@@ -622,20 +627,6 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * @returns {[]}
-   * @private
-   */
-  _getDefinePluginConfig() {
-    const definitions = {};
-
-    definitions[Constant.BSI_CX_TARGET_VERSION] = this.config.targetVersion.valueOf();
-
-    return [
-      new DefinePlugin(definitions)
-    ]
-  }
-
-  /**
    * @returns {Object[]}
    * @private
    */
@@ -713,7 +704,7 @@ export default class WebpackConfigBuilder {
 
     return {
       assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
-      hints: 'warning'
+      hints: false
     };
   }
 
