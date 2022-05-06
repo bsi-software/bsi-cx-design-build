@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.8.1] - 06.05.2022
+
+### Fixed
+
+* Static assets will be copied to `/assets/**/*` instead of `/assets/assets/**/*`.
+
 ## [1.8.0] - 06.05.2022
 
 ### Added
@@ -344,7 +350,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.1...HEAD
+
+[1.8.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.0...1.8.1
 
 [1.8.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.7.0...1.8.0
 

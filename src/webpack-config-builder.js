@@ -558,7 +558,6 @@ export default class WebpackConfigBuilder {
         patterns: [
           {
             from: `${copyAssetsFolderPath}/**/*`,
-            to: DistFolder.ASSETS,
             globOptions: {
               dot: true,
               ignore: ['**/.gitkeep', '**/.gitignore']
