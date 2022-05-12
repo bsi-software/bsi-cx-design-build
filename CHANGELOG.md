@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.8.2] - 12.05.2022
+
+### Changed
+
+* The predefined context variables `properties`, `cx` and `designBaseUrl` inside Twig templates are now available in
+  templates and macros.
+
 ## [1.8.1] - 06.05.2022
 
 ### Fixed
@@ -350,7 +357,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.1...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.2...HEAD
+
+[1.8.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.1...1.8.2
 
 [1.8.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.0...1.8.1
 

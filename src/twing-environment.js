@@ -15,7 +15,11 @@ import {
 } from './twig-functions';
 import {findNodeModulesFolder} from './utility';
 
-export default function () {
+/**
+ * @param {{}} [globals]
+ * @returns {TwingEnvironment}
+ */
+export default function (globals) {
   let relativeFilesystemLoader = new TwingLoaderRelativeFilesystem();
   let filesystemLoader = new TwingLoaderFilesystem();
   let bsiCxScopePath = path.join(findNodeModulesFolder(__dirname), '@bsi-cx');
@@ -34,6 +38,10 @@ export default function () {
   twing.addFunction(bsiCxJsModuleRuntimeHref);
   twing.addFunction(bsiCxJsModuleRuntimeInline);
   twing.addFunction(bsiCxLorem);
+
+  for (const [key, value] of Object.entries(globals ?? {})) {
+    twing.addGlobal(key, value);
+  }
 
   return twing;
 }

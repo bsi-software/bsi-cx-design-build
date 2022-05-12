@@ -11,7 +11,7 @@
   <script src="{{ bsi_cx_js_module_href('main') }}" defer="defer"></script>
   {{ bsi_cx_js_module_missing_chunks_import() }}
 </head>
-<body>
+<body data-img-ref="42">
 {% apply spaceless %}
   <div data-bsi-dropzone="a1683342-d4a7-4c26-924e-bce162c4399f" class="test-class">
     {% block content %}{% endblock %}
@@ -19,6 +19,15 @@
 {% endapply %}
 
 <p>Lorem ipsum</p>
+
+<script>
+  {% set obj = {
+    img: bsi_cx_asset('./content-elements/content/title/placeholder.png')
+  } %}
+  window.images = {{ obj|json_encode|raw }};
+</script>
+
+{{ cx.version.TARGET.toString() }}
 
 </body>
 </html>
