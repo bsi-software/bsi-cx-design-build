@@ -23,11 +23,10 @@
   "contributors": [
     {
       "name": "Oliver Fabel",
-      "email": "oliver.fabel@bsi-software.com",
       "url": "https://www.bsi-software.com/"
     }
   ],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.17.4",
     "@babel/plugin-transform-runtime": "^7.17.0",
