@@ -83,6 +83,7 @@ export function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
 /**
  * @param {string} str1
  * @param {string} str2
+ * @returns {string}
  */
 export function findStringSimilarities(str1, str2) {
   let length = Math.min(str1.length, str2.length);
@@ -92,6 +93,25 @@ export function findStringSimilarities(str1, str2) {
     let charToCheck = str1.charAt(index);
     if (charToCheck === str2.charAt(index)) {
       similarPart += charToCheck;
+    }
+  }
+
+  return similarPart;
+}
+
+/**
+ * @param {string[]} arr1
+ * @param {string[]} arr2
+ * @returns {string[]}
+ */
+export function findArraySimilarities(arr1, arr2) {
+  let length = Math.min(arr1.length, arr2.length);
+  let similarPart = [];
+
+  for (let index = 0; index < length; index++) {
+    let itemToCheck = arr1[index];
+    if (itemToCheck === arr2[index]) {
+      similarPart.push(itemToCheck);
     }
   }
 

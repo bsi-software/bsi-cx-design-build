@@ -811,6 +811,7 @@ function getAbsolutePath(mayRelativePath, basePathWhenRelative) {
 /**
  * @param {string} str1
  * @param {string} str2
+ * @returns {string}
  */
 function findStringSimilarities(str1, str2) {
   let length = Math.min(str1.length, str2.length);
@@ -820,6 +821,25 @@ function findStringSimilarities(str1, str2) {
     let charToCheck = str1.charAt(index);
     if (charToCheck === str2.charAt(index)) {
       similarPart += charToCheck;
+    }
+  }
+
+  return similarPart;
+}
+
+/**
+ * @param {string[]} arr1
+ * @param {string[]} arr2
+ * @returns {string[]}
+ */
+function findArraySimilarities(arr1, arr2) {
+  let length = Math.min(arr1.length, arr2.length);
+  let similarPart = [];
+
+  for (let index = 0; index < length; index++) {
+    let itemToCheck = arr1[index];
+    if (itemToCheck === arr2[index]) {
+      similarPart.push(itemToCheck);
     }
   }
 
@@ -6511,9 +6531,10 @@ class WebpackConfigBuilder {
     buildConfigs.forEach((config, index) => {
       if (index === 0) {
         commonDevServerPort = config.devServer.port;
-        commonContentBase = config.devServer.static.directory;
+        commonContentBase = toPosixPath(config.devServer.static.directory).split((external_path_default()).posix.sep);
       } else {
-        commonContentBase = findStringSimilarities(commonContentBase, config.devServer.static.directory);
+        let currentStaticDirectory = toPosixPath(config.devServer.static.directory).split((external_path_default()).posix.sep);
+        commonContentBase = findArraySimilarities(commonContentBase, currentStaticDirectory);
       }
 
       if (index > 0) {
@@ -6523,7 +6544,7 @@ class WebpackConfigBuilder {
 
     let devServerConfig = buildConfigs[0].devServer;
     devServerConfig.port = commonDevServerPort;
-    devServerConfig.static.directory = commonContentBase;
+    devServerConfig.static.directory = commonContentBase.join((external_path_default()).posix.sep);
 
     return buildConfigs;
   }

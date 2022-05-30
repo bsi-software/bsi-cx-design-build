@@ -402,8 +402,15 @@ declare module "src/utility" {
     /**
      * @param {string} str1
      * @param {string} str2
+     * @returns {string}
      */
     export function findStringSimilarities(str1: string, str2: string): string;
+    /**
+     * @param {string[]} arr1
+     * @param {string[]} arr2
+     * @returns {string[]}
+     */
+    export function findArraySimilarities(arr1: string[], arr2: string[]): string[];
     /**
      * @param {string} possibleWin32Path
      * @returns {string}

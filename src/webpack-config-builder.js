@@ -12,7 +12,7 @@ import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugi
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
 import File from './file';
-import {buildPublicPath, findStringSimilarities, getZipArchiveName, toPosixPath} from './utility';
+import {buildPublicPath, findArraySimilarities, getZipArchiveName, toPosixPath} from './utility';
 import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
@@ -793,9 +793,10 @@ export default class WebpackConfigBuilder {
     buildConfigs.forEach((config, index) => {
       if (index === 0) {
         commonDevServerPort = config.devServer.port;
-        commonContentBase = config.devServer.static.directory;
+        commonContentBase = toPosixPath(config.devServer.static.directory).split(path.posix.sep);
       } else {
-        commonContentBase = findStringSimilarities(commonContentBase, config.devServer.static.directory);
+        let currentStaticDirectory = toPosixPath(config.devServer.static.directory).split(path.posix.sep);
+        commonContentBase = findArraySimilarities(commonContentBase, currentStaticDirectory);
       }
 
       if (index > 0) {
@@ -805,7 +806,7 @@ export default class WebpackConfigBuilder {
 
     let devServerConfig = buildConfigs[0].devServer;
     devServerConfig.port = commonDevServerPort;
-    devServerConfig.static.directory = commonContentBase;
+    devServerConfig.static.directory = commonContentBase.join(path.posix.sep);
 
     return buildConfigs;
   }

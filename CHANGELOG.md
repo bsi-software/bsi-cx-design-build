@@ -7,6 +7,17 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.0] - 30.05.2022
+
+### Added
+
+* Project is published under [MIT license](./LICENSE.txt).
+
+### Fixed
+
+* Common document root calculation for development servers.
+* Updated dependencies to the latest versions.
+
 ## [1.8.2] - 12.05.2022
 
 ### Changed
@@ -357,7 +368,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.2...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.0...HEAD
+
+[1.9.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.2...1.9.0
 
 [1.8.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.1...1.8.2
 
