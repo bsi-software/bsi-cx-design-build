@@ -1256,7 +1256,7 @@ declare module "src/build-config/build-config" {
     export type ValidatedBuildConfig = import("src/build-config/validated-build-config").default;
 }
 declare module "src/handlebars-helpers" {
-    var _default: {
+    const _default: {
         'bsi.nls': (key: any) => any;
     };
     export default _default;
