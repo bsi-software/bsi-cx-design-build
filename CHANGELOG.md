@@ -7,6 +7,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.2] - 01.06.2022
+
+### Fixed
+
+* Common document root calculation for development servers.
+
+## [Unreleased]
+
 ## [1.9.1] - 01.06.2022
 
 ### Fixed
@@ -374,7 +382,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.2...HEAD
+
+[1.9.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.1...1.9.2
+
+[1.9.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.0...1.9.1
 
 [1.9.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.8.2...1.9.0
 
