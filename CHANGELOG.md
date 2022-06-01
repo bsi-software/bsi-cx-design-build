@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.1] - 01.06.2022
+
+### Fixed
+
+* Common document root calculation for development servers.
+
 ## [1.9.0] - 30.05.2022
 
 ### Added

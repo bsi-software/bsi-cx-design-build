@@ -6544,7 +6544,7 @@ class WebpackConfigBuilder {
 
     let devServerConfig = buildConfigs[0].devServer;
     devServerConfig.port = commonDevServerPort;
-    devServerConfig.static.directory = commonContentBase.join((external_path_default()).posix.sep);
+    devServerConfig.static.directory = '/' + commonContentBase.join((external_path_default()).posix.sep);
 
     return buildConfigs;
   }
