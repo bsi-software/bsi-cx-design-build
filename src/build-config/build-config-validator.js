@@ -93,16 +93,17 @@ export default class BuildConfigValidator {
     this._validateProperty('sourceMapEnabled', Boolean);
     this._validateProperty('staticFileFolderPath', String);
     this._validateProperty('copyAssetsFolderPath', String);
-    this._validateProperty('webpackPlugins', Array);
-    this._validateProperty('webpackRules', Array);
+    this._validateProperty('webpackPlugins', Array, true, false);
+    this._validateProperty('webpackRules', Array, true, false);
   }
 
   /**
    * @param {string} name
    * @param {object} type
    * @param {boolean} [applyDefaultConfig=true]
+   * @param {boolean} [cloneValue=true]
    */
-  _validateProperty(name, type, applyDefaultConfig) {
+  _validateProperty(name, type, applyDefaultConfig, cloneValue) {
     let property = '_' + name;
     let value = this.buildConfig[name];
     let defaultValue = this.defaultBuildConfig[name];
@@ -126,7 +127,7 @@ export default class BuildConfigValidator {
       validatedValue = this[propertyValidator](validatedValue, name);
     }
 
-    this.validatedConfig[property] = ObjectCloner.cloneValue(validatedValue);
+    this.validatedConfig[property] = cloneValue ? ObjectCloner.cloneValue(validatedValue) : validatedValue;
   }
 
   /**

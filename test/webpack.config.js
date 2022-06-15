@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const {BuildConfig, ModuleConfig, WebpackConfigBuilder, Version, DesignType} = require('@bsi-cx/design-build');
 
@@ -10,6 +11,10 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withTargetVersion(Version.CX_1_3)
     .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
     .withPropertiesFilePath('properties.js')
+    .withWebpackPlugins(new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }))
     .withModules(
       new ModuleConfig()
         .withName('main')

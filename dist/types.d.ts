@@ -825,8 +825,9 @@ declare module "src/build-config/build-config-validator" {
          * @param {string} name
          * @param {object} type
          * @param {boolean} [applyDefaultConfig=true]
+         * @param {boolean} [cloneValue=true]
          */
-        _validateProperty(name: string, type: object, applyDefaultConfig?: boolean): void;
+        _validateProperty(name: string, type: object, applyDefaultConfig?: boolean, cloneValue?: boolean): void;
         /**
          * @param {string} name
          * @param {string} property
