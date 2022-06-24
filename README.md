@@ -21,7 +21,11 @@ on [GitHub Wiki](https://github.com/bsi-software/bsi-cx-design-build/wiki) or vi
 the [BSI Software](https://www.bsi-software.com/cx) website for more information about BSI CX. If you need more
 information about BSI CX designs, you can read our [online documentation](https://bsi-software.github.io/bsi-cx-docs/).
 To start a new BSI CX design project, we recommend you to use
-our [scaffold design](https://github.com/bsi-software/bsi-cx-scaffold-design).
+our [master template web](https://github.com/bsi-software/bsi-cx-design-master-template-web). Which provides a complete
+template for the web (batteries included). For emails, you can use
+the [master template email](https://github.com/bsi-software/bsi-cx-design-master-template-email). If you like so start
+from scratch instead, checkout our
+[scaffold design](https://github.com/bsi-software/bsi-cx-scaffold-design).
 
 ## Requirements
 
