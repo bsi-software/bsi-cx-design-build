@@ -7,6 +7,17 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.4] - 05.07.2022
+
+### Removed
+
+* `autoprefixer` from dependencies (already included
+  in [postcss-preset-env](https://github.com/csstools/postcss-preset-env#autoprefixer))
+
+### Fixed
+
+* Updated dependencies to the latest versions.
+
 ## [1.9.3] - 15.06.2022
 
 ### Fixed
@@ -387,7 +398,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.3...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.4...HEAD
+
+[1.9.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.3...1.9.4
 
 [1.9.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.2...1.9.3
 

@@ -1,6 +1,6 @@
 {
   "name": "@bsi-cx/design-build",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "A webpack config builder to create a design for BSI CX.",
   "private": false,
   "engines": {
@@ -12,8 +12,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js --mode production --progress",
     "watch": "webpack --config webpack.config.js --mode production --watch --progress",
-    "pretest": "npx ./test/install.js",
-    "posttest": "npx ./test/uninstall.js",
+    "pretest": "./test/install.js",
+    "posttest": "./test/uninstall.js",
     "test": "cd test && webpack --config webpack.config.js --mode development --progress"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
@@ -34,7 +34,6 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/register": "^7.17.0",
     "@babel/runtime": "^7.17.2",
-    "autoprefixer": "^10.4.2",
     "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^9.1.0",
     "css-loader": "^6.6.0",
