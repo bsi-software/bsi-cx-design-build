@@ -1,0 +1,8 @@
+*
+!/@bsi-cx/**
+!/dist/**
+!/export/**
+!/src/**
+/CHANGELOG.md
+/LICENSE.txt
+/README.md

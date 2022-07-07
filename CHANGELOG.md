@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 * Use [package from NPM registry](https://www.npmjs.com/package/@ofabel/twing) for Twing (instead of GitHub) to fix
   installation problem with Apple ARM processors.
+* Project is published on the [NPM registry](https://www.npmjs.com/package/@bsi-cx/design-build).
 
 ## [1.9.4] - 05.07.2022
 

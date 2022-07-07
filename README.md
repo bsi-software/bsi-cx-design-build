@@ -12,7 +12,6 @@
 [![Webpack](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/webpack)](https://www.npmjs.com/package/webpack)
 [![Sass](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/sass)](https://www.npmjs.com/package/sass)
 [![Less](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/less)](https://www.npmjs.com/package/less)
-[![Twing](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/twing)](https://www.npmjs.com/package/twing)
 
 # @bsi-cx/design-build
 
@@ -42,13 +41,13 @@ To use this package you have to fulfill the following requirements:
 Fulfill the requirements and run the following command in your project folder:
 
 ````shell script
-npm install --save-dev github:bsi-software/bsi-cx-design-build#semver:^1.0.0
+npm install --save-dev @bsi-cx/design-build
 ````
 
 Or add the following lines to the `devDependencies` section in your `package.json`:
 
 ````json
-"@bsi-cx/design-build": "github:bsi-software/bsi-cx-design-build#semver:^1.0.0"
+"@bsi-cx/design-build": "^1.0.0"
 ````
 
 ## Documentation
