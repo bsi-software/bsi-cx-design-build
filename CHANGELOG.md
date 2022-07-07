@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.5] - 07.07.2022
+
+### Changed
+
+* Use [package from NPM registry](https://www.npmjs.com/package/@ofabel/twing) for Twing (instead of GitHub) to fix
+  installation problem with Apple ARM processors.
+
 ## [1.9.4] - 05.07.2022
 
 ### Removed
@@ -398,7 +405,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.4...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.5...HEAD
+
+[1.9.5]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.4...1.9.5
 
 [1.9.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.3...1.9.4
 
