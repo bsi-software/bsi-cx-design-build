@@ -16,14 +16,16 @@ import {
 import {findNodeModulesFolder} from './utility';
 
 /**
+ * @param {string} templateRoot
  * @param {{}} [globals]
  * @returns {TwingEnvironment}
  */
-export default function (globals) {
+export default function (templateRoot, globals) {
   let relativeFilesystemLoader = new TwingLoaderRelativeFilesystem();
   let filesystemLoader = new TwingLoaderFilesystem();
   let bsiCxScopePath = path.join(findNodeModulesFolder(__dirname), '@bsi-cx');
 
+  filesystemLoader.addPath(templateRoot);
   filesystemLoader.addPath(bsiCxScopePath, 'bsi-cx');
 
   let twing = new TwingEnvironment(new TwingLoaderChain([relativeFilesystemLoader, filesystemLoader]));

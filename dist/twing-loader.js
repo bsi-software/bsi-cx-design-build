@@ -520,14 +520,16 @@ const bsiCxLorem = new twing_namespaceObject.TwingFunction('bsi_cx_lorem', (word
 
 
 /**
+ * @param {string} templateRoot
  * @param {{}} [globals]
  * @returns {TwingEnvironment}
  */
-/* harmony default export */ function twing_environment(globals) {
+/* harmony default export */ function twing_environment(templateRoot, globals) {
   let relativeFilesystemLoader = new twing_namespaceObject.TwingLoaderRelativeFilesystem();
   let filesystemLoader = new twing_namespaceObject.TwingLoaderFilesystem();
   let bsiCxScopePath = external_path_default().join(findNodeModulesFolder(__dirname), '@bsi-cx');
 
+  filesystemLoader.addPath(templateRoot);
   filesystemLoader.addPath(bsiCxScopePath, 'bsi-cx');
 
   let twing = new twing_namespaceObject.TwingEnvironment(new twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader]));
@@ -582,8 +584,9 @@ function slash(pathToConvert) {
 /* harmony default export */ function twing_loader(source) {
   let callback = this.async();
   let options = this.getOptions();
+  let templateRoot = slash(options.templateRoot);
   let renderContext = options.renderContext;
-  let currentEnvironment = twing_environment(renderContext);
+  let currentEnvironment = twing_environment(templateRoot, renderContext);
   let resourcePath = slash(this.resourcePath);
 
   this.cacheable(false);

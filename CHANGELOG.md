@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.6] - 11.07.2022
+
+### Fixed
+
+* Bug in the Twing environment configuration by adding the template root folder to the list of known paths.
+* Updated dependencies to the latest versions.
+
 ## [1.9.5] - 07.07.2022
 
 ### Changed
@@ -406,7 +413,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.5...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.6...HEAD
+
+[1.9.6]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.5...1.9.6
 
 [1.9.5]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.4...1.9.5
 

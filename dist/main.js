@@ -5973,6 +5973,7 @@ class WebpackConfigBuilder {
           {
             loader: this._getTwingLoader(),
             options: {
+              templateRoot: this.config.rootPath,
               renderContext: {
                 properties: this.properties.proxy,
                 designBaseUrl: buildPublicPath(this.config),

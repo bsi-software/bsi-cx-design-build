@@ -29,8 +29,9 @@ function slash(pathToConvert) {
 export default function (source) {
   let callback = this.async();
   let options = this.getOptions();
+  let templateRoot = slash(options.templateRoot);
   let renderContext = options.renderContext;
-  let currentEnvironment = environment(renderContext);
+  let currentEnvironment = environment(templateRoot, renderContext);
   let resourcePath = slash(this.resourcePath);
 
   this.cacheable(false);
