@@ -7,6 +7,17 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.9.7] - 17.07.2022
+
+### Fixed
+
+* Document root evaluation for development web server.
+* Updated dependencies to the latest versions.
+
+### Changed
+
+* Increased minimal required Node Version to 16.16.0.
+
 ## [1.9.6] - 11.07.2022
 
 ### Fixed
@@ -413,7 +424,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.6...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.7...HEAD
+
+[1.9.7]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.6...1.9.7
 
 [1.9.6]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.5...1.9.6
 

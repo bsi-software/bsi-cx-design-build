@@ -783,7 +783,13 @@ export default class WebpackConfigBuilder {
    * @param  {...BuildConfig} configs
    */
   static fromConfigs(...configs) {
+    /**
+     * @type {undefined|number}
+     */
     let commonDevServerPort = undefined;
+    /**
+     * @type {undefined|string[]}
+     */
     let commonContentBase = undefined;
 
     let buildConfigs = configs
@@ -804,6 +810,10 @@ export default class WebpackConfigBuilder {
         delete config.devServer;
       }
     });
+
+    if (commonContentBase.length > 0) {
+      commonContentBase.unshift(path.posix.sep);
+    }
 
     let devServerConfig = buildConfigs[0].devServer;
     devServerConfig.port = commonDevServerPort;
