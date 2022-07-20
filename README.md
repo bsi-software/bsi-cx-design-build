@@ -1,4 +1,4 @@
-[![node >= 14.16.0](https://img.shields.io/badge/node-%3E%3D14.16.0-brightgreen)](https://nodejs.org/)
+[![node >= 16.16.0](https://img.shields.io/badge/node-%3E%3D16.16.0-brightgreen)](https://nodejs.org/)
 [![BSI Studio >= 1.0.0](https://img.shields.io/badge/BSI%20Studio-%3E%3D1.0.0-brightgreen)](https://www.bsi-software.com/cx)
 [![BSI CX >= 1.3.0](https://img.shields.io/badge/BSI%20CX-%3E%3D1.3.0-brightgreen)](https://www.bsi-software.com/cx)
 [![Install size](https://img.shields.io/github/repo-size/bsi-software/bsi-cx-design-build?label=install%20size)](https://github.com/bsi-software/bsi-cx-design-build/releases)
@@ -8,10 +8,6 @@
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/commits)
 [![GitHub last commit](https://img.shields.io/github/last-commit/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/commits)
 [![GitHub contributors](https://img.shields.io/github/contributors/bsi-software/bsi-cx-design-build)](https://github.com/bsi-software/bsi-cx-design-build/graphs/contributors)
-
-[![Webpack](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/webpack)](https://www.npmjs.com/package/webpack)
-[![Sass](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/sass)](https://www.npmjs.com/package/sass)
-[![Less](https://img.shields.io/github/package-json/dependency-version/bsi-software/bsi-cx-design-build/less)](https://www.npmjs.com/package/less)
 
 # @bsi-cx/design-build
 
@@ -30,8 +26,8 @@ from scratch instead, checkout our
 
 To use this package you have to fulfill the following requirements:
 
-* [Node](https://nodejs.org/) >= 14.16.0
-* [NPM](https://nodejs.org/) >= 6.14.4
+* [Node](https://nodejs.org/) >= 16.16.0
+* [NPM](https://nodejs.org/) >= 8.11.0
 * A code editor e.g. [Visual Studio Code](https://code.visualstudio.com/), [IntelliJ](https://www.jetbrains.com/idea/)
   or [Web Storm](https://www.jetbrains.com/webstorm/)
 * To test your design, you need access to [BSI CX](https://www.bsi-software.com/cx)

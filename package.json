@@ -20,6 +20,7 @@
     "postserve": "./test/uninstall.js"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
+  "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",
   "bugs": {
     "url": "https://github.com/bsi-software/bsi-cx-design-build/issues"
   },
