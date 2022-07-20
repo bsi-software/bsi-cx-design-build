@@ -52,7 +52,7 @@ export default class BuildConfig {
    */
   _propertiesFilePath = undefined;
   /**
-   * @type {number}
+   * @type {number|'auto'}
    * @private
    */
   _devServerPort = undefined;
@@ -157,7 +157,7 @@ export default class BuildConfig {
   }
 
   /**
-   * @returns {number}
+   * @returns {number|'auto'}
    */
   get devServerPort() {
     return this._devServerPort;
@@ -326,7 +326,7 @@ export default class BuildConfig {
    * that you don't have to configure a separate port for each template of your build.
    * Only the first configuration will be considered.
    *
-   * @param {number} devServerPort - The development server port number.
+   * @param {number|'auto'} devServerPort - The development server port number.
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {

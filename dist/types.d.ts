@@ -526,9 +526,9 @@ declare module "src/build-config/build-config-interface" {
          */
         get propertiesFilePath(): string;
         /**
-         * @returns {number}
+         * @returns {number|'auto'}
          */
-        get devServerPort(): number;
+        get devServerPort(): number | "auto";
         /**
          * @returns {boolean}
          */
@@ -702,9 +702,9 @@ declare module "src/build-config/validated-build-config" {
          */
         get propertiesFilePath(): string;
         /**
-         * @returns {number}
+         * @returns {number|'auto'}
          */
-        get devServerPort(): number;
+        get devServerPort(): number | "auto";
         /**
          * @returns {boolean}
          */
@@ -760,7 +760,7 @@ declare module "src/build-config/default-build-config" {
         get additionalFilesToCopy(): any[];
         get copyAssetsFolderPath(): string;
         get designType(): import("src/design-type").DesignType;
-        get devServerPort(): number;
+        get devServerPort(): string;
         get hashZipFiles(): boolean;
         get modules(): any[];
         get modulesRootPath(): string;
@@ -949,7 +949,7 @@ declare module "src/build-config/build-config" {
          */
         private _propertiesFilePath;
         /**
-         * @type {number}
+         * @type {number|'auto'}
          * @private
          */
         private _devServerPort;
@@ -1032,9 +1032,9 @@ declare module "src/build-config/build-config" {
          */
         get propertiesFilePath(): string;
         /**
-         * @returns {number}
+         * @returns {number|'auto'}
          */
-        get devServerPort(): number;
+        get devServerPort(): number | "auto";
         /**
          * @returns {boolean}
          */
@@ -1140,10 +1140,10 @@ declare module "src/build-config/build-config" {
          * that you don't have to configure a separate port for each template of your build.
          * Only the first configuration will be considered.
          *
-         * @param {number} devServerPort - The development server port number.
+         * @param {number|'auto'} devServerPort - The development server port number.
          * @returns {BuildConfig}
          */
-        withDevServerPort(devServerPort: number): BuildConfig;
+        withDevServerPort(devServerPort: number | 'auto'): BuildConfig;
         /**
          * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
          *

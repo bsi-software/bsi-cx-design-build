@@ -148,7 +148,7 @@ export default class ValidatedBuildConfig {
   }
 
   /**
-   * @returns {number}
+   * @returns {number|'auto'}
    */
   get devServerPort() {
     return this._devServerPort;

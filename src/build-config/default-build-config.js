@@ -20,7 +20,7 @@ export default class DefaultBuildConfig {
   }
 
   get devServerPort() {
-    return 9000;
+    return 'auto';
   }
 
   get hashZipFiles() {

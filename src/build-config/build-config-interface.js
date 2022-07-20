@@ -49,7 +49,7 @@ export default class BuildConfigInterface {
   }
 
   /**
-   * @returns {number}
+   * @returns {number|'auto'}
    */
   get devServerPort() {
   }
