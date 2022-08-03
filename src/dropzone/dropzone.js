@@ -98,7 +98,7 @@ export default class Dropzone extends AbstractBuilder {
   }
 
   /**
-   * Set the identifier of this dropzone. <strong>It is highly recommended to use a
+   * Set the identifier of this dropzone. <strong>It is highly recommended using a
    * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
    *
    * @param {string} dropzone - The dropzone name.
