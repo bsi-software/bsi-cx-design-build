@@ -322,7 +322,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * Define the dropzones of this include.
+   * Define the dropzones of this content element.
    *
    * @example
    * .withDropzones(
@@ -338,11 +338,33 @@ export default class ContentElement extends AbstractBuilder {
    *       require('./content-elements/basic/text'),
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
-   * @param {...Dropzone} dropzones - The dropzones of this include.
+   * @param {...Dropzone} dropzones - The dropzones of this content element.
    * @returns {ContentElement}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
+    return this;
+  }
+
+  /**
+   * Extend the allowed elements list of a defined dropzone.
+   *
+   * @example
+   * .withExtendedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @returns {ContentElement}
+   */
+  withExtendedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    }
+
     return this;
   }
 
