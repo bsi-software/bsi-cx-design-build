@@ -3753,7 +3753,7 @@ declare module "src/dropzone/dropzone" {
          */
         get moveAllowed(): boolean;
         /**
-         * Set the identifier of this dropzone. <strong>It is highly recommended to use a
+         * Set the identifier of this dropzone. <strong>It is highly recommended using a
          * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
          *
          * @param {string} dropzone - The dropzone name.
@@ -4064,7 +4064,7 @@ declare module "src/content-element/content-element" {
          */
         withRawParts(...parts: {}[]): ContentElement;
         /**
-         * Define the dropzones of this include.
+         * Define the dropzones of this content element.
          *
          * @example
          * .withDropzones(
@@ -4080,10 +4080,24 @@ declare module "src/content-element/content-element" {
          *       require('./content-elements/basic/text'),
          *       require('./content-elements/basic/image'))
          *     .withMaxAllowedElements(1))
-         * @param {...Dropzone} dropzones - The dropzones of this include.
+         * @param {...Dropzone} dropzones - The dropzones of this content element.
          * @returns {ContentElement}
          */
         withDropzones(...dropzones: Dropzone[]): ContentElement;
+        /**
+         * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withExtendedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+         * @returns {ContentElement}
+         */
+        withExtendedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
         /**
          * Clone the configuration.
          *

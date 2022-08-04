@@ -347,7 +347,8 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * Extend the allowed elements list of a defined dropzone.
+   * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
    *
    * @example
    * .withExtendedDropzone(

@@ -26,7 +26,11 @@ module.exports = cx.design
       .withContentElements(
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),
-        require('./content-elements/content/column-1'),
+        require('./content-elements/content/column-1')
+          .withExtendedDropzone(
+            'b6608fe9-4815-4ef1-a118-6e945ead513f',
+            require('./content-elements/content/title'),
+            require('./content-elements/content/text')),
         require('./content-elements/content/column-2')))
   .withDropzones(
     cx.dropzone

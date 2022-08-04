@@ -149,7 +149,8 @@ export default class AbstractBuilder {
         computedValue = value.value;
         break;
       case value instanceof Array:
-        computedValue = value.filter(item => this._checkCompatibility(item))
+        computedValue = value
+          .filter(item => this._checkCompatibility(item))
           .map(item => extractFunc(item))
           .filter(item => item !== undefined);
         break;

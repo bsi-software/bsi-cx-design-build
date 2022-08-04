@@ -995,7 +995,8 @@ class AbstractBuilder {
         computedValue = value.value;
         break;
       case value instanceof Array:
-        computedValue = value.filter(item => this._checkCompatibility(item))
+        computedValue = value
+          .filter(item => this._checkCompatibility(item))
           .map(item => extractFunc(item))
           .filter(item => item !== undefined);
         break;
@@ -2674,7 +2675,7 @@ class Dropzone extends AbstractBuilder {
   }
 
   /**
-   * Set the identifier of this dropzone. <strong>It is highly recommended to use a
+   * Set the identifier of this dropzone. <strong>It is highly recommended using a
    * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
    *
    * @param {string} dropzone - The dropzone name.
@@ -3970,7 +3971,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * Define the dropzones of this include.
+   * Define the dropzones of this content element.
    *
    * @example
    * .withDropzones(
@@ -3986,11 +3987,34 @@ class ContentElement extends AbstractBuilder {
    *       require('./content-elements/basic/text'),
    *       require('./content-elements/basic/image'))
    *     .withMaxAllowedElements(1))
-   * @param {...Dropzone} dropzones - The dropzones of this include.
+   * @param {...Dropzone} dropzones - The dropzones of this content element.
    * @returns {ContentElement}
    */
   withDropzones(...dropzones) {
     this._dropzones = dropzones;
+    return this;
+  }
+
+  /**
+   * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withExtendedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @returns {ContentElement}
+   */
+  withExtendedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    }
+
     return this;
   }
 
