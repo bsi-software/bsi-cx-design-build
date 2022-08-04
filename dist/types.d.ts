@@ -5399,6 +5399,20 @@ declare module "src/design/design" {
          */
         withDropzones(...dropzones: Dropzone[]): Design;
         /**
+         * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withExtendedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+         * @returns {Design}
+         */
+        withExtendedDropzone(id: string, ...elements: ContentElement[]): Design;
+        /**
          * The style configurations of your design. This is only necessary if you use
          * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
          * Otherwise you don't have to register your styles here.
@@ -6003,6 +6017,20 @@ declare module "src/website/abstract-include" {
          * @returns {this}
          */
         withDropzones(...dropzones: Dropzone[]): this;
+        /**
+         * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withExtendedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+         * @returns {this}
+         */
+        withExtendedDropzone(id: string, ...elements: ContentElement[]): this;
     }
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
