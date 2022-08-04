@@ -154,6 +154,29 @@ export default class AbstractInclude extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withExtendedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @returns {this}
+   */
+  withExtendedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    }
+
+    return this;
+  }
+
   _buildInternal() {
     let config = {};
     let include = {};

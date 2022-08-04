@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.10.1] - 04.08.2022
+
+### Fixed
+
+* Add support for extending dropzones using `withExtendedDropzone()` to design and include builder class.
+
 ## [1.10.0] - 04.08.2022
 
 ### Added
@@ -442,7 +448,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.1...HEAD
+
+[1.10.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.0...1.10.1
 
 [1.10.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.9.8...1.10.0
 
