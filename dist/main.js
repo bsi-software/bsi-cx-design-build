@@ -6551,7 +6551,7 @@ class WebpackConfigBuilder {
       }
     });
 
-    if (commonContentBase.length > 0) {
+    if ((external_path_default()).sep === (external_path_default()).posix.sep && commonContentBase.length > 0) {
       commonContentBase.unshift((external_path_default()).posix.sep);
     }
 

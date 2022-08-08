@@ -811,7 +811,7 @@ export default class WebpackConfigBuilder {
       }
     });
 
-    if (commonContentBase.length > 0) {
+    if (path.sep === path.posix.sep && commonContentBase.length > 0) {
       commonContentBase.unshift(path.posix.sep);
     }
 
