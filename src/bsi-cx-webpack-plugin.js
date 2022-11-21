@@ -166,30 +166,48 @@ class _BsiCxWebpackPlugin {
    */
   _createReplaceMap(designJsonObj) {
     /**
+     * @type {Set<string>}
+     */
+    let knownElements = this._createSetOfKnownElements(designJsonObj);
+    /**
      * @type {Map<string, function(string):string>}
      */
     let replaceMap = new Map();
 
-    this._addDropzonesToReplaceMap(designJsonObj, replaceMap);
+    this._addDropzonesToReplaceMap(designJsonObj, replaceMap, knownElements);
 
     designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
       ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.forEach(element => this._addElementToReplaceMap(element, replaceMap)));
+        ?.forEach(element => this._addElementToReplaceMap(element, replaceMap, knownElements)));
 
     let website = designJsonObj[DesignJsonProperty.WEBSITE] ?? {};
     Object.values(website[DesignJsonProperty.INCLUDES] ?? {})
-      .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap));
+      .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap, knownElements));
 
     return replaceMap;
   }
 
   /**
-   * @param {{}} element
-   * @param {Map<string, function(string):string>} replaceMap
+   * @param {{}} designJsonObj
+   * @returns {Set<string>}
    * @private
    */
-  _addElementToReplaceMap(element, replaceMap) {
-    this._addDropzonesToReplaceMap(element, replaceMap);
+  _createSetOfKnownElements(designJsonObj) {
+    let knownElements = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
+      ?.flatMap(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
+        ?.map(element => element[DesignJsonProperty.ELEMENT_ID]));
+
+    return new Set(knownElements);
+  }
+
+  /**
+   * @param {{}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @param {Set<string>} knownElements
+   * @private
+   */
+  _addElementToReplaceMap(element, replaceMap, knownElements) {
+    this._addDropzonesToReplaceMap(element, replaceMap, knownElements);
 
     element[DesignJsonProperty.PARTS]
       ?.filter(part => !!part[DesignJsonProperty.ID])
@@ -214,9 +232,10 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {{}} objScope
    * @param {Map<string, function(string):string>} replaceMap
+   * @param {Set<string>} knownElements
    * @private
    */
-  _addDropzonesToReplaceMap(objScope, replaceMap) {
+  _addDropzonesToReplaceMap(objScope, replaceMap, knownElements) {
     /**
      * @type {{}[]}
      */
@@ -224,7 +243,7 @@ class _BsiCxWebpackPlugin {
 
     dropzones.forEach(dropzone => {
       let dropzoneId = dropzone[DesignJsonPropertyExtension.DROPZONE];
-      let allowedElements = dropzone[DesignJsonPropertyExtension.ALLOWED_ELEMENTS]?.join(' ');
+      let allowedElements = dropzone[DesignJsonPropertyExtension.ALLOWED_ELEMENTS]?.filter(id => knownElements.has(id)).join(' ');
       let maxElements = dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
       let removeAllowed = dropzone[DesignJsonPropertyExtension.REMOVE_ALLOWED];
       let moveAllowed = dropzone[DesignJsonPropertyExtension.MOVE_ALLOWED];
