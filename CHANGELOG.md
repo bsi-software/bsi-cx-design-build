@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.10.4] - 29.11.2022
+
+### Fixed
+
+* Filter allowed elements for dropzones in respect of the elements listed in groups.
+* Updated dependencies to the latest versions.
+
 ## [1.10.4-rc.1] - 21.11.2022
 
 ### Fixed
@@ -467,9 +474,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.3...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.4...HEAD
 
-[1.10.4-rc.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.4-rc.1...HEAD
+[1.10.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.3...1.10.4
+
+[1.10.4-rc.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.4-rc.1...1.10.4
 
 [1.10.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.2...1.10.3
 
