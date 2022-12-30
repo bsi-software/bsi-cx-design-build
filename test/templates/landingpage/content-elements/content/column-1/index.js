@@ -1,5 +1,8 @@
 const {cx, Icon} = require('@bsi-cx/design-build');
 
+/**
+ * @type {ContentElement}
+ */
 const element = cx.contentElement;
 
 module.exports = element;

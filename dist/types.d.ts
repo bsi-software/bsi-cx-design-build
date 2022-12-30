@@ -490,6 +490,8 @@ declare module "src/build-config/module-config" {
     export type BuildConfig = import("src/build-config/build-config").default;
 }
 declare module "src/build-config/build-config-interface" {
+    /** @typedef {import('webpack').PathData} PathData */
+    /** @typedef {import('webpack').AssetInfo} AssetInfo */
     /** @typedef {import('../version').Version} Version */
     /** @typedef {import('../design-type').DesignType} DesignType */
     /** @typedef {import('./module-config').default} ModuleConfig */
@@ -558,6 +560,10 @@ declare module "src/build-config/build-config-interface" {
          */
         get copyAssetsFolderPath(): string;
         /**
+         * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+         */
+        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        /**
          * @returns {{}[]}
          */
         get webpackRules(): {}[];
@@ -570,11 +576,15 @@ declare module "src/build-config/build-config-interface" {
          */
         get postcssEnabled(): boolean;
     }
+    export type PathData = any;
+    export type AssetInfo = any;
     export type Version = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
     export type ModuleConfig = import("src/build-config/module-config").default;
 }
 declare module "src/build-config/validated-build-config" {
+    /** @typedef {import('webpack').PathData} PathData */
+    /** @typedef {import('webpack').AssetInfo} AssetInfo */
     /** @typedef {import('../version').Version} Version */
     /** @typedef {import('../design-type').DesignType} DesignType */
     /** @typedef {import('./module-config').default} ModuleConfig */
@@ -659,6 +669,11 @@ declare module "src/build-config/validated-build-config" {
          */
         private _copyAssetsFolderPath;
         /**
+         * @type {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+         * @private
+         */
+        private _assetResourceRuleFilename;
+        /**
          * @type {Object[]}
          * @private
          */
@@ -734,6 +749,10 @@ declare module "src/build-config/validated-build-config" {
          */
         get copyAssetsFolderPath(): string;
         /**
+         * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+         */
+        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        /**
          * @returns {Object[]}
          */
         get webpackPlugins(): any[];
@@ -746,10 +765,44 @@ declare module "src/build-config/validated-build-config" {
          */
         get postcssEnabled(): boolean;
     }
+    export type PathData = any;
+    export type AssetInfo = any;
     export type Version = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
     export type ModuleConfig = import("src/build-config/module-config").default;
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
+}
+declare module "src/dist-folder" {
+    export default class DistFolder {
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static INCLUDES: string;
+        /**
+         * @type {string}
+         */
+        static ASSETS: string;
+        /**
+         * @type {string}
+         */
+        static MODULES: string;
+        /**
+         * @type {string}
+         */
+        static STATIC: string;
+        /**
+         * @type {string}
+         */
+        static VENDORS: string;
+        /**
+         * @type {string}
+         */
+        static SHARED: string;
+    }
 }
 declare module "src/build-config/default-build-config" {
     /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
@@ -759,6 +812,7 @@ declare module "src/build-config/default-build-config" {
     export default class DefaultBuildConfig implements BuildConfigInterface {
         get additionalFilesToCopy(): any[];
         get copyAssetsFolderPath(): string;
+        get assetResourceRuleFilename(): string;
         get designType(): import("src/design-type").DesignType;
         get devServerPort(): string;
         get hashZipFiles(): boolean;
@@ -823,11 +877,11 @@ declare module "src/build-config/build-config-validator" {
         private _validate;
         /**
          * @param {string} name
-         * @param {object} type
+         * @param {(value:any)=>boolean} type
          * @param {boolean} [applyDefaultConfig=true]
          * @param {boolean} [cloneValue=true]
          */
-        _validateProperty(name: string, type: object, applyDefaultConfig?: boolean, cloneValue?: boolean): void;
+        _validateProperty(name: string, type: (value: any) => boolean, applyDefaultConfig?: boolean, cloneValue?: boolean): void;
         /**
          * @param {string} name
          * @param {string} property
@@ -899,6 +953,8 @@ declare module "src/build-config/build-config-validator" {
     import ValidatedBuildConfig from "src/build-config/validated-build-config";
 }
 declare module "src/build-config/build-config" {
+    /** @typedef {import('webpack').PathData} PathData */
+    /** @typedef {import('webpack').AssetInfo} AssetInfo */
     /** @typedef {import('../version').Version} Version */
     /** @typedef {import('../version').CX_22_0} CX_22_0 */
     /** @typedef {import('../design-type').DesignType} DesignType */
@@ -989,6 +1045,11 @@ declare module "src/build-config/build-config" {
          */
         private _copyAssetsFolderPath;
         /**
+         * @type {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+         * @private
+         */
+        private _assetResourceRuleFilename;
+        /**
          * @type {{}[]}
          * @private
          */
@@ -1063,6 +1124,10 @@ declare module "src/build-config/build-config" {
          * @returns {string}
          */
         get copyAssetsFolderPath(): string;
+        /**
+         * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+         */
+        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
         /**
          * @returns {{}[]}
          */
@@ -1209,6 +1274,14 @@ declare module "src/build-config/build-config" {
          */
         withCopyAssetsFolderPath(copyAssetsFolderPath: string): BuildConfig;
         /**
+         * Set a custom filename for asset modules. Default value is: <code>static/[name]-[contenthash][ext]</code>
+         *
+         * @see {@link https://webpack.js.org/configuration/module/#rulegeneratorfilename}
+         * @param {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)} assetResourceRuleFilename
+         * @returns {BuildConfig}
+         */
+        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: any, assetInfo?: any) => string)): BuildConfig;
+        /**
          * Configure additional rules for the Webpack configuration. Be aware, that this can clash with the existing rules.
          *
          * @see {@link https://webpack.js.org/configuration/module/#rule}
@@ -1247,6 +1320,8 @@ declare module "src/build-config/build-config" {
          */
         validate(): ValidatedBuildConfig;
     }
+    export type PathData = any;
+    export type AssetInfo = any;
     export type Version = import("src/version").Version;
     export type CX_22_0 = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
@@ -1483,38 +1558,6 @@ declare module "src/file" {
          * @type {string}
          */
         static DESIGN_PROPERTIES: string;
-    }
-}
-declare module "src/dist-folder" {
-    export default class DistFolder {
-        /**
-         * @type {string}
-         */
-        static CONTENT_ELEMENTS: string;
-        /**
-         * @type {string}
-         */
-        static INCLUDES: string;
-        /**
-         * @type {string}
-         */
-        static ASSETS: string;
-        /**
-         * @type {string}
-         */
-        static MODULES: string;
-        /**
-         * @type {string}
-         */
-        static STATIC: string;
-        /**
-         * @type {string}
-         */
-        static VENDORS: string;
-        /**
-         * @type {string}
-         */
-        static SHARED: string;
     }
 }
 declare module "src/browser-utility" {

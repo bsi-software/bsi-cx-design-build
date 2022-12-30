@@ -1,3 +1,5 @@
+/** @typedef {import('webpack').PathData} PathData */
+/** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
 /** @typedef {import('../design-type').DesignType} DesignType */
 /** @typedef {import('./module-config').default} ModuleConfig */
@@ -94,6 +96,12 @@ export default class BuildConfigInterface {
    * @returns {string}
    */
   get copyAssetsFolderPath() {
+  }
+
+  /**
+   * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   */
+  get assetResourceRuleFilename() {
   }
 
   /**

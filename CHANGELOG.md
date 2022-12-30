@@ -7,6 +7,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.11.0] - 30.12.2022
+
+### Fixed
+
+* Type checks in Webpack build config validation.
+* Updated dependencies to the latest versions.
+
+### Added
+
+* Config option
+  for [custom resource asset rule filenames](https://webpack.js.org/configuration/module/#rulegeneratorfilename) using
+  the `withAssetResourceRuleFilename()` method.
+
 ## [1.10.4] - 29.11.2022
 
 ### Fixed
@@ -474,7 +487,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.4...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.11.0...HEAD
+
+[1.11.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.4...1.11.0
 
 [1.10.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.10.3...1.10.4
 

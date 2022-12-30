@@ -1,6 +1,8 @@
 import ObjectCloner from '../object-cloner';
 import BuildConfigValidator from './build-config-validator';
 
+/** @typedef {import('webpack').PathData} PathData */
+/** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
 /** @typedef {import('../version').CX_22_0} CX_22_0 */
 /** @typedef {import('../design-type').DesignType} DesignType */
@@ -91,6 +93,11 @@ export default class BuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   * @private
+   */
+  _assetResourceRuleFilename = undefined;
   /**
    * @type {{}[]}
    * @private
@@ -210,6 +217,13 @@ export default class BuildConfig {
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
+  }
+
+  /**
+   * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   */
+  get assetResourceRuleFilename() {
+    return this._assetResourceRuleFilename;
   }
 
   /**
@@ -423,6 +437,18 @@ export default class BuildConfig {
    */
   withCopyAssetsFolderPath(copyAssetsFolderPath) {
     this._copyAssetsFolderPath = copyAssetsFolderPath;
+    return this;
+  }
+
+  /**
+   * Set a custom filename for asset modules. Default value is: <code>static/[name]-[contenthash][ext]</code>
+   *
+   * @see {@link https://webpack.js.org/configuration/module/#rulegeneratorfilename}
+   * @param {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)} assetResourceRuleFilename
+   * @returns {BuildConfig}
+   */
+  withAssetResourceRuleFilename(assetResourceRuleFilename) {
+    this._assetResourceRuleFilename = assetResourceRuleFilename;
     return this;
   }
 

@@ -1,3 +1,5 @@
+/** @typedef {import('webpack').PathData} PathData */
+/** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
 /** @typedef {import('../design-type').DesignType} DesignType */
 /** @typedef {import('./module-config').default} ModuleConfig */
@@ -82,6 +84,11 @@ export default class ValidatedBuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   * @private
+   */
+  _assetResourceRuleFilename = undefined;
   /**
    * @type {Object[]}
    * @private
@@ -201,6 +208,13 @@ export default class ValidatedBuildConfig {
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
+  }
+
+  /**
+   * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   */
+  get assetResourceRuleFilename() {
+    return this._assetResourceRuleFilename;
   }
 
   /**

@@ -979,6 +979,8 @@ class ModuleConfig {
 }
 
 ;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
+/** @typedef {import('webpack').PathData} PathData */
+/** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
 /** @typedef {import('../design-type').DesignType} DesignType */
 /** @typedef {import('./module-config').default} ModuleConfig */
@@ -1063,6 +1065,11 @@ class ValidatedBuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   * @private
+   */
+  _assetResourceRuleFilename = undefined;
   /**
    * @type {Object[]}
    * @private
@@ -1185,6 +1192,13 @@ class ValidatedBuildConfig {
   }
 
   /**
+   * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   */
+  get assetResourceRuleFilename() {
+    return this._assetResourceRuleFilename;
+  }
+
+  /**
    * @returns {Object[]}
    */
   get webpackPlugins() {
@@ -1206,7 +1220,40 @@ class ValidatedBuildConfig {
   }
 }
 
+;// CONCATENATED MODULE: ./src/dist-folder.js
+class DistFolder {
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'content-elements';
+  /**
+   * @type {string}
+   */
+  static INCLUDES = 'includes';
+  /**
+   * @type {string}
+   */
+  static ASSETS = 'assets';
+  /**
+   * @type {string}
+   */
+  static MODULES = 'modules';
+  /**
+   * @type {string}
+   */
+  static STATIC = 'static';
+  /**
+   * @type {string}
+   */
+  static VENDORS = 'vendors';
+  /**
+   * @type {string}
+   */
+  static SHARED = 'shared';
+}
+
 ;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
+
 
 
 
@@ -1222,6 +1269,10 @@ class DefaultBuildConfig {
 
   get copyAssetsFolderPath() {
     return 'assets';
+  }
+
+  get assetResourceRuleFilename() {
+    return `${DistFolder.STATIC}/[name]-[contenthash][ext]`;
   }
 
   get designType() {
@@ -1369,29 +1420,36 @@ class BuildConfigValidator {
    * @private
    */
   _validate() {
+    const StringType = v => typeof v === 'string';
+    const NumberType = v => typeof v === 'number';
+    const BooleanType = v => typeof v === 'boolean';
+    const ArrayType = v => Array.isArray(v);
+    const FunctionType = v => typeof v === 'function';
+
     // invocation order is relevant
-    this._validateProperty('name', String);
-    this._validateProperty('version', String);
-    this._validateProperty('targetVersion', Version);
-    this._validateProperty('designType', DesignType);
-    this._validateProperty('rootPath', String);
-    this._validateProperty('outputPath', String, false);
-    this._validateProperty('propertiesFilePath', String);
-    this._validateProperty('devServerPort', Number);
-    this._validateProperty('hashZipFiles', Boolean);
-    this._validateProperty('modulesRootPath', String);
-    this._validateProperty('modules', Array);
-    this._validateProperty('additionalFilesToCopy', Array);
-    this._validateProperty('sourceMapEnabled', Boolean);
-    this._validateProperty('staticFileFolderPath', String);
-    this._validateProperty('copyAssetsFolderPath', String);
-    this._validateProperty('webpackPlugins', Array, true, false);
-    this._validateProperty('webpackRules', Array, true, false);
+    this._validateProperty('name', StringType);
+    this._validateProperty('version', StringType);
+    this._validateProperty('targetVersion', v => v instanceof Version);
+    this._validateProperty('designType', v => v instanceof DesignType);
+    this._validateProperty('rootPath', StringType);
+    this._validateProperty('outputPath', StringType, false);
+    this._validateProperty('propertiesFilePath', StringType);
+    this._validateProperty('devServerPort', NumberType);
+    this._validateProperty('hashZipFiles', BooleanType);
+    this._validateProperty('modulesRootPath', StringType);
+    this._validateProperty('modules', ArrayType);
+    this._validateProperty('additionalFilesToCopy', ArrayType);
+    this._validateProperty('sourceMapEnabled', BooleanType);
+    this._validateProperty('staticFileFolderPath', StringType);
+    this._validateProperty('copyAssetsFolderPath', StringType);
+    this._validateProperty('assetResourceRuleFilename', v => StringType(v) || FunctionType(v), true, false);
+    this._validateProperty('webpackPlugins', ArrayType, true, false);
+    this._validateProperty('webpackRules', ArrayType, true, false);
   }
 
   /**
    * @param {string} name
-   * @param {object} type
+   * @param {(value:any)=>boolean} type
    * @param {boolean} [applyDefaultConfig=true]
    * @param {boolean} [cloneValue=true]
    */
@@ -1401,8 +1459,8 @@ class BuildConfigValidator {
     let defaultValue = this.defaultBuildConfig[name];
     let required = defaultValue === undefined;
 
-    if (value !== undefined && !value instanceof type) {
-      throw new ValidationError(`${name} must be ${type.constructor.name}`);
+    if (value !== undefined && !type(value)) {
+      throw new ValidationError(`${name} is of invalid type`);
     }
 
     if (required && !value) {
@@ -1634,6 +1692,8 @@ class BuildConfigValidator {
 
 
 
+/** @typedef {import('webpack').PathData} PathData */
+/** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
 /** @typedef {import('../version').CX_22_0} CX_22_0 */
 /** @typedef {import('../design-type').DesignType} DesignType */
@@ -1724,6 +1784,11 @@ class BuildConfig {
    * @private
    */
   _copyAssetsFolderPath = undefined;
+  /**
+   * @type {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   * @private
+   */
+  _assetResourceRuleFilename = undefined;
   /**
    * @type {{}[]}
    * @private
@@ -1843,6 +1908,13 @@ class BuildConfig {
    */
   get copyAssetsFolderPath() {
     return this._copyAssetsFolderPath;
+  }
+
+  /**
+   * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
+   */
+  get assetResourceRuleFilename() {
+    return this._assetResourceRuleFilename;
   }
 
   /**
@@ -2056,6 +2128,18 @@ class BuildConfig {
    */
   withCopyAssetsFolderPath(copyAssetsFolderPath) {
     this._copyAssetsFolderPath = copyAssetsFolderPath;
+    return this;
+  }
+
+  /**
+   * Set a custom filename for asset modules. Default value is: <code>static/[name]-[contenthash][ext]</code>
+   *
+   * @see {@link https://webpack.js.org/configuration/module/#rulegeneratorfilename}
+   * @param {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)} assetResourceRuleFilename
+   * @returns {BuildConfig}
+   */
+  withAssetResourceRuleFilename(assetResourceRuleFilename) {
+    this._assetResourceRuleFilename = assetResourceRuleFilename;
     return this;
   }
 
@@ -2406,38 +2490,6 @@ class File {
    * @type {string}
    */
   static DESIGN_PROPERTIES = 'design.properties';
-}
-
-;// CONCATENATED MODULE: ./src/dist-folder.js
-class DistFolder {
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS = 'content-elements';
-  /**
-   * @type {string}
-   */
-  static INCLUDES = 'includes';
-  /**
-   * @type {string}
-   */
-  static ASSETS = 'assets';
-  /**
-   * @type {string}
-   */
-  static MODULES = 'modules';
-  /**
-   * @type {string}
-   */
-  static STATIC = 'static';
-  /**
-   * @type {string}
-   */
-  static VENDORS = 'vendors';
-  /**
-   * @type {string}
-   */
-  static SHARED = 'shared';
 }
 
 ;// CONCATENATED MODULE: ./src/browser-utility.js
@@ -5804,7 +5856,7 @@ class WebpackConfigBuilder {
      * @type {BuildContext}
      * @private
      */
-    this._context = new BuildContext(config,);
+    this._context = new BuildContext(config);
   }
 
   /**
@@ -6171,7 +6223,7 @@ class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
+              filename: this.config.assetResourceRuleFilename
             }
           },
         ]
@@ -6190,7 +6242,7 @@ class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
+          filename: this.config.assetResourceRuleFilename
         }
       }
     ];

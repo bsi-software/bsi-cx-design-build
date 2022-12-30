@@ -45,7 +45,7 @@ export default class WebpackConfigBuilder {
      * @type {BuildContext}
      * @private
      */
-    this._context = new BuildContext(config,);
+    this._context = new BuildContext(config);
   }
 
   /**
@@ -412,7 +412,7 @@ export default class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
+              filename: this.config.assetResourceRuleFilename
             }
           },
         ]
@@ -431,7 +431,7 @@ export default class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: `${DistFolder.STATIC}/[name]-[contenthash][ext]`
+          filename: this.config.assetResourceRuleFilename
         }
       }
     ];

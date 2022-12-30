@@ -77,29 +77,36 @@ export default class BuildConfigValidator {
    * @private
    */
   _validate() {
+    const StringType = v => typeof v === 'string';
+    const NumberType = v => typeof v === 'number';
+    const BooleanType = v => typeof v === 'boolean';
+    const ArrayType = v => Array.isArray(v);
+    const FunctionType = v => typeof v === 'function';
+
     // invocation order is relevant
-    this._validateProperty('name', String);
-    this._validateProperty('version', String);
-    this._validateProperty('targetVersion', Version);
-    this._validateProperty('designType', DesignType);
-    this._validateProperty('rootPath', String);
-    this._validateProperty('outputPath', String, false);
-    this._validateProperty('propertiesFilePath', String);
-    this._validateProperty('devServerPort', Number);
-    this._validateProperty('hashZipFiles', Boolean);
-    this._validateProperty('modulesRootPath', String);
-    this._validateProperty('modules', Array);
-    this._validateProperty('additionalFilesToCopy', Array);
-    this._validateProperty('sourceMapEnabled', Boolean);
-    this._validateProperty('staticFileFolderPath', String);
-    this._validateProperty('copyAssetsFolderPath', String);
-    this._validateProperty('webpackPlugins', Array, true, false);
-    this._validateProperty('webpackRules', Array, true, false);
+    this._validateProperty('name', StringType);
+    this._validateProperty('version', StringType);
+    this._validateProperty('targetVersion', v => v instanceof Version);
+    this._validateProperty('designType', v => v instanceof DesignType);
+    this._validateProperty('rootPath', StringType);
+    this._validateProperty('outputPath', StringType, false);
+    this._validateProperty('propertiesFilePath', StringType);
+    this._validateProperty('devServerPort', NumberType);
+    this._validateProperty('hashZipFiles', BooleanType);
+    this._validateProperty('modulesRootPath', StringType);
+    this._validateProperty('modules', ArrayType);
+    this._validateProperty('additionalFilesToCopy', ArrayType);
+    this._validateProperty('sourceMapEnabled', BooleanType);
+    this._validateProperty('staticFileFolderPath', StringType);
+    this._validateProperty('copyAssetsFolderPath', StringType);
+    this._validateProperty('assetResourceRuleFilename', v => StringType(v) || FunctionType(v), true, false);
+    this._validateProperty('webpackPlugins', ArrayType, true, false);
+    this._validateProperty('webpackRules', ArrayType, true, false);
   }
 
   /**
    * @param {string} name
-   * @param {object} type
+   * @param {(value:any)=>boolean} type
    * @param {boolean} [applyDefaultConfig=true]
    * @param {boolean} [cloneValue=true]
    */
@@ -109,8 +116,8 @@ export default class BuildConfigValidator {
     let defaultValue = this.defaultBuildConfig[name];
     let required = defaultValue === undefined;
 
-    if (value !== undefined && !value instanceof type) {
-      throw new ValidationError(`${name} must be ${type.constructor.name}`);
+    if (value !== undefined && !type(value)) {
+      throw new ValidationError(`${name} is of invalid type`);
     }
 
     if (required && !value) {
