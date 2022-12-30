@@ -2,8 +2,8 @@
   <configuration default="false" name="update" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="update" />
-    <arguments value="--package-lock=true" />
-    <node-interpreter value="project" />
+    <arguments value="--package-lock=true --save" />
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v16.16.0/bin/node" />
     <envs />
     <method v="2" />
   </configuration>
