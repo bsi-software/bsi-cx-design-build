@@ -19,13 +19,10 @@
     "serve": "cd test && webpack serve --config webpack.config.js --mode development --progress",
     "postserve": "./test/uninstall.js"
   },
-  "repository": "https://github.com/bsi-software/bsi-cx-design-build.git",
+  "repository": "github:bsi-software/bsi-cx-design-build",
   "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",
   "bugs": {
     "url": "https://github.com/bsi-software/bsi-cx-design-build/issues"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
   },
   "contributors": [
     {
