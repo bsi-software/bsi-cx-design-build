@@ -19,6 +19,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Config option
   for [custom resource asset rule filenames](https://webpack.js.org/configuration/module/#rulegeneratorfilename) using
   the `withAssetResourceRuleFilename()` method.
+* Config option for additional static assets file extensions using the `withAdditionalStaticAssetFileExtensions()`
+  method.
 
 ## [1.10.4] - 29.11.2022
 

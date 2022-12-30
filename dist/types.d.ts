@@ -564,6 +564,10 @@ declare module "src/build-config/build-config-interface" {
          */
         get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
         /**
+         * @returns {string[]}
+         */
+        get additionalStaticAssetFileExtensions(): string[];
+        /**
          * @returns {{}[]}
          */
         get webpackRules(): {}[];
@@ -674,6 +678,11 @@ declare module "src/build-config/validated-build-config" {
          */
         private _assetResourceRuleFilename;
         /**
+         * @type {string[]}
+         * @private
+         */
+        private _additionalStaticAssetFileExtensions;
+        /**
          * @type {Object[]}
          * @private
          */
@@ -753,6 +762,10 @@ declare module "src/build-config/validated-build-config" {
          */
         get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
         /**
+         * @returns {string[]}
+         */
+        get additionalStaticAssetFileExtensions(): string[];
+        /**
          * @returns {Object[]}
          */
         get webpackPlugins(): any[];
@@ -813,6 +826,7 @@ declare module "src/build-config/default-build-config" {
         get additionalFilesToCopy(): any[];
         get copyAssetsFolderPath(): string;
         get assetResourceRuleFilename(): string;
+        get additionalStaticAssetFileExtensions(): any[];
         get designType(): import("src/design-type").DesignType;
         get devServerPort(): string;
         get hashZipFiles(): boolean;
@@ -1050,6 +1064,10 @@ declare module "src/build-config/build-config" {
          */
         private _assetResourceRuleFilename;
         /**
+         * @returns {string[]}
+         */
+        _additionalStaticAssetFileExtensions: any;
+        /**
          * @type {{}[]}
          * @private
          */
@@ -1128,6 +1146,10 @@ declare module "src/build-config/build-config" {
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
         get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        /**
+         * @returns {string[]}
+         */
+        get additionalStaticAssetFileExtensions(): string[];
         /**
          * @returns {{}[]}
          */
@@ -1281,6 +1303,17 @@ declare module "src/build-config/build-config" {
          * @returns {BuildConfig}
          */
         withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: any, assetInfo?: any) => string)): BuildConfig;
+        /**
+         * Additional file extensions for static assets. The following file extensions are defined by default: avif, png,
+         * apng, jpg, jpeg, jfif, pjpeg, pjp, webp, gif, bmp, tiff, tif, raw, svg, eot, ttf, woff, woff2, pdf, ico,
+         * cur, mkv, 3gp, mp3, mp4, m4v, m4p, ogv, webm, aac, flac, mpg, mpeg, oga, ogg, wav, json5
+         *
+         * The extensions you define here will be added to the list.
+         *
+         * @param {...string} extensions
+         * @returns {BuildConfig}
+         */
+        withAdditionalStaticAssetFileExtensions(...extensions: string[]): BuildConfig;
         /**
          * Configure additional rules for the Webpack configuration. Be aware, that this can clash with the existing rules.
          *

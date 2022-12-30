@@ -20,6 +20,10 @@ export default class DefaultBuildConfig {
     return `${DistFolder.STATIC}/[name]-[contenthash][ext]`;
   }
 
+  get additionalStaticAssetFileExtensions() {
+    return [];
+  }
+
   get designType() {
     return LANDINGPAGE;
   }

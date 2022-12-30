@@ -1071,6 +1071,11 @@ class ValidatedBuildConfig {
    */
   _assetResourceRuleFilename = undefined;
   /**
+   * @type {string[]}
+   * @private
+   */
+  _additionalStaticAssetFileExtensions = undefined;
+  /**
    * @type {Object[]}
    * @private
    */
@@ -1199,6 +1204,13 @@ class ValidatedBuildConfig {
   }
 
   /**
+   * @returns {string[]}
+   */
+  get additionalStaticAssetFileExtensions() {
+    return this._additionalStaticAssetFileExtensions;
+  }
+
+  /**
    * @returns {Object[]}
    */
   get webpackPlugins() {
@@ -1273,6 +1285,10 @@ class DefaultBuildConfig {
 
   get assetResourceRuleFilename() {
     return `${DistFolder.STATIC}/[name]-[contenthash][ext]`;
+  }
+
+  get additionalStaticAssetFileExtensions() {
+    return [];
   }
 
   get designType() {
@@ -1443,6 +1459,7 @@ class BuildConfigValidator {
     this._validateProperty('staticFileFolderPath', StringType);
     this._validateProperty('copyAssetsFolderPath', StringType);
     this._validateProperty('assetResourceRuleFilename', v => StringType(v) || FunctionType(v), true, false);
+    this._validateProperty('additionalStaticAssetFileExtensions', ArrayType);
     this._validateProperty('webpackPlugins', ArrayType, true, false);
     this._validateProperty('webpackRules', ArrayType, true, false);
   }
@@ -1790,6 +1807,10 @@ class BuildConfig {
    */
   _assetResourceRuleFilename = undefined;
   /**
+   * @returns {string[]}
+   */
+  _additionalStaticAssetFileExtensions = undefined;
+  /**
    * @type {{}[]}
    * @private
    */
@@ -1915,6 +1936,13 @@ class BuildConfig {
    */
   get assetResourceRuleFilename() {
     return this._assetResourceRuleFilename;
+  }
+
+  /**
+   * @returns {string[]}
+   */
+  get additionalStaticAssetFileExtensions() {
+    return this._additionalStaticAssetFileExtensions;
   }
 
   /**
@@ -2140,6 +2168,21 @@ class BuildConfig {
    */
   withAssetResourceRuleFilename(assetResourceRuleFilename) {
     this._assetResourceRuleFilename = assetResourceRuleFilename;
+    return this;
+  }
+
+  /**
+   * Additional file extensions for static assets. The following file extensions are defined by default: avif, png,
+   * apng, jpg, jpeg, jfif, pjpeg, pjp, webp, gif, bmp, tiff, tif, raw, svg, eot, ttf, woff, woff2, pdf, ico,
+   * cur, mkv, 3gp, mp3, mp4, m4v, m4p, ogv, webm, aac, flac, mpg, mpeg, oga, ogg, wav, json5
+   *
+   * The extensions you define here will be added to the list.
+   *
+   * @param {...string} extensions
+   * @returns {BuildConfig}
+   */
+  withAdditionalStaticAssetFileExtensions(...extensions) {
+    this._additionalStaticAssetFileExtensions = extensions;
     return this;
   }
 
@@ -6155,7 +6198,7 @@ class WebpackConfigBuilder {
    * @returns {string[]}
    */
   _getStaticAssetFileExtensions() {
-    return [
+    const defaults = [
       'avif',
       'png',
       'apng',
@@ -6195,6 +6238,10 @@ class WebpackConfigBuilder {
       'wav',
       'json5'
     ];
+
+    const extensions = new Set([...defaults, ...this.config.additionalStaticAssetFileExtensions]);
+
+    return [...extensions.values()].map(ext => ext.startsWith('.') ? ext : `.${ext}`);
   }
 
   /**
@@ -6203,8 +6250,8 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStaticAssetsRuleConfig() {
-    let fileExtensions = this._getStaticAssetFileExtensions().join('|');
-    let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
+    let fileExtensions = this._getStaticAssetFileExtensions().map(escapeRegex).join('|');
+    let testRegex = new RegExp(fileExtensions, 'i');
     let inlineQueryRegex = new RegExp(QueryConstant.INLINE);
 
     return [

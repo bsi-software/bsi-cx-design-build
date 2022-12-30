@@ -90,6 +90,11 @@ export default class ValidatedBuildConfig {
    */
   _assetResourceRuleFilename = undefined;
   /**
+   * @type {string[]}
+   * @private
+   */
+  _additionalStaticAssetFileExtensions = undefined;
+  /**
    * @type {Object[]}
    * @private
    */
@@ -215,6 +220,13 @@ export default class ValidatedBuildConfig {
    */
   get assetResourceRuleFilename() {
     return this._assetResourceRuleFilename;
+  }
+
+  /**
+   * @returns {string[]}
+   */
+  get additionalStaticAssetFileExtensions() {
+    return this._additionalStaticAssetFileExtensions;
   }
 
   /**

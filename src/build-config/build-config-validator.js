@@ -100,6 +100,7 @@ export default class BuildConfigValidator {
     this._validateProperty('staticFileFolderPath', StringType);
     this._validateProperty('copyAssetsFolderPath', StringType);
     this._validateProperty('assetResourceRuleFilename', v => StringType(v) || FunctionType(v), true, false);
+    this._validateProperty('additionalStaticAssetFileExtensions', ArrayType);
     this._validateProperty('webpackPlugins', ArrayType, true, false);
     this._validateProperty('webpackRules', ArrayType, true, false);
   }

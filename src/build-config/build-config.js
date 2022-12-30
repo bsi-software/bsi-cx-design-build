@@ -99,6 +99,10 @@ export default class BuildConfig {
    */
   _assetResourceRuleFilename = undefined;
   /**
+   * @returns {string[]}
+   */
+  _additionalStaticAssetFileExtensions = undefined;
+  /**
    * @type {{}[]}
    * @private
    */
@@ -224,6 +228,13 @@ export default class BuildConfig {
    */
   get assetResourceRuleFilename() {
     return this._assetResourceRuleFilename;
+  }
+
+  /**
+   * @returns {string[]}
+   */
+  get additionalStaticAssetFileExtensions() {
+    return this._additionalStaticAssetFileExtensions;
   }
 
   /**
@@ -449,6 +460,21 @@ export default class BuildConfig {
    */
   withAssetResourceRuleFilename(assetResourceRuleFilename) {
     this._assetResourceRuleFilename = assetResourceRuleFilename;
+    return this;
+  }
+
+  /**
+   * Additional file extensions for static assets. The following file extensions are defined by default: avif, png,
+   * apng, jpg, jpeg, jfif, pjpeg, pjp, webp, gif, bmp, tiff, tif, raw, svg, eot, ttf, woff, woff2, pdf, ico,
+   * cur, mkv, 3gp, mp3, mp4, m4v, m4p, ogv, webm, aac, flac, mpg, mpeg, oga, ogg, wav, json5
+   *
+   * The extensions you define here will be added to the list.
+   *
+   * @param {...string} extensions
+   * @returns {BuildConfig}
+   */
+  withAdditionalStaticAssetFileExtensions(...extensions) {
+    this._additionalStaticAssetFileExtensions = extensions;
     return this;
   }
 

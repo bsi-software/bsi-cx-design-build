@@ -11,6 +11,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withTargetVersion(Version.CX_22_0)
     .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
     .withPropertiesFilePath('properties.js')
+    .withAdditionalStaticAssetFileExtensions('md')
     .withWebpackPlugins(new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'

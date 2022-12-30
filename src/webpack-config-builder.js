@@ -12,7 +12,7 @@ import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugi
 import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
 import Constant from './constant';
 import File from './file';
-import {buildPublicPath, findArraySimilarities, getZipArchiveName, toPosixPath} from './utility';
+import {buildPublicPath, escapeRegex, findArraySimilarities, getZipArchiveName, toPosixPath} from './utility';
 import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
@@ -344,7 +344,7 @@ export default class WebpackConfigBuilder {
    * @returns {string[]}
    */
   _getStaticAssetFileExtensions() {
-    return [
+    const defaults = [
       'avif',
       'png',
       'apng',
@@ -384,6 +384,10 @@ export default class WebpackConfigBuilder {
       'wav',
       'json5'
     ];
+
+    const extensions = new Set([...defaults, ...this.config.additionalStaticAssetFileExtensions]);
+
+    return [...extensions.values()].map(ext => ext.startsWith('.') ? ext : `.${ext}`);
   }
 
   /**
@@ -392,8 +396,8 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStaticAssetsRuleConfig() {
-    let fileExtensions = this._getStaticAssetFileExtensions().join('|');
-    let testRegex = new RegExp(`\.(${fileExtensions})$`, 'i');
+    let fileExtensions = this._getStaticAssetFileExtensions().map(escapeRegex).join('|');
+    let testRegex = new RegExp(fileExtensions, 'i');
     let inlineQueryRegex = new RegExp(QueryConstant.INLINE);
 
     return [

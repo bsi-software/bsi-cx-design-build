@@ -105,6 +105,12 @@ export default class BuildConfigInterface {
   }
 
   /**
+   * @returns {string[]}
+   */
+  get additionalStaticAssetFileExtensions() {
+  }
+
+  /**
    * @returns {{}[]}
    */
   get webpackRules() {
