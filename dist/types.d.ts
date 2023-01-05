@@ -5992,6 +5992,50 @@ declare module "src/content-element/part/url-provider-part" {
     }
     import AbstractPart from "src/content-element/part/abstract-part";
 }
+declare module "src/content-element/part/raw" {
+    /**
+     * @since Studio 1.0
+     */
+    export default class RawPart extends AbstractPart {
+        /**
+         * @param {string} partId
+         */
+        constructor(partId: string);
+        /**
+         * @type {Record<string,*>}
+         * @private
+         */
+        private _properties;
+        /**
+         * @returns {Record<string, *>}
+         */
+        get properties(): Record<string, any>;
+        /**
+         * Set a property for this raw part.
+         *
+         * @example
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new RawPart('chart')
+         *       .withLabel('Chart')
+         *       .withProperty('type','pie'))
+         * @param {string} name
+         * @param {string|array|number|boolean|Record|null} value
+         * @returns {RawPart}
+         */
+        withProperty(name: string, value: string | any[] | number | boolean | Record | null): RawPart;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {RawPart}
+         */
+        clone(shallow?: boolean): RawPart;
+        _buildInternal(): Record<string, any>;
+    }
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
 declare module "src/website/abstract-include" {
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
@@ -6291,6 +6335,13 @@ declare module "src/content-element/part/part-factory" {
          * @returns {VideoPart}
          */
         get video(): VideoPart;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {string} partId
+         * @returns {RawPart}
+         */
+        raw(partId: string): RawPart;
     }
     import BackgroundImagePart from "src/content-element/part/background-image-part";
     import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
@@ -6311,6 +6362,7 @@ declare module "src/content-element/part/part-factory" {
     import TablePart from "src/content-element/part/table-part";
     import UrlProviderPart from "src/content-element/part/url-provider-part";
     import VideoPart from "src/content-element/part/video-part";
+    import RawPart from "src/content-element/part/raw";
 }
 declare module "src/design/design-helper" {
     /** @typedef {import('./design-factory').default} DesignFactory */
@@ -6730,6 +6782,7 @@ declare module "export/browser" {
     import SocialFollowPart from "src/content-element/part/social-follow-part";
     import SocialSharePart from "src/content-element/part/social-share-part";
     import UrlProviderPart from "src/content-element/part/url-provider-part";
+    import RawPart from "src/content-element/part/raw";
     import Website from "src/website/website";
     import PageInclude from "src/website/page-include";
     import Include from "src/website/include";
@@ -6743,7 +6796,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

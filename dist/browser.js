@@ -88,6 +88,7 @@ __webpack_require__.d(__webpack_exports__, {
   "PageInclude": () => (/* reexport */ PageInclude),
   "Part": () => (/* reexport */ part_namespaceObject),
   "PlainTextPart": () => (/* reexport */ PlainTextPart),
+  "RawPart": () => (/* reexport */ RawPart),
   "RawValue": () => (/* reexport */ RawValue),
   "SchemaVersion": () => (/* reexport */ schema_version_namespaceObject),
   "SocialFollowPart": () => (/* reexport */ SocialFollowPart),
@@ -4694,6 +4695,74 @@ class UrlProviderPart extends AbstractPart {
   }
 }
 
+;// CONCATENATED MODULE: ./src/content-element/part/raw.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class RawPart extends AbstractPart {
+  /**
+   * @type {Record<string,*>}
+   * @private
+   */
+  _properties = undefined;
+
+  /**
+   * @param {string} partId
+   */
+  constructor(partId) {
+    const part = new Part(partId);
+
+    super(part);
+
+    this._properties = {};
+  }
+
+  /**
+   * @returns {Record<string, *>}
+   */
+  get properties() {
+    return this._properties;
+  }
+
+  /**
+   * Set a property for this raw part.
+   *
+   * @example
+   * let element = new ContentElement()
+   *   .withElementId('element')
+   *   .withParts(
+   *     new RawPart('chart')
+   *       .withLabel('Chart')
+   *       .withProperty('type','pie'))
+   * @param {string} name
+   * @param {string|array|number|boolean|Record|null} value
+   * @returns {RawPart}
+   */
+  withProperty(name, value) {
+    this._properties[name] = value;
+    return this;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {RawPart}
+   */
+  clone(shallow) {
+    return this._clone(new RawPart(this.partId), shallow);
+  }
+
+  _buildInternal() {
+    let config = super._buildInternal();
+
+    return Object.assign({}, config, this._properties);
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/website/website.js
 
 
@@ -5438,6 +5507,7 @@ class NLS extends AbstractBuilder {
 
 
 
+
 class PartFactory {
   /**
    * Get a new background content element part builder instance.
@@ -5608,6 +5678,16 @@ class PartFactory {
    */
   get video() {
     return new VideoPart();
+  }
+
+  /**
+   * Create a raw element part builder instance. Can be used for custom element parts.
+   *
+   * @param {string} partId
+   * @returns {RawPart}
+   */
+  raw(partId) {
+    return new RawPart(partId);
   }
 }
 
@@ -6074,6 +6154,7 @@ function bsiProperty(property, fallback) {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
 
 
 

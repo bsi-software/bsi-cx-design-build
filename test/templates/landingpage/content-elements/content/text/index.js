@@ -18,6 +18,9 @@ module.exports = cx.contentElement
     require('../../../styles/background-color'))
   .withFile(require('./template.hbs.twig'))
   .withParts(
+    cx.part.raw('chart')
+      .withLabel('test')
+      .withProperty('array', [{a: 2}]),
     cx.part.formattedText
       .withId('22235837-cf9e-49e9-8918-294b22e2854d')
       .withLabel('Text')

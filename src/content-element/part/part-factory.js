@@ -17,6 +17,7 @@ import SocialSharePart from './social-share-part';
 import TablePart from './table-part';
 import UrlProviderPart from './url-provider-part';
 import VideoPart from './video-part';
+import RawPart from './raw';
 
 export default class PartFactory {
   /**
@@ -188,5 +189,15 @@ export default class PartFactory {
    */
   get video() {
     return new VideoPart();
+  }
+
+  /**
+   * Create a raw element part builder instance. Can be used for custom element parts.
+   *
+   * @param {string} partId
+   * @returns {RawPart}
+   */
+  raw(partId) {
+    return new RawPart(partId);
   }
 }
