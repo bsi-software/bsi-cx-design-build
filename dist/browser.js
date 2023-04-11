@@ -3826,11 +3826,11 @@ class ContentElement extends AbstractBuilder {
   /**
    * Set the label of the content element.
    *
-   * @param {string} label - The label of the content element.
+   * @param {string|NLS} label - The label of the content element.
    * @returns {ContentElement}
    * @since Studio 1.0
    */
-  withLabel(label) {
+  withLabel(label) { // TODO mjt auch nls erlauben & description
     this._label = label;
     return this;
   }
@@ -4050,7 +4050,7 @@ class ContentElement extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity); // TODO mjt ${nls.key:test} wie bei dropzone.js - buildinternal -> allowed elements, schauen ob Version >22
     this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);

@@ -4018,11 +4018,11 @@ declare module "src/content-element/content-element" {
         /**
          * Set the label of the content element.
          *
-         * @param {string} label - The label of the content element.
+         * @param {string|NLS} label - The label of the content element.
          * @returns {ContentElement}
          * @since Studio 1.0
          */
-        withLabel(label: string): ContentElement;
+        withLabel(label: string | NLS): ContentElement;
         /**
          * Set the description of the content element.
          *

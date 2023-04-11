@@ -226,7 +226,7 @@ class _BsiCxWebpackPlugin {
          */
         let needle = new RegExp(escapeRegex(id), 'g');
 
-        replaceMap.set(id, haystack => haystack.replace(needle, partId));
+        replaceMap.set(id, haystack => haystack.replace(needle, partId)); // Todo mjt hier werden element part ids ersetzt
       });
   }
 
@@ -337,7 +337,13 @@ class _BsiCxWebpackPlugin {
       ...rest
     };
 
+    // TODO mjt nls key referenz, im String
+    let nls = json.nls;
     let jsonStr = JSON.stringify(json, null, 2);
+
+    /* Object.entries(nls).forEach(([id, value]) => jsonStr = jsonStr.replaceAll('\${nlsKey:qr.code}', value)); */
+
+
     this._updateAsset(designJsonPath, jsonStr);
     this._deleteAsset(designJsonChunkPath);
   }
@@ -545,7 +551,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyReplaceMap(content, replaceMap) {
-    replaceMap.forEach(replaceFunc => content = replaceFunc(content));
+    replaceMap.forEach(replaceFunc => content = replaceFunc(content)); // Todo mjt ersetzt
 
     return content;
   }
@@ -630,8 +636,9 @@ class _BsiCxWebpackPlugin {
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
-    context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion;
+    context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion; // TODO mjt zugriff auf targetversion aus design webpack.config.js
     context[Constant.BSI_CX_TARGET_TYPE] = this._config.designType;
+    // context[Constant.BSI_CX_LOCALE] = this._config.locale; // TODO mjt und dann in content-elements.js -> _buildInternal referenzieren
 
     vm.createContext(context);
 
