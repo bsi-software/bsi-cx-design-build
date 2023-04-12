@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.12.1] - 12.04.2023
+
+### Fixed
+
+* Updated design json property `enterMode` of HTML editor config.
+* Updated dependencies to the latest versions.
+
 ## [1.12.0] - 05.01.2023
 
 ### Fixed
@@ -499,7 +506,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.0...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.1...HEAD
+
+[1.12.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.0...1.12.1
 
 [1.12.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.11.0...1.12.0
 

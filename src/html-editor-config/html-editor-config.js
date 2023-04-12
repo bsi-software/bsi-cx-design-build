@@ -138,7 +138,7 @@ export default class HtmlEditorConfig extends AbstractBuilder {
   /**
    * @returns {RawValue|EnterMode|undefined}
    */
-  get enterMode() {
+  get enter() {
     return this._enterMode;
   }
 
