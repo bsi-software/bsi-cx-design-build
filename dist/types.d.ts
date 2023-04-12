@@ -4665,7 +4665,7 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {RawValue|EnterMode|undefined}
          */
-        get enterMode(): RawValue | import("src/html-editor-config/enter-mode").EnterMode;
+        get enter(): RawValue | import("src/html-editor-config/enter-mode").EnterMode;
         /**
          * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
          * It is recommended to set the identifier.

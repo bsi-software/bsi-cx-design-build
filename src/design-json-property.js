@@ -130,7 +130,7 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
-  static ENTER_MODE = 'enterMode';
+  static ENTER_MODE = 'enter';
   /**
    * @type {string}
    */

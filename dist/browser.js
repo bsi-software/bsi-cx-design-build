@@ -444,7 +444,7 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
-  static ENTER_MODE = 'enterMode';
+  static ENTER_MODE = 'enter';
   /**
    * @type {string}
    */
@@ -2945,7 +2945,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   /**
    * @returns {RawValue|EnterMode|undefined}
    */
-  get enterMode() {
+  get enter() {
     return this._enterMode;
   }
 

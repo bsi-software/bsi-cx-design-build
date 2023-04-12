@@ -3,7 +3,7 @@
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="update" />
     <arguments value="--package-lock=true --save" />
-    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v16.16.0/bin/node" />
+    <node-interpreter value="$PROJECT_DIR$/../../node/node-v18.12.1-win-x64/node" />
     <envs />
     <method v="2" />
   </configuration>
