@@ -1,4 +1,3 @@
-import path from 'path';
 import {TwingEnvironment, TwingLoaderChain, TwingLoaderFilesystem, TwingLoaderRelativeFilesystem} from '@ofabel/twing';
 
 import {
@@ -15,6 +14,20 @@ import {
 } from './twig-functions';
 import {findNodeModulesFolder} from './utility';
 
+class NodeModulesLoader extends TwingLoaderFilesystem {
+  constructor() {
+    super();
+
+    let nodeModulesPath = findNodeModulesFolder(__dirname);
+
+    this.addPath(nodeModulesPath);
+  }
+
+  parseName(name, default_ = NodeModulesLoader.MAIN_NAMESPACE) {
+    return [default_, name];
+  }
+}
+
 /**
  * @param {string} templateRoot
  * @param {{}} [globals]
@@ -23,12 +36,11 @@ import {findNodeModulesFolder} from './utility';
 export default function (templateRoot, globals) {
   let relativeFilesystemLoader = new TwingLoaderRelativeFilesystem();
   let filesystemLoader = new TwingLoaderFilesystem();
-  let bsiCxScopePath = path.join(findNodeModulesFolder(__dirname), '@bsi-cx');
+  let nodeModulesLoader = new NodeModulesLoader();
 
   filesystemLoader.addPath(templateRoot);
-  filesystemLoader.addPath(bsiCxScopePath, 'bsi-cx');
 
-  let twing = new TwingEnvironment(new TwingLoaderChain([relativeFilesystemLoader, filesystemLoader]));
+  let twing = new TwingEnvironment(new TwingLoaderChain([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]));
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);
