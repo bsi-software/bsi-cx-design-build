@@ -518,6 +518,19 @@ const bsiCxLorem = new twing_namespaceObject.TwingFunction('bsi_cx_lorem', (word
 
 
 
+class NodeModulesLoader extends twing_namespaceObject.TwingLoaderFilesystem {
+  constructor() {
+    super();
+
+    let nodeModulesPath = findNodeModulesFolder(__dirname);
+
+    this.addPath(nodeModulesPath);
+  }
+
+  parseName(name, default_ = NodeModulesLoader.MAIN_NAMESPACE) {
+    return [default_, name];
+  }
+}
 
 /**
  * @param {string} templateRoot
@@ -527,12 +540,11 @@ const bsiCxLorem = new twing_namespaceObject.TwingFunction('bsi_cx_lorem', (word
 /* harmony default export */ function twing_environment(templateRoot, globals) {
   let relativeFilesystemLoader = new twing_namespaceObject.TwingLoaderRelativeFilesystem();
   let filesystemLoader = new twing_namespaceObject.TwingLoaderFilesystem();
-  let bsiCxScopePath = external_path_default().join(findNodeModulesFolder(__dirname), '@bsi-cx');
+  let nodeModulesLoader = new NodeModulesLoader();
 
   filesystemLoader.addPath(templateRoot);
-  filesystemLoader.addPath(bsiCxScopePath, 'bsi-cx');
 
-  let twing = new twing_namespaceObject.TwingEnvironment(new twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader]));
+  let twing = new twing_namespaceObject.TwingEnvironment(new twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]));
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);

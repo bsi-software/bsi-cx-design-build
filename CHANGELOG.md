@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.12.2-rc.1] - 11.05.2023
+
+### Fixed
+
+* Simple fix to load Twig templates from the `node_modules` folder ([#7](https://github.com/bsi-software/bsi-cx-design-build/pull/7))
+
 ## [1.12.1] - 12.04.2023
 
 ### Fixed
@@ -506,7 +512,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.1...HEAD
+[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.2-rc.1...HEAD
+
+[1.12.2-rc.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.1...1.12.2-rc.1
 
 [1.12.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.0...1.12.1
 
