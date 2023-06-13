@@ -355,7 +355,8 @@ export default class BuildConfig {
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
-    this._devServerPort = devServerPort;
+    this._devServerPort = this.assignPort();
+    // this._devServerPort = devServerPort; TODO 
     return this;
   }
 
@@ -532,5 +533,25 @@ export default class BuildConfig {
    */
   validate() {
     return BuildConfigValidator.validate(this);
+  }
+
+   /**
+   * @param {number} port - The port to assign
+   * @returns {number}
+   * @private
+   */
+  assignPort(port) {
+    let portNr = port;
+    const net = require("net");
+    const server = net.createServer().listen(port, "localhost");
+
+    server.on("error", (err) => {
+      portNr = this.assignPort(port + 1);
+    });
+
+    server.on("listening", function () {
+      server.close();
+    });
+    return portNr;
   }
 }

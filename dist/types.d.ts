@@ -828,7 +828,7 @@ declare module "src/build-config/default-build-config" {
         get assetResourceRuleFilename(): string;
         get additionalStaticAssetFileExtensions(): any[];
         get designType(): import("src/design-type").DesignType;
-        get devServerPort(): string;
+        get devServerPort(): number;
         get hashZipFiles(): boolean;
         get modules(): any[];
         get modulesRootPath(): string;
@@ -843,6 +843,16 @@ declare module "src/build-config/default-build-config" {
         get webpackPlugins(): any[];
         get webpackRules(): any[];
         get postcssEnabled(): boolean;
+        isPortReachable(port: any, { host, timeout }?: {
+            host: any;
+            timeout?: number;
+        }): Promise<boolean>;
+        /**
+         * @param {number} port - The port to assign
+         * @returns {number}
+         * @private
+         */
+        private _assignPort;
     }
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
@@ -1352,6 +1362,12 @@ declare module "src/build-config/build-config" {
          * @returns {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
          */
         validate(): ValidatedBuildConfig;
+        /**
+        * @param {number} port - The port to assign
+        * @returns {number}
+        * @private
+        */
+        private assignPort;
     }
     export type PathData = any;
     export type AssetInfo = any;

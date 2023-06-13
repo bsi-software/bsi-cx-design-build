@@ -1,7 +1,39 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 808:
+/***/ ((module) => {
+
+module.exports = require("net");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -58,54 +90,56 @@
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "BuildConfig": () => (/* reexport */ BuildConfig),
-  "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
-  "DesignType": () => (/* reexport */ design_type_namespaceObject),
-  "ModuleConfig": () => (/* reexport */ ModuleConfig),
-  "Version": () => (/* reexport */ version_namespaceObject),
-  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
-  "css": () => (/* reexport */ helper_namespaceObject)
+  BuildConfig: () => (/* reexport */ BuildConfig),
+  DefaultBuildConfig: () => (/* reexport */ DefaultBuildConfig),
+  DesignType: () => (/* reexport */ design_type_namespaceObject),
+  ModuleConfig: () => (/* reexport */ ModuleConfig),
+  Version: () => (/* reexport */ version_namespaceObject),
+  WebpackConfigBuilder: () => (/* reexport */ WebpackConfigBuilder),
+  css: () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  "ALL_TYPES": () => (ALL_TYPES),
-  "DesignType": () => (DesignType),
-  "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (LANDINGPAGE),
-  "LEGACY_TYPES": () => (LEGACY_TYPES),
-  "TARGET": () => (TARGET),
-  "WEBSITE": () => (WEBSITE)
+  ALL_TYPES: () => (ALL_TYPES),
+  DesignType: () => (DesignType),
+  EMAIL: () => (EMAIL),
+  LANDINGPAGE: () => (LANDINGPAGE),
+  LEGACY_TYPES: () => (LEGACY_TYPES),
+  TARGET: () => (TARGET),
+  WEBSITE: () => (WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
 var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
-  "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (CX_22_0),
-  "STUDIO_1_0": () => (STUDIO_1_0),
-  "STUDIO_1_1": () => (STUDIO_1_1),
-  "STUDIO_1_2": () => (STUDIO_1_2),
-  "TARGET": () => (version_TARGET),
-  "Version": () => (Version)
+  CX_1_3: () => (CX_1_3),
+  CX_22_0: () => (CX_22_0),
+  STUDIO_1_0: () => (STUDIO_1_0),
+  STUDIO_1_1: () => (STUDIO_1_1),
+  STUDIO_1_2: () => (STUDIO_1_2),
+  TARGET: () => (version_TARGET),
+  Version: () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/css/helper.js
 var helper_namespaceObject = {};
 __webpack_require__.r(helper_namespaceObject);
 __webpack_require__.d(helper_namespaceObject, {
-  "color": () => (color),
-  "dataUri": () => (dataUri),
-  "number": () => (number),
-  "url": () => (url)
+  color: () => (color),
+  dataUri: () => (dataUri),
+  number: () => (number),
+  url: () => (url)
 });
 
 ;// CONCATENATED MODULE: external "source-map-support/register"
@@ -1280,7 +1314,7 @@ class DefaultBuildConfig {
   }
 
   get copyAssetsFolderPath() {
-    return 'assets';
+    return "assets";
   }
 
   get assetResourceRuleFilename() {
@@ -1296,7 +1330,11 @@ class DefaultBuildConfig {
   }
 
   get devServerPort() {
-    return 'auto';
+    // return 'auto';
+    let devPort = 9003; 
+    //this._assignPort(devPort).then(port => devPort = port);
+    //console.log("Default port is: /d", devPort);
+    return devPort;
   }
 
   get hashZipFiles() {
@@ -1308,7 +1346,7 @@ class DefaultBuildConfig {
   }
 
   get modulesRootPath() {
-    return 'modules';
+    return "modules";
   }
 
   get name() {
@@ -1316,7 +1354,7 @@ class DefaultBuildConfig {
   }
 
   get outputPath() {
-    return 'dist';
+    return "dist";
   }
 
   get propertiesFilePath() {
@@ -1332,7 +1370,7 @@ class DefaultBuildConfig {
   }
 
   get staticFileFolderPath() {
-    return 'static';
+    return "static";
   }
 
   get targetVersion() {
@@ -1340,7 +1378,7 @@ class DefaultBuildConfig {
   }
 
   get version() {
-    return '1.0.0';
+    return "1.0.0";
   }
 
   get webpackPlugins() {
@@ -1353,6 +1391,112 @@ class DefaultBuildConfig {
 
   get postcssEnabled() {
     return false;
+  }
+
+  async isPortReachable(port, {host, timeout = 1000} = {}) {
+    if (typeof host !== 'string') {
+      throw new TypeError('Specify a `host`');
+    }
+  
+    const promise = new Promise(((resolve, reject) => {
+      const socket = new net.Socket();
+  
+      const onError = () => {
+        socket.destroy();
+        reject();
+      };
+  
+      socket.setTimeout(timeout);
+      socket.once('error', onError);
+      socket.once('timeout', onError);
+  
+      socket.connect(port, host, () => {
+        socket.end();
+        resolve();
+      });
+    }));
+  
+    try {
+      await promise;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * @param {number} port - The port to assign
+   * @returns {number}
+   * @private
+   */
+  async _assignPort(defaultPort) {
+    let maxPort = 9200;
+    if (defaultPort > maxPort) {
+      return;
+    }
+    let port = defaultPort;
+    const net = __webpack_require__(808);
+
+    let usePort = false;
+    
+   // while (port < maxPort) {
+   //   await(this.isPortReachable(port, { host: "localhost" }))
+   //   .then((isUsable) => {if (isUsable) {
+   //    return port; 
+   //   }});
+   //   console.log("Port:" + port + " , use:" + usePort);
+   //   port+=1;
+   // }
+   // 
+   // return port;
+    console.log("Start listening on %d", port);
+
+    const server = net.createServer();
+
+    // handle connection error
+    server.once("error", (err) => {
+      usePort = false;
+      console.log("Cannot connect to port %d. Error: " + err, port);
+      // port = this._assignPort(port + 1);
+    });
+
+    // connection successful
+    server.on("listening", function () {
+      console.log("Connection to port %d successful", port);
+      server.close();
+      usePort = true;
+    });
+    server.on("connection", function () {
+      console.log("Connection to port %d successful", port);
+      server.close();
+      usePort = true;
+    });
+
+  //  while (!usePort) {
+  //    console.log(await isPortReachable(port, { host: "localhost" }));
+  //    port+=1;
+  //  }
+
+     await(
+       server.listen(port, () => {
+       console.log("Actual port: %d", port);
+       usePort = true;
+       return port;
+     })
+     );
+
+    console.log(server);
+    server.close();
+    // TODO: replace usePort with code to wait on listen call.
+    // socket stuff is async, watch out for inf loops
+    if (usePort) {
+      console.log("Final portNr = &d", port);
+      return port;
+    }
+    else {
+      console.log("DEBUG: ELSE");
+      port = this._assignPort(port + 1);
+    }
   }
 }
 
@@ -2063,7 +2207,8 @@ class BuildConfig {
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
-    this._devServerPort = devServerPort;
+    this._devServerPort = this.assignPort();
+    // this._devServerPort = devServerPort; TODO 
     return this;
   }
 
@@ -2240,6 +2385,26 @@ class BuildConfig {
    */
   validate() {
     return BuildConfigValidator.validate(this);
+  }
+
+   /**
+   * @param {number} port - The port to assign
+   * @returns {number}
+   * @private
+   */
+  assignPort(port) {
+    let portNr = port;
+    const net = __webpack_require__(808);
+    const server = net.createServer().listen(port, "localhost");
+
+    server.on("error", (err) => {
+      portNr = this.assignPort(port + 1);
+    });
+
+    server.on("listening", function () {
+      server.close();
+    });
+    return portNr;
   }
 }
 
@@ -6785,6 +6950,8 @@ function number(value) {
 
 
 
+
+})();
 
 var __webpack_export_target__ = exports;
 for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
