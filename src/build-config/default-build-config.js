@@ -1,6 +1,7 @@
 import { CX_22_0 } from "../version";
 import { LANDINGPAGE } from "../design-type";
 import DistFolder from "../dist-folder";
+import * as net from 'net';
 
 /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
 

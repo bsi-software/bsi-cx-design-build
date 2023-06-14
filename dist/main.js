@@ -1298,7 +1298,57 @@ class DistFolder {
   static SHARED = 'shared';
 }
 
+;// CONCATENATED MODULE: external "crypto"
+const external_crypto_namespaceObject = require("crypto");
+;// CONCATENATED MODULE: ./src/hash-utility.js
+
+
+
+String.prototype.hashCode = function() {
+  let hash = 0,
+    i, chr;
+  if (this.length === 0) return hash;
+  for (i = 0; i < this.length; i++) {
+    chr = this.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+/**
+ * @param {string} content
+ * @returns {string}
+ */
+function _createContentHash(content) {
+  return createHash('sha256')
+    .update(content)
+    .digest('hex')
+    .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
+}
+
+/**
+ * @param {string} filePath
+ * @returns {number}
+ */
+function _createPathHash(filePath) {
+  let pathHash = filePath;
+  if (external_path_default().isAbsolute(filePath)) {
+    let test = filePath.split('templates');
+    pathHash = external_path_default().relative(test[0] + '\\templates\\', filePath)
+  }
+  let newHash = pathHash.toString().hashCode();
+  if (newHash < 0) {
+    newHash *= -1;
+  }
+  return newHash;
+}
+
+// EXTERNAL MODULE: external "net"
+var external_net_ = __webpack_require__(808);
 ;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
+
+
 
 
 
@@ -1399,7 +1449,7 @@ class DefaultBuildConfig {
     }
   
     const promise = new Promise(((resolve, reject) => {
-      const socket = new net.Socket();
+      const socket = new external_net_.Socket();
   
       const onError = () => {
         socket.destroy();
@@ -2422,8 +2472,6 @@ const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-p
 var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
 ;// CONCATENATED MODULE: ./package.json
 const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
-;// CONCATENATED MODULE: external "crypto"
-const external_crypto_namespaceObject = require("crypto");
 ;// CONCATENATED MODULE: external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
@@ -2901,7 +2949,8 @@ class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
-class _BsiCxWebpackPlugin {
+
+class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
@@ -3031,8 +3080,8 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _importDesignJson() {
-    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
+    let designJsonPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     /**
      * @type {*}
      */
@@ -3163,7 +3212,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _exportDesignHtml(replaceMap) {
-    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
+    let designHtmlPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_HTML);
     this._updateHtmlTemplate(designHtmlPath, 'design', replaceMap);
   }
 
@@ -3172,7 +3221,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _exportPreviewHtml(replaceMap) {
-    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewFilePath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.PREVIEW_HTML);
     let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview', replaceMap);
 
     if (/\.hbs$/.test(previewFilePath)) {
@@ -3186,8 +3235,8 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _exportDesignJson(designJsonObj, replaceMap) {
-    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
+    let designJsonPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
@@ -3404,10 +3453,11 @@ class _BsiCxWebpackPlugin {
       content = /^module\.exports/.test(content) ? this._eval(content) : content;
     }
 
-    let contentHash = this._createContentHash(content);
     let extension = this._getTemplateFileExtension(fileObj.path);
     let prefix = external_slugify_default()(filenamePrefix ?? uuid());
-    let filename = prefix + '-' + contentHash + '.' + extension;
+    let pathHash = _createPathHash(fileObj.path);
+
+    let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + (external_path_default()).posix.sep + filename;
 
     content = this._applyReplaceMap(content, replaceMap);
@@ -3571,7 +3621,7 @@ class _BsiCxWebpackPlugin {
    */
   _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
+    let cssStylesFilename = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.STYLES_CSS);
 
     if (cssStylesFilename === undefined) {
       return content;
@@ -3586,8 +3636,8 @@ class _BsiCxWebpackPlugin {
       .replace(/\n/g, '')
       .replace(staticFolderUrlPattern, inlineSourceAssetsUrl);
 
-    content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
-    content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
+    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.CSS_INLINE, source);
+    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
 
     return content;
   }
@@ -3597,7 +3647,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _handleJavaScriptModules(content) {
-    let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
+    let jsModuleMatches = content.matchAll(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE);
     let importedModules = [];
 
     for (const match of jsModuleMatches) {
@@ -3611,7 +3661,7 @@ class _BsiCxWebpackPlugin {
 
   _injectModuleRuntime(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
+    let filename = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
 
     if (filename === undefined) {
       return content;
@@ -3623,8 +3673,8 @@ class _BsiCxWebpackPlugin {
       .trim()
       .replace(/\n/g, '');
 
-    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
-    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
+    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
+    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
 
     return content;
   }
@@ -3743,7 +3793,7 @@ class _BsiCxWebpackPlugin {
     return (0,external_crypto_namespaceObject.createHash)('sha256')
       .update(content)
       .digest('hex')
-      .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
+      .substr(0, bsi_cx_webpack_plugin_BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
   }
 
   /**
@@ -3806,7 +3856,7 @@ class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
+          new bsi_cx_webpack_plugin_BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
         })
     });
   }
@@ -6016,7 +6066,11 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
+;// CONCATENATED MODULE: external "webpack-node-externals/utils"
+const utils_namespaceObject = require("webpack-node-externals/utils");
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+
+
 
 
 
@@ -6220,9 +6274,10 @@ class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
+    let pathHash = _createPathHash(config.path);
     return {
       import: importPath,
-      filename: `${DistFolder.MODULES}/[name]-[contenthash].js`,
+      filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
       runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
     };
   }
@@ -6435,8 +6490,10 @@ class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: this.config.assetResourceRuleFilename
-            }
+              filename: asset => {
+                return getAssetResourceFilename(asset, this.config.designType);
+              }
+            },
           },
         ]
       }
@@ -6454,7 +6511,9 @@ class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: this.config.assetResourceRuleFilename
+          filename: asset => {
+            return getAssetResourceFilename(asset, this.config.designType);
+          }
         }
       }
     ];
@@ -6562,9 +6621,10 @@ class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
+    let pathHash = _createPathHash(this.config.staticFileFolderPath + '\\styles.css');
     return [
       new (external_mini_css_extract_plugin_default())({
-        filename: `${DistFolder.STATIC}/styles-[contenthash].css`,
+        filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
       })
     ];
   }
@@ -6844,6 +6904,11 @@ class WebpackConfigBuilder {
 
     return buildConfigs;
   }
+}
+
+function getAssetResourceFilename(asset, designType) {
+  let pathHash = _createPathHash(designType + (external_path_default()).posix.sep + asset.filename);
+  return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
 }
 
 ;// CONCATENATED MODULE: ./src/css/helper.js

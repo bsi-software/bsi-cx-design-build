@@ -817,6 +817,18 @@ declare module "src/dist-folder" {
         static SHARED: string;
     }
 }
+declare module "src/hash-utility" {
+    /**
+     * @param {string} content
+     * @returns {string}
+     */
+    export function _createContentHash(content: string): string;
+    /**
+     * @param {string} filePath
+     * @returns {number}
+     */
+    export function _createPathHash(filePath: string): number;
+}
 declare module "src/build-config/default-build-config" {
     /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
     /**

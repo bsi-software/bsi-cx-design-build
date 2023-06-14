@@ -21,6 +21,7 @@ import QueryConstant from './query-constant';
 import DistFolder from './dist-folder';
 import * as Version from './version';
 import * as DesignType from './design-type';
+import {_createPathHash} from './hash-utility';
 
 export default class WebpackConfigBuilder {
   /**
@@ -201,9 +202,10 @@ export default class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
+    let pathHash = _createPathHash(config.path);
     return {
       import: importPath,
-      filename: `${DistFolder.MODULES}/[name]-[contenthash].js`,
+      filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
       runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
     };
   }
@@ -416,8 +418,10 @@ export default class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: this.config.assetResourceRuleFilename
-            }
+              filename: asset => {
+                return getAssetResourceFilename(asset, this.config.designType);
+              }
+            },
           },
         ]
       }
@@ -435,7 +439,9 @@ export default class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: this.config.assetResourceRuleFilename
+          filename: asset => {
+            return getAssetResourceFilename(asset, this.config.designType);
+          }
         }
       }
     ];
@@ -543,9 +549,10 @@ export default class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
+    let pathHash = _createPathHash(this.config.staticFileFolderPath + '\\styles.css');
     return [
       new MiniCssExtractPlugin({
-        filename: `${DistFolder.STATIC}/styles-[contenthash].css`,
+        filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
       })
     ];
   }
@@ -825,4 +832,9 @@ export default class WebpackConfigBuilder {
 
     return buildConfigs;
   }
+}
+
+function getAssetResourceFilename(asset, designType) {
+  let pathHash = _createPathHash(designType + path.posix.sep + asset.filename);
+  return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
 }

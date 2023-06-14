@@ -20,13 +20,12 @@
 
 <p>Lorem ipsum</p>
 
-{#  TODO: was macht das script?
- <script>
-   {% set obj = {
-     img: bsi_cx_asset('./content-elements/content/title/placeholder.png')
-   } %}
-   window.images = {{ obj|json_encode|raw }};
- </script> #}
+{#<script>
+  {% set obj = {
+    img: bsi_cx_asset('./content-elements/content/title/placeholder.png')
+  } %}
+  window.images = {{ obj|json_encode|raw }};
+</script>#}
 
 {{ cx.version.TARGET.toString() }}
 
