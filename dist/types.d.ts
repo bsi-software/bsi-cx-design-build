@@ -817,18 +817,6 @@ declare module "src/dist-folder" {
         static SHARED: string;
     }
 }
-declare module "src/hash-utility" {
-    /**
-     * @param {string} content
-     * @returns {string}
-     */
-    export function _createContentHash(content: string): string;
-    /**
-     * @param {string} filePath
-     * @returns {number}
-     */
-    export function _createPathHash(filePath: string): number;
-}
 declare module "src/build-config/default-build-config" {
     /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
     /**
@@ -840,7 +828,7 @@ declare module "src/build-config/default-build-config" {
         get assetResourceRuleFilename(): string;
         get additionalStaticAssetFileExtensions(): any[];
         get designType(): import("src/design-type").DesignType;
-        get devServerPort(): number;
+        get devServerPort(): string;
         get hashZipFiles(): boolean;
         get modules(): any[];
         get modulesRootPath(): string;
@@ -855,16 +843,6 @@ declare module "src/build-config/default-build-config" {
         get webpackPlugins(): any[];
         get webpackRules(): any[];
         get postcssEnabled(): boolean;
-        isPortReachable(port: any, { host, timeout }?: {
-            host: any;
-            timeout?: number;
-        }): Promise<boolean>;
-        /**
-         * @param {number} port - The port to assign
-         * @returns {number}
-         * @private
-         */
-        private _assignPort;
     }
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
 }
@@ -1245,7 +1223,7 @@ declare module "src/build-config/build-config" {
          */
         withPropertiesFilePath(propertiesFilePath: string): BuildConfig;
         /**
-         * A TCP port number to use for the development server. The default port is 9000. Be aware,
+         * A TCP port number to use for the development server. The default port is 8081. Be aware,
          * that you don't have to configure a separate port for each template of your build.
          * Only the first configuration will be considered.
          *
@@ -1374,12 +1352,6 @@ declare module "src/build-config/build-config" {
          * @returns {ValidatedBuildConfig} - The validated build config with {@link DefaultBuildConfig|defaults} applied where necessary.
          */
         validate(): ValidatedBuildConfig;
-        /**
-        * @param {number} port - The port to assign
-        * @returns {number}
-        * @private
-        */
-        private assignPort;
     }
     export type PathData = any;
     export type AssetInfo = any;
@@ -1750,6 +1722,13 @@ declare module "src/bsi-js-property-plugin" {
     export default class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
     }
     import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
+declare module "src/path-hash-utility" {
+    /**
+     * @param {string} filePath
+     * @returns {number}
+     */
+    export function _createPathHash(filePath: string): number;
 }
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {

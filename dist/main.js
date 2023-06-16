@@ -1,39 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 808:
-/***/ ((module) => {
-
-module.exports = require("net");
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -90,8 +58,6 @@ module.exports = require("net");
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -1298,56 +1264,9 @@ class DistFolder {
   static SHARED = 'shared';
 }
 
-;// CONCATENATED MODULE: external "crypto"
-const external_crypto_namespaceObject = require("crypto");
-;// CONCATENATED MODULE: ./src/hash-utility.js
-
-
-
-String.prototype.hashCode = function() {
-  let hash = 0,
-    i, chr;
-  if (this.length === 0) return hash;
-  for (i = 0; i < this.length; i++) {
-    chr = this.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
-}
-
-/**
- * @param {string} content
- * @returns {string}
- */
-function _createContentHash(content) {
-  return createHash('sha256')
-    .update(content)
-    .digest('hex')
-    .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
-}
-
-/**
- * @param {string} filePath
- * @returns {number}
- */
-function _createPathHash(filePath) {
-  let pathHash = filePath;
-  if (external_path_default().isAbsolute(filePath)) {
-    let test = filePath.split('templates');
-    pathHash = external_path_default().relative(test[0] + '\\templates\\', filePath)
-  }
-  let newHash = pathHash.toString().hashCode();
-  if (newHash < 0) {
-    newHash *= -1;
-  }
-  return newHash;
-}
-
-// EXTERNAL MODULE: external "net"
-var external_net_ = __webpack_require__(808);
+;// CONCATENATED MODULE: external "net"
+const external_net_namespaceObject = require("net");
 ;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
-
 
 
 
@@ -1380,11 +1299,7 @@ class DefaultBuildConfig {
   }
 
   get devServerPort() {
-    // return 'auto';
-    let devPort = 9003; 
-    //this._assignPort(devPort).then(port => devPort = port);
-    //console.log("Default port is: /d", devPort);
-    return devPort;
+    return 'auto'
   }
 
   get hashZipFiles() {
@@ -1441,112 +1356,6 @@ class DefaultBuildConfig {
 
   get postcssEnabled() {
     return false;
-  }
-
-  async isPortReachable(port, {host, timeout = 1000} = {}) {
-    if (typeof host !== 'string') {
-      throw new TypeError('Specify a `host`');
-    }
-  
-    const promise = new Promise(((resolve, reject) => {
-      const socket = new external_net_.Socket();
-  
-      const onError = () => {
-        socket.destroy();
-        reject();
-      };
-  
-      socket.setTimeout(timeout);
-      socket.once('error', onError);
-      socket.once('timeout', onError);
-  
-      socket.connect(port, host, () => {
-        socket.end();
-        resolve();
-      });
-    }));
-  
-    try {
-      await promise;
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  /**
-   * @param {number} port - The port to assign
-   * @returns {number}
-   * @private
-   */
-  async _assignPort(defaultPort) {
-    let maxPort = 9200;
-    if (defaultPort > maxPort) {
-      return;
-    }
-    let port = defaultPort;
-    const net = __webpack_require__(808);
-
-    let usePort = false;
-    
-   // while (port < maxPort) {
-   //   await(this.isPortReachable(port, { host: "localhost" }))
-   //   .then((isUsable) => {if (isUsable) {
-   //    return port; 
-   //   }});
-   //   console.log("Port:" + port + " , use:" + usePort);
-   //   port+=1;
-   // }
-   // 
-   // return port;
-    console.log("Start listening on %d", port);
-
-    const server = net.createServer();
-
-    // handle connection error
-    server.once("error", (err) => {
-      usePort = false;
-      console.log("Cannot connect to port %d. Error: " + err, port);
-      // port = this._assignPort(port + 1);
-    });
-
-    // connection successful
-    server.on("listening", function () {
-      console.log("Connection to port %d successful", port);
-      server.close();
-      usePort = true;
-    });
-    server.on("connection", function () {
-      console.log("Connection to port %d successful", port);
-      server.close();
-      usePort = true;
-    });
-
-  //  while (!usePort) {
-  //    console.log(await isPortReachable(port, { host: "localhost" }));
-  //    port+=1;
-  //  }
-
-     await(
-       server.listen(port, () => {
-       console.log("Actual port: %d", port);
-       usePort = true;
-       return port;
-     })
-     );
-
-    console.log(server);
-    server.close();
-    // TODO: replace usePort with code to wait on listen call.
-    // socket stuff is async, watch out for inf loops
-    if (usePort) {
-      console.log("Final portNr = &d", port);
-      return port;
-    }
-    else {
-      console.log("DEBUG: ELSE");
-      port = this._assignPort(port + 1);
-    }
   }
 }
 
@@ -1686,6 +1495,10 @@ class BuildConfigValidator {
     let propertyValidator = `_validate${ucfirst(name)}`;
     if (typeof this[propertyValidator] === 'function') {
       validatedValue = this[propertyValidator](validatedValue, name);
+    }
+
+    if (name == 'devServerPort'){
+      console.log('------ It worked! Port: ' + validatedValue);
     }
 
     this.validatedConfig[property] = cloneValue ? ObjectCloner.cloneValue(validatedValue) : validatedValue;
@@ -2249,7 +2062,7 @@ class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware,
+   * A TCP port number to use for the development server. The default port is 8081. Be aware,
    * that you don't have to configure a separate port for each template of your build.
    * Only the first configuration will be considered.
    *
@@ -2257,8 +2070,7 @@ class BuildConfig {
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
-    this._devServerPort = this.assignPort();
-    // this._devServerPort = devServerPort; TODO 
+    this._devServerPort = devServerPort;
     return this;
   }
 
@@ -2436,26 +2248,6 @@ class BuildConfig {
   validate() {
     return BuildConfigValidator.validate(this);
   }
-
-   /**
-   * @param {number} port - The port to assign
-   * @returns {number}
-   * @private
-   */
-  assignPort(port) {
-    let portNr = port;
-    const net = __webpack_require__(808);
-    const server = net.createServer().listen(port, "localhost");
-
-    server.on("error", (err) => {
-      portNr = this.assignPort(port + 1);
-    });
-
-    server.on("listening", function () {
-      server.close();
-    });
-    return portNr;
-  }
 }
 
 ;// CONCATENATED MODULE: external "zip-webpack-plugin"
@@ -2472,6 +2264,8 @@ const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-p
 var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
 ;// CONCATENATED MODULE: ./package.json
 const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
+;// CONCATENATED MODULE: external "crypto"
+const external_crypto_namespaceObject = require("crypto");
 ;// CONCATENATED MODULE: external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
@@ -2928,6 +2722,32 @@ class AbstractPropertyPlugin {
 class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 }
 
+;// CONCATENATED MODULE: ./src/path-hash-utility.js
+String.prototype.hashCode = function() {
+  let hash = 0,
+    i, chr;
+  if (this.length === 0) return hash;
+  for (i = 0; i < this.length; i++) {
+    chr = this.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+/**
+ * @param {string} filePath
+ * @returns {number}
+ */
+function _createPathHash(filePath) {
+  let hash = filePath.toString().hashCode();
+  if (hash < 0) {
+    hash *= -1;
+    hash = hash + '1';
+  }
+  return hash;
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
 
 
@@ -2950,7 +2770,7 @@ class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
-class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
+class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
@@ -3080,8 +2900,8 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
    * @private
    */
   _importDesignJson() {
-    let designJsonPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
+    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     /**
      * @type {*}
      */
@@ -3212,7 +3032,7 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
    * @private
    */
   _exportDesignHtml(replaceMap) {
-    let designHtmlPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_HTML);
+    let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
     this._updateHtmlTemplate(designHtmlPath, 'design', replaceMap);
   }
 
@@ -3221,7 +3041,7 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
    * @private
    */
   _exportPreviewHtml(replaceMap) {
-    let previewFilePath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.PREVIEW_HTML);
+    let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
     let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview', replaceMap);
 
     if (/\.hbs$/.test(previewFilePath)) {
@@ -3235,8 +3055,8 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
    * @private
    */
   _exportDesignJson(designJsonObj, replaceMap) {
-    let designJsonPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
+    let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
+    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
     let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
@@ -3455,7 +3275,9 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
 
     let extension = this._getTemplateFileExtension(fileObj.path);
     let prefix = external_slugify_default()(filenamePrefix ?? uuid());
-    let pathHash = _createPathHash(fileObj.path);
+
+    let pathForHash = external_path_default().relative(this._config.rootPath, fileObj.path);
+    let pathHash = _createPathHash(this._config.designType + (external_path_default()).posix.sep + pathForHash);
 
     let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + (external_path_default()).posix.sep + filename;
@@ -3621,7 +3443,7 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
    */
   _handleStylesheets(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let cssStylesFilename = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.STYLES_CSS);
+    let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
 
     if (cssStylesFilename === undefined) {
       return content;
@@ -3636,8 +3458,8 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
       .replace(/\n/g, '')
       .replace(staticFolderUrlPattern, inlineSourceAssetsUrl);
 
-    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.CSS_INLINE, source);
-    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
+    content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
+    content = content.replace(_BsiCxWebpackPlugin.CSS_HREF, linkStyleUrl);
 
     return content;
   }
@@ -3647,7 +3469,7 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
    * @returns {string}
    */
   _handleJavaScriptModules(content) {
-    let jsModuleMatches = content.matchAll(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE);
+    let jsModuleMatches = content.matchAll(_BsiCxWebpackPlugin.JS_MODULE);
     let importedModules = [];
 
     for (const match of jsModuleMatches) {
@@ -3661,7 +3483,7 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
 
   _injectModuleRuntime(content) {
     let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
-    let filename = this._getAssetName(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
+    let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
 
     if (filename === undefined) {
       return content;
@@ -3673,8 +3495,8 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
       .trim()
       .replace(/\n/g, '');
 
-    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
-    content = content.replace(bsi_cx_webpack_plugin_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
+    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
+    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
 
     return content;
   }
@@ -3793,7 +3615,7 @@ class bsi_cx_webpack_plugin_BsiCxWebpackPlugin {
     return (0,external_crypto_namespaceObject.createHash)('sha256')
       .update(content)
       .digest('hex')
-      .substr(0, bsi_cx_webpack_plugin_BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
+      .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
   }
 
   /**
@@ -3856,7 +3678,7 @@ class BsiCxWebpackPlugin {
         },
         () => {
           const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new bsi_cx_webpack_plugin_BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
+          new _BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
         })
     });
   }
@@ -6066,10 +5888,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// CONCATENATED MODULE: external "webpack-node-externals/utils"
-const utils_namespaceObject = require("webpack-node-externals/utils");
 ;// CONCATENATED MODULE: ./src/webpack-config-builder.js
-
 
 
 
@@ -6143,6 +5962,7 @@ class WebpackConfigBuilder {
   }
 
   build() {
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '8080';
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,
@@ -6274,7 +6094,7 @@ class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
-    let pathHash = _createPathHash(config.path);
+    let pathHash = _createPathHash(this.config.designType + (external_path_default()).posix.sep + DistFolder.MODULES + (external_path_default()).posix.sep + config.name);
     return {
       import: importPath,
       filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
@@ -6621,7 +6441,7 @@ class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
-    let pathHash = _createPathHash(this.config.staticFileFolderPath + '\\styles.css');
+    let pathHash = _createPathHash(this.config.designType + (external_path_default()).posix.sep + DistFolder.STATIC + (external_path_default()).posix.sep + 'styles.css');
     return [
       new (external_mini_css_extract_plugin_default())({
         filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
@@ -7015,8 +6835,6 @@ function number(value) {
 
 
 
-
-})();
 
 var __webpack_export_target__ = exports;
 for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];

@@ -21,7 +21,7 @@ import QueryConstant from './query-constant';
 import DistFolder from './dist-folder';
 import * as Version from './version';
 import * as DesignType from './design-type';
-import {_createPathHash} from './hash-utility';
+import {_createPathHash} from './path-hash-utility';
 
 export default class WebpackConfigBuilder {
   /**
@@ -71,6 +71,7 @@ export default class WebpackConfigBuilder {
   }
 
   build() {
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '8081';
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,
@@ -202,7 +203,7 @@ export default class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
-    let pathHash = _createPathHash(config.path);
+    let pathHash = _createPathHash(this.config.designType + path.posix.sep + DistFolder.MODULES + path.posix.sep + config.name);
     return {
       import: importPath,
       filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
@@ -549,7 +550,7 @@ export default class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
-    let pathHash = _createPathHash(this.config.staticFileFolderPath + '\\styles.css');
+    let pathHash = _createPathHash(this.config.designType + path.posix.sep + DistFolder.STATIC + path.posix.sep + 'styles.css');
     return [
       new MiniCssExtractPlugin({
         filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,

@@ -17,7 +17,7 @@ import slugify from 'slugify';
 import DesignJsonPropertyExtension from './design-json-property-extension';
 import BsiHtmlAttributes from './bsi-html-attributes';
 import BsiJsPropertyPlugin from './bsi-js-property-plugin';
-import {_createPathHash} from './hash-utility';
+import {_createPathHash} from './path-hash-utility';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -524,7 +524,9 @@ class _BsiCxWebpackPlugin {
 
     let extension = this._getTemplateFileExtension(fileObj.path);
     let prefix = slugify(filenamePrefix ?? uuid());
-    let pathHash = _createPathHash(fileObj.path);
+
+    let pathForHash = path.relative(this._config.rootPath, fileObj.path);
+    let pathHash = _createPathHash(this._config.designType + path.posix.sep + pathForHash);
 
     let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + path.posix.sep + filename;

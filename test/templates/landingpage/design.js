@@ -12,7 +12,6 @@ module.exports = cx.design
   .withTitle('Landingpage Template Test')
   .withAuthor(author)
   .withDate('18.08.2021')
-  .withPreviewImage(require('./thumbnail.png'))
   .withDefaultLocale(Locale.EN)
   .withLocales(
     Locale.EN,

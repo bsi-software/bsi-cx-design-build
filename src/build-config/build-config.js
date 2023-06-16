@@ -347,7 +347,7 @@ export default class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware,
+   * A TCP port number to use for the development server. The default port is 8081. Be aware,
    * that you don't have to configure a separate port for each template of your build.
    * Only the first configuration will be considered.
    *
@@ -355,8 +355,7 @@ export default class BuildConfig {
    * @returns {BuildConfig}
    */
   withDevServerPort(devServerPort) {
-    this._devServerPort = this.assignPort();
-    // this._devServerPort = devServerPort; TODO 
+    this._devServerPort = devServerPort;
     return this;
   }
 
@@ -533,25 +532,5 @@ export default class BuildConfig {
    */
   validate() {
     return BuildConfigValidator.validate(this);
-  }
-
-   /**
-   * @param {number} port - The port to assign
-   * @returns {number}
-   * @private
-   */
-  assignPort(port) {
-    let portNr = port;
-    const net = require("net");
-    const server = net.createServer().listen(port, "localhost");
-
-    server.on("error", (err) => {
-      portNr = this.assignPort(port + 1);
-    });
-
-    server.on("listening", function () {
-      server.close();
-    });
-    return portNr;
   }
 }
