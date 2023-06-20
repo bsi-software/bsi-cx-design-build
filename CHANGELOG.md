@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.12.3] - 16.06.2023
+
+* Changed autoport logic to avoid common port conflicts, new starting port is 9001
+* Changed hashes from content-hash to path-hash, so files keep their names when updated
+* Added landingpage design for testing purpose
+* Added debug run config
+
 ## [1.12.2-rc.1] - 11.05.2023
 
 ### Fixed

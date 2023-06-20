@@ -71,7 +71,7 @@ export default class WebpackConfigBuilder {
   }
 
   build() {
-    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '8081';
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '9001';
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,

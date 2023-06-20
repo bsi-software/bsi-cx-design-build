@@ -347,7 +347,7 @@ export default class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 8081. Be aware,
+   * A TCP port number to use for the development server. The default port is 9001. Be aware,
    * that you don't have to configure a separate port for each template of your build.
    * Only the first configuration will be considered.
    *
