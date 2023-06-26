@@ -1264,10 +1264,7 @@ class DistFolder {
   static SHARED = 'shared';
 }
 
-;// CONCATENATED MODULE: external "net"
-const external_net_namespaceObject = require("net");
 ;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
-
 
 
 
@@ -1283,7 +1280,7 @@ class DefaultBuildConfig {
   }
 
   get copyAssetsFolderPath() {
-    return "assets";
+    return 'assets';
   }
 
   get assetResourceRuleFilename() {
@@ -1299,7 +1296,7 @@ class DefaultBuildConfig {
   }
 
   get devServerPort() {
-    return 'auto'
+    return 'auto';
   }
 
   get hashZipFiles() {
@@ -1311,7 +1308,7 @@ class DefaultBuildConfig {
   }
 
   get modulesRootPath() {
-    return "modules";
+    return 'modules';
   }
 
   get name() {
@@ -1319,7 +1316,7 @@ class DefaultBuildConfig {
   }
 
   get outputPath() {
-    return "dist";
+    return 'dist';
   }
 
   get propertiesFilePath() {
@@ -1335,7 +1332,7 @@ class DefaultBuildConfig {
   }
 
   get staticFileFolderPath() {
-    return "static";
+    return 'static';
   }
 
   get targetVersion() {
@@ -1343,7 +1340,7 @@ class DefaultBuildConfig {
   }
 
   get version() {
-    return "1.0.0";
+    return '1.0.0';
   }
 
   get webpackPlugins() {
@@ -1495,10 +1492,6 @@ class BuildConfigValidator {
     let propertyValidator = `_validate${ucfirst(name)}`;
     if (typeof this[propertyValidator] === 'function') {
       validatedValue = this[propertyValidator](validatedValue, name);
-    }
-
-    if (name == 'devServerPort'){
-      console.log('------ It worked! Port: ' + validatedValue);
     }
 
     this.validatedConfig[property] = cloneValue ? ObjectCloner.cloneValue(validatedValue) : validatedValue;
@@ -2062,7 +2055,7 @@ class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 8081. Be aware,
+   * A TCP port number to use for the development server. The default port is 9001. Be aware,
    * that you don't have to configure a separate port for each template of your build.
    * Only the first configuration will be considered.
    *
@@ -2250,6 +2243,8 @@ class BuildConfig {
   }
 }
 
+;// CONCATENATED MODULE: external "webpack/lib"
+const lib_namespaceObject = require("webpack/lib");
 ;// CONCATENATED MODULE: external "zip-webpack-plugin"
 const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
 var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
@@ -2274,8 +2269,6 @@ const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
 ;// CONCATENATED MODULE: external "webpack"
 const external_webpack_namespaceObject = require("webpack");
-;// CONCATENATED MODULE: external "webpack/lib"
-const lib_namespaceObject = require("webpack/lib");
 ;// CONCATENATED MODULE: ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
@@ -2723,12 +2716,12 @@ class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 }
 
 ;// CONCATENATED MODULE: ./src/path-hash-utility.js
-String.prototype.hashCode = function() {
+  function calculateHashCode(filePath) {
   let hash = 0,
     i, chr;
-  if (this.length === 0) return hash;
-  for (i = 0; i < this.length; i++) {
-    chr = this.charCodeAt(i);
+  if (filePath.length === 0) return hash;
+  for (i = 0; i < filePath.length; i++) {
+    chr = filePath.charCodeAt(i);
     hash = ((hash << 5) - hash) + chr;
     hash |= 0; // Convert to 32bit integer
   }
@@ -2739,8 +2732,8 @@ String.prototype.hashCode = function() {
  * @param {string} filePath
  * @returns {number}
  */
-function _createPathHash(filePath) {
-  let hash = filePath.toString().hashCode();
+function createPathHash(filePath) {
+  let hash = calculateHashCode(filePath);
   if (hash < 0) {
     hash *= -1;
     hash = hash + '1';
@@ -3277,7 +3270,7 @@ class _BsiCxWebpackPlugin {
     let prefix = external_slugify_default()(filenamePrefix ?? uuid());
 
     let pathForHash = external_path_default().relative(this._config.rootPath, fileObj.path);
-    let pathHash = _createPathHash(this._config.designType + (external_path_default()).posix.sep + pathForHash);
+    let pathHash = createPathHash(external_path_default().posix.join(this._config.designType.toString(), pathForHash));
 
     let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + (external_path_default()).posix.sep + filename;
@@ -5914,6 +5907,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -5962,7 +5956,7 @@ class WebpackConfigBuilder {
   }
 
   build() {
-    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '8080';
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '9001';
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,
@@ -6094,7 +6088,7 @@ class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
-    let pathHash = _createPathHash(this.config.designType + (external_path_default()).posix.sep + DistFolder.MODULES + (external_path_default()).posix.sep + config.name);
+    let pathHash = createPathHash(external_path_default().posix.join(this.config.designType.toString(), DistFolder.MODULES, config.name));
     return {
       import: importPath,
       filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
@@ -6310,9 +6304,7 @@ class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: asset => {
-                return getAssetResourceFilename(asset, this.config.designType);
-              }
+              filename: asset => getAssetResourceFilename(asset, this.config.designType)
             },
           },
         ]
@@ -6331,9 +6323,7 @@ class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: asset => {
-            return getAssetResourceFilename(asset, this.config.designType);
-          }
+          filename: asset => getAssetResourceFilename(asset, this.config.designType)
         }
       }
     ];
@@ -6441,7 +6431,7 @@ class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
-    let pathHash = _createPathHash(this.config.designType + (external_path_default()).posix.sep + DistFolder.STATIC + (external_path_default()).posix.sep + 'styles.css');
+    let pathHash = createPathHash(external_path_default().posix.join(this.config.designType.toString(), DistFolder.STATIC, 'styles.css'));
     return [
       new (external_mini_css_extract_plugin_default())({
         filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
@@ -6726,8 +6716,15 @@ class WebpackConfigBuilder {
   }
 }
 
+/**
+ * Create the asset resource filename for given asset and design type.
+ *
+ * @param {Asset} asset
+ * @param {DesignType} designType
+ * @returns {string}
+ */
 function getAssetResourceFilename(asset, designType) {
-  let pathHash = _createPathHash(designType + (external_path_default()).posix.sep + asset.filename);
+  let pathHash = createPathHash(external_path_default().posix.join(designType.toString(), asset.filename));
   return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
 }
 

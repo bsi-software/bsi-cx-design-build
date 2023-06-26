@@ -12,12 +12,12 @@
   "scripts": {
     "build": "webpack --config webpack.config.js --mode production --progress",
     "watch": "webpack --config webpack.config.js --mode production --watch --progress",
-    "pretest": "node \"./test/install.js",
-    "posttest": "node \"./test/uninstall.js",
+    "pretest": "node \"./test/install.js\"",
+    "posttest": "node \"./test/uninstall.js\"",
     "test": "cd test && webpack --config webpack.config.js --mode development --progress",
-    "preserve": "node \"./test/install.js",
+    "preserve": "node \"./test/install.js\"",
     "serve": "cd test && webpack serve --config webpack.config.js --mode development --progress",
-    "postserve": "node \"./test/uninstall.js"
+    "postserve": "node \"./test/uninstall.js\""
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",

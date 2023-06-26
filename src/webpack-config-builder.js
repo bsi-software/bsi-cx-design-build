@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import Asset from 'webpack/lib';
 import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
@@ -21,7 +22,7 @@ import QueryConstant from './query-constant';
 import DistFolder from './dist-folder';
 import * as Version from './version';
 import * as DesignType from './design-type';
-import {_createPathHash} from './path-hash-utility';
+import {createPathHash} from './path-hash-utility';
 
 export default class WebpackConfigBuilder {
   /**
@@ -203,7 +204,7 @@ export default class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
-    let pathHash = _createPathHash(this.config.designType + path.posix.sep + DistFolder.MODULES + path.posix.sep + config.name);
+    let pathHash = createPathHash(path.posix.join(this.config.designType.toString(), DistFolder.MODULES, config.name));
     return {
       import: importPath,
       filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
@@ -419,9 +420,7 @@ export default class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: asset => {
-                return getAssetResourceFilename(asset, this.config.designType);
-              }
+              filename: asset => getAssetResourceFilename(asset, this.config.designType)
             },
           },
         ]
@@ -440,9 +439,7 @@ export default class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: asset => {
-            return getAssetResourceFilename(asset, this.config.designType);
-          }
+          filename: asset => getAssetResourceFilename(asset, this.config.designType)
         }
       }
     ];
@@ -550,7 +547,7 @@ export default class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
-    let pathHash = _createPathHash(this.config.designType + path.posix.sep + DistFolder.STATIC + path.posix.sep + 'styles.css');
+    let pathHash = createPathHash(path.posix.join(this.config.designType.toString(), DistFolder.STATIC, 'styles.css'));
     return [
       new MiniCssExtractPlugin({
         filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
@@ -835,7 +832,14 @@ export default class WebpackConfigBuilder {
   }
 }
 
+/**
+ * Create the asset resource filename for given asset and design type.
+ *
+ * @param {Asset} asset
+ * @param {DesignType} designType
+ * @returns {string}
+ */
 function getAssetResourceFilename(asset, designType) {
-  let pathHash = _createPathHash(designType + path.posix.sep + asset.filename);
+  let pathHash = createPathHash(path.posix.join(designType.toString(), asset.filename));
   return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
 }

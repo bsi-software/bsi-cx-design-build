@@ -1,9 +1,9 @@
-String.prototype.hashCode = function() {
+  function calculateHashCode(filePath) {
   let hash = 0,
     i, chr;
-  if (this.length === 0) return hash;
-  for (i = 0; i < this.length; i++) {
-    chr = this.charCodeAt(i);
+  if (filePath.length === 0) return hash;
+  for (i = 0; i < filePath.length; i++) {
+    chr = filePath.charCodeAt(i);
     hash = ((hash << 5) - hash) + chr;
     hash |= 0; // Convert to 32bit integer
   }
@@ -14,8 +14,8 @@ String.prototype.hashCode = function() {
  * @param {string} filePath
  * @returns {number}
  */
-export function _createPathHash(filePath) {
-  let hash = filePath.toString().hashCode();
+export function createPathHash(filePath) {
+  let hash = calculateHashCode(filePath);
   if (hash < 0) {
     hash *= -1;
     hash = hash + '1';

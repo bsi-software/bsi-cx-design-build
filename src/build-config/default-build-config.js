@@ -1,6 +1,6 @@
-import { CX_22_0 } from "../version";
-import { LANDINGPAGE } from "../design-type";
-import DistFolder from "../dist-folder";
+import { CX_22_0 } from '../version';
+import { LANDINGPAGE } from '../design-type';
+import DistFolder from '../dist-folder';
 
 /** @typedef {import('./build-config-interface').default} BuildConfigInterface */
 
@@ -13,7 +13,7 @@ export default class DefaultBuildConfig {
   }
 
   get copyAssetsFolderPath() {
-    return "assets";
+    return 'assets';
   }
 
   get assetResourceRuleFilename() {
@@ -41,7 +41,7 @@ export default class DefaultBuildConfig {
   }
 
   get modulesRootPath() {
-    return "modules";
+    return 'modules';
   }
 
   get name() {
@@ -49,7 +49,7 @@ export default class DefaultBuildConfig {
   }
 
   get outputPath() {
-    return "dist";
+    return 'dist';
   }
 
   get propertiesFilePath() {
@@ -65,7 +65,7 @@ export default class DefaultBuildConfig {
   }
 
   get staticFileFolderPath() {
-    return "static";
+    return 'static';
   }
 
   get targetVersion() {
@@ -73,7 +73,7 @@ export default class DefaultBuildConfig {
   }
 
   get version() {
-    return "1.0.0";
+    return '1.0.0';
   }
 
   get webpackPlugins() {
