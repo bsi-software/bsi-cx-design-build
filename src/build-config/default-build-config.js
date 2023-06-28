@@ -1,5 +1,5 @@
-import {CX_22_0} from '../version';
-import {LANDINGPAGE} from '../design-type';
+import { CX_22_0 } from '../version';
+import { LANDINGPAGE } from '../design-type';
 import DistFolder from '../dist-folder';
 
 /** @typedef {import('./build-config-interface').default} BuildConfigInterface */

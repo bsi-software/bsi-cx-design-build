@@ -1223,7 +1223,7 @@ declare module "src/build-config/build-config" {
          */
         withPropertiesFilePath(propertiesFilePath: string): BuildConfig;
         /**
-         * A TCP port number to use for the development server. The default port is 9000. Be aware,
+         * A TCP port number to use for the development server. The default port is 9001. Be aware,
          * that you don't have to configure a separate port for each template of your build.
          * Only the first configuration will be considered.
          *
@@ -1722,6 +1722,13 @@ declare module "src/bsi-js-property-plugin" {
     export default class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
     }
     import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
+declare module "src/path-hash-utility" {
+    /**
+     * @param {string} filePath
+     * @returns {number}
+     */
+    export function createPathHash(filePath: string): number;
 }
 declare module "src/bsi-cx-webpack-plugin" {
     export default class BsiCxWebpackPlugin {

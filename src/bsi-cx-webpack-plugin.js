@@ -17,6 +17,7 @@ import slugify from 'slugify';
 import DesignJsonPropertyExtension from './design-json-property-extension';
 import BsiHtmlAttributes from './bsi-html-attributes';
 import BsiJsPropertyPlugin from './bsi-js-property-plugin';
+import {createPathHash} from './path-hash-utility';
 
 class _BsiCxWebpackPlugin {
   /**
@@ -521,10 +522,13 @@ class _BsiCxWebpackPlugin {
       content = /^module\.exports/.test(content) ? this._eval(content) : content;
     }
 
-    let contentHash = this._createContentHash(content);
     let extension = this._getTemplateFileExtension(fileObj.path);
     let prefix = slugify(filenamePrefix ?? uuid());
-    let filename = prefix + '-' + contentHash + '.' + extension;
+
+    let pathForHash = path.relative(this._config.rootPath, fileObj.path);
+    let pathHash = createPathHash(path.posix.join(this._config.designType.toString(), pathForHash));
+
+    let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + path.posix.sep + filename;
 
     content = this._applyReplaceMap(content, replaceMap);

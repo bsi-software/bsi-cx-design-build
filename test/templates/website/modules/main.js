@@ -1,5 +1,6 @@
 require('./comment');
 require('./big');
+require('../static/placeholder')
 
 export default function say(message) {
   alert(message);
@@ -7,3 +8,4 @@ export default function say(message) {
 
 alert('test');
 
+import '../static/placeholder';

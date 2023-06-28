@@ -5,9 +5,28 @@ const {BuildConfig, ModuleConfig, WebpackConfigBuilder, Version, DesignType} = r
 
 module.exports = WebpackConfigBuilder.fromConfigs(
   new BuildConfig()
-    .withName('landingpage')
+    .withName('website')
     .withVersion('1.0.0-alpha')
     .withDesignType(DesignType.WEBSITE)
+    .withTargetVersion(Version.CX_22_0)
+    .withRootPath(path.resolve(__dirname, 'templates', 'website'))
+    .withPropertiesFilePath('properties.js')
+    .withAdditionalStaticAssetFileExtensions('md')
+    .withWebpackPlugins(new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }))
+    .withModules(
+      new ModuleConfig()
+        .withName('main')
+        .withPath('main.js'),
+      new ModuleConfig()
+        .withName('alternate')
+        .withPath('alternate.js')),
+  new BuildConfig()
+    .withName('landingpage')
+    .withVersion('1.0.0-alpha')
+    .withDesignType(DesignType.LANDINGPAGE)
     .withTargetVersion(Version.CX_22_0)
     .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
     .withPropertiesFilePath('properties.js')
@@ -22,4 +41,4 @@ module.exports = WebpackConfigBuilder.fromConfigs(
         .withPath('main.js'),
       new ModuleConfig()
         .withName('alternate')
-        .withPath('alternate.js')));
+        .withPath('alternate.js')),);

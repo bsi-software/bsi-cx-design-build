@@ -1,8 +1,0 @@
-{% import './macro.twig' as macro %}
-{{ macro.version() }}
-{% if cx.version.TARGET >= cx.version.CX_1_3 and cx.design.TARGET == cx.design.WEBSITE %}
-  <div data-bsi-element="content-title" class="element content-title">
-    <h2 data-bsi-element-part="plain-text">{% verbatim %}{{bsi.nls 'title_'}}{% endverbatim %}</h2>
-    <img src="{{ bsi_cx_asset('./placeholder.png') }}" alt="{% verbatim %}{{bsi.nls 'title_'}}{% endverbatim %}"/>
-  </div>
-{% endif %}

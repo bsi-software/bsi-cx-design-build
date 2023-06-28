@@ -63,49 +63,49 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "BuildConfig": () => (/* reexport */ BuildConfig),
-  "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
-  "DesignType": () => (/* reexport */ design_type_namespaceObject),
-  "ModuleConfig": () => (/* reexport */ ModuleConfig),
-  "Version": () => (/* reexport */ version_namespaceObject),
-  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
-  "css": () => (/* reexport */ helper_namespaceObject)
+  BuildConfig: () => (/* reexport */ BuildConfig),
+  DefaultBuildConfig: () => (/* reexport */ DefaultBuildConfig),
+  DesignType: () => (/* reexport */ design_type_namespaceObject),
+  ModuleConfig: () => (/* reexport */ ModuleConfig),
+  Version: () => (/* reexport */ version_namespaceObject),
+  WebpackConfigBuilder: () => (/* reexport */ WebpackConfigBuilder),
+  css: () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  "ALL_TYPES": () => (ALL_TYPES),
-  "DesignType": () => (DesignType),
-  "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (LANDINGPAGE),
-  "LEGACY_TYPES": () => (LEGACY_TYPES),
-  "TARGET": () => (TARGET),
-  "WEBSITE": () => (WEBSITE)
+  ALL_TYPES: () => (ALL_TYPES),
+  DesignType: () => (DesignType),
+  EMAIL: () => (EMAIL),
+  LANDINGPAGE: () => (LANDINGPAGE),
+  LEGACY_TYPES: () => (LEGACY_TYPES),
+  TARGET: () => (TARGET),
+  WEBSITE: () => (WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
 var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
-  "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (CX_22_0),
-  "STUDIO_1_0": () => (STUDIO_1_0),
-  "STUDIO_1_1": () => (STUDIO_1_1),
-  "STUDIO_1_2": () => (STUDIO_1_2),
-  "TARGET": () => (version_TARGET),
-  "Version": () => (Version)
+  CX_1_3: () => (CX_1_3),
+  CX_22_0: () => (CX_22_0),
+  STUDIO_1_0: () => (STUDIO_1_0),
+  STUDIO_1_1: () => (STUDIO_1_1),
+  STUDIO_1_2: () => (STUDIO_1_2),
+  TARGET: () => (version_TARGET),
+  Version: () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/css/helper.js
 var helper_namespaceObject = {};
 __webpack_require__.r(helper_namespaceObject);
 __webpack_require__.d(helper_namespaceObject, {
-  "color": () => (color),
-  "dataUri": () => (dataUri),
-  "number": () => (number),
-  "url": () => (url)
+  color: () => (color),
+  dataUri: () => (dataUri),
+  number: () => (number),
+  url: () => (url)
 });
 
 ;// CONCATENATED MODULE: external "source-map-support/register"
@@ -2055,7 +2055,7 @@ class BuildConfig {
   }
 
   /**
-   * A TCP port number to use for the development server. The default port is 9000. Be aware,
+   * A TCP port number to use for the development server. The default port is 9001. Be aware,
    * that you don't have to configure a separate port for each template of your build.
    * Only the first configuration will be considered.
    *
@@ -2243,6 +2243,8 @@ class BuildConfig {
   }
 }
 
+;// CONCATENATED MODULE: external "webpack/lib"
+const lib_namespaceObject = require("webpack/lib");
 ;// CONCATENATED MODULE: external "zip-webpack-plugin"
 const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
 var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
@@ -2267,8 +2269,6 @@ const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
 ;// CONCATENATED MODULE: external "webpack"
 const external_webpack_namespaceObject = require("webpack");
-;// CONCATENATED MODULE: external "webpack/lib"
-const lib_namespaceObject = require("webpack/lib");
 ;// CONCATENATED MODULE: ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
@@ -2715,7 +2715,34 @@ class AbstractPropertyPlugin {
 class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 }
 
+;// CONCATENATED MODULE: ./src/path-hash-utility.js
+  function calculateHashCode(filePath) {
+  let hash = 0,
+    i, chr;
+  if (filePath.length === 0) return hash;
+  for (i = 0; i < filePath.length; i++) {
+    chr = filePath.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+/**
+ * @param {string} filePath
+ * @returns {number}
+ */
+function createPathHash(filePath) {
+  let hash = calculateHashCode(filePath);
+  if (hash < 0) {
+    hash *= -1;
+    hash = hash + '1';
+  }
+  return hash;
+}
+
 ;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+
 
 
 
@@ -3239,10 +3266,13 @@ class _BsiCxWebpackPlugin {
       content = /^module\.exports/.test(content) ? this._eval(content) : content;
     }
 
-    let contentHash = this._createContentHash(content);
     let extension = this._getTemplateFileExtension(fileObj.path);
     let prefix = external_slugify_default()(filenamePrefix ?? uuid());
-    let filename = prefix + '-' + contentHash + '.' + extension;
+
+    let pathForHash = external_path_default().relative(this._config.rootPath, fileObj.path);
+    let pathHash = createPathHash(external_path_default().posix.join(this._config.designType.toString(), pathForHash));
+
+    let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + (external_path_default()).posix.sep + filename;
 
     content = this._applyReplaceMap(content, replaceMap);
@@ -5876,6 +5906,8 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 
 
 
+
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -5924,6 +5956,7 @@ class WebpackConfigBuilder {
   }
 
   build() {
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '9001';
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,
@@ -6055,9 +6088,10 @@ class WebpackConfigBuilder {
       throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
     }
 
+    let pathHash = createPathHash(external_path_default().posix.join(this.config.designType.toString(), DistFolder.MODULES, config.name));
     return {
       import: importPath,
-      filename: `${DistFolder.MODULES}/[name]-[contenthash].js`,
+      filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
       runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
     };
   }
@@ -6270,8 +6304,8 @@ class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: this.config.assetResourceRuleFilename
-            }
+              filename: asset => getAssetResourceFilename(asset, this.config.designType)
+            },
           },
         ]
       }
@@ -6289,7 +6323,7 @@ class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: this.config.assetResourceRuleFilename
+          filename: asset => getAssetResourceFilename(asset, this.config.designType)
         }
       }
     ];
@@ -6397,9 +6431,10 @@ class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
+    let pathHash = createPathHash(external_path_default().posix.join(this.config.designType.toString(), DistFolder.STATIC, 'styles.css'));
     return [
       new (external_mini_css_extract_plugin_default())({
-        filename: `${DistFolder.STATIC}/styles-[contenthash].css`,
+        filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
       })
     ];
   }
@@ -6679,6 +6714,18 @@ class WebpackConfigBuilder {
 
     return buildConfigs;
   }
+}
+
+/**
+ * Create the asset resource filename for given asset and design type.
+ *
+ * @param {Asset} asset
+ * @param {DesignType} designType
+ * @returns {string}
+ */
+function getAssetResourceFilename(asset, designType) {
+  let pathHash = createPathHash(external_path_default().posix.join(designType.toString(), asset.filename));
+  return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
 }
 
 ;// CONCATENATED MODULE: ./src/css/helper.js

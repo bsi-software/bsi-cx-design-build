@@ -1,6 +1,6 @@
 require('./styles.scss');
 
-const {ContentElement, PlainTextPart, Version, Icon, cx} = require('@bsi-cx/design-build');
+const {ContentElement, PlainTextPart, Icon, cx} = require('@bsi-cx/design-build');
 
 const full = require('../../../html-editor-configs/full');
 
@@ -8,11 +8,9 @@ const full = require('../../../html-editor-configs/full');
  * @type {ContentElement}
  */
 module.exports = cx.contentElement
-  .withMinVersion(Version.CX_22_0)
-  .withMaxVersion(Version.CX_22_0)
-  .withElementId('title')
+  .withElementId('text')
   .withIcon(Icon.HEADING)
-  .withLabel('Titel')
+  .withLabel('Text')
   .withStyleConfigs(
     require('../../../styles/text-color'),
     require('../../../styles/background-color'))
