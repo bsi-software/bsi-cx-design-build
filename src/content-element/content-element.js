@@ -35,12 +35,12 @@ export default class ContentElement extends AbstractBuilder {
    */
   _elementId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _description = undefined;
@@ -83,14 +83,14 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get description() {
     return this._description;
@@ -157,7 +157,7 @@ export default class ContentElement extends AbstractBuilder {
    * @returns {ContentElement}
    * @since Studio 1.0
    */
-  withLabel(label) { // TODO mjt auch nls erlauben & description
+  withLabel(label) {
     this._label = label;
     return this;
   }
@@ -377,7 +377,7 @@ export default class ContentElement extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity); // TODO mjt ${nls.key:test} wie bei dropzone.js - buildinternal -> allowed elements, schauen ob Version >22
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);

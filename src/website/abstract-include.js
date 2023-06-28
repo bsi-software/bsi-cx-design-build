@@ -28,7 +28,7 @@ export default class AbstractInclude extends AbstractBuilder {
    */
   _file = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @protected
    */
   _name = undefined;
@@ -72,7 +72,7 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get name() {
     return this._name;
@@ -121,7 +121,7 @@ export default class AbstractInclude extends AbstractBuilder {
   /**
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
-   * @param {string} name - The name of this include.
+   * @param {string|NLS} name - The name of this include.
    * @returns {this}
    */
   withName(name) {

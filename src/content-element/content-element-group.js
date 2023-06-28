@@ -23,7 +23,7 @@ export default class ContentElementGroup extends AbstractBuilder {
    */
   _groupId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -46,7 +46,7 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -81,7 +81,7 @@ export default class ContentElementGroup extends AbstractBuilder {
   /**
    * The label for this content element group.
    *
-   * @param {string} label - The group label.
+   * @param {string|NLS} label - The group label.
    * @returns {ContentElementGroup}
    */
   withLabel(label) {

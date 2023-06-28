@@ -28,7 +28,7 @@ export default class Style extends AbstractBuilder {
    */
   _identifier = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -46,7 +46,7 @@ export default class Style extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -76,7 +76,7 @@ export default class Style extends AbstractBuilder {
   /**
    * Set the label for this style configuration.
    *
-   * @param {string} label - The label to use.
+   * @param {string|NLS} label - The label to use.
    * @returns {Style}
    */
   withLabel(label) {

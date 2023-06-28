@@ -3,18 +3,20 @@ const {cx, Style} = require('@bsi-cx/design-build');
 /**
  * @type {Style}
  */
+const nls = require('../nls');
+
 module.exports = cx.style
   .withIdentifier('background-color')
-  .withLabel('Hintergrundfarbe')
+  .withLabel(nls.background)
   .withCssClasses(
     cx.cssClass
-      .withLabel('Schwarz')
+      .withLabel(nls.black)
       .withCssClass('black-background'),
     cx.cssClass
       .withLabel('Blau')
       .withCssClass('blue-background'),
     cx.cssClass
-      .withLabel('Rot')
+      .withLabel(nls.red)
       .withCssClass('red-background'),
     cx.cssClass
       .withLabel('Weiss')

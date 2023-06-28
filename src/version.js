@@ -103,4 +103,14 @@ export const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
 /**
  * @type {Version}
  */
+export const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
 export const TARGET = global[Constant.BSI_CX_TARGET_VERSION];
