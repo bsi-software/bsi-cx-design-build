@@ -146,6 +146,10 @@ export default class AbstractBuilder {
     let computedValue;
     let isRawValue = value instanceof RawValue;
 
+    if (property === DesignJsonProperty.NLS && typeof value[0].nlsMarker == 'undefined') {
+      value = Object.values(value[0]);
+    }
+
     switch (true) {
       case isRawValue:
         computedValue = value.value;

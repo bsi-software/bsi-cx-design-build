@@ -63,49 +63,51 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  BuildConfig: () => (/* reexport */ BuildConfig),
-  DefaultBuildConfig: () => (/* reexport */ DefaultBuildConfig),
-  DesignType: () => (/* reexport */ design_type_namespaceObject),
-  ModuleConfig: () => (/* reexport */ ModuleConfig),
-  Version: () => (/* reexport */ version_namespaceObject),
-  WebpackConfigBuilder: () => (/* reexport */ WebpackConfigBuilder),
-  css: () => (/* reexport */ helper_namespaceObject)
+  "BuildConfig": () => (/* reexport */ BuildConfig),
+  "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
+  "DesignType": () => (/* reexport */ design_type_namespaceObject),
+  "ModuleConfig": () => (/* reexport */ ModuleConfig),
+  "Version": () => (/* reexport */ version_namespaceObject),
+  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
+  "css": () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  ALL_TYPES: () => (ALL_TYPES),
-  DesignType: () => (DesignType),
-  EMAIL: () => (EMAIL),
-  LANDINGPAGE: () => (LANDINGPAGE),
-  LEGACY_TYPES: () => (LEGACY_TYPES),
-  TARGET: () => (TARGET),
-  WEBSITE: () => (WEBSITE)
+  "ALL_TYPES": () => (ALL_TYPES),
+  "DesignType": () => (DesignType),
+  "EMAIL": () => (EMAIL),
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "LEGACY_TYPES": () => (LEGACY_TYPES),
+  "TARGET": () => (TARGET),
+  "WEBSITE": () => (WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
 var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
-  CX_1_3: () => (CX_1_3),
-  CX_22_0: () => (CX_22_0),
-  STUDIO_1_0: () => (STUDIO_1_0),
-  STUDIO_1_1: () => (STUDIO_1_1),
-  STUDIO_1_2: () => (STUDIO_1_2),
-  TARGET: () => (version_TARGET),
-  Version: () => (Version)
+  "CX_1_3": () => (CX_1_3),
+  "CX_22_0": () => (CX_22_0),
+  "CX_23_1": () => (CX_23_1),
+  "CX_23_2": () => (CX_23_2),
+  "STUDIO_1_0": () => (STUDIO_1_0),
+  "STUDIO_1_1": () => (STUDIO_1_1),
+  "STUDIO_1_2": () => (STUDIO_1_2),
+  "TARGET": () => (version_TARGET),
+  "Version": () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/css/helper.js
 var helper_namespaceObject = {};
 __webpack_require__.r(helper_namespaceObject);
 __webpack_require__.d(helper_namespaceObject, {
-  color: () => (color),
-  dataUri: () => (dataUri),
-  number: () => (number),
-  url: () => (url)
+  "color": () => (color),
+  "dataUri": () => (dataUri),
+  "number": () => (number),
+  "url": () => (url)
 });
 
 ;// CONCATENATED MODULE: external "source-map-support/register"
@@ -200,6 +202,10 @@ class Constant {
    * @type {string}
    */
   static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
 ;// CONCATENATED MODULE: ./src/design-type.js
@@ -358,6 +364,16 @@ const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
 /**
  * @type {Version}
  */
+const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
+
+/**
+ * @type {Version}
+ */
+const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
 ;// CONCATENATED MODULE: ./src/raw-value.js
@@ -381,7 +397,173 @@ class RawValue {
   }
 }
 
+;// CONCATENATED MODULE: ./src/design-json-property.js
+class DesignJsonProperty {
+  /**
+   * @type {string}
+   */
+  static ID = 'id';
+  /**
+   * @type {string}
+   */
+  static SCHEMA_VERSION = 'schemaVersion';
+  /**
+   * @type {string}
+   */
+  static TITLE = 'title';
+  /**
+   * @type {string}
+   */
+  static AUTHOR = 'author';
+  /**
+   * @type {string}
+   */
+  static DATE = 'date';
+  /**
+   * @type {string}
+   */
+  static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static DEFAULT_LOCALE = 'defaultLocale';
+  /**
+   * @type {string}
+   */
+  static LOCALES = 'locales';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
+  /**
+   * @type {string}
+   */
+  static GROUP_ID = 'groupId';
+  /**
+   * @type {string}
+   */
+  static CONTENT_ELEMENTS = 'contentElements';
+  /**
+   * @type {string}
+   */
+  static ELEMENT_ID = 'elementId';
+  /**
+   * @type {string}
+   */
+  static FILE = 'file';
+  /**
+   * @type {string}
+   */
+  static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static PARTS = 'parts';
+  /**
+   * @type {string}
+   */
+  static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
+  /**
+   * @type {string}
+   */
+  static LABEL = 'label';
+  /**
+   * @type {string}
+   */
+  static DESCRIPTION = 'description';
+  /**
+   * @type {string}
+   */
+  static HIDDEN = 'hidden';
+  /**
+   * @type {string}
+   */
+  static STYLE_CONFIGS = 'styleConfigs';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASSES = 'cssClasses';
+  /**
+   * @type {string}
+   */
+  static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
+  /**
+   * @type {string}
+   */
+  static FEATURES = 'features';
+  /**
+   * @type {string}
+   */
+  static TEXT_COLORS = 'textColors';
+  /**
+   * @type {string}
+   */
+  static BACKGROUND_COLORS = 'backgroundColors';
+  /**
+   * @type {string}
+   */
+  static FORMATS = 'formats';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZES = 'fontSizes';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_UNIT = 'fontSizeUnit';
+  /**
+   * @type {string}
+   */
+  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
+  /**
+   * @type {string}
+   */
+  static LINE_HEIGHTS = 'lineHeights';
+  /**
+   * @type {string}
+   */
+  static ENTER_MODE = 'enter';
+  /**
+   * @type {string}
+   */
+  static WEBSITE = 'website';
+  /**
+   * @type {string}
+   */
+  static NLS = 'nls';
+  /**
+   * @type {string}
+   */
+  static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
+  /**
+   * @type {string}
+   */
+  static INCLUDES = 'includes';
+  /**
+   * @type {string}
+   */
+  static EDITABLE = 'editable';
+  /**
+   * @type {string}
+   */
+  static NAME = 'name';
+  /**
+   * @type {string}
+   */
+  static PAGE_INCLUDE = '__page__';
+}
+
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
+
+
 
 
 
@@ -528,6 +710,10 @@ class AbstractBuilder {
     let computedValue;
     let isRawValue = value instanceof RawValue;
 
+    if (property === DesignJsonProperty.NLS && typeof value[0].nlsMarker == 'undefined') {
+      value = Object.values(value[0]);
+    }
+
     switch (true) {
       case isRawValue:
         computedValue = value.value;
@@ -541,6 +727,19 @@ class AbstractBuilder {
       default:
         computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
+    }
+
+    if (typeof value.nlsMarker !== 'undefined' &&
+      (property === DesignJsonProperty.LABEL || property === DesignJsonProperty.DESCRIPTION || property === DesignJsonProperty.NAME)) {
+      if (version_TARGET.valueOf() >= CX_23_2.valueOf()) {
+        computedValue = '${nlsKey:' + computedValue.identifier + '}';
+      } else {
+        for (let item of computedValue.translations) {
+          if (item.locale === __webpack_require__.g[Constant.BSI_CX_DEFAULT_LOCALE] || item.locale.value === '*') {
+            computedValue = item.translation;
+          }
+        }
+      }
     }
 
     if (!!arrayToObject && !isRawValue) {
@@ -2274,170 +2473,6 @@ const external_webpack_namespaceObject = require("webpack");
   'bsi.nls': key => key
 });
 
-;// CONCATENATED MODULE: ./src/design-json-property.js
-class DesignJsonProperty {
-  /**
-   * @type {string}
-   */
-  static ID = 'id';
-  /**
-   * @type {string}
-   */
-  static SCHEMA_VERSION = 'schemaVersion';
-  /**
-   * @type {string}
-   */
-  static TITLE = 'title';
-  /**
-   * @type {string}
-   */
-  static AUTHOR = 'author';
-  /**
-   * @type {string}
-   */
-  static DATE = 'date';
-  /**
-   * @type {string}
-   */
-  static PREVIEW_IMAGE = 'previewImage';
-  /**
-   * @type {string}
-   */
-  static DEFAULT_LOCALE = 'defaultLocale';
-  /**
-   * @type {string}
-   */
-  static LOCALES = 'locales';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENT_GROUPS = 'contentElementGroups';
-  /**
-   * @type {string}
-   */
-  static GROUP_ID = 'groupId';
-  /**
-   * @type {string}
-   */
-  static CONTENT_ELEMENTS = 'contentElements';
-  /**
-   * @type {string}
-   */
-  static ELEMENT_ID = 'elementId';
-  /**
-   * @type {string}
-   */
-  static FILE = 'file';
-  /**
-   * @type {string}
-   */
-  static ICON = 'icon';
-  /**
-   * @type {string}
-   */
-  static PARTS = 'parts';
-  /**
-   * @type {string}
-   */
-  static PART_ID = 'partId';
-  /**
-   * @type {string}
-   */
-  static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
-  /**
-   * @type {string}
-   */
-  static LABEL = 'label';
-  /**
-   * @type {string}
-   */
-  static DESCRIPTION = 'description';
-  /**
-   * @type {string}
-   */
-  static HIDDEN = 'hidden';
-  /**
-   * @type {string}
-   */
-  static STYLE_CONFIGS = 'styleConfigs';
-  /**
-   * @type {string}
-   */
-  static CSS_CLASSES = 'cssClasses';
-  /**
-   * @type {string}
-   */
-  static CSS_CLASS = 'cssClass';
-  /**
-   * @type {string}
-   */
-  static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
-  /**
-   * @type {string}
-   */
-  static FEATURES = 'features';
-  /**
-   * @type {string}
-   */
-  static TEXT_COLORS = 'textColors';
-  /**
-   * @type {string}
-   */
-  static BACKGROUND_COLORS = 'backgroundColors';
-  /**
-   * @type {string}
-   */
-  static FORMATS = 'formats';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZES = 'fontSizes';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZE_UNIT = 'fontSizeUnit';
-  /**
-   * @type {string}
-   */
-  static FONT_SIZE_DEFAULT = 'fontSizeDefault';
-  /**
-   * @type {string}
-   */
-  static LINE_HEIGHTS = 'lineHeights';
-  /**
-   * @type {string}
-   */
-  static ENTER_MODE = 'enter';
-  /**
-   * @type {string}
-   */
-  static WEBSITE = 'website';
-  /**
-   * @type {string}
-   */
-  static NLS = 'nls';
-  /**
-   * @type {string}
-   */
-  static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
-  /**
-   * @type {string}
-   */
-  static INCLUDES = 'includes';
-  /**
-   * @type {string}
-   */
-  static EDITABLE = 'editable';
-  /**
-   * @type {string}
-   */
-  static NAME = 'name';
-  /**
-   * @type {string}
-   */
-  static PAGE_INCLUDE = '__page__';
-}
-
 ;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
@@ -2970,7 +3005,7 @@ class _BsiCxWebpackPlugin {
          */
         let needle = new RegExp(escapeRegex(id), 'g');
 
-        replaceMap.set(id, haystack => haystack.replace(needle, partId)); // Todo mjt hier werden element part ids ersetzt
+        replaceMap.set(id, haystack => haystack.replace(needle, partId));
       });
   }
 
@@ -3081,15 +3116,7 @@ class _BsiCxWebpackPlugin {
       ...rest
     };
 
-    // TODO mjt nls key referenz, im String
-    let nls = json.nls;
     let jsonStr = JSON.stringify(json, null, 2);
-
-    Object.entries(nls).forEach(([id, value]) => jsonStr = jsonStr.replaceAll('\${nlsKey:qr.code}', value));
-
-    /* Object.entries(nls).forEach(([id, value]) => jsonStr = jsonStr.replaceAll('\${nlsKey:qr.code}'), value));
-    jsonStr.replaceAll("${nlsKey:qr.code}") */
-
     this._updateAsset(designJsonPath, jsonStr);
     this._deleteAsset(designJsonChunkPath);
   }
@@ -3297,7 +3324,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyReplaceMap(content, replaceMap) {
-    replaceMap.forEach(replaceFunc => content = replaceFunc(content)); // Todo mjt ersetzt
+    replaceMap.forEach(replaceFunc => content = replaceFunc(content));
 
     return content;
   }
@@ -3382,9 +3409,8 @@ class _BsiCxWebpackPlugin {
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
-    context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion; // TODO mjt zugriff auf targetversion aus design webpack.config.js
+    context[Constant.BSI_CX_TARGET_VERSION] = this._config.targetVersion;
     context[Constant.BSI_CX_TARGET_TYPE] = this._config.designType;
-    // context[Constant.BSI_CX_LOCALE] = this._config.locale; // TODO mjt und dann in content-elements.js -> _buildInternal referenzieren
 
     external_vm_default().createContext(context);
 
@@ -3398,6 +3424,11 @@ class _BsiCxWebpackPlugin {
       });
 
       script.runInContext(context);
+    }
+
+    let defaultLocale = context[scope][DesignJsonProperty.DEFAULT_LOCALE];
+    if (typeof defaultLocale !== 'undefined') {
+      context[Constant.BSI_CX_DEFAULT_LOCALE] = defaultLocale;
     }
 
     return context[scope];

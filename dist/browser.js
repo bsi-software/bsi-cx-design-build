@@ -51,264 +51,268 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  AbstractBuilder: () => (/* reexport */ AbstractBuilder),
-  AbstractConstant: () => (/* reexport */ AbstractConstant),
-  AbstractPart: () => (/* reexport */ AbstractPart),
-  BackgroundImagePart: () => (/* reexport */ BackgroundImagePart),
-  BuilderObjectNormalizer: () => (/* reexport */ BuilderObjectNormalizer),
-  ContentElement: () => (/* reexport */ ContentElement),
-  ContentElementGroup: () => (/* reexport */ ContentElementGroup),
-  CssClass: () => (/* reexport */ CssClass),
-  Design: () => (/* reexport */ Design),
-  DesignJsonProperty: () => (/* reexport */ DesignJsonProperty),
-  DesignType: () => (/* reexport */ design_type_namespaceObject),
-  Dropzone: () => (/* reexport */ Dropzone),
-  EnterMode: () => (/* reexport */ enter_mode_namespaceObject),
-  Feature: () => (/* reexport */ feature_namespaceObject),
-  FontSizeUnit: () => (/* reexport */ font_size_unit_namespaceObject),
-  FormCheckboxPart: () => (/* reexport */ FormCheckboxPart),
-  FormFieldPart: () => (/* reexport */ FormFieldPart),
-  FormPart: () => (/* reexport */ FormPart),
-  FormRadioPart: () => (/* reexport */ FormRadioPart),
-  FormSelectPart: () => (/* reexport */ FormSelectPart),
-  FormTextareaPart: () => (/* reexport */ FormTextareaPart),
-  Format: () => (/* reexport */ format_namespaceObject),
-  FormattedTextPart: () => (/* reexport */ FormattedTextPart),
-  HtmlEditorConfig: () => (/* reexport */ HtmlEditorConfig),
-  HtmlPart: () => (/* reexport */ HtmlPart),
-  Icon: () => (/* reexport */ icon_namespaceObject),
-  ImagePart: () => (/* reexport */ ImagePart),
-  Include: () => (/* reexport */ Include),
-  IteratorPart: () => (/* reexport */ IteratorPart),
-  LinkPart: () => (/* reexport */ LinkPart),
-  Locale: () => (/* reexport */ locale_namespaceObject),
-  NLS: () => (/* reexport */ NLS),
-  NewsSnippetsPart: () => (/* reexport */ NewsSnippetsPart),
-  ObjectCloner: () => (/* reexport */ ObjectCloner),
-  PageInclude: () => (/* reexport */ PageInclude),
-  Part: () => (/* reexport */ part_namespaceObject),
-  PlainTextPart: () => (/* reexport */ PlainTextPart),
-  RawPart: () => (/* reexport */ RawPart),
-  RawValue: () => (/* reexport */ RawValue),
-  SchemaVersion: () => (/* reexport */ schema_version_namespaceObject),
-  SocialFollowPart: () => (/* reexport */ SocialFollowPart),
-  SocialSharePart: () => (/* reexport */ SocialSharePart),
-  Style: () => (/* reexport */ Style),
-  TablePart: () => (/* reexport */ TablePart),
-  Translation: () => (/* reexport */ Translation),
-  UrlProviderPart: () => (/* reexport */ UrlProviderPart),
-  Version: () => (/* reexport */ version_namespaceObject),
-  VideoPart: () => (/* reexport */ VideoPart),
-  Website: () => (/* reexport */ Website),
-  bsiProperty: () => (/* reexport */ bsiProperty),
-  cx: () => (/* binding */ cx)
+  "AbstractBuilder": () => (/* reexport */ AbstractBuilder),
+  "AbstractConstant": () => (/* reexport */ AbstractConstant),
+  "AbstractPart": () => (/* reexport */ AbstractPart),
+  "BackgroundImagePart": () => (/* reexport */ BackgroundImagePart),
+  "BuilderObjectNormalizer": () => (/* reexport */ BuilderObjectNormalizer),
+  "ContentElement": () => (/* reexport */ ContentElement),
+  "ContentElementGroup": () => (/* reexport */ ContentElementGroup),
+  "CssClass": () => (/* reexport */ CssClass),
+  "Design": () => (/* reexport */ Design),
+  "DesignJsonProperty": () => (/* reexport */ DesignJsonProperty),
+  "DesignType": () => (/* reexport */ design_type_namespaceObject),
+  "Dropzone": () => (/* reexport */ Dropzone),
+  "EnterMode": () => (/* reexport */ enter_mode_namespaceObject),
+  "Feature": () => (/* reexport */ feature_namespaceObject),
+  "FontSizeUnit": () => (/* reexport */ font_size_unit_namespaceObject),
+  "FormCheckboxPart": () => (/* reexport */ FormCheckboxPart),
+  "FormFieldPart": () => (/* reexport */ FormFieldPart),
+  "FormPart": () => (/* reexport */ FormPart),
+  "FormRadioPart": () => (/* reexport */ FormRadioPart),
+  "FormSelectPart": () => (/* reexport */ FormSelectPart),
+  "FormTextareaPart": () => (/* reexport */ FormTextareaPart),
+  "Format": () => (/* reexport */ format_namespaceObject),
+  "FormattedTextPart": () => (/* reexport */ FormattedTextPart),
+  "HtmlEditorConfig": () => (/* reexport */ HtmlEditorConfig),
+  "HtmlPart": () => (/* reexport */ HtmlPart),
+  "Icon": () => (/* reexport */ icon_namespaceObject),
+  "ImagePart": () => (/* reexport */ ImagePart),
+  "Include": () => (/* reexport */ Include),
+  "IteratorPart": () => (/* reexport */ IteratorPart),
+  "LinkPart": () => (/* reexport */ LinkPart),
+  "Locale": () => (/* reexport */ locale_namespaceObject),
+  "NLS": () => (/* reexport */ NLS),
+  "NewsSnippetsPart": () => (/* reexport */ NewsSnippetsPart),
+  "ObjectCloner": () => (/* reexport */ ObjectCloner),
+  "PageInclude": () => (/* reexport */ PageInclude),
+  "Part": () => (/* reexport */ part_namespaceObject),
+  "PlainTextPart": () => (/* reexport */ PlainTextPart),
+  "RawPart": () => (/* reexport */ RawPart),
+  "RawValue": () => (/* reexport */ RawValue),
+  "SchemaVersion": () => (/* reexport */ schema_version_namespaceObject),
+  "SocialFollowPart": () => (/* reexport */ SocialFollowPart),
+  "SocialSharePart": () => (/* reexport */ SocialSharePart),
+  "Style": () => (/* reexport */ Style),
+  "TablePart": () => (/* reexport */ TablePart),
+  "Translation": () => (/* reexport */ Translation),
+  "UrlProviderPart": () => (/* reexport */ UrlProviderPart),
+  "Version": () => (/* reexport */ version_namespaceObject),
+  "VideoPart": () => (/* reexport */ VideoPart),
+  "Website": () => (/* reexport */ Website),
+  "bsiProperty": () => (/* reexport */ bsiProperty),
+  "cx": () => (/* binding */ cx)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  ALL_TYPES: () => (ALL_TYPES),
-  DesignType: () => (DesignType),
-  EMAIL: () => (EMAIL),
-  LANDINGPAGE: () => (LANDINGPAGE),
-  LEGACY_TYPES: () => (LEGACY_TYPES),
-  TARGET: () => (TARGET),
-  WEBSITE: () => (WEBSITE)
+  "ALL_TYPES": () => (ALL_TYPES),
+  "DesignType": () => (DesignType),
+  "EMAIL": () => (EMAIL),
+  "LANDINGPAGE": () => (LANDINGPAGE),
+  "LEGACY_TYPES": () => (LEGACY_TYPES),
+  "TARGET": () => (TARGET),
+  "WEBSITE": () => (WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
 var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
-  CX_1_3: () => (CX_1_3),
-  CX_22_0: () => (CX_22_0),
-  STUDIO_1_0: () => (STUDIO_1_0),
-  STUDIO_1_1: () => (STUDIO_1_1),
-  STUDIO_1_2: () => (STUDIO_1_2),
-  TARGET: () => (version_TARGET),
-  Version: () => (Version)
+  "CX_1_3": () => (CX_1_3),
+  "CX_22_0": () => (CX_22_0),
+  "CX_23_1": () => (CX_23_1),
+  "CX_23_2": () => (CX_23_2),
+  "STUDIO_1_0": () => (STUDIO_1_0),
+  "STUDIO_1_1": () => (STUDIO_1_1),
+  "STUDIO_1_2": () => (STUDIO_1_2),
+  "TARGET": () => (version_TARGET),
+  "Version": () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/design/locale.js
 var locale_namespaceObject = {};
 __webpack_require__.r(locale_namespaceObject);
 __webpack_require__.d(locale_namespaceObject, {
-  DE: () => (DE),
-  DE_CH: () => (DE_CH),
-  DE_DE: () => (DE_DE),
-  EN: () => (EN),
-  EN_GB: () => (EN_GB),
-  EN_US: () => (EN_US),
-  FR: () => (FR),
-  FR_CH: () => (FR_CH),
-  IT: () => (IT),
-  IT_CH: () => (IT_CH),
-  Locale: () => (Locale),
-  WILDCARD: () => (WILDCARD)
+  "DE": () => (DE),
+  "DE_CH": () => (DE_CH),
+  "DE_DE": () => (DE_DE),
+  "EN": () => (EN),
+  "EN_GB": () => (EN_GB),
+  "EN_US": () => (EN_US),
+  "FR": () => (FR),
+  "FR_CH": () => (FR_CH),
+  "IT": () => (IT),
+  "IT_CH": () => (IT_CH),
+  "Locale": () => (Locale),
+  "WILDCARD": () => (WILDCARD)
 });
 
 // NAMESPACE OBJECT: ./src/design/schema-version.js
 var schema_version_namespaceObject = {};
 __webpack_require__.r(schema_version_namespaceObject);
 __webpack_require__.d(schema_version_namespaceObject, {
-  SchemaVersion: () => (SchemaVersion),
-  V_1_0: () => (V_1_0),
-  V_22_0: () => (V_22_0)
+  "SchemaVersion": () => (SchemaVersion),
+  "V_1_0": () => (V_1_0),
+  "V_22_0": () => (V_22_0),
+  "V_23_1": () => (V_23_1),
+  "V_23_2": () => (V_23_2)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
 var feature_namespaceObject = {};
 __webpack_require__.r(feature_namespaceObject);
 __webpack_require__.d(feature_namespaceObject, {
-  ALIGN_CENTER: () => (ALIGN_CENTER),
-  ALIGN_JUSTIFY: () => (ALIGN_JUSTIFY),
-  ALIGN_LEFT: () => (ALIGN_LEFT),
-  ALIGN_RIGHT: () => (ALIGN_RIGHT),
-  BACKGROUND_COLOR: () => (BACKGROUND_COLOR),
-  BOLD: () => (BOLD),
-  CLEAR_FORMATTING: () => (CLEAR_FORMATTING),
-  EMOTICONS: () => (EMOTICONS),
-  FONT_SIZE: () => (FONT_SIZE),
-  FORMAT_OL: () => (FORMAT_OL),
-  FORMAT_UL: () => (FORMAT_UL),
-  FULLSCREEN: () => (FULLSCREEN),
-  Feature: () => (Feature),
-  HELP: () => (HELP),
-  HTML: () => (HTML),
-  INDENT: () => (INDENT),
-  INSERT_LINK: () => (INSERT_LINK),
-  ITALIC: () => (ITALIC),
-  LINE_HEIGHT: () => (LINE_HEIGHT),
-  OUTDENT: () => (OUTDENT),
-  PARAGRAPH_FORMAT: () => (PARAGRAPH_FORMAT),
-  QUOTE: () => (QUOTE),
-  REDO: () => (REDO),
-  SELECT_ALL: () => (SELECT_ALL),
-  SPECIAL_CHARACTERS: () => (SPECIAL_CHARACTERS),
-  STRIKE_THROUGH: () => (STRIKE_THROUGH),
-  SUBSCRIPT: () => (SUBSCRIPT),
-  SUPERSCRIPT: () => (SUPERSCRIPT),
-  TEXT_COLOR: () => (TEXT_COLOR),
-  UNDERLINE: () => (UNDERLINE),
-  UNDO: () => (UNDO)
+  "ALIGN_CENTER": () => (ALIGN_CENTER),
+  "ALIGN_JUSTIFY": () => (ALIGN_JUSTIFY),
+  "ALIGN_LEFT": () => (ALIGN_LEFT),
+  "ALIGN_RIGHT": () => (ALIGN_RIGHT),
+  "BACKGROUND_COLOR": () => (BACKGROUND_COLOR),
+  "BOLD": () => (BOLD),
+  "CLEAR_FORMATTING": () => (CLEAR_FORMATTING),
+  "EMOTICONS": () => (EMOTICONS),
+  "FONT_SIZE": () => (FONT_SIZE),
+  "FORMAT_OL": () => (FORMAT_OL),
+  "FORMAT_UL": () => (FORMAT_UL),
+  "FULLSCREEN": () => (FULLSCREEN),
+  "Feature": () => (Feature),
+  "HELP": () => (HELP),
+  "HTML": () => (HTML),
+  "INDENT": () => (INDENT),
+  "INSERT_LINK": () => (INSERT_LINK),
+  "ITALIC": () => (ITALIC),
+  "LINE_HEIGHT": () => (LINE_HEIGHT),
+  "OUTDENT": () => (OUTDENT),
+  "PARAGRAPH_FORMAT": () => (PARAGRAPH_FORMAT),
+  "QUOTE": () => (QUOTE),
+  "REDO": () => (REDO),
+  "SELECT_ALL": () => (SELECT_ALL),
+  "SPECIAL_CHARACTERS": () => (SPECIAL_CHARACTERS),
+  "STRIKE_THROUGH": () => (STRIKE_THROUGH),
+  "SUBSCRIPT": () => (SUBSCRIPT),
+  "SUPERSCRIPT": () => (SUPERSCRIPT),
+  "TEXT_COLOR": () => (TEXT_COLOR),
+  "UNDERLINE": () => (UNDERLINE),
+  "UNDO": () => (UNDO)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/enter-mode.js
 var enter_mode_namespaceObject = {};
 __webpack_require__.r(enter_mode_namespaceObject);
 __webpack_require__.d(enter_mode_namespaceObject, {
-  BR: () => (BR),
-  DIV: () => (DIV),
-  EnterMode: () => (EnterMode),
-  P: () => (P)
+  "BR": () => (BR),
+  "DIV": () => (DIV),
+  "EnterMode": () => (EnterMode),
+  "P": () => (P)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/font-size-unit.js
 var font_size_unit_namespaceObject = {};
 __webpack_require__.r(font_size_unit_namespaceObject);
 __webpack_require__.d(font_size_unit_namespaceObject, {
-  CM: () => (CM),
-  EM: () => (EM),
-  FontSizeUnit: () => (FontSizeUnit),
-  MM: () => (MM),
-  PT: () => (PT),
-  PX: () => (PX),
-  REM: () => (REM)
+  "CM": () => (CM),
+  "EM": () => (EM),
+  "FontSizeUnit": () => (FontSizeUnit),
+  "MM": () => (MM),
+  "PT": () => (PT),
+  "PX": () => (PX),
+  "REM": () => (REM)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/format.js
 var format_namespaceObject = {};
 __webpack_require__.r(format_namespaceObject);
 __webpack_require__.d(format_namespaceObject, {
-  Format: () => (Format),
-  H1: () => (H1),
-  H2: () => (H2),
-  H3: () => (H3),
-  H4: () => (H4),
-  H5: () => (H5),
-  H6: () => (H6),
-  P: () => (format_P),
-  PRE: () => (PRE)
+  "Format": () => (Format),
+  "H1": () => (H1),
+  "H2": () => (H2),
+  "H3": () => (H3),
+  "H4": () => (H4),
+  "H5": () => (H5),
+  "H6": () => (H6),
+  "P": () => (format_P),
+  "PRE": () => (PRE)
 });
 
 // NAMESPACE OBJECT: ./src/content-element/icon.js
 var icon_namespaceObject = {};
 __webpack_require__.r(icon_namespaceObject);
 __webpack_require__.d(icon_namespaceObject, {
-  ASTERISK: () => (ASTERISK),
-  CHAIN: () => (CHAIN),
-  CHECKBOX: () => (CHECKBOX),
-  COMMUNICATION: () => (COMMUNICATION),
-  COMPASS: () => (COMPASS),
-  DIAGRAM_AREA: () => (DIAGRAM_AREA),
-  DIAGRAM_BAR: () => (DIAGRAM_BAR),
-  DIAGRAM_LINE: () => (DIAGRAM_LINE),
-  DIVIDER: () => (DIVIDER),
-  DOCUMENT: () => (DOCUMENT),
-  DROPDOWN: () => (DROPDOWN),
-  ENVELOPE: () => (ENVELOPE),
-  FACEBOOK: () => (FACEBOOK),
-  FORMFIELD: () => (FORMFIELD),
-  HANDSHAKE: () => (HANDSHAKE),
-  HEADING: () => (HEADING),
-  HEADSET: () => (HEADSET),
-  HEART: () => (HEART),
-  IMAGE: () => (IMAGE),
-  INFO: () => (INFO),
-  Icon: () => (Icon),
-  LIST: () => (LIST),
-  MEGAPHONE: () => (MEGAPHONE),
-  METADATA: () => (METADATA),
-  ONE_COLUMN: () => (ONE_COLUMN),
-  PAPERCLIP: () => (PAPERCLIP),
-  PARAMETER: () => (PARAMETER),
-  PERSON_FEMALE: () => (PERSON_FEMALE),
-  PERSON_MALE: () => (PERSON_MALE),
-  PHONE: () => (PHONE),
-  PILE: () => (PILE),
-  QRCODE: () => (QRCODE),
-  RADIOBUTTON: () => (RADIOBUTTON),
-  SIGNPOST: () => (SIGNPOST),
-  SMILEY: () => (SMILEY),
-  SNIPPET: () => (SNIPPET),
-  SOCIAL_FOLLOW: () => (SOCIAL_FOLLOW),
-  SOCIAL_SHARE: () => (SOCIAL_SHARE),
-  TABLE: () => (TABLE),
-  TEXT: () => (TEXT),
-  TEXTAREA: () => (TEXTAREA),
-  TEXT_WITH_IMAGE: () => (TEXT_WITH_IMAGE),
-  THREE_COLUMNS: () => (THREE_COLUMNS),
-  TWITTER: () => (TWITTER),
-  TWO_COLUMNS: () => (TWO_COLUMNS),
-  VIDEO: () => (VIDEO),
-  YOUTUBE: () => (YOUTUBE)
+  "ASTERISK": () => (ASTERISK),
+  "CHAIN": () => (CHAIN),
+  "CHECKBOX": () => (CHECKBOX),
+  "COMMUNICATION": () => (COMMUNICATION),
+  "COMPASS": () => (COMPASS),
+  "DIAGRAM_AREA": () => (DIAGRAM_AREA),
+  "DIAGRAM_BAR": () => (DIAGRAM_BAR),
+  "DIAGRAM_LINE": () => (DIAGRAM_LINE),
+  "DIVIDER": () => (DIVIDER),
+  "DOCUMENT": () => (DOCUMENT),
+  "DROPDOWN": () => (DROPDOWN),
+  "ENVELOPE": () => (ENVELOPE),
+  "FACEBOOK": () => (FACEBOOK),
+  "FORMFIELD": () => (FORMFIELD),
+  "HANDSHAKE": () => (HANDSHAKE),
+  "HEADING": () => (HEADING),
+  "HEADSET": () => (HEADSET),
+  "HEART": () => (HEART),
+  "IMAGE": () => (IMAGE),
+  "INFO": () => (INFO),
+  "Icon": () => (Icon),
+  "LIST": () => (LIST),
+  "MEGAPHONE": () => (MEGAPHONE),
+  "METADATA": () => (METADATA),
+  "ONE_COLUMN": () => (ONE_COLUMN),
+  "PAPERCLIP": () => (PAPERCLIP),
+  "PARAMETER": () => (PARAMETER),
+  "PERSON_FEMALE": () => (PERSON_FEMALE),
+  "PERSON_MALE": () => (PERSON_MALE),
+  "PHONE": () => (PHONE),
+  "PILE": () => (PILE),
+  "QRCODE": () => (QRCODE),
+  "RADIOBUTTON": () => (RADIOBUTTON),
+  "SIGNPOST": () => (SIGNPOST),
+  "SMILEY": () => (SMILEY),
+  "SNIPPET": () => (SNIPPET),
+  "SOCIAL_FOLLOW": () => (SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (SOCIAL_SHARE),
+  "TABLE": () => (TABLE),
+  "TEXT": () => (TEXT),
+  "TEXTAREA": () => (TEXTAREA),
+  "TEXT_WITH_IMAGE": () => (TEXT_WITH_IMAGE),
+  "THREE_COLUMNS": () => (THREE_COLUMNS),
+  "TWITTER": () => (TWITTER),
+  "TWO_COLUMNS": () => (TWO_COLUMNS),
+  "VIDEO": () => (VIDEO),
+  "YOUTUBE": () => (YOUTUBE)
 });
 
 // NAMESPACE OBJECT: ./src/content-element/part/part.js
 var part_namespaceObject = {};
 __webpack_require__.r(part_namespaceObject);
 __webpack_require__.d(part_namespaceObject, {
-  BACKGROUND_IMAGE: () => (BACKGROUND_IMAGE),
-  FORM: () => (FORM),
-  FORMATTED_TEXT: () => (FORMATTED_TEXT),
-  FORM_CHECKBOX: () => (FORM_CHECKBOX),
-  FORM_FIELD: () => (FORM_FIELD),
-  FORM_RADIO: () => (FORM_RADIO),
-  FORM_SELECT: () => (FORM_SELECT),
-  FORM_TEXTAREA: () => (FORM_TEXTAREA),
-  HTML: () => (part_HTML),
-  IMAGE: () => (part_IMAGE),
-  ITERATOR: () => (ITERATOR),
-  LINK: () => (LINK),
-  NEWS_SNIPPETS: () => (NEWS_SNIPPETS),
-  PLAIN_TEXT: () => (PLAIN_TEXT),
-  Part: () => (Part),
-  SOCIAL_FOLLOW: () => (part_SOCIAL_FOLLOW),
-  SOCIAL_SHARE: () => (part_SOCIAL_SHARE),
-  TABLE: () => (part_TABLE),
-  URL_PROVIDER: () => (URL_PROVIDER),
-  VIDEO: () => (part_VIDEO)
+  "BACKGROUND_IMAGE": () => (BACKGROUND_IMAGE),
+  "FORM": () => (FORM),
+  "FORMATTED_TEXT": () => (FORMATTED_TEXT),
+  "FORM_CHECKBOX": () => (FORM_CHECKBOX),
+  "FORM_FIELD": () => (FORM_FIELD),
+  "FORM_RADIO": () => (FORM_RADIO),
+  "FORM_SELECT": () => (FORM_SELECT),
+  "FORM_TEXTAREA": () => (FORM_TEXTAREA),
+  "HTML": () => (part_HTML),
+  "IMAGE": () => (part_IMAGE),
+  "ITERATOR": () => (ITERATOR),
+  "LINK": () => (LINK),
+  "NEWS_SNIPPETS": () => (NEWS_SNIPPETS),
+  "PLAIN_TEXT": () => (PLAIN_TEXT),
+  "Part": () => (Part),
+  "SOCIAL_FOLLOW": () => (part_SOCIAL_FOLLOW),
+  "SOCIAL_SHARE": () => (part_SOCIAL_SHARE),
+  "TABLE": () => (part_TABLE),
+  "URL_PROVIDER": () => (URL_PROVIDER),
+  "VIDEO": () => (part_VIDEO)
 });
 
 ;// CONCATENATED MODULE: ./src/design-json-property.js
@@ -684,6 +688,10 @@ class Constant {
    * @type {string}
    */
   static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
 ;// CONCATENATED MODULE: ./src/design-type.js
@@ -842,9 +850,21 @@ const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
 /**
  * @type {Version}
  */
+const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
+
+/**
+ * @type {Version}
+ */
+const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
+
+
 
 
 
@@ -991,6 +1011,10 @@ class AbstractBuilder {
     let computedValue;
     let isRawValue = value instanceof RawValue;
 
+    if (property === DesignJsonProperty.NLS && typeof value[0].nlsMarker == 'undefined') {
+      value = Object.values(value[0]);
+    }
+
     switch (true) {
       case isRawValue:
         computedValue = value.value;
@@ -1004,6 +1028,19 @@ class AbstractBuilder {
       default:
         computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
+    }
+
+    if (typeof value.nlsMarker !== 'undefined' &&
+      (property === DesignJsonProperty.LABEL || property === DesignJsonProperty.DESCRIPTION || property === DesignJsonProperty.NAME)) {
+      if (version_TARGET.valueOf() >= CX_23_2.valueOf()) {
+        computedValue = '${nlsKey:' + computedValue.identifier + '}';
+      } else {
+        for (let item of computedValue.translations) {
+          if (item.locale === __webpack_require__.g[Constant.BSI_CX_DEFAULT_LOCALE] || item.locale.value === '*') {
+            computedValue = item.translation;
+          }
+        }
+      }
     }
 
     if (!!arrayToObject && !isRawValue) {
@@ -1217,7 +1254,7 @@ class AbstractPart extends AbstractBuilder {
    */
   _partId = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -1249,7 +1286,7 @@ class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -1294,7 +1331,7 @@ class AbstractPart extends AbstractBuilder {
   /**
    * The set content element part's label.
    *
-   * @param {string} label - The label to set.
+   * @param {string|NLS} label - The label to set.
    * @returns {this}
    * @since Studio 1.0
    */
@@ -1421,6 +1458,22 @@ const V_1_0 = new SchemaVersion('1.0');
  * @since 22.0
  */
 const V_22_0 = new SchemaVersion('22.0');
+/**
+ * Use this in all templates for BSI CX 23.1.
+ *
+ * @see {@link Design#withSchemaVersion}
+ * @type {SchemaVersion}
+ * @since 23.1
+ */
+const V_23_1 = new SchemaVersion('23.1');
+/**
+ * Use this in all templates for BSI CX 23.2.
+ *
+ * @see {@link Design#withSchemaVersion}
+ * @type {SchemaVersion}
+ * @since 23.2
+ */
+const V_23_2 = new SchemaVersion('23.2');
 
 ;// CONCATENATED MODULE: ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
@@ -2077,7 +2130,7 @@ class ContentElementGroup extends AbstractBuilder {
    */
   _groupId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -2100,7 +2153,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -2135,7 +2188,7 @@ class ContentElementGroup extends AbstractBuilder {
   /**
    * The label for this content element group.
    *
-   * @param {string} label - The group label.
+   * @param {string|NLS} label - The group label.
    * @returns {ContentElementGroup}
    */
   withLabel(label) {
@@ -3204,7 +3257,7 @@ class Style extends AbstractBuilder {
    */
   _identifier = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -3222,7 +3275,7 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -3252,7 +3305,7 @@ class Style extends AbstractBuilder {
   /**
    * Set the label for this style configuration.
    *
-   * @param {string} label - The label to use.
+   * @param {string|NLS} label - The label to use.
    * @returns {Style}
    */
   withLabel(label) {
@@ -3355,7 +3408,7 @@ class CssClass extends AbstractBuilder {
    */
   _cssClass = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -3368,7 +3421,7 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -3390,7 +3443,7 @@ class CssClass extends AbstractBuilder {
   /**
    * Specify the label to use with this CSS class.
    *
-   * @param {string} label - The label to use.
+   * @param {string|NLS} label - The label to use.
    * @returns {CssClass}
    */
   withLabel(label) {
@@ -3708,12 +3761,12 @@ class ContentElement extends AbstractBuilder {
    */
   _elementId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _description = undefined;
@@ -3756,14 +3809,14 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get description() {
     return this._description;
@@ -3830,7 +3883,7 @@ class ContentElement extends AbstractBuilder {
    * @returns {ContentElement}
    * @since Studio 1.0
    */
-  withLabel(label) { // TODO mjt auch nls erlauben & description
+  withLabel(label) {
     this._label = label;
     return this;
   }
@@ -3838,7 +3891,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * Set the description of the content element.
    *
-   * @param {string} description - The description of the content element.
+   * @param {string|NLS} description - The description of the content element.
    * @returns {ContentElement}
    * @since Studio 1.0
    */
@@ -4050,7 +4103,7 @@ class ContentElement extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity); // TODO mjt ${nls.key:test} wie bei dropzone.js - buildinternal -> allowed elements, schauen ob Version >22
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
@@ -4924,7 +4977,7 @@ class AbstractInclude extends AbstractBuilder {
    */
   _file = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @protected
    */
   _name = undefined;
@@ -4968,7 +5021,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get name() {
     return this._name;
@@ -5017,7 +5070,7 @@ class AbstractInclude extends AbstractBuilder {
   /**
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
-   * @param {string} name - The name of this include.
+   * @param {string|NLS} name - The name of this include.
    * @returns {this}
    */
   withName(name) {
@@ -5315,6 +5368,7 @@ class Translation extends AbstractBuilder {
 
 
 
+
 /**
  * The builder class for NLS objects.
  *
@@ -5349,6 +5403,11 @@ class NLS extends AbstractBuilder {
    * @private
    */
   _translations = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _nlsMarker = uuid();
 
   /**
    * @returns {string|undefined}
@@ -5362,6 +5421,13 @@ class NLS extends AbstractBuilder {
    */
   get translations() {
     return this._translations;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get nlsMarker() {
+    return this._nlsMarker;
   }
 
   /**

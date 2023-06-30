@@ -12,7 +12,7 @@ module.exports = cx.design
   .withTitle('Landingpage Template Test')
   .withAuthor(author)
   .withDate('18.08.2021')
-  .withDefaultLocale(Locale.EN)
+  .withDefaultLocale(Locale.DE)
   .withLocales(
     Locale.EN,
     Locale.DE,
@@ -21,7 +21,7 @@ module.exports = cx.design
   .withContentElementGroups(
     cx.contentElementGroup
       .withGroupId('content')
-      .withLabel('Inhalt')
+      .withLabel('Content')
       .withContentElements(
         require('./content-elements/content/title'),
         require('./content-elements/content/column-1')
@@ -37,4 +37,5 @@ module.exports = cx.design
         require('./content-elements/content/column-1'),
         require('./content-elements/content/column-2')))
   .withHtmlEditorConfigs(
-    require('./html-editor-configs/normal'));
+    require('./html-editor-configs/normal'))
+  .withNLS(...require('./nls'));
