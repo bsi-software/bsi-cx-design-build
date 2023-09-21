@@ -66,4 +66,4 @@ module.exports = cx.design
           .withName('Navigation')
           .withEditable(false)
           .withFile(require('./includes/navigation.hbs'))))
-  .withNLS(require('./nls'));
+  .withNLS(Object.values(require('./nls')));

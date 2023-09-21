@@ -1,17 +1,15 @@
 const {cx, Icon} = require('@bsi-cx/design-build');
-const {Locale} = require('../../../../../../export/browser');
 
 /**
  * @type {ContentElement}
  */
 const element = cx.contentElement;
-const nls = require('../../../nls');
 
 module.exports = element;
 
 element.withElementId('column-1')
   .withIcon(Icon.ONE_COLUMN)
-  .withLabel(nls.column)
+  .withLabel('1 Column')
   .withFile(require('./template.twig'))
   .withDropzones(
     cx.dropzone
