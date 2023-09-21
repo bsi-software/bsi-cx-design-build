@@ -1,5 +1,6 @@
 import AbstractBuilder from '../abstract-builder';
 import Translation from './translation';
+import {uuid} from '../browser-utility';
 
 /**
  * The builder class for NLS objects.
@@ -35,6 +36,11 @@ export default class NLS extends AbstractBuilder {
    * @private
    */
   _translations = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _nlsMarker = uuid();
 
   /**
    * @returns {string|undefined}
@@ -48,6 +54,13 @@ export default class NLS extends AbstractBuilder {
    */
   get translations() {
     return this._translations;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get nlsMarker() {
+    return this._nlsMarker;
   }
 
   /**

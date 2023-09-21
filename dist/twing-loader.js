@@ -119,6 +119,10 @@ class constant_Constant {
    * @type {string}
    */
   static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
 ;// CONCATENATED MODULE: ./src/query-constant.js

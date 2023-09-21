@@ -19,7 +19,7 @@ export default class AbstractPart extends AbstractBuilder {
    */
   _partId = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -51,7 +51,7 @@ export default class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -96,7 +96,7 @@ export default class AbstractPart extends AbstractBuilder {
   /**
    * The set content element part's label.
    *
-   * @param {string} label - The label to set.
+   * @param {string|NLS} label - The label to set.
    * @returns {this}
    * @since Studio 1.0
    */

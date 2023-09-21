@@ -4,6 +4,7 @@ const {cx, Locale, bsiProperty} = require('@bsi-cx/design-build');
  * @type {string}
  */
 const author = bsiProperty('author');
+const nls = require('./nls');
 
 /**
  * @type {Design}
@@ -13,7 +14,7 @@ module.exports = cx.design
   .withAuthor(author)
   .withDate('18.08.2021')
   .withPreviewImage(require('./thumbnail.png'))
-  .withDefaultLocale(Locale.EN)
+  .withDefaultLocale(Locale.DE)
   .withLocales(
     Locale.EN,
     Locale.DE,
@@ -22,7 +23,7 @@ module.exports = cx.design
   .withContentElementGroups(
     cx.contentElementGroup
       .withGroupId('content')
-      .withLabel('Inhalt')
+      .withLabel(nls.content)
       .withContentElements(
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),
@@ -52,7 +53,7 @@ module.exports = cx.design
           .withFile(require('./includes/page.html')),
         cx.include
           .withIdentifier('footer')
-          .withName('Fusszeile')
+          .withName(nls.footer)
           .withEditable(true)
           .withFile(require('./includes/footer.twig')),
         cx.include
@@ -65,4 +66,4 @@ module.exports = cx.design
           .withName('Navigation')
           .withEditable(false)
           .withFile(require('./includes/navigation.hbs'))))
-  .withNLS(...require('./nls'));
+  .withNLS(Object.values(require('./nls')));

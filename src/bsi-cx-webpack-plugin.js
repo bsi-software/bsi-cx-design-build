@@ -647,6 +647,11 @@ class _BsiCxWebpackPlugin {
       script.runInContext(context);
     }
 
+    let defaultLocale = context[scope][DesignJsonProperty.DEFAULT_LOCALE];
+    if (typeof defaultLocale !== 'undefined') {
+      context[Constant.BSI_CX_DEFAULT_LOCALE] = defaultLocale;
+    }
+
     return context[scope];
   }
 

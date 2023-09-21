@@ -3,18 +3,19 @@ const {cx, Style} = require('@bsi-cx/design-build');
 /**
  * @type {Style}
  */
+
 module.exports = cx.style
   .withIdentifier('background-color')
-  .withLabel('Hintergrundfarbe')
+  .withLabel('Background')
   .withCssClasses(
     cx.cssClass
-      .withLabel('Schwarz')
+      .withLabel('Black')
       .withCssClass('black-background'),
     cx.cssClass
       .withLabel('Blau')
       .withCssClass('blue-background'),
     cx.cssClass
-      .withLabel('Rot')
+      .withLabel('Red')
       .withCssClass('red-background'),
     cx.cssClass
       .withLabel('Weiss')

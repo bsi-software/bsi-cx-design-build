@@ -1,7 +1,9 @@
 import RawValue from './raw-value';
 import ObjectCloner from './object-cloner';
-import {STUDIO_1_0, TARGET as TARGET_VERSION} from './version';
+import {STUDIO_1_0, CX_23_2, TARGET as TARGET_VERSION} from './version';
 import {ALL_TYPES, TARGET as TARGET_TYPE} from './design-type';
+import DesignJsonProperty from './design-json-property';
+import Constant from './constant';
 
 /** @typedef {import('./version').Version} Version */
 /** @typedef {import('./design-type').DesignType} DesignType */
@@ -144,6 +146,10 @@ export default class AbstractBuilder {
     let computedValue;
     let isRawValue = value instanceof RawValue;
 
+    if (property === DesignJsonProperty.NLS && typeof value[0].nlsMarker == 'undefined') {
+      value = Object.values(value[0]);
+    }
+
     switch (true) {
       case isRawValue:
         computedValue = value.value;
@@ -157,6 +163,19 @@ export default class AbstractBuilder {
       default:
         computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
+    }
+
+    if (typeof value.nlsMarker !== 'undefined' &&
+      (property === DesignJsonProperty.LABEL || property === DesignJsonProperty.DESCRIPTION || property === DesignJsonProperty.NAME)) {
+      if (TARGET_VERSION.valueOf() >= CX_23_2.valueOf()) {
+        computedValue = '${nlsKey:' + computedValue.identifier + '}';
+      } else {
+        for (let item of computedValue.translations) {
+          if (item.locale === global[Constant.BSI_CX_DEFAULT_LOCALE] || item.locale.value === '*') {
+            computedValue = item.translation;
+          }
+        }
+      }
     }
 
     if (!!arrayToObject && !isRawValue) {

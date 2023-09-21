@@ -73,6 +73,10 @@ declare module "src/constant" {
          * @type {string}
          */
         static BSI_CX_TARGET_TYPE: string;
+        /**
+         * @type {string}
+         */
+        static BSI_CX_DEFAULT_LOCALE: string;
     }
 }
 declare module "src/design-type" {
@@ -173,6 +177,14 @@ declare module "src/version" {
     /**
      * @type {Version}
      */
+    export const CX_23_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_23_2: Version;
+    /**
+     * @type {Version}
+     */
     export const TARGET: Version;
     export type DesignType = import("src/design-type").DesignType;
     import AbstractConstant from "src/abstract-constant";
@@ -192,6 +204,170 @@ declare module "src/raw-value" {
          * @returns {*}
          */
         get value(): any;
+    }
+}
+declare module "src/design-json-property" {
+    export default class DesignJsonProperty {
+        /**
+         * @type {string}
+         */
+        static ID: string;
+        /**
+         * @type {string}
+         */
+        static SCHEMA_VERSION: string;
+        /**
+         * @type {string}
+         */
+        static TITLE: string;
+        /**
+         * @type {string}
+         */
+        static AUTHOR: string;
+        /**
+         * @type {string}
+         */
+        static DATE: string;
+        /**
+         * @type {string}
+         */
+        static PREVIEW_IMAGE: string;
+        /**
+         * @type {string}
+         */
+        static DEFAULT_LOCALE: string;
+        /**
+         * @type {string}
+         */
+        static LOCALES: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENT_GROUPS: string;
+        /**
+         * @type {string}
+         */
+        static GROUP_ID: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static ELEMENT_ID: string;
+        /**
+         * @type {string}
+         */
+        static FILE: string;
+        /**
+         * @type {string}
+         */
+        static ICON: string;
+        /**
+         * @type {string}
+         */
+        static PARTS: string;
+        /**
+         * @type {string}
+         */
+        static PART_ID: string;
+        /**
+         * @type {string}
+         */
+        static HTML_EDITOR_CONFIG: string;
+        /**
+         * @type {string}
+         */
+        static LABEL: string;
+        /**
+         * @type {string}
+         */
+        static DESCRIPTION: string;
+        /**
+         * @type {string}
+         */
+        static HIDDEN: string;
+        /**
+         * @type {string}
+         */
+        static STYLE_CONFIGS: string;
+        /**
+         * @type {string}
+         */
+        static CSS_CLASSES: string;
+        /**
+         * @type {string}
+         */
+        static CSS_CLASS: string;
+        /**
+         * @type {string}
+         */
+        static HTML_EDITOR_CONFIGS: string;
+        /**
+         * @type {string}
+         */
+        static FEATURES: string;
+        /**
+         * @type {string}
+         */
+        static TEXT_COLORS: string;
+        /**
+         * @type {string}
+         */
+        static BACKGROUND_COLORS: string;
+        /**
+         * @type {string}
+         */
+        static FORMATS: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZES: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZE_UNIT: string;
+        /**
+         * @type {string}
+         */
+        static FONT_SIZE_DEFAULT: string;
+        /**
+         * @type {string}
+         */
+        static LINE_HEIGHTS: string;
+        /**
+         * @type {string}
+         */
+        static ENTER_MODE: string;
+        /**
+         * @type {string}
+         */
+        static WEBSITE: string;
+        /**
+         * @type {string}
+         */
+        static NLS: string;
+        /**
+         * @type {string}
+         */
+        static MAX_NAVIGATION_LEVEL: string;
+        /**
+         * @type {string}
+         */
+        static INCLUDES: string;
+        /**
+         * @type {string}
+         */
+        static EDITABLE: string;
+        /**
+         * @type {string}
+         */
+        static NAME: string;
+        /**
+         * @type {string}
+         */
+        static PAGE_INCLUDE: string;
     }
 }
 declare module "src/abstract-builder" {
@@ -1369,170 +1545,6 @@ declare module "src/handlebars-helpers" {
         'bsi.nls': (key: any) => any;
     };
     export default _default;
-}
-declare module "src/design-json-property" {
-    export default class DesignJsonProperty {
-        /**
-         * @type {string}
-         */
-        static ID: string;
-        /**
-         * @type {string}
-         */
-        static SCHEMA_VERSION: string;
-        /**
-         * @type {string}
-         */
-        static TITLE: string;
-        /**
-         * @type {string}
-         */
-        static AUTHOR: string;
-        /**
-         * @type {string}
-         */
-        static DATE: string;
-        /**
-         * @type {string}
-         */
-        static PREVIEW_IMAGE: string;
-        /**
-         * @type {string}
-         */
-        static DEFAULT_LOCALE: string;
-        /**
-         * @type {string}
-         */
-        static LOCALES: string;
-        /**
-         * @type {string}
-         */
-        static CONTENT_ELEMENT_GROUPS: string;
-        /**
-         * @type {string}
-         */
-        static GROUP_ID: string;
-        /**
-         * @type {string}
-         */
-        static CONTENT_ELEMENTS: string;
-        /**
-         * @type {string}
-         */
-        static ELEMENT_ID: string;
-        /**
-         * @type {string}
-         */
-        static FILE: string;
-        /**
-         * @type {string}
-         */
-        static ICON: string;
-        /**
-         * @type {string}
-         */
-        static PARTS: string;
-        /**
-         * @type {string}
-         */
-        static PART_ID: string;
-        /**
-         * @type {string}
-         */
-        static HTML_EDITOR_CONFIG: string;
-        /**
-         * @type {string}
-         */
-        static LABEL: string;
-        /**
-         * @type {string}
-         */
-        static DESCRIPTION: string;
-        /**
-         * @type {string}
-         */
-        static HIDDEN: string;
-        /**
-         * @type {string}
-         */
-        static STYLE_CONFIGS: string;
-        /**
-         * @type {string}
-         */
-        static CSS_CLASSES: string;
-        /**
-         * @type {string}
-         */
-        static CSS_CLASS: string;
-        /**
-         * @type {string}
-         */
-        static HTML_EDITOR_CONFIGS: string;
-        /**
-         * @type {string}
-         */
-        static FEATURES: string;
-        /**
-         * @type {string}
-         */
-        static TEXT_COLORS: string;
-        /**
-         * @type {string}
-         */
-        static BACKGROUND_COLORS: string;
-        /**
-         * @type {string}
-         */
-        static FORMATS: string;
-        /**
-         * @type {string}
-         */
-        static FONT_SIZES: string;
-        /**
-         * @type {string}
-         */
-        static FONT_SIZE_UNIT: string;
-        /**
-         * @type {string}
-         */
-        static FONT_SIZE_DEFAULT: string;
-        /**
-         * @type {string}
-         */
-        static LINE_HEIGHTS: string;
-        /**
-         * @type {string}
-         */
-        static ENTER_MODE: string;
-        /**
-         * @type {string}
-         */
-        static WEBSITE: string;
-        /**
-         * @type {string}
-         */
-        static NLS: string;
-        /**
-         * @type {string}
-         */
-        static MAX_NAVIGATION_LEVEL: string;
-        /**
-         * @type {string}
-         */
-        static INCLUDES: string;
-        /**
-         * @type {string}
-         */
-        static EDITABLE: string;
-        /**
-         * @type {string}
-         */
-        static NAME: string;
-        /**
-         * @type {string}
-         */
-        static PAGE_INCLUDE: string;
-    }
 }
 declare module "src/builder-object-normalizer" {
     export default class BuilderObjectNormalizer {
@@ -3128,7 +3140,7 @@ declare module "src/content-element/part/abstract-part" {
          */
         private _partId;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @private
          */
         private _label;
@@ -3141,9 +3153,9 @@ declare module "src/content-element/part/abstract-part" {
          */
         get partId(): import("src/content-element/part/part").Part;
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get label(): string;
+        get label(): any;
         /**
          * The ID of the part. You can apply an unique identifier to your content element part.
          * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -3179,11 +3191,11 @@ declare module "src/content-element/part/abstract-part" {
         /**
          * The set content element part's label.
          *
-         * @param {string} label - The label to set.
+         * @param {string|NLS} label - The label to set.
          * @returns {this}
          * @since Studio 1.0
          */
-        withLabel(label: string): this;
+        withLabel(label: string | NLS): this;
     }
     export type Part = import("src/content-element/part/part").Part;
     import AbstractBuilder from "src/abstract-builder";
@@ -3211,6 +3223,22 @@ declare module "src/design/schema-version" {
      * @since 22.0
      */
     export const V_22_0: SchemaVersion;
+    /**
+     * Use this in all templates for BSI CX 23.1.
+     *
+     * @see {@link Design#withSchemaVersion}
+     * @type {SchemaVersion}
+     * @since 23.1
+     */
+    export const V_23_1: SchemaVersion;
+    /**
+     * Use this in all templates for BSI CX 23.2.
+     *
+     * @see {@link Design#withSchemaVersion}
+     * @type {SchemaVersion}
+     * @since 23.2
+     */
+    export const V_23_2: SchemaVersion;
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
@@ -3249,7 +3277,7 @@ declare module "src/style/css-class" {
          */
         private _cssClass;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @private
          */
         private _label;
@@ -3258,9 +3286,9 @@ declare module "src/style/css-class" {
          */
         get cssClass(): string;
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get label(): string;
+        get label(): any;
         /**
          * Specify the CSS class to use.
          *
@@ -3273,10 +3301,10 @@ declare module "src/style/css-class" {
         /**
          * Specify the label to use with this CSS class.
          *
-         * @param {string} label - The label to use.
+         * @param {string|NLS} label - The label to use.
          * @returns {CssClass}
          */
-        withLabel(label: string): CssClass;
+        withLabel(label: string | NLS): CssClass;
         /**
          * Clone the configuration.
          *
@@ -3313,7 +3341,7 @@ declare module "src/style/style" {
          */
         private _identifier;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @private
          */
         private _label;
@@ -3327,9 +3355,9 @@ declare module "src/style/style" {
          */
         get identifier(): string;
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get label(): string;
+        get label(): any;
         /**
          * @returns {RawValue|[CssClass]|undefined}
          */
@@ -3347,10 +3375,10 @@ declare module "src/style/style" {
         /**
          * Set the label for this style configuration.
          *
-         * @param {string} label - The label to use.
+         * @param {string|NLS} label - The label to use.
          * @returns {Style}
          */
-        withLabel(label: string): Style;
+        withLabel(label: string | NLS): Style;
         /**
          * Specify the css classes to use with this style configuration.
          *
@@ -3652,7 +3680,7 @@ declare module "src/content-element/content-element-group" {
          */
         private _groupId;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @private
          */
         private _label;
@@ -3671,9 +3699,9 @@ declare module "src/content-element/content-element-group" {
          */
         get groupId(): string;
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get label(): string;
+        get label(): any;
         /**
          * @returns {boolean|undefined}
          */
@@ -3693,10 +3721,10 @@ declare module "src/content-element/content-element-group" {
         /**
          * The label for this content element group.
          *
-         * @param {string} label - The group label.
+         * @param {string|NLS} label - The group label.
          * @returns {ContentElementGroup}
          */
-        withLabel(label: string): ContentElementGroup;
+        withLabel(label: string | NLS): ContentElementGroup;
         /**
          * Declare this content element group as hidden. It is not required to set this property.
          * Groups are visible per default.
@@ -3932,12 +3960,12 @@ declare module "src/content-element/content-element" {
          */
         private _elementId;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @private
          */
         private _label;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @private
          */
         private _description;
@@ -3976,13 +4004,13 @@ declare module "src/content-element/content-element" {
          */
         get elementId(): string;
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get label(): string;
+        get label(): any;
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get description(): string;
+        get description(): any;
         /**
          * @returns {{}|undefined}
          */
@@ -4018,19 +4046,19 @@ declare module "src/content-element/content-element" {
         /**
          * Set the label of the content element.
          *
-         * @param {string} label - The label of the content element.
+         * @param {string|NLS} label - The label of the content element.
          * @returns {ContentElement}
          * @since Studio 1.0
          */
-        withLabel(label: string): ContentElement;
+        withLabel(label: string | NLS): ContentElement;
         /**
          * Set the description of the content element.
          *
-         * @param {string} description - The description of the content element.
+         * @param {string|NLS} description - The description of the content element.
          * @returns {ContentElement}
          * @since Studio 1.0
          */
-        withDescription(description: string): ContentElement;
+        withDescription(description: string | NLS): ContentElement;
         /**
          * Set the template to use for this content element. Be aware, that you have to require the template.
          *
@@ -5136,6 +5164,11 @@ declare module "src/nls/nls" {
          */
         private _translations;
         /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _nlsMarker;
+        /**
          * @returns {string|undefined}
          */
         get identifier(): string;
@@ -5143,6 +5176,10 @@ declare module "src/nls/nls" {
          * @returns {Translation[]|undefined}
          */
         get translations(): Translation[];
+        /**
+         * @returns {string|undefined}
+         */
+        get nlsMarker(): string;
         /**
          * @param {string} identifier
          * @returns {NLS}
@@ -6070,10 +6107,10 @@ declare module "src/website/abstract-include" {
          */
         protected _file: {} | undefined;
         /**
-         * @type {string|undefined}
+         * @type {string|NLS|undefined}
          * @protected
          */
-        protected _name: string | undefined;
+        protected _name: string | NLS | undefined;
         /**
          * @type {Dropzone[]|undefined}
          * @private
@@ -6092,9 +6129,9 @@ declare module "src/website/abstract-include" {
          */
         get file(): {};
         /**
-         * @returns {string|undefined}
+         * @returns {string|NLS|undefined}
          */
-        get name(): string;
+        get name(): any;
         /**
          * @returns {Dropzone[]|undefined}
          */
@@ -6119,10 +6156,10 @@ declare module "src/website/abstract-include" {
         /**
          * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
          *
-         * @param {string} name - The name of this include.
+         * @param {string|NLS} name - The name of this include.
          * @returns {this}
          */
-        withName(name: string): this;
+        withName(name: string | NLS): this;
         /**
          * Define the dropzones of this include.
          *

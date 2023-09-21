@@ -27,7 +27,7 @@ export default class CssClass extends AbstractBuilder {
    */
   _cssClass = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -40,7 +40,7 @@ export default class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -62,7 +62,7 @@ export default class CssClass extends AbstractBuilder {
   /**
    * Specify the label to use with this CSS class.
    *
-   * @param {string} label - The label to use.
+   * @param {string|NLS} label - The label to use.
    * @returns {CssClass}
    */
   withLabel(label) {

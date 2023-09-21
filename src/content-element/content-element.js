@@ -35,12 +35,12 @@ export default class ContentElement extends AbstractBuilder {
    */
   _elementId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _description = undefined;
@@ -83,14 +83,14 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get description() {
     return this._description;
@@ -153,7 +153,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * Set the label of the content element.
    *
-   * @param {string} label - The label of the content element.
+   * @param {string|NLS} label - The label of the content element.
    * @returns {ContentElement}
    * @since Studio 1.0
    */
@@ -165,7 +165,7 @@ export default class ContentElement extends AbstractBuilder {
   /**
    * Set the description of the content element.
    *
-   * @param {string} description - The description of the content element.
+   * @param {string|NLS} description - The description of the content element.
    * @returns {ContentElement}
    * @since Studio 1.0
    */

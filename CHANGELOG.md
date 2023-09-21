@@ -7,17 +7,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.x.x] - tbd
+## [1.13.0] - 21.09.2023
+
+### Added
+
+* NLS support for labels and descriptions
+* Support of CX versions 23.1 and 23.2
+* Landingpage design for testing purpose
+* Debug run config
 
 ### Changed
 
 * Updated autoport logic to avoid common port conflicts, new starting port is 9001
 * Updated hashes from content-hash to path-hash, so files keep their names when updated
-
-### Added
-
-* Landingpage design for testing purpose
-* Debug run config
 
 ## [1.12.2-rc.1] - 11.05.2023
 
@@ -524,7 +526,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Custom JS module support
 * Basic setup to publish project as NPM package
 
-[Unreleased]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.2-rc.1...HEAD
+[1.13.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.2-rc.1...1.13.0
 
 [1.12.2-rc.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.1...1.12.2-rc.1
 

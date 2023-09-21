@@ -123,6 +123,8 @@ __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
   CX_1_3: () => (CX_1_3),
   CX_22_0: () => (CX_22_0),
+  CX_23_1: () => (CX_23_1),
+  CX_23_2: () => (CX_23_2),
   STUDIO_1_0: () => (STUDIO_1_0),
   STUDIO_1_1: () => (STUDIO_1_1),
   STUDIO_1_2: () => (STUDIO_1_2),
@@ -154,7 +156,9 @@ __webpack_require__.r(schema_version_namespaceObject);
 __webpack_require__.d(schema_version_namespaceObject, {
   SchemaVersion: () => (SchemaVersion),
   V_1_0: () => (V_1_0),
-  V_22_0: () => (V_22_0)
+  V_22_0: () => (V_22_0),
+  V_23_1: () => (V_23_1),
+  V_23_2: () => (V_23_2)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -684,6 +688,10 @@ class Constant {
    * @type {string}
    */
   static BSI_CX_TARGET_TYPE = '###BSI_CX_TARGET_TYPE###';
+  /**
+   * @type {string}
+   */
+  static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
 ;// CONCATENATED MODULE: ./src/design-type.js
@@ -842,9 +850,21 @@ const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
 /**
  * @type {Version}
  */
+const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
+
+/**
+ * @type {Version}
+ */
+const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
 ;// CONCATENATED MODULE: ./src/abstract-builder.js
+
+
 
 
 
@@ -991,6 +1011,10 @@ class AbstractBuilder {
     let computedValue;
     let isRawValue = value instanceof RawValue;
 
+    if (property === DesignJsonProperty.NLS && typeof value[0].nlsMarker == 'undefined') {
+      value = Object.values(value[0]);
+    }
+
     switch (true) {
       case isRawValue:
         computedValue = value.value;
@@ -1004,6 +1028,19 @@ class AbstractBuilder {
       default:
         computedValue = this._checkCompatibility(value) ? extractFunc(value) : undefined;
         break;
+    }
+
+    if (typeof value.nlsMarker !== 'undefined' &&
+      (property === DesignJsonProperty.LABEL || property === DesignJsonProperty.DESCRIPTION || property === DesignJsonProperty.NAME)) {
+      if (version_TARGET.valueOf() >= CX_23_2.valueOf()) {
+        computedValue = '${nlsKey:' + computedValue.identifier + '}';
+      } else {
+        for (let item of computedValue.translations) {
+          if (item.locale === __webpack_require__.g[Constant.BSI_CX_DEFAULT_LOCALE] || item.locale.value === '*') {
+            computedValue = item.translation;
+          }
+        }
+      }
     }
 
     if (!!arrayToObject && !isRawValue) {
@@ -1217,7 +1254,7 @@ class AbstractPart extends AbstractBuilder {
    */
   _partId = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -1249,7 +1286,7 @@ class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -1294,7 +1331,7 @@ class AbstractPart extends AbstractBuilder {
   /**
    * The set content element part's label.
    *
-   * @param {string} label - The label to set.
+   * @param {string|NLS} label - The label to set.
    * @returns {this}
    * @since Studio 1.0
    */
@@ -1421,6 +1458,22 @@ const V_1_0 = new SchemaVersion('1.0');
  * @since 22.0
  */
 const V_22_0 = new SchemaVersion('22.0');
+/**
+ * Use this in all templates for BSI CX 23.1.
+ *
+ * @see {@link Design#withSchemaVersion}
+ * @type {SchemaVersion}
+ * @since 23.1
+ */
+const V_23_1 = new SchemaVersion('23.1');
+/**
+ * Use this in all templates for BSI CX 23.2.
+ *
+ * @see {@link Design#withSchemaVersion}
+ * @type {SchemaVersion}
+ * @since 23.2
+ */
+const V_23_2 = new SchemaVersion('23.2');
 
 ;// CONCATENATED MODULE: ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
@@ -2077,7 +2130,7 @@ class ContentElementGroup extends AbstractBuilder {
    */
   _groupId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -2100,7 +2153,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -2135,7 +2188,7 @@ class ContentElementGroup extends AbstractBuilder {
   /**
    * The label for this content element group.
    *
-   * @param {string} label - The group label.
+   * @param {string|NLS} label - The group label.
    * @returns {ContentElementGroup}
    */
   withLabel(label) {
@@ -3204,7 +3257,7 @@ class Style extends AbstractBuilder {
    */
   _identifier = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -3222,7 +3275,7 @@ class Style extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -3252,7 +3305,7 @@ class Style extends AbstractBuilder {
   /**
    * Set the label for this style configuration.
    *
-   * @param {string} label - The label to use.
+   * @param {string|NLS} label - The label to use.
    * @returns {Style}
    */
   withLabel(label) {
@@ -3355,7 +3408,7 @@ class CssClass extends AbstractBuilder {
    */
   _cssClass = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
@@ -3368,7 +3421,7 @@ class CssClass extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
@@ -3390,7 +3443,7 @@ class CssClass extends AbstractBuilder {
   /**
    * Specify the label to use with this CSS class.
    *
-   * @param {string} label - The label to use.
+   * @param {string|NLS} label - The label to use.
    * @returns {CssClass}
    */
   withLabel(label) {
@@ -3708,12 +3761,12 @@ class ContentElement extends AbstractBuilder {
    */
   _elementId = uuid();
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _label = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @private
    */
   _description = undefined;
@@ -3756,14 +3809,14 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get label() {
     return this._label;
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get description() {
     return this._description;
@@ -3826,7 +3879,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * Set the label of the content element.
    *
-   * @param {string} label - The label of the content element.
+   * @param {string|NLS} label - The label of the content element.
    * @returns {ContentElement}
    * @since Studio 1.0
    */
@@ -3838,7 +3891,7 @@ class ContentElement extends AbstractBuilder {
   /**
    * Set the description of the content element.
    *
-   * @param {string} description - The description of the content element.
+   * @param {string|NLS} description - The description of the content element.
    * @returns {ContentElement}
    * @since Studio 1.0
    */
@@ -4924,7 +4977,7 @@ class AbstractInclude extends AbstractBuilder {
    */
   _file = undefined;
   /**
-   * @type {string|undefined}
+   * @type {string|NLS|undefined}
    * @protected
    */
   _name = undefined;
@@ -4968,7 +5021,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string|NLS|undefined}
    */
   get name() {
     return this._name;
@@ -5017,7 +5070,7 @@ class AbstractInclude extends AbstractBuilder {
   /**
    * Set the name of this include. In contrast to the {@link identifier}, this property must not be unique.
    *
-   * @param {string} name - The name of this include.
+   * @param {string|NLS} name - The name of this include.
    * @returns {this}
    */
   withName(name) {
@@ -5315,6 +5368,7 @@ class Translation extends AbstractBuilder {
 
 
 
+
 /**
  * The builder class for NLS objects.
  *
@@ -5349,6 +5403,11 @@ class NLS extends AbstractBuilder {
    * @private
    */
   _translations = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _nlsMarker = uuid();
 
   /**
    * @returns {string|undefined}
@@ -5362,6 +5421,13 @@ class NLS extends AbstractBuilder {
    */
   get translations() {
     return this._translations;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get nlsMarker() {
+    return this._nlsMarker;
   }
 
   /**
