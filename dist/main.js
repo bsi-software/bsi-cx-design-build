@@ -63,51 +63,51 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "BuildConfig": () => (/* reexport */ BuildConfig),
-  "DefaultBuildConfig": () => (/* reexport */ DefaultBuildConfig),
-  "DesignType": () => (/* reexport */ design_type_namespaceObject),
-  "ModuleConfig": () => (/* reexport */ ModuleConfig),
-  "Version": () => (/* reexport */ version_namespaceObject),
-  "WebpackConfigBuilder": () => (/* reexport */ WebpackConfigBuilder),
-  "css": () => (/* reexport */ helper_namespaceObject)
+  BuildConfig: () => (/* reexport */ BuildConfig),
+  DefaultBuildConfig: () => (/* reexport */ DefaultBuildConfig),
+  DesignType: () => (/* reexport */ design_type_namespaceObject),
+  ModuleConfig: () => (/* reexport */ ModuleConfig),
+  Version: () => (/* reexport */ version_namespaceObject),
+  WebpackConfigBuilder: () => (/* reexport */ WebpackConfigBuilder),
+  css: () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
-  "ALL_TYPES": () => (ALL_TYPES),
-  "DesignType": () => (DesignType),
-  "EMAIL": () => (EMAIL),
-  "LANDINGPAGE": () => (LANDINGPAGE),
-  "LEGACY_TYPES": () => (LEGACY_TYPES),
-  "TARGET": () => (TARGET),
-  "WEBSITE": () => (WEBSITE)
+  ALL_TYPES: () => (ALL_TYPES),
+  DesignType: () => (DesignType),
+  EMAIL: () => (EMAIL),
+  LANDINGPAGE: () => (LANDINGPAGE),
+  LEGACY_TYPES: () => (LEGACY_TYPES),
+  TARGET: () => (TARGET),
+  WEBSITE: () => (WEBSITE)
 });
 
 // NAMESPACE OBJECT: ./src/version.js
 var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
-  "CX_1_3": () => (CX_1_3),
-  "CX_22_0": () => (CX_22_0),
-  "CX_23_1": () => (CX_23_1),
-  "CX_23_2": () => (CX_23_2),
-  "STUDIO_1_0": () => (STUDIO_1_0),
-  "STUDIO_1_1": () => (STUDIO_1_1),
-  "STUDIO_1_2": () => (STUDIO_1_2),
-  "TARGET": () => (version_TARGET),
-  "Version": () => (Version)
+  CX_1_3: () => (CX_1_3),
+  CX_22_0: () => (CX_22_0),
+  CX_23_1: () => (CX_23_1),
+  CX_23_2: () => (CX_23_2),
+  STUDIO_1_0: () => (STUDIO_1_0),
+  STUDIO_1_1: () => (STUDIO_1_1),
+  STUDIO_1_2: () => (STUDIO_1_2),
+  TARGET: () => (version_TARGET),
+  Version: () => (Version)
 });
 
 // NAMESPACE OBJECT: ./src/css/helper.js
 var helper_namespaceObject = {};
 __webpack_require__.r(helper_namespaceObject);
 __webpack_require__.d(helper_namespaceObject, {
-  "color": () => (color),
-  "dataUri": () => (dataUri),
-  "number": () => (number),
-  "url": () => (url)
+  color: () => (color),
+  dataUri: () => (dataUri),
+  number: () => (number),
+  url: () => (url)
 });
 
 ;// CONCATENATED MODULE: external "source-map-support/register"
