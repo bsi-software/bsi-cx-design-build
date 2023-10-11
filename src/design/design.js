@@ -445,6 +445,36 @@ export default class Design extends AbstractBuilder {
    *     ]
    *   }
    * })
+   *
+   * With CX 23.2 an extended style format was introduced,
+   * which makes it possible to define styles using either CSS classes or DOM manipulations, or a combination of both.
+   *
+   * @example
+   * .withRawStyleConfigs({
+   *   'background-color': {
+   *     label: 'Background Color',
+   *     styles: [
+   *       {
+   *         styleId: 'darkred-background-5vLqPX',
+   *         label: 'Darkred',
+   *         cssClass: 'darkred-background',
+   *         domManipulations: [
+   *           { selector: 'div.darkred-background', attribute: 'style', value: 'background-color: darkred;' },
+   *           { selector: 'div.darkred-background p', attribute: 'style', value: 'color: white;' }
+   *         ]
+   *       },
+   *       {
+   *         styleId: 'lightblue-background-9ftMNF',
+   *         label: 'Lightblue',
+   *         cssClass: 'lightblue-background',
+   *         domManipulations: [
+   *           { selector: 'div.lightblue-background', attribute: 'style', value: 'background-color: lightblue;' },
+   *           { selector: 'div.lightblue-background p', attribute: 'style', value: 'color: black;' }
+   *         ]
+   *       }
+   *     ]
+   *   }
+   * })
    * @see {@link withStyleConfigs}
    * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
    * @returns {Design}

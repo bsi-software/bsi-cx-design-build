@@ -62,6 +62,7 @@ __webpack_require__.d(__webpack_exports__, {
   Design: () => (/* reexport */ Design),
   DesignJsonProperty: () => (/* reexport */ DesignJsonProperty),
   DesignType: () => (/* reexport */ design_type_namespaceObject),
+  DomManipulation: () => (/* reexport */ DomManipulation),
   Dropzone: () => (/* reexport */ Dropzone),
   EnterMode: () => (/* reexport */ enter_mode_namespaceObject),
   Feature: () => (/* reexport */ feature_namespaceObject),
@@ -94,6 +95,7 @@ __webpack_require__.d(__webpack_exports__, {
   SocialFollowPart: () => (/* reexport */ SocialFollowPart),
   SocialSharePart: () => (/* reexport */ SocialSharePart),
   Style: () => (/* reexport */ Style),
+  StyleOption: () => (/* reexport */ StyleOption),
   TablePart: () => (/* reexport */ TablePart),
   Translation: () => (/* reexport */ Translation),
   UrlProviderPart: () => (/* reexport */ UrlProviderPart),
@@ -241,6 +243,7 @@ var icon_namespaceObject = {};
 __webpack_require__.r(icon_namespaceObject);
 __webpack_require__.d(icon_namespaceObject, {
   ASTERISK: () => (ASTERISK),
+  CALENDAR_CLOCK: () => (CALENDAR_CLOCK),
   CHAIN: () => (CHAIN),
   CHECKBOX: () => (CHECKBOX),
   COMMUNICATION: () => (COMMUNICATION),
@@ -409,6 +412,30 @@ class DesignJsonProperty {
    * @type {string}
    */
   static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static STYLES = 'styles';
+  /**
+   * @type {string}
+   */
+  static STYLE_ID = 'styleId';
+  /**
+   * @type {string}
+   */
+  static DOM_MANIPULATIONS = 'domManipulations';
+  /**
+   * @type {string}
+   */
+  static SELECTOR = 'selector';
+  /**
+   * @type {string}
+   */
+  static ATTRIBUTE = 'attribute';
+  /**
+   * @type {string}
+   */
+  static VALUE = 'value';
   /**
    * @type {string}
    */
@@ -1955,6 +1982,36 @@ class Design extends AbstractBuilder {
    *     ]
    *   }
    * })
+   *
+   * With CX 23.2 an extended style format was introduced,
+   * which makes it possible to define styles using either CSS classes or DOM manipulations, or a combination of both.
+   *
+   * @example
+   * .withRawStyleConfigs({
+   *   'background-color': {
+   *     label: 'Background Color',
+   *     styles: [
+   *       {
+   *         styleId: 'darkred-background-5vLqPX',
+   *         label: 'Darkred',
+   *         cssClass: 'darkred-background',
+   *         domManipulations: [
+   *           { selector: 'div.darkred-background', attribute: 'style', value: 'background-color: darkred;' },
+   *           { selector: 'div.darkred-background p', attribute: 'style', value: 'color: white;' }
+   *         ]
+   *       },
+   *       {
+   *         styleId: 'lightblue-background-9ftMNF',
+   *         label: 'Lightblue',
+   *         cssClass: 'lightblue-background',
+   *         domManipulations: [
+   *           { selector: 'div.lightblue-background', attribute: 'style', value: 'background-color: lightblue;' },
+   *           { selector: 'div.lightblue-background p', attribute: 'style', value: 'color: black;' }
+   *         ]
+   *       }
+   *     ]
+   *   }
+   * })
    * @see {@link withStyleConfigs}
    * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
    * @returns {Design}
@@ -3233,6 +3290,7 @@ class HtmlEditorConfig extends AbstractBuilder {
 
 
 /** @typedef {import('./css-class').default} CssClass */
+/** @typedef {import('./style-option').default} StyleOption */
 
 /**
  * This is the builder class for style configuration objects.
@@ -3248,6 +3306,42 @@ class HtmlEditorConfig extends AbstractBuilder {
  *     cx.cssClass
  *       .withCssClass('text-blue')
  *       .withLabel('Blue'));
+ *
+ * With CX 23.2 an extended style format was introduced,
+ * which makes it possible to define styles using either CSS classes or DOM manipulations, or a combination of both.
+ *
+ * @example
+ * module.exports = cx.style
+ *   .withIdentifier('background-color')
+ *   .withLabel('Background Color')
+ *   .withStyleOptions(
+ *     cx.styleOption
+ *       .withStyleId('darkred-background-5vLqPX')
+ *       .withLabel('Darkred')
+ *       .withCssClass('darkred-background')
+ *       .withDomManipulations(
+ *         cx.domManipulation
+ *           .withSelector('div.darkred-background')
+ *           .withAttribute('style')
+ *           .withValue('background-color: darkred;'),
+ *         cx.domManipulation
+ *           .withSelector('div.darkred-background p')
+ *           .withAttribute('style')
+ *           .withValue('color: white;')),
+ *     cx.styleOption
+ *       .withStyleId('lightblue-background-9ftMNF')
+ *       .withLabel('Lightblue')
+ *       .withCssClass('lightblue-background')
+ *       .withDomManipulations(
+ *         cx.domManipulation
+ *           .withSelector('div.lightblue-background')
+ *           .withAttribute('style')
+ *           .withValue('background-color: lightblue;'),
+ *         cx.domManipulation
+ *           .withSelector('div.lightblue-background p')
+ *           .withAttribute('style')
+ *           .withValue('color: black;')));
+ *
  * @since Studio 1.1
  */
 class Style extends AbstractBuilder {
@@ -3266,6 +3360,11 @@ class Style extends AbstractBuilder {
    * @private
    */
   _cssClasses = undefined;
+  /**
+   * @type {RawValue|StyleOption[]|undefined}
+   * @private
+   */
+  _styles = undefined;
 
   /**
    * @returns {string|undefined}
@@ -3286,6 +3385,13 @@ class Style extends AbstractBuilder {
    */
   get cssClasses() {
     return this._cssClasses;
+  }
+
+  /**
+   * @returns {RawValue|[StyleOption]|undefined}
+   */
+  get styles() {
+    return this._styles;
   }
 
   /**
@@ -3355,12 +3461,85 @@ class Style extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Specify the style options to use with this style configuration.
+   *
+   * @example
+   * .withStyleOptions(
+   *   cx.styleOption
+   *     .withStyleId('darkred-background-5vLqPX')
+   *     .withLabel('Darkred')
+   *     .withCssClass('darkred-background')
+   *     .withDomManipulations(
+   *       cx.domManipulation
+   *         .withSelector('div.darkred-background')
+   *         .withAttribute('style')
+   *         .withValue('background-color: darkred;'),
+   *       cx.domManipulation
+   *         .withSelector('div.darkred-background p')
+   *         .withAttribute('style')
+   *         .withValue('color: white;')),
+   *   cx.styleOption
+   *     .withStyleId('lightblue-background-9ftMNF')
+   *     .withLabel('Lightblue')
+   *     .withCssClass('lightblue-background')
+   *     .withDomManipulations(
+   *       cx.domManipulation
+   *         .withSelector('div.lightblue-background')
+   *         .withAttribute('style')
+   *         .withValue('background-color: lightblue;'),
+   *       cx.domManipulation
+   *         .withSelector('div.lightblue-background p')
+   *         .withAttribute('style')
+   *         .withValue('color: black;')))
+   * @see {@link withRawStyleOptions} to set a raw value
+   * @param {...StyleOption} styles - The style options to use.
+   * @returns {Style}
+   */
+  withStyleOptions(...styles) {
+    this._styles = styles;
+    return this;
+  }
+
+  /**
+   * Set the raw style options to use with this style.
+   *
+   * @example
+   * .withRawStyleOptions(
+   *   {
+   *     styleId: 'darkred-background-5vLqPX',
+   *     label: 'Darkred',
+   *     cssClass: 'darkred-background',
+   *     domManipulations: [
+   *       { selector: 'div.darkred-background', attribute: 'style', value: 'background-color: darkred;' },
+   *       { selector: 'div.darkred-background p', attribute: 'style', value: 'color: white;' }
+   *     ]
+   *   },
+   *   {
+   *     styleId: 'lightblue-background-9ftMNF',
+   *     label: 'Lightblue',
+   *     cssClass: 'lightblue-background',
+   *     domManipulations: [
+   *       { selector: 'div.lightblue-background', attribute: 'style', value: 'background-color: lightblue;' },
+   *       { selector: 'div.lightblue-background p', attribute: 'style', value: 'color: black;' }
+   *     ]
+   *   }
+   * )
+   * @param {...{}} styles
+   * @returns {Style}
+   */
+  withRawStyleOptions(...styles) {
+    this._styles = new RawValue(styles);
+    return this;
+  }
+
   _buildInternal() {
     let config = {};
     let style = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, style, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASSES, style, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLES, style, builderObjectValue);
 
     config[this.identifier] = style;
 
@@ -3483,6 +3662,366 @@ class CssClass extends AbstractBuilder {
     return new CssClass()
       .withCssClass(cssClass)
       .withLabel(label);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/style/style-option.js
+
+
+
+
+
+/** @typedef {import('./style').default} Style */
+/** @typedef {import('./dom-manipulation').default} DomManipulation */
+
+/**
+ * This is the builder class for style option objects (required by the {@link Style|style} configuration object).
+ *
+ * @example
+ * module.exports = cx.style
+ *   .withIdentifier('background-color')
+ *   .withLabel('Background Color')
+ *   .withStyleOptions(
+ *     cx.styleOption
+ *       .withStyleId('darkred-background-5vLqPX')
+ *       .withLabel('Darkred')
+ *       .withCssClass('darkred-background')
+ *       .withDomManipulations(
+ *         cx.domManipulation
+ *           .withSelector('div.darkred-background')
+ *           .withAttribute('style')
+ *           .withValue('background-color: darkred;'),
+ *         cx.domManipulation
+ *           .withSelector('div.darkred-background p')
+ *           .withAttribute('style')
+ *           .withValue('color: white;')),
+ *     cx.styleOption
+ *       .withStyleId('lightblue-background-9ftMNF')
+ *       .withLabel('Lightblue')
+ *       .withCssClass('lightblue-background')
+ *       .withDomManipulations(
+ *         cx.domManipulation
+ *           .withSelector('div.lightblue-background')
+ *           .withAttribute('style')
+ *           .withValue('background-color: lightblue;'),
+ *         cx.domManipulation
+ *           .withSelector('div.lightblue-background p')
+ *           .withAttribute('style')
+ *           .withValue('color: black;')));
+ * @since CX 23.2
+ */
+class StyleOption extends AbstractBuilder {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _styleId = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _cssClass = undefined;
+  /**
+   * @type {RawValue|DomManipulation[]|undefined}
+   * @private
+   */
+  _domManipulations = undefined;
+
+  /**
+   * @returns {string|undefined}
+   */
+  get styleId() {
+    return this._styleId;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get cssClass() {
+    return this._cssClass;
+  }
+
+  /**
+   * @returns {RawValue|[DomManipulation]|undefined}
+   */
+  get domManipulations() {
+    return this._domManipulations;
+  }
+
+  /**
+   * Specify the style id to use.
+   *
+   * @example
+   * .withStyleId('text-red')
+   * @param {string} styleId - The style id that identifies the style option.
+   * @returns {StyleOption}
+   */
+  withStyleId(styleId) {
+    this._styleId = styleId;
+    return this;
+  }
+
+  /**
+   * Specify the label to use with this style option.
+   *
+   * @param {string|NLS} label - The label to use.
+   * @returns {StyleOption}
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  /**
+   * Specify the CSS class to use.
+   *
+   * @example
+   * .withCssClass('text-red')
+   * @param {string} cssClass - The CSS class to use.
+   * @returns {StyleOption}
+   */
+  withCssClass(cssClass) {
+    this._cssClass = cssClass;
+    return this;
+  }
+
+  /**
+   * Specify the DOM manipulations to use with this style option.
+   *
+   * @example
+   * .withDomManipulations(
+   *   cx.domManipulation
+   *     .withSelector('div.darkred-background')
+   *     .withAttribute('style')
+   *     .withValue('background-color: darkred;'),
+   *   cx.domManipulation
+   *     .withSelector('div.darkred-background p')
+   *     .withAttribute('style')
+   *     .withValue('color: white;'))
+   * @see {@link withRawDomManipulations} to set a raw value
+   * @param {...DomManipulation} domManipulations - The DOM manipulations to use.
+   * @returns {StyleOption}
+   */
+  withDomManipulations(...domManipulations) {
+    this._domManipulations = domManipulations;
+    return this;
+  }
+
+  /**
+   * Set the raw DOM manipulations to use with this style option.
+   *
+   * @example
+   * .withRawDomManipulations(
+   *   {
+   *     selector: 'div.darkred-background',
+   *     attribute: 'style',
+   *     value: 'background-color: darkred;'
+   *   },
+   *   {
+   *     selector: 'div.darkred-background p',
+   *     attribute: 'style',
+   *     value: 'color: white;'
+   *   }
+   * )
+   * @param {...{}} domManipulations
+   * @returns {StyleOption}
+   */
+  withRawDomManipulations(...domManipulations) {
+    this._domManipulations = new RawValue(domManipulations);
+    return this;
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DOM_MANIPULATIONS, config, builderObjectValue)
+
+    return config;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {StyleOption}
+   */
+  clone(shallow) {
+    return this._clone(new StyleOption(), shallow);
+  }
+}
+
+;// CONCATENATED MODULE: ./src/style/dom-manipulation.js
+
+
+
+
+/** @typedef {import('./style-option').default} StyleOption */
+
+/**
+ * This is the builder class for DOM manipulation objects (required by the {@link StyleOption} configuration object).
+ *
+ * @example
+ * module.exports = cx.style
+ *   .withIdentifier('background-color')
+ *   .withLabel('Background Color')
+ *   .withStyleOptions(
+ *     cx.styleOption
+ *       .withStyleId('darkred-background-5vLqPX')
+ *       .withLabel('Darkred')
+ *       .withCssClass('darkred-background')
+ *       .withDomManipulations(
+ *         cx.domManipulation
+ *           .withSelector('div.darkred-background')
+ *           .withAttribute('style')
+ *           .withValue('background-color: darkred;'),
+ *         cx.domManipulation
+ *           .withSelector('div.darkred-background p')
+ *           .withAttribute('style')
+ *           .withValue('color: white;')),
+ *     cx.styleOption
+ *       .withStyleId('lightblue-background-9ftMNF')
+ *       .withLabel('Lightblue')
+ *       .withCssClass('lightblue-background')
+ *       .withDomManipulations(
+ *         cx.domManipulation
+ *           .withSelector('div.lightblue-background')
+ *           .withAttribute('style')
+ *           .withValue('background-color: lightblue;'),
+ *         cx.domManipulation
+ *           .withSelector('div.lightblue-background p')
+ *           .withAttribute('style')
+ *           .withValue('color: black;')));
+ * @since CX 23.2
+ */
+class DomManipulation extends AbstractBuilder {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _selector = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _attribute = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _value = undefined;
+
+  /**
+   * @returns {string|undefined}
+   */
+  get selector() {
+    return this._selector;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get attribute() {
+    return this._attribute;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * Specify the selector to use with this DOM manipulation.
+   * Any DOM selector can be used, e.g. tag, class, id.
+   *
+   * @example
+   * .withSelector('div.btn-blue')
+   * @param {string} selector - The selector to use.
+   * @returns {DomManipulation}
+   */
+  withSelector(selector) {
+    this._selector = selector;
+    return this;
+  }
+
+  /**
+   * Specify the attribute to use with this DOM manipulation.
+   * Use the attribute 'style' to define CSS inline styles. Alternatively, set 'class' to specify CSS classes.
+   *
+   * @example
+   * .withAttribute('style')
+   * @param {string} attribute - The attribute to use.
+   * @returns {DomManipulation}
+   */
+  withAttribute(attribute) {
+    this._attribute = attribute;
+    return this;
+  }
+
+  /**
+   * Specify the value to use with this DOM manipulation.
+   *
+   * @example
+   * .withValue('color: #16616d; border: 2px solid #16616d;')
+   * @param {string} value - The value to use.
+   * @returns {DomManipulation}
+   */
+  withValue(value) {
+    this._value = value;
+    return this;
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.SELECTOR, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ATTRIBUTE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.VALUE, config, identity);
+
+    return config;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {DomManipulation}
+   */
+  clone(shallow) {
+    return this._clone(new DomManipulation(), shallow);
+  }
+
+  /**
+   * Static helper method to create a new DOM manipulation object.
+   *
+   * @example
+   * DomManipulation.create('div.btn-blue','style','color: #16616d; border: 2px solid #16616d;')
+   * @param {string} selector - The selector to use.
+   * @param {string} attribute - The attribute to use.
+   * @param {string} value - The value to use.
+   * @returns {DomManipulation}
+   */
+  static create(selector, attribute, value) {
+    return new DomManipulation()
+      .withSelector(selector)
+      .withAttribute(attribute)
+      .withValue(value);
   }
 }
 
@@ -3722,6 +4261,11 @@ const TWO_COLUMNS = new Icon('two-columns');
  * @since Studio 1.0
  */
 const THREE_COLUMNS = new Icon('three-columns');
+/**
+ * @type {Icon}
+ * @since CX 23.2
+ */
+const CALENDAR_CLOCK = new Icon('calendar-clock');
 
 ;// CONCATENATED MODULE: ./src/content-element/content-element.js
 
@@ -5900,6 +6444,8 @@ class DesignHelper {
 
 
 
+
+
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
  * The design factory is available under the <code>cx</code> constant.
@@ -6128,6 +6674,62 @@ class DesignFactory {
   }
 
   /**
+   * Get a new style option builder instance.
+   *
+   * @example
+   * .withStyleOptions(
+   *   cx.styleOption
+   *     .withStyleId('darkred-background-5vLqPX')
+   *     .withLabel('Darkred')
+   *     .withCssClass('darkred-background')
+   *     .withDomManipulations(
+   *       cx.domManipulation
+   *         .withSelector('div.darkred-background')
+   *         .withAttribute('style')
+   *         .withValue('background-color: darkred;'),
+   *       cx.domManipulation
+   *         .withSelector('div.darkred-background p')
+   *         .withAttribute('style')
+   *         .withValue('color: white;')),
+   *   cx.styleOption
+   *     .withStyleId('lightblue-background-9ftMNF')
+   *     .withLabel('Lightblue')
+   *     .withCssClass('lightblue-background')
+   *     .withDomManipulations(
+   *       cx.domManipulation
+   *         .withSelector('div.lightblue-background')
+   *         .withAttribute('style')
+   *         .withValue('background-color: lightblue;'),
+   *       cx.domManipulation
+   *         .withSelector('div.lightblue-background p')
+   *         .withAttribute('style')
+   *         .withValue('color: black;')))
+   * @returns {StyleOption}
+   */
+  get styleOption() {
+    return new StyleOption();
+  }
+
+  /**
+   * Get a new DOM manipulation builder instance.
+   *
+   * @example
+   * .withDomManipulations(
+   *   cx.domManipulation
+   *     .withSelector('div.darkred-background')
+   *     .withAttribute('style')
+   *     .withValue('background-color: darkred;'),
+   *   cx.domManipulation
+   *     .withSelector('div.darkred-background p')
+   *     .withAttribute('style')
+   *     .withValue('color: white;'))
+   * @returns {DomManipulation}
+   */
+  get domManipulation() {
+    return new DomManipulation();
+  }
+
+  /**
    * Get a new NLS builder instance.
    *
    * @example
@@ -6220,6 +6822,8 @@ function bsiProperty(property, fallback) {
 }
 
 ;// CONCATENATED MODULE: ./export/browser.js
+
+
 
 
 

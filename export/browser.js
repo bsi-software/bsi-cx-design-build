@@ -19,6 +19,8 @@ import Dropzone from '../src/dropzone/dropzone';
 import HtmlEditorConfig from '../src/html-editor-config/html-editor-config';
 import Style from '../src/style/style';
 import CssClass from '../src/style/css-class';
+import StyleOption from '../src/style/style-option';
+import DomManipulation from '../src/style/dom-manipulation';
 import * as Icon from '../src/content-element/icon';
 import ContentElement from '../src/content-element/content-element';
 import * as Part from '../src/content-element/part/part';
@@ -79,6 +81,8 @@ export {
   HtmlEditorConfig,
   Style,
   CssClass,
+  StyleOption,
+  DomManipulation,
   Icon,
   ContentElement,
   Part,

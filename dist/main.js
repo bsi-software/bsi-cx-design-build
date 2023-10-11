@@ -494,6 +494,30 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static STYLES = 'styles';
+  /**
+   * @type {string}
+   */
+  static STYLE_ID = 'styleId';
+  /**
+   * @type {string}
+   */
+  static DOM_MANIPULATIONS = 'domManipulations';
+  /**
+   * @type {string}
+   */
+  static SELECTOR = 'selector';
+  /**
+   * @type {string}
+   */
+  static ATTRIBUTE = 'attribute';
+  /**
+   * @type {string}
+   */
+  static VALUE = 'value';
+  /**
+   * @type {string}
+   */
   static HTML_EDITOR_CONFIGS = 'htmlEditorConfigs';
   /**
    * @type {string}

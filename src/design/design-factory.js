@@ -7,6 +7,8 @@ import PageInclude from '../website/page-include';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
 import Style from '../style/style';
 import CssClass from '../style/css-class';
+import StyleOption from '../style/style-option';
+import DomManipulation from '../style/dom-manipulation';
 import NLS from '../nls/nls';
 import Translation from '../nls/translation';
 import PartFactory from '../content-element/part/part-factory';
@@ -238,6 +240,62 @@ export default class DesignFactory {
    */
   get cssClass() {
     return new CssClass();
+  }
+
+  /**
+   * Get a new style option builder instance.
+   *
+   * @example
+   * .withStyleOptions(
+   *   cx.styleOption
+   *     .withStyleId('darkred-background-5vLqPX')
+   *     .withLabel('Darkred')
+   *     .withCssClass('darkred-background')
+   *     .withDomManipulations(
+   *       cx.domManipulation
+   *         .withSelector('div.darkred-background')
+   *         .withAttribute('style')
+   *         .withValue('background-color: darkred;'),
+   *       cx.domManipulation
+   *         .withSelector('div.darkred-background p')
+   *         .withAttribute('style')
+   *         .withValue('color: white;')),
+   *   cx.styleOption
+   *     .withStyleId('lightblue-background-9ftMNF')
+   *     .withLabel('Lightblue')
+   *     .withCssClass('lightblue-background')
+   *     .withDomManipulations(
+   *       cx.domManipulation
+   *         .withSelector('div.lightblue-background')
+   *         .withAttribute('style')
+   *         .withValue('background-color: lightblue;'),
+   *       cx.domManipulation
+   *         .withSelector('div.lightblue-background p')
+   *         .withAttribute('style')
+   *         .withValue('color: black;')))
+   * @returns {StyleOption}
+   */
+  get styleOption() {
+    return new StyleOption();
+  }
+
+  /**
+   * Get a new DOM manipulation builder instance.
+   *
+   * @example
+   * .withDomManipulations(
+   *   cx.domManipulation
+   *     .withSelector('div.darkred-background')
+   *     .withAttribute('style')
+   *     .withValue('background-color: darkred;'),
+   *   cx.domManipulation
+   *     .withSelector('div.darkred-background p')
+   *     .withAttribute('style')
+   *     .withValue('color: white;'))
+   * @returns {DomManipulation}
+   */
+  get domManipulation() {
+    return new DomManipulation();
   }
 
   /**

@@ -27,7 +27,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withName('landingpage')
     .withVersion('1.0.0-alpha')
     .withDesignType(DesignType.LANDINGPAGE)
-    .withTargetVersion(Version.CX_22_0)
+    .withTargetVersion(Version.CX_23_2)
     .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
     .withPropertiesFilePath('properties.js')
     .withAdditionalStaticAssetFileExtensions('md')
@@ -41,4 +41,4 @@ module.exports = WebpackConfigBuilder.fromConfigs(
         .withPath('main.js'),
       new ModuleConfig()
         .withName('alternate')
-        .withPath('alternate.js')),);
+        .withPath('alternate.js')));
