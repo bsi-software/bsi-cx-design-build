@@ -291,6 +291,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static ARCHIVED: string;
+        /**
+         * @type {string}
+         */
         static STYLE_CONFIGS: string;
         /**
          * @type {string}
@@ -4394,6 +4398,11 @@ declare module "src/content-element/content-element" {
          */
         private _hidden;
         /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _archived;
+        /**
          * @type {RawValue|[Style]|undefined}
          * @private
          */
@@ -4432,6 +4441,10 @@ declare module "src/content-element/content-element" {
          * @returns {boolean|undefined}
          */
         get hidden(): boolean;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get archived(): boolean;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
@@ -4510,6 +4523,16 @@ declare module "src/content-element/content-element" {
          * @since BSI CX 1.3
          */
         withHidden(hidden: boolean): ContentElement;
+        /**
+         * Declare this content element as archived.
+         *
+         * @example
+         * .withArchived(true)
+         * @param {boolean} archived - The archived state.
+         * @returns {ContentElement}
+         * @since BSI CX 23.2
+         */
+        withArchived(archived: boolean): ContentElement;
         /**
          * Declare the styles for this content element. You don't have to register the used styles in the design object
          * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.

@@ -11,6 +11,7 @@ element.withElementId('column-1')
   .withIcon(Icon.ONE_COLUMN)
   .withLabel('1 Column')
   .withFile(require('./template.twig'))
+  .withArchived(true)
   .withDropzones(
     cx.dropzone
       .withDropzone('b6608fe9-4815-4ef1-a118-6e945ead513f')

@@ -82,6 +82,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ARCHIVED = 'archived';
+  /**
+   * @type {string}
+   */
   static STYLE_CONFIGS = 'styleConfigs';
   /**
    * @type {string}
