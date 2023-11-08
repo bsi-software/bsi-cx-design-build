@@ -4534,6 +4534,16 @@ declare module "src/content-element/content-element" {
          */
         withArchived(archived: boolean): ContentElement;
         /**
+         * Declare this content element as archived with a minimum CX version.
+         *
+         * @example
+         * .withArchivedMinVersion(Version.CX_23_2)
+         * @param {Version} minVersion
+         * @returns {ContentElement}
+         * @since BSI CX 23.2
+         */
+        withArchivedMinVersion(minVersion: Version): ContentElement;
+        /**
          * Declare the styles for this content element. You don't have to register the used styles in the design object
          * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
          *

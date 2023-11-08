@@ -4278,6 +4278,7 @@ const CALENDAR_CLOCK = new Icon('calendar-clock');
 
 
 
+
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
@@ -4529,6 +4530,23 @@ class ContentElement extends AbstractBuilder {
    */
   withArchived(archived) {
     this._archived = archived;
+    return this;
+  }
+
+  /**
+   * Declare this content element as archived with a minimum CX version.
+   *
+   * @example
+   * .withArchivedMinVersion(Version.CX_23_2)
+   * @param {Version} minVersion
+   * @returns {ContentElement}
+   * @since BSI CX 23.2
+   */
+  withArchivedMinVersion(minVersion) {
+    console.log(version_TARGET);
+    if (version_TARGET >= minVersion) {
+      this._archived = true;
+    }
     return this;
   }
 

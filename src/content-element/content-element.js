@@ -3,6 +3,7 @@ import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
+import {TARGET as TARGET_VERSION} from '../version';
 
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
@@ -255,6 +256,22 @@ export default class ContentElement extends AbstractBuilder {
    */
   withArchived(archived) {
     this._archived = archived;
+    return this;
+  }
+
+  /**
+   * Declare this content element as archived for a minimum CX version.
+   *
+   * @example
+   * .withArchivedMinVersion(Version.CX_23_2)
+   * @param {Version} minVersion
+   * @returns {ContentElement}
+   * @since BSI CX 23.2
+   */
+  withArchivedMinVersion(minVersion) {
+    if (TARGET_VERSION >= minVersion) {
+      this._archived = true;
+    }
     return this;
   }
 
