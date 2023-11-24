@@ -482,6 +482,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ARCHIVED = 'archived';
+  /**
+   * @type {string}
+   */
   static STYLE_CONFIGS = 'styleConfigs';
   /**
    * @type {string}
@@ -491,6 +495,30 @@ class DesignJsonProperty {
    * @type {string}
    */
   static CSS_CLASS = 'cssClass';
+  /**
+   * @type {string}
+   */
+  static STYLES = 'styles';
+  /**
+   * @type {string}
+   */
+  static STYLE_ID = 'styleId';
+  /**
+   * @type {string}
+   */
+  static DOM_MANIPULATIONS = 'domManipulations';
+  /**
+   * @type {string}
+   */
+  static SELECTOR = 'selector';
+  /**
+   * @type {string}
+   */
+  static ATTRIBUTE = 'attribute';
+  /**
+   * @type {string}
+   */
+  static VALUE = 'value';
   /**
    * @type {string}
    */

@@ -291,6 +291,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static ARCHIVED: string;
+        /**
+         * @type {string}
+         */
         static STYLE_CONFIGS: string;
         /**
          * @type {string}
@@ -300,6 +304,30 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static CSS_CLASS: string;
+        /**
+         * @type {string}
+         */
+        static STYLES: string;
+        /**
+         * @type {string}
+         */
+        static STYLE_ID: string;
+        /**
+         * @type {string}
+         */
+        static DOM_MANIPULATIONS: string;
+        /**
+         * @type {string}
+         */
+        static SELECTOR: string;
+        /**
+         * @type {string}
+         */
+        static ATTRIBUTE: string;
+        /**
+         * @type {string}
+         */
+        static VALUE: string;
         /**
          * @type {string}
          */
@@ -3316,8 +3344,278 @@ declare module "src/style/css-class" {
     export type Style = import("src/style/style").default;
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/style/dom-manipulation" {
+    /** @typedef {import('./style-option').default} StyleOption */
+    /**
+     * This is the builder class for DOM manipulation objects (required by the {@link StyleOption} configuration object).
+     *
+     * @example
+     * module.exports = cx.style
+     *   .withIdentifier('background-color')
+     *   .withLabel('Background Color')
+     *   .withStyleOptions(
+     *     cx.styleOption
+     *       .withStyleId('darkred-background-5vLqPX')
+     *       .withLabel('Darkred')
+     *       .withCssClass('darkred-background')
+     *       .withDomManipulations(
+     *         cx.domManipulation
+     *           .withSelector('div.darkred-background')
+     *           .withAttribute('style')
+     *           .withValue('background-color: darkred;'),
+     *         cx.domManipulation
+     *           .withSelector('div.darkred-background p')
+     *           .withAttribute('style')
+     *           .withValue('color: white;')),
+     *     cx.styleOption
+     *       .withStyleId('lightblue-background-9ftMNF')
+     *       .withLabel('Lightblue')
+     *       .withCssClass('lightblue-background')
+     *       .withDomManipulations(
+     *         cx.domManipulation
+     *           .withSelector('div.lightblue-background')
+     *           .withAttribute('style')
+     *           .withValue('background-color: lightblue;'),
+     *         cx.domManipulation
+     *           .withSelector('div.lightblue-background p')
+     *           .withAttribute('style')
+     *           .withValue('color: black;')));
+     * @since CX 23.2
+     */
+    export default class DomManipulation extends AbstractBuilder {
+        /**
+         * Static helper method to create a new DOM manipulation object.
+         *
+         * @example
+         * DomManipulation.create('div.btn-blue','style','color: #16616d; border: 2px solid #16616d;')
+         * @param {string} selector - The selector to use.
+         * @param {string} attribute - The attribute to use.
+         * @param {string} value - The value to use.
+         * @returns {DomManipulation}
+         */
+        static create(selector: string, attribute: string, value: string): DomManipulation;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _selector;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _attribute;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _value;
+        /**
+         * @returns {string|undefined}
+         */
+        get selector(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get attribute(): string;
+        /**
+         * @returns {string|undefined}
+         */
+        get value(): string;
+        /**
+         * Specify the selector to use with this DOM manipulation.
+         * Any DOM selector can be used, e.g. tag, class, id.
+         *
+         * @example
+         * .withSelector('div.btn-blue')
+         * @param {string} selector - The selector to use.
+         * @returns {DomManipulation}
+         */
+        withSelector(selector: string): DomManipulation;
+        /**
+         * Specify the attribute to use with this DOM manipulation.
+         * Use the attribute 'style' to define CSS inline styles. Alternatively, set 'class' to specify CSS classes.
+         *
+         * @example
+         * .withAttribute('style')
+         * @param {string} attribute - The attribute to use.
+         * @returns {DomManipulation}
+         */
+        withAttribute(attribute: string): DomManipulation;
+        /**
+         * Specify the value to use with this DOM manipulation.
+         *
+         * @example
+         * .withValue('color: #16616d; border: 2px solid #16616d;')
+         * @param {string} value - The value to use.
+         * @returns {DomManipulation}
+         */
+        withValue(value: string): DomManipulation;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {DomManipulation}
+         */
+        clone(shallow?: boolean): DomManipulation;
+    }
+    export type StyleOption = import("src/style/style-option").default;
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/style/style-option" {
+    /** @typedef {import('./style').default} Style */
+    /** @typedef {import('./dom-manipulation').default} DomManipulation */
+    /**
+     * This is the builder class for style option objects (required by the {@link Style|style} configuration object).
+     *
+     * @example
+     * module.exports = cx.style
+     *   .withIdentifier('background-color')
+     *   .withLabel('Background Color')
+     *   .withStyleOptions(
+     *     cx.styleOption
+     *       .withStyleId('darkred-background-5vLqPX')
+     *       .withLabel('Darkred')
+     *       .withCssClass('darkred-background')
+     *       .withDomManipulations(
+     *         cx.domManipulation
+     *           .withSelector('div.darkred-background')
+     *           .withAttribute('style')
+     *           .withValue('background-color: darkred;'),
+     *         cx.domManipulation
+     *           .withSelector('div.darkred-background p')
+     *           .withAttribute('style')
+     *           .withValue('color: white;')),
+     *     cx.styleOption
+     *       .withStyleId('lightblue-background-9ftMNF')
+     *       .withLabel('Lightblue')
+     *       .withCssClass('lightblue-background')
+     *       .withDomManipulations(
+     *         cx.domManipulation
+     *           .withSelector('div.lightblue-background')
+     *           .withAttribute('style')
+     *           .withValue('background-color: lightblue;'),
+     *         cx.domManipulation
+     *           .withSelector('div.lightblue-background p')
+     *           .withAttribute('style')
+     *           .withValue('color: black;')));
+     * @since CX 23.2
+     */
+    export default class StyleOption extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _styleId;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _cssClass;
+        /**
+         * @type {RawValue|DomManipulation[]|undefined}
+         * @private
+         */
+        private _domManipulations;
+        /**
+         * @returns {string|undefined}
+         */
+        get styleId(): string;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get label(): any;
+        /**
+         * @returns {string|undefined}
+         */
+        get cssClass(): string;
+        /**
+         * @returns {RawValue|[DomManipulation]|undefined}
+         */
+        get domManipulations(): RawValue | [import("src/style/dom-manipulation").default];
+        /**
+         * Specify the style id to use.
+         *
+         * @example
+         * .withStyleId('text-red')
+         * @param {string} styleId - The style id that identifies the style option.
+         * @returns {StyleOption}
+         */
+        withStyleId(styleId: string): StyleOption;
+        /**
+         * Specify the label to use with this style option.
+         *
+         * @param {string|NLS} label - The label to use.
+         * @returns {StyleOption}
+         */
+        withLabel(label: string | NLS): StyleOption;
+        /**
+         * Specify the CSS class to use.
+         *
+         * @example
+         * .withCssClass('text-red')
+         * @param {string} cssClass - The CSS class to use.
+         * @returns {StyleOption}
+         */
+        withCssClass(cssClass: string): StyleOption;
+        /**
+         * Specify the DOM manipulations to use with this style option.
+         *
+         * @example
+         * .withDomManipulations(
+         *   cx.domManipulation
+         *     .withSelector('div.darkred-background')
+         *     .withAttribute('style')
+         *     .withValue('background-color: darkred;'),
+         *   cx.domManipulation
+         *     .withSelector('div.darkred-background p')
+         *     .withAttribute('style')
+         *     .withValue('color: white;'))
+         * @see {@link withRawDomManipulations} to set a raw value
+         * @param {...DomManipulation} domManipulations - The DOM manipulations to use.
+         * @returns {StyleOption}
+         */
+        withDomManipulations(...domManipulations: DomManipulation[]): StyleOption;
+        /**
+         * Set the raw DOM manipulations to use with this style option.
+         *
+         * @example
+         * .withRawDomManipulations(
+         *   {
+         *     selector: 'div.darkred-background',
+         *     attribute: 'style',
+         *     value: 'background-color: darkred;'
+         *   },
+         *   {
+         *     selector: 'div.darkred-background p',
+         *     attribute: 'style',
+         *     value: 'color: white;'
+         *   }
+         * )
+         * @param {...{}} domManipulations
+         * @returns {StyleOption}
+         */
+        withRawDomManipulations(...domManipulations: {}[]): StyleOption;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {StyleOption}
+         */
+        clone(shallow?: boolean): StyleOption;
+    }
+    export type Style = import("src/style/style").default;
+    export type DomManipulation = import("src/style/dom-manipulation").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
 declare module "src/style/style" {
     /** @typedef {import('./css-class').default} CssClass */
+    /** @typedef {import('./style-option').default} StyleOption */
     /**
      * This is the builder class for style configuration objects.
      *
@@ -3332,6 +3630,42 @@ declare module "src/style/style" {
      *     cx.cssClass
      *       .withCssClass('text-blue')
      *       .withLabel('Blue'));
+     *
+     * With CX 23.2 an extended style format was introduced,
+     * which makes it possible to define styles using either CSS classes or DOM manipulations, or a combination of both.
+     *
+     * @example
+     * module.exports = cx.style
+     *   .withIdentifier('background-color')
+     *   .withLabel('Background Color')
+     *   .withStyleOptions(
+     *     cx.styleOption
+     *       .withStyleId('darkred-background-5vLqPX')
+     *       .withLabel('Darkred')
+     *       .withCssClass('darkred-background')
+     *       .withDomManipulations(
+     *         cx.domManipulation
+     *           .withSelector('div.darkred-background')
+     *           .withAttribute('style')
+     *           .withValue('background-color: darkred;'),
+     *         cx.domManipulation
+     *           .withSelector('div.darkred-background p')
+     *           .withAttribute('style')
+     *           .withValue('color: white;')),
+     *     cx.styleOption
+     *       .withStyleId('lightblue-background-9ftMNF')
+     *       .withLabel('Lightblue')
+     *       .withCssClass('lightblue-background')
+     *       .withDomManipulations(
+     *         cx.domManipulation
+     *           .withSelector('div.lightblue-background')
+     *           .withAttribute('style')
+     *           .withValue('background-color: lightblue;'),
+     *         cx.domManipulation
+     *           .withSelector('div.lightblue-background p')
+     *           .withAttribute('style')
+     *           .withValue('color: black;')));
+     *
      * @since Studio 1.1
      */
     export default class Style extends AbstractBuilder {
@@ -3351,6 +3685,11 @@ declare module "src/style/style" {
          */
         private _cssClasses;
         /**
+         * @type {RawValue|StyleOption[]|undefined}
+         * @private
+         */
+        private _styles;
+        /**
          * @returns {string|undefined}
          */
         get identifier(): string;
@@ -3362,6 +3701,10 @@ declare module "src/style/style" {
          * @returns {RawValue|[CssClass]|undefined}
          */
         get cssClasses(): RawValue | [import("src/style/css-class").default];
+        /**
+         * @returns {RawValue|[StyleOption]|undefined}
+         */
+        get styles(): RawValue | [import("src/style/style-option").default];
         /**
          * Set the unique identifier for this style configuration. If not specified, a UUID v4 will be used.
          * <strong>It is recommended to set this property.</strong>
@@ -3414,6 +3757,70 @@ declare module "src/style/style" {
          */
         withRawCssClasses(...cssClasses: {}[]): Style;
         /**
+         * Specify the style options to use with this style configuration.
+         *
+         * @example
+         * .withStyleOptions(
+         *   cx.styleOption
+         *     .withStyleId('darkred-background-5vLqPX')
+         *     .withLabel('Darkred')
+         *     .withCssClass('darkred-background')
+         *     .withDomManipulations(
+         *       cx.domManipulation
+         *         .withSelector('div.darkred-background')
+         *         .withAttribute('style')
+         *         .withValue('background-color: darkred;'),
+         *       cx.domManipulation
+         *         .withSelector('div.darkred-background p')
+         *         .withAttribute('style')
+         *         .withValue('color: white;')),
+         *   cx.styleOption
+         *     .withStyleId('lightblue-background-9ftMNF')
+         *     .withLabel('Lightblue')
+         *     .withCssClass('lightblue-background')
+         *     .withDomManipulations(
+         *       cx.domManipulation
+         *         .withSelector('div.lightblue-background')
+         *         .withAttribute('style')
+         *         .withValue('background-color: lightblue;'),
+         *       cx.domManipulation
+         *         .withSelector('div.lightblue-background p')
+         *         .withAttribute('style')
+         *         .withValue('color: black;')))
+         * @see {@link withRawStyleOptions} to set a raw value
+         * @param {...StyleOption} styles - The style options to use.
+         * @returns {Style}
+         */
+        withStyleOptions(...styles: StyleOption[]): Style;
+        /**
+         * Set the raw style options to use with this style.
+         *
+         * @example
+         * .withRawStyleOptions(
+         *   {
+         *     styleId: 'darkred-background-5vLqPX',
+         *     label: 'Darkred',
+         *     cssClass: 'darkred-background',
+         *     domManipulations: [
+         *       { selector: 'div.darkred-background', attribute: 'style', value: 'background-color: darkred;' },
+         *       { selector: 'div.darkred-background p', attribute: 'style', value: 'color: white;' }
+         *     ]
+         *   },
+         *   {
+         *     styleId: 'lightblue-background-9ftMNF',
+         *     label: 'Lightblue',
+         *     cssClass: 'lightblue-background',
+         *     domManipulations: [
+         *       { selector: 'div.lightblue-background', attribute: 'style', value: 'background-color: lightblue;' },
+         *       { selector: 'div.lightblue-background p', attribute: 'style', value: 'color: black;' }
+         *     ]
+         *   }
+         * )
+         * @param {...{}} styles
+         * @returns {Style}
+         */
+        withRawStyleOptions(...styles: {}[]): Style;
+        /**
          * Clone the configuration.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -3422,6 +3829,7 @@ declare module "src/style/style" {
         clone(shallow?: boolean): Style;
     }
     export type CssClass = import("src/style/css-class").default;
+    export type StyleOption = import("src/style/style-option").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
@@ -3658,6 +4066,11 @@ declare module "src/content-element/icon" {
      * @since Studio 1.0
      */
     export const THREE_COLUMNS: Icon;
+    /**
+     * @type {Icon}
+     * @since CX 23.2
+     */
+    export const CALENDAR_CLOCK: Icon;
     import AbstractConstant from "src/abstract-constant";
 }
 declare module "src/content-element/content-element-group" {
@@ -3985,6 +4398,11 @@ declare module "src/content-element/content-element" {
          */
         private _hidden;
         /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _archived;
+        /**
          * @type {RawValue|[Style]|undefined}
          * @private
          */
@@ -4023,6 +4441,10 @@ declare module "src/content-element/content-element" {
          * @returns {boolean|undefined}
          */
         get hidden(): boolean;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get archived(): boolean;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
@@ -4101,6 +4523,26 @@ declare module "src/content-element/content-element" {
          * @since BSI CX 1.3
          */
         withHidden(hidden: boolean): ContentElement;
+        /**
+         * Declare this content element as archived.
+         *
+         * @example
+         * .withArchived(true)
+         * @param {boolean} archived - The archived state.
+         * @returns {ContentElement}
+         * @since BSI CX 23.2
+         */
+        withArchived(archived: boolean): ContentElement;
+        /**
+         * Declare this content element as archived with a minimum CX version.
+         *
+         * @example
+         * .withArchivedMinVersion(Version.CX_23_2)
+         * @param {Version} minVersion
+         * @returns {ContentElement}
+         * @since BSI CX 23.2
+         */
+        withArchivedMinVersion(minVersion: Version): ContentElement;
         /**
          * Declare the styles for this content element. You don't have to register the used styles in the design object
          * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
@@ -5562,6 +6004,36 @@ declare module "src/design/design" {
          *     ]
          *   }
          * })
+         *
+         * With CX 23.2 an extended style format was introduced,
+         * which makes it possible to define styles using either CSS classes or DOM manipulations, or a combination of both.
+         *
+         * @example
+         * .withRawStyleConfigs({
+         *   'background-color': {
+         *     label: 'Background Color',
+         *     styles: [
+         *       {
+         *         styleId: 'darkred-background-5vLqPX',
+         *         label: 'Darkred',
+         *         cssClass: 'darkred-background',
+         *         domManipulations: [
+         *           { selector: 'div.darkred-background', attribute: 'style', value: 'background-color: darkred;' },
+         *           { selector: 'div.darkred-background p', attribute: 'style', value: 'color: white;' }
+         *         ]
+         *       },
+         *       {
+         *         styleId: 'lightblue-background-9ftMNF',
+         *         label: 'Lightblue',
+         *         cssClass: 'lightblue-background',
+         *         domManipulations: [
+         *           { selector: 'div.lightblue-background', attribute: 'style', value: 'background-color: lightblue;' },
+         *           { selector: 'div.lightblue-background p', attribute: 'style', value: 'color: black;' }
+         *         ]
+         *       }
+         *     ]
+         *   }
+         * })
          * @see {@link withStyleConfigs}
          * @param {{}} styleConfigs - The <code>styleConfigs</code> object.
          * @returns {Design}
@@ -6701,6 +7173,56 @@ declare module "src/design/design-factory" {
          */
         get cssClass(): CssClass;
         /**
+         * Get a new style option builder instance.
+         *
+         * @example
+         * .withStyleOptions(
+         *   cx.styleOption
+         *     .withStyleId('darkred-background-5vLqPX')
+         *     .withLabel('Darkred')
+         *     .withCssClass('darkred-background')
+         *     .withDomManipulations(
+         *       cx.domManipulation
+         *         .withSelector('div.darkred-background')
+         *         .withAttribute('style')
+         *         .withValue('background-color: darkred;'),
+         *       cx.domManipulation
+         *         .withSelector('div.darkred-background p')
+         *         .withAttribute('style')
+         *         .withValue('color: white;')),
+         *   cx.styleOption
+         *     .withStyleId('lightblue-background-9ftMNF')
+         *     .withLabel('Lightblue')
+         *     .withCssClass('lightblue-background')
+         *     .withDomManipulations(
+         *       cx.domManipulation
+         *         .withSelector('div.lightblue-background')
+         *         .withAttribute('style')
+         *         .withValue('background-color: lightblue;'),
+         *       cx.domManipulation
+         *         .withSelector('div.lightblue-background p')
+         *         .withAttribute('style')
+         *         .withValue('color: black;')))
+         * @returns {StyleOption}
+         */
+        get styleOption(): StyleOption;
+        /**
+         * Get a new DOM manipulation builder instance.
+         *
+         * @example
+         * .withDomManipulations(
+         *   cx.domManipulation
+         *     .withSelector('div.darkred-background')
+         *     .withAttribute('style')
+         *     .withValue('background-color: darkred;'),
+         *   cx.domManipulation
+         *     .withSelector('div.darkred-background p')
+         *     .withAttribute('style')
+         *     .withValue('color: white;'))
+         * @returns {DomManipulation}
+         */
+        get domManipulation(): DomManipulation;
+        /**
          * Get a new NLS builder instance.
          *
          * @example
@@ -6769,6 +7291,8 @@ declare module "src/design/design-factory" {
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
     import CssClass from "src/style/css-class";
+    import StyleOption from "src/style/style-option";
+    import DomManipulation from "src/style/dom-manipulation";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
@@ -6804,6 +7328,8 @@ declare module "export/browser" {
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
     import CssClass from "src/style/css-class";
+    import StyleOption from "src/style/style-option";
+    import DomManipulation from "src/style/dom-manipulation";
     import * as Icon from "src/content-element/icon";
     import ContentElement from "src/content-element/content-element";
     import * as Part from "src/content-element/part/part";
@@ -6840,7 +7366,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

@@ -233,3 +233,8 @@ export const TWO_COLUMNS = new Icon('two-columns');
  * @since Studio 1.0
  */
 export const THREE_COLUMNS = new Icon('three-columns');
+/**
+ * @type {Icon}
+ * @since CX 23.2
+ */
+export const CALENDAR_CLOCK = new Icon('calendar-clock');

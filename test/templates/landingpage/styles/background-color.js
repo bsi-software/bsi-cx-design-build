@@ -5,18 +5,31 @@ const {cx, Style} = require('@bsi-cx/design-build');
  */
 
 module.exports = cx.style
-  .withIdentifier('background-color')
+  .withIdentifier('background-color-oHkzMh')
   .withLabel('Background')
-  .withCssClasses(
-    cx.cssClass
+  .withStyleOptions(
+    cx.styleOption
+      .withStyleId('black-background-ew5kWs')
       .withLabel('Black')
       .withCssClass('black-background'),
-    cx.cssClass
+    cx.styleOption
+      .withStyleId('blue-background-scWZO4')
       .withLabel('Blau')
-      .withCssClass('blue-background'),
-    cx.cssClass
+      .withDomManipulations(
+        cx.domManipulation
+          .withSelector('.background > div')
+          .withAttribute('class')
+          .withValue('blue-background')),
+    cx.styleOption
+      .withStyleId('red-background-9mwEve')
       .withLabel('Red')
-      .withCssClass('red-background'),
-    cx.cssClass
-      .withLabel('Weiss')
-      .withCssClass('white-background'));
+      .withCssClass('red-background')
+      .withDomManipulations(
+        cx.domManipulation
+          .withSelector('.background > div')
+          .withAttribute('class')
+          .withValue('red-background'),
+        cx.domManipulation
+          .withSelector('.background p')
+          .withAttribute('style')
+          .withValue('color: white;')));

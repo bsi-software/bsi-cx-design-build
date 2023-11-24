@@ -3,6 +3,7 @@ import DesignJsonProperty from '../design-json-property';
 import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
+import {TARGET as TARGET_VERSION} from '../version';
 
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
@@ -60,6 +61,11 @@ export default class ContentElement extends AbstractBuilder {
    */
   _hidden = undefined;
   /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _archived = undefined;
+  /**
    * @type {RawValue|[Style]|undefined}
    * @private
    */
@@ -115,6 +121,13 @@ export default class ContentElement extends AbstractBuilder {
    */
   get hidden() {
     return this._hidden;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get archived() {
+    return this._archived;
   }
 
   /**
@@ -229,6 +242,36 @@ export default class ContentElement extends AbstractBuilder {
    */
   withHidden(hidden) {
     this._hidden = hidden;
+    return this;
+  }
+
+  /**
+   * Declare this content element as archived.
+   *
+   * @example
+   * .withArchived(true)
+   * @param {boolean} archived - The archived state.
+   * @returns {ContentElement}
+   * @since BSI CX 23.2
+   */
+  withArchived(archived) {
+    this._archived = archived;
+    return this;
+  }
+
+  /**
+   * Declare this content element as archived for a minimum CX version.
+   *
+   * @example
+   * .withArchivedMinVersion(Version.CX_23_2)
+   * @param {Version} minVersion
+   * @returns {ContentElement}
+   * @since BSI CX 23.2
+   */
+  withArchivedMinVersion(minVersion) {
+    if (TARGET_VERSION >= minVersion) {
+      this._archived = true;
+    }
     return this;
   }
 
@@ -381,6 +424,7 @@ export default class ContentElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
