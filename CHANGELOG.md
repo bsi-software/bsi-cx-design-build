@@ -7,6 +7,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.13.1] - 04.12.2023
+
+### Added
+
+* Support of new Styles definition including DOM manipulation
+* Support of withArchived() function
+* Added calender-clock icon
+
+
 ## [1.13.0] - 21.09.2023
 
 ### Added
@@ -525,6 +534,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * ES6 imports
 * Custom JS module support
 * Basic setup to publish project as NPM package
+
+[1.13.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.0...1.13.1
 
 [1.13.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.12.2-rc.1...1.13.0
 
