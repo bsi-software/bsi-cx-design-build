@@ -4534,7 +4534,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * Declare this content element as archived with a minimum CX version.
+   * Declare this content element as archived for a minimum CX version.
    *
    * @example
    * .withArchivedMinVersion(Version.CX_23_2)
@@ -4543,7 +4543,6 @@ class ContentElement extends AbstractBuilder {
    * @since BSI CX 23.2
    */
   withArchivedMinVersion(minVersion) {
-    console.log(version_TARGET);
     if (version_TARGET >= minVersion) {
       this._archived = true;
     }

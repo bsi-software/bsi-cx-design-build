@@ -4534,7 +4534,7 @@ declare module "src/content-element/content-element" {
          */
         withArchived(archived: boolean): ContentElement;
         /**
-         * Declare this content element as archived with a minimum CX version.
+         * Declare this content element as archived for a minimum CX version.
          *
          * @example
          * .withArchivedMinVersion(Version.CX_23_2)
