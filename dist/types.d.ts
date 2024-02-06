@@ -2856,6 +2856,22 @@ declare module "src/webpack-config-builder" {
          */
         _getStaticJavaScriptFileRuleConfig(): {}[];
         /**
+         * Create the asset resource filename for given asset and design type.
+         *
+         * @param {Asset} asset
+         * @param {DesignType} designType
+         * @param {String} assetResourceRuleFilename
+         * @returns {string}
+         */
+        _getAssetResourceFilename(asset: Asset, designType: typeof DesignType, assetResourceRuleFilename: string): string;
+        /**
+         * a valid resource file name must contain both '[name]' and '[ext]'
+         *
+         * @param {String} filename
+         * @returns {boolean}
+         */
+        _isValidAssetResourceRuleFilename(filename: string): boolean;
+        /**
          * @param {string} fileToCheck
          * @returns {boolean}
          */
@@ -2970,6 +2986,7 @@ declare module "src/webpack-config-builder" {
         _getOutputConfig(): {};
     }
     import BuildContext from "src/build-context";
+    import * as DesignType from "src/design-type";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
 }
 declare module "src/css/helper" {

@@ -11,6 +11,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withTargetVersion(Version.CX_22_0)
     .withRootPath(path.resolve(__dirname, 'templates', 'website'))
     .withPropertiesFilePath('properties.js')
+    .withAssetResourceRuleFilename('static/[name]-xxx-[contenthash][ext]')
     .withAdditionalStaticAssetFileExtensions('md')
     .withWebpackPlugins(new webpack.ProvidePlugin({
       $: 'jquery',
@@ -30,6 +31,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withTargetVersion(Version.CX_23_2)
     .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
     .withPropertiesFilePath('properties.js')
+    .withAssetResourceRuleFilename('static/[name]-xxx-[pathhash][ext]')
     .withAdditionalStaticAssetFileExtensions('md')
     .withWebpackPlugins(new webpack.ProvidePlugin({
       $: 'jquery',
