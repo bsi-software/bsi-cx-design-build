@@ -420,7 +420,7 @@ export default class WebpackConfigBuilder {
             },
             type: 'asset/resource',
             generator: {
-              filename: asset => getAssetResourceFilename(asset, this.config.designType)
+              filename: asset => this._getAssetResourceFilename(asset, this.config.designType, this.config.assetResourceRuleFilename)
             },
           },
         ]
@@ -439,10 +439,43 @@ export default class WebpackConfigBuilder {
         resource: (file) => this._isStaticJavaScriptFile(file),
         type: 'asset/resource',
         generator: {
-          filename: asset => getAssetResourceFilename(asset, this.config.designType)
+          filename: asset => this._getAssetResourceFilename(asset, this.config.designType)
         }
       }
     ];
+  }
+
+  /**
+   * Create the asset resource filename for given asset and design type.
+   *
+   * @param {Asset} asset
+   * @param {DesignType} designType
+   * @param {String} assetResourceRuleFilename
+   * @returns {string}
+   */
+  _getAssetResourceFilename(asset, designType, assetResourceRuleFilename) {
+    const isCustomPath = this._isValidAssetResourceRuleFilename(assetResourceRuleFilename);
+    if (isCustomPath && assetResourceRuleFilename.includes("[contenthash]")) {
+      return assetResourceRuleFilename;
+    }
+
+    const pathHash = createPathHash(path.posix.join(designType.toString(), asset.filename));
+    if(isCustomPath && assetResourceRuleFilename.includes("[pathhash]")) {
+      // 'pathhash' is not a standard webpack feature
+      return assetResourceRuleFilename.replace("[pathhash]", pathHash);
+    } else {
+      return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
+    }  
+  }
+
+  /**
+   * a valid resource file name must contain both '[name]' and '[ext]'
+   *
+   * @param {String} filename
+   * @returns {boolean}
+   */
+  _isValidAssetResourceRuleFilename(filename) {
+    return filename && filename.length > 0 && filename.includes("[name]") && filename.includes("[ext]");
   }
 
   /**
@@ -830,16 +863,4 @@ export default class WebpackConfigBuilder {
 
     return buildConfigs;
   }
-}
-
-/**
- * Create the asset resource filename for given asset and design type.
- *
- * @param {Asset} asset
- * @param {DesignType} designType
- * @returns {string}
- */
-function getAssetResourceFilename(asset, designType) {
-  let pathHash = createPathHash(path.posix.join(designType.toString(), asset.filename));
-  return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
 }
