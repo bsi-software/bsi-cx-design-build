@@ -11,7 +11,6 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withTargetVersion(Version.CX_22_0)
     .withRootPath(path.resolve(__dirname, 'templates', 'website'))
     .withPropertiesFilePath('properties.js')
-    .withAssetResourceRuleFilename('static/[name]-xxx-[contenthash][ext]')
     .withAdditionalStaticAssetFileExtensions('md')
     .withWebpackPlugins(new webpack.ProvidePlugin({
       $: 'jquery',
