@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.13.2] - 06.02.2023
+## [1.13.3] - 28.02.2024
+
+### Changed
+
+* Updated default `assetResourceRuleFilename` to use pathhash instead of contenthash.
+
+## [1.13.2] - 06.02.2024
 
 ### Added
 
@@ -539,6 +545,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * ES6 imports
 * Custom JS module support
 * Basic setup to publish project as NPM package
+
+[1.13.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.2...1.13.3
+
+[1.13.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.1...1.13.2
 
 [1.13.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.0...1.13.1
 

@@ -1511,7 +1511,7 @@ class DefaultBuildConfig {
   }
 
   get assetResourceRuleFilename() {
-    return `${DistFolder.STATIC}/[name]-[contenthash][ext]`;
+    return `${DistFolder.STATIC}/[name]-[pathhash][ext]`;
   }
 
   get additionalStaticAssetFileExtensions() {
@@ -2485,7 +2485,7 @@ var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(ex
 const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
 var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
 ;// CONCATENATED MODULE: ./package.json
-const package_namespaceObject = JSON.parse('{"u2":"@bsi-cx/design-build"}');
+const package_namespaceObject = /*#__PURE__*/JSON.parse('{"UU":"@bsi-cx/design-build"}');
 ;// CONCATENATED MODULE: external "crypto"
 const external_crypto_namespaceObject = require("crypto");
 ;// CONCATENATED MODULE: external "vm"
@@ -6477,7 +6477,7 @@ class WebpackConfigBuilder {
    * @private
    */
   _getTemplateLoader() {
-    return `${package_namespaceObject.u2}/dist/template-loader`;
+    return `${package_namespaceObject.UU}/dist/template-loader`;
   }
 
   /**
@@ -6485,7 +6485,7 @@ class WebpackConfigBuilder {
    * @private
    */
   _getTwingLoader() {
-    return `${package_namespaceObject.u2}/dist/twing-loader`;
+    return `${package_namespaceObject.UU}/dist/twing-loader`;
   }
 
   /**

@@ -17,7 +17,7 @@ export default class DefaultBuildConfig {
   }
 
   get assetResourceRuleFilename() {
-    return `${DistFolder.STATIC}/[name]-[contenthash][ext]`;
+    return `${DistFolder.STATIC}/[name]-[pathhash][ext]`;
   }
 
   get additionalStaticAssetFileExtensions() {
