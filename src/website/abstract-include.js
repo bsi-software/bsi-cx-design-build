@@ -23,6 +23,11 @@ export default class AbstractInclude extends AbstractBuilder {
    */
   _editable = undefined;
   /**
+   * @type {string|undefined}
+   * @protected
+   */
+  _contentType = undefined;
+  /**
    * @type {{}|undefined}
    * @protected
    */
@@ -65,6 +70,13 @@ export default class AbstractInclude extends AbstractBuilder {
   }
 
   /**
+   * @returns {string|undefined}
+   */
+  get contentType() {
+    return this._contentType;
+  }
+
+  /**
    * @returns {{}|undefined}
    */
   get file() {
@@ -101,6 +113,19 @@ export default class AbstractInclude extends AbstractBuilder {
    */
   withEditable(editable) {
     this._editable = editable;
+    return this;
+  }
+
+  /**
+   * Define the content type of this include.
+   *
+   * @example
+   * .withContentType('pre-defined')
+   * @param {string} contentType - The content type of this include.
+   * @returns {this}
+   */
+  withContentType(contentType) {
+    this._contentType = contentType;
     return this;
   }
 
@@ -184,6 +209,7 @@ export default class AbstractInclude extends AbstractBuilder {
     config[this.identifier] = include;
 
     this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_TYPE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);

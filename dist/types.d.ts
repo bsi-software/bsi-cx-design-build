@@ -383,11 +383,27 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static PAGINATION: string;
+        /**
+         * @type {string}
+         */
+        static NUM_DATA_RECORDS_PER_PAGE: string;
+        /**
+         * @type {string}
+         */
+        static NUM_ADJACENT_PAGES: string;
+        /**
+         * @type {string}
+         */
         static INCLUDES: string;
         /**
          * @type {string}
          */
         static EDITABLE: string;
+        /**
+         * @type {string}
+         */
+        static CONTENT_TYPE: string;
         /**
          * @type {string}
          */
@@ -5384,12 +5400,22 @@ declare module "src/website/website" {
      * @example
      * module.exports = cx.website
      *   .withMaxNavigationLevel(2)
+     *   .withPagination(
+     *     cx.pagination
+     *       .withNumDataRecordsPerPage(20)
+     *       .withNumAdjacentPages(3))
      *   .withIncludes(
      *     cx.include
      *       .withIdentifier('header')
      *       .withEditable(true)
      *       .withFile(require('./template.twig')
-     *       .withName('Template for the Homepage'))
+     *       .withName('Template for the Homepage'),
+     *     cx.include
+     *       .withIdentifier('pagination-element')
+     *       .withEditable(false)
+     *       .withContentType('pre-defined')
+     *       .withFile(require('./includes/pagination-element.hbs'))
+     *       .withName('Pagination'))
      * @since BSI CX 1.3
      */
     export default class Website extends AbstractBuilder {
@@ -5399,6 +5425,11 @@ declare module "src/website/website" {
          */
         private _maxNavigationLevel;
         /**
+         * @type {RawValue|Pagination|undefined}
+         * @private
+         */
+        private _pagination;
+        /**
          * @type {RawValue|AbstractInclude[]|undefined}
          * @private
          */
@@ -5407,6 +5438,10 @@ declare module "src/website/website" {
          * @returns {number|undefined}
          */
         get maxNavigationLevel(): number;
+        /**
+         * @returns {RawValue|Pagination|undefined}
+         */
+        get pagination(): any;
         /**
          * @returns {RawValue|AbstractInclude[]|undefined}
          */
@@ -5418,6 +5453,30 @@ declare module "src/website/website" {
          * @returns {Website}
          */
         withMaxNavigationLevel(maxNavigationLevel: number): Website;
+        /**
+         * Define the pagination to be used for this website.
+         *
+         * @example
+         * .withPagination(
+         *   cx.pagination
+         *     .withNumDataRecordsPerPage(20)
+         *     .withNumAdjacentPages(3))
+         * @param {Pagination} pagination
+         * @returns {Website}
+         */
+        withPagination(pagination: Pagination): Website;
+        /**
+         * Define the pagination to be used for this website as raw value.
+         *
+         * @example
+         * .withRawPagination({
+         *   numDataRecordsPerPage: 20,
+         *   numAdjacentPages: 3
+         * })
+         * @param {{}} pagination - Pagination as raw value.
+         * @returns {Website}
+         */
+        withRawPagination(pagination: {}): Website;
         /**
          * Define the includes for this website.
          *
@@ -6591,6 +6650,11 @@ declare module "src/website/abstract-include" {
          */
         protected _editable: boolean | undefined;
         /**
+         * @type {string|undefined}
+         * @protected
+         */
+        protected _contentType: string | undefined;
+        /**
          * @type {{}|undefined}
          * @protected
          */
@@ -6614,6 +6678,10 @@ declare module "src/website/abstract-include" {
          */
         get editable(): boolean;
         /**
+         * @returns {string|undefined}
+         */
+        get contentType(): string;
+        /**
          * @returns {{}|undefined}
          */
         get file(): {};
@@ -6632,6 +6700,15 @@ declare module "src/website/abstract-include" {
          * @returns {this}
          */
         withEditable(editable: boolean): this;
+        /**
+         * Define the content type of this include.
+         *
+         * @example
+         * .withContentType('pre-defined')
+         * @param {string} contentType - The content type of this include.
+         * @returns {this}
+         */
+        withContentType(contentType: string): this;
         /**
          * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
          * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
@@ -6727,7 +6804,13 @@ declare module "src/website/include" {
      *     .withIdentifier('header')
      *     .withEditable(true)
      *     .withFile(require('./includes/header.twig'))
-     *     .withName('Header'))
+     *     .withName('Header'),
+     *   cx.include
+     *     .withIdentifier('pagination-element')
+     *     .withEditable(false)
+     *     .withContentType('pre-defined')
+     *     .withFile(require('./includes/pagination-element.hbs'))
+     *     .withName('Pagination'))
      * @since BSI CX 1.3
      */
     export default class Include extends AbstractInclude {
@@ -6751,6 +6834,53 @@ declare module "src/website/include" {
     export type Website = import("src/website/website").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractInclude from "src/website/abstract-include";
+}
+declare module "src/website/pagination" {
+    /**
+     * This is the builder class for {@link Website|website} pagination.
+     *
+     * @example
+     * .withPagination(
+     *   cx.pagination
+     *     .withNumDataRecordsPerPage(20)
+     *     .withNumAdjacentPages(3))
+     * @since BSI CX 22.0
+     */
+    export default class Pagination extends AbstractBuilder {
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _numDataRecordsPerPage;
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _numAdjacentPages;
+        /**
+         * @returns {number|undefined}
+         */
+        get numDataRecordsPerPage(): number;
+        /**
+         * @returns {number|undefined}
+         */
+        get numAdjacentPages(): number;
+        /**
+         * Define how many records are to be displayed simultaneously on a page.
+         *
+         * @param {number} numDataRecordsPerPage - The number of data records to be displayed on a page.
+         * @returns {Pagination}
+         */
+        withNumDataRecordsPerPage(numDataRecordsPerPage: number): Pagination;
+        /**
+         * Define how many lower and higher page numbers are to be displayed in the pagination navigation.
+         *
+         * @param {number} numAdjacentPages - The number of adjacent pages.
+         * @returns {Pagination}
+         */
+        withNumAdjacentPages(numAdjacentPages: number): Pagination;
+    }
+    import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/content-element/part/part-factory" {
     export default class PartFactory {
@@ -7145,6 +7275,17 @@ declare module "src/design/design-factory" {
          */
         get pageInclude(): PageInclude;
         /**
+         * Get a new website pagination config builder instance.
+         *
+         * @example
+         * .withPagination(
+         *   cx.pagination
+         *     .withNumDataRecordsPerPage(20)
+         *     .withNumAdjacentPages(3))
+         * @returns {Pagination}
+         */
+        get pagination(): Pagination;
+        /**
          * Get a new HTML editor config builder instance.
          *
          * @example
@@ -7305,6 +7446,7 @@ declare module "src/design/design-factory" {
     import Include from "src/website/include";
     import Dropzone from "src/dropzone/dropzone";
     import PageInclude from "src/website/page-include";
+    import Pagination from "src/website/pagination";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
     import CssClass from "src/style/css-class";
