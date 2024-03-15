@@ -29,7 +29,7 @@ module.exports.black =
 module.exports.red =
   NLS.create(
     'red',
-    Translation.create(Locale.EN, 'Red'),
+    Translation.wildcard('Red'),
     Translation.create(Locale.DE, 'Rot'));
 
 /**
@@ -38,7 +38,7 @@ module.exports.red =
 module.exports.background =
   NLS.create(
     'background',
-    Translation.create(Locale.EN, 'Background'),
+    Translation.wildcard('Background'),
     Translation.create(Locale.DE, 'Hintergrund'));
 
 /**
