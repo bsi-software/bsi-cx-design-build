@@ -25,6 +25,7 @@ module.exports = cx.design
       .withGroupId('content')
       .withLabel(nls.content)
       .withContentElements(
+        require('./content-elements/content/pagination-element'),
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),
         require('./content-elements/content/column-1')
@@ -37,6 +38,7 @@ module.exports = cx.design
     cx.dropzone
       .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')
       .withAllowedElements(
+        require('./content-elements/content/pagination-element'),
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),
         require('./content-elements/content/column-1'),
@@ -46,11 +48,21 @@ module.exports = cx.design
   .withWebsite(
     cx.website
       .withMaxNavigationLevel(2)
+      .withPagination(
+        cx.pagination
+          .withNumDataRecordsPerPage(20)
+          .withNumAdjacentPages(3))
       .withIncludes(
         cx.pageInclude
           .withName('Vorlage für Inhaltsseiten')
           .withEditable(true)
           .withFile(require('./includes/page.html')),
+        cx.include
+          .withIdentifier('pagination-element')
+          .withName('Pagination')
+          .withEditable(false)
+          .withContentType('pre-defined')
+          .withFile(require('./includes/pagination-element.hbs')),
         cx.include
           .withIdentifier('footer')
           .withName(nls.footer)

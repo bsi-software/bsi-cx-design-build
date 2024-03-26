@@ -495,11 +495,27 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static PAGINATION = 'pagination';
+  /**
+   * @type {string}
+   */
+  static NUM_DATA_RECORDS_PER_PAGE = 'numDataRecordsPerPage';
+  /**
+   * @type {string}
+   */
+  static NUM_ADJACENT_PAGES = 'numAdjacentPages';
+  /**
+   * @type {string}
+   */
   static INCLUDES = 'includes';
   /**
    * @type {string}
    */
   static EDITABLE = 'editable';
+  /**
+   * @type {string}
+   */
+  static CONTENT_TYPE = 'contentType';
   /**
    * @type {string}
    */
@@ -5422,12 +5438,22 @@ class RawPart extends AbstractPart {
  * @example
  * module.exports = cx.website
  *   .withMaxNavigationLevel(2)
+ *   .withPagination(
+ *     cx.pagination
+ *       .withNumDataRecordsPerPage(20)
+ *       .withNumAdjacentPages(3))
  *   .withIncludes(
  *     cx.include
  *       .withIdentifier('header')
  *       .withEditable(true)
  *       .withFile(require('./template.twig')
- *       .withName('Template for the Homepage'))
+ *       .withName('Template for the Homepage'),
+ *     cx.include
+ *       .withIdentifier('pagination-element')
+ *       .withEditable(false)
+ *       .withContentType('pre-defined')
+ *       .withFile(require('./includes/pagination-element.hbs'))
+ *       .withName('Pagination'))
  * @since BSI CX 1.3
  */
 class Website extends AbstractBuilder {
@@ -5436,6 +5462,11 @@ class Website extends AbstractBuilder {
    * @private
    */
   _maxNavigationLevel = undefined;
+  /**
+   * @type {RawValue|Pagination|undefined}
+   * @private
+   */
+  _pagination = undefined;
   /**
    * @type {RawValue|AbstractInclude[]|undefined}
    * @private
@@ -5447,6 +5478,13 @@ class Website extends AbstractBuilder {
    */
   get maxNavigationLevel() {
     return this._maxNavigationLevel;
+  }
+
+  /**
+   * @returns {RawValue|Pagination|undefined}
+   */
+  get pagination() {
+    return this._pagination;
   }
 
   /**
@@ -5472,6 +5510,38 @@ class Website extends AbstractBuilder {
    */
   withMaxNavigationLevel(maxNavigationLevel) {
     this._maxNavigationLevel = maxNavigationLevel;
+    return this;
+  }
+
+  /**
+   * Define the pagination to be used for this website.
+   *
+   * @example
+   * .withPagination(
+   *   cx.pagination
+   *     .withNumDataRecordsPerPage(20)
+   *     .withNumAdjacentPages(3))
+   * @param {Pagination} pagination
+   * @returns {Website}
+   */
+  withPagination(pagination) {
+    this._pagination = pagination;
+    return this;
+  }
+
+  /**
+   * Define the pagination to be used for this website as raw value.
+   *
+   * @example
+   * .withRawPagination({
+   *   numDataRecordsPerPage: 20,
+   *   numAdjacentPages: 3
+   * })
+   * @param {{}} pagination - Pagination as raw value.
+   * @returns {Website}
+   */
+  withRawPagination(pagination) {
+    this._pagination = new RawValue(pagination);
     return this;
   }
 
@@ -5522,6 +5592,7 @@ class Website extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PAGINATION, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.INCLUDES, config, builderObjectValue, true);
 
     return config;
@@ -5563,6 +5634,11 @@ class AbstractInclude extends AbstractBuilder {
    * @protected
    */
   _editable = undefined;
+  /**
+   * @type {string|undefined}
+   * @protected
+   */
+  _contentType = undefined;
   /**
    * @type {{}|undefined}
    * @protected
@@ -5606,6 +5682,13 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
+   * @returns {string|undefined}
+   */
+  get contentType() {
+    return this._contentType;
+  }
+
+  /**
    * @returns {{}|undefined}
    */
   get file() {
@@ -5642,6 +5725,19 @@ class AbstractInclude extends AbstractBuilder {
    */
   withEditable(editable) {
     this._editable = editable;
+    return this;
+  }
+
+  /**
+   * Define the content type of this include.
+   *
+   * @example
+   * .withContentType('pre-defined')
+   * @param {string} contentType - The content type of this include.
+   * @returns {this}
+   */
+  withContentType(contentType) {
+    this._contentType = contentType;
     return this;
   }
 
@@ -5725,6 +5821,7 @@ class AbstractInclude extends AbstractBuilder {
     config[this.identifier] = include;
 
     this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_TYPE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);
@@ -5782,7 +5879,13 @@ class PageInclude extends AbstractInclude {
  *     .withIdentifier('header')
  *     .withEditable(true)
  *     .withFile(require('./includes/header.twig'))
- *     .withName('Header'))
+ *     .withName('Header'),
+ *   cx.include
+ *     .withIdentifier('pagination-element')
+ *     .withEditable(false)
+ *     .withContentType('pre-defined')
+ *     .withFile(require('./includes/pagination-element.hbs'))
+ *     .withName('Pagination'))
  * @since BSI CX 1.3
  */
 class Include extends AbstractInclude {
@@ -6144,6 +6247,89 @@ class NLS extends AbstractBuilder {
   }
 }
 
+;// CONCATENATED MODULE: ./src/website/pagination.js
+
+
+
+
+
+
+/**
+ * This is the builder class for {@link Website|website} pagination.
+ *
+ * @example
+ * .withPagination(
+ *   cx.pagination
+ *     .withNumDataRecordsPerPage(20)
+ *     .withNumAdjacentPages(3))
+ * @since BSI CX 22.0
+ */
+class Pagination extends AbstractBuilder {
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _numDataRecordsPerPage = undefined;
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _numAdjacentPages = undefined;
+
+  /**
+   * @returns {number|undefined}
+   */
+  get numDataRecordsPerPage() {
+    return this._numDataRecordsPerPage;
+  }
+
+  /**
+   * @returns {number|undefined}
+   */
+  get numAdjacentPages() {
+    return this._numAdjacentPages;
+  }
+
+  get minVersion() {
+    return CX_22_0;
+  }
+
+  get allowedTypes() {
+    return [WEBSITE];
+  }
+
+  /**
+   * Define how many records are to be displayed simultaneously on a page.
+   *
+   * @param {number} numDataRecordsPerPage - The number of data records to be displayed on a page.
+   * @returns {Pagination}
+   */
+  withNumDataRecordsPerPage(numDataRecordsPerPage) {
+    this._numDataRecordsPerPage = numDataRecordsPerPage;
+    return this;
+  }
+
+  /**
+   * Define how many lower and higher page numbers are to be displayed in the pagination navigation.
+   *
+   * @param {number} numAdjacentPages - The number of adjacent pages.
+   * @returns {Pagination}
+   */
+  withNumAdjacentPages(numAdjacentPages) {
+    this._numAdjacentPages = numAdjacentPages;
+    return this;
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.NUM_DATA_RECORDS_PER_PAGE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.NUM_ADJACENT_PAGES, config, identity);
+
+    return config;
+  }
+}
+
 ;// CONCATENATED MODULE: ./src/content-element/part/part-factory.js
 
 
@@ -6494,6 +6680,7 @@ class DesignHelper {
 
 
 
+
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
  * The design factory is available under the <code>cx</code> constant.
@@ -6665,6 +6852,20 @@ class DesignFactory {
    */
   get pageInclude() {
     return new PageInclude();
+  }
+
+  /**
+   * Get a new website pagination config builder instance.
+   *
+   * @example
+   * .withPagination(
+   *   cx.pagination
+   *     .withNumDataRecordsPerPage(20)
+   *     .withNumAdjacentPages(3))
+   * @returns {Pagination}
+   */
+  get pagination() {
+    return new Pagination();
   }
 
   /**

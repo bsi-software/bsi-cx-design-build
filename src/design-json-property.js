@@ -174,11 +174,27 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static PAGINATION = 'pagination';
+  /**
+   * @type {string}
+   */
+  static NUM_DATA_RECORDS_PER_PAGE = 'numDataRecordsPerPage';
+  /**
+   * @type {string}
+   */
+  static NUM_ADJACENT_PAGES = 'numAdjacentPages';
+  /**
+   * @type {string}
+   */
   static INCLUDES = 'includes';
   /**
    * @type {string}
    */
   static EDITABLE = 'editable';
+  /**
+   * @type {string}
+   */
+  static CONTENT_TYPE = 'contentType';
   /**
    * @type {string}
    */

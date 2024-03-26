@@ -4,6 +4,7 @@ import ContentElement from '../content-element/content-element';
 import Website from '../website/website';
 import Include from '../website/include';
 import PageInclude from '../website/page-include';
+import Pagination from '../website/pagination';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
 import Style from '../style/style';
 import CssClass from '../style/css-class';
@@ -186,6 +187,20 @@ export default class DesignFactory {
    */
   get pageInclude() {
     return new PageInclude();
+  }
+
+  /**
+   * Get a new website pagination config builder instance.
+   *
+   * @example
+   * .withPagination(
+   *   cx.pagination
+   *     .withNumDataRecordsPerPage(20)
+   *     .withNumAdjacentPages(3))
+   * @returns {Pagination}
+   */
+  get pagination() {
+    return new Pagination();
   }
 
   /**

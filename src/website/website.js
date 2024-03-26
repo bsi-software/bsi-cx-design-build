@@ -11,12 +11,22 @@ import {WEBSITE} from '../design-type';
  * @example
  * module.exports = cx.website
  *   .withMaxNavigationLevel(2)
+ *   .withPagination(
+ *     cx.pagination
+ *       .withNumDataRecordsPerPage(20)
+ *       .withNumAdjacentPages(3))
  *   .withIncludes(
  *     cx.include
  *       .withIdentifier('header')
  *       .withEditable(true)
  *       .withFile(require('./template.twig')
- *       .withName('Template for the Homepage'))
+ *       .withName('Template for the Homepage'),
+ *     cx.include
+ *       .withIdentifier('pagination-element')
+ *       .withEditable(false)
+ *       .withContentType('pre-defined')
+ *       .withFile(require('./includes/pagination-element.hbs'))
+ *       .withName('Pagination'))
  * @since BSI CX 1.3
  */
 export default class Website extends AbstractBuilder {
@@ -25,6 +35,11 @@ export default class Website extends AbstractBuilder {
    * @private
    */
   _maxNavigationLevel = undefined;
+  /**
+   * @type {RawValue|Pagination|undefined}
+   * @private
+   */
+  _pagination = undefined;
   /**
    * @type {RawValue|AbstractInclude[]|undefined}
    * @private
@@ -36,6 +51,13 @@ export default class Website extends AbstractBuilder {
    */
   get maxNavigationLevel() {
     return this._maxNavigationLevel;
+  }
+
+  /**
+   * @returns {RawValue|Pagination|undefined}
+   */
+  get pagination() {
+    return this._pagination;
   }
 
   /**
@@ -61,6 +83,38 @@ export default class Website extends AbstractBuilder {
    */
   withMaxNavigationLevel(maxNavigationLevel) {
     this._maxNavigationLevel = maxNavigationLevel;
+    return this;
+  }
+
+  /**
+   * Define the pagination to be used for this website.
+   *
+   * @example
+   * .withPagination(
+   *   cx.pagination
+   *     .withNumDataRecordsPerPage(20)
+   *     .withNumAdjacentPages(3))
+   * @param {Pagination} pagination
+   * @returns {Website}
+   */
+  withPagination(pagination) {
+    this._pagination = pagination;
+    return this;
+  }
+
+  /**
+   * Define the pagination to be used for this website as raw value.
+   *
+   * @example
+   * .withRawPagination({
+   *   numDataRecordsPerPage: 20,
+   *   numAdjacentPages: 3
+   * })
+   * @param {{}} pagination - Pagination as raw value.
+   * @returns {Website}
+   */
+  withRawPagination(pagination) {
+    this._pagination = new RawValue(pagination);
     return this;
   }
 
@@ -111,6 +165,7 @@ export default class Website extends AbstractBuilder {
     let config = {};
 
     this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PAGINATION, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.INCLUDES, config, builderObjectValue, true);
 
     return config;

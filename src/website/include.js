@@ -16,7 +16,13 @@ import AbstractInclude from './abstract-include';
  *     .withIdentifier('header')
  *     .withEditable(true)
  *     .withFile(require('./includes/header.twig'))
- *     .withName('Header'))
+ *     .withName('Header'),
+ *   cx.include
+ *     .withIdentifier('pagination-element')
+ *     .withEditable(false)
+ *     .withContentType('pre-defined')
+ *     .withFile(require('./includes/pagination-element.hbs'))
+ *     .withName('Pagination'))
  * @since BSI CX 1.3
  */
 export default class Include extends AbstractInclude {

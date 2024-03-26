@@ -1,0 +1,11 @@
+<div class="pagination-element" data-bsi-element="pagination-element" data-bsi-hide-edit-button="true">
+  <a href="{{paginationInfo.firstPageUrl}}">First Page</a>
+  {{#each paginationInfo.previousPages}}
+  <a href="{{url}}">[{{pageNo}}]</a>
+  {{/each}}
+  {{paginationInfo.currentPageNo}}
+  {{#each paginationInfo.nextPages}}
+  <a href="{{{url}}}">[{{pageNo}}]</a>
+  {{/each}}
+  <a href="{{paginationInfo.lastPageUrl}}">Last Page</a>
+</div>
