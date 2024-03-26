@@ -5,17 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Next
+## [1.13.4] - 26.03.2024
 
 ### Added
 
-* Support for using pagination in websites.
+* Support for using pagination in websites
 
 ## [1.13.3] - 28.02.2024
 
 ### Changed
 
-* Updated default `assetResourceRuleFilename` to use pathhash instead of contenthash.
+* Updated default `assetResourceRuleFilename` to use pathhash instead of contenthash
 
 ## [1.13.2] - 06.02.2024
 
