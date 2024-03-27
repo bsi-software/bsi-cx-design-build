@@ -6676,7 +6676,6 @@ class WebpackConfigBuilder {
   _getDevServerConfig() {
     return {
       port: this.config.devServerPort,
-      magicHtml: false,
       hot: false,
       liveReload: false,
       static: {
