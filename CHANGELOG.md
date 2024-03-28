@@ -5,11 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.13.5] - 28.03.2024
+
+### Changed
+
+* Remove magicHtml option #379128 (#15) to prevent runtime issues that cause `npx webpack serve` to fail
+
+[1.13.5]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.4...1.13.5
+
+
 ## [1.13.4] - 26.03.2024
 
 ### Added
 
 * Support for using pagination in websites
+
+[1.13.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.3...1.13.4
 
 ## [1.13.3] - 28.02.2024
 
