@@ -365,6 +365,7 @@ export default class WebpackConfigBuilder {
       'raw',
       'svg',
       'eot',
+      'otf',
       'ttf',
       'woff',
       'woff2',
