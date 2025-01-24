@@ -26,6 +26,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ALT_TEXT_MANDATORY = 'altTextMandatory';
+  /**
+   * @type {string}
+   */
   static DEFAULT_LOCALE = 'defaultLocale';
   /**
    * @type {string}

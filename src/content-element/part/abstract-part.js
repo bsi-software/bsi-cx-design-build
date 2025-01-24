@@ -1,6 +1,6 @@
 import AbstractBuilder from '../../abstract-builder';
+import { constantObjectValue, identity } from '../../browser-utility';
 import DesignJsonProperty from '../../design-json-property';
-import {constantObjectValue, identity} from '../../browser-utility';
 
 /** @typedef {import('./part').Part} Part */
 
@@ -34,6 +34,22 @@ export default class AbstractPart extends AbstractBuilder {
      * @private
      */
     this._partId = partId;
+  }
+
+  /**
+   * @param {Part} partId
+   * @param {string} label
+   * @param {string} id
+   */
+  constructor(partId, label, id) {
+    super();
+    /**
+     * @type {Part}
+     * @private
+     */
+    this._partId = partId;
+    this._label = label;
+    this._id = id;
   }
 
   /**
