@@ -318,7 +318,7 @@ __webpack_require__.d(part_namespaceObject, {
   VIDEO: () => (part_VIDEO)
 });
 
-;// CONCATENATED MODULE: ./src/design-json-property.js
+;// ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -344,6 +344,14 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static ALT_TEXT_MANDATORY = 'altTextMandatory';
+  /**
+   * @type {string}
+   */
+  static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}
    */
@@ -526,7 +534,7 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
-;// CONCATENATED MODULE: ./src/raw-value.js
+;// ./src/raw-value.js
 class RawValue {
   /**
    * @param {*} value
@@ -547,7 +555,7 @@ class RawValue {
   }
 }
 
-;// CONCATENATED MODULE: ./src/abstract-constant.js
+;// ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -591,7 +599,7 @@ class AbstractConstant {
   }
 }
 
-;// CONCATENATED MODULE: ./src/object-cloner.js
+;// ./src/object-cloner.js
 
 
 
@@ -689,7 +697,7 @@ class ObjectCloner {
   }
 }
 
-;// CONCATENATED MODULE: ./src/constant.js
+;// ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -741,7 +749,7 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// CONCATENATED MODULE: ./src/design-type.js
+;// ./src/design-type.js
 
 
 
@@ -791,7 +799,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
-;// CONCATENATED MODULE: ./src/version.js
+;// ./src/version.js
 
 
 
@@ -909,7 +917,7 @@ const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
  */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
-;// CONCATENATED MODULE: ./src/abstract-builder.js
+;// ./src/abstract-builder.js
 
 
 
@@ -1162,7 +1170,7 @@ class AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
+;// ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
@@ -1231,7 +1239,7 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// CONCATENATED MODULE: ./src/browser-utility.js
+;// ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
  * @returns {string}
@@ -1279,7 +1287,7 @@ function uuid() {
   });
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/abstract-part.js
+;// ./src/content-element/part/abstract-part.js
 
 
 
@@ -1398,7 +1406,7 @@ class AbstractPart extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/locale.js
+;// ./src/design/locale.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1478,7 +1486,7 @@ const IT = new Locale('it');
  */
 const IT_CH = new Locale('it-CH');
 
-;// CONCATENATED MODULE: ./src/design/schema-version.js
+;// ./src/design/schema-version.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1522,7 +1530,7 @@ const V_23_1 = new SchemaVersion('23.1');
  */
 const V_23_2 = new SchemaVersion('23.2');
 
-;// CONCATENATED MODULE: ./src/design-json-property-extension.js
+;// ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
    * @type {string}
@@ -1554,7 +1562,7 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
-;// CONCATENATED MODULE: ./src/design/design.js
+;// ./src/design/design.js
 
 
 
@@ -2181,7 +2189,7 @@ class Design extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/content-element-group.js
+;// ./src/content-element/content-element-group.js
 
 
 
@@ -2358,7 +2366,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
+;// ./src/html-editor-config/feature.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2582,7 +2590,7 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
+;// ./src/html-editor-config/enter-mode.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2612,7 +2620,7 @@ const BR = new EnterMode('br');
  */
 const DIV = new EnterMode('div');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
+;// ./src/html-editor-config/font-size-unit.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2663,7 +2671,7 @@ const CM = new FontSizeUnit('cm');
  */
 const MM = new FontSizeUnit('mm');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/format.js
+;// ./src/html-editor-config/format.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2728,7 +2736,7 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
-;// CONCATENATED MODULE: ./src/dropzone/dropzone.js
+;// ./src/dropzone/dropzone.js
 
 
 
@@ -2934,7 +2942,7 @@ class Dropzone extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
+;// ./src/html-editor-config/html-editor-config.js
 
 
 
@@ -3303,7 +3311,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style.js
+;// ./src/style/style.js
 
 
 
@@ -3577,7 +3585,7 @@ class Style extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/css-class.js
+;// ./src/style/css-class.js
 
 
 
@@ -3685,7 +3693,7 @@ class CssClass extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style-option.js
+;// ./src/style/style-option.js
 
 
 
@@ -3885,7 +3893,7 @@ class StyleOption extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/dom-manipulation.js
+;// ./src/style/dom-manipulation.js
 
 
 
@@ -4045,7 +4053,7 @@ class DomManipulation extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/icon.js
+;// ./src/content-element/icon.js
 
 
 class Icon extends AbstractConstant {
@@ -4287,7 +4295,7 @@ const THREE_COLUMNS = new Icon('three-columns');
  */
 const CALENDAR_CLOCK = new Icon('calendar-clock');
 
-;// CONCATENATED MODULE: ./src/content-element/content-element.js
+;// ./src/content-element/content-element.js
 
 
 
@@ -4744,7 +4752,7 @@ class ContentElement extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part.js
+;// ./src/content-element/part/part.js
 
 
 class Part extends AbstractConstant {
@@ -4846,7 +4854,7 @@ const part_SOCIAL_SHARE = new Part('social-share');
  */
 const URL_PROVIDER = new Part('url-provider');
 
-;// CONCATENATED MODULE: ./src/content-element/part/plain-text-part.js
+;// ./src/content-element/part/plain-text-part.js
 
 
 
@@ -4869,7 +4877,7 @@ class PlainTextPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/formatted-text-part.js
+;// ./src/content-element/part/formatted-text-part.js
 
 
 
@@ -4960,7 +4968,7 @@ class FormattedTextPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/html-part.js
+;// ./src/content-element/part/html-part.js
 
 
 
@@ -4983,7 +4991,7 @@ class HtmlPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/video-part.js
+;// ./src/content-element/part/video-part.js
 
 
 
@@ -5006,7 +5014,8 @@ class VideoPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/image-part.js
+;// ./src/content-element/part/image-part.js
+
 
 
 
@@ -5014,8 +5023,42 @@ class VideoPart extends AbstractPart {
  * @since Studio 1.0
  */
 class ImagePart extends AbstractPart {
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _altTextMandatory = undefined;
+
   constructor() {
     super(part_IMAGE);
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get altTextMandatory() {
+    return this._altTextMandatory;
+  }
+
+  /**
+   * Set a Boolean to indicate if the alt-text for this image is mandatory.
+   * If true users must describe the image before they can save it in the CX editor.
+   *
+   * @see {withAltTextMandatory}
+   * @param {Boolean} altTextMandatory
+   * @returns {ImagePart}
+   */
+  withAltTextMandatory(altTextMandatory) {
+    this._altTextMandatory = altTextMandatory
+    return this;
+  }
+
+  _buildInternal() {
+    let config = super._buildInternal();
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, v => Boolean(v));
+
+    return config;
   }
 
   /**
@@ -5029,7 +5072,7 @@ class ImagePart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/background-image-part.js
+;// ./src/content-element/part/background-image-part.js
 
 
 
@@ -5052,7 +5095,8 @@ class BackgroundImagePart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/table-part.js
+;// ./src/content-element/part/table-part.js
+
 
 
 
@@ -5060,8 +5104,42 @@ class BackgroundImagePart extends AbstractPart {
  * @since Studio 1.0
  */
 class TablePart extends AbstractPart {
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _captionEnabled = undefined;
+
   constructor() {
     super(part_TABLE);
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get captionEnabled() {
+    return this._captionEnabled;
+  }
+
+  /**
+   * Set a Boolean to indicate if caption is enabled in editor.
+   * If true users can add a caption for the table in CX editor.
+   *
+   * @see {withCaptionEnabled}
+   * @param {Boolean} captionEnabled
+   * @returns {ImagePart}
+   */
+  withCaptionEnabled(captionEnabled) {
+    this._captionEnabled = captionEnabled
+    return this;
+  }
+
+  _buildInternal() {
+    let config = super._buildInternal();
+
+    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, v => Boolean(v));
+
+    return config;
   }
 
   /**
@@ -5075,7 +5153,7 @@ class TablePart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/iterator-part.js
+;// ./src/content-element/part/iterator-part.js
 
 
 
@@ -5098,7 +5176,7 @@ class IteratorPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/news-snippets-part.js
+;// ./src/content-element/part/news-snippets-part.js
 
 
 
@@ -5121,7 +5199,7 @@ class NewsSnippetsPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/form-part.js
+;// ./src/content-element/part/form-part.js
 
 
 
@@ -5144,7 +5222,7 @@ class FormPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/form-field-part.js
+;// ./src/content-element/part/form-field-part.js
 
 
 
@@ -5167,7 +5245,7 @@ class FormFieldPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/form-checkbox-part.js
+;// ./src/content-element/part/form-checkbox-part.js
 
 
 
@@ -5190,7 +5268,7 @@ class FormCheckboxPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/form-textarea-part.js
+;// ./src/content-element/part/form-textarea-part.js
 
 
 
@@ -5213,7 +5291,7 @@ class FormTextareaPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/form-select-part.js
+;// ./src/content-element/part/form-select-part.js
 
 
 
@@ -5236,7 +5314,7 @@ class FormSelectPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/form-radio-part.js
+;// ./src/content-element/part/form-radio-part.js
 
 
 
@@ -5259,7 +5337,7 @@ class FormRadioPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/link-part.js
+;// ./src/content-element/part/link-part.js
 
 
 
@@ -5282,7 +5360,7 @@ class LinkPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/social-follow-part.js
+;// ./src/content-element/part/social-follow-part.js
 
 
 
@@ -5305,7 +5383,7 @@ class SocialFollowPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/social-share-part.js
+;// ./src/content-element/part/social-share-part.js
 
 
 
@@ -5328,7 +5406,7 @@ class SocialSharePart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/url-provider-part.js
+;// ./src/content-element/part/url-provider-part.js
 
 
 
@@ -5356,7 +5434,7 @@ class UrlProviderPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/raw.js
+;// ./src/content-element/part/raw.js
 
 
 
@@ -5424,7 +5502,7 @@ class RawPart extends AbstractPart {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/website.js
+;// ./src/website/website.js
 
 
 
@@ -5609,7 +5687,7 @@ class Website extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/abstract-include.js
+;// ./src/website/abstract-include.js
 
 
 
@@ -5830,7 +5908,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/page-include.js
+;// ./src/website/page-include.js
 
 
 
@@ -5860,7 +5938,7 @@ class PageInclude extends AbstractInclude {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/include.js
+;// ./src/website/include.js
 
 
 /** @typedef {import('./website').default} Website */
@@ -5916,7 +5994,7 @@ class Include extends AbstractInclude {
   }
 }
 
-;// CONCATENATED MODULE: ./src/nls/translation.js
+;// ./src/nls/translation.js
 
 
 
@@ -6059,7 +6137,7 @@ class Translation extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/nls/nls.js
+;// ./src/nls/nls.js
 
 
 
@@ -6247,7 +6325,7 @@ class NLS extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/pagination.js
+;// ./src/website/pagination.js
 
 
 
@@ -6330,7 +6408,7 @@ class Pagination extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part-factory.js
+;// ./src/content-element/part/part-factory.js
 
 
 
@@ -6535,7 +6613,7 @@ class PartFactory {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/design-helper.js
+;// ./src/design/design-helper.js
 
 
 /** @typedef {import('./design-factory').default} DesignFactory */
@@ -6662,7 +6740,7 @@ class DesignHelper {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/design-factory.js
+;// ./src/design/design-factory.js
 
 
 
@@ -7049,7 +7127,7 @@ class DesignFactory {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-property.js
+;// ./src/bsi-property.js
 
 
 /**
@@ -7070,7 +7148,7 @@ function bsiProperty(property, fallback) {
   return plugin.getProperty(property, fallback);
 }
 
-;// CONCATENATED MODULE: ./export/browser.js
+;// ./export/browser.js
 
 
 
@@ -7135,7 +7213,7 @@ const cx = new DesignFactory();
 
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;

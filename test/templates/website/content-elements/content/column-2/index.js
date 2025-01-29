@@ -1,4 +1,4 @@
-const {cx, Icon} = require('@bsi-cx/design-build');
+const { cx, Icon } = require('@bsi-cx/design-build');
 
 const element = cx.contentElement;
 
@@ -20,4 +20,5 @@ element.withElementId('column-2')
       .withAllowedElements(
         require('../column-1'),
         require('../title'),
-        require('../text')));
+        require('../text'),
+        require('../image')));

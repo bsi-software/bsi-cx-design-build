@@ -12,12 +12,12 @@ import IteratorPart from './iterator-part';
 import LinkPart from './link-part';
 import NewsSnippetsPart from './news-snippets-part';
 import PlainTextPart from './plain-text-part';
+import RawPart from './raw';
 import SocialFollowPart from './social-follow-part';
 import SocialSharePart from './social-share-part';
 import TablePart from './table-part';
 import UrlProviderPart from './url-provider-part';
 import VideoPart from './video-part';
-import RawPart from './raw';
 
 export default class PartFactory {
   /**

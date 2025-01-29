@@ -110,9 +110,9 @@ __webpack_require__.d(helper_namespaceObject, {
   url: () => (url)
 });
 
-;// CONCATENATED MODULE: external "source-map-support/register"
+;// external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-;// CONCATENATED MODULE: ./src/abstract-constant.js
+;// ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -156,7 +156,7 @@ class AbstractConstant {
   }
 }
 
-;// CONCATENATED MODULE: ./src/constant.js
+;// ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -208,7 +208,7 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// CONCATENATED MODULE: ./src/design-type.js
+;// ./src/design-type.js
 
 
 
@@ -258,7 +258,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
-;// CONCATENATED MODULE: ./src/version.js
+;// ./src/version.js
 
 
 
@@ -376,7 +376,7 @@ const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
  */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
-;// CONCATENATED MODULE: ./src/raw-value.js
+;// ./src/raw-value.js
 class RawValue {
   /**
    * @param {*} value
@@ -397,7 +397,7 @@ class RawValue {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design-json-property.js
+;// ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -423,6 +423,14 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static ALT_TEXT_MANDATORY = 'altTextMandatory';
+  /**
+   * @type {string}
+   */
+  static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}
    */
@@ -605,7 +613,7 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
-;// CONCATENATED MODULE: ./src/abstract-builder.js
+;// ./src/abstract-builder.js
 
 
 
@@ -858,7 +866,7 @@ class AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/object-cloner.js
+;// ./src/object-cloner.js
 
 
 
@@ -956,20 +964,20 @@ class ObjectCloner {
   }
 }
 
-;// CONCATENATED MODULE: external "fs"
+;// external "fs"
 const external_fs_namespaceObject = require("fs");
 var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-;// CONCATENATED MODULE: external "path"
+;// external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
-;// CONCATENATED MODULE: external "slugify"
+;// external "slugify"
 const external_slugify_namespaceObject = require("slugify");
 var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
-;// CONCATENATED MODULE: ./src/build-config/validation-error.js
+;// ./src/build-config/validation-error.js
 class ValidationError extends Error {
 }
 
-;// CONCATENATED MODULE: ./src/utility.js
+;// ./src/utility.js
 
 
 
@@ -1118,7 +1126,7 @@ function findNodeModulesFolder(startFolder) {
   return findNodeModulesFolder(parentFolder);
 }
 
-;// CONCATENATED MODULE: ./src/build-config/module-config.js
+;// ./src/build-config/module-config.js
 
 
 /** @typedef {import('./build-config').default} BuildConfig */
@@ -1221,7 +1229,7 @@ class ModuleConfig {
   }
 }
 
-;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
+;// ./src/build-config/validated-build-config.js
 /** @typedef {import('webpack').PathData} PathData */
 /** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
@@ -1475,7 +1483,7 @@ class ValidatedBuildConfig {
   }
 }
 
-;// CONCATENATED MODULE: ./src/dist-folder.js
+;// ./src/dist-folder.js
 class DistFolder {
   /**
    * @type {string}
@@ -1507,7 +1515,7 @@ class DistFolder {
   static SHARED = 'shared';
 }
 
-;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
+;// ./src/build-config/default-build-config.js
 
 
 
@@ -1599,7 +1607,7 @@ class DefaultBuildConfig {
   }
 }
 
-;// CONCATENATED MODULE: ./src/build-config/build-config-validator.js
+;// ./src/build-config/build-config-validator.js
 
 
 
@@ -1948,7 +1956,7 @@ class BuildConfigValidator {
   }
 }
 
-;// CONCATENATED MODULE: ./src/build-config/build-config.js
+;// ./src/build-config/build-config.js
 
 
 
@@ -2486,38 +2494,38 @@ class BuildConfig {
   }
 }
 
-;// CONCATENATED MODULE: external "webpack/lib"
+;// external "webpack/lib"
 const lib_namespaceObject = require("webpack/lib");
-;// CONCATENATED MODULE: external "zip-webpack-plugin"
+;// external "zip-webpack-plugin"
 const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
 var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "mini-css-extract-plugin"
+;// external "mini-css-extract-plugin"
 const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
 var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "copy-webpack-plugin"
+;// external "copy-webpack-plugin"
 const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
 var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: external "terser-webpack-plugin"
+;// external "terser-webpack-plugin"
 const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
 var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
-;// CONCATENATED MODULE: ./package.json
+;// ./package.json
 const package_namespaceObject = /*#__PURE__*/JSON.parse('{"UU":"@bsi-cx/design-build"}');
-;// CONCATENATED MODULE: external "crypto"
+;// external "crypto"
 const external_crypto_namespaceObject = require("crypto");
-;// CONCATENATED MODULE: external "vm"
+;// external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
-;// CONCATENATED MODULE: external "handlebars"
+;// external "handlebars"
 const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
-;// CONCATENATED MODULE: external "webpack"
+;// external "webpack"
 const external_webpack_namespaceObject = require("webpack");
-;// CONCATENATED MODULE: ./src/handlebars-helpers.js
+;// ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
 });
 
-;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
+;// ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
@@ -2586,7 +2594,7 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// CONCATENATED MODULE: ./src/file.js
+;// ./src/file.js
 class File {
   /**
    * @type {string}
@@ -2614,7 +2622,7 @@ class File {
   static DESIGN_PROPERTIES = 'design.properties';
 }
 
-;// CONCATENATED MODULE: ./src/browser-utility.js
+;// ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
  * @returns {string}
@@ -2662,7 +2670,7 @@ function uuid() {
   });
 }
 
-;// CONCATENATED MODULE: ./src/design-json-property-extension.js
+;// ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
    * @type {string}
@@ -2694,7 +2702,7 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
-;// CONCATENATED MODULE: ./src/bsi-html-attributes.js
+;// ./src/bsi-html-attributes.js
 class BsiHtmlAttributes {
   /**
    * @type {string}
@@ -2722,7 +2730,7 @@ class BsiHtmlAttributes {
   static HIDE_REMOVE_BUTTON = 'data-bsi-hide-remove-button';
 }
 
-;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
+;// ./src/abstract-property-plugin.js
 /**
  * @abstract
  */
@@ -2788,13 +2796,13 @@ class AbstractPropertyPlugin {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-js-property-plugin.js
+;// ./src/bsi-js-property-plugin.js
 
 
 class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 }
 
-;// CONCATENATED MODULE: ./src/path-hash-utility.js
+;// ./src/path-hash-utility.js
   function calculateHashCode(filePath) {
   let hash = 0,
     i, chr;
@@ -2820,7 +2828,7 @@ function createPathHash(filePath) {
   return hash;
 }
 
-;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
+;// ./src/bsi-cx-webpack-plugin.js
 
 
 
@@ -3761,7 +3769,7 @@ class BsiCxWebpackPlugin {
   }
 };
 
-;// CONCATENATED MODULE: ./src/java-property-file-builder.js
+;// ./src/java-property-file-builder.js
 class JavaPropertyFileBuilder {
   constructor() {
     this._properties = [];
@@ -3848,7 +3856,7 @@ class JavaPropertyFileBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/legacy-design-property.js
+;// ./src/legacy-design-property.js
 class LegacyDesignProperty {
   /**
    * @type {string}
@@ -4114,7 +4122,7 @@ class LegacyDesignProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
+;// ./src/bsi-cx-webpack-legacy-design-plugin.js
 
 
 
@@ -4605,9 +4613,9 @@ class BsiCxWebpackLegacyDesignPlugin {
   }
 };
 
-;// CONCATENATED MODULE: external "fast-glob"
+;// external "fast-glob"
 const external_fast_glob_namespaceObject = require("fast-glob");
-;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
+;// ./src/bsi-cx-webpack-zip-hash-plugin.js
 
 
 
@@ -4715,7 +4723,7 @@ class BsiCxWebpackZipHashPlugin {
   }
 };
 
-;// CONCATENATED MODULE: ./src/bsi-cx-twig-context-webpack-plugin.js
+;// ./src/bsi-cx-twig-context-webpack-plugin.js
 class BsiCxTwigContextWebpackPlugin {
   /**
    * @type {string}
@@ -4747,7 +4755,7 @@ class BsiCxTwigContextWebpackPlugin {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
+;// ./src/bsi-less-property-plugin.js
 
 
 class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
@@ -4796,10 +4804,10 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// CONCATENATED MODULE: external "module"
+;// external "module"
 const external_module_namespaceObject = require("module");
 var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
-;// CONCATENATED MODULE: ./src/module-loader.js
+;// ./src/module-loader.js
 
 
 class ModuleLoader {
@@ -4880,7 +4888,7 @@ class ModuleLoader {
   }
 }
 
-;// CONCATENATED MODULE: ./src/property-context.js
+;// ./src/property-context.js
 
 
 class PropertyContext {
@@ -5035,16 +5043,16 @@ class PropertyContext {
   }
 }
 
-;// CONCATENATED MODULE: external "sass"
+;// external "sass"
 const external_sass_namespaceObject = require("sass");
 var external_sass_default = /*#__PURE__*/__webpack_require__.n(external_sass_namespaceObject);
-;// CONCATENATED MODULE: external "less/lib/less/tree/color"
+;// external "less/lib/less/tree/color"
 const color_namespaceObject = require("less/lib/less/tree/color");
 var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
-;// CONCATENATED MODULE: external "less/lib/less/data/colors"
+;// external "less/lib/less/data/colors"
 const colors_namespaceObject = require("less/lib/less/data/colors");
 var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
-;// CONCATENATED MODULE: ./src/css/abstract-css-property.js
+;// ./src/css/abstract-css-property.js
 class AbstractCssProperty {
   /**
    * @returns {*}
@@ -5090,7 +5098,7 @@ class AbstractCssProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/css/css-color.js
+;// ./src/css/css-color.js
 
 
 
@@ -5361,10 +5369,10 @@ class CssColor extends AbstractCssProperty {
   }
 }
 
-;// CONCATENATED MODULE: external "less/lib/less/tree/dimension"
+;// external "less/lib/less/tree/dimension"
 const dimension_namespaceObject = require("less/lib/less/tree/dimension");
 var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceObject);
-;// CONCATENATED MODULE: ./src/css/css-dimension.js
+;// ./src/css/css-dimension.js
 
 
 
@@ -5471,7 +5479,7 @@ class CssDimension extends AbstractCssProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/css/css-raw.js
+;// ./src/css/css-raw.js
 
 
 
@@ -5541,7 +5549,7 @@ class CssRaw extends AbstractCssProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/query-constant.js
+;// ./src/query-constant.js
 class QueryConstant {
   /**
    * @type {string}
@@ -5553,7 +5561,7 @@ class QueryConstant {
   static ASSET = 'asset';
 }
 
-;// CONCATENATED MODULE: ./src/css/css-url.js
+;// ./src/css/css-url.js
 
 
 
@@ -5736,7 +5744,7 @@ class CssUrl extends AbstractCssProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/css/css-bool.js
+;// ./src/css/css-bool.js
 
 
 
@@ -5810,7 +5818,7 @@ class CssBool extends AbstractCssProperty {
   }
 }
 
-;// CONCATENATED MODULE: ./src/css/css-property-resolver.js
+;// ./src/css/css-property-resolver.js
 
 
 
@@ -5882,7 +5890,7 @@ class CssPropertyResolver {
   }
 }
 
-;// CONCATENATED MODULE: ./src/build-context.js
+;// ./src/build-context.js
 
 
 
@@ -5941,7 +5949,7 @@ class BuildContext {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-sass-property-plugin.js
+;// ./src/bsi-sass-property-plugin.js
 
 
 class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
@@ -5965,7 +5973,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// CONCATENATED MODULE: ./src/webpack-config-builder.js
+;// ./src/webpack-config-builder.js
 
 
 
@@ -6832,7 +6840,7 @@ class WebpackConfigBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/css/helper.js
+;// ./src/css/helper.js
 
 
 
@@ -6924,7 +6932,7 @@ function number(value) {
   return !!parser ? parser(value) : value;
 }
 
-;// CONCATENATED MODULE: ./export/main.js
+;// ./export/main.js
 
 
 
@@ -6938,7 +6946,7 @@ function number(value) {
 
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;

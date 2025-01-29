@@ -30,6 +30,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static CAPTION_ENABLED = 'captionEnabled';
+  /**
+   * @type {string}
+   */
   static DEFAULT_LOCALE = 'defaultLocale';
   /**
    * @type {string}

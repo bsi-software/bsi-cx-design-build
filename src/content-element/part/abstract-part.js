@@ -37,22 +37,6 @@ export default class AbstractPart extends AbstractBuilder {
   }
 
   /**
-   * @param {Part} partId
-   * @param {string} label
-   * @param {string} id
-   */
-  constructor(partId, label, id) {
-    super();
-    /**
-     * @type {Part}
-     * @private
-     */
-    this._partId = partId;
-    this._label = label;
-    this._id = id;
-  }
-
-  /**
    * @returns {string}
    */
   get id() {

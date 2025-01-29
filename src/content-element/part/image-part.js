@@ -16,10 +16,6 @@ export default class ImagePart extends AbstractPart {
     super(IMAGE);
   }
 
-  constructor(label, id) {
-    super(IMAGE, label, id);
-  }
-
   /**
    * @returns {Boolean|undefined}
    */
@@ -31,7 +27,7 @@ export default class ImagePart extends AbstractPart {
    * Set a Boolean to indicate if the alt-text for this image is mandatory.
    * If true users must describe the image before they can save it in the CX editor.
    *
-   * @see {@link withAltTextMandatory}
+   * @see {withAltTextMandatory}
    * @param {Boolean} altTextMandatory
    * @returns {ImagePart}
    */
@@ -43,8 +39,7 @@ export default class ImagePart extends AbstractPart {
   _buildInternal() {
     let config = super._buildInternal();
 
-    // TODO: erweitern, dass es in config{ altTextMandatory: true/false } geschrieben wird
-    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, this.altTextMandatory);
+    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, v => Boolean(v));
 
     return config;
   }
