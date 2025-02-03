@@ -6,6 +6,7 @@ import ObjectCloner from '../src/object-cloner';
 import RawValue from '../src/raw-value';
 import AbstractPart from '../src/content-element/part/abstract-part';
 import * as Locale from '../src/design/locale';
+import * as WebsiteContentType from '../src/design/websiteContentType';
 import * as SchemaVersion from '../src/design/schema-version';
 import Design from '../src/design/design';
 import ContentElementGroup from '../src/content-element/content-element-group';
@@ -68,6 +69,7 @@ export {
   RawValue,
   AbstractPart,
   Locale,
+  WebsiteContentType,
   SchemaVersion,
   Design,
   ContentElementGroup,

@@ -42,9 +42,9 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ template_loader)
 });
 
-;// CONCATENATED MODULE: external "source-map-support/register"
+;// external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-;// CONCATENATED MODULE: ./src/template-loader.js
+;// ./src/template-loader.js
 
 
 /* harmony default export */ function template_loader(sourceToConvert) {
@@ -62,7 +62,7 @@ const register_namespaceObject = require("source-map-support/register");
 };
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
