@@ -3264,6 +3264,48 @@ declare module "src/content-element/part/abstract-part" {
     export type Part = import("src/content-element/part/part").Part;
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/design/schema-version" {
+    /** @typedef {import('./design').default} Design */
+    /**
+     * Class to define a schema version.
+     */
+    export class SchemaVersion extends AbstractConstant {
+    }
+    /**
+     * Use this in website templates for BSI CX 1.3.
+     *
+     * @see {@link Design#withSchemaVersion}
+     * @type {SchemaVersion}
+     * @since BSI CX 1.3
+     */
+    export const V_1_0: SchemaVersion;
+    /**
+     * Use this in all templates for BSI CX 22.0.
+     *
+     * @see {@link Design#withSchemaVersion}
+     * @type {SchemaVersion}
+     * @since 22.0
+     */
+    export const V_22_0: SchemaVersion;
+    /**
+     * Use this in all templates for BSI CX 23.1.
+     *
+     * @see {@link Design#withSchemaVersion}
+     * @type {SchemaVersion}
+     * @since 23.1
+     */
+    export const V_23_1: SchemaVersion;
+    /**
+     * Use this in all templates for BSI CX 23.2.
+     *
+     * @see {@link Design#withSchemaVersion}
+     * @type {SchemaVersion}
+     * @since 23.2
+     */
+    export const V_23_2: SchemaVersion;
+    export type Design = import("src/design/design").default;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/design/websiteContentType" {
     /** @typedef {import('./design').default} Design */
     /**
@@ -3313,48 +3355,6 @@ declare module "src/design/websiteContentType" {
      * @type {WebsiteContentType}
      */
     export const CUSTOMER_PARTNER: WebsiteContentType;
-    export type Design = import("src/design/design").default;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/design/schema-version" {
-    /** @typedef {import('./design').default} Design */
-    /**
-     * Class to define a schema version.
-     */
-    export class SchemaVersion extends AbstractConstant {
-    }
-    /**
-     * Use this in website templates for BSI CX 1.3.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since BSI CX 1.3
-     */
-    export const V_1_0: SchemaVersion;
-    /**
-     * Use this in all templates for BSI CX 22.0.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since 22.0
-     */
-    export const V_22_0: SchemaVersion;
-    /**
-     * Use this in all templates for BSI CX 23.1.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since 23.1
-     */
-    export const V_23_1: SchemaVersion;
-    /**
-     * Use this in all templates for BSI CX 23.2.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since 23.2
-     */
-    export const V_23_2: SchemaVersion;
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
@@ -5953,9 +5953,9 @@ declare module "src/design/design" {
          */
         get nls(): RawValue | NLS[] | undefined;
         /**
-         * @returns {RawValue|WebsiteContentType[]|undefined}
+         * @returns {RawValue|[WebsiteContentType]|undefined}
          */
-        get websiteContentTypes(): RawValue | WebsiteContentType[] | undefined;
+        get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -6301,7 +6301,6 @@ declare module "src/design/design" {
     export type NLS = import("src/nls/nls").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
-    import { WebsiteContentType } from "src/design/websiteContentType";
 }
 declare module "src/design/locale" {
     /** @typedef {import('./design').default} Design */

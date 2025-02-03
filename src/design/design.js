@@ -3,7 +3,6 @@ import { builderObjectValue, constantObjectValue, identity } from '../browser-ut
 import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
-import { WebsiteContentType } from './websiteContentType';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
@@ -199,7 +198,7 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|WebsiteContentType[]|undefined}
+   * @returns {RawValue|[WebsiteContentType]|undefined}
    */
   get websiteContentTypes() {
     return this._websiteContentTypes;
