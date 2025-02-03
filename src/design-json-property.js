@@ -74,6 +74,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static PART_CONFIG = 'config';
+  /**
+   * @type {string}
+   */
   static HTML_EDITOR_CONFIG = 'htmlEditorConfig';
   /**
    * @type {string}

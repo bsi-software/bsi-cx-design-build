@@ -282,6 +282,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static PART_CONFIG: string;
+        /**
+         * @type {string}
+         */
         static HTML_EDITOR_CONFIG: string;
         /**
          * @type {string}
@@ -7070,6 +7074,163 @@ declare module "src/content-element/part/part-factory" {
     import VideoPart from "src/content-element/part/video-part";
     import RawPart from "src/content-element/part/raw";
 }
+declare module "src/content-element/part/part-builder" {
+    export default class PartBuilder {
+        /**
+         * Build a new background content element part builder instance.
+         *
+         * @returns {BackgroundImagePart}
+         */
+        backgroundImage(label: any, id: any): BackgroundImagePart;
+        /**
+         * Build a new checkbox form field content element part builder instance.
+         *
+         * @returns {FormCheckboxPart}
+         */
+        formCheckbox(label: any, id: any): FormCheckboxPart;
+        /**
+         * Build a new form field content element part builder instance.
+         *
+         * @returns {FormFieldPart}
+         */
+        formField(label: any, id: any): FormFieldPart;
+        /**
+         * Build a new form content element part builder instance.
+         *
+         * @returns {FormPart}
+         */
+        form(label: any, id: any): FormPart;
+        /**
+         * Build a new radio form field content element part builder instance.
+         *
+         * @returns {FormRadioPart}
+         */
+        formRadio(label: any, id: any): FormRadioPart;
+        /**
+         * Build a new select form field content element part builder instance.
+         *
+         * @returns {FormSelectPart}
+         */
+        formSelect(label: any, id: any): FormSelectPart;
+        /**
+         * Build a new textarea form field content element part builder instance.
+         *
+         * @returns {FormTextareaPart}
+         */
+        formTextarea(label: any, id: any): FormTextareaPart;
+        /**
+         * Build a new formatted text content element part builder instance.
+         *
+         * @returns {FormattedTextPart}
+         */
+        formattedText(label: any, id: any): FormattedTextPart;
+        /**
+         * Build a new HTML content element part builder instance.
+         *
+         * @returns {HtmlPart}
+         */
+        html(label: any, id: any): HtmlPart;
+        /**
+         * Build a new image content element part builder instance.
+         *
+         * @returns {ImagePart}
+         */
+        image(label: any, id: any): ImagePart;
+        /**
+         * Build a new iterator content element part builder instance.
+         *
+         * @returns {IteratorPart}
+         */
+        iterator(label: any, id: any): IteratorPart;
+        /**
+         * Build a new link content element part builder instance.
+         *
+         * @returns {LinkPart}
+         */
+        link(label: any, id: any): LinkPart;
+        /**
+         * Build a new news snippet content element part builder instance.
+         *
+         * @returns {NewsSnippetsPart}
+         */
+        newsSnippet(label: any, id: any): NewsSnippetsPart;
+        /**
+         * Build a new plain text content element part builder instance.
+         *
+         * @returns {PlainTextPart}
+         */
+        plainText(label: any, id: any): PlainTextPart;
+        /**
+         * Build a new social follow content element part builder instance.
+         *
+         * @returns {SocialFollowPart}
+         */
+        socialFollow(label: any, id: any): SocialFollowPart;
+        /**
+         * Build a new social share content element part builder instance.
+         *
+         * @returns {SocialSharePart}
+         */
+        socialShare(label: any, id: any): SocialSharePart;
+        /**
+         * Build a new table content element part builder instance.
+         *
+         * @returns {TablePart}
+         */
+        table(label: any, id: any): TablePart;
+        /**
+         * Build a new URL provider content element part builder instance.
+         *
+         * @returns {UrlProviderPart}
+         */
+        urlProvider(label: any, id: any): UrlProviderPart;
+        /**
+         * Build a new video content element part builder instance.
+         *
+         * @returns {VideoPart}
+         */
+        video(label: any, id: any): VideoPart;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {string} partId
+         * @param {string} label
+         * @param {string} id
+         * @returns {RawPart}
+         */
+        raw(partId: string, label: string, id: string): RawPart;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {AbstractPart} part
+         * @param {string} label
+         * @param {string} id
+         * @returns {RawPart}
+         */
+        _initPart(part: AbstractPart, label: string, id: string): RawPart;
+    }
+    import BackgroundImagePart from "src/content-element/part/background-image-part";
+    import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
+    import FormFieldPart from "src/content-element/part/form-field-part";
+    import FormPart from "src/content-element/part/form-part";
+    import FormRadioPart from "src/content-element/part/form-radio-part";
+    import FormSelectPart from "src/content-element/part/form-select-part";
+    import FormTextareaPart from "src/content-element/part/form-textarea-part";
+    import FormattedTextPart from "src/content-element/part/formatted-text-part";
+    import HtmlPart from "src/content-element/part/html-part";
+    import ImagePart from "src/content-element/part/image-part";
+    import IteratorPart from "src/content-element/part/iterator-part";
+    import LinkPart from "src/content-element/part/link-part";
+    import NewsSnippetsPart from "src/content-element/part/news-snippets-part";
+    import PlainTextPart from "src/content-element/part/plain-text-part";
+    import SocialFollowPart from "src/content-element/part/social-follow-part";
+    import SocialSharePart from "src/content-element/part/social-share-part";
+    import TablePart from "src/content-element/part/table-part";
+    import UrlProviderPart from "src/content-element/part/url-provider-part";
+    import VideoPart from "src/content-element/part/video-part";
+    import RawPart from "src/content-element/part/raw";
+    import AbstractPart from "src/content-element/part/abstract-part";
+}
 declare module "src/design/design-helper" {
     /** @typedef {import('./design-factory').default} DesignFactory */
     /** @typedef {import('../style/css-class').default} CssClass */
@@ -7471,6 +7632,20 @@ declare module "src/design/design-factory" {
          */
         get part(): PartFactory;
         /**
+           * Get a content element part factory instance to create new content element part builder objects.
+           * The content element part factory is also available under the part constant.
+           *
+           * @example
+           * const {cx, part2} = require('@bsi-cx/design-build');
+           *
+           * // ...
+           * .withParts(
+           *   cx.part2.plainText('Text', 'text-id'),
+           *   part2.image('Image', 'image-id'))
+           * @returns {PartBuilder}
+           */
+        get part2(): PartBuilder;
+        /**
          * Get a collection of various helper methods.
          *
          * @example
@@ -7498,6 +7673,7 @@ declare module "src/design/design-factory" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
+    import PartBuilder from "src/content-element/part/part-builder";
     import DesignHelper from "src/design/design-helper";
 }
 declare module "src/bsi-property" {
