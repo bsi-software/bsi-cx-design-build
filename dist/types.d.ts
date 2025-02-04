@@ -382,6 +382,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static WEBSITE_CONTENT_TYPE: string;
+        /**
+         * @type {string}
+         */
         static MAX_NAVIGATION_LEVEL: string;
         /**
          * @type {string}
@@ -406,7 +410,7 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
-        static CONTENT_TYPE: string;
+        static INCLUDE_TYPE: string;
         /**
          * @type {string}
          */
@@ -6737,7 +6741,12 @@ declare module "src/website/abstract-include" {
          * @type {string|undefined}
          * @protected
          */
-        protected _contentType: string | undefined;
+        protected _includeType: string | undefined;
+        /**
+         * @type {string|WebsiteContentType|undefined}
+         * @protected
+         */
+        protected _websiteContentType: string | WebsiteContentType | undefined;
         /**
          * @type {{}|undefined}
          * @protected
@@ -6764,7 +6773,11 @@ declare module "src/website/abstract-include" {
         /**
          * @returns {string|undefined}
          */
-        get contentType(): string | undefined;
+        get includeType(): string | undefined;
+        /**
+         * @returns {string|WebsiteContentType|undefined}
+         */
+        get websiteContentType(): string | WebsiteContentType | undefined;
         /**
          * @returns {{}|undefined}
          */
@@ -6785,14 +6798,26 @@ declare module "src/website/abstract-include" {
          */
         withEditable(editable: boolean): this;
         /**
-         * Define the content type of this include.
+         * Define the type of this include.
          *
          * @example
-         * .withContentType('pre-defined')
-         * @param {string} contentType - The content type of this include.
+         * .withIncludeType('pre-defined')
+         * @param {string} includeType - The type of this include.
          * @returns {this}
          */
-        withContentType(contentType: string): this;
+        withIncludeType(includeType: string): this;
+        /**
+         * Define the website content type of this include.
+         * If set the choosen WebsiteContentType use this include.
+         *
+         * For example: if the WebsiteContentType is BLOG, every blogpost in this Website use this include as template
+         *
+         * @example
+         * .withWebsiteContentType(WebsiteContentType.BLOG)
+         * @param {WebsiteContentType} websiteContentType - The website content type of this include.
+         * @returns {this}
+         */
+        withWebsiteContentType(websiteContentType: WebsiteContentType): this;
         /**
          * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
          * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
