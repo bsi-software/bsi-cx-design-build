@@ -1,21 +1,21 @@
-import Design from './design';
-import ContentElementGroup from '../content-element/content-element-group';
 import ContentElement from '../content-element/content-element';
-import Website from '../website/website';
+import ContentElementGroup from '../content-element/content-element-group';
+import ConfigPartFactory from '../content-element/part/config-part-factory';
+import PartFactory from '../content-element/part/part-factory';
+import Dropzone from '../dropzone/dropzone';
+import HtmlEditorConfig from '../html-editor-config/html-editor-config';
+import NLS from '../nls/nls';
+import Translation from '../nls/translation';
+import CssClass from '../style/css-class';
+import DomManipulation from '../style/dom-manipulation';
+import Style from '../style/style';
+import StyleOption from '../style/style-option';
 import Include from '../website/include';
 import PageInclude from '../website/page-include';
 import Pagination from '../website/pagination';
-import HtmlEditorConfig from '../html-editor-config/html-editor-config';
-import Style from '../style/style';
-import CssClass from '../style/css-class';
-import StyleOption from '../style/style-option';
-import DomManipulation from '../style/dom-manipulation';
-import NLS from '../nls/nls';
-import Translation from '../nls/translation';
-import PartFactory from '../content-element/part/part-factory';
-import PartBuilder from '../content-element/part/part-builder';
+import Website from '../website/website';
+import Design from './design';
 import DesignHelper from './design-helper';
-import Dropzone from '../dropzone/dropzone';
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -381,10 +381,10 @@ export default class DesignFactory {
      * .withParts(
      *   cx.part2.plainText('Text', 'text-id'),
      *   part2.image('Image', 'image-id'))
-     * @returns {PartBuilder}
+     * @returns {ConfigPartFactory}
      */
   get part2() {
-    return new PartBuilder();
+    return new ConfigPartFactory();
   }
 
   /**

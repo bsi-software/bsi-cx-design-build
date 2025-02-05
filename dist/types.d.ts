@@ -6882,52 +6882,297 @@ declare module "src/website/include" {
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractInclude from "src/website/abstract-include";
 }
-declare module "src/website/pagination" {
+declare module "src/content-element/part/config-part" {
+    /** @typedef {import('./part').Part} Part */
+    /** @typedef {import('../../design/design').default} Design */
+    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
     /**
-     * This is the builder class for {@link Website|website} pagination.
-     *
-     * @example
-     * .withPagination(
-     *   cx.pagination
-     *     .withNumDataRecordsPerPage(20)
-     *     .withNumAdjacentPages(3))
-     * @since BSI CX 22.0
+     * @since Studio 23.2
      */
-    export default class Pagination extends AbstractBuilder {
+    export default class ConfigPart extends AbstractPart {
         /**
-         * @type {number|undefined}
+         * @param {Part} partId
+         */
+        constructor(partId: Part, label: any, id: any);
+        /**
+         * @type {{}|undefined}
          * @private
          */
-        private _numDataRecordsPerPage;
+        private _config;
         /**
-         * @type {number|undefined}
+         * @type {RawValue|HtmlEditorConfig|undefined}
          * @private
          */
-        private _numAdjacentPages;
+        private _htmlEditorConfig;
         /**
-         * @returns {number|undefined}
+         * @type {Boolean|undefined}
+         * @private
          */
-        get numDataRecordsPerPage(): number | undefined;
+        private _altTextMandatory;
         /**
-         * @returns {number|undefined}
+         * @type {Boolean|undefined}
+         * @private
          */
-        get numAdjacentPages(): number | undefined;
+        private _captionEnabled;
         /**
-         * Define how many records are to be displayed simultaneously on a page.
+         * @returns {{}|undefined}
+         */
+        get config(): {} | undefined;
+        /**
+         * @returns {RawValue|HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get altTextMandatory(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get captionEnabled(): boolean | undefined;
+        withRawConfig(config: any): this;
+        withConfig(key: any, value: any): this;
+        /**
+         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
          *
-         * @param {number} numDataRecordsPerPage - The number of data records to be displayed on a page.
-         * @returns {Pagination}
+         * @example
+         * let editorConfig = new HtmlEditorConfig()
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * // ...
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new FormattedTextPart()
+         *       .withLabel('Text')
+         *       .withHtmlEditorConfig(editorConfig))
+         * @see {withRawHtmlEditorConfig} to set a raw value
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {FormattedTextPart}
          */
-        withNumDataRecordsPerPage(numDataRecordsPerPage: number): Pagination;
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
         /**
-         * Define how many lower and higher page numbers are to be displayed in the pagination navigation.
+         * Set a Boolean to indicate if the alt-text for this image is mandatory.
+         * If true users must describe the image before they can save it in the CX editor.
          *
-         * @param {number} numAdjacentPages - The number of adjacent pages.
-         * @returns {Pagination}
+         * @see {withAltTextMandatory}
+         * @param {Boolean} altTextMandatory
+         * @returns {ConfigPart}
          */
-        withNumAdjacentPages(numAdjacentPages: number): Pagination;
+        withAltTextMandatory(altTextMandatory: boolean): ConfigPart;
+        /**
+         * Set a Boolean to indicate if caption is enabled in editor.
+         * If true users can add a caption for the table in CX editor.
+         *
+         * @see {withCaptionEnabled}
+         * @param {Boolean} captionEnabled
+         * @returns {ConfigPart}
+         */
+        withCaptionEnabled(captionEnabled: boolean): ConfigPart;
+        withLabel(label: any): this;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {FormFieldPart}
+         */
+        clone(shallow?: boolean): FormFieldPart;
     }
-    import AbstractBuilder from "src/abstract-builder";
+    export type Part = import("src/content-element/part/part").Part;
+    export type Design = import("src/design/design").default;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractPart from "src/content-element/part/abstract-part";
+    import { Part } from "src/content-element/part/part";
+}
+declare module "src/content-element/part/config-part-factory" {
+    export default class ConfigPartFactory {
+        /**
+         * Get a new background content element part builder instance.
+         *
+         * @returns {BackgroundImagePart}
+         */
+        get backgroundImage(): BackgroundImagePart;
+        /**
+         * Get a new plain text content element part builder instance.
+         *
+         * @returns {PlainTextPart}
+         */
+        get plainText(): PlainTextPart;
+        /**
+         * Build a new background content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        BackgroundImage(label: string, id: string): ConfigPart;
+        /**
+         * Build a new checkbox form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        formCheckbox(label: string, id: string): ConfigPart;
+        /**
+         * Build a new form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        formField(label: string, id: string): ConfigPart;
+        /**
+         * Build a new form content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        form(label: string, id: string): ConfigPart;
+        /**
+         * Build a new radio form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        formRadio(label: string, id: string): ConfigPart;
+        /**
+         * Build a new select form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        formSelect(label: string, id: string): ConfigPart;
+        /**
+         * Build a new textarea form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        formTextarea(label: string, id: string): ConfigPart;
+        /**
+         * Build a new formatted text content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {ConfigPart}
+         */
+        formattedText(label: string, id: string, htmlEditorConfig: HtmlEditorConfig): ConfigPart;
+        /**
+         * Build a new HTML content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        html(label: string, id: string): ConfigPart;
+        /**
+         * Build a new image content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @param {boolean} altTextMandatory
+         * @returns {ConfigPart}
+         */
+        image(label: string, id: string, altTextMandatory: boolean): ConfigPart;
+        /**
+         * Build a new iterator content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        iterator(label: string, id: string): ConfigPart;
+        /**
+         * Build a new link content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        link(label: string, id: string): ConfigPart;
+        /**
+         * Build a new news snippet content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        newsSnippet(label: string, id: string): ConfigPart;
+        /**
+         * Build a new plain text content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        PlainText(label: string, id: string): ConfigPart;
+        /**
+         * Build a new social follow content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        socialFollow(label: string, id: string): ConfigPart;
+        /**
+         * Build a new social share content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        socialShare(label: string, id: string): ConfigPart;
+        /**
+         * Build a new table content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @param {boolean} captionEnabled
+         * @returns {ConfigPart}
+         */
+        table(label: string, id: string, captionEnabled: boolean): ConfigPart;
+        /**
+         * Build a new URL provider content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        urlProvider(label: string, id: string): ConfigPart;
+        /**
+         * Build a new video content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        video(label: string, id: string): ConfigPart;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {string} partId
+         * @param {string} label
+         * @param {string} id
+         * @returns {ConfigPart}
+         */
+        raw(partId: string, label: string, id: string): ConfigPart;
+    }
+    import BackgroundImagePart from "src/content-element/part/background-image-part";
+    import PlainTextPart from "src/content-element/part/plain-text-part";
+    import ConfigPart from "src/content-element/part/config-part";
+    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
 declare module "src/content-element/part/part-factory" {
     export default class PartFactory {
@@ -7074,162 +7319,52 @@ declare module "src/content-element/part/part-factory" {
     import VideoPart from "src/content-element/part/video-part";
     import RawPart from "src/content-element/part/raw";
 }
-declare module "src/content-element/part/part-builder" {
-    export default class PartBuilder {
+declare module "src/website/pagination" {
+    /**
+     * This is the builder class for {@link Website|website} pagination.
+     *
+     * @example
+     * .withPagination(
+     *   cx.pagination
+     *     .withNumDataRecordsPerPage(20)
+     *     .withNumAdjacentPages(3))
+     * @since BSI CX 22.0
+     */
+    export default class Pagination extends AbstractBuilder {
         /**
-         * Build a new background content element part builder instance.
-         *
-         * @returns {BackgroundImagePart}
+         * @type {number|undefined}
+         * @private
          */
-        backgroundImage(label: any, id: any): BackgroundImagePart;
+        private _numDataRecordsPerPage;
         /**
-         * Build a new checkbox form field content element part builder instance.
-         *
-         * @returns {FormCheckboxPart}
+         * @type {number|undefined}
+         * @private
          */
-        formCheckbox(label: any, id: any): FormCheckboxPart;
+        private _numAdjacentPages;
         /**
-         * Build a new form field content element part builder instance.
-         *
-         * @returns {FormFieldPart}
+         * @returns {number|undefined}
          */
-        formField(label: any, id: any): FormFieldPart;
+        get numDataRecordsPerPage(): number | undefined;
         /**
-         * Build a new form content element part builder instance.
-         *
-         * @returns {FormPart}
+         * @returns {number|undefined}
          */
-        form(label: any, id: any): FormPart;
+        get numAdjacentPages(): number | undefined;
         /**
-         * Build a new radio form field content element part builder instance.
+         * Define how many records are to be displayed simultaneously on a page.
          *
-         * @returns {FormRadioPart}
+         * @param {number} numDataRecordsPerPage - The number of data records to be displayed on a page.
+         * @returns {Pagination}
          */
-        formRadio(label: any, id: any): FormRadioPart;
+        withNumDataRecordsPerPage(numDataRecordsPerPage: number): Pagination;
         /**
-         * Build a new select form field content element part builder instance.
+         * Define how many lower and higher page numbers are to be displayed in the pagination navigation.
          *
-         * @returns {FormSelectPart}
+         * @param {number} numAdjacentPages - The number of adjacent pages.
+         * @returns {Pagination}
          */
-        formSelect(label: any, id: any): FormSelectPart;
-        /**
-         * Build a new textarea form field content element part builder instance.
-         *
-         * @returns {FormTextareaPart}
-         */
-        formTextarea(label: any, id: any): FormTextareaPart;
-        /**
-         * Build a new formatted text content element part builder instance.
-         *
-         * @returns {FormattedTextPart}
-         */
-        formattedText(label: any, id: any): FormattedTextPart;
-        /**
-         * Build a new HTML content element part builder instance.
-         *
-         * @returns {HtmlPart}
-         */
-        html(label: any, id: any): HtmlPart;
-        /**
-         * Build a new image content element part builder instance.
-         *
-         * @returns {ImagePart}
-         */
-        image(label: any, id: any): ImagePart;
-        /**
-         * Build a new iterator content element part builder instance.
-         *
-         * @returns {IteratorPart}
-         */
-        iterator(label: any, id: any): IteratorPart;
-        /**
-         * Build a new link content element part builder instance.
-         *
-         * @returns {LinkPart}
-         */
-        link(label: any, id: any): LinkPart;
-        /**
-         * Build a new news snippet content element part builder instance.
-         *
-         * @returns {NewsSnippetsPart}
-         */
-        newsSnippet(label: any, id: any): NewsSnippetsPart;
-        /**
-         * Build a new plain text content element part builder instance.
-         *
-         * @returns {PlainTextPart}
-         */
-        plainText(label: any, id: any): PlainTextPart;
-        /**
-         * Build a new social follow content element part builder instance.
-         *
-         * @returns {SocialFollowPart}
-         */
-        socialFollow(label: any, id: any): SocialFollowPart;
-        /**
-         * Build a new social share content element part builder instance.
-         *
-         * @returns {SocialSharePart}
-         */
-        socialShare(label: any, id: any): SocialSharePart;
-        /**
-         * Build a new table content element part builder instance.
-         *
-         * @returns {TablePart}
-         */
-        table(label: any, id: any): TablePart;
-        /**
-         * Build a new URL provider content element part builder instance.
-         *
-         * @returns {UrlProviderPart}
-         */
-        urlProvider(label: any, id: any): UrlProviderPart;
-        /**
-         * Build a new video content element part builder instance.
-         *
-         * @returns {VideoPart}
-         */
-        video(label: any, id: any): VideoPart;
-        /**
-         * Create a raw element part builder instance. Can be used for custom element parts.
-         *
-         * @param {string} partId
-         * @param {string} label
-         * @param {string} id
-         * @returns {RawPart}
-         */
-        raw(partId: string, label: string, id: string): RawPart;
-        /**
-         * Create a raw element part builder instance. Can be used for custom element parts.
-         *
-         * @param {AbstractPart} part
-         * @param {string} label
-         * @param {string} id
-         * @returns {RawPart}
-         */
-        _initPart(part: AbstractPart, label: string, id: string): RawPart;
+        withNumAdjacentPages(numAdjacentPages: number): Pagination;
     }
-    import BackgroundImagePart from "src/content-element/part/background-image-part";
-    import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
-    import FormFieldPart from "src/content-element/part/form-field-part";
-    import FormPart from "src/content-element/part/form-part";
-    import FormRadioPart from "src/content-element/part/form-radio-part";
-    import FormSelectPart from "src/content-element/part/form-select-part";
-    import FormTextareaPart from "src/content-element/part/form-textarea-part";
-    import FormattedTextPart from "src/content-element/part/formatted-text-part";
-    import HtmlPart from "src/content-element/part/html-part";
-    import ImagePart from "src/content-element/part/image-part";
-    import IteratorPart from "src/content-element/part/iterator-part";
-    import LinkPart from "src/content-element/part/link-part";
-    import NewsSnippetsPart from "src/content-element/part/news-snippets-part";
-    import PlainTextPart from "src/content-element/part/plain-text-part";
-    import SocialFollowPart from "src/content-element/part/social-follow-part";
-    import SocialSharePart from "src/content-element/part/social-share-part";
-    import TablePart from "src/content-element/part/table-part";
-    import UrlProviderPart from "src/content-element/part/url-provider-part";
-    import VideoPart from "src/content-element/part/video-part";
-    import RawPart from "src/content-element/part/raw";
-    import AbstractPart from "src/content-element/part/abstract-part";
+    import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/design/design-helper" {
     /** @typedef {import('./design-factory').default} DesignFactory */
@@ -7642,9 +7777,9 @@ declare module "src/design/design-factory" {
            * .withParts(
            *   cx.part2.plainText('Text', 'text-id'),
            *   part2.image('Image', 'image-id'))
-           * @returns {PartBuilder}
+           * @returns {ConfigPartFactory}
            */
-        get part2(): PartBuilder;
+        get part2(): ConfigPartFactory;
         /**
          * Get a collection of various helper methods.
          *
@@ -7673,7 +7808,7 @@ declare module "src/design/design-factory" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
-    import PartBuilder from "src/content-element/part/part-builder";
+    import ConfigPartFactory from "src/content-element/part/config-part-factory";
     import DesignHelper from "src/design/design-helper";
 }
 declare module "src/bsi-property" {

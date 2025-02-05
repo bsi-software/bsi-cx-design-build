@@ -68,7 +68,7 @@ __webpack_require__.d(__webpack_exports__, {
   Feature: () => (/* reexport */ feature_namespaceObject),
   FontSizeUnit: () => (/* reexport */ font_size_unit_namespaceObject),
   FormCheckboxPart: () => (/* reexport */ FormCheckboxPart),
-  FormFieldPart: () => (/* reexport */ FormFieldPart),
+  FormFieldPart: () => (/* reexport */ form_field_part_FormFieldPart),
   FormPart: () => (/* reexport */ FormPart),
   FormRadioPart: () => (/* reexport */ FormRadioPart),
   FormSelectPart: () => (/* reexport */ FormSelectPart),
@@ -5233,7 +5233,7 @@ class FormPart extends AbstractPart {
 /**
  * @since Studio 1.0
  */
-class FormFieldPart extends AbstractPart {
+class form_field_part_FormFieldPart extends AbstractPart {
   constructor() {
     super(FORM_FIELD);
   }
@@ -5245,7 +5245,7 @@ class FormFieldPart extends AbstractPart {
    * @returns {FormFieldPart}
    */
   clone(shallow) {
-    return this._clone(new FormFieldPart(), shallow);
+    return this._clone(new form_field_part_FormFieldPart(), shallow);
   }
 }
 
@@ -5457,6 +5457,7 @@ class RawPart extends AbstractPart {
    */
   constructor(partId) {
     const part = new Part(partId);
+
     super(part);
 
     this._properties = {};
@@ -6328,86 +6329,431 @@ class NLS extends AbstractBuilder {
   }
 }
 
-;// ./src/website/pagination.js
+;// ./src/content-element/part/config-part.js
 
 
 
 
 
+/** @typedef {import('./part').Part} Part */
+/** @typedef {import('../../design/design').default} Design */
+/** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
 
 /**
- * This is the builder class for {@link Website|website} pagination.
- *
- * @example
- * .withPagination(
- *   cx.pagination
- *     .withNumDataRecordsPerPage(20)
- *     .withNumAdjacentPages(3))
- * @since BSI CX 22.0
+ * @since Studio 23.2
  */
-class Pagination extends AbstractBuilder {
+class ConfigPart extends AbstractPart {
   /**
-   * @type {number|undefined}
+   * @type {{}|undefined}
    * @private
    */
-  _numDataRecordsPerPage = undefined;
+  _config = undefined;
+
   /**
-   * @type {number|undefined}
+   * @type {RawValue|HtmlEditorConfig|undefined}
    * @private
    */
-  _numAdjacentPages = undefined;
+  _htmlEditorConfig = undefined;
 
   /**
-   * @returns {number|undefined}
+   * @type {Boolean|undefined}
+   * @private
    */
-  get numDataRecordsPerPage() {
-    return this._numDataRecordsPerPage;
+  _altTextMandatory = undefined;
+
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _captionEnabled = undefined;
+
+  /**
+   * @param {Part} partId
+   */
+  constructor(partId, label, id) {
+    var partObj = new Part(partId);
+    super(partObj);
+    /**
+     * @type {Part}
+     * @private
+     */
+    super.withLabel(label);
+    super.withId(id);
   }
 
   /**
-   * @returns {number|undefined}
+   * @returns {{}|undefined}
    */
-  get numAdjacentPages() {
-    return this._numAdjacentPages;
-  }
-
-  get minVersion() {
-    return CX_22_0;
-  }
-
-  get allowedTypes() {
-    return [WEBSITE];
+  get config() {
+    return this._config;
   }
 
   /**
-   * Define how many records are to be displayed simultaneously on a page.
-   *
-   * @param {number} numDataRecordsPerPage - The number of data records to be displayed on a page.
-   * @returns {Pagination}
+   * @returns {RawValue|HtmlEditorConfig|undefined}
    */
-  withNumDataRecordsPerPage(numDataRecordsPerPage) {
-    this._numDataRecordsPerPage = numDataRecordsPerPage;
+  get htmlEditorConfig() {
+    return this._htmlEditorConfig;
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get altTextMandatory() {
+    return this._altTextMandatory;
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get captionEnabled() {
+    return this._captionEnabled;
+  }
+
+
+  // TODO description
+  withRawConfig(config) {
+    this._config = config;
+    return this;
+  }
+
+  // TODO description
+  withConfig(key, value) {
+    this._config = this.config || {};
+    this._config[key] = value;
     return this;
   }
 
   /**
-   * Define how many lower and higher page numbers are to be displayed in the pagination navigation.
+   * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+   * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+   * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
    *
-   * @param {number} numAdjacentPages - The number of adjacent pages.
-   * @returns {Pagination}
+   * @example
+   * let editorConfig = new HtmlEditorConfig()
+   *   .withIdentifier('minimal')
+   *   .withRawEnterMode('p')
+   *   .withFeatures(
+   *     Feature.BOLD,
+   *     Feature.ITALIC,
+   *     Feature.UNDERLINE);
+   * // ...
+   * let element = new ContentElement()
+   *   .withElementId('element')
+   *   .withParts(
+   *     new FormattedTextPart()
+   *       .withLabel('Text')
+   *       .withHtmlEditorConfig(editorConfig))
+   * @see {withRawHtmlEditorConfig} to set a raw value
+   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @returns {FormattedTextPart}
    */
-  withNumAdjacentPages(numAdjacentPages) {
-    this._numAdjacentPages = numAdjacentPages;
-    return this;
+  withHtmlEditorConfig(htmlEditorConfig) {
+    this._htmlEditorConfig = htmlEditorConfig;
+    return this.withConfig(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
+  }
+
+  /**
+   * Set a Boolean to indicate if the alt-text for this image is mandatory.
+   * If true users must describe the image before they can save it in the CX editor.
+   *
+   * @see {withAltTextMandatory}
+   * @param {Boolean} altTextMandatory
+   * @returns {ConfigPart}
+   */
+  withAltTextMandatory(altTextMandatory) {
+    this._altTextMandatory = altTextMandatory;
+    return this.withConfig(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory);
+  }
+
+  /**
+   * Set a Boolean to indicate if caption is enabled in editor.
+   * If true users can add a caption for the table in CX editor.
+   *
+   * @see {withCaptionEnabled}
+   * @param {Boolean} captionEnabled
+   * @returns {ConfigPart}
+   */
+  withCaptionEnabled(captionEnabled) {
+    this._captionEnabled = captionEnabled;
+    return this.withConfig(DesignJsonProperty.CAPTION_ENABLED, captionEnabled);
+  }
+
+  withLabel(label) {
+    return super.withLabel(label);
   }
 
   _buildInternal() {
-    let config = {};
+    let config = super._buildInternal();
 
-    this._applyPropertyIfDefined(DesignJsonProperty.NUM_DATA_RECORDS_PER_PAGE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.NUM_ADJACENT_PAGES, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
 
     return config;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormFieldPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormFieldPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/config-part-factory.js
+
+
+
+
+
+class ConfigPartFactory {
+  /**
+   * Get a new background content element part builder instance.
+   *
+   * @returns {BackgroundImagePart}
+   */
+  get backgroundImage() {
+    return new ConfigPart('background-image');
+  }
+
+  /**
+   * Get a new plain text content element part builder instance.
+   *
+   * @returns {PlainTextPart}
+   */
+  get plainText() {
+    return new ConfigPart('plain-text');
+  }
+
+  /**
+   * Build a new background content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  BackgroundImage(label, id) {
+    return new ConfigPart('background-image', label, id);
+  }
+
+  /**
+   * Build a new checkbox form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  formCheckbox(label, id) {
+    return new ConfigPart('form-checkbox', label, id);
+  }
+
+  /**
+   * Build a new form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  formField(label, id) {
+    return new ConfigPart('form-field', label, id);
+  }
+
+  /**
+   * Build a new form content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  form(label, id) {
+    return new ConfigPart('form', label, id);
+  }
+
+  /**
+   * Build a new radio form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  formRadio(label, id) {
+    return new ConfigPart('form-radio', label, id);
+  }
+
+  /**
+   * Build a new select form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  formSelect(label, id) {
+    return new ConfigPart('form-select', label, id);
+  }
+
+  /**
+   * Build a new textarea form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  formTextarea(label, id) {
+    return new ConfigPart('form-textarea', label, id);
+  }
+
+  /**
+   * Build a new formatted text content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @returns {ConfigPart}
+   */
+  formattedText(label, id, htmlEditorConfig) {
+    var part = new ConfigPart('formatted-text', label, id)
+    return htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+  }
+
+  /**
+   * Build a new HTML content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  html(label, id) {
+    return new ConfigPart('html', label, id);
+  }
+
+  /**
+   * Build a new image content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {boolean} altTextMandatory
+   * @returns {ConfigPart}
+   */
+  image(label, id, altTextMandatory) {
+    var part = new ConfigPart('image', label, id);
+    return altTextMandatory !== null ? part.withAltTextMandatory(altTextMandatory) : part;
+  }
+
+  /**
+   * Build a new iterator content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  iterator(label, id) {
+    return new ConfigPart('iterator', label, id);
+  }
+
+  /**
+   * Build a new link content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  link(label, id) {
+    return new ConfigPart('link', label, id);
+  }
+
+  /**
+   * Build a new news snippet content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  newsSnippet(label, id) {
+    return new ConfigPart('news-snippets', label, id);
+  }
+
+  /**
+   * Build a new plain text content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  PlainText(label, id) {
+    return new ConfigPart('plain-text', label, id);
+  }
+
+  /**
+   * Build a new social follow content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  socialFollow(label, id) {
+    return new ConfigPart('social-follow', label, id);
+  }
+
+  /**
+   * Build a new social share content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  socialShare(label, id) {
+    return new ConfigPart('social-share', label, id);
+  }
+
+  /**
+   * Build a new table content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {boolean} captionEnabled
+   * @returns {ConfigPart}
+   */
+  table(label, id, captionEnabled) {
+    var part = new ConfigPart('table', label, id);
+    return captionEnabled !== null ? part.withCaptionEnabled(captionEnabled) : part;
+  }
+
+  /**
+   * Build a new URL provider content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  urlProvider(label, id) {
+    return new ConfigPart('url-provider', label, id);
+  }
+
+  /**
+   * Build a new video content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  video(label, id) {
+    return new ConfigPart('video', label, id);
+  }
+
+  /**
+   * Create a raw element part builder instance. Can be used for custom element parts.
+   *
+   * @param {string} partId
+   * @param {string} label
+   * @param {string} id
+   * @returns {ConfigPart}
+   */
+  raw(partId, label, id) {
+    return new ConfigPart(partId, label, id);
   }
 }
 
@@ -6458,7 +6804,7 @@ class PartFactory {
    * @returns {FormFieldPart}
    */
   get formField() {
-    return new FormFieldPart();
+    return new form_field_part_FormFieldPart();
   }
 
   /**
@@ -6616,223 +6962,86 @@ class PartFactory {
   }
 }
 
-;// ./src/content-element/part/part-builder.js
+;// ./src/website/pagination.js
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class PartBuilder {
+/**
+ * This is the builder class for {@link Website|website} pagination.
+ *
+ * @example
+ * .withPagination(
+ *   cx.pagination
+ *     .withNumDataRecordsPerPage(20)
+ *     .withNumAdjacentPages(3))
+ * @since BSI CX 22.0
+ */
+class Pagination extends AbstractBuilder {
   /**
-   * Build a new background content element part builder instance.
-   *
-   * @returns {BackgroundImagePart}
+   * @type {number|undefined}
+   * @private
    */
-  backgroundImage(label, id) {
-    return this._initPart(new BackgroundImagePart(), label, id);
+  _numDataRecordsPerPage = undefined;
+  /**
+   * @type {number|undefined}
+   * @private
+   */
+  _numAdjacentPages = undefined;
+
+  /**
+   * @returns {number|undefined}
+   */
+  get numDataRecordsPerPage() {
+    return this._numDataRecordsPerPage;
   }
 
   /**
-   * Build a new checkbox form field content element part builder instance.
-   *
-   * @returns {FormCheckboxPart}
+   * @returns {number|undefined}
    */
-  formCheckbox(label, id) {
-    return this._initPart(new FormCheckboxPart(), label, id);
+  get numAdjacentPages() {
+    return this._numAdjacentPages;
+  }
+
+  get minVersion() {
+    return CX_22_0;
+  }
+
+  get allowedTypes() {
+    return [WEBSITE];
   }
 
   /**
-   * Build a new form field content element part builder instance.
+   * Define how many records are to be displayed simultaneously on a page.
    *
-   * @returns {FormFieldPart}
+   * @param {number} numDataRecordsPerPage - The number of data records to be displayed on a page.
+   * @returns {Pagination}
    */
-  formField(label, id) {
-    return this._initPart(new FormFieldPart(), label, id);
+  withNumDataRecordsPerPage(numDataRecordsPerPage) {
+    this._numDataRecordsPerPage = numDataRecordsPerPage;
+    return this;
   }
 
   /**
-   * Build a new form content element part builder instance.
+   * Define how many lower and higher page numbers are to be displayed in the pagination navigation.
    *
-   * @returns {FormPart}
+   * @param {number} numAdjacentPages - The number of adjacent pages.
+   * @returns {Pagination}
    */
-  form(label, id) {
-    return this._initPart(new FormPart(), label, id);
+  withNumAdjacentPages(numAdjacentPages) {
+    this._numAdjacentPages = numAdjacentPages;
+    return this;
   }
 
-  /**
-   * Build a new radio form field content element part builder instance.
-   *
-   * @returns {FormRadioPart}
-   */
-  formRadio(label, id) {
-    return this._initPart(new FormRadioPart(), label, id);
-  }
+  _buildInternal() {
+    let config = {};
 
-  /**
-   * Build a new select form field content element part builder instance.
-   *
-   * @returns {FormSelectPart}
-   */
-  formSelect(label, id) {
-    return this._initPart(new FormSelectPart(), label, id);
-  }
+    this._applyPropertyIfDefined(DesignJsonProperty.NUM_DATA_RECORDS_PER_PAGE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.NUM_ADJACENT_PAGES, config, identity);
 
-  /**
-   * Build a new textarea form field content element part builder instance.
-   *
-   * @returns {FormTextareaPart}
-   */
-  formTextarea(label, id) {
-    return this._initPart(new FormTextareaPart(), label, id);
-  }
-
-  /**
-   * Build a new formatted text content element part builder instance.
-   *
-   * @returns {FormattedTextPart}
-   */
-  formattedText(label, id) {
-    return this._initPart(new FormattedTextPart(), label, id);
-  }
-
-  /**
-   * Build a new HTML content element part builder instance.
-   *
-   * @returns {HtmlPart}
-   */
-  html(label, id) {
-    return this._initPart(new HtmlPart(), label, id);
-  }
-
-  /**
-   * Build a new image content element part builder instance.
-   *
-   * @returns {ImagePart}
-   */
-  image(label, id) {
-    return this._initPart(new ImagePart(), label, id);
-  }
-
-  /**
-   * Build a new iterator content element part builder instance.
-   *
-   * @returns {IteratorPart}
-   */
-  iterator(label, id) {
-    return this._initPart(new IteratorPart(), label, id);
-  }
-
-  /**
-   * Build a new link content element part builder instance.
-   *
-   * @returns {LinkPart}
-   */
-  link(label, id) {
-    return this._initPart(new LinkPart(), label, id);
-  }
-
-  /**
-   * Build a new news snippet content element part builder instance.
-   *
-   * @returns {NewsSnippetsPart}
-   */
-  newsSnippet(label, id) {
-    return this._initPart(new NewsSnippetsPart(), label, id);
-  }
-
-  /**
-   * Build a new plain text content element part builder instance.
-   *
-   * @returns {PlainTextPart}
-   */
-  plainText(label, id) {
-    return this._initPart(new PlainTextPart(), label, id);
-  }
-
-  /**
-   * Build a new social follow content element part builder instance.
-   *
-   * @returns {SocialFollowPart}
-   */
-  socialFollow(label, id) {
-    return this._initPart(new SocialFollowPart(), label, id);
-  }
-
-  /**
-   * Build a new social share content element part builder instance.
-   *
-   * @returns {SocialSharePart}
-   */
-  socialShare(label, id) {
-    return this._initPart(new SocialSharePart(), label, id);
-  }
-
-  /**
-   * Build a new table content element part builder instance.
-   *
-   * @returns {TablePart}
-   */
-  table(label, id) {
-    return this._initPart(new TablePart(), label, id);
-  }
-
-  /**
-   * Build a new URL provider content element part builder instance.
-   *
-   * @returns {UrlProviderPart}
-   */
-  urlProvider(label, id) {
-    return this._initPart(new UrlProviderPart(), label, id);
-  }
-
-  /**
-   * Build a new video content element part builder instance.
-   *
-   * @returns {VideoPart}
-   */
-  video(label, id) {
-    return this._initPart(new VideoPart(), label, id);
-  }
-
-  /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
-   *
-   * @param {string} partId
-   * @param {string} label
-   * @param {string} id
-   * @returns {RawPart}
-   */
-  raw(partId, label, id) {
-    return this._initPart(new RawPart(partId), label, id);
-  }
-
-  /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
-   *
-   * @param {AbstractPart} part
-   * @param {string} label
-   * @param {string} id
-   * @returns {RawPart}
-   */
-  _initPart(part, label, id){
-    return part.withLabel(label).withId(id);
+    return config;
   }
 }
 
@@ -7347,10 +7556,10 @@ class DesignFactory {
      * .withParts(
      *   cx.part2.plainText('Text', 'text-id'),
      *   part2.image('Image', 'image-id'))
-     * @returns {PartBuilder}
+     * @returns {ConfigPartFactory}
      */
   get part2() {
-    return new PartBuilder();
+    return new ConfigPartFactory();
   }
 
   /**

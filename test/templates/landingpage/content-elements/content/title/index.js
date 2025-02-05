@@ -14,4 +14,4 @@ module.exports = cx.contentElement
     require('../../../styles/background-color'))
   .withFile(require('./template.twig'))
   .withParts(
-    cx.part2.plainText('Titel', 'title-id'));
+    cx.part2.PlainText('Titel', 'title-id'));
