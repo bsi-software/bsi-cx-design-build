@@ -3091,187 +3091,6 @@ declare module "export/main" {
     import * as css from "src/css/helper";
     export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
 }
-declare module "src/content-element/part/part" {
-    export class Part extends AbstractConstant {
-    }
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const PLAIN_TEXT: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORMATTED_TEXT: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const HTML: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const VIDEO: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const IMAGE: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const BACKGROUND_IMAGE: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const TABLE: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const ITERATOR: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const NEWS_SNIPPETS: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_FIELD: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_CHECKBOX: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_TEXTAREA: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_SELECT: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_RADIO: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const LINK: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const SOCIAL_FOLLOW: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const SOCIAL_SHARE: Part;
-    /**
-     * @type {Part}
-     * @since 22.0
-     */
-    export const URL_PROVIDER: Part;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/content-element/part/abstract-part" {
-    /** @typedef {import('./part').Part} Part */
-    /**
-     * @abstract
-     */
-    export default class AbstractPart extends AbstractBuilder {
-        /**
-         * @param {Part} partId
-         */
-        constructor(partId: Part);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _id;
-        /**
-         * @type {Part}
-         * @private
-         */
-        private _partId;
-        /**
-         * @type {string|NLS|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @returns {string}
-         */
-        get id(): string;
-        /**
-         * @returns {Part}
-         */
-        get partId(): Part;
-        /**
-         * @returns {string|NLS|undefined}
-         */
-        get label(): string | NLS | undefined;
-        /**
-         * The ID of the part. You can apply an unique identifier to your content element part.
-         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
-         * This property is only for the design build and will not appear in the final build artifacts.
-         * The advantage of using this property is, that you don't have to care about the order of your parts
-         * in your specification. The build will reorder the part definitions in the order they appear in the
-         * corresponding template. This can be very handy in large and complex elements with many parts.
-         *
-         * @example
-         * // template.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
-         * </div>
-         *
-         * // title.js
-         * module.exports = new ContentElement()
-         *   .withElementId('title')
-         *   .withLabel('Title')
-         *   .withFile(require('./template.html')
-         *   .withParts(
-         *     new PlainTextPart()
-         *       .withId('539a1787-7df2-43ab-9a67-e1f913ad5d7c')
-         *       .withLabel('Title'));
-         *
-         * // dist/title-4026bb9f6ec6c2284775.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
-         * </div>
-         * @param {string} id - The ID to use.
-         * @returns {this}
-         */
-        withId(id: string): this;
-        /**
-         * The set content element part's label.
-         *
-         * @param {string|NLS} label - The label to set.
-         * @returns {this}
-         * @since Studio 1.0
-         */
-        withLabel(label: string | NLS): this;
-    }
-    export type Part = import("src/content-element/part/part").Part;
-    import AbstractBuilder from "src/abstract-builder";
-}
 declare module "src/design/schema-version" {
     /** @typedef {import('./design').default} Design */
     /**
@@ -4117,6 +3936,162 @@ declare module "src/content-element/icon" {
     export const CALENDAR_CLOCK: Icon;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/content-element/part/part" {
+    export default class Part extends AbstractBuilder {
+        /**
+         * @param {string} partId
+         */
+        constructor(partId: string, label: any, id: any);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _id;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _partId;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _config;
+        /**
+         * @type {RawValue|HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _altTextMandatory;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _captionEnabled;
+        /**
+         * @returns {string}
+         */
+        get id(): string;
+        /**
+         * @returns {string}
+         */
+        get partId(): string;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get label(): string | NLS | undefined;
+        /**
+         * @returns {{}|undefined}
+         */
+        get config(): {} | undefined;
+        /**
+         * @returns {RawValue|HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get altTextMandatory(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get captionEnabled(): boolean | undefined;
+        /**
+         * The ID of the part. You can apply an unique identifier to your content element part.
+         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+         * This property is only for the design build and will not appear in the final build artifacts.
+         * The advantage of using this property is, that you don't have to care about the order of your parts
+         * in your specification. The build will reorder the part definitions in the order they appear in the
+         * corresponding template. This can be very handy in large and complex elements with many parts.
+         *
+         * @example
+         * // template.html
+         * <div data-bsi-element="title">
+         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+         * </div>
+         *
+         * // title.js
+         * module.exports = new ContentElement()
+         *   .withElementId('title')
+         *   .withLabel('Title')
+         *   .withFile(require('./template.html')
+         *   .withParts(
+         *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+         *    );
+         *
+         * // dist/title-4026bb9f6ec6c2284775.html
+         * <div data-bsi-element="title">
+         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+         * </div>
+         * @param {string} id - The ID to use.
+         * @returns {this}
+         */
+        withId(id: string): this;
+        /**
+         * The set content element part's label.
+         *
+         * @param {string|NLS} label - The label to set.
+         * @returns {this}
+         * @since Studio 1.0
+         */
+        withLabel(label: string | NLS): this;
+        withRawConfig(config: any): this;
+        withConfig(key: any, value: any): this;
+        /**
+         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
+         *
+         * @example
+         * let editorConfig = new HtmlEditorConfig()
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * // ...
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new FormattedTextPart()
+         *       .withLabel('Text')
+         *       .withHtmlEditorConfig(editorConfig))
+         * @see {withRawHtmlEditorConfig} to set a raw value
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+        /**
+         * Set a Boolean to indicate if the alt-text for this image is mandatory.
+         * If true users must describe the image before they can save it in the CX editor.
+         *
+         * @see {withAltTextMandatory}
+         * @param {Boolean} altTextMandatory
+         * @returns {Part}
+         */
+        withAltTextMandatory(altTextMandatory: boolean): Part;
+        /**
+         * Set a Boolean to indicate if caption is enabled in editor.
+         * If true users can add a caption for the table in CX editor.
+         *
+         * @see {withCaptionEnabled}
+         * @param {Boolean} captionEnabled
+         * @returns {Part}
+         */
+        withCaptionEnabled(captionEnabled: boolean): Part;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
 declare module "src/content-element/content-element-group" {
     /** @typedef {import('./content-element').default} ContentElement */
     /**
@@ -4390,7 +4365,7 @@ declare module "src/content-element/content-element" {
     /** @typedef {import('../design/design').default} Design */
     /** @typedef {import('../style/style').default} Style */
     /** @typedef {import('./icon').Icon} Icon */
-    /** @typedef {import('./part/abstract-part').default} AbstractPart */
+    /** @typedef {import('./part/part').Part} AbstractPart */
     /** @typedef {import('./content-element-group').default} ContentElementGroup */
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
@@ -4711,7 +4686,7 @@ declare module "src/content-element/content-element" {
     export type Design = import("src/design/design").default;
     export type Style = import("src/style/style").default;
     export type Icon = import("src/content-element/icon").Icon;
-    export type AbstractPart = import("src/content-element/part/abstract-part").default;
+    export type AbstractPart = import("src/content-element/part/part").Part;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
@@ -5338,70 +5313,6 @@ declare module "src/html-editor-config/html-editor-config" {
     export type Format = import("src/html-editor-config/format").Format;
     export type FontSizeUnit = import("src/html-editor-config/font-size-unit").FontSizeUnit;
     import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-}
-declare module "src/content-element/part/formatted-text-part" {
-    /** @typedef {import('../../design/design').default} Design */
-    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormattedTextPart extends AbstractPart {
-        constructor();
-        /**
-         * @type {RawValue|HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @returns {RawValue|HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
-        /**
-         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
-         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
-         *
-         * @example
-         * let editorConfig = new HtmlEditorConfig()
-         *   .withIdentifier('minimal')
-         *   .withRawEnterMode('p')
-         *   .withFeatures(
-         *     Feature.BOLD,
-         *     Feature.ITALIC,
-         *     Feature.UNDERLINE);
-         * // ...
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new FormattedTextPart()
-         *       .withLabel('Text')
-         *       .withHtmlEditorConfig(editorConfig))
-         * @see {withRawHtmlEditorConfig} to set a raw value
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
-         * Be aware, that you also have to register your HTML editor configuration with {@link Design#withHtmlEditorConfigs}.
-         *
-         * @see {@link withHtmlEditorConfig}
-         * @param {string} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withRawHtmlEditorConfig(htmlEditorConfig: string): FormattedTextPart;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormattedTextPart}
-         */
-        clone(shallow?: boolean): FormattedTextPart;
-    }
-    export type Design = import("src/design/design").default;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractPart from "src/content-element/part/abstract-part";
     import RawValue from "src/raw-value";
 }
 declare module "src/website/website" {
@@ -6219,7 +6130,7 @@ declare module "src/design/design" {
     export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
     export type Locale = import("src/design/locale").Locale;
     export type ContentElement = import("src/content-element/content-element").default;
-    export type FormattedTextPart = import("src/content-element/part/formatted-text-part").default;
+    export type FormattedTextPart = any;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
     export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
@@ -6306,374 +6217,6 @@ declare module "src/design/locale" {
     export const IT_CH: Locale;
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/content-element/part/plain-text-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class PlainTextPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {PlainTextPart}
-         */
-        clone(shallow?: boolean): PlainTextPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/html-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class HtmlPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {HtmlPart}
-         */
-        clone(shallow?: boolean): HtmlPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/video-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class VideoPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {VideoPart}
-         */
-        clone(shallow?: boolean): VideoPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/image-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class ImagePart extends AbstractPart {
-        constructor();
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _altTextMandatory;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get altTextMandatory(): boolean | undefined;
-        /**
-         * Set a Boolean to indicate if the alt-text for this image is mandatory.
-         * If true users must describe the image before they can save it in the CX editor.
-         *
-         * @see {withAltTextMandatory}
-         * @param {Boolean} altTextMandatory
-         * @returns {ImagePart}
-         */
-        withAltTextMandatory(altTextMandatory: boolean): ImagePart;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {ImagePart}
-         */
-        clone(shallow?: boolean): ImagePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/background-image-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class BackgroundImagePart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {BackgroundImagePart}
-         */
-        clone(shallow?: boolean): BackgroundImagePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/table-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class TablePart extends AbstractPart {
-        constructor();
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _captionEnabled;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get captionEnabled(): boolean | undefined;
-        /**
-         * Set a Boolean to indicate if caption is enabled in editor.
-         * If true users can add a caption for the table in CX editor.
-         *
-         * @see {withCaptionEnabled}
-         * @param {Boolean} captionEnabled
-         * @returns {ImagePart}
-         */
-        withCaptionEnabled(captionEnabled: boolean): ImagePart;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {TablePart}
-         */
-        clone(shallow?: boolean): TablePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/iterator-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class IteratorPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {IteratorPart}
-         */
-        clone(shallow?: boolean): IteratorPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/news-snippets-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class NewsSnippetsPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {NewsSnippetsPart}
-         */
-        clone(shallow?: boolean): NewsSnippetsPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormPart}
-         */
-        clone(shallow?: boolean): FormPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-field-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormFieldPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormFieldPart}
-         */
-        clone(shallow?: boolean): FormFieldPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-checkbox-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormCheckboxPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormCheckboxPart}
-         */
-        clone(shallow?: boolean): FormCheckboxPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-textarea-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormTextareaPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormTextareaPart}
-         */
-        clone(shallow?: boolean): FormTextareaPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-select-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormSelectPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormSelectPart}
-         */
-        clone(shallow?: boolean): FormSelectPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/form-radio-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormRadioPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormRadioPart}
-         */
-        clone(shallow?: boolean): FormRadioPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/link-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class LinkPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {LinkPart}
-         */
-        clone(shallow?: boolean): LinkPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/social-follow-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class SocialFollowPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {SocialFollowPart}
-         */
-        clone(shallow?: boolean): SocialFollowPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/social-share-part" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class SocialSharePart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {SocialSharePart}
-         */
-        clone(shallow?: boolean): SocialSharePart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/url-provider-part" {
-    /**
-     * @since 22.0
-     */
-    export default class UrlProviderPart extends AbstractPart {
-        constructor();
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {UrlProviderPart}
-         */
-        clone(shallow?: boolean): UrlProviderPart;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
-}
-declare module "src/content-element/part/raw" {
-    /**
-     * @since Studio 1.0
-     */
-    export default class RawPart extends AbstractPart {
-        /**
-         * @param {string} partId
-         */
-        constructor(partId: string);
-        /**
-         * @type {Record<string,*>}
-         * @private
-         */
-        private _properties;
-        /**
-         * @returns {Record<string, *>}
-         */
-        get properties(): Record<string, any>;
-        /**
-         * Set a property for this raw part.
-         *
-         * @example
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new RawPart('chart')
-         *       .withLabel('Chart')
-         *       .withProperty('type','pie'))
-         * @param {string} name
-         * @param {string|array|number|boolean|Record|null} value
-         * @returns {RawPart}
-         */
-        withProperty(name: string, value: string | any[] | number | boolean | Record | null): RawPart;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {RawPart}
-         */
-        clone(shallow?: boolean): RawPart;
-        _buildInternal(): Record<string, any>;
-    }
-    import AbstractPart from "src/content-element/part/abstract-part";
 }
 declare module "src/website/abstract-include" {
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
@@ -6882,442 +6425,295 @@ declare module "src/website/include" {
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractInclude from "src/website/abstract-include";
 }
-declare module "src/content-element/part/config-part" {
-    /** @typedef {import('./part').Part} Part */
-    /** @typedef {import('../../design/design').default} Design */
-    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
-    /**
-     * @since Studio 23.2
-     */
-    export default class ConfigPart extends AbstractPart {
-        /**
-         * @param {Part} partId
-         */
-        constructor(partId: Part, label: any, id: any);
-        /**
-         * @type {{}|undefined}
-         * @private
-         */
-        private _config;
-        /**
-         * @type {RawValue|HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _altTextMandatory;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _captionEnabled;
-        /**
-         * @returns {{}|undefined}
-         */
-        get config(): {} | undefined;
-        /**
-         * @returns {RawValue|HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get altTextMandatory(): boolean | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get captionEnabled(): boolean | undefined;
-        withRawConfig(config: any): this;
-        withConfig(key: any, value: any): this;
-        /**
-         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
-         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
-         *
-         * @example
-         * let editorConfig = new HtmlEditorConfig()
-         *   .withIdentifier('minimal')
-         *   .withRawEnterMode('p')
-         *   .withFeatures(
-         *     Feature.BOLD,
-         *     Feature.ITALIC,
-         *     Feature.UNDERLINE);
-         * // ...
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new FormattedTextPart()
-         *       .withLabel('Text')
-         *       .withHtmlEditorConfig(editorConfig))
-         * @see {withRawHtmlEditorConfig} to set a raw value
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * Set a Boolean to indicate if the alt-text for this image is mandatory.
-         * If true users must describe the image before they can save it in the CX editor.
-         *
-         * @see {withAltTextMandatory}
-         * @param {Boolean} altTextMandatory
-         * @returns {ConfigPart}
-         */
-        withAltTextMandatory(altTextMandatory: boolean): ConfigPart;
-        /**
-         * Set a Boolean to indicate if caption is enabled in editor.
-         * If true users can add a caption for the table in CX editor.
-         *
-         * @see {withCaptionEnabled}
-         * @param {Boolean} captionEnabled
-         * @returns {ConfigPart}
-         */
-        withCaptionEnabled(captionEnabled: boolean): ConfigPart;
-        withLabel(label: any): this;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormFieldPart}
-         */
-        clone(shallow?: boolean): FormFieldPart;
-    }
-    export type Part = import("src/content-element/part/part").Part;
-    export type Design = import("src/design/design").default;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractPart from "src/content-element/part/abstract-part";
-    import { Part } from "src/content-element/part/part";
-}
-declare module "src/content-element/part/config-part-factory" {
-    export default class ConfigPartFactory {
+declare module "src/content-element/part/part-factory" {
+    export default class PartFactory {
         /**
          * Get a new background content element part builder instance.
          *
-         * @returns {BackgroundImagePart}
+         * @returns {Part}
          */
-        get backgroundImage(): BackgroundImagePart;
-        /**
-         * Get a new plain text content element part builder instance.
-         *
-         * @returns {PlainTextPart}
-         */
-        get plainText(): PlainTextPart;
+        get backgroundImage(): Part;
         /**
          * Build a new background content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        BackgroundImage(label: string, id: string): ConfigPart;
+        BackgroundImage(label: string, id: string): Part;
         /**
-         * Build a new checkbox form field content element part builder instance.
+         * Get a new form content element part builder instance.
          *
-         * @param {string} label
-         * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        formCheckbox(label: string, id: string): ConfigPart;
-        /**
-         * Build a new form field content element part builder instance.
-         *
-         * @param {string} label
-         * @param {string} id
-         * @returns {ConfigPart}
-         */
-        formField(label: string, id: string): ConfigPart;
+        get form(): Part;
         /**
          * Build a new form content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        form(label: string, id: string): ConfigPart;
+        Form(label: string, id: string): Part;
+        /**
+         * Get a new checkbox form field content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get formCheckbox(): Part;
+        /**
+         * Build a new checkbox form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {Part}
+         */
+        FormCheckbox(label: string, id: string): Part;
+        /**
+         * Get a new form field content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get formField(): Part;
+        /**
+         * Build a new form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {Part}
+         */
+        FormField(label: string, id: string): Part;
+        /**
+         * Get a new radio form field content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get formRadio(): Part;
         /**
          * Build a new radio form field content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        formRadio(label: string, id: string): ConfigPart;
+        FormRadio(label: string, id: string): Part;
+        /**
+         * Get a new select form field content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get formSelect(): Part;
         /**
          * Build a new select form field content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        formSelect(label: string, id: string): ConfigPart;
+        FormSelect(label: string, id: string): Part;
+        /**
+         * Get a new textarea form field content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get formTextarea(): Part;
         /**
          * Build a new textarea form field content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        formTextarea(label: string, id: string): ConfigPart;
+        FormTextarea(label: string, id: string): Part;
+        /**
+         * Get a new formatted text content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get formattedText(): Part;
         /**
          * Build a new formatted text content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
          * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        formattedText(label: string, id: string, htmlEditorConfig: HtmlEditorConfig): ConfigPart;
+        FormattedText(label: string, id: string, htmlEditorConfig: HtmlEditorConfig): Part;
+        /**
+         * Get a new HTML content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get html(): Part;
         /**
          * Build a new HTML content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        html(label: string, id: string): ConfigPart;
+        Html(label: string, id: string): Part;
+        /**
+         * Get a new image content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get image(): Part;
         /**
          * Build a new image content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
          * @param {boolean} altTextMandatory
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        image(label: string, id: string, altTextMandatory: boolean): ConfigPart;
+        Image(label: string, id: string, altTextMandatory: boolean): Part;
+        /**
+         * Get a new iterator content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get iterator(): Part;
         /**
          * Build a new iterator content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        iterator(label: string, id: string): ConfigPart;
+        Iterator(label: string, id: string): Part;
+        /**
+         * Get a new link content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get link(): Part;
         /**
          * Build a new link content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        link(label: string, id: string): ConfigPart;
+        Link(label: string, id: string): Part;
+        /**
+         * Get a new news snippet content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get newsSnippet(): Part;
         /**
          * Build a new news snippet content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        newsSnippet(label: string, id: string): ConfigPart;
+        NewsSnippet(label: string, id: string): Part;
+        /**
+         * Get a new plain text content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get plainText(): Part;
         /**
          * Build a new plain text content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        PlainText(label: string, id: string): ConfigPart;
+        PlainText(label: string, id: string): Part;
+        /**
+         * Get a new social follow content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get socialFollow(): Part;
         /**
          * Build a new social follow content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        socialFollow(label: string, id: string): ConfigPart;
+        SocialFollow(label: string, id: string): Part;
+        /**
+         * Get a new social share content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get socialShare(): Part;
         /**
          * Build a new social share content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        socialShare(label: string, id: string): ConfigPart;
+        SocialShare(label: string, id: string): Part;
+        /**
+         * Get a new table content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get table(): Part;
         /**
          * Build a new table content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
          * @param {boolean} captionEnabled
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        table(label: string, id: string, captionEnabled: boolean): ConfigPart;
+        Table(label: string, id: string, captionEnabled: boolean): Part;
+        /**
+         * Get a new URL provider content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get urlProvider(): Part;
         /**
          * Build a new URL provider content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        urlProvider(label: string, id: string): ConfigPart;
+        UrlProvider(label: string, id: string): Part;
+        /**
+         * Get a new video content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get video(): Part;
         /**
          * Build a new video content element part builder instance.
          *
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        video(label: string, id: string): ConfigPart;
+        Video(label: string, id: string): Part;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {string} partId
+         * @returns {Part}
+         */
+        raw(partId: string): Part;
         /**
          * Create a raw element part builder instance. Can be used for custom element parts.
          *
          * @param {string} partId
          * @param {string} label
          * @param {string} id
-         * @returns {ConfigPart}
+         * @returns {Part}
          */
-        raw(partId: string, label: string, id: string): ConfigPart;
+        Raw(partId: string, label: string, id: string): Part;
     }
-    import BackgroundImagePart from "src/content-element/part/background-image-part";
-    import PlainTextPart from "src/content-element/part/plain-text-part";
-    import ConfigPart from "src/content-element/part/config-part";
-    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
-}
-declare module "src/content-element/part/part-factory" {
-    export default class PartFactory {
-        /**
-         * Get a new background content element part builder instance.
-         *
-         * @returns {BackgroundImagePart}
-         */
-        get backgroundImage(): BackgroundImagePart;
-        /**
-         * Get a new checkbox form field content element part builder instance.
-         *
-         * @returns {FormCheckboxPart}
-         */
-        get formCheckbox(): FormCheckboxPart;
-        /**
-         * Get a new form field content element part builder instance.
-         *
-         * @returns {FormFieldPart}
-         */
-        get formField(): FormFieldPart;
-        /**
-         * Get a new form content element part builder instance.
-         *
-         * @returns {FormPart}
-         */
-        get form(): FormPart;
-        /**
-         * Get a new radio form field content element part builder instance.
-         *
-         * @returns {FormRadioPart}
-         */
-        get formRadio(): FormRadioPart;
-        /**
-         * Get a new select form field content element part builder instance.
-         *
-         * @returns {FormSelectPart}
-         */
-        get formSelect(): FormSelectPart;
-        /**
-         * Get a new textarea form field content element part builder instance.
-         *
-         * @returns {FormTextareaPart}
-         */
-        get formTextarea(): FormTextareaPart;
-        /**
-         * Get a new formatted text content element part builder instance.
-         *
-         * @returns {FormattedTextPart}
-         */
-        get formattedText(): FormattedTextPart;
-        /**
-         * Get a new HTML content element part builder instance.
-         *
-         * @returns {HtmlPart}
-         */
-        get html(): HtmlPart;
-        /**
-         * Get a new image content element part builder instance.
-         *
-         * @returns {ImagePart}
-         */
-        get image(): ImagePart;
-        /**
-         * Get a new iterator content element part builder instance.
-         *
-         * @returns {IteratorPart}
-         */
-        get iterator(): IteratorPart;
-        /**
-         * Get a new link content element part builder instance.
-         *
-         * @returns {LinkPart}
-         */
-        get link(): LinkPart;
-        /**
-         * Get a new news snippet content element part builder instance.
-         *
-         * @returns {NewsSnippetsPart}
-         */
-        get newsSnippet(): NewsSnippetsPart;
-        /**
-         * Get a new plain text content element part builder instance.
-         *
-         * @returns {PlainTextPart}
-         */
-        get plainText(): PlainTextPart;
-        /**
-         * Get a new social follow content element part builder instance.
-         *
-         * @returns {SocialFollowPart}
-         */
-        get socialFollow(): SocialFollowPart;
-        /**
-         * Get a new social share content element part builder instance.
-         *
-         * @returns {SocialSharePart}
-         */
-        get socialShare(): SocialSharePart;
-        /**
-         * Get a new table content element part builder instance.
-         *
-         * @returns {TablePart}
-         */
-        get table(): TablePart;
-        /**
-         * Get a new URL provider content element part builder instance.
-         *
-         * @returns {UrlProviderPart}
-         */
-        get urlProvider(): UrlProviderPart;
-        /**
-         * Get a new video content element part builder instance.
-         *
-         * @returns {VideoPart}
-         */
-        get video(): VideoPart;
-        /**
-         * Create a raw element part builder instance. Can be used for custom element parts.
-         *
-         * @param {string} partId
-         * @returns {RawPart}
-         */
-        raw(partId: string): RawPart;
-    }
-    import BackgroundImagePart from "src/content-element/part/background-image-part";
-    import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
-    import FormFieldPart from "src/content-element/part/form-field-part";
-    import FormPart from "src/content-element/part/form-part";
-    import FormRadioPart from "src/content-element/part/form-radio-part";
-    import FormSelectPart from "src/content-element/part/form-select-part";
-    import FormTextareaPart from "src/content-element/part/form-textarea-part";
-    import FormattedTextPart from "src/content-element/part/formatted-text-part";
-    import HtmlPart from "src/content-element/part/html-part";
-    import ImagePart from "src/content-element/part/image-part";
-    import IteratorPart from "src/content-element/part/iterator-part";
-    import LinkPart from "src/content-element/part/link-part";
-    import NewsSnippetsPart from "src/content-element/part/news-snippets-part";
-    import PlainTextPart from "src/content-element/part/plain-text-part";
-    import SocialFollowPart from "src/content-element/part/social-follow-part";
-    import SocialSharePart from "src/content-element/part/social-share-part";
-    import TablePart from "src/content-element/part/table-part";
-    import UrlProviderPart from "src/content-element/part/url-provider-part";
-    import VideoPart from "src/content-element/part/video-part";
-    import RawPart from "src/content-element/part/raw";
+    import Part from "src/content-element/part/part";
 }
 declare module "src/website/pagination" {
     /**
@@ -7767,20 +7163,6 @@ declare module "src/design/design-factory" {
          */
         get part(): PartFactory;
         /**
-           * Get a content element part factory instance to create new content element part builder objects.
-           * The content element part factory is also available under the part constant.
-           *
-           * @example
-           * const {cx, part2} = require('@bsi-cx/design-build');
-           *
-           * // ...
-           * .withParts(
-           *   cx.part2.plainText('Text', 'text-id'),
-           *   part2.image('Image', 'image-id'))
-           * @returns {ConfigPartFactory}
-           */
-        get part2(): ConfigPartFactory;
-        /**
          * Get a collection of various helper methods.
          *
          * @example
@@ -7808,7 +7190,6 @@ declare module "src/design/design-factory" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
-    import ConfigPartFactory from "src/content-element/part/config-part-factory";
     import DesignHelper from "src/design/design-helper";
 }
 declare module "src/bsi-property" {
@@ -7826,7 +7207,6 @@ declare module "export/browser" {
     import BuilderObjectNormalizer from "src/builder-object-normalizer";
     import ObjectCloner from "src/object-cloner";
     import RawValue from "src/raw-value";
-    import AbstractPart from "src/content-element/part/abstract-part";
     import * as Locale from "src/design/locale";
     import * as SchemaVersion from "src/design/schema-version";
     import Design from "src/design/design";
@@ -7845,27 +7225,7 @@ declare module "export/browser" {
     import DomManipulation from "src/style/dom-manipulation";
     import * as Icon from "src/content-element/icon";
     import ContentElement from "src/content-element/content-element";
-    import * as Part from "src/content-element/part/part";
-    import PlainTextPart from "src/content-element/part/plain-text-part";
-    import FormattedTextPart from "src/content-element/part/formatted-text-part";
-    import HtmlPart from "src/content-element/part/html-part";
-    import VideoPart from "src/content-element/part/video-part";
-    import ImagePart from "src/content-element/part/image-part";
-    import BackgroundImagePart from "src/content-element/part/background-image-part";
-    import TablePart from "src/content-element/part/table-part";
-    import IteratorPart from "src/content-element/part/iterator-part";
-    import NewsSnippetsPart from "src/content-element/part/news-snippets-part";
-    import FormPart from "src/content-element/part/form-part";
-    import FormFieldPart from "src/content-element/part/form-field-part";
-    import FormCheckboxPart from "src/content-element/part/form-checkbox-part";
-    import FormTextareaPart from "src/content-element/part/form-textarea-part";
-    import FormSelectPart from "src/content-element/part/form-select-part";
-    import FormRadioPart from "src/content-element/part/form-radio-part";
-    import LinkPart from "src/content-element/part/link-part";
-    import SocialFollowPart from "src/content-element/part/social-follow-part";
-    import SocialSharePart from "src/content-element/part/social-share-part";
-    import UrlProviderPart from "src/content-element/part/url-provider-part";
-    import RawPart from "src/content-element/part/raw";
+    import Part from "src/content-element/part/part";
     import Website from "src/website/website";
     import PageInclude from "src/website/page-include";
     import Include from "src/website/include";
@@ -7879,7 +7239,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

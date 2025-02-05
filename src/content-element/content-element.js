@@ -1,14 +1,14 @@
 import AbstractBuilder from '../abstract-builder';
+import { builderObjectValue, constantObjectValue, identity, uuid } from '../browser-utility';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, constantObjectValue, identity, uuid} from '../browser-utility';
-import RawValue from '../raw-value';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
-import {TARGET as TARGET_VERSION} from '../version';
+import RawValue from '../raw-value';
+import { TARGET as TARGET_VERSION } from '../version';
 
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
-/** @typedef {import('./part/abstract-part').default} AbstractPart */
+/** @typedef {import('./part/part').Part} Part */
 /** @typedef {import('./content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
@@ -24,10 +24,8 @@ import {TARGET as TARGET_VERSION} from '../version';
  *     .withFile(require('./template.twig'))
  *     .withIcon(Icon.IMAGE)
  *     .withParts(
- *       cx.part.image
- *         .withLabel('Image'),
- *       cx.part.plainText
- *         .withLabel('Description')))
+ *       cx.part.Image('Image', 'image-id'),
+ *       cx.part.PlainText('Description', 'description-id')))
  */
 export default class ContentElement extends AbstractBuilder {
   /**
@@ -71,7 +69,7 @@ export default class ContentElement extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[AbstractPart]|undefined}
+   * @type {RawValue|[Part]|undefined}
    * @private
    */
   _parts = undefined;
@@ -138,7 +136,7 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|AbstractPart[]|undefined}
+   * @returns {RawValue|Part[]|undefined}
    */
   get parts() {
     return this._parts;
@@ -331,7 +329,7 @@ export default class ContentElement extends AbstractBuilder {
    *   cx.part.plainText
    *     .withLabel('Description'))
    * @see {@link withRawParts} to set a raw value
-   * @param {...AbstractPart} parts - The parts to use.
+   * @param {...Part} parts - The parts to use.
    * @returns {ContentElement}
    * @since Studio 1.0
    */

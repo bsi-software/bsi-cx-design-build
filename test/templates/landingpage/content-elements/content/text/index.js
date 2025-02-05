@@ -6,5 +6,5 @@ module.exports = cx.contentElement
   .withLabel('Text')
   .withIcon(Icon.TEXT)
   .withParts(
-    cx.part2.formattedText('Text', 'text-part-Fjse59',
+    cx.part.FormattedText('Text', 'text-part-Fjse59',
       require('../../../html-editor-configs/full.js')));

@@ -8,7 +8,7 @@ module.exports = cx
   .withLabel('Hero (nur Bild)')
   .withDescription('')
   .withParts(
-    cx.part2.image('Bild', 'hero-image-f6zquy'),
+    cx.part.Image('Bild', 'hero-image-f6zquy'),
     cx.part.table
       .withLabel('Table')
       .withId('hero-image-f6zquy')

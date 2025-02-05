@@ -15,5 +15,5 @@ module.exports = cx.contentElement
     require('../../../styles/background-color'))
   .withFile(require('./template.hbs.twig'))
   .withParts(
-    cx.part2.plainText
+    cx.part.plainText
       .withLabel(nls.title));

@@ -1,6 +1,5 @@
 import ContentElement from '../content-element/content-element';
 import ContentElementGroup from '../content-element/content-element-group';
-import ConfigPartFactory from '../content-element/part/config-part-factory';
 import PartFactory from '../content-element/part/part-factory';
 import Dropzone from '../dropzone/dropzone';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
@@ -368,23 +367,6 @@ export default class DesignFactory {
    */
   get part() {
     return new PartFactory();
-  }
-
-  /**
-     * Get a content element part factory instance to create new content element part builder objects.
-     * The content element part factory is also available under the part constant.
-     *
-     * @example
-     * const {cx, part2} = require('@bsi-cx/design-build');
-     *
-     * // ...
-     * .withParts(
-     *   cx.part2.plainText('Text', 'text-id'),
-     *   part2.image('Image', 'image-id'))
-     * @returns {ConfigPartFactory}
-     */
-  get part2() {
-    return new ConfigPartFactory();
   }
 
   /**
