@@ -1,4 +1,3 @@
-/// <reference types="node" />
 declare module "src/abstract-constant" {
     /**
      * @abstract
@@ -134,7 +133,7 @@ declare module "src/version" {
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): import("src/design-type").DesignType[];
+        get allowedTypes(): DesignType[];
         /**
          * @returns {boolean}
          */
@@ -142,7 +141,7 @@ declare module "src/version" {
         /**
          * @returns {string|undefined}
          */
-        get schemaVersion(): string;
+        get schemaVersion(): string | undefined;
         /**
          * @param {Version} version
          * @returns {number}
@@ -379,6 +378,14 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static WEBSITE_CONTENT_TYPES: string;
+        /**
+         * @type {string}
+         */
+        static WEBSITE_CONTENT_TYPE: string;
+        /**
+         * @type {string}
+         */
         static MAX_NAVIGATION_LEVEL: string;
         /**
          * @type {string}
@@ -403,7 +410,7 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
-        static CONTENT_TYPE: string;
+        static INCLUDE_TYPE: string;
         /**
          * @type {string}
          */
@@ -439,15 +446,15 @@ declare module "src/abstract-builder" {
         /**
          * @return {Version}
          */
-        get minVersion(): import("src/version").Version;
+        get minVersion(): Version;
         /**
          * @return {Version|undefined}
          */
-        get maxVersion(): import("src/version").Version;
+        get maxVersion(): Version | undefined;
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): import("src/design-type").DesignType[];
+        get allowedTypes(): DesignType[];
         /**
          * Define a minimum CX version. Will be excluded from builds targeting a lower version.
          *
@@ -549,7 +556,7 @@ declare module "src/object-cloner" {
          * @param {T} value
          * @returns {T}
          */
-        static cloneValue<T_1>(value: T_1): T_1;
+        static cloneValue<T>(value: T): T;
         /**
          * @template T
          * @param {T} source
@@ -676,11 +683,11 @@ declare module "src/build-config/module-config" {
         /**
          * @returns {string|undefined}
          */
-        get name(): string;
+        get name(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get path(): string;
+        get path(): string | undefined;
         /**
          * The name for your JavaScript module. The name specified here must be unique in your build configuration.
          * This means you can't configure two modules with the same name. This will be the name of the resulting entry
@@ -730,11 +737,11 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): import("src/version").Version;
+        get targetVersion(): Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): import("src/design-type").DesignType;
+        get designType(): DesignType;
         /**
          * @returns {string}
          */
@@ -746,7 +753,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {number|'auto'}
          */
@@ -758,7 +765,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): import("src/build-config/module-config").default[];
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -782,7 +789,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
         /**
          * @returns {string[]}
          */
@@ -928,11 +935,11 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): import("src/version").Version;
+        get targetVersion(): Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): import("src/design-type").DesignType;
+        get designType(): DesignType;
         /**
          * @returns {string}
          */
@@ -944,7 +951,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {number|'auto'}
          */
@@ -956,7 +963,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): import("src/build-config/module-config").default[];
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -980,7 +987,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
         /**
          * @returns {string[]}
          */
@@ -1100,7 +1107,7 @@ declare module "src/build-config/build-config-validator" {
         /**
          * @returns {BuildConfig}
          */
-        get buildConfig(): import("src/build-config/build-config").default;
+        get buildConfig(): BuildConfig;
         /**
          * @returns {ValidatedBuildConfig}
          */
@@ -1313,11 +1320,11 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): import("src/version").Version;
+        get targetVersion(): Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): import("src/design-type").DesignType;
+        get designType(): DesignType;
         /**
          * @returns {string}
          */
@@ -1329,7 +1336,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {number|'auto'}
          */
@@ -1341,7 +1348,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): import("src/build-config/module-config").default[];
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -1365,7 +1372,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
         /**
          * @returns {string[]}
          */
@@ -1450,7 +1457,7 @@ declare module "src/build-config/build-config" {
          * @param {number|'auto'} devServerPort - The development server port number.
          * @returns {BuildConfig}
          */
-        withDevServerPort(devServerPort: number | 'auto'): BuildConfig;
+        withDevServerPort(devServerPort: number | "auto"): BuildConfig;
         /**
          * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
          *
@@ -1522,7 +1529,7 @@ declare module "src/build-config/build-config" {
          * @param {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)} assetResourceRuleFilename
          * @returns {BuildConfig}
          */
-        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: any, assetInfo?: any) => string)): BuildConfig;
+        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: PathData, assetInfo?: AssetInfo) => string)): BuildConfig;
         /**
          * Additional file extensions for static assets. The following file extensions are defined by default: avif, png,
          * apng, jpg, jpeg, jfif, pjpeg, pjp, webp, gif, bmp, tiff, tif, raw, svg, eot, ttf, woff, woff2, pdf, ico,
@@ -2233,7 +2240,7 @@ declare module "src/property-context" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {ModuleLoader}
          */
@@ -2475,7 +2482,7 @@ declare module "src/css/css-dimension" {
         /**
          * @returns {string|undefined}
          */
-        get unit(): string;
+        get unit(): string | undefined;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
@@ -2655,7 +2662,7 @@ declare module "src/css/css-property-resolver" {
          * @param {T} value
          * @returns {AbstractCssProperty|T}
          */
-        resolve<T>(value: T): import("src/css/abstract-css-property").default | T;
+        resolve<T>(value: T): AbstractCssProperty | T;
         /**
          * @param {string|number} value
          * @returns {AbstractCssProperty}
@@ -3212,11 +3219,11 @@ declare module "src/content-element/part/abstract-part" {
         /**
          * @returns {Part}
          */
-        get partId(): import("src/content-element/part/part").Part;
+        get partId(): Part;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * The ID of the part. You can apply an unique identifier to your content element part.
          * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -3303,6 +3310,58 @@ declare module "src/design/schema-version" {
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/design/websiteContentType" {
+    /** @typedef {import('./design').default} Design */
+    /**
+     * Class to define a WebsiteContentType.
+     */
+    export class WebsiteContentType extends AbstractConstant {
+    }
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const BLOG: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const POP_UP: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const OPEN_POSITION: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const PRESS_RELEASE: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const USE_CASE: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const EVENT: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const CUSTOMER_PARTNER: WebsiteContentType;
+    export type Design = import("src/design/design").default;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/style/css-class" {
     /** @typedef {import('./style').default} Style */
     /**
@@ -3345,11 +3404,11 @@ declare module "src/style/css-class" {
         /**
          * @returns {string|undefined}
          */
-        get cssClass(): string;
+        get cssClass(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * Specify the CSS class to use.
          *
@@ -3445,15 +3504,15 @@ declare module "src/style/dom-manipulation" {
         /**
          * @returns {string|undefined}
          */
-        get selector(): string;
+        get selector(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get attribute(): string;
+        get attribute(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get value(): string;
+        get value(): string | undefined;
         /**
          * Specify the selector to use with this DOM manipulation.
          * Any DOM selector can be used, e.g. tag, class, id.
@@ -3557,19 +3616,19 @@ declare module "src/style/style-option" {
         /**
          * @returns {string|undefined}
          */
-        get styleId(): string;
+        get styleId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {string|undefined}
          */
-        get cssClass(): string;
+        get cssClass(): string | undefined;
         /**
          * @returns {RawValue|[DomManipulation]|undefined}
          */
-        get domManipulations(): RawValue | [import("src/style/dom-manipulation").default];
+        get domManipulations(): RawValue | [DomManipulation] | undefined;
         /**
          * Specify the style id to use.
          *
@@ -3725,19 +3784,19 @@ declare module "src/style/style" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {RawValue|[CssClass]|undefined}
          */
-        get cssClasses(): RawValue | [import("src/style/css-class").default];
+        get cssClasses(): RawValue | [CssClass] | undefined;
         /**
          * @returns {RawValue|[StyleOption]|undefined}
          */
-        get styles(): RawValue | [import("src/style/style-option").default];
+        get styles(): RawValue | [StyleOption] | undefined;
         /**
          * Set the unique identifier for this style configuration. If not specified, a UUID v4 will be used.
          * <strong>It is recommended to set this property.</strong>
@@ -4143,19 +4202,19 @@ declare module "src/content-element/content-element-group" {
         /**
          * @returns {string|undefined}
          */
-        get groupId(): string;
+        get groupId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean;
+        get hidden(): boolean | undefined;
         /**
          * @returns {RawValue|[ContentElement]|undefined}
          */
-        get contentElements(): RawValue | [import("src/content-element/content-element").default];
+        get contentElements(): RawValue | [ContentElement] | undefined;
         /**
          * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
          * <strong>It is recommended to set the group identifier.</strong>
@@ -4288,27 +4347,27 @@ declare module "src/dropzone/dropzone" {
         /**
          * @returns {string|undefined}
          */
-        get dropzone(): string;
+        get dropzone(): string | undefined;
         /**
          * @returns {RawValue|ContentElement[]|undefined}
          */
-        get allowedElements(): RawValue | import("src/content-element/content-element").default[];
+        get allowedElements(): RawValue | ContentElement[] | undefined;
         /**
          * @returns {number|undefined}
          */
-        get maxAllowedElements(): number;
+        get maxAllowedElements(): number | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get removeAllowed(): boolean;
+        get removeAllowed(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get copyAllowed(): boolean;
+        get copyAllowed(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get moveAllowed(): boolean;
+        get moveAllowed(): boolean | undefined;
         /**
          * Set the identifier of this dropzone. <strong>It is highly recommended using a
          * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -4453,43 +4512,43 @@ declare module "src/content-element/content-element" {
         /**
          * @returns {string|undefined}
          */
-        get elementId(): string;
+        get elementId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get description(): any;
+        get description(): string | NLS | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {};
+        get file(): {} | undefined;
         /**
          * @returns {RawValue|Icon|undefined}
          */
-        get icon(): RawValue | import("src/content-element/icon").Icon;
+        get icon(): RawValue | Icon | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean;
+        get hidden(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get archived(): boolean;
+        get archived(): boolean | undefined;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): RawValue | import("src/style/style").default[];
+        get styleConfigs(): RawValue | Style[] | undefined;
         /**
          * @returns {RawValue|AbstractPart[]|undefined}
          */
-        get parts(): RawValue | import("src/content-element/part/abstract-part").default[];
+        get parts(): RawValue | AbstractPart[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * Set the ID of this content element.
          *
@@ -5139,43 +5198,43 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {RawValue|Feature[]|undefined}
          */
-        get features(): RawValue | import("src/html-editor-config/feature").Feature[];
+        get features(): RawValue | Feature[] | undefined;
         /**
          * @returns {string[]|undefined}
          */
-        get textColors(): string[];
+        get textColors(): string[] | undefined;
         /**
          * @returns {string[]|undefined}
          */
-        get backgroundColors(): string[];
+        get backgroundColors(): string[] | undefined;
         /**
          * @returns {RawValue|Format[]|undefined}
          */
-        get formats(): RawValue | import("src/html-editor-config/format").Format[];
+        get formats(): RawValue | Format[] | undefined;
         /**
          * @returns {number[]|undefined}
          */
-        get fontSizes(): number[];
+        get fontSizes(): number[] | undefined;
         /**
          * @returns {RawValue|FontSizeUnit|undefined}
          */
-        get fontSizeUnit(): RawValue | import("src/html-editor-config/font-size-unit").FontSizeUnit;
+        get fontSizeUnit(): RawValue | FontSizeUnit | undefined;
         /**
          * @returns {number|undefined}
          */
-        get fontSizeDefault(): number;
+        get fontSizeDefault(): number | undefined;
         /**
          * @returns {number[]|undefined}
          */
-        get lineHeights(): number[];
+        get lineHeights(): number[] | undefined;
         /**
          * @returns {RawValue|EnterMode|undefined}
          */
-        get enter(): RawValue | import("src/html-editor-config/enter-mode").EnterMode;
+        get enter(): RawValue | EnterMode | undefined;
         /**
          * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
          * It is recommended to set the identifier.
@@ -5345,7 +5404,7 @@ declare module "src/content-element/part/formatted-text-part" {
         /**
          * @returns {RawValue|HtmlEditorConfig|undefined}
          */
-        get htmlEditorConfig(): RawValue | import("src/html-editor-config/html-editor-config").default;
+        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
         /**
          * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
          * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
@@ -5437,15 +5496,15 @@ declare module "src/website/website" {
         /**
          * @returns {number|undefined}
          */
-        get maxNavigationLevel(): number;
+        get maxNavigationLevel(): number | undefined;
         /**
          * @returns {RawValue|Pagination|undefined}
          */
-        get pagination(): any;
+        get pagination(): RawValue | Pagination | undefined;
         /**
          * @returns {RawValue|AbstractInclude[]|undefined}
          */
-        get includes(): RawValue | AbstractInclude[];
+        get includes(): RawValue | AbstractInclude[] | undefined;
         /**
          * Define the maximum navigation level.
          *
@@ -5581,11 +5640,11 @@ declare module "src/nls/translation" {
         /**
          * @returns {Locale|RawValue|undefined}
          */
-        get locale(): RawValue | import("src/design/locale").Locale;
+        get locale(): Locale | RawValue | undefined;
         /**
          * @returns {string|undefined}
          */
-        get translation(): string;
+        get translation(): string | undefined;
         /**
          * Set the locale to use for this translation.
          *
@@ -5689,15 +5748,15 @@ declare module "src/nls/nls" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {Translation[]|undefined}
          */
-        get translations(): Translation[];
+        get translations(): Translation[] | undefined;
         /**
          * @returns {string|undefined}
          */
-        get nlsMarker(): string;
+        get nlsMarker(): string | undefined;
         /**
          * @param {string} identifier
          * @returns {NLS}
@@ -5747,6 +5806,7 @@ declare module "src/nls/nls" {
 declare module "src/design/design" {
     /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
     /** @typedef {import('./locale').Locale} Locale */
+    /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
@@ -5840,57 +5900,66 @@ declare module "src/design/design" {
          */
         private _nls;
         /**
+         * @type {RawValue|[WebsiteContentType]|undefined}
+         * @private
+         */
+        private _websiteContentTypes;
+        /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
-        get schemaVersion(): RawValue | import("src/design/schema-version").SchemaVersion;
+        get schemaVersion(): RawValue | SchemaVersion | undefined;
         /**
          * @returns {string|undefined}
          */
-        get title(): string;
+        get title(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get author(): string;
+        get author(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get date(): string;
+        get date(): string | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get previewImage(): {};
+        get previewImage(): {} | undefined;
         /**
          * @returns {RawValue|Locale|undefined}
          */
-        get defaultLocale(): RawValue | import("src/design/locale").Locale;
+        get defaultLocale(): RawValue | Locale | undefined;
         /**
          * @returns {RawValue|[Locale]|undefined}
          */
-        get locales(): RawValue | [import("src/design/locale").Locale];
+        get locales(): RawValue | [Locale] | undefined;
         /**
          * @returns {RawValue|ContentElementGroup[]|undefined}
          */
-        get contentElementGroups(): RawValue | import("src/content-element/content-element-group").default[];
+        get contentElementGroups(): RawValue | ContentElementGroup[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * @returns {RawValue|[Style]|undefined}
          */
-        get styleConfigs(): RawValue | [import("src/style/style").default];
+        get styleConfigs(): RawValue | [Style] | undefined;
         /**
          * @returns {RawValue|HtmlEditorConfig[]|undefined}
          */
-        get htmlEditorConfigs(): RawValue | import("src/html-editor-config/html-editor-config").default[];
+        get htmlEditorConfigs(): RawValue | HtmlEditorConfig[] | undefined;
         /**
          * @returns {RawValue|Website|undefined}
          */
-        get website(): RawValue | import("src/website/website").default;
+        get website(): RawValue | Website | undefined;
         /**
          * @returns {RawValue|NLS[]|undefined}
          */
-        get nls(): RawValue | import("src/nls/nls").default[];
+        get nls(): RawValue | NLS[] | undefined;
+        /**
+         * @returns {RawValue|[WebsiteContentType]|undefined}
+         */
+        get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -6194,6 +6263,24 @@ declare module "src/design/design" {
          */
         withRawNLS(nls: {}): Design;
         /**
+         * Configure the allowed website content types.
+         *
+         * @see {@link withRawWebsiteContentTypes} to set a raw value
+         * @param {...WebsiteContentType} websiteContentTypes
+         * @returns {Design}
+         */
+        withWebsiteContentTypes(...websiteContentTypes: WebsiteContentType[]): Design;
+        /**
+         * Set the raw value of the websiteContentTypes property.
+         *
+         * @example
+         * .withRawWebsiteContentTypes('blog', 'some-custom-type', 'use-case')
+         * @see {@link withWebsiteContentTypes}
+         * @param {...string} websiteContentTypes - The raw value.
+         * @returns {Design}
+         */
+        withRawWebsiteContentTypes(...websiteContentTypes: string[]): Design;
+        /**
          * Clone the configuration.
          *
          * @example
@@ -6207,6 +6294,7 @@ declare module "src/design/design" {
     }
     export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
     export type Locale = import("src/design/locale").Locale;
+    export type WebsiteContentType = import("src/design/websiteContentType").WebsiteContentType;
     export type ContentElement = import("src/content-element/content-element").default;
     export type FormattedTextPart = import("src/content-element/part/formatted-text-part").default;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
@@ -6653,7 +6741,12 @@ declare module "src/website/abstract-include" {
          * @type {string|undefined}
          * @protected
          */
-        protected _contentType: string | undefined;
+        protected _includeType: string | undefined;
+        /**
+         * @type {string|WebsiteContentType|undefined}
+         * @protected
+         */
+        protected _websiteContentType: string | WebsiteContentType | undefined;
         /**
          * @type {{}|undefined}
          * @protected
@@ -6672,27 +6765,31 @@ declare module "src/website/abstract-include" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get editable(): boolean;
+        get editable(): boolean | undefined;
         /**
          * @returns {string|undefined}
          */
-        get contentType(): string;
+        get includeType(): string | undefined;
+        /**
+         * @returns {string|WebsiteContentType|undefined}
+         */
+        get websiteContentType(): string | WebsiteContentType | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {};
+        get file(): {} | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get name(): any;
+        get name(): string | NLS | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * Enable or disable edit mode on this include.
          *
@@ -6701,14 +6798,26 @@ declare module "src/website/abstract-include" {
          */
         withEditable(editable: boolean): this;
         /**
-         * Define the content type of this include.
+         * Define the type of this include.
          *
          * @example
-         * .withContentType('pre-defined')
-         * @param {string} contentType - The content type of this include.
+         * .withIncludeType('pre-defined')
+         * @param {string} includeType - The type of this include.
          * @returns {this}
          */
-        withContentType(contentType: string): this;
+        withIncludeType(includeType: string): this;
+        /**
+         * Define the website content type of this include.
+         * If set the choosen WebsiteContentType use this include.
+         *
+         * For example: if the WebsiteContentType is BLOG, every blogpost in this Website use this include as template
+         *
+         * @example
+         * .withWebsiteContentType(WebsiteContentType.BLOG)
+         * @param {WebsiteContentType} websiteContentType - The website content type of this include.
+         * @returns {this}
+         */
+        withWebsiteContentType(websiteContentType: WebsiteContentType): this;
         /**
          * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
          * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
@@ -6860,11 +6969,11 @@ declare module "src/website/pagination" {
         /**
          * @returns {number|undefined}
          */
-        get numDataRecordsPerPage(): number;
+        get numDataRecordsPerPage(): number | undefined;
         /**
          * @returns {number|undefined}
          */
-        get numAdjacentPages(): number;
+        get numAdjacentPages(): number | undefined;
         /**
          * Define how many records are to be displayed simultaneously on a page.
          *
@@ -7474,6 +7583,7 @@ declare module "export/browser" {
     import RawValue from "src/raw-value";
     import AbstractPart from "src/content-element/part/abstract-part";
     import * as Locale from "src/design/locale";
+    import * as WebsiteContentType from "src/design/websiteContentType";
     import * as SchemaVersion from "src/design/schema-version";
     import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
@@ -7525,7 +7635,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";
