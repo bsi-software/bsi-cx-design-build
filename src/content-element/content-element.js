@@ -410,6 +410,32 @@ export default class ContentElement extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withReducedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to remove to the allowed elements list.
+   * @returns {ContentElement}
+   */
+  withReducedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      let removeIds = elements.map(el => el.elementId);
+      let allowedElements = dropzone.allowedElements;
+      allowedElements = allowedElements.filter(el => !removeIds.includes(el.elementId));
+      dropzone.withAllowedElements(...allowedElements);
+    }
+
+    return this;
+  }
+
   isCompatible() {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
