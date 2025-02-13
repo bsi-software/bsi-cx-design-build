@@ -24,23 +24,11 @@
   "bugs": {
     "url": "https://github.com/bsi-software/bsi-cx-design-build/issues"
   },
-  "contributors": [
-    {
-      "name": "Oliver Fabel"
-    }, 
-    {
-      "name": "Lukas Heyer"
-    },
-    {
-      "name": "Marleen Jattke"
-    },
-    {
-      "name": "Lukas Steiger"
-    },
-    {
-      "name": "Benjamin Vier"
-    }
-  ],
+  "author": {
+    "name": "Design Team BSI",
+    "email": "design@bsi-software.com",
+    "url": "https://bsi-software.github.io/bsi-cx-docs/"
+  },
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.23.0",

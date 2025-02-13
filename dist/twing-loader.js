@@ -66,14 +66,14 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ twing_loader)
 });
 
-;// CONCATENATED MODULE: external "source-map-support/register"
+;// external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-;// CONCATENATED MODULE: external "path"
+;// external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
-;// CONCATENATED MODULE: external "@ofabel/twing"
+;// external "@ofabel/twing"
 const twing_namespaceObject = require("@ofabel/twing");
-;// CONCATENATED MODULE: ./src/constant.js
+;// ./src/constant.js
 class constant_Constant {
   /**
    * @type {string}
@@ -125,7 +125,7 @@ class constant_Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// CONCATENATED MODULE: ./src/query-constant.js
+;// ./src/query-constant.js
 class QueryConstant {
   /**
    * @type {string}
@@ -137,10 +137,10 @@ class QueryConstant {
   static ASSET = 'asset';
 }
 
-;// CONCATENATED MODULE: external "fs"
+;// external "fs"
 const external_fs_namespaceObject = require("fs");
 var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-;// CONCATENATED MODULE: ./src/abstract-constant.js
+;// ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -184,7 +184,7 @@ class AbstractConstant {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design-type.js
+;// ./src/design-type.js
 
 
 
@@ -234,7 +234,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[constant_Constant.BSI_CX_TARGET_TYPE];
 
-;// CONCATENATED MODULE: ./src/utility.js
+;// ./src/utility.js
 
 
 
@@ -383,7 +383,7 @@ function findNodeModulesFolder(startFolder) {
   return findNodeModulesFolder(parentFolder);
 }
 
-;// CONCATENATED MODULE: ./src/twig-functions.js
+;// ./src/twig-functions.js
 
 
 
@@ -516,7 +516,7 @@ const bsiCxLorem = new twing_namespaceObject.TwingFunction('bsi_cx_lorem', (word
   return strToPromise(phrase);
 }, [], {})
 
-;// CONCATENATED MODULE: ./src/twing-environment.js
+;// ./src/twing-environment.js
 
 
 
@@ -568,7 +568,7 @@ class NodeModulesLoader extends twing_namespaceObject.TwingLoaderFilesystem {
   return twing;
 }
 
-;// CONCATENATED MODULE: ./src/twing-loader.js
+;// ./src/twing-loader.js
 
 
 
@@ -625,7 +625,7 @@ function slash(pathToConvert) {
 };
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;

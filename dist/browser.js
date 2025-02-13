@@ -53,8 +53,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, {
   AbstractBuilder: () => (/* reexport */ AbstractBuilder),
   AbstractConstant: () => (/* reexport */ AbstractConstant),
-  AbstractPart: () => (/* reexport */ AbstractPart),
-  BackgroundImagePart: () => (/* reexport */ BackgroundImagePart),
   BuilderObjectNormalizer: () => (/* reexport */ BuilderObjectNormalizer),
   ContentElement: () => (/* reexport */ ContentElement),
   ContentElementGroup: () => (/* reexport */ ContentElementGroup),
@@ -67,40 +65,21 @@ __webpack_require__.d(__webpack_exports__, {
   EnterMode: () => (/* reexport */ enter_mode_namespaceObject),
   Feature: () => (/* reexport */ feature_namespaceObject),
   FontSizeUnit: () => (/* reexport */ font_size_unit_namespaceObject),
-  FormCheckboxPart: () => (/* reexport */ FormCheckboxPart),
-  FormFieldPart: () => (/* reexport */ FormFieldPart),
-  FormPart: () => (/* reexport */ FormPart),
-  FormRadioPart: () => (/* reexport */ FormRadioPart),
-  FormSelectPart: () => (/* reexport */ FormSelectPart),
-  FormTextareaPart: () => (/* reexport */ FormTextareaPart),
   Format: () => (/* reexport */ format_namespaceObject),
-  FormattedTextPart: () => (/* reexport */ FormattedTextPart),
   HtmlEditorConfig: () => (/* reexport */ HtmlEditorConfig),
-  HtmlPart: () => (/* reexport */ HtmlPart),
   Icon: () => (/* reexport */ icon_namespaceObject),
-  ImagePart: () => (/* reexport */ ImagePart),
   Include: () => (/* reexport */ Include),
-  IteratorPart: () => (/* reexport */ IteratorPart),
-  LinkPart: () => (/* reexport */ LinkPart),
   Locale: () => (/* reexport */ locale_namespaceObject),
   NLS: () => (/* reexport */ NLS),
-  NewsSnippetsPart: () => (/* reexport */ NewsSnippetsPart),
   ObjectCloner: () => (/* reexport */ ObjectCloner),
   PageInclude: () => (/* reexport */ PageInclude),
-  Part: () => (/* reexport */ part_namespaceObject),
-  PlainTextPart: () => (/* reexport */ PlainTextPart),
-  RawPart: () => (/* reexport */ RawPart),
+  Part: () => (/* reexport */ Part),
   RawValue: () => (/* reexport */ RawValue),
   SchemaVersion: () => (/* reexport */ schema_version_namespaceObject),
-  SocialFollowPart: () => (/* reexport */ SocialFollowPart),
-  SocialSharePart: () => (/* reexport */ SocialSharePart),
   Style: () => (/* reexport */ Style),
   StyleOption: () => (/* reexport */ StyleOption),
-  TablePart: () => (/* reexport */ TablePart),
   Translation: () => (/* reexport */ Translation),
-  UrlProviderPart: () => (/* reexport */ UrlProviderPart),
   Version: () => (/* reexport */ version_namespaceObject),
-  VideoPart: () => (/* reexport */ VideoPart),
   Website: () => (/* reexport */ Website),
   bsiProperty: () => (/* reexport */ bsiProperty),
   cx: () => (/* binding */ cx)
@@ -292,33 +271,7 @@ __webpack_require__.d(icon_namespaceObject, {
   YOUTUBE: () => (YOUTUBE)
 });
 
-// NAMESPACE OBJECT: ./src/content-element/part/part.js
-var part_namespaceObject = {};
-__webpack_require__.r(part_namespaceObject);
-__webpack_require__.d(part_namespaceObject, {
-  BACKGROUND_IMAGE: () => (BACKGROUND_IMAGE),
-  FORM: () => (FORM),
-  FORMATTED_TEXT: () => (FORMATTED_TEXT),
-  FORM_CHECKBOX: () => (FORM_CHECKBOX),
-  FORM_FIELD: () => (FORM_FIELD),
-  FORM_RADIO: () => (FORM_RADIO),
-  FORM_SELECT: () => (FORM_SELECT),
-  FORM_TEXTAREA: () => (FORM_TEXTAREA),
-  HTML: () => (part_HTML),
-  IMAGE: () => (part_IMAGE),
-  ITERATOR: () => (ITERATOR),
-  LINK: () => (LINK),
-  NEWS_SNIPPETS: () => (NEWS_SNIPPETS),
-  PLAIN_TEXT: () => (PLAIN_TEXT),
-  Part: () => (Part),
-  SOCIAL_FOLLOW: () => (part_SOCIAL_FOLLOW),
-  SOCIAL_SHARE: () => (part_SOCIAL_SHARE),
-  TABLE: () => (part_TABLE),
-  URL_PROVIDER: () => (URL_PROVIDER),
-  VIDEO: () => (part_VIDEO)
-});
-
-;// CONCATENATED MODULE: ./src/design-json-property.js
+;// ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -344,6 +297,14 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PREVIEW_IMAGE = 'previewImage';
+  /**
+   * @type {string}
+   */
+  static ALT_TEXT_MANDATORY = 'altTextMandatory';
+  /**
+   * @type {string}
+   */
+  static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}
    */
@@ -384,6 +345,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static PART_CONFIG = 'config';
   /**
    * @type {string}
    */
@@ -526,7 +491,7 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
-;// CONCATENATED MODULE: ./src/raw-value.js
+;// ./src/raw-value.js
 class RawValue {
   /**
    * @param {*} value
@@ -547,7 +512,7 @@ class RawValue {
   }
 }
 
-;// CONCATENATED MODULE: ./src/abstract-constant.js
+;// ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -591,7 +556,7 @@ class AbstractConstant {
   }
 }
 
-;// CONCATENATED MODULE: ./src/object-cloner.js
+;// ./src/object-cloner.js
 
 
 
@@ -689,7 +654,7 @@ class ObjectCloner {
   }
 }
 
-;// CONCATENATED MODULE: ./src/constant.js
+;// ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -741,7 +706,7 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// CONCATENATED MODULE: ./src/design-type.js
+;// ./src/design-type.js
 
 
 
@@ -791,7 +756,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
-;// CONCATENATED MODULE: ./src/version.js
+;// ./src/version.js
 
 
 
@@ -909,7 +874,7 @@ const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
  */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
-;// CONCATENATED MODULE: ./src/abstract-builder.js
+;// ./src/abstract-builder.js
 
 
 
@@ -1162,7 +1127,7 @@ class AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
+;// ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
@@ -1231,174 +1196,7 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// CONCATENATED MODULE: ./src/browser-utility.js
-/**
- * @param {(string|number)[]} arr
- * @returns {string}
- */
-function scalarArrayToList(arr) {
-  return arr.join(',');
-}
-
-/**
- * @template T
- * @param {T} v
- * @returns {T}
- */
-function identity(v) {
-  return v;
-}
-
-/**
- * @param {AbstractConstant} constant
- * @returns {string}
- */
-function constantObjectValue(constant) {
-  return constant.value;
-}
-
-/**
- * @param {AbstractBuilder} builder
- * @returns {{}}
- */
-function builderObjectValue(builder) {
-  return builder.build();
-}
-
-/**
- * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
- * (won't work in the browser context).
- *
- * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
- * @returns {string}
- */
-function uuid() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/abstract-part.js
-
-
-
-
-/** @typedef {import('./part').Part} Part */
-
-/**
- * @abstract
- */
-class AbstractPart extends AbstractBuilder {
-  /**
-   * @type {string}
-   * @private
-   */
-  _id = undefined;
-  /**
-   * @type {Part}
-   * @private
-   */
-  _partId = undefined;
-  /**
-   * @type {string|NLS|undefined}
-   * @private
-   */
-  _label = undefined;
-
-  /**
-   * @param {Part} partId
-   */
-  constructor(partId) {
-    super();
-    /**
-     * @type {Part}
-     * @private
-     */
-    this._partId = partId;
-  }
-
-  /**
-   * @returns {string}
-   */
-  get id() {
-    return this._id;
-  }
-
-  /**
-   * @returns {Part}
-   */
-  get partId() {
-    return this._partId;
-  }
-
-  /**
-   * @returns {string|NLS|undefined}
-   */
-  get label() {
-    return this._label;
-  }
-
-  /**
-   * The ID of the part. You can apply an unique identifier to your content element part.
-   * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
-   * This property is only for the design build and will not appear in the final build artifacts.
-   * The advantage of using this property is, that you don't have to care about the order of your parts
-   * in your specification. The build will reorder the part definitions in the order they appear in the
-   * corresponding template. This can be very handy in large and complex elements with many parts.
-   *
-   * @example
-   * // template.html
-   * <div data-bsi-element="title">
-   *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
-   * </div>
-   *
-   * // title.js
-   * module.exports = new ContentElement()
-   *   .withElementId('title')
-   *   .withLabel('Title')
-   *   .withFile(require('./template.html')
-   *   .withParts(
-   *     new PlainTextPart()
-   *       .withId('539a1787-7df2-43ab-9a67-e1f913ad5d7c')
-   *       .withLabel('Title'));
-   *
-   * // dist/title-4026bb9f6ec6c2284775.html
-   * <div data-bsi-element="title">
-   *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
-   * </div>
-   * @param {string} id - The ID to use.
-   * @returns {this}
-   */
-  withId(id) {
-    this._id = id;
-    return this;
-  }
-
-  /**
-   * The set content element part's label.
-   *
-   * @param {string|NLS} label - The label to set.
-   * @returns {this}
-   * @since Studio 1.0
-   */
-  withLabel(label) {
-    this._label = label;
-    return this;
-  }
-
-  _buildInternal() {
-    let config = {};
-
-    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
-
-    return config;
-  }
-}
-
-;// CONCATENATED MODULE: ./src/design/locale.js
+;// ./src/design/locale.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1478,7 +1276,7 @@ const IT = new Locale('it');
  */
 const IT_CH = new Locale('it-CH');
 
-;// CONCATENATED MODULE: ./src/design/schema-version.js
+;// ./src/design/schema-version.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1522,7 +1320,55 @@ const V_23_1 = new SchemaVersion('23.1');
  */
 const V_23_2 = new SchemaVersion('23.2');
 
-;// CONCATENATED MODULE: ./src/design-json-property-extension.js
+;// ./src/browser-utility.js
+/**
+ * @param {(string|number)[]} arr
+ * @returns {string}
+ */
+function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @template T
+ * @param {T} v
+ * @returns {T}
+ */
+function identity(v) {
+  return v;
+}
+
+/**
+ * @param {AbstractConstant} constant
+ * @returns {string}
+ */
+function constantObjectValue(constant) {
+  return constant.value;
+}
+
+/**
+ * @param {AbstractBuilder} builder
+ * @returns {{}}
+ */
+function builderObjectValue(builder) {
+  return builder.build();
+}
+
+/**
+ * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
+ * (won't work in the browser context).
+ *
+ * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
+ * @returns {string}
+ */
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+;// ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
    * @type {string}
@@ -1554,7 +1400,7 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
-;// CONCATENATED MODULE: ./src/design/design.js
+;// ./src/design/design.js
 
 
 
@@ -2181,7 +2027,7 @@ class Design extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/content-element-group.js
+;// ./src/content-element/content-element-group.js
 
 
 
@@ -2358,7 +2204,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
+;// ./src/html-editor-config/feature.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2582,7 +2428,7 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
+;// ./src/html-editor-config/enter-mode.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2612,7 +2458,7 @@ const BR = new EnterMode('br');
  */
 const DIV = new EnterMode('div');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
+;// ./src/html-editor-config/font-size-unit.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2663,7 +2509,7 @@ const CM = new FontSizeUnit('cm');
  */
 const MM = new FontSizeUnit('mm');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/format.js
+;// ./src/html-editor-config/format.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2728,7 +2574,7 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
-;// CONCATENATED MODULE: ./src/dropzone/dropzone.js
+;// ./src/dropzone/dropzone.js
 
 
 
@@ -2934,7 +2780,7 @@ class Dropzone extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
+;// ./src/html-editor-config/html-editor-config.js
 
 
 
@@ -3303,7 +3149,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style.js
+;// ./src/style/style.js
 
 
 
@@ -3577,7 +3423,7 @@ class Style extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/css-class.js
+;// ./src/style/css-class.js
 
 
 
@@ -3685,7 +3531,7 @@ class CssClass extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style-option.js
+;// ./src/style/style-option.js
 
 
 
@@ -3885,7 +3731,7 @@ class StyleOption extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/dom-manipulation.js
+;// ./src/style/dom-manipulation.js
 
 
 
@@ -4045,7 +3891,7 @@ class DomManipulation extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/icon.js
+;// ./src/content-element/icon.js
 
 
 class Icon extends AbstractConstant {
@@ -4287,7 +4133,7 @@ const THREE_COLUMNS = new Icon('three-columns');
  */
 const CALENDAR_CLOCK = new Icon('calendar-clock');
 
-;// CONCATENATED MODULE: ./src/content-element/content-element.js
+;// ./src/content-element/content-element.js
 
 
 
@@ -4298,7 +4144,7 @@ const CALENDAR_CLOCK = new Icon('calendar-clock');
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
-/** @typedef {import('./part/abstract-part').default} AbstractPart */
+/** @typedef {import('./part/part').Part} AbstractPart */
 /** @typedef {import('./content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
@@ -4744,152 +4590,99 @@ class ContentElement extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part.js
-
-
-class Part extends AbstractConstant {
-}
-
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const PLAIN_TEXT = new Part('plain-text');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORMATTED_TEXT = new Part('formatted-text');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const part_HTML = new Part('html');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const part_VIDEO = new Part('video');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const part_IMAGE = new Part('image');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const BACKGROUND_IMAGE = new Part('background-image');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const part_TABLE = new Part('table');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const ITERATOR = new Part('iterator');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const NEWS_SNIPPETS = new Part('news-snippets');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM = new Part('form');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_FIELD = new Part('form-field');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_CHECKBOX = new Part('form-checkbox');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_TEXTAREA = new Part('form-textarea');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_SELECT = new Part('form-select');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const FORM_RADIO = new Part('form-radio');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const LINK = new Part('link');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const part_SOCIAL_FOLLOW = new Part('social-follow');
-/**
- * @type {Part}
- * @since Studio 1.0
- */
-const part_SOCIAL_SHARE = new Part('social-share');
-/**
- * @type {Part}
- * @since 22.0
- */
-const URL_PROVIDER = new Part('url-provider');
-
-;// CONCATENATED MODULE: ./src/content-element/part/plain-text-part.js
+;// ./src/content-element/part/part.js
 
 
 
-/**
- * @since Studio 1.0
- */
-class PlainTextPart extends AbstractPart {
-  constructor() {
-    super(PLAIN_TEXT);
-  }
 
+class Part extends AbstractBuilder {
   /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {PlainTextPart}
+   * @type {string}
+   * @private
    */
-  clone(shallow) {
-    return this._clone(new PlainTextPart(), shallow);
-  }
-}
+  _id = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _partId = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _config = undefined;
 
-;// CONCATENATED MODULE: ./src/content-element/part/formatted-text-part.js
-
-
-
-
-
-/** @typedef {import('../../design/design').default} Design */
-/** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
-
-/**
- * @since Studio 1.0
- */
-class FormattedTextPart extends AbstractPart {
   /**
    * @type {RawValue|HtmlEditorConfig|undefined}
    * @private
    */
   _htmlEditorConfig = undefined;
 
-  constructor() {
-    super(FORMATTED_TEXT);
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _altTextMandatory = undefined;
+
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _captionEnabled = undefined;
+
+  /**
+   * @param {string} partId
+   */
+  constructor(partId, label, id) {
+    super();
+    /**
+     * @type {string}
+     * @private
+     */
+    this._partId = partId;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._label = label;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._id = id;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get id() {
+    return this._id;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get partId() {
+    return this._partId;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @returns {{}|undefined}
+   */
+  get config() {
+    return this._config;
   }
 
   /**
@@ -4897,6 +4690,80 @@ class FormattedTextPart extends AbstractPart {
    */
   get htmlEditorConfig() {
     return this._htmlEditorConfig;
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get altTextMandatory() {
+    return this._altTextMandatory;
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get captionEnabled() {
+    return this._captionEnabled;
+  }
+
+  /**
+   * The ID of the part. You can apply an unique identifier to your content element part.
+   * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+   * This property is only for the design build and will not appear in the final build artifacts.
+   * The advantage of using this property is, that you don't have to care about the order of your parts
+   * in your specification. The build will reorder the part definitions in the order they appear in the
+   * corresponding template. This can be very handy in large and complex elements with many parts.
+   *
+   * @example
+   * // template.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+   * </div>
+   *
+   * // title.js
+   * module.exports = new ContentElement()
+   *   .withElementId('title')
+   *   .withLabel('Title')
+   *   .withFile(require('./template.html')
+   *   .withParts(
+   *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+   *    );
+   *
+   * // dist/title-4026bb9f6ec6c2284775.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+   * </div>
+   * @param {string} id - The ID to use.
+   * @returns {this}
+   */
+  withId(id) {
+    this._id = id;
+    return this;
+  }
+
+  /**
+   * The set content element part's label.
+   *
+   * @param {string|NLS} label - The label to set.
+   * @returns {this}
+   * @since Studio 1.0
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  // TODO description
+  withRawConfig(config) {
+    this._config = config;
+    return this;
+  }
+
+  // TODO description
+  withConfig(key, value) {
+    this._config = this.config || {};
+    this._config[key] = value;
+    return this;
   }
 
   /**
@@ -4925,506 +4792,52 @@ class FormattedTextPart extends AbstractPart {
    */
   withHtmlEditorConfig(htmlEditorConfig) {
     this._htmlEditorConfig = htmlEditorConfig;
-    return this;
+    return this.withConfig(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
   }
 
   /**
-   * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
-   * Be aware, that you also have to register your HTML editor configuration with {@link Design#withHtmlEditorConfigs}.
+   * Set a Boolean to indicate if the alt-text for this image is mandatory.
+   * If true users must describe the image before they can save it in the CX editor.
    *
-   * @see {@link withHtmlEditorConfig}
-   * @param {string} htmlEditorConfig
-   * @returns {FormattedTextPart}
+   * @see {withAltTextMandatory}
+   * @param {Boolean} altTextMandatory
+   * @returns {Part}
    */
-  withRawHtmlEditorConfig(htmlEditorConfig) {
-    this._htmlEditorConfig = new RawValue(htmlEditorConfig);
-    return this;
+  withAltTextMandatory(altTextMandatory) {
+    this._altTextMandatory = altTextMandatory;
+    return this.withConfig(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory);
+  }
+
+  /**
+   * Set a Boolean to indicate if caption is enabled in editor.
+   * If true users can add a caption for the table in CX editor.
+   *
+   * @see {withCaptionEnabled}
+   * @param {Boolean} captionEnabled
+   * @returns {Part}
+   */
+  withCaptionEnabled(captionEnabled) {
+    this._captionEnabled = captionEnabled;
+    return this.withConfig(DesignJsonProperty.CAPTION_ENABLED, captionEnabled);
   }
 
   _buildInternal() {
-    let config = super._buildInternal();
+    let config = {};
 
+    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
+    // Deprecated properties, only for older cx-versions
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
 
     return config;
   }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormattedTextPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormattedTextPart(), shallow);
-  }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/html-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class HtmlPart extends AbstractPart {
-  constructor() {
-    super(part_HTML);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {HtmlPart}
-   */
-  clone(shallow) {
-    return this._clone(new HtmlPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/video-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class VideoPart extends AbstractPart {
-  constructor() {
-    super(part_VIDEO);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {VideoPart}
-   */
-  clone(shallow) {
-    return this._clone(new VideoPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/image-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class ImagePart extends AbstractPart {
-  constructor() {
-    super(part_IMAGE);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {ImagePart}
-   */
-  clone(shallow) {
-    return this._clone(new ImagePart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/background-image-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class BackgroundImagePart extends AbstractPart {
-  constructor() {
-    super(BACKGROUND_IMAGE);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {BackgroundImagePart}
-   */
-  clone(shallow) {
-    return this._clone(new BackgroundImagePart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/table-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class TablePart extends AbstractPart {
-  constructor() {
-    super(part_TABLE);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {TablePart}
-   */
-  clone(shallow) {
-    return this._clone(new TablePart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/iterator-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class IteratorPart extends AbstractPart {
-  constructor() {
-    super(ITERATOR);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {IteratorPart}
-   */
-  clone(shallow) {
-    return this._clone(new IteratorPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/news-snippets-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class NewsSnippetsPart extends AbstractPart {
-  constructor() {
-    super(NEWS_SNIPPETS);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {NewsSnippetsPart}
-   */
-  clone(shallow) {
-    return this._clone(new NewsSnippetsPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/form-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class FormPart extends AbstractPart {
-  constructor() {
-    super(FORM);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/form-field-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class FormFieldPart extends AbstractPart {
-  constructor() {
-    super(FORM_FIELD);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormFieldPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormFieldPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/form-checkbox-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class FormCheckboxPart extends AbstractPart {
-  constructor() {
-    super(FORM_CHECKBOX);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormCheckboxPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormCheckboxPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/form-textarea-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class FormTextareaPart extends AbstractPart {
-  constructor() {
-    super(FORM_TEXTAREA);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormTextareaPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormTextareaPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/form-select-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class FormSelectPart extends AbstractPart {
-  constructor() {
-    super(FORM_SELECT);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormSelectPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormSelectPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/form-radio-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class FormRadioPart extends AbstractPart {
-  constructor() {
-    super(FORM_RADIO);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {FormRadioPart}
-   */
-  clone(shallow) {
-    return this._clone(new FormRadioPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/link-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class LinkPart extends AbstractPart {
-  constructor() {
-    super(LINK);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {LinkPart}
-   */
-  clone(shallow) {
-    return this._clone(new LinkPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/social-follow-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class SocialFollowPart extends AbstractPart {
-  constructor() {
-    super(part_SOCIAL_FOLLOW);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {SocialFollowPart}
-   */
-  clone(shallow) {
-    return this._clone(new SocialFollowPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/social-share-part.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class SocialSharePart extends AbstractPart {
-  constructor() {
-    super(part_SOCIAL_SHARE);
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {SocialSharePart}
-   */
-  clone(shallow) {
-    return this._clone(new SocialSharePart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/url-provider-part.js
-
-
-
-
-/**
- * @since 22.0
- */
-class UrlProviderPart extends AbstractPart {
-  constructor() {
-    super(URL_PROVIDER);
-  }
-
-  get minVersion() {
-    return CX_22_0;
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {UrlProviderPart}
-   */
-  clone(shallow) {
-    return this._clone(new UrlProviderPart(), shallow);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/content-element/part/raw.js
-
-
-
-/**
- * @since Studio 1.0
- */
-class RawPart extends AbstractPart {
-  /**
-   * @type {Record<string,*>}
-   * @private
-   */
-  _properties = undefined;
-
-  /**
-   * @param {string} partId
-   */
-  constructor(partId) {
-    const part = new Part(partId);
-
-    super(part);
-
-    this._properties = {};
-  }
-
-  /**
-   * @returns {Record<string, *>}
-   */
-  get properties() {
-    return this._properties;
-  }
-
-  /**
-   * Set a property for this raw part.
-   *
-   * @example
-   * let element = new ContentElement()
-   *   .withElementId('element')
-   *   .withParts(
-   *     new RawPart('chart')
-   *       .withLabel('Chart')
-   *       .withProperty('type','pie'))
-   * @param {string} name
-   * @param {string|array|number|boolean|Record|null} value
-   * @returns {RawPart}
-   */
-  withProperty(name, value) {
-    this._properties[name] = value;
-    return this;
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {RawPart}
-   */
-  clone(shallow) {
-    return this._clone(new RawPart(this.partId), shallow);
-  }
-
-  _buildInternal() {
-    let config = super._buildInternal();
-
-    return Object.assign({}, config, this._properties);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/website/website.js
+;// ./src/website/website.js
 
 
 
@@ -5609,7 +5022,7 @@ class Website extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/abstract-include.js
+;// ./src/website/abstract-include.js
 
 
 
@@ -5830,7 +5243,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/page-include.js
+;// ./src/website/page-include.js
 
 
 
@@ -5860,7 +5273,7 @@ class PageInclude extends AbstractInclude {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/include.js
+;// ./src/website/include.js
 
 
 /** @typedef {import('./website').default} Website */
@@ -5916,7 +5329,7 @@ class Include extends AbstractInclude {
   }
 }
 
-;// CONCATENATED MODULE: ./src/nls/translation.js
+;// ./src/nls/translation.js
 
 
 
@@ -6059,7 +5472,7 @@ class Translation extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/nls/nls.js
+;// ./src/nls/nls.js
 
 
 
@@ -6247,7 +5660,420 @@ class NLS extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/pagination.js
+;// ./src/content-element/part/part-factory.js
+
+
+class PartFactory {
+  /**
+   * Get a new background content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get backgroundImage() {
+    return this.BackgroundImage();
+  }
+
+  /**
+   * Build a new background content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  BackgroundImage(label, id) {
+    return new Part('background-image', label, id);
+  }
+
+  /**
+   * Get a new form content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get form() {
+    return this.Form();
+  }
+
+  /**
+   * Build a new form content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  Form(label, id) {
+    return new Part('form', label, id);
+  }
+
+  /**
+   * Get a new checkbox form field content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get formCheckbox() {
+    return this.FormCheckbox();
+  }
+
+  /**
+   * Build a new checkbox form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  FormCheckbox(label, id) {
+    return new Part('form-checkbox', label, id);
+  }
+
+  /**
+   * Get a new form field content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get formField() {
+    return this.FormField();
+  }
+
+  /**
+   * Build a new form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  FormField(label, id) {
+    return new Part('form-field', label, id);
+  }
+
+  /**
+   * Get a new radio form field content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get formRadio() {
+    return this.FormRadio();
+  }
+
+  /**
+   * Build a new radio form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  FormRadio(label, id) {
+    return new Part('form-radio', label, id);
+  }
+
+  /**
+   * Get a new select form field content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get formSelect() {
+    return this.FormSelect();
+  }
+
+  /**
+   * Build a new select form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  FormSelect(label, id) {
+    return new Part('form-select', label, id);
+  }
+
+  /**
+   * Get a new textarea form field content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get formTextarea() {
+    return this.FormTextarea();
+  }
+
+  /**
+   * Build a new textarea form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  FormTextarea(label, id) {
+    return new Part('form-textarea', label, id);
+  }
+
+  /**
+   * Get a new formatted text content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get formattedText() {
+    return this.FormattedText();
+  }
+
+  /**
+   * Build a new formatted text content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @returns {Part}
+   */
+  FormattedText(label, id, htmlEditorConfig) {
+    var part = new Part('formatted-text', label, id)
+    return htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+  }
+
+  /**
+   * Get a new HTML content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get html() {
+    return this.Html();
+  }
+
+  /**
+   * Build a new HTML content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  Html(label, id) {
+    return new Part('html', label, id);
+  }
+
+  /**
+   * Get a new image content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get image() {
+    return this.Image();
+  }
+
+  /**
+   * Build a new image content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {boolean} altTextMandatory
+   * @returns {Part}
+   */
+  Image(label, id, altTextMandatory) {
+    var part = new Part('image', label, id);
+    return altTextMandatory != null ? part.withAltTextMandatory(altTextMandatory) : part;
+  }
+
+  /**
+   * Get a new iterator content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get iterator() {
+    return this.Iterator();
+  }
+
+  /**
+   * Build a new iterator content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  Iterator(label, id) {
+    return new Part('iterator', label, id);
+  }
+
+  /**
+   * Get a new link content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get link() {
+    return this.Link();
+  }
+
+  /**
+   * Build a new link content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  Link(label, id) {
+    return new Part('link', label, id);
+  }
+
+  /**
+   * Get a new news snippet content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get newsSnippet() {
+    return this.NewsSnippets();
+  }
+
+  /**
+   * Build a new news snippet content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  NewsSnippet(label, id) {
+    return new Part('news-snippets', label, id);
+  }
+
+  /**
+   * Get a new plain text content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get plainText() {
+    return this.PlainText();
+  }
+
+  /**
+   * Build a new plain text content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  PlainText(label, id) {
+    return new Part('plain-text', label, id);
+  }
+
+  /**
+   * Get a new social follow content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get socialFollow() {
+    return this.SocialFollow();
+  }
+
+  /**
+   * Build a new social follow content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  SocialFollow(label, id) {
+    return new Part('social-follow', label, id);
+  }
+
+  /**
+   * Get a new social share content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get socialShare() {
+    return this.SocialShare();
+  }
+
+  /**
+   * Build a new social share content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  SocialShare(label, id) {
+    return new Part('social-share', label, id);
+  }
+
+  /**
+   * Get a new table content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get table() {
+    return this.Table();
+  }
+
+  /**
+   * Build a new table content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {boolean} captionEnabled
+   * @returns {Part}
+   */
+  Table(label, id, captionEnabled) {
+    var part = new Part('table', label, id);
+    return captionEnabled != null ? part.withCaptionEnabled(captionEnabled) : part;
+  }
+
+  /**
+   * Get a new URL provider content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get urlProvider() {
+    return this.UrlProvider();
+  }
+
+  /**
+   * Build a new URL provider content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  UrlProvider(label, id) {
+    return new Part('url-provider', label, id);
+  }
+
+  /**
+   * Get a new video content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get video() {
+    return this.Video();
+  }
+
+  /**
+   * Build a new video content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  Video(label, id) {
+    return new Part('video', label, id);
+  }
+
+  /**
+   * Create a raw element part builder instance. Can be used for custom element parts.
+   *
+   * @param {string} partId
+   * @returns {Part}
+   */
+  raw(partId) {
+    return this.Raw(partId);
+  }
+
+  /**
+   * Create a raw element part builder instance. Can be used for custom element parts.
+   *
+   * @param {string} partId
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  Raw(partId, label, id) {
+    return new Part(partId, label, id);
+  }
+}
+
+;// ./src/website/pagination.js
 
 
 
@@ -6330,212 +6156,7 @@ class Pagination extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part-factory.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class PartFactory {
-  /**
-   * Get a new background content element part builder instance.
-   *
-   * @returns {BackgroundImagePart}
-   */
-  get backgroundImage() {
-    return new BackgroundImagePart();
-  }
-
-  /**
-   * Get a new checkbox form field content element part builder instance.
-   *
-   * @returns {FormCheckboxPart}
-   */
-  get formCheckbox() {
-    return new FormCheckboxPart();
-  }
-
-  /**
-   * Get a new form field content element part builder instance.
-   *
-   * @returns {FormFieldPart}
-   */
-  get formField() {
-    return new FormFieldPart();
-  }
-
-  /**
-   * Get a new form content element part builder instance.
-   *
-   * @returns {FormPart}
-   */
-  get form() {
-    return new FormPart();
-  }
-
-  /**
-   * Get a new radio form field content element part builder instance.
-   *
-   * @returns {FormRadioPart}
-   */
-  get formRadio() {
-    return new FormRadioPart();
-  }
-
-  /**
-   * Get a new select form field content element part builder instance.
-   *
-   * @returns {FormSelectPart}
-   */
-  get formSelect() {
-    return new FormSelectPart();
-  }
-
-  /**
-   * Get a new textarea form field content element part builder instance.
-   *
-   * @returns {FormTextareaPart}
-   */
-  get formTextarea() {
-    return new FormTextareaPart();
-  }
-
-  /**
-   * Get a new formatted text content element part builder instance.
-   *
-   * @returns {FormattedTextPart}
-   */
-  get formattedText() {
-    return new FormattedTextPart();
-  }
-
-  /**
-   * Get a new HTML content element part builder instance.
-   *
-   * @returns {HtmlPart}
-   */
-  get html() {
-    return new HtmlPart();
-  }
-
-  /**
-   * Get a new image content element part builder instance.
-   *
-   * @returns {ImagePart}
-   */
-  get image() {
-    return new ImagePart();
-  }
-
-  /**
-   * Get a new iterator content element part builder instance.
-   *
-   * @returns {IteratorPart}
-   */
-  get iterator() {
-    return new IteratorPart();
-  }
-
-  /**
-   * Get a new link content element part builder instance.
-   *
-   * @returns {LinkPart}
-   */
-  get link() {
-    return new LinkPart();
-  }
-
-  /**
-   * Get a new news snippet content element part builder instance.
-   *
-   * @returns {NewsSnippetsPart}
-   */
-  get newsSnippet() {
-    return new NewsSnippetsPart();
-  }
-
-  /**
-   * Get a new plain text content element part builder instance.
-   *
-   * @returns {PlainTextPart}
-   */
-  get plainText() {
-    return new PlainTextPart();
-  }
-
-  /**
-   * Get a new social follow content element part builder instance.
-   *
-   * @returns {SocialFollowPart}
-   */
-  get socialFollow() {
-    return new SocialFollowPart();
-  }
-
-  /**
-   * Get a new social share content element part builder instance.
-   *
-   * @returns {SocialSharePart}
-   */
-  get socialShare() {
-    return new SocialSharePart();
-  }
-
-  /**
-   * Get a new table content element part builder instance.
-   *
-   * @returns {TablePart}
-   */
-  get table() {
-    return new TablePart();
-  }
-
-  /**
-   * Get a new URL provider content element part builder instance.
-   *
-   * @returns {UrlProviderPart}
-   */
-  get urlProvider() {
-    return new UrlProviderPart();
-  }
-
-  /**
-   * Get a new video content element part builder instance.
-   *
-   * @returns {VideoPart}
-   */
-  get video() {
-    return new VideoPart();
-  }
-
-  /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
-   *
-   * @param {string} partId
-   * @returns {RawPart}
-   */
-  raw(partId) {
-    return new RawPart(partId);
-  }
-}
-
-;// CONCATENATED MODULE: ./src/design/design-helper.js
+;// ./src/design/design-helper.js
 
 
 /** @typedef {import('./design-factory').default} DesignFactory */
@@ -6662,7 +6283,7 @@ class DesignHelper {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/design-factory.js
+;// ./src/design/design-factory.js
 
 
 
@@ -7049,7 +6670,7 @@ class DesignFactory {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-property.js
+;// ./src/bsi-property.js
 
 
 /**
@@ -7070,28 +6691,7 @@ function bsiProperty(property, fallback) {
   return plugin.getProperty(property, fallback);
 }
 
-;// CONCATENATED MODULE: ./export/browser.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;// ./export/browser.js
 
 
 
@@ -7135,7 +6735,7 @@ const cx = new DesignFactory();
 
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;

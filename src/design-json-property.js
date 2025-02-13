@@ -26,6 +26,14 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static ALT_TEXT_MANDATORY = 'altTextMandatory';
+  /**
+   * @type {string}
+   */
+  static CAPTION_ENABLED = 'captionEnabled';
+  /**
+   * @type {string}
+   */
   static DEFAULT_LOCALE = 'defaultLocale';
   /**
    * @type {string}
@@ -63,6 +71,10 @@ export default class DesignJsonProperty {
    * @type {string}
    */
   static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static PART_CONFIG = 'config';
   /**
    * @type {string}
    */
