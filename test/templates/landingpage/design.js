@@ -23,7 +23,9 @@ module.exports = cx.design
       .withGroupId('content')
       .withLabel('Content')
       .withContentElements(
-        require('./content-elements/content/title'),
+        require('./content-elements/content/title')
+          .withAddStyleConfigs(require('./styles/new-text-color'))
+          .withRemoveStyleConfigs(require('./styles/text-color')),
         require('./content-elements/content/column-1')
           .withExtendedDropzone(
             'b6608fe9-4815-4ef1-a118-6e945ead513f',
