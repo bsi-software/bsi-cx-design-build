@@ -4365,7 +4365,7 @@ declare module "src/content-element/content-element" {
     /** @typedef {import('../design/design').default} Design */
     /** @typedef {import('../style/style').default} Style */
     /** @typedef {import('./icon').Icon} Icon */
-    /** @typedef {import('./part/part').Part} AbstractPart */
+    /** @typedef {import('./part/part').Part} Part */
     /** @typedef {import('./content-element-group').default} ContentElementGroup */
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
@@ -4380,10 +4380,8 @@ declare module "src/content-element/content-element" {
      *     .withFile(require('./template.twig'))
      *     .withIcon(Icon.IMAGE)
      *     .withParts(
-     *       cx.part.image
-     *         .withLabel('Image'),
-     *       cx.part.plainText
-     *         .withLabel('Description')))
+     *       cx.part.Image('Image', 'image-id'),
+     *       cx.part.PlainText('Description', 'description-id')))
      */
     export default class ContentElement extends AbstractBuilder {
         /**
@@ -4427,7 +4425,7 @@ declare module "src/content-element/content-element" {
          */
         private _styleConfigs;
         /**
-         * @type {RawValue|[AbstractPart]|undefined}
+         * @type {RawValue|[Part]|undefined}
          * @private
          */
         private _parts;
@@ -4469,9 +4467,9 @@ declare module "src/content-element/content-element" {
          */
         get styleConfigs(): RawValue | Style[] | undefined;
         /**
-         * @returns {RawValue|AbstractPart[]|undefined}
+         * @returns {RawValue|Part[]|undefined}
          */
-        get parts(): RawValue | AbstractPart[] | undefined;
+        get parts(): RawValue | Part[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
@@ -4601,6 +4599,32 @@ declare module "src/content-element/content-element" {
          */
         withRawStyleConfigs(...styleConfigs: string[]): ContentElement;
         /**
+       * Add styles to this content element. You don't have to register the used styles in the design object
+       * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+       *
+       * @example
+       *  let textElement = cx.contentElement
+       *    .withAddStyleConfigs(
+       *      require('./styles/background-color'))
+       * @see {@link withRawStyleConfigs} to set a raw value
+       * @param {...Style} styleConfigs - Styles for this content element.
+       * @returns {ContentElement}
+       * @since Studio 1.1
+       */
+        withAddStyleConfigs(...styleConfigs: Style[]): ContentElement;
+        /**
+       * Remove styles for this content element.
+       *
+       * @example
+       *  let textElement = cx.contentElement
+       *    .withRemoveStyleConfigs(
+       *      require('./styles/background-color'))
+       * @param {...Style} styleConfigs - Styles to be removed for this content element.
+       * @returns {ContentElement}
+       * @since Studio 1.1
+       */
+        withRemoveStyleConfigs(...styleConfigs: Style[]): ContentElement;
+        /**
          * Specify the parts of your content element.
          *
          * @example
@@ -4610,11 +4634,11 @@ declare module "src/content-element/content-element" {
          *   cx.part.plainText
          *     .withLabel('Description'))
          * @see {@link withRawParts} to set a raw value
-         * @param {...AbstractPart} parts - The parts to use.
+         * @param {...Part} parts - The parts to use.
          * @returns {ContentElement}
          * @since Studio 1.0
          */
-        withParts(...parts: AbstractPart[]): ContentElement;
+        withParts(...parts: Part[]): ContentElement;
         /**
          * Set the parts of your content element as raw value.
          *
@@ -4671,6 +4695,20 @@ declare module "src/content-element/content-element" {
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
         /**
+         * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withReducedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+         * @returns {ContentElement}
+         */
+        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        /**
          * Clone the configuration.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -4686,7 +4724,7 @@ declare module "src/content-element/content-element" {
     export type Design = import("src/design/design").default;
     export type Style = import("src/style/style").default;
     export type Icon = import("src/content-element/icon").Icon;
-    export type AbstractPart = import("src/content-element/part/part").Part;
+    export type Part = import("src/content-element/part/part").Part;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
@@ -5973,6 +6011,20 @@ declare module "src/design/design" {
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): Design;
         /**
+         * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withReducedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+         * @returns {ContentElement}
+         */
+        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        /**
          * The style configurations of your design. This is only necessary if you use
          * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
          * Otherwise you don't have to register your styles here.
@@ -6351,6 +6403,20 @@ declare module "src/website/abstract-include" {
          * @returns {this}
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): this;
+        /**
+       * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+       * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+       *
+       * @example
+       * .withReducedDropzone(
+       *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+       *   require('./content-elements/basic/text'),
+       *   require('./content-elements/basic/image'))
+       * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+       * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+       * @returns {ContentElement}
+       */
+        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
     }
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
