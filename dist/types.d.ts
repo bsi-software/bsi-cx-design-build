@@ -184,6 +184,22 @@ declare module "src/version" {
     /**
      * @type {Version}
      */
+    export const CX_24_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_24_2: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_25_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_25_2: Version;
+    /**
+     * @type {Version}
+     */
     export const TARGET: Version;
     export type DesignType = import("src/design-type").DesignType;
     import AbstractConstant from "src/abstract-constant";
@@ -4365,7 +4381,7 @@ declare module "src/content-element/content-element" {
     /** @typedef {import('../design/design').default} Design */
     /** @typedef {import('../style/style').default} Style */
     /** @typedef {import('./icon').Icon} Icon */
-    /** @typedef {import('./part/part').Part} AbstractPart */
+    /** @typedef {import('./part/part').Part} Part */
     /** @typedef {import('./content-element-group').default} ContentElementGroup */
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
@@ -4380,10 +4396,8 @@ declare module "src/content-element/content-element" {
      *     .withFile(require('./template.twig'))
      *     .withIcon(Icon.IMAGE)
      *     .withParts(
-     *       cx.part.image
-     *         .withLabel('Image'),
-     *       cx.part.plainText
-     *         .withLabel('Description')))
+     *       cx.part.Image('Image', 'image-id'),
+     *       cx.part.PlainText('Description', 'description-id')))
      */
     export default class ContentElement extends AbstractBuilder {
         /**
@@ -4427,7 +4441,7 @@ declare module "src/content-element/content-element" {
          */
         private _styleConfigs;
         /**
-         * @type {RawValue|[AbstractPart]|undefined}
+         * @type {RawValue|[Part]|undefined}
          * @private
          */
         private _parts;
@@ -4469,9 +4483,9 @@ declare module "src/content-element/content-element" {
          */
         get styleConfigs(): RawValue | Style[] | undefined;
         /**
-         * @returns {RawValue|AbstractPart[]|undefined}
+         * @returns {RawValue|Part[]|undefined}
          */
-        get parts(): RawValue | AbstractPart[] | undefined;
+        get parts(): RawValue | Part[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
@@ -4610,11 +4624,11 @@ declare module "src/content-element/content-element" {
          *   cx.part.plainText
          *     .withLabel('Description'))
          * @see {@link withRawParts} to set a raw value
-         * @param {...AbstractPart} parts - The parts to use.
+         * @param {...Part} parts - The parts to use.
          * @returns {ContentElement}
          * @since Studio 1.0
          */
-        withParts(...parts: AbstractPart[]): ContentElement;
+        withParts(...parts: Part[]): ContentElement;
         /**
          * Set the parts of your content element as raw value.
          *
@@ -4686,7 +4700,7 @@ declare module "src/content-element/content-element" {
     export type Design = import("src/design/design").default;
     export type Style = import("src/style/style").default;
     export type Icon = import("src/content-element/icon").Icon;
-    export type AbstractPart = import("src/content-element/part/part").Part;
+    export type Part = import("src/content-element/part/part").Part;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";

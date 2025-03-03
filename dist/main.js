@@ -93,6 +93,10 @@ __webpack_require__.d(version_namespaceObject, {
   CX_22_0: () => (CX_22_0),
   CX_23_1: () => (CX_23_1),
   CX_23_2: () => (CX_23_2),
+  CX_24_1: () => (CX_24_1),
+  CX_24_2: () => (CX_24_2),
+  CX_25_1: () => (CX_25_1),
+  CX_25_2: () => (CX_25_2),
   STUDIO_1_0: () => (STUDIO_1_0),
   STUDIO_1_1: () => (STUDIO_1_1),
   STUDIO_1_2: () => (STUDIO_1_2),
@@ -370,6 +374,26 @@ const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
  * @type {Version}
  */
 const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
+const CX_24_1 = new Version([24, 1, 0], ALL_TYPES, false, '24.1');
+
+/**
+ * @type {Version}
+ */
+const CX_24_2 = new Version([24, 2, 0], ALL_TYPES, false, '24.2');
+
+/**
+ * @type {Version}
+ */
+const CX_25_1 = new Version([25, 1, 0], ALL_TYPES, false, '25.1');
+
+/**
+ * @type {Version}
+ */
+const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
 
 /**
  * @type {Version}
