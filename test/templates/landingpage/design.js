@@ -23,12 +23,15 @@ module.exports = cx.design
       .withGroupId('content')
       .withLabel('Content')
       .withContentElements(
-        require('./content-elements/content/title'),
+        require('./content-elements/content/title')
+          .withAddStyleConfigs(require('./styles/new-text-color'))
+          .withRemoveStyleConfigs(require('./styles/text-color')),
         require('./content-elements/content/column-1')
           .withExtendedDropzone(
             'b6608fe9-4815-4ef1-a118-6e945ead513f',
             require('./content-elements/content/title')),
-        require('./content-elements/content/column-2'),
+        require('./content-elements/content/column-2')
+          .withReducedDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348', require('./content-elements/content/title')),
         require('./content-elements/content/text')))
   .withDropzones(
     cx.dropzone

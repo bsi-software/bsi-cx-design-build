@@ -1839,6 +1839,32 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withReducedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+   * @returns {ContentElement}
+   */
+  withReducedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      let removeIds = elements.map(el => el.elementId);
+      let allowedElements = dropzone.allowedElements;
+      allowedElements = allowedElements.filter(el => !removeIds.includes(el.elementId));
+      dropzone.withAllowedElements(...allowedElements);
+    }
+
+    return this;
+  }
+
+  /**
    * The style configurations of your design. This is only necessary if you use
    * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
    * Otherwise you don't have to register your styles here.
@@ -4480,6 +4506,43 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
+ * Add styles to this content element. You don't have to register the used styles in the design object
+ * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+ *
+ * @example
+ *  let textElement = cx.contentElement
+ *    .withAddStyleConfigs(
+ *      require('./styles/background-color'))
+ * @see {@link withRawStyleConfigs} to set a raw value
+ * @param {...Style} styleConfigs - Styles for this content element.
+ * @returns {ContentElement}
+ * @since Studio 1.1
+ */
+  withAddStyleConfigs(...styleConfigs) {
+    this._styleConfigs = (this.styleConfigs || []).concat(styleConfigs);
+    
+    return this;
+  }
+
+  /**
+ * Remove styles for this content element.
+ *
+ * @example
+ *  let textElement = cx.contentElement
+ *    .withRemoveStyleConfigs(
+ *      require('./styles/background-color'))
+ * @param {...Style} styleConfigs - Styles to be removed for this content element.
+ * @returns {ContentElement}
+ * @since Studio 1.1
+ */
+  withRemoveStyleConfigs(...styleConfigs) {
+    var styleIds = styleConfigs.map(style => style.identifier);
+    this._styleConfigs = (this.styleConfigs || []).filter(style => !styleIds.includes(style.identifier));
+    
+    return this;
+  }
+
+  /**
    * Specify the parts of your content element.
    *
    * @example
@@ -4565,6 +4628,32 @@ class ContentElement extends AbstractBuilder {
 
     if (dropzone) {
       dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    }
+
+    return this;
+  }
+
+  /**
+   * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withReducedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+   * @returns {ContentElement}
+   */
+  withReducedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      let removeIds = elements.map(el => el.elementId);
+      let allowedElements = dropzone.allowedElements;
+      allowedElements = allowedElements.filter(el => !removeIds.includes(el.elementId));
+      dropzone.withAllowedElements(...allowedElements);
     }
 
     return this;
@@ -5249,6 +5338,32 @@ class AbstractInclude extends AbstractBuilder {
     return this;
   }
 
+    /**
+   * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withReducedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+   * @returns {ContentElement}
+   */
+    withReducedDropzone(id, ...elements) {
+      let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+  
+      if (dropzone) {
+        let removeIds = elements.map(el => el.elementId);
+        let allowedElements = dropzone.allowedElements;
+        allowedElements = allowedElements.filter(el => !removeIds.includes(el.elementId));
+        dropzone.withAllowedElements(...allowedElements);
+      }
+  
+      return this;
+    }
+  
   _buildInternal() {
     let config = {};
     let include = {};

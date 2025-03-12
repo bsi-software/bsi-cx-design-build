@@ -8,8 +8,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 
 * New element part attributes: altImageMandatory und captionEnabled
-* New way to build element parts: cx.part.PlainText('partLabel', 'partId')
+* New way to build element parts: `cx.part.PlainText('partLabel', 'partId')`
 * Rewrite part implementation
+* Function `.withReducedDropzone()`
+* Function `addStyle` and `removeStyle`
 
 ## [1.13.5] - 28.03.2024
 
