@@ -3115,188 +3115,6 @@ declare module "export/main" {
     import * as css from "src/css/helper";
     export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
 }
-
-declare module "src/content-element/part/part" {
-    export class Part extends AbstractConstant {
-    }
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const PLAIN_TEXT: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORMATTED_TEXT: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const HTML: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const VIDEO: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const IMAGE: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const BACKGROUND_IMAGE: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const TABLE: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const ITERATOR: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const NEWS_SNIPPETS: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_FIELD: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_CHECKBOX: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_TEXTAREA: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_SELECT: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const FORM_RADIO: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const LINK: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const SOCIAL_FOLLOW: Part;
-    /**
-     * @type {Part}
-     * @since Studio 1.0
-     */
-    export const SOCIAL_SHARE: Part;
-    /**
-     * @type {Part}
-     * @since 22.0
-     */
-    export const URL_PROVIDER: Part;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/content-element/part/abstract-part" {
-    /** @typedef {import('./part').Part} Part */
-    /**
-     * @abstract
-     */
-    export default class AbstractPart extends AbstractBuilder {
-        /**
-         * @param {Part} partId
-         */
-        constructor(partId: Part);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _id;
-        /**
-         * @type {Part}
-         * @private
-         */
-        private _partId;
-        /**
-         * @type {string|NLS|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @returns {string}
-         */
-        get id(): string;
-        /**
-         * @returns {Part}
-         */
-        get partId(): Part;
-        /**
-         * @returns {string|NLS|undefined}
-         */
-        get label(): string | NLS | undefined;
-        /**
-         * The ID of the part. You can apply an unique identifier to your content element part.
-         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
-         * This property is only for the design build and will not appear in the final build artifacts.
-         * The advantage of using this property is, that you don't have to care about the order of your parts
-         * in your specification. The build will reorder the part definitions in the order they appear in the
-         * corresponding template. This can be very handy in large and complex elements with many parts.
-         *
-         * @example
-         * // template.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
-         * </div>
-         *
-         * // title.js
-         * module.exports = new ContentElement()
-         *   .withElementId('title')
-         *   .withLabel('Title')
-         *   .withFile(require('./template.html')
-         *   .withParts(
-         *     new PlainTextPart()
-         *       .withId('539a1787-7df2-43ab-9a67-e1f913ad5d7c')
-         *       .withLabel('Title'));
-         *
-         * // dist/title-4026bb9f6ec6c2284775.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
-         * </div>
-         * @param {string} id - The ID to use.
-         * @returns {this}
-         */
-        withId(id: string): this;
-        /**
-         * The set content element part's label.
-         *
-         * @param {string|NLS} label - The label to set.
-         * @returns {this}
-         * @since Studio 1.0
-         */
-        withLabel(label: string | NLS): this;
-    }
-    export type Part = import("src/content-element/part/part").Part;
-    import AbstractBuilder from "src/abstract-builder";
-}
 declare module "src/design/schema-version" {
     /** @typedef {import('./design').default} Design */
     /**
@@ -3391,52 +3209,6 @@ declare module "src/design/websiteContentType" {
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
-<<<<<<< HEAD
->>>>>>> f7e5d3c (WebsiteContentTypes)
-declare module "src/design/schema-version" {
-    /** @typedef {import('./design').default} Design */
-    /**
-     * Class to define a schema version.
-     */
-    export class SchemaVersion extends AbstractConstant {
-    }
-    /**
-     * Use this in website templates for BSI CX 1.3.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since BSI CX 1.3
-     */
-    export const V_1_0: SchemaVersion;
-    /**
-     * Use this in all templates for BSI CX 22.0.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since 22.0
-     */
-    export const V_22_0: SchemaVersion;
-    /**
-     * Use this in all templates for BSI CX 23.1.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since 23.1
-     */
-    export const V_23_1: SchemaVersion;
-    /**
-     * Use this in all templates for BSI CX 23.2.
-     *
-     * @see {@link Design#withSchemaVersion}
-     * @type {SchemaVersion}
-     * @since 23.2
-     */
-    export const V_23_2: SchemaVersion;
-    export type Design = import("src/design/design").default;
-    import AbstractConstant from "src/abstract-constant";
-}
-=======
->>>>>>> 11272a7 (cleanup)
 declare module "src/style/css-class" {
     /** @typedef {import('./style').default} Style */
     /**
@@ -4773,11 +4545,7 @@ declare module "src/content-element/content-element" {
         /**
          * @returns {RawValue|Part[]|undefined}
          */
-<<<<<<< HEAD
         get parts(): RawValue | Part[] | undefined;
-=======
-        get parts(): RawValue | AbstractPart[] | undefined;
->>>>>>> f7e5d3c (WebsiteContentTypes)
         /**
          * @returns {Dropzone[]|undefined}
          */
@@ -5661,73 +5429,6 @@ declare module "src/html-editor-config/html-editor-config" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
-<<<<<<< HEAD
-=======
-declare module "src/content-element/part/formatted-text-part" {
-    /** @typedef {import('../../design/design').default} Design */
-    /** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
-    /**
-     * @since Studio 1.0
-     */
-    export default class FormattedTextPart extends AbstractPart {
-        constructor();
-        /**
-         * @type {RawValue|HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @returns {RawValue|HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
-        /**
-         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
-         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
-         *
-         * @example
-         * let editorConfig = new HtmlEditorConfig()
-         *   .withIdentifier('minimal')
-         *   .withRawEnterMode('p')
-         *   .withFeatures(
-         *     Feature.BOLD,
-         *     Feature.ITALIC,
-         *     Feature.UNDERLINE);
-         * // ...
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new FormattedTextPart()
-         *       .withLabel('Text')
-         *       .withHtmlEditorConfig(editorConfig))
-         * @see {withRawHtmlEditorConfig} to set a raw value
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * Set the HTML editor config to use as raw value. You have to pass the unique ID of a HTML editor config here.
-         * Be aware, that you also have to register your HTML editor configuration with {@link Design#withHtmlEditorConfigs}.
-         *
-         * @see {@link withHtmlEditorConfig}
-         * @param {string} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withRawHtmlEditorConfig(htmlEditorConfig: string): FormattedTextPart;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {FormattedTextPart}
-         */
-        clone(shallow?: boolean): FormattedTextPart;
-    }
-    export type Design = import("src/design/design").default;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractPart from "src/content-element/part/abstract-part";
-    import RawValue from "src/raw-value";
-}
->>>>>>> f7e5d3c (WebsiteContentTypes)
 declare module "src/website/website" {
     /**
      * This is the builder class for website objects.
@@ -6232,17 +5933,10 @@ declare module "src/design/design" {
          * @returns {RawValue|NLS[]|undefined}
          */
         get nls(): RawValue | NLS[] | undefined;
-<<<<<<< HEAD
-=======
         /**
          * @returns {RawValue|[WebsiteContentType]|undefined}
          */
-<<<<<<< HEAD
-        get websiteContentTypes(): RawValue | WebsiteContentType[] | undefined;
->>>>>>> f7e5d3c (WebsiteContentTypes)
-=======
         get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
->>>>>>> 11272a7 (cleanup)
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -7738,11 +7432,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-<<<<<<< HEAD
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
-=======
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, AbstractPart, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, PlainTextPart, FormattedTextPart, HtmlPart, VideoPart, ImagePart, BackgroundImagePart, TablePart, IteratorPart, NewsSnippetsPart, FormPart, FormFieldPart, FormCheckboxPart, FormTextareaPart, FormSelectPart, FormRadioPart, LinkPart, SocialFollowPart, SocialSharePart, UrlProviderPart, RawPart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
->>>>>>> f7e5d3c (WebsiteContentTypes)
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";
