@@ -106,6 +106,10 @@ __webpack_require__.d(version_namespaceObject, {
   CX_22_0: () => (CX_22_0),
   CX_23_1: () => (CX_23_1),
   CX_23_2: () => (CX_23_2),
+  CX_24_1: () => (CX_24_1),
+  CX_24_2: () => (CX_24_2),
+  CX_25_1: () => (CX_25_1),
+  CX_25_2: () => (CX_25_2),
   STUDIO_1_0: () => (STUDIO_1_0),
   STUDIO_1_1: () => (STUDIO_1_1),
   STUDIO_1_2: () => (STUDIO_1_2),
@@ -868,6 +872,26 @@ const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
  * @type {Version}
  */
 const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
+const CX_24_1 = new Version([24, 1, 0], ALL_TYPES, false, '24.1');
+
+/**
+ * @type {Version}
+ */
+const CX_24_2 = new Version([24, 2, 0], ALL_TYPES, false, '24.2');
+
+/**
+ * @type {Version}
+ */
+const CX_25_1 = new Version([25, 1, 0], ALL_TYPES, false, '25.1');
+
+/**
+ * @type {Version}
+ */
+const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
 
 /**
  * @type {Version}
@@ -4144,7 +4168,7 @@ const CALENDAR_CLOCK = new Icon('calendar-clock');
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
 /** @typedef {import('./icon').Icon} Icon */
-/** @typedef {import('./part/part').Part} AbstractPart */
+/** @typedef {import('./part/part').Part} Part */
 /** @typedef {import('./content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
@@ -4160,10 +4184,8 @@ const CALENDAR_CLOCK = new Icon('calendar-clock');
  *     .withFile(require('./template.twig'))
  *     .withIcon(Icon.IMAGE)
  *     .withParts(
- *       cx.part.image
- *         .withLabel('Image'),
- *       cx.part.plainText
- *         .withLabel('Description')))
+ *       cx.part.Image('Image', 'image-id'),
+ *       cx.part.PlainText('Description', 'description-id')))
  */
 class ContentElement extends AbstractBuilder {
   /**
@@ -4207,7 +4229,7 @@ class ContentElement extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[AbstractPart]|undefined}
+   * @type {RawValue|[Part]|undefined}
    * @private
    */
   _parts = undefined;
@@ -4274,7 +4296,7 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|AbstractPart[]|undefined}
+   * @returns {RawValue|Part[]|undefined}
    */
   get parts() {
     return this._parts;
@@ -4467,7 +4489,7 @@ class ContentElement extends AbstractBuilder {
    *   cx.part.plainText
    *     .withLabel('Description'))
    * @see {@link withRawParts} to set a raw value
-   * @param {...AbstractPart} parts - The parts to use.
+   * @param {...Part} parts - The parts to use.
    * @returns {ContentElement}
    * @since Studio 1.0
    */

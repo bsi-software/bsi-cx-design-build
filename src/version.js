@@ -1,6 +1,6 @@
-import {ALL_TYPES, LEGACY_TYPES} from './design-type';
 import AbstractConstant from './abstract-constant';
 import Constant from './constant';
+import { ALL_TYPES, LEGACY_TYPES } from './design-type';
 
 /** @typedef {import('./design-type').DesignType} DesignType */
 
@@ -109,6 +109,26 @@ export const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
  * @type {Version}
  */
 export const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+
+/**
+ * @type {Version}
+ */
+export const CX_24_1 = new Version([24, 1, 0], ALL_TYPES, false, '24.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_24_2 = new Version([24, 2, 0], ALL_TYPES, false, '24.2');
+
+/**
+ * @type {Version}
+ */
+export const CX_25_1 = new Version([25, 1, 0], ALL_TYPES, false, '25.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
 
 /**
  * @type {Version}
