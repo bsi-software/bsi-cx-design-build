@@ -1712,7 +1712,6 @@ class DesignJsonPropertyExtension {
 
 
 
-
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
@@ -1907,7 +1906,7 @@ class Design extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|WebsiteContentType[]|undefined}
+   * @returns {RawValue|[WebsiteContentType]|undefined}
    */
   get websiteContentTypes() {
     return this._websiteContentTypes;
