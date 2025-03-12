@@ -508,6 +508,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static WEBSITE_CONTENT_TYPE = 'websiteContentType';
+  /**
+   * @type {string}
+   */
   static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
   /**
    * @type {string}
@@ -532,7 +536,7 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
-  static CONTENT_TYPE = 'contentType';
+  static INCLUDE_TYPE = 'includeType';
   /**
    * @type {string}
    */
@@ -6071,7 +6075,12 @@ class AbstractInclude extends AbstractBuilder {
    * @type {string|undefined}
    * @protected
    */
-  _contentType = undefined;
+  _includeType = undefined;
+  /**
+   * @type {string|WebsiteContentType|undefined}
+   * @protected
+   */
+  _websiteContentType = undefined;
   /**
    * @type {{}|undefined}
    * @protected
@@ -6117,8 +6126,15 @@ class AbstractInclude extends AbstractBuilder {
   /**
    * @returns {string|undefined}
    */
-  get contentType() {
-    return this._contentType;
+  get includeType() {
+    return this._includeType;
+  }
+
+  /**
+   * @returns {string|WebsiteContentType|undefined}
+   */
+  get websiteContentType() {
+    return this._websiteContentType;
   }
 
   /**
@@ -6162,15 +6178,31 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * Define the content type of this include.
+   * Define the type of this include.
    *
    * @example
-   * .withContentType('pre-defined')
-   * @param {string} contentType - The content type of this include.
+   * .withIncludeType('pre-defined')
+   * @param {string} includeType - The type of this include.
    * @returns {this}
    */
-  withContentType(contentType) {
-    this._contentType = contentType;
+  withIncludeType(includeType) {
+    this._includeType = includeType;
+    return this;
+  }
+
+  /**
+   * Define the website content type of this include.
+   * If set the choosen WebsiteContentType use this include.
+   * 
+   * For example: if the WebsiteContentType is BLOG, every blogpost in this Website use this include as template
+   *
+   * @example
+   * .withWebsiteContentType(WebsiteContentType.BLOG)
+   * @param {WebsiteContentType} websiteContentType - The website content type of this include.
+   * @returns {this}
+   */
+  withWebsiteContentType(websiteContentType) {
+    this._websiteContentType = websiteContentType;
     return this;
   }
 
@@ -6280,7 +6312,8 @@ class AbstractInclude extends AbstractBuilder {
     config[this.identifier] = include;
 
     this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_TYPE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDE_TYPE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPE, include, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);

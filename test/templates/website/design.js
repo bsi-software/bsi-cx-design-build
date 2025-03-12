@@ -58,11 +58,16 @@ module.exports = cx.design
           .withName('Vorlage für Inhaltsseiten')
           .withEditable(true)
           .withFile(require('./includes/page.html')),
+          cx.pageInclude
+            .withName('Vorlage für Blog')
+            .withEditable(true)
+            .withFile(require('./includes/page.html'))
+            .withWebsiteContentType(WebsiteContentType.CUSTOMER_PARTNER),
         cx.include
           .withIdentifier('pagination-element')
           .withName('Pagination')
           .withEditable(false)
-          .withContentType('pre-defined')
+          .withIncludeType('pre-defined')
           .withFile(require('./includes/pagination-element.hbs')),
         cx.include
           .withIdentifier('footer')
