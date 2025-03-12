@@ -320,6 +320,43 @@ export default class ContentElement extends AbstractBuilder {
   }
 
   /**
+ * Add styles to this content element. You don't have to register the used styles in the design object
+ * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+ *
+ * @example
+ *  let textElement = cx.contentElement
+ *    .withAddStyleConfigs(
+ *      require('./styles/background-color'))
+ * @see {@link withRawStyleConfigs} to set a raw value
+ * @param {...Style} styleConfigs - Styles for this content element.
+ * @returns {ContentElement}
+ * @since Studio 1.1
+ */
+  withAddStyleConfigs(...styleConfigs) {
+    this._styleConfigs = (this.styleConfigs || []).concat(styleConfigs);
+    
+    return this;
+  }
+
+  /**
+ * Remove styles for this content element.
+ *
+ * @example
+ *  let textElement = cx.contentElement
+ *    .withRemoveStyleConfigs(
+ *      require('./styles/background-color'))
+ * @param {...Style} styleConfigs - Styles to be removed for this content element.
+ * @returns {ContentElement}
+ * @since Studio 1.1
+ */
+  withRemoveStyleConfigs(...styleConfigs) {
+    var styleIds = styleConfigs.map(style => style.identifier);
+    this._styleConfigs = (this.styleConfigs || []).filter(style => !styleIds.includes(style.identifier));
+    
+    return this;
+  }
+
+  /**
    * Specify the parts of your content element.
    *
    * @example
