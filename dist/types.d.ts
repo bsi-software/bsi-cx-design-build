@@ -2726,8 +2726,8 @@ declare module "src/build-context" {
          */
         get cssPropertyResolver(): CssPropertyResolver;
     }
-    import PropertyContext from "src/property-context";
     import CssPropertyResolver from "src/css/css-property-resolver";
+    import PropertyContext from "src/property-context";
 }
 declare module "src/bsi-sass-property-plugin" {
     export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
@@ -3028,9 +3028,9 @@ declare module "src/webpack-config-builder" {
          */
         _getOutputConfig(): {};
     }
+    import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
     import BuildContext from "src/build-context";
     import * as DesignType from "src/design-type";
-    import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
 }
 declare module "src/css/helper" {
     /**
@@ -3093,19 +3093,19 @@ declare module "src/css/helper" {
      * @returns {CssDimension|string}
      */
     export function number(value: string): CssDimension | string;
-    import CssUrl from "src/css/css-url";
     import CssColor from "src/css/css-color";
     import CssDimension from "src/css/css-dimension";
+    import CssUrl from "src/css/css-url";
 }
 declare module "export/main" {
-    import * as Version from "src/version";
-    import * as DesignType from "src/design-type";
     import BuildConfig from "src/build-config/build-config";
-    import ModuleConfig from "src/build-config/module-config";
     import DefaultBuildConfig from "src/build-config/default-build-config";
-    import WebpackConfigBuilder from "src/webpack-config-builder";
+    import ModuleConfig from "src/build-config/module-config";
     import * as css from "src/css/helper";
-    export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
+    import * as DesignType from "src/design-type";
+    import * as Version from "src/version";
+    import WebpackConfigBuilder from "src/webpack-config-builder";
+    export { BuildConfig, css, DefaultBuildConfig, DesignType, ModuleConfig, Version, WebpackConfigBuilder };
 }
 declare module "src/design/schema-version" {
     /** @typedef {import('./design').default} Design */
@@ -4685,6 +4685,20 @@ declare module "src/content-element/content-element" {
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
         /**
+         * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withReducedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to remove to the allowed elements list.
+         * @returns {ContentElement}
+         */
+        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        /**
          * Clone the configuration.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -5987,6 +6001,20 @@ declare module "src/design/design" {
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): Design;
         /**
+         * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withReducedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+         * @param {...ContentElement} elements - The elements to remove to the allowed elements list.
+         * @returns {ContentElement}
+         */
+        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        /**
          * The style configurations of your design. This is only necessary if you use
          * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
          * Otherwise you don't have to register your styles here.
@@ -6365,6 +6393,20 @@ declare module "src/website/abstract-include" {
          * @returns {this}
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): this;
+        /**
+       * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+       * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+       *
+       * @example
+       * .withReducedDropzone(
+       *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+       *   require('./content-elements/basic/text'),
+       *   require('./content-elements/basic/image'))
+       * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+       * @param {...ContentElement} elements - The elements to remove to the allowed elements list.
+       * @returns {ContentElement}
+       */
+        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
     }
     export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
@@ -7188,23 +7230,23 @@ declare module "src/design/design-factory" {
          */
         get h(): DesignHelper;
     }
-    import Design from "src/design/design";
-    import ContentElementGroup from "src/content-element/content-element-group";
     import ContentElement from "src/content-element/content-element";
-    import Website from "src/website/website";
-    import Include from "src/website/include";
+    import ContentElementGroup from "src/content-element/content-element-group";
+    import PartFactory from "src/content-element/part/part-factory";
+    import Design from "src/design/design";
+    import DesignHelper from "src/design/design-helper";
     import Dropzone from "src/dropzone/dropzone";
-    import PageInclude from "src/website/page-include";
-    import Pagination from "src/website/pagination";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
-    import Style from "src/style/style";
-    import CssClass from "src/style/css-class";
-    import StyleOption from "src/style/style-option";
-    import DomManipulation from "src/style/dom-manipulation";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
-    import PartFactory from "src/content-element/part/part-factory";
-    import DesignHelper from "src/design/design-helper";
+    import CssClass from "src/style/css-class";
+    import DomManipulation from "src/style/dom-manipulation";
+    import Style from "src/style/style";
+    import StyleOption from "src/style/style-option";
+    import Include from "src/website/include";
+    import PageInclude from "src/website/page-include";
+    import Pagination from "src/website/pagination";
+    import Website from "src/website/website";
 }
 declare module "src/bsi-property" {
     /**
@@ -7215,48 +7257,48 @@ declare module "src/bsi-property" {
     export default function bsiProperty(property: string, fallback?: any): any;
 }
 declare module "export/browser" {
-    import DesignJsonProperty from "src/design-json-property";
     import AbstractBuilder from "src/abstract-builder";
     import AbstractConstant from "src/abstract-constant";
+    import bsiProperty from "src/bsi-property";
     import BuilderObjectNormalizer from "src/builder-object-normalizer";
-    import ObjectCloner from "src/object-cloner";
-    import RawValue from "src/raw-value";
+    import ContentElement from "src/content-element/content-element";
+    import ContentElementGroup from "src/content-element/content-element-group";
+    import * as Icon from "src/content-element/icon";
+    import Part from "src/content-element/part/part";
+    import DesignJsonProperty from "src/design-json-property";
+    import * as DesignType from "src/design-type";
+    import Design from "src/design/design";
+    import DesignFactory from "src/design/design-factory";
     import * as Locale from "src/design/locale";
     import * as SchemaVersion from "src/design/schema-version";
-    import Design from "src/design/design";
-    import ContentElementGroup from "src/content-element/content-element-group";
     import Dropzone from "src/dropzone/dropzone";
-    import * as Version from "src/version";
-    import * as DesignType from "src/design-type";
-    import * as Feature from "src/html-editor-config/feature";
     import * as EnterMode from "src/html-editor-config/enter-mode";
+    import * as Feature from "src/html-editor-config/feature";
     import * as FontSizeUnit from "src/html-editor-config/font-size-unit";
     import * as Format from "src/html-editor-config/format";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
-    import Style from "src/style/style";
-    import CssClass from "src/style/css-class";
-    import StyleOption from "src/style/style-option";
-    import DomManipulation from "src/style/dom-manipulation";
-    import * as Icon from "src/content-element/icon";
-    import ContentElement from "src/content-element/content-element";
-    import Part from "src/content-element/part/part";
-    import Website from "src/website/website";
-    import PageInclude from "src/website/page-include";
-    import Include from "src/website/include";
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
+    import ObjectCloner from "src/object-cloner";
+    import RawValue from "src/raw-value";
+    import CssClass from "src/style/css-class";
+    import DomManipulation from "src/style/dom-manipulation";
+    import Style from "src/style/style";
+    import StyleOption from "src/style/style-option";
+    import * as Version from "src/version";
+    import Include from "src/website/include";
+    import PageInclude from "src/website/page-include";
+    import Website from "src/website/website";
     /**
      * A collection of various builder factory methods.
      *
      * @type {DesignFactory}
      */
     export const cx: DesignFactory;
-    import bsiProperty from "src/bsi-property";
-    import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { AbstractBuilder, AbstractConstant, bsiProperty, BuilderObjectNormalizer, ContentElement, ContentElementGroup, CssClass, Design, DesignJsonProperty, DesignType, DomManipulation, Dropzone, EnterMode, Feature, FontSizeUnit, Format, HtmlEditorConfig, Icon, Include, Locale, NLS, ObjectCloner, PageInclude, Part, RawValue, SchemaVersion, Style, StyleOption, Translation, Version, Website };
 }
 declare module "@bsi-cx/design-build" {
-    export * from "export/main";
     export * from "export/browser";
+    export * from "export/main";
 }
 //# sourceMappingURL=types.d.ts.map

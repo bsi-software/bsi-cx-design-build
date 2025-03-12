@@ -1,9 +1,9 @@
 import AbstractBuilder from '../abstract-builder';
+import { builderObjectValue, identity, uuid } from '../browser-utility';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, identity, uuid} from '../browser-utility';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
-import {CX_1_3} from '../version';
-import {WEBSITE} from '../design-type';
+import { WEBSITE } from '../design-type';
+import { CX_1_3 } from '../version';
 
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
@@ -202,6 +202,32 @@ export default class AbstractInclude extends AbstractBuilder {
     return this;
   }
 
+    /**
+   * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withReducedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+   * @param {...ContentElement} elements - The elements to remove to the allowed elements list.
+   * @returns {ContentElement}
+   */
+    withReducedDropzone(id, ...elements) {
+      let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+  
+      if (dropzone) {
+        let removeIds = elements.map(el => el.elementId);
+        let allowedElements = dropzone.allowedElements;
+        allowedElements = allowedElements.filter(el => !removeIds.includes(el.elementId));
+        dropzone.withAllowedElements(...allowedElements);
+      }
+  
+      return this;
+    }
+  
   _buildInternal() {
     let config = {};
     let include = {};
