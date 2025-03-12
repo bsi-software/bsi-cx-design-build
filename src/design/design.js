@@ -421,7 +421,7 @@ export default class Design extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to remove to the allowed elements list.
+   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
    * @returns {ContentElement}
    */
   withReducedDropzone(id, ...elements) {
