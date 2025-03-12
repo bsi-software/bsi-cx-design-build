@@ -606,6 +606,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static WEBSITE_CONTENT_TYPES = 'websiteContentTypes';
+  /**
+   * @type {string}
+   */
   static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
   /**
    * @type {string}

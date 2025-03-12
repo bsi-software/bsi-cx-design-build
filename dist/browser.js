@@ -81,6 +81,7 @@ __webpack_require__.d(__webpack_exports__, {
   Translation: () => (/* reexport */ Translation),
   Version: () => (/* reexport */ version_namespaceObject),
   Website: () => (/* reexport */ Website),
+  WebsiteContentType: () => (/* reexport */ websiteContentType_namespaceObject),
   bsiProperty: () => (/* reexport */ bsiProperty),
   cx: () => (/* binding */ cx)
 });
@@ -133,6 +134,20 @@ __webpack_require__.d(locale_namespaceObject, {
   IT_CH: () => (IT_CH),
   Locale: () => (Locale),
   WILDCARD: () => (WILDCARD)
+});
+
+// NAMESPACE OBJECT: ./src/design/websiteContentType.js
+var websiteContentType_namespaceObject = {};
+__webpack_require__.r(websiteContentType_namespaceObject);
+__webpack_require__.d(websiteContentType_namespaceObject, {
+  BLOG: () => (BLOG),
+  CUSTOMER_PARTNER: () => (CUSTOMER_PARTNER),
+  EVENT: () => (EVENT),
+  OPEN_POSITION: () => (OPEN_POSITION),
+  POP_UP: () => (POP_UP),
+  PRESS_RELEASE: () => (PRESS_RELEASE),
+  USE_CASE: () => (USE_CASE),
+  WebsiteContentType: () => (WebsiteContentType)
 });
 
 // NAMESPACE OBJECT: ./src/design/schema-version.js
@@ -275,6 +290,35 @@ __webpack_require__.d(icon_namespaceObject, {
   YOUTUBE: () => (YOUTUBE)
 });
 
+<<<<<<< HEAD
+=======
+// NAMESPACE OBJECT: ./src/content-element/part/part.js
+var part_namespaceObject = {};
+__webpack_require__.r(part_namespaceObject);
+__webpack_require__.d(part_namespaceObject, {
+  BACKGROUND_IMAGE: () => (BACKGROUND_IMAGE),
+  FORM: () => (FORM),
+  FORMATTED_TEXT: () => (FORMATTED_TEXT),
+  FORM_CHECKBOX: () => (FORM_CHECKBOX),
+  FORM_FIELD: () => (FORM_FIELD),
+  FORM_RADIO: () => (FORM_RADIO),
+  FORM_SELECT: () => (FORM_SELECT),
+  FORM_TEXTAREA: () => (FORM_TEXTAREA),
+  HTML: () => (part_HTML),
+  IMAGE: () => (part_IMAGE),
+  ITERATOR: () => (ITERATOR),
+  LINK: () => (LINK),
+  NEWS_SNIPPETS: () => (NEWS_SNIPPETS),
+  PLAIN_TEXT: () => (PLAIN_TEXT),
+  Part: () => (Part),
+  SOCIAL_FOLLOW: () => (part_SOCIAL_FOLLOW),
+  SOCIAL_SHARE: () => (part_SOCIAL_SHARE),
+  TABLE: () => (part_TABLE),
+  URL_PROVIDER: () => (URL_PROVIDER),
+  VIDEO: () => (part_VIDEO)
+});
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/design-json-property.js
 class DesignJsonProperty {
   /**
@@ -457,6 +501,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static NLS = 'nls';
+  /**
+   * @type {string}
+   */
+  static WEBSITE_CONTENT_TYPES = 'websiteContentTypes';
   /**
    * @type {string}
    */
@@ -1220,6 +1268,176 @@ class BuilderObjectNormalizer {
   }
 }
 
+<<<<<<< HEAD
+=======
+;// ./src/browser-utility.js
+/**
+ * @param {(string|number)[]} arr
+ * @returns {string}
+ */
+function scalarArrayToList(arr) {
+  return arr.join(',');
+}
+
+/**
+ * @template T
+ * @param {T} v
+ * @returns {T}
+ */
+function identity(v) {
+  return v;
+}
+
+/**
+ * @param {AbstractConstant} constant
+ * @returns {string}
+ */
+function constantObjectValue(constant) {
+  return constant.value;
+}
+
+/**
+ * @param {AbstractBuilder} builder
+ * @returns {{}}
+ */
+function builderObjectValue(builder) {
+  return builder.build();
+}
+
+/**
+ * Very simple UUID v4 generator. Don't use the <code>crypto.getRandomValues()</code> or the uuid NPM package
+ * (won't work in the browser context).
+ *
+ * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
+ * @returns {string}
+ */
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+;// ./src/content-element/part/abstract-part.js
+
+
+
+
+/** @typedef {import('./part').Part} Part */
+
+/**
+ * @abstract
+ */
+class AbstractPart extends AbstractBuilder {
+  /**
+   * @type {string}
+   * @private
+   */
+  _id = undefined;
+  /**
+   * @type {Part}
+   * @private
+   */
+  _partId = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _label = undefined;
+
+  /**
+   * @param {Part} partId
+   */
+  constructor(partId) {
+    super();
+    /**
+     * @type {Part}
+     * @private
+     */
+    this._partId = partId;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get id() {
+    return this._id;
+  }
+
+  /**
+   * @returns {Part}
+   */
+  get partId() {
+    return this._partId;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * The ID of the part. You can apply an unique identifier to your content element part.
+   * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+   * This property is only for the design build and will not appear in the final build artifacts.
+   * The advantage of using this property is, that you don't have to care about the order of your parts
+   * in your specification. The build will reorder the part definitions in the order they appear in the
+   * corresponding template. This can be very handy in large and complex elements with many parts.
+   *
+   * @example
+   * // template.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+   * </div>
+   *
+   * // title.js
+   * module.exports = new ContentElement()
+   *   .withElementId('title')
+   *   .withLabel('Title')
+   *   .withFile(require('./template.html')
+   *   .withParts(
+   *     new PlainTextPart()
+   *       .withId('539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+   *       .withLabel('Title'));
+   *
+   * // dist/title-4026bb9f6ec6c2284775.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+   * </div>
+   * @param {string} id - The ID to use.
+   * @returns {this}
+   */
+  withId(id) {
+    this._id = id;
+    return this;
+  }
+
+  /**
+   * The set content element part's label.
+   *
+   * @param {string|NLS} label - The label to set.
+   * @returns {this}
+   * @since Studio 1.0
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+
+    return config;
+  }
+}
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/design/locale.js
 
 
@@ -1300,6 +1518,63 @@ const IT = new Locale('it');
  */
 const IT_CH = new Locale('it-CH');
 
+<<<<<<< HEAD
+=======
+;// ./src/design/websiteContentType.js
+
+
+/** @typedef {import('./design').default} Design */
+
+/**
+ * Class to define a WebsiteContentType.
+ */
+class WebsiteContentType extends AbstractConstant {
+}
+
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const BLOG = new WebsiteContentType('blog');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const POP_UP = new WebsiteContentType('pop-up');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const OPEN_POSITION = new WebsiteContentType('open-position');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const PRESS_RELEASE = new WebsiteContentType('press-release');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const USE_CASE = new WebsiteContentType('use-case');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const EVENT = new WebsiteContentType('event');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const CUSTOMER_PARTNER = new WebsiteContentType('customer-partner');
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/design/schema-version.js
 
 
@@ -1344,6 +1619,7 @@ const V_23_1 = new SchemaVersion('23.1');
  */
 const V_23_2 = new SchemaVersion('23.2');
 
+<<<<<<< HEAD
 ;// ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
@@ -1392,6 +1668,8 @@ function uuid() {
   });
 }
 
+=======
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
@@ -1425,6 +1703,10 @@ class DesignJsonPropertyExtension {
 }
 
 ;// ./src/design/design.js
+<<<<<<< HEAD
+=======
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 
 
 
@@ -1433,6 +1715,7 @@ class DesignJsonPropertyExtension {
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
@@ -1526,6 +1809,11 @@ class Design extends AbstractBuilder {
    * @private
    */
   _nls = undefined;
+  /**
+   * @type {RawValue|[WebsiteContentType]|undefined}
+   * @private
+   */
+  _websiteContentTypes = undefined;
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -1616,6 +1904,13 @@ class Design extends AbstractBuilder {
    */
   get nls() {
     return this._nls;
+  }
+
+  /**
+   * @returns {RawValue|WebsiteContentType[]|undefined}
+   */
+  get websiteContentTypes() {
+    return this._websiteContentTypes;
   }
 
   /**
@@ -2040,6 +2335,32 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the allowed website content types.
+   *
+   * @see {@link withRawWebsiteContentTypes} to set a raw value
+   * @param {...WebsiteContentType} websiteContentTypes
+   * @returns {Design}
+   */
+  withWebsiteContentTypes(...websiteContentTypes) {
+    this._websiteContentTypes = websiteContentTypes;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the websiteContentTypes property.
+   *
+   * @example
+   * .withRawWebsiteContentTypes('blog', 'some-custom-type', 'use-case')
+   * @see {@link withWebsiteContentTypes}
+   * @param {...string} websiteContentTypes - The raw value.
+   * @returns {Design}
+   */
+  withRawWebsiteContentTypes(...websiteContentTypes) {
+    this._websiteContentTypes = new RawValue(websiteContentTypes);
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -2058,6 +2379,7 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
 
     return config;
   }
@@ -4702,6 +5024,111 @@ class ContentElement extends AbstractBuilder {
 }
 
 ;// ./src/content-element/part/part.js
+<<<<<<< HEAD
+=======
+
+
+class Part extends AbstractConstant {
+}
+
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const PLAIN_TEXT = new Part('plain-text');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORMATTED_TEXT = new Part('formatted-text');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_HTML = new Part('html');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_VIDEO = new Part('video');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_IMAGE = new Part('image');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const BACKGROUND_IMAGE = new Part('background-image');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_TABLE = new Part('table');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const ITERATOR = new Part('iterator');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const NEWS_SNIPPETS = new Part('news-snippets');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM = new Part('form');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_FIELD = new Part('form-field');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_CHECKBOX = new Part('form-checkbox');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_TEXTAREA = new Part('form-textarea');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_SELECT = new Part('form-select');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const FORM_RADIO = new Part('form-radio');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const LINK = new Part('link');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_SOCIAL_FOLLOW = new Part('social-follow');
+/**
+ * @type {Part}
+ * @since Studio 1.0
+ */
+const part_SOCIAL_SHARE = new Part('social-share');
+/**
+ * @type {Part}
+ * @since 22.0
+ */
+const URL_PROVIDER = new Part('url-provider');
+
+;// ./src/content-element/part/plain-text-part.js
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 
 
 
@@ -4728,6 +5155,22 @@ class Part extends AbstractBuilder {
    */
   _config = undefined;
 
+<<<<<<< HEAD
+=======
+;// ./src/content-element/part/formatted-text-part.js
+
+
+
+
+
+/** @typedef {import('../../design/design').default} Design */
+/** @typedef {import('../../html-editor-config/html-editor-config').default} HtmlEditorConfig */
+
+/**
+ * @since Studio 1.0
+ */
+class FormattedTextPart extends AbstractPart {
+>>>>>>> f7e5d3c (WebsiteContentTypes)
   /**
    * @type {RawValue|HtmlEditorConfig|undefined}
    * @private
@@ -4948,6 +5391,473 @@ class Part extends AbstractBuilder {
   }
 }
 
+<<<<<<< HEAD
+=======
+;// ./src/content-element/part/html-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class HtmlPart extends AbstractPart {
+  constructor() {
+    super(part_HTML);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {HtmlPart}
+   */
+  clone(shallow) {
+    return this._clone(new HtmlPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/video-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class VideoPart extends AbstractPart {
+  constructor() {
+    super(part_VIDEO);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {VideoPart}
+   */
+  clone(shallow) {
+    return this._clone(new VideoPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/image-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class ImagePart extends AbstractPart {
+  constructor() {
+    super(part_IMAGE);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {ImagePart}
+   */
+  clone(shallow) {
+    return this._clone(new ImagePart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/background-image-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class BackgroundImagePart extends AbstractPart {
+  constructor() {
+    super(BACKGROUND_IMAGE);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {BackgroundImagePart}
+   */
+  clone(shallow) {
+    return this._clone(new BackgroundImagePart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/table-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class TablePart extends AbstractPart {
+  constructor() {
+    super(part_TABLE);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {TablePart}
+   */
+  clone(shallow) {
+    return this._clone(new TablePart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/iterator-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class IteratorPart extends AbstractPart {
+  constructor() {
+    super(ITERATOR);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {IteratorPart}
+   */
+  clone(shallow) {
+    return this._clone(new IteratorPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/news-snippets-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class NewsSnippetsPart extends AbstractPart {
+  constructor() {
+    super(NEWS_SNIPPETS);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {NewsSnippetsPart}
+   */
+  clone(shallow) {
+    return this._clone(new NewsSnippetsPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/form-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class FormPart extends AbstractPart {
+  constructor() {
+    super(FORM);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/form-field-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class FormFieldPart extends AbstractPart {
+  constructor() {
+    super(FORM_FIELD);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormFieldPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormFieldPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/form-checkbox-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class FormCheckboxPart extends AbstractPart {
+  constructor() {
+    super(FORM_CHECKBOX);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormCheckboxPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormCheckboxPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/form-textarea-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class FormTextareaPart extends AbstractPart {
+  constructor() {
+    super(FORM_TEXTAREA);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormTextareaPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormTextareaPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/form-select-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class FormSelectPart extends AbstractPart {
+  constructor() {
+    super(FORM_SELECT);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormSelectPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormSelectPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/form-radio-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class FormRadioPart extends AbstractPart {
+  constructor() {
+    super(FORM_RADIO);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {FormRadioPart}
+   */
+  clone(shallow) {
+    return this._clone(new FormRadioPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/link-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class LinkPart extends AbstractPart {
+  constructor() {
+    super(LINK);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {LinkPart}
+   */
+  clone(shallow) {
+    return this._clone(new LinkPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/social-follow-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class SocialFollowPart extends AbstractPart {
+  constructor() {
+    super(part_SOCIAL_FOLLOW);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {SocialFollowPart}
+   */
+  clone(shallow) {
+    return this._clone(new SocialFollowPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/social-share-part.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class SocialSharePart extends AbstractPart {
+  constructor() {
+    super(part_SOCIAL_SHARE);
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {SocialSharePart}
+   */
+  clone(shallow) {
+    return this._clone(new SocialSharePart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/url-provider-part.js
+
+
+
+
+/**
+ * @since 22.0
+ */
+class UrlProviderPart extends AbstractPart {
+  constructor() {
+    super(URL_PROVIDER);
+  }
+
+  get minVersion() {
+    return CX_22_0;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {UrlProviderPart}
+   */
+  clone(shallow) {
+    return this._clone(new UrlProviderPart(), shallow);
+  }
+}
+
+;// ./src/content-element/part/raw.js
+
+
+
+/**
+ * @since Studio 1.0
+ */
+class RawPart extends AbstractPart {
+  /**
+   * @type {Record<string,*>}
+   * @private
+   */
+  _properties = undefined;
+
+  /**
+   * @param {string} partId
+   */
+  constructor(partId) {
+    const part = new Part(partId);
+
+    super(part);
+
+    this._properties = {};
+  }
+
+  /**
+   * @returns {Record<string, *>}
+   */
+  get properties() {
+    return this._properties;
+  }
+
+  /**
+   * Set a property for this raw part.
+   *
+   * @example
+   * let element = new ContentElement()
+   *   .withElementId('element')
+   *   .withParts(
+   *     new RawPart('chart')
+   *       .withLabel('Chart')
+   *       .withProperty('type','pie'))
+   * @param {string} name
+   * @param {string|array|number|boolean|Record|null} value
+   * @returns {RawPart}
+   */
+  withProperty(name, value) {
+    this._properties[name] = value;
+    return this;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {RawPart}
+   */
+  clone(shallow) {
+    return this._clone(new RawPart(this.partId), shallow);
+  }
+
+  _buildInternal() {
+    let config = super._buildInternal();
+
+    return Object.assign({}, config, this._properties);
+  }
+}
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/website/website.js
 
 
@@ -5797,6 +6707,7 @@ class NLS extends AbstractBuilder {
   }
 }
 
+<<<<<<< HEAD
 ;// ./src/content-element/part/part-factory.js
 
 
@@ -6210,6 +7121,8 @@ class PartFactory {
   }
 }
 
+=======
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/website/pagination.js
 
 
@@ -6293,6 +7206,214 @@ class Pagination extends AbstractBuilder {
   }
 }
 
+<<<<<<< HEAD
+=======
+;// ./src/content-element/part/part-factory.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class PartFactory {
+  /**
+   * Get a new background content element part builder instance.
+   *
+   * @returns {BackgroundImagePart}
+   */
+  get backgroundImage() {
+    return new BackgroundImagePart();
+  }
+
+  /**
+   * Get a new checkbox form field content element part builder instance.
+   *
+   * @returns {FormCheckboxPart}
+   */
+  get formCheckbox() {
+    return new FormCheckboxPart();
+  }
+
+  /**
+   * Get a new form field content element part builder instance.
+   *
+   * @returns {FormFieldPart}
+   */
+  get formField() {
+    return new FormFieldPart();
+  }
+
+  /**
+   * Get a new form content element part builder instance.
+   *
+   * @returns {FormPart}
+   */
+  get form() {
+    return new FormPart();
+  }
+
+  /**
+   * Get a new radio form field content element part builder instance.
+   *
+   * @returns {FormRadioPart}
+   */
+  get formRadio() {
+    return new FormRadioPart();
+  }
+
+  /**
+   * Get a new select form field content element part builder instance.
+   *
+   * @returns {FormSelectPart}
+   */
+  get formSelect() {
+    return new FormSelectPart();
+  }
+
+  /**
+   * Get a new textarea form field content element part builder instance.
+   *
+   * @returns {FormTextareaPart}
+   */
+  get formTextarea() {
+    return new FormTextareaPart();
+  }
+
+  /**
+   * Get a new formatted text content element part builder instance.
+   *
+   * @returns {FormattedTextPart}
+   */
+  get formattedText() {
+    return new FormattedTextPart();
+  }
+
+  /**
+   * Get a new HTML content element part builder instance.
+   *
+   * @returns {HtmlPart}
+   */
+  get html() {
+    return new HtmlPart();
+  }
+
+  /**
+   * Get a new image content element part builder instance.
+   *
+   * @returns {ImagePart}
+   */
+  get image() {
+    return new ImagePart();
+  }
+
+  /**
+   * Get a new iterator content element part builder instance.
+   *
+   * @returns {IteratorPart}
+   */
+  get iterator() {
+    return new IteratorPart();
+  }
+
+  /**
+   * Get a new link content element part builder instance.
+   *
+   * @returns {LinkPart}
+   */
+  get link() {
+    return new LinkPart();
+  }
+
+  /**
+   * Get a new news snippet content element part builder instance.
+   *
+   * @returns {NewsSnippetsPart}
+   */
+  get newsSnippet() {
+    return new NewsSnippetsPart();
+  }
+
+  /**
+   * Get a new plain text content element part builder instance.
+   *
+   * @returns {PlainTextPart}
+   */
+  get plainText() {
+    return new PlainTextPart();
+  }
+
+  /**
+   * Get a new social follow content element part builder instance.
+   *
+   * @returns {SocialFollowPart}
+   */
+  get socialFollow() {
+    return new SocialFollowPart();
+  }
+
+  /**
+   * Get a new social share content element part builder instance.
+   *
+   * @returns {SocialSharePart}
+   */
+  get socialShare() {
+    return new SocialSharePart();
+  }
+
+  /**
+   * Get a new table content element part builder instance.
+   *
+   * @returns {TablePart}
+   */
+  get table() {
+    return new TablePart();
+  }
+
+  /**
+   * Get a new URL provider content element part builder instance.
+   *
+   * @returns {UrlProviderPart}
+   */
+  get urlProvider() {
+    return new UrlProviderPart();
+  }
+
+  /**
+   * Get a new video content element part builder instance.
+   *
+   * @returns {VideoPart}
+   */
+  get video() {
+    return new VideoPart();
+  }
+
+  /**
+   * Create a raw element part builder instance. Can be used for custom element parts.
+   *
+   * @param {string} partId
+   * @returns {RawPart}
+   */
+  raw(partId) {
+    return new RawPart(partId);
+  }
+}
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 ;// ./src/design/design-helper.js
 
 
@@ -6829,6 +7950,31 @@ function bsiProperty(property, fallback) {
 }
 
 ;// ./export/browser.js
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> f7e5d3c (WebsiteContentTypes)
 
 
 

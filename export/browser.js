@@ -5,6 +5,7 @@ import BuilderObjectNormalizer from '../src/builder-object-normalizer';
 import ObjectCloner from '../src/object-cloner';
 import RawValue from '../src/raw-value';
 import * as Locale from '../src/design/locale';
+import * as WebsiteContentType from '../src/design/websiteContentType';
 import * as SchemaVersion from '../src/design/schema-version';
 import Design from '../src/design/design';
 import ContentElementGroup from '../src/content-element/content-element-group';
@@ -46,6 +47,7 @@ export {
   ObjectCloner,
   RawValue,
   Locale,
+  WebsiteContentType,
   SchemaVersion,
   Design,
   ContentElementGroup,

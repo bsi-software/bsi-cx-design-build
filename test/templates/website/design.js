@@ -1,4 +1,4 @@
-const {cx, Locale, bsiProperty} = require('@bsi-cx/design-build');
+const {cx, Locale, bsiProperty, WebsiteContentType} = require('@bsi-cx/design-build');
 
 /**
  * @type {string}
@@ -79,4 +79,5 @@ module.exports = cx.design
           .withName('Navigation')
           .withEditable(false)
           .withFile(require('./includes/navigation.hbs'))))
-  .withNLS(Object.values(require('./nls')));
+  .withNLS(Object.values(require('./nls')))
+  .withWebsiteContentTypes(WebsiteContentType.BLOG, WebsiteContentType.CUSTOMER_PARTNER);

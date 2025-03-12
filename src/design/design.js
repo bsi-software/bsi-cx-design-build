@@ -3,9 +3,11 @@ import { builderObjectValue, constantObjectValue, identity } from '../browser-ut
 import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
+import { WebsiteContentType } from './websiteContentType';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
@@ -99,6 +101,11 @@ export default class Design extends AbstractBuilder {
    * @private
    */
   _nls = undefined;
+  /**
+   * @type {RawValue|[WebsiteContentType]|undefined}
+   * @private
+   */
+  _websiteContentTypes = undefined;
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -189,6 +196,13 @@ export default class Design extends AbstractBuilder {
    */
   get nls() {
     return this._nls;
+  }
+
+  /**
+   * @returns {RawValue|WebsiteContentType[]|undefined}
+   */
+  get websiteContentTypes() {
+    return this._websiteContentTypes;
   }
 
   /**
@@ -613,6 +627,32 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the allowed website content types.
+   *
+   * @see {@link withRawWebsiteContentTypes} to set a raw value
+   * @param {...WebsiteContentType} websiteContentTypes
+   * @returns {Design}
+   */
+  withWebsiteContentTypes(...websiteContentTypes) {
+    this._websiteContentTypes = websiteContentTypes;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the websiteContentTypes property.
+   *
+   * @example
+   * .withRawWebsiteContentTypes('blog', 'some-custom-type', 'use-case')
+   * @see {@link withWebsiteContentTypes}
+   * @param {...string} websiteContentTypes - The raw value.
+   * @returns {Design}
+   */
+  withRawWebsiteContentTypes(...websiteContentTypes) {
+    this._websiteContentTypes = new RawValue(websiteContentTypes);
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -631,6 +671,7 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
 
     return config;
   }
