@@ -182,6 +182,14 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static WEBSITE_CONTENT_TYPES = 'websiteContentTypes';
+  /**
+   * @type {string}
+   */
+  static WEBSITE_CONTENT_TYPE = 'websiteContentType';
+  /**
+   * @type {string}
+   */
   static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
   /**
    * @type {string}
@@ -206,7 +214,7 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
-  static CONTENT_TYPE = 'contentType';
+  static INCLUDE_TYPE = 'includeType';
   /**
    * @type {string}
    */

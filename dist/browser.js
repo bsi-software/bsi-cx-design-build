@@ -81,6 +81,7 @@ __webpack_require__.d(__webpack_exports__, {
   Translation: () => (/* reexport */ Translation),
   Version: () => (/* reexport */ version_namespaceObject),
   Website: () => (/* reexport */ Website),
+  WebsiteContentType: () => (/* reexport */ websiteContentType_namespaceObject),
   bsiProperty: () => (/* reexport */ bsiProperty),
   cx: () => (/* binding */ cx)
 });
@@ -133,6 +134,20 @@ __webpack_require__.d(locale_namespaceObject, {
   IT_CH: () => (IT_CH),
   Locale: () => (Locale),
   WILDCARD: () => (WILDCARD)
+});
+
+// NAMESPACE OBJECT: ./src/design/websiteContentType.js
+var websiteContentType_namespaceObject = {};
+__webpack_require__.r(websiteContentType_namespaceObject);
+__webpack_require__.d(websiteContentType_namespaceObject, {
+  BLOG: () => (BLOG),
+  CUSTOMER_PARTNER: () => (CUSTOMER_PARTNER),
+  EVENT: () => (EVENT),
+  OPEN_POSITION: () => (OPEN_POSITION),
+  POP_UP: () => (POP_UP),
+  PRESS_RELEASE: () => (PRESS_RELEASE),
+  USE_CASE: () => (USE_CASE),
+  WebsiteContentType: () => (WebsiteContentType)
 });
 
 // NAMESPACE OBJECT: ./src/design/schema-version.js
@@ -460,6 +475,14 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static WEBSITE_CONTENT_TYPES = 'websiteContentTypes';
+  /**
+   * @type {string}
+   */
+  static WEBSITE_CONTENT_TYPE = 'websiteContentType';
+  /**
+   * @type {string}
+   */
   static MAX_NAVIGATION_LEVEL = 'maxNavigationLevel';
   /**
    * @type {string}
@@ -484,7 +507,7 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
-  static CONTENT_TYPE = 'contentType';
+  static INCLUDE_TYPE = 'includeType';
   /**
    * @type {string}
    */
@@ -1300,6 +1323,60 @@ const IT = new Locale('it');
  */
 const IT_CH = new Locale('it-CH');
 
+;// ./src/design/websiteContentType.js
+
+
+/** @typedef {import('./design').default} Design */
+
+/**
+ * Class to define a WebsiteContentType.
+ */
+class WebsiteContentType extends AbstractConstant {
+}
+
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const BLOG = new WebsiteContentType('blog');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const POP_UP = new WebsiteContentType('pop-up');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const OPEN_POSITION = new WebsiteContentType('open-position');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const PRESS_RELEASE = new WebsiteContentType('press-release');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const USE_CASE = new WebsiteContentType('use-case');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const EVENT = new WebsiteContentType('event');
+/**
+ * @see {@link Design#withDefaultWebsiteContentType}
+ * @see {@link Design#withWebsiteContentTypes}
+ * @type {WebsiteContentType}
+ */
+const CUSTOMER_PARTNER = new WebsiteContentType('customer-partner');
+
 ;// ./src/design/schema-version.js
 
 
@@ -1433,6 +1510,7 @@ class DesignJsonPropertyExtension {
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
@@ -1526,6 +1604,11 @@ class Design extends AbstractBuilder {
    * @private
    */
   _nls = undefined;
+  /**
+   * @type {RawValue|[WebsiteContentType]|undefined}
+   * @private
+   */
+  _websiteContentTypes = undefined;
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -1616,6 +1699,13 @@ class Design extends AbstractBuilder {
    */
   get nls() {
     return this._nls;
+  }
+
+  /**
+   * @returns {RawValue|[WebsiteContentType]|undefined}
+   */
+  get websiteContentTypes() {
+    return this._websiteContentTypes;
   }
 
   /**
@@ -2040,6 +2130,32 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the allowed website content types.
+   *
+   * @see {@link withRawWebsiteContentTypes} to set a raw value
+   * @param {...WebsiteContentType} websiteContentTypes
+   * @returns {Design}
+   */
+  withWebsiteContentTypes(...websiteContentTypes) {
+    this._websiteContentTypes = websiteContentTypes;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the websiteContentTypes property.
+   *
+   * @example
+   * .withRawWebsiteContentTypes('blog', 'some-custom-type', 'use-case')
+   * @see {@link withWebsiteContentTypes}
+   * @param {...string} websiteContentTypes - The raw value.
+   * @returns {Design}
+   */
+  withRawWebsiteContentTypes(...websiteContentTypes) {
+    this._websiteContentTypes = new RawValue(websiteContentTypes);
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -2058,6 +2174,7 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
 
     return config;
   }
@@ -5162,7 +5279,12 @@ class AbstractInclude extends AbstractBuilder {
    * @type {string|undefined}
    * @protected
    */
-  _contentType = undefined;
+  _includeType = undefined;
+  /**
+   * @type {string|WebsiteContentType|undefined}
+   * @protected
+   */
+  _websiteContentType = undefined;
   /**
    * @type {{}|undefined}
    * @protected
@@ -5208,8 +5330,15 @@ class AbstractInclude extends AbstractBuilder {
   /**
    * @returns {string|undefined}
    */
-  get contentType() {
-    return this._contentType;
+  get includeType() {
+    return this._includeType;
+  }
+
+  /**
+   * @returns {string|WebsiteContentType|undefined}
+   */
+  get websiteContentType() {
+    return this._websiteContentType;
   }
 
   /**
@@ -5253,15 +5382,31 @@ class AbstractInclude extends AbstractBuilder {
   }
 
   /**
-   * Define the content type of this include.
+   * Define the type of this include.
    *
    * @example
-   * .withContentType('pre-defined')
-   * @param {string} contentType - The content type of this include.
+   * .withIncludeType('pre-defined')
+   * @param {string} includeType - The type of this include.
    * @returns {this}
    */
-  withContentType(contentType) {
-    this._contentType = contentType;
+  withIncludeType(includeType) {
+    this._includeType = includeType;
+    return this;
+  }
+
+  /**
+   * Define the website content type of this include.
+   * If set the choosen WebsiteContentType use this include.
+   * 
+   * For example: if the WebsiteContentType is BLOG, every blogpost in this Website use this include as template
+   *
+   * @example
+   * .withWebsiteContentType(WebsiteContentType.BLOG)
+   * @param {WebsiteContentType} websiteContentType - The website content type of this include.
+   * @returns {this}
+   */
+  withWebsiteContentType(websiteContentType) {
+    this._websiteContentType = websiteContentType;
     return this;
   }
 
@@ -5371,7 +5516,8 @@ class AbstractInclude extends AbstractBuilder {
     config[this.identifier] = include;
 
     this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_TYPE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDE_TYPE, include, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPE, include, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);
@@ -6829,6 +6975,7 @@ function bsiProperty(property, fallback) {
 }
 
 ;// ./export/browser.js
+
 
 
 

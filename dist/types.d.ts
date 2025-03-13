@@ -406,6 +406,14 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static WEBSITE_CONTENT_TYPES: string;
+        /**
+         * @type {string}
+         */
+        static WEBSITE_CONTENT_TYPE: string;
+        /**
+         * @type {string}
+         */
         static MAX_NAVIGATION_LEVEL: string;
         /**
          * @type {string}
@@ -430,7 +438,7 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
-        static CONTENT_TYPE: string;
+        static INCLUDE_TYPE: string;
         /**
          * @type {string}
          */
@@ -3149,6 +3157,58 @@ declare module "src/design/schema-version" {
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/design/websiteContentType" {
+    /** @typedef {import('./design').default} Design */
+    /**
+     * Class to define a WebsiteContentType.
+     */
+    export class WebsiteContentType extends AbstractConstant {
+    }
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const BLOG: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const POP_UP: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const OPEN_POSITION: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const PRESS_RELEASE: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const USE_CASE: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const EVENT: WebsiteContentType;
+    /**
+     * @see {@link Design#withDefaultWebsiteContentType}
+     * @see {@link Design#withWebsiteContentTypes}
+     * @type {WebsiteContentType}
+     */
+    export const CUSTOMER_PARTNER: WebsiteContentType;
+    export type Design = import("src/design/design").default;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/style/css-class" {
     /** @typedef {import('./style').default} Style */
     /**
@@ -5723,6 +5783,7 @@ declare module "src/nls/nls" {
 declare module "src/design/design" {
     /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
     /** @typedef {import('./locale').Locale} Locale */
+    /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
@@ -5816,6 +5877,11 @@ declare module "src/design/design" {
          */
         private _nls;
         /**
+         * @type {RawValue|[WebsiteContentType]|undefined}
+         * @private
+         */
+        private _websiteContentTypes;
+        /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
         get schemaVersion(): RawValue | SchemaVersion | undefined;
@@ -5867,6 +5933,10 @@ declare module "src/design/design" {
          * @returns {RawValue|NLS[]|undefined}
          */
         get nls(): RawValue | NLS[] | undefined;
+        /**
+         * @returns {RawValue|[WebsiteContentType]|undefined}
+         */
+        get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -6184,6 +6254,24 @@ declare module "src/design/design" {
          */
         withRawNLS(nls: {}): Design;
         /**
+         * Configure the allowed website content types.
+         *
+         * @see {@link withRawWebsiteContentTypes} to set a raw value
+         * @param {...WebsiteContentType} websiteContentTypes
+         * @returns {Design}
+         */
+        withWebsiteContentTypes(...websiteContentTypes: WebsiteContentType[]): Design;
+        /**
+         * Set the raw value of the websiteContentTypes property.
+         *
+         * @example
+         * .withRawWebsiteContentTypes('blog', 'some-custom-type', 'use-case')
+         * @see {@link withWebsiteContentTypes}
+         * @param {...string} websiteContentTypes - The raw value.
+         * @returns {Design}
+         */
+        withRawWebsiteContentTypes(...websiteContentTypes: string[]): Design;
+        /**
          * Clone the configuration.
          *
          * @example
@@ -6197,6 +6285,7 @@ declare module "src/design/design" {
     }
     export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
     export type Locale = import("src/design/locale").Locale;
+    export type WebsiteContentType = import("src/design/websiteContentType").WebsiteContentType;
     export type ContentElement = import("src/content-element/content-element").default;
     export type FormattedTextPart = any;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
@@ -6311,7 +6400,12 @@ declare module "src/website/abstract-include" {
          * @type {string|undefined}
          * @protected
          */
-        protected _contentType: string | undefined;
+        protected _includeType: string | undefined;
+        /**
+         * @type {string|WebsiteContentType|undefined}
+         * @protected
+         */
+        protected _websiteContentType: string | WebsiteContentType | undefined;
         /**
          * @type {{}|undefined}
          * @protected
@@ -6338,7 +6432,11 @@ declare module "src/website/abstract-include" {
         /**
          * @returns {string|undefined}
          */
-        get contentType(): string | undefined;
+        get includeType(): string | undefined;
+        /**
+         * @returns {string|WebsiteContentType|undefined}
+         */
+        get websiteContentType(): string | WebsiteContentType | undefined;
         /**
          * @returns {{}|undefined}
          */
@@ -6359,14 +6457,26 @@ declare module "src/website/abstract-include" {
          */
         withEditable(editable: boolean): this;
         /**
-         * Define the content type of this include.
+         * Define the type of this include.
          *
          * @example
-         * .withContentType('pre-defined')
-         * @param {string} contentType - The content type of this include.
+         * .withIncludeType('pre-defined')
+         * @param {string} includeType - The type of this include.
          * @returns {this}
          */
-        withContentType(contentType: string): this;
+        withIncludeType(includeType: string): this;
+        /**
+         * Define the website content type of this include.
+         * If set the choosen WebsiteContentType use this include.
+         *
+         * For example: if the WebsiteContentType is BLOG, every blogpost in this Website use this include as template
+         *
+         * @example
+         * .withWebsiteContentType(WebsiteContentType.BLOG)
+         * @param {WebsiteContentType} websiteContentType - The website content type of this include.
+         * @returns {this}
+         */
+        withWebsiteContentType(websiteContentType: WebsiteContentType): this;
         /**
          * Define the template to use with this include. Be aware, that you must <code>require</code> the corresponding
          * template file. This can either be a \*.html, \*.hbs, \*.hbs.twig or a \*.twig file.
@@ -7290,6 +7400,7 @@ declare module "export/browser" {
     import ObjectCloner from "src/object-cloner";
     import RawValue from "src/raw-value";
     import * as Locale from "src/design/locale";
+    import * as WebsiteContentType from "src/design/websiteContentType";
     import * as SchemaVersion from "src/design/schema-version";
     import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
@@ -7321,7 +7432,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

@@ -12,6 +12,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Rewrite part implementation
 * Function `.withReducedDropzone()`
 * Function `addStyle` and `removeStyle`
+* Add "websiteContentType" to design and include
 
 ## [1.13.5] - 28.03.2024
 
