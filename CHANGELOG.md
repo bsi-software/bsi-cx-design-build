@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 
+* fix newsSnippets - Typo
 
 ## [1.13.6] - 14.03.2025
 
