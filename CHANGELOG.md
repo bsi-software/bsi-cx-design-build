@@ -7,7 +7,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 
+
+## [1.13.7] - 14.03.2025
+
+### Changed
 * fix newsSnippets - Typo
+
+[1.13.6]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.6...1.13.7
+
 
 ## [1.13.6] - 14.03.2025
 
