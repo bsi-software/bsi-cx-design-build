@@ -7,12 +7,21 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 
+
+## [1.13.6] - 14.03.2025
+
+### Changed
+* Rewrite part implementation
+
+### Added
 * New element part attributes: altImageMandatory und captionEnabled
 * New way to build element parts: `cx.part.PlainText('partLabel', 'partId')`
-* Rewrite part implementation
 * Function `.withReducedDropzone()`
 * Function `addStyle` and `removeStyle`
 * Add "websiteContentType" to design and include
+
+[1.13.6]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.5...1.13.6
+
 
 ## [1.13.5] - 28.03.2024
 
