@@ -251,7 +251,7 @@ export default class PartFactory {
    * @returns {Part}
    */
   get newsSnippet() {
-    return this.NewsSnippets();
+    return this.NewsSnippet();
   }
 
   /**
