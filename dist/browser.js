@@ -141,12 +141,9 @@ var websiteContentType_namespaceObject = {};
 __webpack_require__.r(websiteContentType_namespaceObject);
 __webpack_require__.d(websiteContentType_namespaceObject, {
   BLOG: () => (BLOG),
-  CUSTOMER_PARTNER: () => (CUSTOMER_PARTNER),
   EVENT: () => (EVENT),
-  OPEN_POSITION: () => (OPEN_POSITION),
   POP_UP: () => (POP_UP),
   PRESS_RELEASE: () => (PRESS_RELEASE),
-  USE_CASE: () => (USE_CASE),
   WebsiteContentType: () => (WebsiteContentType)
 });
 
@@ -1340,42 +1337,27 @@ class WebsiteContentType extends AbstractConstant {
  * @type {WebsiteContentType}
  */
 const BLOG = new WebsiteContentType('blog');
+
 /**
  * @see {@link Design#withDefaultWebsiteContentType}
  * @see {@link Design#withWebsiteContentTypes}
  * @type {WebsiteContentType}
  */
 const POP_UP = new WebsiteContentType('pop-up');
-/**
- * @see {@link Design#withDefaultWebsiteContentType}
- * @see {@link Design#withWebsiteContentTypes}
- * @type {WebsiteContentType}
- */
-const OPEN_POSITION = new WebsiteContentType('open-position');
+
 /**
  * @see {@link Design#withDefaultWebsiteContentType}
  * @see {@link Design#withWebsiteContentTypes}
  * @type {WebsiteContentType}
  */
 const PRESS_RELEASE = new WebsiteContentType('press-release');
-/**
- * @see {@link Design#withDefaultWebsiteContentType}
- * @see {@link Design#withWebsiteContentTypes}
- * @type {WebsiteContentType}
- */
-const USE_CASE = new WebsiteContentType('use-case');
+
 /**
  * @see {@link Design#withDefaultWebsiteContentType}
  * @see {@link Design#withWebsiteContentTypes}
  * @type {WebsiteContentType}
  */
 const EVENT = new WebsiteContentType('event');
-/**
- * @see {@link Design#withDefaultWebsiteContentType}
- * @see {@link Design#withWebsiteContentTypes}
- * @type {WebsiteContentType}
- */
-const CUSTOMER_PARTNER = new WebsiteContentType('customer-partner');
 
 ;// ./src/design/schema-version.js
 

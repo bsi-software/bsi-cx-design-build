@@ -3181,31 +3181,13 @@ declare module "src/design/websiteContentType" {
      * @see {@link Design#withWebsiteContentTypes}
      * @type {WebsiteContentType}
      */
-    export const OPEN_POSITION: WebsiteContentType;
-    /**
-     * @see {@link Design#withDefaultWebsiteContentType}
-     * @see {@link Design#withWebsiteContentTypes}
-     * @type {WebsiteContentType}
-     */
     export const PRESS_RELEASE: WebsiteContentType;
     /**
      * @see {@link Design#withDefaultWebsiteContentType}
      * @see {@link Design#withWebsiteContentTypes}
      * @type {WebsiteContentType}
      */
-    export const USE_CASE: WebsiteContentType;
-    /**
-     * @see {@link Design#withDefaultWebsiteContentType}
-     * @see {@link Design#withWebsiteContentTypes}
-     * @type {WebsiteContentType}
-     */
     export const EVENT: WebsiteContentType;
-    /**
-     * @see {@link Design#withDefaultWebsiteContentType}
-     * @see {@link Design#withWebsiteContentTypes}
-     * @type {WebsiteContentType}
-     */
-    export const CUSTOMER_PARTNER: WebsiteContentType;
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
