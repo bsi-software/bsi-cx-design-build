@@ -6,7 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+
+
+## [1.13.8] - 09.10.2025
+
+### Changed
 * Fix possible npm security issues
+
+[1.13.8]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.7...1.13.8
 
 
 ## [1.13.7] - 14.03.2025
@@ -14,7 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 * fix newsSnippets - Typo
 
-[1.13.6]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.6...1.13.7
+[1.13.7]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.6...1.13.7
 
 
 ## [1.13.6] - 14.03.2025
