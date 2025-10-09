@@ -71,8 +71,8 @@ const register_namespaceObject = require("source-map-support/register");
 ;// external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
-;// external "@ofabel/twing"
-const twing_namespaceObject = require("@ofabel/twing");
+;// external "twing"
+const external_twing_namespaceObject = require("twing");
 ;// ./src/constant.js
 class constant_Constant {
   /**
@@ -426,7 +426,7 @@ function bsiCxJsModuleImport(template, config, inline) {
 /**
  * Resolve static assets.
  */
-const bsiCxAsset = new twing_namespaceObject.TwingFunction('bsi_cx_asset', (template, assetPath, inline) => {
+const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asset', (template, assetPath, inline) => {
   let templatePath = template.source.getResolvedName();
   let templateDirPath = external_path_default().dirname(templatePath);
   let absoluteAssetPath = toPosixPath(external_path_default().resolve(templateDirPath, assetPath));
@@ -438,21 +438,21 @@ const bsiCxAsset = new twing_namespaceObject.TwingFunction('bsi_cx_asset', (temp
 /**
  * Get URL to the CSS asset.
  */
-const bsiCxCssHref = new twing_namespaceObject.TwingFunction('bsi_cx_css_href', () => {
+const bsiCxCssHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_css_href', () => {
   return strToPromise(constant_Constant.BSI_CX_CSS_HREF);
 }, [], {});
 
 /**
  * Get the contents of the CSS asset.
  */
-const bsiCxCssInline = new twing_namespaceObject.TwingFunction('bsi_cx_css_inline', () => {
+const bsiCxCssInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_css_inline', () => {
   return strToPromise(constant_Constant.BSI_CX_CSS_INLINE);
 }, [], {});
 
 /**
  * Get URL to the requested JS module.
  */
-const bsiCxJsModuleHref = new twing_namespaceObject.TwingFunction('bsi_cx_js_module_href', (template, module) => {
+const bsiCxJsModuleHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_href', (template, module) => {
   let config = {
     module: module
   };
@@ -462,7 +462,7 @@ const bsiCxJsModuleHref = new twing_namespaceObject.TwingFunction('bsi_cx_js_mod
 /**
  * Get the content of the requested JS module.
  */
-const bsiCxJsModuleInline = new twing_namespaceObject.TwingFunction('bsi_cx_js_module_inline', (template, module) => {
+const bsiCxJsModuleInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_inline', (template, module) => {
   let config = {
     module: module
   };
@@ -472,7 +472,7 @@ const bsiCxJsModuleInline = new twing_namespaceObject.TwingFunction('bsi_cx_js_m
 /**
  * Import all missing JS module chunks.
  */
-const bsiCxJsModuleMissingChunksImport = new twing_namespaceObject.TwingFunction('bsi_cx_js_module_missing_chunks_import', (template, attributes) => {
+const bsiCxJsModuleMissingChunksImport = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_missing_chunks_import', (template, attributes) => {
   let config = {
     chunks: true,
     attributes: attributes || {}
@@ -483,7 +483,7 @@ const bsiCxJsModuleMissingChunksImport = new twing_namespaceObject.TwingFunction
 /**
  * Inline all missing JS module chunks.
  */
-const bsiCxJsModuleMissingChunksInline = new twing_namespaceObject.TwingFunction('bsi_cx_js_module_missing_chunks_inline', (template, attributes) => {
+const bsiCxJsModuleMissingChunksInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_missing_chunks_inline', (template, attributes) => {
   let config = {
     chunks: true,
     attributes: attributes || {}
@@ -494,21 +494,21 @@ const bsiCxJsModuleMissingChunksInline = new twing_namespaceObject.TwingFunction
 /**
  * Get URL to the JS runtime module.
  */
-const bsiCxJsModuleRuntimeHref = new twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_href', () => {
+const bsiCxJsModuleRuntimeHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_href', () => {
   return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_HREF);
 }, [], {});
 
 /**
  * Get the contents of the JS runtime module.
  */
-const bsiCxJsModuleRuntimeInline = new twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_inline', () => {
+const bsiCxJsModuleRuntimeInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_inline', () => {
   return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_INLINE);
 }, [], {});
 
 /**
  * Lorem ipsum generator.
  */
-const bsiCxLorem = new twing_namespaceObject.TwingFunction('bsi_cx_lorem', (words) => {
+const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lorem', (words) => {
   let numOfWords = parseInt(words, 10);
   let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
@@ -522,7 +522,7 @@ const bsiCxLorem = new twing_namespaceObject.TwingFunction('bsi_cx_lorem', (word
 
 
 
-class NodeModulesLoader extends twing_namespaceObject.TwingLoaderFilesystem {
+class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesystem {
   constructor() {
     super();
 
@@ -542,13 +542,13 @@ class NodeModulesLoader extends twing_namespaceObject.TwingLoaderFilesystem {
  * @returns {TwingEnvironment}
  */
 /* harmony default export */ function twing_environment(templateRoot, globals) {
-  let relativeFilesystemLoader = new twing_namespaceObject.TwingLoaderRelativeFilesystem();
-  let filesystemLoader = new twing_namespaceObject.TwingLoaderFilesystem();
+  let relativeFilesystemLoader = new external_twing_namespaceObject.TwingLoaderRelativeFilesystem();
+  let filesystemLoader = new external_twing_namespaceObject.TwingLoaderFilesystem();
   let nodeModulesLoader = new NodeModulesLoader();
 
   filesystemLoader.addPath(templateRoot);
 
-  let twing = new twing_namespaceObject.TwingEnvironment(new twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]));
+  let twing = new external_twing_namespaceObject.TwingEnvironment(new external_twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]));
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);

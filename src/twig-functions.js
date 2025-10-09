@@ -1,6 +1,6 @@
 import path from 'path';
 
-import {TwingFunction, TwingTemplate} from '@ofabel/twing';
+import {TwingFunction, TwingTemplate} from 'twing';
 
 import Constant from './constant';
 import QueryConstant from './query-constant';

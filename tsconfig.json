@@ -8,7 +8,8 @@
     "declarationMap": true,
     "allowJs": true,
     "outFile": "dist/types.ts",
-    "module": "system",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true
   }
 }
