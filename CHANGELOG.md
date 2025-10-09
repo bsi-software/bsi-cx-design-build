@@ -9,6 +9,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 
 
+## [1.14.3] - 08.07.2026
+* Rollback rollback (1.14.2)
+* Choose same less version as MT
+* Replace @ofabel/twing with twing
+
 
 ## [1.14.2] - 08.07.2026
 * Rollback tsconfig.json
