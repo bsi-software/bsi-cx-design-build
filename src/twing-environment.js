@@ -1,4 +1,4 @@
-import {TwingEnvironment, TwingLoaderChain, TwingLoaderFilesystem, TwingLoaderRelativeFilesystem} from '@ofabel/twing';
+import {TwingEnvironment, TwingLoaderChain, TwingLoaderFilesystem, TwingLoaderRelativeFilesystem} from 'twing';
 
 import {
   bsiCxAsset,
