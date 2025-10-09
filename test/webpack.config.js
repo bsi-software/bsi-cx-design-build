@@ -27,7 +27,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withName('landingpage')
     .withVersion('1.0.0-alpha')
     .withDesignType(DesignType.LANDINGPAGE)
-    .withTargetVersion(Version.CX_23_2)
+    .withTargetVersion(Version.CX_22_0)
     .withRootPath(path.resolve(__dirname, 'templates', 'landingpage'))
     .withPropertiesFilePath('properties.js')
     .withAssetResourceRuleFilename('static/[name]-xxx-[pathhash][ext]')
