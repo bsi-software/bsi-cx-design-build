@@ -53,6 +53,7 @@
     "ref-loader": "^1.0.3",
     "sass": "^1.69.2",
     "sass-loader": "^14.1.1",
+    "scripts": "^0.1.0",
     "slugify": "^1.6.6",
     "source-map-support": "^0.5.21",
     "terser-webpack-plugin": "^5.3.9",
