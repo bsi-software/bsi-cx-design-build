@@ -8,6 +8,16 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 
 
+## [2.0.0] - 09.10.2025
+Inoffical release for testing purpose
+
+### Changed
+* Replace @ofabel dependency with twing 5
+* Set moduleResolution to nodenext
+
+[2.0.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.8...2.0.0
+
+
 ## [1.13.8] - 09.10.2025
 
 ### Changed
