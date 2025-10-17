@@ -292,7 +292,7 @@ __webpack_require__.d(icon_namespaceObject, {
   YOUTUBE: () => (YOUTUBE)
 });
 
-;// CONCATENATED MODULE: ./src/design-json-property.js
+;// ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -334,6 +334,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static OPTIONS = 'options';
+  /**
+   * @type {string}
+   */
+  static FIELD_HEIGHT = 'fieldHeight';
   /**
    * @type {string}
    */
@@ -548,7 +552,7 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
-;// CONCATENATED MODULE: ./src/raw-value.js
+;// ./src/raw-value.js
 class RawValue {
   /**
    * @param {*} value
@@ -569,7 +573,7 @@ class RawValue {
   }
 }
 
-;// CONCATENATED MODULE: ./src/abstract-constant.js
+;// ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -613,7 +617,7 @@ class AbstractConstant {
   }
 }
 
-;// CONCATENATED MODULE: ./src/object-cloner.js
+;// ./src/object-cloner.js
 
 
 
@@ -711,7 +715,7 @@ class ObjectCloner {
   }
 }
 
-;// CONCATENATED MODULE: ./src/constant.js
+;// ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -763,7 +767,7 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// CONCATENATED MODULE: ./src/design-type.js
+;// ./src/design-type.js
 
 
 
@@ -813,7 +817,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
-;// CONCATENATED MODULE: ./src/version.js
+;// ./src/version.js
 
 
 
@@ -951,7 +955,7 @@ const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
  */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
-;// CONCATENATED MODULE: ./src/abstract-builder.js
+;// ./src/abstract-builder.js
 
 
 
@@ -1204,7 +1208,7 @@ class AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
+;// ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
@@ -1273,7 +1277,7 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/locale.js
+;// ./src/design/locale.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1353,7 +1357,7 @@ const IT = new Locale('it');
  */
 const IT_CH = new Locale('it-CH');
 
-;// CONCATENATED MODULE: ./src/design/websiteContentType.js
+;// ./src/design/websiteContentType.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1407,7 +1411,7 @@ const EVENT = new WebsiteContentType('event');
  */
 const CUSTOMER_PARTNER = new WebsiteContentType('customer-partner');
 
-;// CONCATENATED MODULE: ./src/design/schema-version.js
+;// ./src/design/schema-version.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1451,7 +1455,7 @@ const V_23_1 = new SchemaVersion('23.1');
  */
 const V_23_2 = new SchemaVersion('23.2');
 
-;// CONCATENATED MODULE: ./src/browser-utility.js
+;// ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
  * @returns {string}
@@ -1499,7 +1503,7 @@ function uuid() {
   });
 }
 
-;// CONCATENATED MODULE: ./src/design-json-property-extension.js
+;// ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
    * @type {string}
@@ -1531,7 +1535,7 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
-;// CONCATENATED MODULE: ./src/design/design.js
+;// ./src/design/design.js
 
 
 
@@ -2225,7 +2229,7 @@ class Design extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/content-element-group.js
+;// ./src/content-element/content-element-group.js
 
 
 
@@ -2403,7 +2407,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
+;// ./src/html-editor-config/feature.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2627,7 +2631,7 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
+;// ./src/html-editor-config/enter-mode.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2657,7 +2661,7 @@ const BR = new EnterMode('br');
  */
 const DIV = new EnterMode('div');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
+;// ./src/html-editor-config/font-size-unit.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2708,7 +2712,7 @@ const CM = new FontSizeUnit('cm');
  */
 const MM = new FontSizeUnit('mm');
 
-;// CONCATENATED MODULE: ./src/html-editor-config/format.js
+;// ./src/html-editor-config/format.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2773,7 +2777,7 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
-;// CONCATENATED MODULE: ./src/content-element/template-part/template-part.js
+;// ./src/content-element/template-part/template-part.js
 
 
 
@@ -2884,7 +2888,7 @@ class TemplatePart extends AbstractBuilder {
     return config;
   }
 }
-;// CONCATENATED MODULE: ./src/content-element/template-element.js
+;// ./src/content-element/template-element.js
 
 
 
@@ -3443,7 +3447,7 @@ class TemplateElement extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/dropzone/dropzone.js
+;// ./src/dropzone/dropzone.js
 
 
 
@@ -3652,7 +3656,7 @@ class Dropzone extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
+;// ./src/html-editor-config/html-editor-config.js
 
 
 
@@ -4021,7 +4025,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style.js
+;// ./src/style/style.js
 
 
 
@@ -4295,7 +4299,7 @@ class Style extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/css-class.js
+;// ./src/style/css-class.js
 
 
 
@@ -4403,7 +4407,7 @@ class CssClass extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/style-option.js
+;// ./src/style/style-option.js
 
 
 
@@ -4603,7 +4607,7 @@ class StyleOption extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/style/dom-manipulation.js
+;// ./src/style/dom-manipulation.js
 
 
 
@@ -4763,7 +4767,7 @@ class DomManipulation extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/icon.js
+;// ./src/content-element/icon.js
 
 
 class Icon extends AbstractConstant {
@@ -5005,7 +5009,7 @@ const THREE_COLUMNS = new Icon('three-columns');
  */
 const CALENDAR_CLOCK = new Icon('calendar-clock');
 
-;// CONCATENATED MODULE: ./src/content-element/content-element.js
+;// ./src/content-element/content-element.js
 
 
 
@@ -5523,7 +5527,7 @@ class ContentElement extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part.js
+;// ./src/content-element/part/part.js
 
 
 
@@ -5770,7 +5774,7 @@ class Part extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/website.js
+;// ./src/website/website.js
 
 
 
@@ -5955,7 +5959,7 @@ class Website extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/abstract-include.js
+;// ./src/website/abstract-include.js
 
 
 
@@ -6233,7 +6237,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/page-include.js
+;// ./src/website/page-include.js
 
 
 
@@ -6263,7 +6267,7 @@ class PageInclude extends AbstractInclude {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/include.js
+;// ./src/website/include.js
 
 
 /** @typedef {import('./website').default} Website */
@@ -6319,7 +6323,7 @@ class Include extends AbstractInclude {
   }
 }
 
-;// CONCATENATED MODULE: ./src/nls/translation.js
+;// ./src/nls/translation.js
 
 
 
@@ -6462,7 +6466,7 @@ class Translation extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/nls/nls.js
+;// ./src/nls/nls.js
 
 
 
@@ -6650,7 +6654,7 @@ class NLS extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/part/part-factory.js
+;// ./src/content-element/part/part-factory.js
 
 
 class PartFactory {
@@ -7063,7 +7067,7 @@ class PartFactory {
   }
 }
 
-;// CONCATENATED MODULE: ./src/content-element/template-part/template-part-factory.js
+;// ./src/content-element/template-part/template-part-factory.js
 
 
 
@@ -7087,8 +7091,9 @@ class TemplatePartFactory {
    * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  MultilinePlainText(label, partContextId) {
-    return new TemplatePart('multiline-plain-text', label, partContextId)
+  MultilinePlainText(label, partContextId, fieldHeight) {
+    var part = new TemplatePart('multiline-plain-text', label, partContextId);
+    return part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
   }
 
   /**
@@ -7159,13 +7164,15 @@ class TemplatePartFactory {
   }
 
   /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
+   * Build a new dynamic value list content element part builder instance.
    *
-   * @param {string} partId
+   * @param {string} label
+   * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  raw(partId) {
-    return this.Raw(partId);
+  DynamicValueList(label, partContextId) {
+    // TODO: WTF???
+    return new TemplatePart('dynamic-value-list', label, partContextId);
   }
 
   /**
@@ -7181,7 +7188,7 @@ class TemplatePartFactory {
   }
 }
 
-;// CONCATENATED MODULE: ./src/website/pagination.js
+;// ./src/website/pagination.js
 
 
 
@@ -7264,7 +7271,7 @@ class Pagination extends AbstractBuilder {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/design-helper.js
+;// ./src/design/design-helper.js
 
 
 /** @typedef {import('./design-factory').default} DesignFactory */
@@ -7391,7 +7398,7 @@ class DesignHelper {
   }
 }
 
-;// CONCATENATED MODULE: ./src/design/design-factory.js
+;// ./src/design/design-factory.js
 
 
 
@@ -7818,7 +7825,7 @@ class DesignFactory {
   }
 }
 
-;// CONCATENATED MODULE: ./src/bsi-property.js
+;// ./src/bsi-property.js
 
 
 /**
@@ -7839,7 +7846,7 @@ function bsiProperty(property, fallback) {
   return plugin.getProperty(property, fallback);
 }
 
-;// CONCATENATED MODULE: ./export/browser.js
+;// ./export/browser.js
 
 
 
@@ -7886,7 +7893,7 @@ const cx = new DesignFactory();
 
 
 var __webpack_export_target__ = exports;
-for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
