@@ -40,7 +40,8 @@ module.exports = cx.design
       .withGroupId('template-parts')
       .withLabel(nls.templateParts)
       .withContentElements(
-        require("./content-elements/content/template-part-element")
+        require("./content-elements/content/template-part-element"),
+        require("./content-elements/content/dynamic-value-list"),
       )
   )
   .withDropzones(
@@ -49,6 +50,7 @@ module.exports = cx.design
       .withAllowedElements(
         require('./content-elements/content/pagination-element'),
         require('./content-elements/content/template-part-element'),
+        require('./content-elements/content/dynamic-value-list'),
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),
         require('./content-elements/content/column-1'),
