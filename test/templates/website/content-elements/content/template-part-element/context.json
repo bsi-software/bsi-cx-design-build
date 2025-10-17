@@ -1,13 +1,29 @@
 {
     "checkbox-part-95513657": {
-        "value": false
+        "value": true
     },
-
     "image-part-01fb0560": {
         "altText": "Test für alt Text",
-        "srcUrl": "www.example.com",
-        "placeholderSrcUrl": "www.placeholderExample.com",
-        "srcset": "{{ bsi_cx_asset('../../../static/image.png') }} 400w, {{ bsi_cx_asset('../../../static/image.png') }} 800w, {{ bsi_cx_asset('../../../static/image.png') }} 1200w",
+        "srcUrl": "{{ bsi_cx_asset('./TemplatePartImage.jpg')}}",
+        "srcset": "400w, 800w, 1200w",
         "decorative": "false"
+    },
+    "plain-text-Y3dhVu": {
+        "value": "Peter Pan"
+    },
+    "multiline-plain-text-0pQpp9": {
+        "value": "Some longer text about the fairy of \n Peter Pan"
+    },
+    "formatted-text-fC3iJv": {
+        "html": "<div style='color: blue'>Yolo</div>",
+        "languageTag": "es"
+    },
+    "link-1wfD2H": {
+        "url": "[b4]",
+        "openInNewWindow": true,
+        "description": "BFSG Label"
+    },
+    "option-0CxEy6": {
+        "value": "house"
     }
 }

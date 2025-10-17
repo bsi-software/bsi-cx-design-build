@@ -292,7 +292,7 @@ __webpack_require__.d(icon_namespaceObject, {
   YOUTUBE: () => (YOUTUBE)
 });
 
-;// ./src/design-json-property.js
+;// CONCATENATED MODULE: ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -548,7 +548,7 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
-;// ./src/raw-value.js
+;// CONCATENATED MODULE: ./src/raw-value.js
 class RawValue {
   /**
    * @param {*} value
@@ -569,7 +569,7 @@ class RawValue {
   }
 }
 
-;// ./src/abstract-constant.js
+;// CONCATENATED MODULE: ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -613,7 +613,7 @@ class AbstractConstant {
   }
 }
 
-;// ./src/object-cloner.js
+;// CONCATENATED MODULE: ./src/object-cloner.js
 
 
 
@@ -711,7 +711,7 @@ class ObjectCloner {
   }
 }
 
-;// ./src/constant.js
+;// CONCATENATED MODULE: ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -763,7 +763,7 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// ./src/design-type.js
+;// CONCATENATED MODULE: ./src/design-type.js
 
 
 
@@ -813,7 +813,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
-;// ./src/version.js
+;// CONCATENATED MODULE: ./src/version.js
 
 
 
@@ -951,7 +951,7 @@ const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
  */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
-;// ./src/abstract-builder.js
+;// CONCATENATED MODULE: ./src/abstract-builder.js
 
 
 
@@ -1204,7 +1204,7 @@ class AbstractBuilder {
   }
 }
 
-;// ./src/builder-object-normalizer.js
+;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
@@ -1273,7 +1273,7 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// ./src/design/locale.js
+;// CONCATENATED MODULE: ./src/design/locale.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1353,7 +1353,7 @@ const IT = new Locale('it');
  */
 const IT_CH = new Locale('it-CH');
 
-;// ./src/design/websiteContentType.js
+;// CONCATENATED MODULE: ./src/design/websiteContentType.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1407,7 +1407,7 @@ const EVENT = new WebsiteContentType('event');
  */
 const CUSTOMER_PARTNER = new WebsiteContentType('customer-partner');
 
-;// ./src/design/schema-version.js
+;// CONCATENATED MODULE: ./src/design/schema-version.js
 
 
 /** @typedef {import('./design').default} Design */
@@ -1451,7 +1451,7 @@ const V_23_1 = new SchemaVersion('23.1');
  */
 const V_23_2 = new SchemaVersion('23.2');
 
-;// ./src/browser-utility.js
+;// CONCATENATED MODULE: ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
  * @returns {string}
@@ -1499,7 +1499,7 @@ function uuid() {
   });
 }
 
-;// ./src/design-json-property-extension.js
+;// CONCATENATED MODULE: ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
    * @type {string}
@@ -1531,7 +1531,7 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
-;// ./src/design/design.js
+;// CONCATENATED MODULE: ./src/design/design.js
 
 
 
@@ -2225,7 +2225,7 @@ class Design extends AbstractBuilder {
   }
 }
 
-;// ./src/content-element/content-element-group.js
+;// CONCATENATED MODULE: ./src/content-element/content-element-group.js
 
 
 
@@ -2403,7 +2403,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 }
 
-;// ./src/html-editor-config/feature.js
+;// CONCATENATED MODULE: ./src/html-editor-config/feature.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2627,7 +2627,7 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-;// ./src/html-editor-config/enter-mode.js
+;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2657,7 +2657,7 @@ const BR = new EnterMode('br');
  */
 const DIV = new EnterMode('div');
 
-;// ./src/html-editor-config/font-size-unit.js
+;// CONCATENATED MODULE: ./src/html-editor-config/font-size-unit.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2708,7 +2708,7 @@ const CM = new FontSizeUnit('cm');
  */
 const MM = new FontSizeUnit('mm');
 
-;// ./src/html-editor-config/format.js
+;// CONCATENATED MODULE: ./src/html-editor-config/format.js
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -2773,7 +2773,7 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
-;// ./src/content-element/template-part/template-part.js
+;// CONCATENATED MODULE: ./src/content-element/template-part/template-part.js
 
 
 
@@ -2864,6 +2864,15 @@ class TemplatePart extends AbstractBuilder {
     return this;
   }
 
+  // TODO description
+  addConfigValueIfNotNull(key, value, isBoolean = false) {
+    if (value !== null) {
+      this._config = this.config || {};
+      this._config[key] = isBoolean ? !!value : value;
+    }
+    return this;
+  }
+
   _buildInternal() {
     let config = {};
 
@@ -2875,7 +2884,7 @@ class TemplatePart extends AbstractBuilder {
     return config;
   }
 }
-;// ./src/content-element/template-element.js
+;// CONCATENATED MODULE: ./src/content-element/template-element.js
 
 
 
@@ -3434,7 +3443,7 @@ class TemplateElement extends AbstractBuilder {
   }
 }
 
-;// ./src/dropzone/dropzone.js
+;// CONCATENATED MODULE: ./src/dropzone/dropzone.js
 
 
 
@@ -3643,7 +3652,7 @@ class Dropzone extends AbstractBuilder {
   }
 }
 
-;// ./src/html-editor-config/html-editor-config.js
+;// CONCATENATED MODULE: ./src/html-editor-config/html-editor-config.js
 
 
 
@@ -4012,7 +4021,7 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 }
 
-;// ./src/style/style.js
+;// CONCATENATED MODULE: ./src/style/style.js
 
 
 
@@ -4286,7 +4295,7 @@ class Style extends AbstractBuilder {
   }
 }
 
-;// ./src/style/css-class.js
+;// CONCATENATED MODULE: ./src/style/css-class.js
 
 
 
@@ -4394,7 +4403,7 @@ class CssClass extends AbstractBuilder {
   }
 }
 
-;// ./src/style/style-option.js
+;// CONCATENATED MODULE: ./src/style/style-option.js
 
 
 
@@ -4594,7 +4603,7 @@ class StyleOption extends AbstractBuilder {
   }
 }
 
-;// ./src/style/dom-manipulation.js
+;// CONCATENATED MODULE: ./src/style/dom-manipulation.js
 
 
 
@@ -4754,7 +4763,7 @@ class DomManipulation extends AbstractBuilder {
   }
 }
 
-;// ./src/content-element/icon.js
+;// CONCATENATED MODULE: ./src/content-element/icon.js
 
 
 class Icon extends AbstractConstant {
@@ -4996,7 +5005,7 @@ const THREE_COLUMNS = new Icon('three-columns');
  */
 const CALENDAR_CLOCK = new Icon('calendar-clock');
 
-;// ./src/content-element/content-element.js
+;// CONCATENATED MODULE: ./src/content-element/content-element.js
 
 
 
@@ -5514,7 +5523,7 @@ class ContentElement extends AbstractBuilder {
   }
 }
 
-;// ./src/content-element/part/part.js
+;// CONCATENATED MODULE: ./src/content-element/part/part.js
 
 
 
@@ -5761,7 +5770,7 @@ class Part extends AbstractBuilder {
   }
 }
 
-;// ./src/website/website.js
+;// CONCATENATED MODULE: ./src/website/website.js
 
 
 
@@ -5946,7 +5955,7 @@ class Website extends AbstractBuilder {
   }
 }
 
-;// ./src/website/abstract-include.js
+;// CONCATENATED MODULE: ./src/website/abstract-include.js
 
 
 
@@ -6224,7 +6233,7 @@ class AbstractInclude extends AbstractBuilder {
   }
 }
 
-;// ./src/website/page-include.js
+;// CONCATENATED MODULE: ./src/website/page-include.js
 
 
 
@@ -6254,7 +6263,7 @@ class PageInclude extends AbstractInclude {
   }
 }
 
-;// ./src/website/include.js
+;// CONCATENATED MODULE: ./src/website/include.js
 
 
 /** @typedef {import('./website').default} Website */
@@ -6310,7 +6319,7 @@ class Include extends AbstractInclude {
   }
 }
 
-;// ./src/nls/translation.js
+;// CONCATENATED MODULE: ./src/nls/translation.js
 
 
 
@@ -6453,7 +6462,7 @@ class Translation extends AbstractBuilder {
   }
 }
 
-;// ./src/nls/nls.js
+;// CONCATENATED MODULE: ./src/nls/nls.js
 
 
 
@@ -6641,7 +6650,7 @@ class NLS extends AbstractBuilder {
   }
 }
 
-;// ./src/content-element/part/part-factory.js
+;// CONCATENATED MODULE: ./src/content-element/part/part-factory.js
 
 
 class PartFactory {
@@ -7054,7 +7063,7 @@ class PartFactory {
   }
 }
 
-;// ./src/content-element/template-part/template-part-factory.js
+;// CONCATENATED MODULE: ./src/content-element/template-part/template-part-factory.js
 
 
 
@@ -7078,8 +7087,8 @@ class TemplatePartFactory {
    * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  MultiplePlainText(label, partContextId) {
-    return new TemplatePart('multiple-plain-text', label, partContextId)
+  MultilinePlainText(label, partContextId) {
+    return new TemplatePart('multiline-plain-text', label, partContextId)
   }
 
   /**
@@ -7092,7 +7101,7 @@ class TemplatePartFactory {
    */
   FormattedText(label, partContextId, htmlEditorConfig) {
     var part = new TemplatePart('formatted-text', label, partContextId)
-    return htmlEditorConfig ? part.withConfig(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier) : part;
+    return part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
   }
 
   /**
@@ -7113,14 +7122,14 @@ class TemplatePartFactory {
    * @param {string} partContextId
    * @param {boolean} altTextMandatory
    * @param {string[]} srcSetSizes ["400w", "800w", "1200w"]
-   * @param {HideAccessibilityFields} hideAccessibilityFields
+   * @param {boolean} hideAccessibilityFields
    * @returns {TemplatePart}
    */
   Image(label, partContextId, altTextMandatory, srcSetSizes, hideAccessibilityFields) {
     var part = new TemplatePart('image', label, partContextId);
-    part = altTextMandatory != null ? part.withConfig(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory) : part;
-    part = srcSetSizes != null ? part.withConfig(DesignJsonProperty.SRC_SET_SIZES, srcSetSizes) : part;
-    part = hideAccessibilityFields != null ? part.withConfig(DesignJsonProperty.HIDE_ACCESSIBILITY_FIELDS, hideAccessibilityFields) : part;
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.SRC_SET_SIZES, srcSetSizes);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.HIDE_ACCESSIBILITY_FIELDS, hideAccessibilityFields);
     return part;
   }
 
@@ -7140,13 +7149,13 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}]
+   * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
-    part = options != null ? part.withConfig(DesignJsonProperty.OPTIONS, options) : part;
-    return new TemplatePart('option', label, partContextId);
+    options = Array.isArray(options) ? options : Object.entries(options).map(([value, text]) => ({ "value": value, "text": text }))
+    return part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
   }
 
   /**
@@ -7172,7 +7181,7 @@ class TemplatePartFactory {
   }
 }
 
-;// ./src/website/pagination.js
+;// CONCATENATED MODULE: ./src/website/pagination.js
 
 
 
@@ -7255,7 +7264,7 @@ class Pagination extends AbstractBuilder {
   }
 }
 
-;// ./src/design/design-helper.js
+;// CONCATENATED MODULE: ./src/design/design-helper.js
 
 
 /** @typedef {import('./design-factory').default} DesignFactory */
@@ -7382,7 +7391,7 @@ class DesignHelper {
   }
 }
 
-;// ./src/design/design-factory.js
+;// CONCATENATED MODULE: ./src/design/design-factory.js
 
 
 
@@ -7809,7 +7818,7 @@ class DesignFactory {
   }
 }
 
-;// ./src/bsi-property.js
+;// CONCATENATED MODULE: ./src/bsi-property.js
 
 
 /**
@@ -7830,7 +7839,7 @@ function bsiProperty(property, fallback) {
   return plugin.getProperty(property, fallback);
 }
 
-;// ./export/browser.js
+;// CONCATENATED MODULE: ./export/browser.js
 
 
 

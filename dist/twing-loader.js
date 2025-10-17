@@ -66,14 +66,20 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ twing_loader)
 });
 
-;// external "source-map-support/register"
+;// CONCATENATED MODULE: external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-;// external "path"
+;// CONCATENATED MODULE: external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+<<<<<<< HEAD
 ;// external "twing"
 const external_twing_namespaceObject = require("twing");
 ;// ./src/constant.js
+=======
+;// CONCATENATED MODULE: external "@ofabel/twing"
+const twing_namespaceObject = require("@ofabel/twing");
+;// CONCATENATED MODULE: ./src/constant.js
+>>>>>>> 52ffd36 (Working, Dynamic Value List is missing)
 class constant_Constant {
   /**
    * @type {string}
@@ -125,7 +131,7 @@ class constant_Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// ./src/query-constant.js
+;// CONCATENATED MODULE: ./src/query-constant.js
 class QueryConstant {
   /**
    * @type {string}
@@ -137,10 +143,10 @@ class QueryConstant {
   static ASSET = 'asset';
 }
 
-;// external "fs"
+;// CONCATENATED MODULE: external "fs"
 const external_fs_namespaceObject = require("fs");
 var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-;// ./src/abstract-constant.js
+;// CONCATENATED MODULE: ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -184,7 +190,7 @@ class AbstractConstant {
   }
 }
 
-;// ./src/design-type.js
+;// CONCATENATED MODULE: ./src/design-type.js
 
 
 
@@ -234,7 +240,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[constant_Constant.BSI_CX_TARGET_TYPE];
 
-;// ./src/utility.js
+;// CONCATENATED MODULE: ./src/utility.js
 
 
 
@@ -383,7 +389,7 @@ function findNodeModulesFolder(startFolder) {
   return findNodeModulesFolder(parentFolder);
 }
 
-;// ./src/twig-functions.js
+;// CONCATENATED MODULE: ./src/twig-functions.js
 
 
 
@@ -516,7 +522,7 @@ const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lore
   return strToPromise(phrase);
 }, [], {})
 
-;// ./src/twing-environment.js
+;// CONCATENATED MODULE: ./src/twing-environment.js
 
 
 
@@ -568,7 +574,7 @@ class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesy
   return twing;
 }
 
-;// ./src/twing-loader.js
+;// CONCATENATED MODULE: ./src/twing-loader.js
 
 
 

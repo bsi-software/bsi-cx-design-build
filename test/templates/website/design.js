@@ -48,6 +48,7 @@ module.exports = cx.design
       .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')
       .withAllowedElements(
         require('./content-elements/content/pagination-element'),
+        require('./content-elements/content/template-part-element'),
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),
         require('./content-elements/content/column-1'),

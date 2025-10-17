@@ -114,9 +114,9 @@ __webpack_require__.d(helper_namespaceObject, {
   url: () => (url)
 });
 
-;// external "source-map-support/register"
+;// CONCATENATED MODULE: external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-;// ./src/abstract-constant.js
+;// CONCATENATED MODULE: ./src/abstract-constant.js
 /**
  * @abstract
  */
@@ -160,7 +160,7 @@ class AbstractConstant {
   }
 }
 
-;// ./src/constant.js
+;// CONCATENATED MODULE: ./src/constant.js
 class Constant {
   /**
    * @type {string}
@@ -212,7 +212,7 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
-;// ./src/design-type.js
+;// CONCATENATED MODULE: ./src/design-type.js
 
 
 
@@ -262,7 +262,7 @@ const ALL_TYPES = [
  */
 const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
-;// ./src/version.js
+;// CONCATENATED MODULE: ./src/version.js
 
 
 
@@ -400,7 +400,7 @@ const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
  */
 const version_TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_VERSION];
 
-;// ./src/raw-value.js
+;// CONCATENATED MODULE: ./src/raw-value.js
 class RawValue {
   /**
    * @param {*} value
@@ -421,7 +421,7 @@ class RawValue {
   }
 }
 
-;// ./src/design-json-property.js
+;// CONCATENATED MODULE: ./src/design-json-property.js
 class DesignJsonProperty {
   /**
    * @type {string}
@@ -677,7 +677,7 @@ class DesignJsonProperty {
   static PAGE_INCLUDE = '__page__';
 }
 
-;// ./src/abstract-builder.js
+;// CONCATENATED MODULE: ./src/abstract-builder.js
 
 
 
@@ -930,7 +930,7 @@ class AbstractBuilder {
   }
 }
 
-;// ./src/object-cloner.js
+;// CONCATENATED MODULE: ./src/object-cloner.js
 
 
 
@@ -1028,20 +1028,20 @@ class ObjectCloner {
   }
 }
 
-;// external "fs"
+;// CONCATENATED MODULE: external "fs"
 const external_fs_namespaceObject = require("fs");
 var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
-;// external "path"
+;// CONCATENATED MODULE: external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
-;// external "slugify"
+;// CONCATENATED MODULE: external "slugify"
 const external_slugify_namespaceObject = require("slugify");
 var external_slugify_default = /*#__PURE__*/__webpack_require__.n(external_slugify_namespaceObject);
-;// ./src/build-config/validation-error.js
+;// CONCATENATED MODULE: ./src/build-config/validation-error.js
 class ValidationError extends Error {
 }
 
-;// ./src/utility.js
+;// CONCATENATED MODULE: ./src/utility.js
 
 
 
@@ -1190,7 +1190,7 @@ function findNodeModulesFolder(startFolder) {
   return findNodeModulesFolder(parentFolder);
 }
 
-;// ./src/build-config/module-config.js
+;// CONCATENATED MODULE: ./src/build-config/module-config.js
 
 
 /** @typedef {import('./build-config').default} BuildConfig */
@@ -1293,7 +1293,7 @@ class ModuleConfig {
   }
 }
 
-;// ./src/build-config/validated-build-config.js
+;// CONCATENATED MODULE: ./src/build-config/validated-build-config.js
 /** @typedef {import('webpack').PathData} PathData */
 /** @typedef {import('webpack').AssetInfo} AssetInfo */
 /** @typedef {import('../version').Version} Version */
@@ -1547,7 +1547,7 @@ class ValidatedBuildConfig {
   }
 }
 
-;// ./src/dist-folder.js
+;// CONCATENATED MODULE: ./src/dist-folder.js
 class DistFolder {
   /**
    * @type {string}
@@ -1583,7 +1583,7 @@ class DistFolder {
   static SHARED = 'shared';
 }
 
-;// ./src/build-config/default-build-config.js
+;// CONCATENATED MODULE: ./src/build-config/default-build-config.js
 
 
 
@@ -1675,7 +1675,7 @@ class DefaultBuildConfig {
   }
 }
 
-;// ./src/build-config/build-config-validator.js
+;// CONCATENATED MODULE: ./src/build-config/build-config-validator.js
 
 
 
@@ -2024,7 +2024,7 @@ class BuildConfigValidator {
   }
 }
 
-;// ./src/build-config/build-config.js
+;// CONCATENATED MODULE: ./src/build-config/build-config.js
 
 
 
@@ -2562,38 +2562,38 @@ class BuildConfig {
   }
 }
 
-;// external "webpack/lib"
+;// CONCATENATED MODULE: external "webpack/lib"
 const lib_namespaceObject = require("webpack/lib");
-;// external "zip-webpack-plugin"
+;// CONCATENATED MODULE: external "zip-webpack-plugin"
 const external_zip_webpack_plugin_namespaceObject = require("zip-webpack-plugin");
 var external_zip_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_zip_webpack_plugin_namespaceObject);
-;// external "mini-css-extract-plugin"
+;// CONCATENATED MODULE: external "mini-css-extract-plugin"
 const external_mini_css_extract_plugin_namespaceObject = require("mini-css-extract-plugin");
 var external_mini_css_extract_plugin_default = /*#__PURE__*/__webpack_require__.n(external_mini_css_extract_plugin_namespaceObject);
-;// external "copy-webpack-plugin"
+;// CONCATENATED MODULE: external "copy-webpack-plugin"
 const external_copy_webpack_plugin_namespaceObject = require("copy-webpack-plugin");
 var external_copy_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_copy_webpack_plugin_namespaceObject);
-;// external "terser-webpack-plugin"
+;// CONCATENATED MODULE: external "terser-webpack-plugin"
 const external_terser_webpack_plugin_namespaceObject = require("terser-webpack-plugin");
 var external_terser_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_terser_webpack_plugin_namespaceObject);
-;// ./package.json
+;// CONCATENATED MODULE: ./package.json
 const package_namespaceObject = /*#__PURE__*/JSON.parse('{"UU":"@bsi-cx/design-build"}');
-;// external "crypto"
+;// CONCATENATED MODULE: external "crypto"
 const external_crypto_namespaceObject = require("crypto");
-;// external "vm"
+;// CONCATENATED MODULE: external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
-;// external "handlebars"
+;// CONCATENATED MODULE: external "handlebars"
 const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
-;// external "webpack"
+;// CONCATENATED MODULE: external "webpack"
 const external_webpack_namespaceObject = require("webpack");
-;// ./src/handlebars-helpers.js
+;// CONCATENATED MODULE: ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key
 });
 
-;// ./src/builder-object-normalizer.js
+;// CONCATENATED MODULE: ./src/builder-object-normalizer.js
 class BuilderObjectNormalizer {
   /**
    * @param {*} obj
@@ -2662,7 +2662,7 @@ class BuilderObjectNormalizer {
   }
 }
 
-;// ./src/file.js
+;// CONCATENATED MODULE: ./src/file.js
 class File {
   /**
    * @type {string}
@@ -2690,7 +2690,7 @@ class File {
   static DESIGN_PROPERTIES = 'design.properties';
 }
 
-;// ./src/browser-utility.js
+;// CONCATENATED MODULE: ./src/browser-utility.js
 /**
  * @param {(string|number)[]} arr
  * @returns {string}
@@ -2738,7 +2738,7 @@ function uuid() {
   });
 }
 
-;// ./src/design-json-property-extension.js
+;// CONCATENATED MODULE: ./src/design-json-property-extension.js
 class DesignJsonPropertyExtension {
   /**
    * @type {string}
@@ -2770,7 +2770,7 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
-;// ./src/bsi-html-attributes.js
+;// CONCATENATED MODULE: ./src/bsi-html-attributes.js
 class BsiHtmlAttributes {
   /**
    * @type {string}
@@ -2798,7 +2798,7 @@ class BsiHtmlAttributes {
   static HIDE_REMOVE_BUTTON = 'data-bsi-hide-remove-button';
 }
 
-;// ./src/abstract-property-plugin.js
+;// CONCATENATED MODULE: ./src/abstract-property-plugin.js
 /**
  * @abstract
  */
@@ -2864,13 +2864,13 @@ class AbstractPropertyPlugin {
   }
 }
 
-;// ./src/bsi-js-property-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-js-property-plugin.js
 
 
 class BsiJsPropertyPlugin extends AbstractPropertyPlugin {
 }
 
-;// ./src/path-hash-utility.js
+;// CONCATENATED MODULE: ./src/path-hash-utility.js
   function calculateHashCode(filePath) {
   let hash = 0,
     i, chr;
@@ -2896,7 +2896,7 @@ function createPathHash(filePath) {
   return hash;
 }
 
-;// ./src/bsi-cx-webpack-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-plugin.js
 
 
 
@@ -3861,7 +3861,7 @@ class BsiCxWebpackPlugin {
   }
 };
 
-;// ./src/java-property-file-builder.js
+;// CONCATENATED MODULE: ./src/java-property-file-builder.js
 class JavaPropertyFileBuilder {
   constructor() {
     this._properties = [];
@@ -3948,7 +3948,7 @@ class JavaPropertyFileBuilder {
   }
 }
 
-;// ./src/legacy-design-property.js
+;// CONCATENATED MODULE: ./src/legacy-design-property.js
 class LegacyDesignProperty {
   /**
    * @type {string}
@@ -4214,7 +4214,7 @@ class LegacyDesignProperty {
   }
 }
 
-;// ./src/bsi-cx-webpack-legacy-design-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-legacy-design-plugin.js
 
 
 
@@ -4705,9 +4705,9 @@ class BsiCxWebpackLegacyDesignPlugin {
   }
 };
 
-;// external "fast-glob"
+;// CONCATENATED MODULE: external "fast-glob"
 const external_fast_glob_namespaceObject = require("fast-glob");
-;// ./src/bsi-cx-webpack-zip-hash-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-cx-webpack-zip-hash-plugin.js
 
 
 
@@ -4815,7 +4815,7 @@ class BsiCxWebpackZipHashPlugin {
   }
 };
 
-;// ./src/bsi-cx-twig-context-webpack-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-cx-twig-context-webpack-plugin.js
 class BsiCxTwigContextWebpackPlugin {
   /**
    * @type {string}
@@ -4847,7 +4847,7 @@ class BsiCxTwigContextWebpackPlugin {
   }
 }
 
-;// ./src/bsi-less-property-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-less-property-plugin.js
 
 
 class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
@@ -4896,10 +4896,10 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// external "module"
+;// CONCATENATED MODULE: external "module"
 const external_module_namespaceObject = require("module");
 var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
-;// ./src/module-loader.js
+;// CONCATENATED MODULE: ./src/module-loader.js
 
 
 class ModuleLoader {
@@ -4980,7 +4980,7 @@ class ModuleLoader {
   }
 }
 
-;// ./src/property-context.js
+;// CONCATENATED MODULE: ./src/property-context.js
 
 
 class PropertyContext {
@@ -5135,16 +5135,16 @@ class PropertyContext {
   }
 }
 
-;// external "sass"
+;// CONCATENATED MODULE: external "sass"
 const external_sass_namespaceObject = require("sass");
 var external_sass_default = /*#__PURE__*/__webpack_require__.n(external_sass_namespaceObject);
-;// external "less/lib/less/tree/color"
+;// CONCATENATED MODULE: external "less/lib/less/tree/color"
 const color_namespaceObject = require("less/lib/less/tree/color");
 var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
-;// external "less/lib/less/data/colors"
+;// CONCATENATED MODULE: external "less/lib/less/data/colors"
 const colors_namespaceObject = require("less/lib/less/data/colors");
 var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
-;// ./src/css/abstract-css-property.js
+;// CONCATENATED MODULE: ./src/css/abstract-css-property.js
 class AbstractCssProperty {
   /**
    * @returns {*}
@@ -5190,7 +5190,7 @@ class AbstractCssProperty {
   }
 }
 
-;// ./src/css/css-color.js
+;// CONCATENATED MODULE: ./src/css/css-color.js
 
 
 
@@ -5461,10 +5461,10 @@ class CssColor extends AbstractCssProperty {
   }
 }
 
-;// external "less/lib/less/tree/dimension"
+;// CONCATENATED MODULE: external "less/lib/less/tree/dimension"
 const dimension_namespaceObject = require("less/lib/less/tree/dimension");
 var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceObject);
-;// ./src/css/css-dimension.js
+;// CONCATENATED MODULE: ./src/css/css-dimension.js
 
 
 
@@ -5571,7 +5571,7 @@ class CssDimension extends AbstractCssProperty {
   }
 }
 
-;// ./src/css/css-raw.js
+;// CONCATENATED MODULE: ./src/css/css-raw.js
 
 
 
@@ -5641,7 +5641,7 @@ class CssRaw extends AbstractCssProperty {
   }
 }
 
-;// ./src/query-constant.js
+;// CONCATENATED MODULE: ./src/query-constant.js
 class QueryConstant {
   /**
    * @type {string}
@@ -5653,7 +5653,7 @@ class QueryConstant {
   static ASSET = 'asset';
 }
 
-;// ./src/css/css-url.js
+;// CONCATENATED MODULE: ./src/css/css-url.js
 
 
 
@@ -5836,7 +5836,7 @@ class CssUrl extends AbstractCssProperty {
   }
 }
 
-;// ./src/css/css-bool.js
+;// CONCATENATED MODULE: ./src/css/css-bool.js
 
 
 
@@ -5910,7 +5910,7 @@ class CssBool extends AbstractCssProperty {
   }
 }
 
-;// ./src/css/css-property-resolver.js
+;// CONCATENATED MODULE: ./src/css/css-property-resolver.js
 
 
 
@@ -5982,7 +5982,7 @@ class CssPropertyResolver {
   }
 }
 
-;// ./src/build-context.js
+;// CONCATENATED MODULE: ./src/build-context.js
 
 
 
@@ -6041,7 +6041,7 @@ class BuildContext {
   }
 }
 
-;// ./src/bsi-sass-property-plugin.js
+;// CONCATENATED MODULE: ./src/bsi-sass-property-plugin.js
 
 
 class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
@@ -6065,7 +6065,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// ./src/webpack-config-builder.js
+;// CONCATENATED MODULE: ./src/webpack-config-builder.js
 
 
 
@@ -6932,7 +6932,7 @@ class WebpackConfigBuilder {
   }
 }
 
-;// ./src/css/helper.js
+;// CONCATENATED MODULE: ./src/css/helper.js
 
 
 
@@ -7024,7 +7024,7 @@ function number(value) {
   return !!parser ? parser(value) : value;
 }
 
-;// ./export/main.js
+;// CONCATENATED MODULE: ./export/main.js
 
 
 

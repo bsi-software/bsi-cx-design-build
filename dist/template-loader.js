@@ -42,9 +42,9 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ template_loader)
 });
 
-;// external "source-map-support/register"
+;// CONCATENATED MODULE: external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
-;// ./src/template-loader.js
+;// CONCATENATED MODULE: ./src/template-loader.js
 
 
 /* harmony default export */ function template_loader(sourceToConvert) {
