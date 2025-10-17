@@ -62,6 +62,15 @@ module.exports.content =
 /**
  * @type {NLS}
  */
+module.exports.templateParts =
+  NLS.create(
+    'template parts',
+    Translation.wildcard('template parts'),
+    Translation.create(Locale.DE, 'Template Elemente'));
+
+/**
+ * @type {NLS}
+ */
 module.exports.subtitle =
   NLS.create(
     'subtitle',

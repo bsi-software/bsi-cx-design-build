@@ -8,6 +8,7 @@ import RawValue from '../raw-value';
 /** @typedef {import('./locale').Locale} Locale */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/template-element').default} TemplateElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
@@ -411,7 +412,7 @@ export default class Design extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @param {...(ContentElement | TemplateElement)} elements - The elements to add to the allowed elements list.
    * @returns {Design}
    */
   withExtendedDropzone(id, ...elements) {
@@ -434,8 +435,8 @@ export default class Design extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
-   * @returns {ContentElement}
+   * @param {...(ContentElement | TemplateElement)} elements - The elements to remove from the allowed elements list.
+   * @returns {Design}
    */
   withReducedDropzone(id, ...elements) {
     let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);

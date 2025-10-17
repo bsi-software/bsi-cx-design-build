@@ -6,6 +6,10 @@ export default class DistFolder {
   /**
    * @type {string}
    */
+    static CONTEXT = 'context';
+  /**
+   * @type {string}
+   */
   static INCLUDES = 'includes';
   /**
    * @type {string}

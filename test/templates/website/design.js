@@ -34,7 +34,15 @@ module.exports = cx.design
             'b6608fe9-4815-4ef1-a118-6e945ead513f',
             require('./content-elements/content/title'),
             require('./content-elements/content/text')),
-        require('./content-elements/content/column-2')))
+        require('./content-elements/content/column-2')
+      ),
+    cx.contentElementGroup
+      .withGroupId('template-parts')
+      .withLabel(nls.templateParts)
+      .withContentElements(
+        require("./content-elements/content/template-part-element")
+      )
+  )
   .withDropzones(
     cx.dropzone
       .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')
