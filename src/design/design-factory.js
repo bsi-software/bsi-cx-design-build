@@ -2,6 +2,7 @@ import ContentElement from '../content-element/content-element';
 import ContentElementGroup from '../content-element/content-element-group';
 import PartFactory from '../content-element/part/part-factory';
 import TemplateElement from '../content-element/template-element';
+import TemplatePartFactory from '../content-element/template-part/template-part-factory';
 import Dropzone from '../dropzone/dropzone';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
 import NLS from '../nls/nls';
@@ -391,6 +392,22 @@ export default class DesignFactory {
   get part() {
     return new PartFactory();
   }
+
+    /**
+   * Get a content element template part factory instance to create new tepmlate element part builder objects.
+   * The template element part factory is also available under the template part constant.
+   *
+   * @example
+   * const {cx, templatePart} = require('@bsi-cx/design-build');
+   *
+   * // ...
+   * .withTemplateParts(
+   *   cx.templatePart.PlainText('Text', 'textId')
+   * @returns {TemplatePartFactory}
+   */
+    get templatePart() {
+      return new TemplatePartFactory();
+    }
 
   /**
    * Get a collection of various helper methods.
