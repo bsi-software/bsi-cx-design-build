@@ -74,7 +74,7 @@ __webpack_require__.d(__webpack_exports__, {
   ObjectCloner: () => (/* reexport */ ObjectCloner),
   PageInclude: () => (/* reexport */ PageInclude),
   Part: () => (/* reexport */ Part),
-  RawValue: () => (/* reexport */ RawValue),
+  RawValue: () => (/* reexport */ raw_value_RawValue),
   SchemaVersion: () => (/* reexport */ schema_version_namespaceObject),
   Style: () => (/* reexport */ Style),
   StyleOption: () => (/* reexport */ StyleOption),
@@ -355,7 +355,15 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static CONTEXT_FILE = 'contextFile';
+  /**
+   * @type {string}
+   */
   static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static TEMPLATE_PARTS = 'templateParts';
   /**
    * @type {string}
    */
@@ -388,6 +396,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static ARCHIVED = 'archived';
+  /**
+   * @type {string}
+   */
+  static COMPOSITE = 'composite';
   /**
    * @type {string}
    */
@@ -519,7 +531,7 @@ class DesignJsonProperty {
 }
 
 ;// ./src/raw-value.js
-class RawValue {
+class raw_value_RawValue {
   /**
    * @param {*} value
    */
@@ -1068,7 +1080,7 @@ class AbstractBuilder {
 
     let value = this[property];
     let computedValue;
-    let isRawValue = value instanceof RawValue;
+    let isRawValue = value instanceof raw_value_RawValue;
 
     if (property === DesignJsonProperty.NLS && typeof value[0].nlsMarker == 'undefined') {
       value = Object.values(value[0]);
@@ -1435,7 +1447,7 @@ function scalarArrayToList(arr) {
  * @param {T} v
  * @returns {T}
  */
-function identity(v) {
+function browser_utility_identity(v) {
   return v;
 }
 
@@ -1443,7 +1455,7 @@ function identity(v) {
  * @param {AbstractConstant} constant
  * @returns {string}
  */
-function constantObjectValue(constant) {
+function browser_utility_constantObjectValue(constant) {
   return constant.value;
 }
 
@@ -1451,7 +1463,7 @@ function constantObjectValue(constant) {
  * @param {AbstractBuilder} builder
  * @returns {{}}
  */
-function builderObjectValue(builder) {
+function browser_utility_builderObjectValue(builder) {
   return builder.build();
 }
 
@@ -1462,7 +1474,7 @@ function builderObjectValue(builder) {
  * @see {@link https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523}
  * @returns {string}
  */
-function uuid() {
+function browser_utility_uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
@@ -1733,7 +1745,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawSchemaVersion(schemaVersion) {
-    this._schemaVersion = new RawValue(schemaVersion);
+    this._schemaVersion = new raw_value_RawValue(schemaVersion);
     return this;
   }
 
@@ -1810,7 +1822,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawDefaultLocale(defaultLocale) {
-    this._defaultLocale = new RawValue(defaultLocale);
+    this._defaultLocale = new raw_value_RawValue(defaultLocale);
     return this;
   }
 
@@ -1839,7 +1851,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawLocales(...locales) {
-    this._locales = new RawValue(locales);
+    this._locales = new raw_value_RawValue(locales);
     return this;
   }
 
@@ -1876,7 +1888,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawContentElementGroups(...contentElementGroups) {
-    this._contentElementGroups = new RawValue(contentElementGroups);
+    this._contentElementGroups = new raw_value_RawValue(contentElementGroups);
     return this;
   }
 
@@ -2023,7 +2035,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawStyleConfigs(styleConfigs) {
-    this._styleConfigs = new RawValue(styleConfigs);
+    this._styleConfigs = new raw_value_RawValue(styleConfigs);
     return this;
   }
 
@@ -2055,7 +2067,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawHtmlEditorConfigs(htmlEditorConfigs) {
-    this._htmlEditorConfigs = new RawValue(htmlEditorConfigs);
+    this._htmlEditorConfigs = new raw_value_RawValue(htmlEditorConfigs);
     return this;
   }
 
@@ -2096,7 +2108,7 @@ class Design extends AbstractBuilder {
    * @since BSI CX 1.3
    */
   withRawWebsite(website) {
-    this._website = new RawValue(website);
+    this._website = new raw_value_RawValue(website);
     return this;
   }
 
@@ -2125,7 +2137,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawNLS(nls) {
-    this._nls = new RawValue(nls);
+    this._nls = new raw_value_RawValue(nls);
     return this;
   }
 
@@ -2151,7 +2163,7 @@ class Design extends AbstractBuilder {
    * @returns {Design}
    */
   withRawWebsiteContentTypes(...websiteContentTypes) {
-    this._websiteContentTypes = new RawValue(websiteContentTypes);
+    this._websiteContentTypes = new raw_value_RawValue(websiteContentTypes);
     return this;
   }
 
@@ -2161,20 +2173,20 @@ class Design extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.SCHEMA_VERSION, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.TITLE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.AUTHOR, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.DATE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PREVIEW_IMAGE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.DEFAULT_LOCALE, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.LOCALES, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, builderObjectValue, true);
-    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, builderObjectValue, true);
-    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
-    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.SCHEMA_VERSION, config, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.TITLE, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.AUTHOR, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DATE, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PREVIEW_IMAGE, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DEFAULT_LOCALE, config, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.LOCALES, config, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENT_GROUPS, config, browser_utility_builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, browser_utility_builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, browser_utility_builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIGS, config, browser_utility_builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, browser_utility_builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, browser_utility_builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, browser_utility_constantObjectValue);
 
     return config;
   }
@@ -2201,6 +2213,7 @@ class Design extends AbstractBuilder {
 
 
 /** @typedef {import('./content-element').default} ContentElement */
+/** @typedef {import('./template-element').default} TemplateElement */
 
 /**
  * This is the builder class to specify content element groups.
@@ -2218,7 +2231,7 @@ class ContentElementGroup extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _groupId = uuid();
+  _groupId = browser_utility_uuid();
   /**
    * @type {string|NLS|undefined}
    * @private
@@ -2230,7 +2243,7 @@ class ContentElementGroup extends AbstractBuilder {
    */
   _hidden = undefined;
   /**
-   * @type {RawValue|[ContentElement]|undefined}
+   * @type {RawValue|[ContentElement|TemplateElement]|undefined}
    * @private
    */
   _contentElements = undefined;
@@ -2257,7 +2270,7 @@ class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|[ContentElement]|undefined}
+   * @returns {RawValue|[ContentElement|TemplateElement]|undefined}
    */
   get contentElements() {
     return this._contentElements;
@@ -2315,8 +2328,8 @@ class ContentElementGroup extends AbstractBuilder {
    *       cx.part.plainText
    *         .withLabel('Description')))
    * @see {@link withRawContentElements} to set a raw value
-   * @see {@link ContentElement}
-   * @param {...ContentElement} contentElements - The content elements to use.
+   * @see {@link ContentElement}, {@link TemplateElement}
+   * @param {...(ContentElement|TemplateElement)} contentElements - The content or template elements to use.
    * @returns {ContentElementGroup}
    */
   withContentElements(...contentElements) {
@@ -2345,17 +2358,17 @@ class ContentElementGroup extends AbstractBuilder {
    * @returns {ContentElementGroup}
    */
   withRawContentElements(...contentElements) {
-    this._contentElements = new RawValue(contentElements);
+    this._contentElements = new raw_value_RawValue(contentElements);
     return this;
   }
 
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.GROUP_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENTS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.GROUP_ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTENT_ELEMENTS, config, browser_utility_builderObjectValue);
 
     return config;
   }
@@ -2741,13 +2754,815 @@ const H6 = new Format('h6');
  */
 const PRE = new Format('pre');
 
+;// ./src/content-element/template-part/template-part.js
+
+
+
+
+class TemplatePart extends AbstractBuilder {
+  /**
+   * @type {string}
+   * @private
+   */
+  _id = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _partId = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _config = undefined;
+
+  /**
+   * @type {RawValue|HtmlEditorConfig|undefined}
+   * @private
+   */
+  _htmlEditorConfig = undefined;
+
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _altTextMandatory = undefined;
+
+  /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _captionEnabled = undefined;
+
+  /**
+   * @param {string} partId
+   */
+  constructor(partId, label, id) {
+    super();
+    /**
+     * @type {string}
+     * @private
+     */
+    this._partId = partId;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._label = label;
+    /**
+     * @type {string}
+     * @private
+     */
+    this._id = id;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get id() {
+    return this._id;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get partId() {
+    return this._partId;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @returns {{}|undefined}
+   */
+  get config() {
+    return this._config;
+  }
+
+  /**
+   * @returns {RawValue|HtmlEditorConfig|undefined}
+   */
+  get htmlEditorConfig() {
+    return this._htmlEditorConfig;
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get altTextMandatory() {
+    return this._altTextMandatory;
+  }
+
+  /**
+   * @returns {Boolean|undefined}
+   */
+  get captionEnabled() {
+    return this._captionEnabled;
+  }
+
+  /**
+   * The ID of the part. You can apply an unique identifier to your content element part.
+   * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+   * This property is only for the design build and will not appear in the final build artifacts.
+   * The advantage of using this property is, that you don't have to care about the order of your parts
+   * in your specification. The build will reorder the part definitions in the order they appear in the
+   * corresponding template. This can be very handy in large and complex elements with many parts.
+   *
+   * @example
+   * // template.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+   * </div>
+   *
+   * // title.js
+   * module.exports = new ContentElement()
+   *   .withElementId('title')
+   *   .withLabel('Title')
+   *   .withFile(require('./template.html')
+   *   .withParts(
+   *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+   *    );
+   *
+   * // dist/title-4026bb9f6ec6c2284775.html
+   * <div data-bsi-element="title">
+   *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+   * </div>
+   * @param {string} id - The ID to use.
+   * @returns {this}
+   */
+  withId(id) {
+    this._id = id;
+    return this;
+  }
+
+  /**
+   * The set content element part's label.
+   *
+   * @param {string|NLS} label - The label to set.
+   * @returns {this}
+   * @since Studio 1.0
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  // TODO description
+  withRawConfig(config) {
+    this._config = config;
+    return this;
+  }
+
+  // TODO description
+  withConfig(key, value) {
+    this._config = this.config || {};
+    this._config[key] = value;
+    return this;
+  }
+
+  /**
+   * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+   * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+   * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
+   *
+   * @example
+   * let editorConfig = new HtmlEditorConfig()
+   *   .withIdentifier('minimal')
+   *   .withRawEnterMode('p')
+   *   .withFeatures(
+   *     Feature.BOLD,
+   *     Feature.ITALIC,
+   *     Feature.UNDERLINE);
+   * // ...
+   * let element = new ContentElement()
+   *   .withElementId('element')
+   *   .withParts(
+   *     new FormattedTextPart()
+   *       .withLabel('Text')
+   *       .withHtmlEditorConfig(editorConfig))
+   * @see {withRawHtmlEditorConfig} to set a raw value
+   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @returns {FormattedTextPart}
+   */
+  withHtmlEditorConfig(htmlEditorConfig) {
+    this._htmlEditorConfig = htmlEditorConfig;
+    return this.withConfig(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
+  }
+
+  /**
+   * Set a Boolean to indicate if the alt-text for this image is mandatory.
+   * If true users must describe the image before they can save it in the CX editor.
+   *
+   * @see {withAltTextMandatory}
+   * @param {Boolean} altTextMandatory
+   * @returns {Part}
+   */
+  withAltTextMandatory(altTextMandatory) {
+    this._altTextMandatory = altTextMandatory;
+    return this.withConfig(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory);
+  }
+
+  /**
+   * Set a Boolean to indicate if caption is enabled in editor.
+   * If true users can add a caption for the table in CX editor.
+   *
+   * @see {withCaptionEnabled}
+   * @param {Boolean} captionEnabled
+   * @returns {Part}
+   */
+  withCaptionEnabled(captionEnabled) {
+    this._captionEnabled = captionEnabled;
+    return this.withConfig(DesignJsonProperty.CAPTION_ENABLED, captionEnabled);
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, browser_utility_identity);
+    // Deprecated properties, only for older cx-versions
+    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, browser_utility_identity);
+
+    return config;
+  }
+}
+
+;// ./src/content-element/template-element.js
+
+
+
+
+
+/**
+ * TODO: MinVersion 25.1
+ */
+class TemplateElement extends AbstractBuilder {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _elementId = uuid();
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _label = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _description = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _file = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _contextFile = undefined;
+  /**
+   * @type {RawValue|Icon|undefined}
+   * @private
+   */
+  _icon = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _hidden = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _composite = undefined;
+  /**
+   * @type {boolean|undefined}
+   * @private
+   */
+  _archived = undefined;
+  /**
+   * @type {RawValue|[Style]|undefined}
+   * @private
+   */
+  _styleConfigs = undefined;
+  /**
+   * @type {RawValue|[TemplatePart]|undefined}
+   * @private
+   */
+  _templateParts = undefined;
+  /**
+   * @type {Dropzone[]|undefined}
+   * @private
+   */
+  _dropzones = undefined;
+
+  /**
+   * @returns {string|undefined}
+   */
+  get elementId() {
+    return this._elementId;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get description() {
+    return this._description;
+  }
+
+  /**
+   * @returns {{}|undefined}
+   */
+  get file() {
+    return this._file;
+  }
+
+  /**
+   * @returns {{}|undefined}
+   */
+  get contextFile() {
+    return this._contextFile;
+  }
+
+  /**
+   * @returns {RawValue|Icon|undefined}
+   */
+  get icon() {
+    return this._icon;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get hidden() {
+    return this._hidden;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get archived() {
+    return this._archived;
+  }
+
+  /**
+   * @returns {boolean|undefined}
+   */
+  get composite() {
+    return this._composite;
+  }
+
+  /**
+   * @returns {RawValue|Style[]|undefined}
+   */
+  get styleConfigs() {
+    return this._styleConfigs;
+  }
+
+  /**
+   * @returns {RawValue|TemplatePart[]|undefined}
+   */
+  get templateParts() {
+    return this._templateParts;
+  }
+
+  /**
+   * @returns {Dropzone[]|undefined}
+   */
+  get dropzones() {
+    return this._dropzones;
+  }
+
+  /**
+   * Set the ID of this template element.
+   *
+   * @param {string} elementId - The template element's ID.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withElementId(elementId) {
+    this._elementId = elementId;
+    return this;
+  }
+
+  /**
+   * Set the label of the template element.
+   *
+   * @param {string|NLS} label - The label of the template element.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  /**
+   * Set the description of the template element.
+   *
+   * @param {string|NLS} description - The description of the template element.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withDescription(description) {
+    this._description = description;
+    return this;
+  }
+
+  /**
+   * Set the template to use for this template element. Be aware, that you have to require the template.
+   *
+   * @example
+   * .withFile(require('./template.hbs'))
+   * @param {string} file - The reference to the required template.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withFile(file) {
+    this._file = file;
+    return this;
+  }
+
+  /**
+   * Set the default values to use for this template element. Be aware, that you have to require the context file.
+   *
+   * @example
+   * .withFile(require('./context.json'))
+   * @param {string} contextFile - The default values for the template parts of this element.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withContextFile(contextFile) {
+    this._contextFile = contextFile;
+    return this;
+  }
+
+  /**
+   * Set the icon for this template element.
+   *
+   * @example
+   * .withIcon(Icon.IMAGE)
+   * @see {@link Icon} for available icons
+   * @see {@link withRawIcon} to set a raw value
+   * @param {Icon} icon - The icon for this template element.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withIcon(icon) {
+    this._icon = icon;
+    return this;
+  }
+
+  /**
+   * Set the icon for this template element as raw value.
+   *
+   * @example
+   * .withRawIcon('image')
+   * @see {@link withIcon}
+   * @param {string} icon - The raw icon for this template element.
+   * @returns {TemplateElement}
+   */
+  withRawIcon(icon) {
+    this._icon = new RawValue(icon);
+    return this;
+  }
+
+  /**
+   * Declare this template element as hidden.
+   *
+   * @example
+   * .withHidden(true)
+   * @param {boolean} hidden - The hidden state.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withHidden(hidden) {
+    this._hidden = hidden;
+    return this;
+  }
+
+  /**
+   * Declare this template element as composite. (Doku 2.3.1.1)
+   *
+   * @example
+   * .withComposite(true)
+   * @param {boolean} composite - The composite state.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withComposite(composite) {
+    this._composite = composite;
+    return this;
+  }
+
+  /**
+   * Declare this template element as archived.
+   *
+   * @example
+   * .withArchived(true)
+   * @param {boolean} archived - The archived state.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withArchived(archived) {
+    this._archived = archived;
+    return this;
+  }
+
+  /**
+   * Declare this template element as archived for a minimum CX version.
+   *
+   * @example
+   * .withArchivedMinVersion(Version.CX_25_1)
+   * @param {Version} minVersion
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withArchivedMinVersion(minVersion) {
+    if (TARGET_VERSION >= minVersion) {
+      this._archived = true;
+    }
+    return this;
+  }
+
+  /**
+   * Declare the styles for this template element. You don't have to register the used styles in the design object
+   * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+   *
+   * @example
+   * let textColorStyle = cx.style
+   *   .withIdentifier('text-color')
+   *   .withLabel('Text Color')
+   *   .withCssClasses(
+   *     cx.cssClass
+   *       .withCssClass('blue-text')
+   *       .withLabel('Blue'),
+   *     cx.cssClass
+   *       .withCssClass('red-text')
+   *       .withLabel('Red'))
+   *  let textElement = cx.TemplateElement
+   *    .withStyleConfigs(
+   *      textColorStyle,
+   *      require('./styles/background-color'))
+   * @see {@link withRawStyleConfigs} to set a raw value
+   * @param {...Style} styleConfigs - Styles for this template element.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withStyleConfigs(...styleConfigs) {
+    this._styleConfigs = styleConfigs;
+    return this;
+  }
+
+  /**
+   * Declare the styles for this template element as raw value. Be aware, that you just pass the name of the referenced
+   * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
+   * in your design specification. Use {@link Design#withStyleConfigs} to do so.
+   *
+   * @example
+   * .withRawStyleConfigs('text-color', 'background-color')
+   * @see {@link withStyleConfigs}
+   * @param {...string} styleConfigs - Style config identifiers.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withRawStyleConfigs(...styleConfigs) {
+    this._styleConfigs = new RawValue(styleConfigs);
+    return this;
+  }
+
+  /**
+ * Add styles to this template element. You don't have to register the used styles in the design object
+ * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+ *
+ * @example
+ *  let textElement = cx.TemplateElement
+ *    .withAddStyleConfigs(
+ *      require('./styles/background-color'))
+ * @see {@link withRawStyleConfigs} to set a raw value
+ * @param {...Style} styleConfigs - Styles for this template element.
+ * @returns {TemplateElement}
+ * @since BSI CX 25.1
+ */
+  withAddStyleConfigs(...styleConfigs) {
+    this._styleConfigs = (this.styleConfigs || []).concat(styleConfigs);
+    
+    return this;
+  }
+
+  /**
+ * Remove styles for this template element.
+ *
+ * @example
+ *  let textElement = cx.TemplateElement
+ *    .withRemoveStyleConfigs(
+ *      require('./styles/background-color'))
+ * @param {...Style} styleConfigs - Styles to be removed for this template element.
+ * @returns {TemplateElement}
+ * @since BSI CX 25.1
+ */
+  withRemoveStyleConfigs(...styleConfigs) {
+    var styleIds = styleConfigs.map(style => style.identifier);
+    this._styleConfigs = (this.styleConfigs || []).filter(style => !styleIds.includes(style.identifier));
+    
+    return this;
+  }
+
+  /**
+   * Specify the parts of your template element.
+   *
+   * @example
+   * .withParts(
+   *   cx.part.image
+   *     .withLabel('Image'),
+   *   cx.part.plainText
+   *     .withLabel('Description'))
+   * @see {@link withRawParts} to set a raw value
+   * @param {...TemplatePart} templateParts - The parts to use.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withTemplateParts(...templateParts) {
+    this._templateParts = templateParts;
+    return this;
+  }
+
+  /**
+   * Set the parts of your template element as raw value.
+   *
+   * @example
+   * .withRawTemplateParts(
+   *   {
+   *     partId: 'image',
+   *     partContextId: 'image',
+   *     label: 'Image'
+   *   },
+   *   {
+   *     partId: 'plain-text',
+   *     partContextId: 'plain-text',
+   *     label: 'Description'
+   *   }
+   * )
+   * @see {@link withTemplateParts}
+   * @param {...{}} templateParts - The template parts as raw value.
+   * @returns {TemplateElement}
+   * @since BSI CX 25.1
+   */
+  withRawTemplateParts(...templateParts) {
+    this._templateParts = new RawValue(templateParts);
+    return this;
+  }
+
+  /**
+   * Define the dropzones of this template element.
+   *
+   * @example
+   * .withDropzones(
+   *   cx.dropzone
+   *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+   *     .withAllowedElements(
+   *       require('./template-elements/basic/text'),
+   *       require('./template-elements/basic/image'))
+   *     .withMaxAllowedElements(1),
+   *   cx.dropzone
+   *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+   *     .withAllowedElements(
+   *       require('./template-elements/basic/text'),
+   *       require('./template-elements/basic/image'))
+   *     .withMaxAllowedElements(1))
+   * @param {...Dropzone} dropzones - The dropzones of this template element.
+   * @returns {TemplateElement}
+   */
+  withDropzones(...dropzones) {
+    this._dropzones = dropzones;
+    return this;
+  }
+
+  /**
+   * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withExtendedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./template-elements/basic/text'),
+   *   require('./template-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+   * @param {...TemplateElement} elements - The elements to add to the allowed elements list.
+   * @returns {TemplateElement}
+   */
+  withExtendedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    }
+
+    return this;
+  }
+
+  /**
+   * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   *
+   * @example
+   * .withReducedDropzone(
+   *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+   *   require('./template-elements/basic/text'),
+   *   require('./template-elements/basic/image'))
+   * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+   * @param {...TemplateElement} elements - The elements to remove from the allowed elements list.
+   * @returns {TemplateElement}
+   */
+  withReducedDropzone(id, ...elements) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
+
+    if (dropzone) {
+      let removeIds = elements.map(el => el.elementId);
+      let allowedElements = dropzone.allowedElements;
+      allowedElements = allowedElements.filter(el => !removeIds.includes(el.elementId));
+      dropzone.withAllowedElements(...allowedElements);
+    }
+
+    return this;
+  }
+
+  isCompatible() {
+    return super.isCompatible() && !this._hasIncompatibleParts();
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
+
+    return config;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {TemplateElement}
+   */
+  clone(shallow) {
+    return this._clone(new TemplateElement(), shallow);
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  _hasIncompatibleParts() {
+    const templateParts = this.templateParts ?? [];
+
+    return templateParts.some(templatePart => templatePart instanceof AbstractBuilder ? !templatePart.isCompatible() : false);
+  }
+}
+
 ;// ./src/dropzone/dropzone.js
 
 
 
 
 
+
 /** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/template-element').default} TemplateElement */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -2774,7 +3589,7 @@ class Dropzone extends AbstractBuilder {
    */
   _dropzone = undefined;
   /**
-   * @type {RawValue|[ContentElement]|undefined}
+   * @type {RawValue|ContentElement[]|TemplateElement[]|undefined}
    * @private
    */
   _allowedElements = undefined;
@@ -2807,7 +3622,7 @@ class Dropzone extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|ContentElement[]|undefined}
+   * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
    */
   get allowedElements() {
     return this._allowedElements;
@@ -2855,12 +3670,13 @@ class Dropzone extends AbstractBuilder {
 
   /**
    * Set the allowed elements.
+   * They should be of the same Type (ContentElement or Template Element)
    *
    * @example
    * .withAllowedElements(
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
-   * @param {...ContentElement} allowedElements - The allowed elements.
+   * @param {...(ContentElement|TemplateElement)} allowedElements - The allowed elements.
    * @returns {Dropzone}
    */
   withAllowedElements(...allowedElements) {
@@ -2875,7 +3691,7 @@ class Dropzone extends AbstractBuilder {
    * @returns {Dropzone}
    */
   withRawAllowedElements(...allowedElements) {
-    this._allowedElements = new RawValue(allowedElements);
+    this._allowedElements = new raw_value_RawValue(allowedElements);
     return this;
   }
 
@@ -2926,12 +3742,12 @@ class Dropzone extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONE, config, browser_utility_identity);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.ALLOWED_ELEMENTS, config, v => v.elementId);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS, config, identity);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.REMOVE_ALLOWED, config, identity);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.COPY_ALLOWED, config, identity);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MOVE_ALLOWED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.REMOVE_ALLOWED, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.COPY_ALLOWED, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.MOVE_ALLOWED, config, browser_utility_identity);
 
     return config;
   }
@@ -2975,7 +3791,7 @@ class HtmlEditorConfig extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _identifier = uuid();
+  _identifier = browser_utility_uuid();
   /**
    * @type {RawValue|Feature[]|undefined}
    * @private
@@ -3129,7 +3945,7 @@ class HtmlEditorConfig extends AbstractBuilder {
    * @returns {HtmlEditorConfig}
    */
   withRawFeatures(...features) {
-    this._features = new RawValue(features);
+    this._features = new raw_value_RawValue(features);
     return this;
   }
 
@@ -3186,7 +4002,7 @@ class HtmlEditorConfig extends AbstractBuilder {
    * @returns {HtmlEditorConfig}
    */
   withRawFormats(...formats) {
-    this._formats = new RawValue(formats);
+    this._formats = new raw_value_RawValue(formats);
     return this;
   }
 
@@ -3228,7 +4044,7 @@ class HtmlEditorConfig extends AbstractBuilder {
    * @returns {HtmlEditorConfig}
    */
   withRawFontSizeUnit(fontSizeUnit) {
-    this._fontSizeUnit = new RawValue(fontSizeUnit);
+    this._fontSizeUnit = new raw_value_RawValue(fontSizeUnit);
     return this;
   }
 
@@ -3282,7 +4098,7 @@ class HtmlEditorConfig extends AbstractBuilder {
    * @returns {HtmlEditorConfig}
    */
   withRawEnterMode(enterMode) {
-    this._enterMode = new RawValue(enterMode);
+    this._enterMode = new raw_value_RawValue(enterMode);
     return this;
   }
 
@@ -3292,15 +4108,15 @@ class HtmlEditorConfig extends AbstractBuilder {
 
     config[this.identifier] = editorConfig;
 
-    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, editorConfig, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEXT_COLORS, editorConfig, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.BACKGROUND_COLORS, editorConfig, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FORMATS, editorConfig, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZES, editorConfig, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_UNIT, editorConfig, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FONT_SIZE_DEFAULT, editorConfig, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LINE_HEIGHTS, editorConfig, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ENTER_MODE, editorConfig, browser_utility_constantObjectValue);
 
     return config;
   }
@@ -3382,7 +4198,7 @@ class Style extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _identifier = uuid();
+  _identifier = browser_utility_uuid();
   /**
    * @type {string|NLS|undefined}
    * @private
@@ -3490,7 +4306,7 @@ class Style extends AbstractBuilder {
    * @returns {Style}
    */
   withRawCssClasses(...cssClasses) {
-    this._cssClasses = new RawValue(cssClasses);
+    this._cssClasses = new raw_value_RawValue(cssClasses);
     return this;
   }
 
@@ -3562,7 +4378,7 @@ class Style extends AbstractBuilder {
    * @returns {Style}
    */
   withRawStyleOptions(...styles) {
-    this._styles = new RawValue(styles);
+    this._styles = new raw_value_RawValue(styles);
     return this;
   }
 
@@ -3570,9 +4386,9 @@ class Style extends AbstractBuilder {
     let config = {};
     let style = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, style, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASSES, style, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLES, style, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, style, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASSES, style, browser_utility_builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLES, style, browser_utility_builderObjectValue);
 
     config[this.identifier] = style;
 
@@ -3666,8 +4482,8 @@ class CssClass extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, browser_utility_identity);
 
     return config;
   }
@@ -3872,17 +4688,17 @@ class StyleOption extends AbstractBuilder {
    * @returns {StyleOption}
    */
   withRawDomManipulations(...domManipulations) {
-    this._domManipulations = new RawValue(domManipulations);
+    this._domManipulations = new raw_value_RawValue(domManipulations);
     return this;
   }
 
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.DOM_MANIPULATIONS, config, builderObjectValue)
+    this._applyPropertyIfDefined(DesignJsonProperty.STYLE_ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DOM_MANIPULATIONS, config, browser_utility_builderObjectValue)
 
     return config;
   }
@@ -4023,9 +4839,9 @@ class DomManipulation extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.SELECTOR, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.ATTRIBUTE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.VALUE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.SELECTOR, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ATTRIBUTE, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.VALUE, config, browser_utility_identity);
 
     return config;
   }
@@ -4335,7 +5151,7 @@ class ContentElement extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _elementId = uuid();
+  _elementId = browser_utility_uuid();
   /**
    * @type {string|NLS|undefined}
    * @private
@@ -4528,7 +5344,7 @@ class ContentElement extends AbstractBuilder {
    * @returns {ContentElement}
    */
   withRawIcon(icon) {
-    this._icon = new RawValue(icon);
+    this._icon = new raw_value_RawValue(icon);
     return this;
   }
 
@@ -4618,7 +5434,7 @@ class ContentElement extends AbstractBuilder {
    * @since Studio 1.1
    */
   withRawStyleConfigs(...styleConfigs) {
-    this._styleConfigs = new RawValue(styleConfigs);
+    this._styleConfigs = new raw_value_RawValue(styleConfigs);
     return this;
   }
 
@@ -4698,7 +5514,7 @@ class ContentElement extends AbstractBuilder {
    * @since Studio 1.0
    */
   withRawParts(...parts) {
-    this._parts = new RawValue(parts);
+    this._parts = new raw_value_RawValue(parts);
     return this;
   }
 
@@ -4783,16 +5599,16 @@ class ContentElement extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, browser_utility_builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, browser_utility_builderObjectValue);
 
     return config;
   }
@@ -5052,14 +5868,14 @@ class Part extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, browser_utility_identity);
     // Deprecated properties, only for older cx-versions
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
-    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, browser_utility_identity);
 
     return config;
   }
@@ -5182,7 +5998,7 @@ class Website extends AbstractBuilder {
    * @returns {Website}
    */
   withRawPagination(pagination) {
-    this._pagination = new RawValue(pagination);
+    this._pagination = new raw_value_RawValue(pagination);
     return this;
   }
 
@@ -5225,16 +6041,16 @@ class Website extends AbstractBuilder {
    * @returns {Website}
    */
   withRawIncludes(includes) {
-    this._includes = new RawValue(includes);
+    this._includes = new raw_value_RawValue(includes);
     return this;
   }
 
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.PAGINATION, config, builderObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDES, config, builderObjectValue, true);
+    this._applyPropertyIfDefined(DesignJsonProperty.MAX_NAVIGATION_LEVEL, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.PAGINATION, config, browser_utility_builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDES, config, browser_utility_builderObjectValue, true);
 
     return config;
   }
@@ -5269,7 +6085,7 @@ class AbstractInclude extends AbstractBuilder {
    * @type {string|undefined}
    * @protected
    */
-  _identifier = uuid();
+  _identifier = browser_utility_uuid();
   /**
    * @type {boolean|undefined}
    * @protected
@@ -5515,12 +6331,12 @@ class AbstractInclude extends AbstractBuilder {
 
     config[this.identifier] = include;
 
-    this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDE_TYPE, include, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPE, include, constantObjectValue);
-    this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, identity);
-    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.EDITABLE, include, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.INCLUDE_TYPE, include, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPE, include, browser_utility_constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FILE, include, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.NAME, include, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, include, browser_utility_builderObjectValue);
 
     return config;
   }
@@ -5690,7 +6506,7 @@ class Translation extends AbstractBuilder {
    * @returns {Translation}
    */
   withRawLocale(locale) {
-    this._locale = new RawValue(locale);
+    this._locale = new raw_value_RawValue(locale);
     return this;
   }
 
@@ -5798,7 +6614,7 @@ class NLS extends AbstractBuilder {
    * @type {string|undefined}
    * @private
    */
-  _nlsMarker = uuid();
+  _nlsMarker = browser_utility_uuid();
 
   /**
    * @returns {string|undefined}
@@ -6432,8 +7248,8 @@ class Pagination extends AbstractBuilder {
   _buildInternal() {
     let config = {};
 
-    this._applyPropertyIfDefined(DesignJsonProperty.NUM_DATA_RECORDS_PER_PAGE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.NUM_ADJACENT_PAGES, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.NUM_DATA_RECORDS_PER_PAGE, config, browser_utility_identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.NUM_ADJACENT_PAGES, config, browser_utility_identity);
 
     return config;
   }
@@ -6585,6 +7401,7 @@ class DesignHelper {
 
 
 
+
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
  * The design factory is available under the <code>cx</code> constant.
@@ -6673,6 +7490,28 @@ class DesignFactory {
    */
   get contentElement() {
     return new ContentElement();
+  }
+
+  /**
+   * Get a new content element builder instance.
+   *
+   * @example
+   * .withTemplateElements(
+   *   cx.TemplateElement
+   *     .withElementId('image-with-text')
+   *     .withLabel('Image with text')
+   *     .withDescription('Displays an image with an optional text.')
+   *     .withFile(require('./template.twig'))
+   *     .withIcon(Icon.IMAGE)
+   *     .withParts(
+   *       cx.part.image
+   *         .withLabel('Image'),
+   *       cx.part.plainText
+   *         .withLabel('Description')))
+   * @returns {TemplateElement}
+   */
+  get templateElement() {
+    return new TemplateElement();
   }
 
   /**

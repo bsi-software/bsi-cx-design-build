@@ -486,7 +486,15 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static CONTEXT_FILE = 'contextFile';
+  /**
+   * @type {string}
+   */
   static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static TEMPLATE_PARTS = 'templateParts';
   /**
    * @type {string}
    */
@@ -519,6 +527,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static ARCHIVED = 'archived';
+  /**
+   * @type {string}
+   */
+  static COMPOSITE = 'composite';
   /**
    * @type {string}
    */
