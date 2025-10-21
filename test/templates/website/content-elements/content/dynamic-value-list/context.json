@@ -1,2 +1,15 @@
 {
+  "id": {
+    "value": "dynamic-dropdown-1"
+  },
+  "name": {
+    "value": "Field"
+  },
+  "entityTypeAndInitialValue": {
+    "dataModelValue": {
+      "type": "",
+      "value": ""
+    },
+    "displayText": ""
+  }
 }

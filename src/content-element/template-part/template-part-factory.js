@@ -101,7 +101,6 @@ export default class TemplatePartFactory {
    * @returns {TemplatePart}
    */
   DynamicValueList(label, partContextId) {
-    // TODO: WTF???
     return new TemplatePart('dynamic-value-list', label, partContextId);
   }
 
