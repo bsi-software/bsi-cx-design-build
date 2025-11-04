@@ -274,6 +274,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static STUDIO_LINK_ENABLED: string;
+        /**
+         * @type {string}
+         */
         static DEFAULT_LOCALE: string;
         /**
          * @type {string}
@@ -7410,7 +7414,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} partContextId
          * @returns {TemplatePart}
          */
-        PlainText(label: string, partContextId: string): TemplatePart;
+        PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean): TemplatePart;
         /**
          * Build a new multiple plain text content element part builder instance.
          *
@@ -7418,7 +7422,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} partContextId
          * @returns {TemplatePart}
          */
-        MultilinePlainText(label: string, partContextId: string, fieldHeight: any): TemplatePart;
+        MultilinePlainText(label: string, partContextId: string, fieldHeight: any, studioLinkEnabled?: boolean): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
          *

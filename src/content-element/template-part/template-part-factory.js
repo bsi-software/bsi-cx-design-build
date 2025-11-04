@@ -10,8 +10,9 @@ export default class TemplatePartFactory {
    * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  PlainText(label, partContextId) {
-    return new TemplatePart('plain-text', label, partContextId);
+  PlainText(label, partContextId, studioLinkEnabled = true) {
+    var part = new TemplatePart('plain-text', label, partContextId);
+    return part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
   }
 
   /**
@@ -21,9 +22,10 @@ export default class TemplatePartFactory {
    * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  MultilinePlainText(label, partContextId, fieldHeight) {
+  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true) {
     var part = new TemplatePart('multiline-plain-text', label, partContextId);
-    return part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
+    return part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
   }
 
   /**
