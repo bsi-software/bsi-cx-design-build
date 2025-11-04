@@ -7082,6 +7082,7 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
+   * @param {boolean} studioLinkEnabled
    * @returns {TemplatePart}
    */
   PlainText(label, partContextId, studioLinkEnabled = true) {
@@ -7094,6 +7095,8 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
+   * @param {int} fieldHeight
+   * @param {boolean} studioLinkEnabled
    * @returns {TemplatePart}
    */
   MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true) {
