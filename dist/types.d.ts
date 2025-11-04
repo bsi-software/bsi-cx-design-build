@@ -258,6 +258,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static STUDIO_LINK_ENABLED: string;
+        /**
+         * @type {string}
+         */
         static DEFAULT_LOCALE: string;
         /**
          * @type {string}
@@ -4057,6 +4061,11 @@ declare module "src/content-element/part/part" {
          */
         private _captionEnabled;
         /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _studioLinkEnabled;
+        /**
          * @returns {string}
          */
         get id(): string;
@@ -4168,6 +4177,15 @@ declare module "src/content-element/part/part" {
          * @returns {Part}
          */
         withCaptionEnabled(captionEnabled: boolean): Part;
+        /**
+         * Set a Boolean to indicate if studioLink is enabled in the editor.
+         * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
+         *
+         * @see {withCaptionEnabled}
+         * @param {Boolean} captionEnabled
+         * @returns {Part}
+         */
+        withStudioLinkEnabled(studioLinkEnabled: any): Part;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -5056,6 +5074,13 @@ declare module "src/html-editor-config/feature" {
      * @type {Feature}
      */
     export const HELP: Feature;
+    /**
+     * Show the cx link option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const STUDIO_LINK: Feature;
     export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
     import AbstractConstant from "src/abstract-constant";
 }
@@ -6819,7 +6844,7 @@ declare module "src/content-element/part/part-factory" {
          * @param {string} id
          * @returns {Part}
          */
-        PlainText(label: string, id: string): Part;
+        PlainText(label: string, id: string, studioLinkEnabled: any): Part;
         /**
          * Get a new social follow content element part builder instance.
          *

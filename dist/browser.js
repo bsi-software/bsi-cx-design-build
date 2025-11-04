@@ -191,6 +191,7 @@ __webpack_require__.d(feature_namespaceObject, {
   SELECT_ALL: () => (SELECT_ALL),
   SPECIAL_CHARACTERS: () => (SPECIAL_CHARACTERS),
   STRIKE_THROUGH: () => (STRIKE_THROUGH),
+  STUDIO_LINK: () => (STUDIO_LINK),
   SUBSCRIPT: () => (SUBSCRIPT),
   SUPERSCRIPT: () => (SUPERSCRIPT),
   TEXT_COLOR: () => (TEXT_COLOR),
@@ -324,6 +325,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static CAPTION_ENABLED = 'captionEnabled';
+  /**
+   * @type {string}
+   */
+  static STUDIO_LINK_ENABLED = 'studioLinkEnabled';
   /**
    * @type {string}
    */
@@ -2595,6 +2600,14 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
+/**
+ * Show the cx link option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
+ * @type {Feature}
+ */
+const STUDIO_LINK = new Feature('studioLink');
+
 ;// ./src/html-editor-config/enter-mode.js
 
 
@@ -4864,6 +4877,12 @@ class Part extends AbstractBuilder {
   _captionEnabled = undefined;
 
   /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _studioLinkEnabled = undefined;
+
+  /**
    * @param {string} partId
    */
   constructor(partId, label, id) {
@@ -5049,6 +5068,19 @@ class Part extends AbstractBuilder {
     return this.withConfig(DesignJsonProperty.CAPTION_ENABLED, captionEnabled);
   }
 
+  /**
+   * Set a Boolean to indicate if studioLink is enabled in the editor.
+   * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
+   *
+   * @see {withCaptionEnabled}
+   * @param {Boolean} captionEnabled
+   * @returns {Part}
+   */
+  withStudioLinkEnabled(studioLinkEnabled) {
+    this._studioLinkEnabled = studioLinkEnabled;
+    return this.withConfig(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled);
+  }
+
   _buildInternal() {
     let config = {};
 
@@ -5060,6 +5092,7 @@ class Part extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.STUDIO_LINK_ENABLED, config, identity);
 
     return config;
   }
@@ -6227,8 +6260,9 @@ class PartFactory {
    * @param {string} id
    * @returns {Part}
    */
-  PlainText(label, id) {
-    return new Part('plain-text', label, id);
+  PlainText(label, id, studioLinkEnabled) {
+    var part = new Part('plain-text', label, id);
+    return studioLinkEnabled !== null ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
   }
 
   /**

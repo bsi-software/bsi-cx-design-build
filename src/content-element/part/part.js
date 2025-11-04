@@ -43,6 +43,12 @@ export default class Part extends AbstractBuilder {
   _captionEnabled = undefined;
 
   /**
+   * @type {Boolean|undefined}
+   * @private
+   */
+  _studioLinkEnabled = undefined;
+
+  /**
    * @param {string} partId
    */
   constructor(partId, label, id) {
@@ -228,6 +234,19 @@ export default class Part extends AbstractBuilder {
     return this.withConfig(DesignJsonProperty.CAPTION_ENABLED, captionEnabled);
   }
 
+  /**
+   * Set a Boolean to indicate if studioLink is enabled in the editor.
+   * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
+   *
+   * @see {withCaptionEnabled}
+   * @param {Boolean} captionEnabled
+   * @returns {Part}
+   */
+  withStudioLinkEnabled(studioLinkEnabled) {
+    this._studioLinkEnabled = studioLinkEnabled;
+    return this.withConfig(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled);
+  }
+
   _buildInternal() {
     let config = {};
 
@@ -239,6 +258,7 @@ export default class Part extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.STUDIO_LINK_ENABLED, config, identity);
 
     return config;
   }
