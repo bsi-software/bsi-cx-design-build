@@ -1,9 +1,10 @@
 import AbstractBuilder from '../abstract-builder';
+import { builderObjectValue, identity, uuid } from '../browser-utility';
 import DesignJsonProperty from '../design-json-property';
-import {builderObjectValue, identity, uuid} from '../browser-utility';
 import RawValue from '../raw-value';
 
 /** @typedef {import('./content-element').default} ContentElement */
+/** @typedef {import('./template-element').default} TemplateElement */
 
 /**
  * This is the builder class to specify content element groups.
@@ -33,7 +34,7 @@ export default class ContentElementGroup extends AbstractBuilder {
    */
   _hidden = undefined;
   /**
-   * @type {RawValue|[ContentElement]|undefined}
+   * @type {RawValue|[ContentElement|TemplateElement]|undefined}
    * @private
    */
   _contentElements = undefined;
@@ -60,7 +61,7 @@ export default class ContentElementGroup extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|[ContentElement]|undefined}
+   * @returns {RawValue|[ContentElement|TemplateElement]|undefined}
    */
   get contentElements() {
     return this._contentElements;
@@ -118,8 +119,8 @@ export default class ContentElementGroup extends AbstractBuilder {
    *       cx.part.plainText
    *         .withLabel('Description')))
    * @see {@link withRawContentElements} to set a raw value
-   * @see {@link ContentElement}
-   * @param {...ContentElement} contentElements - The content elements to use.
+   * @see {@link ContentElement}, {@link TemplateElement}
+   * @param {...(ContentElement|TemplateElement)} contentElements - The content or template elements to use.
    * @returns {ContentElementGroup}
    */
   withContentElements(...contentElements) {

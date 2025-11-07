@@ -1,0 +1,16 @@
+.bsi-template-part-element {
+    &.background-green {
+        background-color: greenyellow;
+    }
+
+    img {
+        width: 100%;
+        min-height: 300px;
+        object-fit: contain;
+    }
+
+    &::before {
+        content: attr(option-tag);
+        background-color: aqua;
+    }
+}
