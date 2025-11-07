@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 * Add Template Element and Template Parts
+* Add studioLink and studioLinkEnabled
 
 
 ## [2.0.0] - 09.10.2025
