@@ -135,7 +135,7 @@ export default class CssUrl extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
-    return new sass.types.String(this.css);
+    return new sass.SassString(this.css);
   }
 
   /**

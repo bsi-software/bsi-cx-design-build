@@ -2743,11 +2743,55 @@ declare module "src/build-context" {
 }
 declare module "src/bsi-sass-property-plugin" {
     export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
+        /**
+         * @param {*} property
+         * @param {*} fallback
+         * @returns {*}
+         */
+        getProperty([property, fallback]: any): any;
         getFunction(): {
             'bsiProperty($property, $fallback: null)': any;
         };
     }
     import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
+declare module "src/bsi-sass-properties-to-scss" {
+    /**
+     * PropertiesToScssConverter
+     * ----------------
+     * Converts a PropertyContext object into SCSS variables.
+     * Supports nested structures (becomes SCSS maps).
+     *
+     * Example:
+     * properties.js:
+     * {
+     *  primary: #abc123,
+     *  secondary: #123abc
+     * }
+     *
+     * becomes
+     * $primary: #abc123
+     * $secondary: #123abc;
+     */
+    export default class PropertiesToScssConverter {
+        /**
+         * @param {PropertyContext} propertyContext
+         */
+        constructor(propertyContext: PropertyContext);
+        _scssData: string;
+        specialCharsRegex: RegExp;
+        /**
+         * @returns {string|undefined}
+         */
+        get scssData(): string | undefined;
+        spacer: (indent: any) => string;
+        _keyValueToStr(key: any, value: any, indent?: number): string;
+        /**
+         * Rekursive Konvertierung eines JS-Objekts in SCSS Map
+         */
+        _toScssMap(obj: any, indent?: number): string;
+    }
+    import PropertyContext from "src/property-context";
 }
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {

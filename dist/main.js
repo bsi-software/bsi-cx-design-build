@@ -1,7 +1,39 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 896:
+/***/ ((module) => {
+
+module.exports = require("fs");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -1004,9 +1036,9 @@ class ObjectCloner {
   }
 }
 
-;// external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __webpack_require__(896);
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
 ;// external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
@@ -2808,7 +2840,8 @@ class AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(property, fallback) {
-    let segments = property.split('.');
+    console.log('property: ' + property)
+    let segments = property.toString().split('.');
     let scope = this._properties;
 
     for (let segment of segments) {
@@ -2817,7 +2850,7 @@ class AbstractPropertyPlugin {
         return this._handleNotFoundProperty(property, fallback);
       }
     }
-
+    console.log('scope: ' + scope)
     return this._propertyResolver.resolve(scope);
   }
 
@@ -2828,7 +2861,7 @@ class AbstractPropertyPlugin {
    * @private
    */
   _handleNotFoundProperty(property, fallback) {
-    if (typeof fallback === 'undefined') {
+    if (typeof fallback === 'undefined' || fallback === null) {
       throw new Error(`Property ${property} not found.`);
     }
 
@@ -4737,7 +4770,7 @@ class BsiCxWebpackZipHashPlugin {
       onlyFiles: true
     });
 
-    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
+    zipFilesToRemove.forEach(external_fs_.unlinkSync);
   }
 
   apply(compiler) {
@@ -4812,6 +4845,7 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(propertyNode, fallback) {
+    console.log('Less')
     if (!propertyNode) {
       throw new Error('Property argument is required.');
     }
@@ -5157,7 +5191,7 @@ class CssColor extends AbstractCssProperty {
   /**
    * @type {{}}
    */
-  static COLORS = Object.assign({}, (colors_default()), {transparent: '#00000000'});
+  static COLORS = Object.assign({}, (colors_default()), { transparent: '#00000000' });
 
   /**
    * @type {number}
@@ -5275,7 +5309,7 @@ class CssColor extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).types.Color(this.red, this.green, this.blue, this.alpha);
+    return new (external_sass_default()).SassColor({ red: this.red, green: this.green, blue: this.blue, alpha: this.alpha / 255 });
   }
 
   toString() {
@@ -5480,7 +5514,7 @@ class CssDimension extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).types.Number(this.value, this.unit);
+    return new (external_sass_default()).SassNumber(this.value, this.unit);
   }
 
   toString() {
@@ -5562,7 +5596,7 @@ class CssRaw extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).types.String(this.value);
+    return new (external_sass_default()).SassString(this.value);
   }
 
   /**
@@ -5739,7 +5773,7 @@ class CssUrl extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
-    return new (external_sass_default()).types.String(this.css);
+    return new (external_sass_default()).SassString(this.css);
   }
 
   /**
@@ -5826,7 +5860,7 @@ class CssBool extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
-    return !!this.value ? (external_sass_default()).types.Boolean.TRUE : (external_sass_default()).types.Boolean.FALSE;
+    return !!this.value ? (external_sass_default()).sassTrue : (external_sass_default()).sassFalse;
   }
 
   /**
@@ -5998,11 +6032,17 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
    * @param {*} fallback
    * @returns {*}
    */
-  getProperty(property, fallback) {
-    let propertyName = property.getValue();
+  getProperty([property, fallback = null]) {
+    console.log('\nSCSS')
+    console.log('original property: ' + property)
+    console.log('original fallback: ' + fallback)
+    property = property.toString().replaceAll('"', '')
+    // fallback = !!fallback ? this._propertyResolver.resolve(fallback) : null;
 
-    let value = super.getProperty(propertyName, fallback);
-
+    console.log('fancy new property: ' + property)
+    console.log('fancy new fallback: ' + fallback)
+    let value = super.getProperty(property, fallback);
+    console.log('value: ' + value);
     return typeof value.getSassObject === 'function' ? value.getSassObject() : value;
   }
 
@@ -6013,7 +6053,77 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
+;// external "postcss/lib/list"
+const list_namespaceObject = require("postcss/lib/list");
+;// ./src/bsi-sass-properties-to-scss.js
+
+
+
+
+
+const bsi_sass_properties_to_scss_fs = __webpack_require__(896);
+/**
+ * PropertiesToScssConverter
+ * ----------------
+ * Converts a PropertyContext object into SCSS variables.
+ * Supports nested structures (becomes SCSS maps).
+ * 
+ * Example:
+ * properties.js:
+ * {
+ *  primary: #abc123,
+ *  secondary: #123abc
+ * }
+ * 
+ * becomes
+ * $primary: #abc123
+ * $secondary: #123abc;
+ */
+class PropertiesToScssConverter {
+  _scssData = '';
+  specialCharsRegex = /[!@$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+  // _propertiesIdentifier = 'bsiProperty'
+  /**
+   * @param {PropertyContext} propertyContext
+   */
+  constructor(propertyContext) {
+    // console.warn('B4');
+    // console.log(propertyContext.properties)
+    let properties = propertyContext.properties;
+    // this._scssData = `$bsiProperty: (${this._toScssMap(properties, 2)});`;
+    this._scssData = this._toScssMap(properties);
+    console.log(this._scssData)
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get scssData() {
+    return this._scssData;
+  }
+
+  spacer = (indent) => ' '.repeat(indent);
+  _keyValueToStr(key, value, indent = 0) {
+    let isTopLevel = !indent;
+    let isObj = typeof value === 'object' && value !== null && !value.hex && !value.url && !value.value;
+    value = isObj ? `(${this._toScssMap(value, indent + 2)})` : this.specialCharsRegex.test(value) ? `'${value}'` : value;
+    return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
+  }
+
+  /**
+   * Rekursive Konvertierung eines JS-Objekts in SCSS Map
+   */
+  _toScssMap(obj, indent = 0) {
+    let entries = Object.entries(obj)
+      .map(([key, value]) => this._keyValueToStr(key, value, indent))
+      .join(indent ? ',\n' : '\n');
+    return `\n${entries}\n${this.spacer(indent)}`;
+  }
+};
+
 ;// ./src/webpack-config-builder.js
+
 
 
 
@@ -6293,7 +6403,7 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStyleRulesConfig() {
-    return [
+    let config= [
       {
         test: /\.less$/i,
         use: [
@@ -6320,10 +6430,9 @@ class WebpackConfigBuilder {
             options: {
               sourceMap: true,
               sassOptions: {
-                functions: {
-                  ...new BsiSassPropertyPlugin(this.context).getFunction()
-                }
-              }
+                functions: new BsiSassPropertyPlugin(this.context).getFunction()
+              },
+              additionalData: new PropertiesToScssConverter(this.properties).scssData
             }
           }
         ]
@@ -6335,6 +6444,9 @@ class WebpackConfigBuilder {
         ]
       }
     ];
+    console.log('style config b4:');
+    console.log(JSON.stringify(config));
+    return config;
   }
 
   /**

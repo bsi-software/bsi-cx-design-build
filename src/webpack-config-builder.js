@@ -18,6 +18,7 @@ import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin'
 import BsiLessPropertyPlugin from './bsi-less-property-plugin';
 import BuildContext from './build-context';
 import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
+import PropertiesToScssConverter from './bsi-sass-properties-to-scss';
 import QueryConstant from './query-constant';
 import DistFolder from './dist-folder';
 import * as Version from './version';
@@ -277,7 +278,7 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStyleRulesConfig() {
-    return [
+    let config= [
       {
         test: /\.less$/i,
         use: [
@@ -304,10 +305,9 @@ export default class WebpackConfigBuilder {
             options: {
               sourceMap: true,
               sassOptions: {
-                functions: {
-                  ...new BsiSassPropertyPlugin(this.context).getFunction()
-                }
-              }
+                functions: new BsiSassPropertyPlugin(this.context).getFunction()
+              },
+              additionalData: new PropertiesToScssConverter(this.properties).scssData
             }
           }
         ]
@@ -319,6 +319,9 @@ export default class WebpackConfigBuilder {
         ]
       }
     ];
+    console.log('style config b4:');
+    console.log(JSON.stringify(config));
+    return config;
   }
 
   /**

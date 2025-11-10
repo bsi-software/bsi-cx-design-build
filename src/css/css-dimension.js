@@ -65,7 +65,7 @@ export default class CssDimension extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new sass.types.Number(this.value, this.unit);
+    return new sass.SassNumber(this.value, this.unit);
   }
 
   toString() {

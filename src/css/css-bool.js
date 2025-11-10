@@ -39,7 +39,7 @@ export default class CssBool extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
-    return !!this.value ? sass.types.Boolean.TRUE : sass.types.Boolean.FALSE;
+    return !!this.value ? sass.sassTrue : sass.sassFalse;
   }
 
   /**

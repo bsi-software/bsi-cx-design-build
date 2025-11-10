@@ -35,7 +35,8 @@ export default class AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(property, fallback) {
-    let segments = property.split('.');
+    console.log('property: ' + property)
+    let segments = property.toString().split('.');
     let scope = this._properties;
 
     for (let segment of segments) {
@@ -44,7 +45,7 @@ export default class AbstractPropertyPlugin {
         return this._handleNotFoundProperty(property, fallback);
       }
     }
-
+    console.log('scope: ' + scope)
     return this._propertyResolver.resolve(scope);
   }
 
@@ -55,7 +56,7 @@ export default class AbstractPropertyPlugin {
    * @private
    */
   _handleNotFoundProperty(property, fallback) {
-    if (typeof fallback === 'undefined') {
+    if (typeof fallback === 'undefined' || fallback === null) {
       throw new Error(`Property ${property} not found.`);
     }
 

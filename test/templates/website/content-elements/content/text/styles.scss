@@ -3,9 +3,14 @@ $flag: bsiProperty('other.test.flag');
 @if $flag {
   .element.content-text {
     color: #ff00ff;
-    content: bsiProperty('other.test.alternateColor', #cde);
-    background: bsiProperty('other.test.background', #def);
+    content: bsiProperty('other.test.alternateColor', #cde123);
+    background: bsiProperty('other.test.background', #deffe2);
     margin: bsiProperty('other.test.margin', 100px);
     padding: bsiProperty('unknown', 5rem);
   }
+}
+
+.element.content-text {
+  color: $secondaryColor;
+  background-color: $primaryColor;
 }

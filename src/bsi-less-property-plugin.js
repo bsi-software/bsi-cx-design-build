@@ -14,6 +14,7 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(propertyNode, fallback) {
+    console.log('Less')
     if (!propertyNode) {
       throw new Error('Property argument is required.');
     }
