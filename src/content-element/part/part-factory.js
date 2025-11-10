@@ -279,10 +279,12 @@ export default class PartFactory {
    *
    * @param {string} label
    * @param {string} id
+   * @param {Boolean} studioLinkEnabled
    * @returns {Part}
    */
-  PlainText(label, id) {
-    return new Part('plain-text', label, id);
+  PlainText(label, id, studioLinkEnabled) {
+    var part = new Part('plain-text', label, id);
+    return studioLinkEnabled !== null ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
   }
 
   /**

@@ -220,3 +220,11 @@ export const HTML = new Feature('html');
  * @type {Feature}
  */
 export const HELP = new Feature('help');
+
+/**
+ * Show the cx link option.
+ *
+ * @see {@link HtmlEditorConfig#withFeatures}
+ * @type {Feature}
+ */
+export const STUDIO_LINK = new Feature('studioLink');
