@@ -31,7 +31,9 @@ export default class PropertiesToScssConverter {
    */
   constructor(context) {
     let properties = context.properties.proxy;
-    this._scssData = this._toScssMap(properties);
+    if (!properties["disableScssVariables"]) {
+      this._scssData = this._toScssMap(properties);
+    }
   }
 
   /**
@@ -47,12 +49,15 @@ export default class PropertiesToScssConverter {
     let isTopLevel = !indent;
     let isObj = typeof value === 'object' && value !== null;
     let isSassObj = typeof value.getSassObject === 'function';
-    let isPlainUrl = value.toString().startsWith('C:');
+    // following content must be escaped: http..., c:..., text with spaces
+    let mustBeEscaped = /^(http|c)|(\s)/gm.test(value.toString().toLowerCase());
+    // handle empty values
+    let isEmpty = value === '';
     value =
       isSassObj ? value.getSassObject() :
         isObj ? `(${this._toScssMap(value, indent + 2)})` :
-          isPlainUrl ? `"${value}"` :
-            value;
+          mustBeEscaped ? `"${value}"` :
+            isEmpty ? null : value;
     return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
   }
 
