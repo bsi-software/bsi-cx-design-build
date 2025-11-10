@@ -2781,6 +2781,11 @@ declare module "src/bsi-sass-properties-to-scss" {
         _scssData: string;
         specialCharsRegex: RegExp;
         /**
+         * @type {CssPropertyResolver}
+         * @private
+         */
+        private _propertyResolver;
+        /**
          * @returns {string|undefined}
          */
         get scssData(): string | undefined;

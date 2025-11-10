@@ -33,6 +33,12 @@ export default class PropertiesToScssConverter {
     // console.warn('B4');
     // console.log(propertyContext.properties)
     let properties = propertyContext.properties;
+    /**
+     * @type {CssPropertyResolver}
+     * @private
+     */
+    this._propertyResolver = propertyContext.cssPropertyResolver;
+
     // this._scssData = `$bsiProperty: (${this._toScssMap(properties, 2)});`;
     this._scssData = this._toScssMap(properties);
     console.log(this._scssData)
@@ -48,8 +54,21 @@ export default class PropertiesToScssConverter {
   spacer = (indent) => ' '.repeat(indent);
   _keyValueToStr(key, value, indent = 0) {
     let isTopLevel = !indent;
-    let isObj = typeof value === 'object' && value !== null && !value.hex && !value.url && !value.value;
-    value = isObj ? `(${this._toScssMap(value, indent + 2)})` : this.specialCharsRegex.test(value) ? `'${value}'` : value;
+    let isObj = typeof value === 'object' && value !== null;
+    let isSassObj = isObj && typeof value.getSassObject === 'function';
+    console.log(`${key}: ${value}`)
+    console.log('A4: ' + value)
+    // let isSassUrl = value.getSassObject().assertString();
+    // value = isSassObj ? value.getSassObject().text : value;
+    // value = (isObj && !isSassObj) ? `(${this._toScssMap(value, indent + 2)})` : this.specialCharsRegex.test(value) ? `'${value}'` : value;
+    value = isSassObj ? value.getSassObject().text
+      : isObj ? `(${this._toScssMap(value, indent + 2)})`
+        : value;
+
+    // value = (!isObj && this.specialCharsRegex.test(value)) ? `'${value}'` : value;
+    console.log('B4: ' + value)
+    // value = (!isObj && value.toString().includes('\\')) ? `'${value}'` : value;
+    value = !isObj ? this._propertyResolver.resolve(value) : value;
     return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
   }
 
