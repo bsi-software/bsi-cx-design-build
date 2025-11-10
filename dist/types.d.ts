@@ -2775,20 +2775,18 @@ declare module "src/bsi-sass-properties-to-scss" {
      */
     export default class PropertiesToScssConverter {
         /**
-         * @param {PropertyContext} propertyContext
+         * @param {BuildContext} context
          */
-        constructor(propertyContext: PropertyContext);
-        _scssData: string;
-        specialCharsRegex: RegExp;
+        constructor(context: BuildContext);
         /**
-         * @type {CssPropertyResolver}
-         * @private
+         * @type {string}
+         * @protected
          */
-        private _propertyResolver;
+        protected _scssData: string;
         /**
-         * @returns {string|undefined}
+         * @returns {string}
          */
-        get scssData(): string | undefined;
+        get scssData(): string;
         spacer: (indent: any) => string;
         _keyValueToStr(key: any, value: any, indent?: number): string;
         /**
@@ -2796,7 +2794,6 @@ declare module "src/bsi-sass-properties-to-scss" {
          */
         _toScssMap(obj: any, indent?: number): string;
     }
-    import PropertyContext from "src/property-context";
 }
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {

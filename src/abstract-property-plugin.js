@@ -35,7 +35,6 @@ export default class AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(property, fallback) {
-    console.log('property: ' + property)
     let segments = property.toString().split('.');
     let scope = this._properties;
 
@@ -45,7 +44,6 @@ export default class AbstractPropertyPlugin {
         return this._handleNotFoundProperty(property, fallback);
       }
     }
-    console.log('scope: ' + scope)
     return this._propertyResolver.resolve(scope);
   }
 

@@ -2840,7 +2840,6 @@ class AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(property, fallback) {
-    console.log('property: ' + property)
     let segments = property.toString().split('.');
     let scope = this._properties;
 
@@ -2850,7 +2849,6 @@ class AbstractPropertyPlugin {
         return this._handleNotFoundProperty(property, fallback);
       }
     }
-    console.log('scope: ' + scope)
     return this._propertyResolver.resolve(scope);
   }
 
@@ -4845,7 +4843,6 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(propertyNode, fallback) {
-    console.log('Less')
     if (!propertyNode) {
       throw new Error('Property argument is required.');
     }
@@ -6033,16 +6030,8 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty([property, fallback = null]) {
-    console.log('\nSCSS')
-    console.log('original property: ' + property)
-    console.log('original fallback: ' + fallback)
     property = property.toString().replaceAll('"', '')
-    // fallback = !!fallback ? this._propertyResolver.resolve(fallback) : null;
-
-    console.log('fancy new property: ' + property)
-    console.log('fancy new fallback: ' + fallback)
     let value = super.getProperty(property, fallback);
-    console.log('value: ' + value);
     return typeof value.getSassObject === 'function' ? value.getSassObject() : value;
   }
 
@@ -6053,12 +6042,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// external "postcss/lib/list"
-const list_namespaceObject = require("postcss/lib/list");
 ;// ./src/bsi-sass-properties-to-scss.js
-
-
-
 
 
 const bsi_sass_properties_to_scss_fs = __webpack_require__(896);
@@ -6080,52 +6064,40 @@ const bsi_sass_properties_to_scss_fs = __webpack_require__(896);
  * $secondary: #123abc;
  */
 class PropertiesToScssConverter {
-  _scssData = '';
-  specialCharsRegex = /[!@$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
-  // _propertiesIdentifier = 'bsiProperty'
   /**
-   * @param {PropertyContext} propertyContext
+   * @type {string}
+   * @protected
    */
-  constructor(propertyContext) {
-    // console.warn('B4');
-    // console.log(propertyContext.properties)
-    let properties = propertyContext.properties;
-    /**
-     * @type {CssPropertyResolver}
-     * @private
-     */
-    this._propertyResolver = propertyContext.cssPropertyResolver;
-    // this._scssData = `$bsiProperty: (${this._toScssMap(properties, 2)});`;
+  _scssData = '';
+
+  /**
+   * @param {BuildContext} context
+   */
+  constructor(context) {
+    let properties = context.properties.proxy;
     this._scssData = this._toScssMap(properties);
-    console.log(this._scssData)
   }
 
   /**
-   * @returns {string|undefined}
+   * @returns {string}
    */
   get scssData() {
     return this._scssData;
   }
 
   spacer = (indent) => ' '.repeat(indent);
+
   _keyValueToStr(key, value, indent = 0) {
     let isTopLevel = !indent;
     let isObj = typeof value === 'object' && value !== null;
-    let isSassObj = isObj && typeof value.getSassObject === 'function';
-    console.log(`${key}: ${value}`)
-    console.log('A4: ' + value)
-    // let isSassUrl = value.getSassObject().assertString();
-    // value = isSassObj ? value.getSassObject().text : value;
-    // value = (isObj && !isSassObj) ? `(${this._toScssMap(value, indent + 2)})` : this.specialCharsRegex.test(value) ? `'${value}'` : value;
-    value = isSassObj ? value.getSassObject().text
-      : isObj ? `(${this._toScssMap(value, indent + 2)})`
-        : value;
-
-    // value = (!isObj && this.specialCharsRegex.test(value)) ? `'${value}'` : value;
-    console.log('B4: ' + value)
-    // value = (!isObj && value.toString().includes('\\')) ? `'${value}'` : value;
-    value = !isObj ? this._propertyResolver.resolve(value) : value;
+    let isSassObj = typeof value.getSassObject === 'function';
+    let isPlainUrl = value.toString().startsWith('C:');
+    value =
+      isSassObj ? value.getSassObject() :
+        isObj ? `(${this._toScssMap(value, indent + 2)})` :
+          isPlainUrl ? `"${value}"` :
+            value;
     return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
   }
 
@@ -6450,7 +6422,7 @@ class WebpackConfigBuilder {
               sassOptions: {
                 functions: new BsiSassPropertyPlugin(this.context).getFunction()
               },
-              additionalData: new PropertiesToScssConverter(this.properties).scssData
+              additionalData: new PropertiesToScssConverter(this.context).scssData
             }
           }
         ]
@@ -6462,8 +6434,6 @@ class WebpackConfigBuilder {
         ]
       }
     ];
-    console.log('style config b4:');
-    console.log(JSON.stringify(config));
     return config;
   }
 

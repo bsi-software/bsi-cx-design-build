@@ -307,7 +307,7 @@ export default class WebpackConfigBuilder {
               sassOptions: {
                 functions: new BsiSassPropertyPlugin(this.context).getFunction()
               },
-              additionalData: new PropertiesToScssConverter(this.properties).scssData
+              additionalData: new PropertiesToScssConverter(this.context).scssData
             }
           }
         ]
@@ -319,8 +319,6 @@ export default class WebpackConfigBuilder {
         ]
       }
     ];
-    console.log('style config b4:');
-    console.log(JSON.stringify(config));
     return config;
   }
 
