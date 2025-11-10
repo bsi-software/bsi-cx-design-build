@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 * Add studioLink and studioLinkEnabled
+* Update sass-loader to get rid of warnings
 
 
 ## [2.0.0] - 09.10.2025
