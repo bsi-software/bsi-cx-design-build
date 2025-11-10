@@ -5072,7 +5072,7 @@ class Part extends AbstractBuilder {
    * Set a Boolean to indicate if studioLink is enabled in the editor.
    * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
    *
-   * @see {withCaptionEnabled}
+   * @see {withStudioLinkEnabled}
    * @param {Boolean} studioLinkEnabled
    * @returns {Part}
    */
