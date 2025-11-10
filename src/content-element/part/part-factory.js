@@ -279,6 +279,7 @@ export default class PartFactory {
    *
    * @param {string} label
    * @param {string} id
+   * @param {Boolean} studioLinkEnabled
    * @returns {Part}
    */
   PlainText(label, id, studioLinkEnabled) {

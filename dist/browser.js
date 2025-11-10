@@ -5073,7 +5073,7 @@ class Part extends AbstractBuilder {
    * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
    *
    * @see {withCaptionEnabled}
-   * @param {Boolean} captionEnabled
+   * @param {Boolean} studioLinkEnabled
    * @returns {Part}
    */
   withStudioLinkEnabled(studioLinkEnabled) {
@@ -6258,6 +6258,7 @@ class PartFactory {
    *
    * @param {string} label
    * @param {string} id
+   * @param {Boolean} studioLinkEnabled
    * @returns {Part}
    */
   PlainText(label, id, studioLinkEnabled) {

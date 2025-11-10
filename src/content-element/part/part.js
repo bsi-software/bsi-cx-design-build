@@ -239,7 +239,7 @@ export default class Part extends AbstractBuilder {
    * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
    *
    * @see {withCaptionEnabled}
-   * @param {Boolean} captionEnabled
+   * @param {Boolean} studioLinkEnabled
    * @returns {Part}
    */
   withStudioLinkEnabled(studioLinkEnabled) {

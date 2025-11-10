@@ -4182,10 +4182,10 @@ declare module "src/content-element/part/part" {
          * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
          *
          * @see {withCaptionEnabled}
-         * @param {Boolean} captionEnabled
+         * @param {Boolean} studioLinkEnabled
          * @returns {Part}
          */
-        withStudioLinkEnabled(studioLinkEnabled: any): Part;
+        withStudioLinkEnabled(studioLinkEnabled: boolean): Part;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -6842,9 +6842,10 @@ declare module "src/content-element/part/part-factory" {
          *
          * @param {string} label
          * @param {string} id
+         * @param {Boolean} studioLinkEnabled
          * @returns {Part}
          */
-        PlainText(label: string, id: string, studioLinkEnabled: any): Part;
+        PlainText(label: string, id: string, studioLinkEnabled: boolean): Part;
         /**
          * Get a new social follow content element part builder instance.
          *
