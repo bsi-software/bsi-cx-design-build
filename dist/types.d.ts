@@ -2744,11 +2744,12 @@ declare module "src/build-context" {
 declare module "src/bsi-sass-property-plugin" {
     export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
         /**
-         * @param {*} property
-         * @param {*} fallback
-         * @returns {*}
+         * Sass function "bsiProperty()"
+         *
+         * @param {[string, any]} param0
+         * @returns
          */
-        getProperty([property, fallback]: any): any;
+        getSassProperty([property, fallback]: [string, any]): any;
         getFunction(): {
             'bsiProperty($property, $fallback: null)': any;
         };
@@ -2795,19 +2796,32 @@ declare module "src/bsi-sass-properties-to-scss" {
          * @returns {string}
          */
         get scssData(): string;
-        spacer: (indent: any) => string;
+        /**
+         *
+         * @param {number} indent
+         * @private
+         * @returns {string} indent string
+         */
+        private _spacer;
         /**
          * Recursive conversion of a JS object to SCSS Map
+         *
+         * @param {Object} obj
+         * @param {Number} indent
+         * @protected
+         * @returns {string} scssString
          */
-        _toScssMap(obj: any, indent?: number): string;
+        protected _toScssMap(obj: any, indent?: number): string;
         /**
          * Converts key, value pair to scss variable or scss map
+         *
          * @param {string} key
          * @param {any} value
          * @param {number} indent
+         * @protected
          * @returns {string} scssString
          */
-        _keyValueToStr(key: string, value: any, indent?: number): string;
+        protected _keyValueToStr(key: string, value: any, indent?: number): string;
     }
 }
 declare module "src/webpack-config-builder" {

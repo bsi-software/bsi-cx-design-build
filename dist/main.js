@@ -5992,12 +5992,14 @@ class BuildContext {
 
 
 class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
+ 
   /**
-   * @param {*} property
-   * @param {*} fallback
-   * @returns {*}
+   * Sass function "bsiProperty()"
+   * 
+   * @param {[string, any]} param0 
+   * @returns 
    */
-  getProperty([property, fallback = null]) {
+  getSassProperty([property, fallback = null]) {
     property = property.toString().replaceAll('"', '')
     let value = super.getProperty(property, fallback);
     return typeof value.getSassObject === 'function' ? value.getSassObject() : value;
@@ -6005,7 +6007,7 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 
   getFunction() {
     return {
-      'bsiProperty($property, $fallback: null)': this.getProperty.bind(this)
+      'bsiProperty($property, $fallback: null)': this.getSassProperty.bind(this)
     }
   }
 }
@@ -6061,23 +6063,36 @@ class PropertiesToScssConverter {
     return this._scssData;
   }
 
-  spacer = (indent) => ' '.repeat(indent);
+  /**
+   * 
+   * @param {number} indent
+   * @private
+   * @returns {string} indent string
+   */
+  _spacer = (indent) => ' '.repeat(indent);
 
   /**
    * Recursive conversion of a JS object to SCSS Map
+   * 
+   * @param {Object} obj 
+   * @param {Number} indent 
+   * @protected
+   * @returns {string} scssString
    */
   _toScssMap(obj, indent = 0) {
     let entries = Object.entries(obj)
       .map(([key, value]) => this._keyValueToStr(key, value, indent))
       .join(indent ? ',\n' : '\n');
-    return `\n${entries}\n${this.spacer(indent)}`;
+    return `\n${entries}\n${this._spacer(indent)}`;
   }
 
   /**
    * Converts key, value pair to scss variable or scss map
+   * 
    * @param {string} key 
    * @param {any} value 
    * @param {number} indent 
+   * @protected
    * @returns {string} scssString
    */
   _keyValueToStr(key, value, indent = 0) {
@@ -6094,7 +6109,7 @@ class PropertiesToScssConverter {
           escapeValue ? `"${value}"` :
             isEmpty ? null :
               value;
-    return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
+    return `${isTopLevel ? '$' : this._spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
   }
 };
 
