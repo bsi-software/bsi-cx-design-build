@@ -14,6 +14,6 @@ $flag: bsiProperty('other.test.flag');
   color: $secondaryColor;
   background-color: $primaryColor;
   &::before {
-    content: "B4:" $wrong;
+    content: "B4 is wrong? #{$wrong}";
   }
 }

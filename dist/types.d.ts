@@ -2765,13 +2765,21 @@ declare module "src/bsi-sass-properties-to-scss" {
      * Example:
      * properties.js:
      * {
-     *  primary: #abc123,
-     *  secondary: #123abc
+     *  primary: '#abc123',
+     *  secondary: '#123abc',
+     *  spacer: {
+     *    100: '4px',
+     *    200: '8px'
+     *  }
      * }
      *
      * becomes
      * $primary: #abc123
      * $secondary: #123abc;
+     * $spacer: (
+     *   100: 4px,
+     *   200: 8px
+     * )
      */
     export default class PropertiesToScssConverter {
         /**
@@ -2788,11 +2796,18 @@ declare module "src/bsi-sass-properties-to-scss" {
          */
         get scssData(): string;
         spacer: (indent: any) => string;
-        _keyValueToStr(key: any, value: any, indent?: number): string;
         /**
-         * Rekursive Konvertierung eines JS-Objekts in SCSS Map
+         * Recursive conversion of a JS object to SCSS Map
          */
         _toScssMap(obj: any, indent?: number): string;
+        /**
+         * Converts key, value pair to scss variable or scss map
+         * @param {string} key
+         * @param {any} value
+         * @param {number} indent
+         * @returns {string} scssString
+         */
+        _keyValueToStr(key: string, value: any, indent?: number): string;
     }
 }
 declare module "src/webpack-config-builder" {

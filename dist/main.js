@@ -1,39 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({
-
-/***/ 896:
-/***/ ((module) => {
-
-module.exports = require("fs");
-
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -1036,9 +1004,9 @@ class ObjectCloner {
   }
 }
 
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __webpack_require__(896);
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
+;// external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
@@ -4768,7 +4736,7 @@ class BsiCxWebpackZipHashPlugin {
       onlyFiles: true
     });
 
-    zipFilesToRemove.forEach(external_fs_.unlinkSync);
+    zipFilesToRemove.forEach(external_fs_namespaceObject.unlinkSync);
   }
 
   apply(compiler) {
@@ -6043,9 +6011,6 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
 }
 
 ;// ./src/bsi-sass-properties-to-scss.js
-
-
-const bsi_sass_properties_to_scss_fs = __webpack_require__(896);
 /**
  * PropertiesToScssConverter
  * ----------------
@@ -6055,13 +6020,21 @@ const bsi_sass_properties_to_scss_fs = __webpack_require__(896);
  * Example:
  * properties.js:
  * {
- *  primary: #abc123,
- *  secondary: #123abc
+ *  primary: '#abc123',
+ *  secondary: '#123abc',
+ *  spacer: {
+ *    100: '4px',
+ *    200: '8px'
+ *  }
  * }
  * 
  * becomes
  * $primary: #abc123
  * $secondary: #123abc;
+ * $spacer: (
+ *   100: 4px,
+ *   200: 8px
+ * )
  */
 class PropertiesToScssConverter {
 
@@ -6090,30 +6063,38 @@ class PropertiesToScssConverter {
 
   spacer = (indent) => ' '.repeat(indent);
 
-  _keyValueToStr(key, value, indent = 0) {
-    let isTopLevel = !indent;
-    let isObj = typeof value === 'object' && value !== null;
-    let isSassObj = typeof value.getSassObject === 'function';
-    // following content must be escaped: http..., c:..., text with spaces
-    let mustBeEscaped = /^(http|c)|(\s)/gm.test(value.toString().toLowerCase());
-    // handle empty values
-    let isEmpty = value === '';
-    value =
-      isSassObj ? value.getSassObject() :
-        isObj ? `(${this._toScssMap(value, indent + 2)})` :
-          mustBeEscaped ? `"${value}"` :
-            isEmpty ? null : value;
-    return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
-  }
-
   /**
-   * Rekursive Konvertierung eines JS-Objekts in SCSS Map
+   * Recursive conversion of a JS object to SCSS Map
    */
   _toScssMap(obj, indent = 0) {
     let entries = Object.entries(obj)
       .map(([key, value]) => this._keyValueToStr(key, value, indent))
       .join(indent ? ',\n' : '\n');
     return `\n${entries}\n${this.spacer(indent)}`;
+  }
+
+  /**
+   * Converts key, value pair to scss variable or scss map
+   * @param {string} key 
+   * @param {any} value 
+   * @param {number} indent 
+   * @returns {string} scssString
+   */
+  _keyValueToStr(key, value, indent = 0) {
+    let isTopLevel = !indent;
+    let isObj = typeof value === 'object' && value !== null;
+    let isSassObj = typeof value.getSassObject === 'function';
+    // following content must be escaped: http..., c:..., text with spaces
+    let escapeValue = /^(http|c)|(\s)/gm.test(value.toString().toLowerCase());
+    // handle empty values
+    let isEmpty = value === '';
+    value =
+      isSassObj ? value.getSassObject() :
+        isObj ? `(${this._toScssMap(value, indent + 2)})` :
+          escapeValue ? `"${value}"` :
+            isEmpty ? null :
+              value;
+    return `${isTopLevel ? '$' : this.spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
   }
 };
 
