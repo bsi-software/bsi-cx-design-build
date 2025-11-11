@@ -2806,12 +2806,12 @@ declare module "src/bsi-sass-properties-to-scss" {
         /**
          * Recursive conversion of a JS object to SCSS Map
          *
-         * @param {Object} obj
+         * @param {object} obj
          * @param {Number} indent
          * @protected
          * @returns {string} scssString
          */
-        protected _toScssMap(obj: any, indent?: number): string;
+        protected _toScssMap(obj: object, indent?: number): string;
         /**
          * Converts key, value pair to scss variable or scss map
          *

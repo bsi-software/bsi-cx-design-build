@@ -59,7 +59,7 @@ export default class PropertiesToScssConverter {
   /**
    * Recursive conversion of a JS object to SCSS Map
    * 
-   * @param {Object} obj 
+   * @param {object} obj 
    * @param {Number} indent 
    * @protected
    * @returns {string} scssString
