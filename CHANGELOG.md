@@ -8,7 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 * Add studioLink and studioLinkEnabled
 * Update sass-loader to get rid of warnings
-* Make all properties as scss variables available during the build
+* Make all properties available as scss variables during the build
 
 
 ## [2.0.0] - 09.10.2025
