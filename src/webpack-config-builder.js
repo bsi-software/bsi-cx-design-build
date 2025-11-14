@@ -278,7 +278,7 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStyleRulesConfig() {
-    let config= [
+    return [
       {
         test: /\.less$/i,
         use: [
@@ -319,7 +319,6 @@ export default class WebpackConfigBuilder {
         ]
       }
     ];
-    return config;
   }
 
   /**
