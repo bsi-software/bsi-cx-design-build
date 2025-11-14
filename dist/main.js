@@ -2808,7 +2808,7 @@ class AbstractPropertyPlugin {
    * @returns {*}
    */
   getProperty(property, fallback) {
-    let segments = property.split('.');
+    let segments = property.toString().split('.');
     let scope = this._properties;
 
     for (let segment of segments) {
@@ -2817,7 +2817,6 @@ class AbstractPropertyPlugin {
         return this._handleNotFoundProperty(property, fallback);
       }
     }
-
     return this._propertyResolver.resolve(scope);
   }
 
@@ -2828,7 +2827,7 @@ class AbstractPropertyPlugin {
    * @private
    */
   _handleNotFoundProperty(property, fallback) {
-    if (typeof fallback === 'undefined') {
+    if (typeof fallback === 'undefined' || fallback === null) {
       throw new Error(`Property ${property} not found.`);
     }
 
@@ -5157,7 +5156,7 @@ class CssColor extends AbstractCssProperty {
   /**
    * @type {{}}
    */
-  static COLORS = Object.assign({}, (colors_default()), {transparent: '#00000000'});
+  static COLORS = Object.assign({}, (colors_default()), { transparent: '#00000000' });
 
   /**
    * @type {number}
@@ -5275,7 +5274,7 @@ class CssColor extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).types.Color(this.red, this.green, this.blue, this.alpha);
+    return new (external_sass_default()).SassColor({ red: this.red, green: this.green, blue: this.blue, alpha: this.alpha / 255 });
   }
 
   toString() {
@@ -5480,7 +5479,7 @@ class CssDimension extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).types.Number(this.value, this.unit);
+    return new (external_sass_default()).SassNumber(this.value, this.unit);
   }
 
   toString() {
@@ -5562,7 +5561,7 @@ class CssRaw extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).types.String(this.value);
+    return new (external_sass_default()).SassString(this.value);
   }
 
   /**
@@ -5739,7 +5738,7 @@ class CssUrl extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
-    return new (external_sass_default()).types.String(this.css);
+    return new (external_sass_default()).SassString(this.css);
   }
 
   /**
@@ -5826,7 +5825,7 @@ class CssBool extends AbstractCssProperty {
    * @returns {*}
    */
   getSassObject() {
-    return !!this.value ? (external_sass_default()).types.Boolean.TRUE : (external_sass_default()).types.Boolean.FALSE;
+    return !!this.value ? (external_sass_default()).sassTrue : (external_sass_default()).sassFalse;
   }
 
   /**
@@ -5993,27 +5992,129 @@ class BuildContext {
 
 
 class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
+ 
   /**
-   * @param {*} property
-   * @param {*} fallback
-   * @returns {*}
+   * Sass function "bsiProperty()"
+   * 
+   * @param {[string, any]} param0 
+   * @returns 
    */
-  getProperty(property, fallback) {
-    let propertyName = property.getValue();
-
-    let value = super.getProperty(propertyName, fallback);
-
+  getSassProperty([property, fallback = null]) {
+    property = property.toString().replaceAll('"', '')
+    let value = super.getProperty(property, fallback);
     return typeof value.getSassObject === 'function' ? value.getSassObject() : value;
   }
 
   getFunction() {
     return {
-      'bsiProperty($property, $fallback: null)': this.getProperty.bind(this)
+      'bsiProperty($property, $fallback: null)': this.getSassProperty.bind(this)
     }
   }
 }
 
+;// ./src/bsi-sass-properties-to-scss.js
+/**
+ * PropertiesToScssConverter
+ * ----------------
+ * Converts a PropertyContext object into SCSS variables.
+ * Supports nested structures (becomes SCSS maps).
+ * 
+ * Example:
+ * properties.js:
+ * {
+ *  primary: '#abc123',
+ *  secondary: '#123abc',
+ *  spacer: {
+ *    100: '4px',
+ *    200: '8px'
+ *  }
+ * }
+ * 
+ * becomes
+ * $primary: #abc123
+ * $secondary: #123abc;
+ * $spacer: (
+ *   100: 4px,
+ *   200: 8px
+ * )
+ */
+class PropertiesToScssConverter {
+
+  /**
+   * @type {string}
+   * @protected
+   */
+  _scssData = '';
+
+  /**
+   * @param {BuildContext} context
+   */
+  constructor(context) {
+    let properties = context.properties.proxy;
+    if (!properties["disableScssVariables"]) {
+      this._scssData = this._toScssMap(properties);
+    }
+  }
+
+  /**
+   * @returns {string}
+   */
+  get scssData() {
+    return this._scssData;
+  }
+
+  /**
+   * 
+   * @param {number} indent
+   * @private
+   * @returns {string} indent string
+   */
+  _spacer = (indent) => ' '.repeat(indent);
+
+  /**
+   * Recursive conversion of a JS object to SCSS Map
+   * 
+   * @param {object} obj 
+   * @param {Number} indent 
+   * @protected
+   * @returns {string} scssString
+   */
+  _toScssMap(obj, indent = 0) {
+    let entries = Object.entries(obj)
+      .map(([key, value]) => this._keyValueToStr(key, value, indent))
+      .join(indent ? ',\n' : '\n');
+    return `\n${entries}\n${this._spacer(indent)}`;
+  }
+
+  /**
+   * Converts key, value pair to scss variable or scss map
+   * 
+   * @param {string} key 
+   * @param {any} value 
+   * @param {number} indent 
+   * @protected
+   * @returns {string} scssString
+   */
+  _keyValueToStr(key, value, indent = 0) {
+    let isTopLevel = !indent;
+    let isObj = typeof value === 'object' && value !== null;
+    let isSassObj = typeof value.getSassObject === 'function';
+    // following content must be escaped: http..., c:..., text with spaces
+    let escapeValue = /^(http|c)|(\s)/gm.test(value.toString().toLowerCase());
+    // handle empty values
+    let isEmpty = value === '';
+    value =
+      isSassObj ? value.getSassObject() :
+        isObj ? `(${this._toScssMap(value, indent + 2)})` :
+          escapeValue ? `"${value}"` :
+            isEmpty ? null :
+              value;
+    return `${isTopLevel ? '$' : this._spacer(indent)}${key}: ${value}${isTopLevel ? ';' : ''}`;
+  }
+};
+
 ;// ./src/webpack-config-builder.js
+
 
 
 
@@ -6293,7 +6394,7 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStyleRulesConfig() {
-    return [
+    let config= [
       {
         test: /\.less$/i,
         use: [
@@ -6320,10 +6421,9 @@ class WebpackConfigBuilder {
             options: {
               sourceMap: true,
               sassOptions: {
-                functions: {
-                  ...new BsiSassPropertyPlugin(this.context).getFunction()
-                }
-              }
+                functions: new BsiSassPropertyPlugin(this.context).getFunction()
+              },
+              additionalData: new PropertiesToScssConverter(this.context).scssData
             }
           }
         ]
@@ -6335,6 +6435,7 @@ class WebpackConfigBuilder {
         ]
       }
     ];
+    return config;
   }
 
   /**

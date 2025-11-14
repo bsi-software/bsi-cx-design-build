@@ -2743,11 +2743,86 @@ declare module "src/build-context" {
 }
 declare module "src/bsi-sass-property-plugin" {
     export default class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
+        /**
+         * Sass function "bsiProperty()"
+         *
+         * @param {[string, any]} param0
+         * @returns
+         */
+        getSassProperty([property, fallback]: [string, any]): any;
         getFunction(): {
             'bsiProperty($property, $fallback: null)': any;
         };
     }
     import AbstractPropertyPlugin from "src/abstract-property-plugin";
+}
+declare module "src/bsi-sass-properties-to-scss" {
+    /**
+     * PropertiesToScssConverter
+     * ----------------
+     * Converts a PropertyContext object into SCSS variables.
+     * Supports nested structures (becomes SCSS maps).
+     *
+     * Example:
+     * properties.js:
+     * {
+     *  primary: '#abc123',
+     *  secondary: '#123abc',
+     *  spacer: {
+     *    100: '4px',
+     *    200: '8px'
+     *  }
+     * }
+     *
+     * becomes
+     * $primary: #abc123
+     * $secondary: #123abc;
+     * $spacer: (
+     *   100: 4px,
+     *   200: 8px
+     * )
+     */
+    export default class PropertiesToScssConverter {
+        /**
+         * @param {BuildContext} context
+         */
+        constructor(context: BuildContext);
+        /**
+         * @type {string}
+         * @protected
+         */
+        protected _scssData: string;
+        /**
+         * @returns {string}
+         */
+        get scssData(): string;
+        /**
+         *
+         * @param {number} indent
+         * @private
+         * @returns {string} indent string
+         */
+        private _spacer;
+        /**
+         * Recursive conversion of a JS object to SCSS Map
+         *
+         * @param {object} obj
+         * @param {Number} indent
+         * @protected
+         * @returns {string} scssString
+         */
+        protected _toScssMap(obj: object, indent?: number): string;
+        /**
+         * Converts key, value pair to scss variable or scss map
+         *
+         * @param {string} key
+         * @param {any} value
+         * @param {number} indent
+         * @protected
+         * @returns {string} scssString
+         */
+        protected _keyValueToStr(key: string, value: any, indent?: number): string;
+    }
 }
 declare module "src/webpack-config-builder" {
     export default class WebpackConfigBuilder {

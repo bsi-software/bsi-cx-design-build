@@ -16,7 +16,7 @@ export default class CssColor extends AbstractCssProperty {
   /**
    * @type {{}}
    */
-  static COLORS = Object.assign({}, colors, {transparent: '#00000000'});
+  static COLORS = Object.assign({}, colors, { transparent: '#00000000' });
 
   /**
    * @type {number}
@@ -134,7 +134,7 @@ export default class CssColor extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new sass.types.Color(this.red, this.green, this.blue, this.alpha);
+    return new sass.SassColor({ red: this.red, green: this.green, blue: this.blue, alpha: this.alpha / 255 });
   }
 
   toString() {
