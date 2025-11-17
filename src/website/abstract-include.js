@@ -6,6 +6,8 @@ import { WEBSITE } from '../design-type';
 import { CX_1_3 } from '../version';
 
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
+/** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/template-element').default} TemplateElement */
 
 /**
  * @abstract
@@ -217,7 +219,7 @@ export default class AbstractInclude extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @param {...(ContentElement | TemplateElement)} elements - The elements to add to the allowed elements list.
    * @returns {this}
    */
   withExtendedDropzone(id, ...elements) {
@@ -240,8 +242,8 @@ export default class AbstractInclude extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
-   * @returns {ContentElement}
+   * @param {...(ContentElement | TemplateElement)} elements - The elements to remove from the allowed elements list.
+   * @returns {this}
    */
     withReducedDropzone(id, ...elements) {
       let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);

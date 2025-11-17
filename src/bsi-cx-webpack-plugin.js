@@ -364,6 +364,7 @@ class _BsiCxWebpackPlugin {
     this._importElementFile(element);
     this._sortElementPartsById(element);
     this._handleElementFile(element, replaceMap);
+    this._handleElementContextFile(element, replaceMap);
     this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
     this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
   }
@@ -389,6 +390,27 @@ class _BsiCxWebpackPlugin {
     let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
     element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+  }
+
+  /**
+   * @param {{file:{content:string,path:string},parts:[]}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _handleElementContextFile(element, replaceMap) {
+    let fileObj = element[DesignJsonProperty.CONTEXT_FILE];
+    if (fileObj) {
+      fileObj.content = JSON.stringify(fileObj);
+      console.log("FileObject Content: " +  fileObj.content); 
+      // this._evalTemplateFile(fileObj.content);
+      fileObj.path = "temp.json";
+
+      let baseFolder = DistFolder.CONTEXT;
+      let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
+
+      element[DesignJsonProperty.CONTEXT_FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+    }
+    
   }
 
   /**
@@ -577,6 +599,8 @@ class _BsiCxWebpackPlugin {
         return 'hbs';
       case /\.hbs$/.test(fileName):
         return 'hbs';
+      case /\.json$/.test(fileName):
+        return 'json';
       default:
         return 'html';
     }

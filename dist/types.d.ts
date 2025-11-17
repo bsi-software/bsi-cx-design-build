@@ -133,7 +133,7 @@ declare module "src/version" {
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): DesignType[];
+        get allowedTypes(): import("src/design-type").DesignType[];
         /**
          * @returns {boolean}
          */
@@ -141,7 +141,7 @@ declare module "src/version" {
         /**
          * @returns {string|undefined}
          */
-        get schemaVersion(): string | undefined;
+        get schemaVersion(): string;
         /**
          * @param {Version} version
          * @returns {number}
@@ -254,6 +254,18 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static SRC_SET_SIZES: string;
+        /**
+         * @type {string}
+         */
+        static HIDE_ACCESSIBILITY_FIELDS: string;
+        /**
+         * @type {string}
+         */
+        static OPTIONS: string;
+        /**
+         * @type {string}
+         */
         static CAPTION_ENABLED: string;
         /**
          * @type {string}
@@ -307,6 +319,10 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static PART_ID: string;
+        /**
+         * @type {string}
+         */
+        static PART_CONTEXT_ID: string;
         /**
          * @type {string}
          */
@@ -490,15 +506,15 @@ declare module "src/abstract-builder" {
         /**
          * @return {Version}
          */
-        get minVersion(): Version;
+        get minVersion(): import("src/version").Version;
         /**
          * @return {Version|undefined}
          */
-        get maxVersion(): Version | undefined;
+        get maxVersion(): import("src/version").Version;
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): DesignType[];
+        get allowedTypes(): import("src/design-type").DesignType[];
         /**
          * Define a minimum CX version. Will be excluded from builds targeting a lower version.
          *
@@ -727,11 +743,11 @@ declare module "src/build-config/module-config" {
         /**
          * @returns {string|undefined}
          */
-        get name(): string | undefined;
+        get name(): string;
         /**
          * @returns {string|undefined}
          */
-        get path(): string | undefined;
+        get path(): string;
         /**
          * The name for your JavaScript module. The name specified here must be unique in your build configuration.
          * This means you can't configure two modules with the same name. This will be the name of the resulting entry
@@ -781,11 +797,11 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): Version;
+        get targetVersion(): import("src/version").Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): DesignType;
+        get designType(): import("src/design-type").DesignType;
         /**
          * @returns {string}
          */
@@ -797,7 +813,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string | undefined;
+        get propertiesFilePath(): string;
         /**
          * @returns {number|'auto'}
          */
@@ -809,7 +825,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): ModuleConfig[];
+        get modules(): import("src/build-config/module-config").default[];
         /**
          * @returns {string}
          */
@@ -979,11 +995,11 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): Version;
+        get targetVersion(): import("src/version").Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): DesignType;
+        get designType(): import("src/design-type").DesignType;
         /**
          * @returns {string}
          */
@@ -995,7 +1011,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string | undefined;
+        get propertiesFilePath(): string;
         /**
          * @returns {number|'auto'}
          */
@@ -1007,7 +1023,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): ModuleConfig[];
+        get modules(): import("src/build-config/module-config").default[];
         /**
          * @returns {string}
          */
@@ -1062,6 +1078,10 @@ declare module "src/dist-folder" {
          * @type {string}
          */
         static CONTENT_ELEMENTS: string;
+        /**
+         * @type {string}
+         */
+        static CONTEXT: string;
         /**
          * @type {string}
          */
@@ -1151,7 +1171,7 @@ declare module "src/build-config/build-config-validator" {
         /**
          * @returns {BuildConfig}
          */
-        get buildConfig(): BuildConfig;
+        get buildConfig(): import("src/build-config/build-config").default;
         /**
          * @returns {ValidatedBuildConfig}
          */
@@ -1364,11 +1384,11 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): Version;
+        get targetVersion(): import("src/version").Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): DesignType;
+        get designType(): import("src/design-type").DesignType;
         /**
          * @returns {string}
          */
@@ -1380,7 +1400,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string | undefined;
+        get propertiesFilePath(): string;
         /**
          * @returns {number|'auto'}
          */
@@ -1392,7 +1412,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): ModuleConfig[];
+        get modules(): import("src/build-config/module-config").default[];
         /**
          * @returns {string}
          */
@@ -2284,7 +2304,7 @@ declare module "src/property-context" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string | undefined;
+        get propertiesFilePath(): string;
         /**
          * @returns {ModuleLoader}
          */
@@ -2526,7 +2546,7 @@ declare module "src/css/css-dimension" {
         /**
          * @returns {string|undefined}
          */
-        get unit(): string | undefined;
+        get unit(): string;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
@@ -3345,11 +3365,11 @@ declare module "src/style/css-class" {
         /**
          * @returns {string|undefined}
          */
-        get cssClass(): string | undefined;
+        get cssClass(): string;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * Specify the CSS class to use.
          *
@@ -3445,15 +3465,15 @@ declare module "src/style/dom-manipulation" {
         /**
          * @returns {string|undefined}
          */
-        get selector(): string | undefined;
+        get selector(): string;
         /**
          * @returns {string|undefined}
          */
-        get attribute(): string | undefined;
+        get attribute(): string;
         /**
          * @returns {string|undefined}
          */
-        get value(): string | undefined;
+        get value(): string;
         /**
          * Specify the selector to use with this DOM manipulation.
          * Any DOM selector can be used, e.g. tag, class, id.
@@ -3557,19 +3577,19 @@ declare module "src/style/style-option" {
         /**
          * @returns {string|undefined}
          */
-        get styleId(): string | undefined;
+        get styleId(): string;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {string|undefined}
          */
-        get cssClass(): string | undefined;
+        get cssClass(): string;
         /**
          * @returns {RawValue|[DomManipulation]|undefined}
          */
-        get domManipulations(): RawValue | [DomManipulation] | undefined;
+        get domManipulations(): RawValue | [import("src/style/dom-manipulation").default];
         /**
          * Specify the style id to use.
          *
@@ -3725,19 +3745,19 @@ declare module "src/style/style" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string | undefined;
+        get identifier(): string;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {RawValue|[CssClass]|undefined}
          */
-        get cssClasses(): RawValue | [CssClass] | undefined;
+        get cssClasses(): RawValue | [import("src/style/css-class").default];
         /**
          * @returns {RawValue|[StyleOption]|undefined}
          */
-        get styles(): RawValue | [StyleOption] | undefined;
+        get styles(): RawValue | [import("src/style/style-option").default];
         /**
          * Set the unique identifier for this style configuration. If not specified, a UUID v4 will be used.
          * <strong>It is recommended to set this property.</strong>
@@ -4163,23 +4183,23 @@ declare module "src/content-element/part/part" {
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {{}|undefined}
          */
-        get config(): {} | undefined;
+        get config(): {};
         /**
          * @returns {RawValue|HtmlEditorConfig|undefined}
          */
-        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
+        get htmlEditorConfig(): any;
         /**
          * @returns {Boolean|undefined}
          */
-        get altTextMandatory(): boolean | undefined;
+        get altTextMandatory(): boolean;
         /**
          * @returns {Boolean|undefined}
          */
-        get captionEnabled(): boolean | undefined;
+        get captionEnabled(): boolean;
         /**
          * The ID of the part. You can apply an unique identifier to your content element part.
          * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -4281,12 +4301,12 @@ declare module "src/content-element/template-part/template-part" {
         /**
          * @param {string} partId
          */
-        constructor(partId: string, label: any, id: any);
+        constructor(partId: string, label: any, partContextId: any);
         /**
          * @type {string}
          * @private
          */
-        private _id;
+        private _partContextId;
         /**
          * @type {string}
          * @private
@@ -4303,24 +4323,9 @@ declare module "src/content-element/template-part/template-part" {
          */
         private _config;
         /**
-         * @type {RawValue|HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _altTextMandatory;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _captionEnabled;
-        /**
          * @returns {string}
          */
-        get id(): string;
+        get partContextId(): string;
         /**
          * @returns {string}
          */
@@ -4328,111 +4333,165 @@ declare module "src/content-element/template-part/template-part" {
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {{}|undefined}
          */
-        get config(): {} | undefined;
-        /**
-         * @returns {RawValue|HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get altTextMandatory(): boolean | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get captionEnabled(): boolean | undefined;
-        /**
-         * The ID of the part. You can apply an unique identifier to your content element part.
-         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
-         * This property is only for the design build and will not appear in the final build artifacts.
-         * The advantage of using this property is, that you don't have to care about the order of your parts
-         * in your specification. The build will reorder the part definitions in the order they appear in the
-         * corresponding template. This can be very handy in large and complex elements with many parts.
-         *
-         * @example
-         * // template.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
-         * </div>
-         *
-         * // title.js
-         * module.exports = new ContentElement()
-         *   .withElementId('title')
-         *   .withLabel('Title')
-         *   .withFile(require('./template.html')
-         *   .withParts(
-         *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
-         *    );
-         *
-         * // dist/title-4026bb9f6ec6c2284775.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
-         * </div>
-         * @param {string} id - The ID to use.
-         * @returns {this}
-         */
-        withId(id: string): this;
-        /**
-         * The set content element part's label.
-         *
-         * @param {string|NLS} label - The label to set.
-         * @returns {this}
-         * @since Studio 1.0
-         */
-        withLabel(label: string | NLS): this;
+        get config(): {};
         withRawConfig(config: any): this;
         withConfig(key: any, value: any): this;
-        /**
-         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
-         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
-         *
-         * @example
-         * let editorConfig = new HtmlEditorConfig()
-         *   .withIdentifier('minimal')
-         *   .withRawEnterMode('p')
-         *   .withFeatures(
-         *     Feature.BOLD,
-         *     Feature.ITALIC,
-         *     Feature.UNDERLINE);
-         * // ...
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new FormattedTextPart()
-         *       .withLabel('Text')
-         *       .withHtmlEditorConfig(editorConfig))
-         * @see {withRawHtmlEditorConfig} to set a raw value
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * Set a Boolean to indicate if the alt-text for this image is mandatory.
-         * If true users must describe the image before they can save it in the CX editor.
-         *
-         * @see {withAltTextMandatory}
-         * @param {Boolean} altTextMandatory
-         * @returns {Part}
-         */
-        withAltTextMandatory(altTextMandatory: boolean): Part;
-        /**
-         * Set a Boolean to indicate if caption is enabled in editor.
-         * If true users can add a caption for the table in CX editor.
-         *
-         * @see {withCaptionEnabled}
-         * @param {Boolean} captionEnabled
-         * @returns {Part}
-         */
-        withCaptionEnabled(captionEnabled: boolean): Part;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/dropzone/dropzone" {
+    /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/template-element').default} TemplateElement */
+    /**
+     * This is the builder class to specify a dropzone.
+     *
+     * @example
+     * .withDropzones(
+     *   cx.dropzone
+     *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+     *     .withAllowedElements(
+     *       require('./content-elements/basic/text'),
+     *       require('./content-elements/basic/image'))
+     *     .withMaxAllowedElements(1),
+     *   cx.dropzone
+     *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+     *     .withAllowedElements(
+     *       require('./content-elements/basic/text'),
+     *       require('./content-elements/basic/image'))
+     *     .withMaxAllowedElements(1))
+     */
+    export default class Dropzone extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _dropzone;
+        /**
+         * @type {RawValue|ContentElement[]|TemplateElement[]|undefined}
+         * @private
+         */
+        private _allowedElements;
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _maxAllowedElements;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _removeAllowed;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _copyAllowed;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _moveAllowed;
+        /**
+         * @returns {string|undefined}
+         */
+        get dropzone(): string;
+        /**
+         * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
+         */
+        get allowedElements(): RawValue | import("src/content-element/content-element").default[] | TemplateElement[];
+        /**
+         * @returns {number|undefined}
+         */
+        get maxAllowedElements(): number;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get removeAllowed(): boolean;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get copyAllowed(): boolean;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get moveAllowed(): boolean;
+        /**
+         * Set the identifier of this dropzone. <strong>It is highly recommended using a
+         * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+         *
+         * @param {string} dropzone - The dropzone name.
+         * @returns {Dropzone}
+         */
+        withDropzone(dropzone: string): Dropzone;
+        /**
+         * Set the allowed elements.
+         * They should be of the same Type (ContentElement or Template Element)
+         *
+         * @example
+         * .withAllowedElements(
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         * @param {...(ContentElement|TemplateElement)} allowedElements - The allowed elements.
+         * @returns {Dropzone}
+         */
+        withAllowedElements(...allowedElements: (ContentElement | TemplateElement)[]): Dropzone;
+        /**
+         * Set the allowed elements as raw value.
+         *
+         * @param {...string} allowedElements - The allowed elements.
+         * @returns {Dropzone}
+         */
+        withRawAllowedElements(...allowedElements: string[]): Dropzone;
+        /**
+         * Set the number of maximum allowed elements.
+         *
+         * @param {number} maxAllowedElements - The number of maximum allowed elements.
+         * @returns {Dropzone}
+         */
+        withMaxAllowedElements(maxAllowedElements: number): Dropzone;
+        /**
+         * Enable or disable the remove button on dropzone elements.
+         *
+         * @param {boolean} removeAllowed - Enable or disable the remove button.
+         * @returns {Dropzone}
+         */
+        withRemoveAllowed(removeAllowed: boolean): Dropzone;
+        /**
+         * Enable or disable the copy button on dropzone elements.
+         *
+         * @param {boolean} copyAllowed - Enable or disable the copy button.
+         * @returns {Dropzone}
+         */
+        withCopyAllowed(copyAllowed: boolean): Dropzone;
+        /**
+         * Enable or disable the move button on dropzone elements.
+         *
+         * @param {boolean} moveAllowed - Enable or disable the move button.
+         * @returns {Dropzone}
+         */
+        withMoveAllowed(moveAllowed: boolean): Dropzone;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {Dropzone}
+         */
+        clone(shallow?: boolean): Dropzone;
+    }
+    export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = import("src/content-element/template-element").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+    import TemplateElement from "src/content-element/template-element";
+}
 declare module "src/content-element/template-element" {
+    /** @typedef {import('./icon').Icon} Icon */
+    /** @typedef {import('../style/style').default} Style */
+    /** @typedef {import('../dropzone/dropzone').default} Dropzone */
     /**
      * TODO: MinVersion 25.1
      */
@@ -4500,51 +4559,51 @@ declare module "src/content-element/template-element" {
         /**
          * @returns {string|undefined}
          */
-        get elementId(): string | undefined;
+        get elementId(): string;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {string|NLS|undefined}
          */
-        get description(): string | NLS | undefined;
+        get description(): any;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {} | undefined;
+        get file(): {};
         /**
          * @returns {{}|undefined}
          */
-        get contextFile(): {} | undefined;
+        get contextFile(): {};
         /**
          * @returns {RawValue|Icon|undefined}
          */
-        get icon(): RawValue | Icon | undefined;
+        get icon(): RawValue | import("src/content-element/icon").Icon;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean | undefined;
+        get hidden(): boolean;
         /**
          * @returns {boolean|undefined}
          */
-        get archived(): boolean | undefined;
+        get archived(): boolean;
         /**
          * @returns {boolean|undefined}
          */
-        get composite(): boolean | undefined;
+        get composite(): boolean;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): RawValue | Style[] | undefined;
+        get styleConfigs(): RawValue | import("src/style/style").default[];
         /**
          * @returns {RawValue|TemplatePart[]|undefined}
          */
-        get templateParts(): RawValue | TemplatePart[] | undefined;
+        get templateParts(): RawValue | TemplatePart[];
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): Dropzone[] | undefined;
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * Set the ID of this template element.
          *
@@ -4801,6 +4860,9 @@ declare module "src/content-element/template-element" {
          * @returns {TemplateElement}
          */
         withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
+        _buildInternal(): {
+            type: string;
+        };
         /**
          * Clone the configuration.
          *
@@ -4814,7 +4876,11 @@ declare module "src/content-element/template-element" {
          */
         private _hasIncompatibleParts;
     }
+    export type Icon = import("src/content-element/icon").Icon;
+    export type Style = import("src/style/style").default;
+    export type Dropzone = import("src/dropzone/dropzone").default;
     import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
     import TemplatePart from "src/content-element/template-part/template-part";
 }
 declare module "src/content-element/content-element-group" {
@@ -4855,19 +4921,19 @@ declare module "src/content-element/content-element-group" {
         /**
          * @returns {string|undefined}
          */
-        get groupId(): string | undefined;
+        get groupId(): string;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean | undefined;
+        get hidden(): boolean;
         /**
          * @returns {RawValue|[ContentElement|TemplateElement]|undefined}
          */
-        get contentElements(): RawValue | [ContentElement | TemplateElement] | undefined;
+        get contentElements(): RawValue | [import("src/content-element/content-element").default | import("src/content-element/template-element").default];
         /**
          * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
          * <strong>It is recommended to set the group identifier.</strong>
@@ -4947,151 +5013,6 @@ declare module "src/content-element/content-element-group" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
-declare module "src/dropzone/dropzone" {
-    /** @typedef {import('../content-element/content-element').default} ContentElement */
-    /** @typedef {import('../content-element/template-element').default} TemplateElement */
-    /**
-     * This is the builder class to specify a dropzone.
-     *
-     * @example
-     * .withDropzones(
-     *   cx.dropzone
-     *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
-     *     .withAllowedElements(
-     *       require('./content-elements/basic/text'),
-     *       require('./content-elements/basic/image'))
-     *     .withMaxAllowedElements(1),
-     *   cx.dropzone
-     *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
-     *     .withAllowedElements(
-     *       require('./content-elements/basic/text'),
-     *       require('./content-elements/basic/image'))
-     *     .withMaxAllowedElements(1))
-     */
-    export default class Dropzone extends AbstractBuilder {
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _dropzone;
-        /**
-         * @type {RawValue|ContentElement[]|TemplateElement[]|undefined}
-         * @private
-         */
-        private _allowedElements;
-        /**
-         * @type {number|undefined}
-         * @private
-         */
-        private _maxAllowedElements;
-        /**
-         * @type {boolean|undefined}
-         * @private
-         */
-        private _removeAllowed;
-        /**
-         * @type {boolean|undefined}
-         * @private
-         */
-        private _copyAllowed;
-        /**
-         * @type {boolean|undefined}
-         * @private
-         */
-        private _moveAllowed;
-        /**
-         * @returns {string|undefined}
-         */
-        get dropzone(): string | undefined;
-        /**
-         * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
-         */
-        get allowedElements(): RawValue | ContentElement[] | TemplateElement[] | undefined;
-        /**
-         * @returns {number|undefined}
-         */
-        get maxAllowedElements(): number | undefined;
-        /**
-         * @returns {boolean|undefined}
-         */
-        get removeAllowed(): boolean | undefined;
-        /**
-         * @returns {boolean|undefined}
-         */
-        get copyAllowed(): boolean | undefined;
-        /**
-         * @returns {boolean|undefined}
-         */
-        get moveAllowed(): boolean | undefined;
-        /**
-         * Set the identifier of this dropzone. <strong>It is highly recommended using a
-         * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
-         *
-         * @param {string} dropzone - The dropzone name.
-         * @returns {Dropzone}
-         */
-        withDropzone(dropzone: string): Dropzone;
-        /**
-         * Set the allowed elements.
-         * They should be of the same Type (ContentElement or Template Element)
-         *
-         * @example
-         * .withAllowedElements(
-         *   require('./content-elements/basic/text'),
-         *   require('./content-elements/basic/image'))
-         * @param {...(ContentElement|TemplateElement)} allowedElements - The allowed elements.
-         * @returns {Dropzone}
-         */
-        withAllowedElements(...allowedElements: (ContentElement | TemplateElement)[]): Dropzone;
-        /**
-         * Set the allowed elements as raw value.
-         *
-         * @param {...string} allowedElements - The allowed elements.
-         * @returns {Dropzone}
-         */
-        withRawAllowedElements(...allowedElements: string[]): Dropzone;
-        /**
-         * Set the number of maximum allowed elements.
-         *
-         * @param {number} maxAllowedElements - The number of maximum allowed elements.
-         * @returns {Dropzone}
-         */
-        withMaxAllowedElements(maxAllowedElements: number): Dropzone;
-        /**
-         * Enable or disable the remove button on dropzone elements.
-         *
-         * @param {boolean} removeAllowed - Enable or disable the remove button.
-         * @returns {Dropzone}
-         */
-        withRemoveAllowed(removeAllowed: boolean): Dropzone;
-        /**
-         * Enable or disable the copy button on dropzone elements.
-         *
-         * @param {boolean} copyAllowed - Enable or disable the copy button.
-         * @returns {Dropzone}
-         */
-        withCopyAllowed(copyAllowed: boolean): Dropzone;
-        /**
-         * Enable or disable the move button on dropzone elements.
-         *
-         * @param {boolean} moveAllowed - Enable or disable the move button.
-         * @returns {Dropzone}
-         */
-        withMoveAllowed(moveAllowed: boolean): Dropzone;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {Dropzone}
-         */
-        clone(shallow?: boolean): Dropzone;
-    }
-    export type ContentElement = import("src/content-element/content-element").default;
-    export type TemplateElement = import("src/content-element/template-element").default;
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-    import TemplateElement from "src/content-element/template-element";
-}
 declare module "src/content-element/content-element" {
     /** @typedef {import('../design/design').default} Design */
     /** @typedef {import('../style/style').default} Style */
@@ -5168,43 +5089,43 @@ declare module "src/content-element/content-element" {
         /**
          * @returns {string|undefined}
          */
-        get elementId(): string | undefined;
+        get elementId(): string;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): string | NLS | undefined;
+        get label(): any;
         /**
          * @returns {string|NLS|undefined}
          */
-        get description(): string | NLS | undefined;
+        get description(): any;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {} | undefined;
+        get file(): {};
         /**
          * @returns {RawValue|Icon|undefined}
          */
-        get icon(): RawValue | Icon | undefined;
+        get icon(): RawValue | import("src/content-element/icon").Icon;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean | undefined;
+        get hidden(): boolean;
         /**
          * @returns {boolean|undefined}
          */
-        get archived(): boolean | undefined;
+        get archived(): boolean;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): RawValue | Style[] | undefined;
+        get styleConfigs(): RawValue | import("src/style/style").default[];
         /**
          * @returns {RawValue|Part[]|undefined}
          */
-        get parts(): RawValue | Part[] | undefined;
+        get parts(): RawValue | any[];
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): Dropzone[] | undefined;
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * Set the ID of this content element.
          *
@@ -5901,43 +5822,43 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string | undefined;
+        get identifier(): string;
         /**
          * @returns {RawValue|Feature[]|undefined}
          */
-        get features(): RawValue | Feature[] | undefined;
+        get features(): RawValue | import("src/html-editor-config/feature").Feature[];
         /**
          * @returns {string[]|undefined}
          */
-        get textColors(): string[] | undefined;
+        get textColors(): string[];
         /**
          * @returns {string[]|undefined}
          */
-        get backgroundColors(): string[] | undefined;
+        get backgroundColors(): string[];
         /**
          * @returns {RawValue|Format[]|undefined}
          */
-        get formats(): RawValue | Format[] | undefined;
+        get formats(): RawValue | import("src/html-editor-config/format").Format[];
         /**
          * @returns {number[]|undefined}
          */
-        get fontSizes(): number[] | undefined;
+        get fontSizes(): number[];
         /**
          * @returns {RawValue|FontSizeUnit|undefined}
          */
-        get fontSizeUnit(): RawValue | FontSizeUnit | undefined;
+        get fontSizeUnit(): RawValue | import("src/html-editor-config/font-size-unit").FontSizeUnit;
         /**
          * @returns {number|undefined}
          */
-        get fontSizeDefault(): number | undefined;
+        get fontSizeDefault(): number;
         /**
          * @returns {number[]|undefined}
          */
-        get lineHeights(): number[] | undefined;
+        get lineHeights(): number[];
         /**
          * @returns {RawValue|EnterMode|undefined}
          */
-        get enter(): RawValue | EnterMode | undefined;
+        get enter(): RawValue | import("src/html-editor-config/enter-mode").EnterMode;
         /**
          * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
          * It is recommended to set the identifier.
@@ -6135,15 +6056,15 @@ declare module "src/website/website" {
         /**
          * @returns {number|undefined}
          */
-        get maxNavigationLevel(): number | undefined;
+        get maxNavigationLevel(): number;
         /**
          * @returns {RawValue|Pagination|undefined}
          */
-        get pagination(): RawValue | Pagination | undefined;
+        get pagination(): any;
         /**
          * @returns {RawValue|AbstractInclude[]|undefined}
          */
-        get includes(): RawValue | AbstractInclude[] | undefined;
+        get includes(): RawValue | AbstractInclude[];
         /**
          * Define the maximum navigation level.
          *
@@ -6279,11 +6200,11 @@ declare module "src/nls/translation" {
         /**
          * @returns {Locale|RawValue|undefined}
          */
-        get locale(): Locale | RawValue | undefined;
+        get locale(): RawValue | import("src/design/locale").Locale;
         /**
          * @returns {string|undefined}
          */
-        get translation(): string | undefined;
+        get translation(): string;
         /**
          * Set the locale to use for this translation.
          *
@@ -6387,15 +6308,15 @@ declare module "src/nls/nls" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string | undefined;
+        get identifier(): string;
         /**
          * @returns {Translation[]|undefined}
          */
-        get translations(): Translation[] | undefined;
+        get translations(): Translation[];
         /**
          * @returns {string|undefined}
          */
-        get nlsMarker(): string | undefined;
+        get nlsMarker(): string;
         /**
          * @param {string} identifier
          * @returns {NLS}
@@ -6447,6 +6368,7 @@ declare module "src/design/design" {
     /** @typedef {import('./locale').Locale} Locale */
     /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
     /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/template-element').default} TemplateElement */
     /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
@@ -6546,59 +6468,59 @@ declare module "src/design/design" {
         /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
-        get schemaVersion(): RawValue | SchemaVersion | undefined;
+        get schemaVersion(): RawValue | import("src/design/schema-version").SchemaVersion;
         /**
          * @returns {string|undefined}
          */
-        get title(): string | undefined;
+        get title(): string;
         /**
          * @returns {string|undefined}
          */
-        get author(): string | undefined;
+        get author(): string;
         /**
          * @returns {string|undefined}
          */
-        get date(): string | undefined;
+        get date(): string;
         /**
          * @returns {{}|undefined}
          */
-        get previewImage(): {} | undefined;
+        get previewImage(): {};
         /**
          * @returns {RawValue|Locale|undefined}
          */
-        get defaultLocale(): RawValue | Locale | undefined;
+        get defaultLocale(): RawValue | import("src/design/locale").Locale;
         /**
          * @returns {RawValue|[Locale]|undefined}
          */
-        get locales(): RawValue | [Locale] | undefined;
+        get locales(): RawValue | [import("src/design/locale").Locale];
         /**
          * @returns {RawValue|ContentElementGroup[]|undefined}
          */
-        get contentElementGroups(): RawValue | ContentElementGroup[] | undefined;
+        get contentElementGroups(): RawValue | import("src/content-element/content-element-group").default[];
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): Dropzone[] | undefined;
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * @returns {RawValue|[Style]|undefined}
          */
-        get styleConfigs(): RawValue | [Style] | undefined;
+        get styleConfigs(): RawValue | [import("src/style/style").default];
         /**
          * @returns {RawValue|HtmlEditorConfig[]|undefined}
          */
-        get htmlEditorConfigs(): RawValue | HtmlEditorConfig[] | undefined;
+        get htmlEditorConfigs(): RawValue | import("src/html-editor-config/html-editor-config").default[];
         /**
          * @returns {RawValue|Website|undefined}
          */
-        get website(): RawValue | Website | undefined;
+        get website(): RawValue | import("src/website/website").default;
         /**
          * @returns {RawValue|NLS[]|undefined}
          */
-        get nls(): RawValue | NLS[] | undefined;
+        get nls(): RawValue | import("src/nls/nls").default[];
         /**
          * @returns {RawValue|[WebsiteContentType]|undefined}
          */
-        get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
+        get websiteContentTypes(): RawValue | [import("src/design/websiteContentType").WebsiteContentType];
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -6754,10 +6676,10 @@ declare module "src/design/design" {
          *   require('./content-elements/basic/text'),
          *   require('./content-elements/basic/image'))
          * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
-         * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+         * @param {...(ContentElement | TemplateElement)} elements - The elements to add to the allowed elements list.
          * @returns {Design}
          */
-        withExtendedDropzone(id: string, ...elements: ContentElement[]): Design;
+        withExtendedDropzone(id: string, ...elements: (ContentElement | TemplateElement)[]): Design;
         /**
          * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
          * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
@@ -6768,10 +6690,10 @@ declare module "src/design/design" {
          *   require('./content-elements/basic/text'),
          *   require('./content-elements/basic/image'))
          * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
-         * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
-         * @returns {ContentElement}
+         * @param {...(ContentElement | TemplateElement)} elements - The elements to remove from the allowed elements list.
+         * @returns {Design}
          */
-        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        withReducedDropzone(id: string, ...elements: (ContentElement | TemplateElement)[]): Design;
         /**
          * The style configurations of your design. This is only necessary if you use
          * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
@@ -6949,6 +6871,7 @@ declare module "src/design/design" {
     export type Locale = import("src/design/locale").Locale;
     export type WebsiteContentType = import("src/design/websiteContentType").WebsiteContentType;
     export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = import("src/content-element/template-element").default;
     export type FormattedTextPart = any;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
@@ -7039,6 +6962,8 @@ declare module "src/design/locale" {
 }
 declare module "src/website/abstract-include" {
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
+    /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/template-element').default} TemplateElement */
     /**
      * @abstract
      * @since BSI CX 1.3
@@ -7086,31 +7011,31 @@ declare module "src/website/abstract-include" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string | undefined;
+        get identifier(): string;
         /**
          * @returns {boolean|undefined}
          */
-        get editable(): boolean | undefined;
+        get editable(): boolean;
         /**
          * @returns {string|undefined}
          */
-        get includeType(): string | undefined;
+        get includeType(): string;
         /**
          * @returns {string|WebsiteContentType|undefined}
          */
-        get websiteContentType(): string | WebsiteContentType | undefined;
+        get websiteContentType(): any;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {} | undefined;
+        get file(): {};
         /**
          * @returns {string|NLS|undefined}
          */
-        get name(): string | NLS | undefined;
+        get name(): any;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): Dropzone[] | undefined;
+        get dropzones(): import("src/dropzone/dropzone").default[];
         /**
          * Enable or disable edit mode on this include.
          *
@@ -7187,10 +7112,10 @@ declare module "src/website/abstract-include" {
          *   require('./content-elements/basic/text'),
          *   require('./content-elements/basic/image'))
          * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
-         * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+         * @param {...(ContentElement | TemplateElement)} elements - The elements to add to the allowed elements list.
          * @returns {this}
          */
-        withExtendedDropzone(id: string, ...elements: ContentElement[]): this;
+        withExtendedDropzone(id: string, ...elements: (ContentElement | TemplateElement)[]): this;
         /**
        * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
        * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
@@ -7201,12 +7126,14 @@ declare module "src/website/abstract-include" {
        *   require('./content-elements/basic/text'),
        *   require('./content-elements/basic/image'))
        * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
-       * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
-       * @returns {ContentElement}
+       * @param {...(ContentElement | TemplateElement)} elements - The elements to remove from the allowed elements list.
+       * @returns {this}
        */
-        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        withReducedDropzone(id: string, ...elements: (ContentElement | TemplateElement)[]): this;
     }
     export type Dropzone = import("src/dropzone/dropzone").default;
+    export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = import("src/content-element/template-element").default;
     import AbstractBuilder from "src/abstract-builder";
 }
 declare module "src/website/page-include" {
@@ -7570,6 +7497,88 @@ declare module "src/content-element/part/part-factory" {
     }
     import Part from "src/content-element/part/part";
 }
+declare module "src/content-element/template-part/template-part-factory" {
+    export default class TemplatePartFactory {
+        /**
+         * Build a new plain text content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @returns {TemplatePart}
+         */
+        PlainText(label: string, partContextId: string): TemplatePart;
+        /**
+         * Build a new multiple plain text content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @returns {TemplatePart}
+         */
+        MultiplePlainText(label: string, partContextId: string): TemplatePart;
+        /**
+         * Build a new formatted text content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {TemplatePart}
+         */
+        FormattedText(label: string, partContextId: string, htmlEditorConfig: HtmlEditorConfig): TemplatePart;
+        /**
+         * Build a new link content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @returns {TemplatePart}
+         */
+        Link(label: string, partContextId: string): TemplatePart;
+        /**
+         * Build a new image content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @param {boolean} altTextMandatory
+         * @param {string[]} srcSetSizes ["400w", "800w", "1200w"]
+         * @param {HideAccessibilityFields} hideAccessibilityFields
+         * @returns {TemplatePart}
+         */
+        Image(label: string, partContextId: string, altTextMandatory: boolean, srcSetSizes: string[], hideAccessibilityFields: HideAccessibilityFields): TemplatePart;
+        /**
+         * Build a new checkbox content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @returns {TemplatePart}
+         */
+        Checkbox(label: string, partContextId: string): TemplatePart;
+        /**
+         * Build a new option content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}]
+         * @returns {TemplatePart}
+         */
+        Option(label: string, partContextId: string, options: any): TemplatePart;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {string} partId
+         * @returns {TemplatePart}
+         */
+        raw(partId: string): TemplatePart;
+        /**
+         * Create a raw element part builder instance. Can be used for custom element parts.
+         *
+         * @param {string} partId
+         * @param {string} label
+         * @param {string} partContextId
+         * @returns {TemplatePart}
+         */
+        Raw(partId: string, label: string, partContextId: string): TemplatePart;
+    }
+    import TemplatePart from "src/content-element/template-part/template-part";
+}
 declare module "src/website/pagination" {
     /**
      * This is the builder class for {@link Website|website} pagination.
@@ -7595,11 +7604,11 @@ declare module "src/website/pagination" {
         /**
          * @returns {number|undefined}
          */
-        get numDataRecordsPerPage(): number | undefined;
+        get numDataRecordsPerPage(): number;
         /**
          * @returns {number|undefined}
          */
-        get numAdjacentPages(): number | undefined;
+        get numAdjacentPages(): number;
         /**
          * Define how many records are to be displayed simultaneously on a page.
          *
@@ -8037,6 +8046,19 @@ declare module "src/design/design-factory" {
          */
         get part(): PartFactory;
         /**
+       * Get a content element template part factory instance to create new tepmlate element part builder objects.
+       * The template element part factory is also available under the template part constant.
+       *
+       * @example
+       * const {cx, templatePart} = require('@bsi-cx/design-build');
+       *
+       * // ...
+       * .withTemplateParts(
+       *   cx.templatePart.PlainText('Text', 'textId')
+       * @returns {TemplatePartFactory}
+       */
+        get templatePart(): TemplatePartFactory;
+        /**
          * Get a collection of various helper methods.
          *
          * @example
@@ -8065,6 +8087,7 @@ declare module "src/design/design-factory" {
     import NLS from "src/nls/nls";
     import Translation from "src/nls/translation";
     import PartFactory from "src/content-element/part/part-factory";
+    import TemplatePartFactory from "src/content-element/template-part/template-part-factory";
     import DesignHelper from "src/design/design-helper";
 }
 declare module "src/bsi-property" {
@@ -8102,6 +8125,8 @@ declare module "export/browser" {
     import * as Icon from "src/content-element/icon";
     import ContentElement from "src/content-element/content-element";
     import Part from "src/content-element/part/part";
+    import TemplateElement from "src/content-element/template-element";
+    import TemplatePart from "src/content-element/template-part/template-part";
     import Website from "src/website/website";
     import PageInclude from "src/website/page-include";
     import Include from "src/website/include";
@@ -8115,7 +8140,7 @@ declare module "export/browser" {
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, TemplateElement, TemplatePart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";

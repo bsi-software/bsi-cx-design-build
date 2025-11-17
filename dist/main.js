@@ -454,6 +454,18 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static SRC_SET_SIZES = 'srcSetSizes';
+  /**
+   * @type {string}
+   */
+  static HIDE_ACCESSIBILITY_FIELDS = 'hideAccessibilityFields';
+  /**
+   * @type {string}
+   */
+  static OPTIONS = 'options';
+  /**
+   * @type {string}
+   */
   static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}
@@ -507,6 +519,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static PART_CONTEXT_ID = 'partContextId';
   /**
    * @type {string}
    */
@@ -1541,6 +1557,10 @@ class DistFolder {
    * @type {string}
    */
   static CONTENT_ELEMENTS = 'content-elements';
+  /**
+   * @type {string}
+   */
+    static CONTEXT = 'context';
   /**
    * @type {string}
    */
@@ -3246,6 +3266,7 @@ class _BsiCxWebpackPlugin {
     this._importElementFile(element);
     this._sortElementPartsById(element);
     this._handleElementFile(element, replaceMap);
+    this._handleElementContextFile(element, replaceMap);
     this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
     this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
   }
@@ -3271,6 +3292,27 @@ class _BsiCxWebpackPlugin {
     let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
     element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+  }
+
+  /**
+   * @param {{file:{content:string,path:string},parts:[]}} element
+   * @param {Map<string, function(string):string>} replaceMap
+   * @private
+   */
+  _handleElementContextFile(element, replaceMap) {
+    let fileObj = element[DesignJsonProperty.CONTEXT_FILE];
+    if (fileObj) {
+      fileObj.content = JSON.stringify(fileObj);
+      console.log("FileObject Content: " +  fileObj.content); 
+      // this._evalTemplateFile(fileObj.content);
+      fileObj.path = "temp.json";
+
+      let baseFolder = DistFolder.CONTEXT;
+      let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
+
+      element[DesignJsonProperty.CONTEXT_FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+    }
+    
   }
 
   /**
@@ -3459,6 +3501,8 @@ class _BsiCxWebpackPlugin {
         return 'hbs';
       case /\.hbs$/.test(fileName):
         return 'hbs';
+      case /\.json$/.test(fileName):
+        return 'json';
       default:
         return 'html';
     }
@@ -7098,7 +7142,7 @@ function number(value) {
 
 
 var __webpack_export_target__ = exports;
-for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
+for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;

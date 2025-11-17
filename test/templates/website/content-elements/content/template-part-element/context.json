@@ -1,0 +1,13 @@
+{
+    "checkbox-part-95513657": {
+        "value": false
+    },
+
+    "image-part-01fb0560": {
+        "altText": "Test für alt Text",
+        "srcUrl": "www.example.com",
+        "placeholderSrcUrl": "www.placeholderExample.com",
+        "srcset": "{{ bsi_cx_asset('../../../static/image.png') }} 400w, {{ bsi_cx_asset('../../../static/image.png') }} 800w, {{ bsi_cx_asset('../../../static/image.png') }} 1200w",
+        "decorative": "false"
+    }
+}

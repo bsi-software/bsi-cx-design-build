@@ -1,7 +1,13 @@
 import AbstractBuilder from "../abstract-builder";
+import { builderObjectValue, constantObjectValue, identity, uuid } from '../browser-utility';
 import DesignJsonProperty from "../design-json-property";
 import DesignJsonPropertyExtension from '../design-json-property-extension';
+import RawValue from '../raw-value';
 import TemplatePart from "./template-part/template-part";
+
+/** @typedef {import('./icon').Icon} Icon */
+/** @typedef {import('../style/style').default} Style */
+/** @typedef {import('../dropzone/dropzone').default} Dropzone */
 
 /**
  * TODO: MinVersion 25.1
@@ -365,7 +371,7 @@ export default class TemplateElement extends AbstractBuilder {
  */
   withAddStyleConfigs(...styleConfigs) {
     this._styleConfigs = (this.styleConfigs || []).concat(styleConfigs);
-    
+
     return this;
   }
 
@@ -383,7 +389,7 @@ export default class TemplateElement extends AbstractBuilder {
   withRemoveStyleConfigs(...styleConfigs) {
     var styleIds = styleConfigs.map(style => style.identifier);
     this._styleConfigs = (this.styleConfigs || []).filter(style => !styleIds.includes(style.identifier));
-    
+
     return this;
   }
 
@@ -511,7 +517,7 @@ export default class TemplateElement extends AbstractBuilder {
   }
 
   _buildInternal() {
-    let config = {};
+    let config = { type: "template-element" };
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -519,7 +525,7 @@ export default class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
+    // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
