@@ -6072,8 +6072,6 @@ class BsiSassPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 ;// ./src/bsi-sass-properties-to-scss.js
 /**
  * PropertiesToScssConverter
@@ -6176,13 +6174,7 @@ class PropertiesToScssConverter {
 };
 
 ;// ./src/webpack-config-builder.js
-=======
-;// CONCATENATED MODULE: ./src/webpack-config-builder.js
->>>>>>> b02d209 (Working, Dynamic Value List is missing)
 
-=======
-;// ./src/webpack-config-builder.js
->>>>>>> ccafa08 (Rebase)
 
 
 

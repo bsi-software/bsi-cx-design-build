@@ -2636,8 +2636,6 @@ const HTML = new Feature('html');
  */
 const HELP = new Feature('help');
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 /**
  * Show the cx link option.
  *
@@ -2647,12 +2645,6 @@ const HELP = new Feature('help');
 const STUDIO_LINK = new Feature('studioLink');
 
 ;// ./src/html-editor-config/enter-mode.js
-=======
-;// CONCATENATED MODULE: ./src/html-editor-config/enter-mode.js
->>>>>>> b02d209 (Working, Dynamic Value List is missing)
-=======
-;// ./src/html-editor-config/enter-mode.js
->>>>>>> ccafa08 (Rebase)
 
 
 /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
@@ -5807,14 +5799,9 @@ class Part extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
     // Deprecated properties, only for older cx-versions
     this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
-<<<<<<< HEAD
-    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, browser_utility_identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, browser_utility_identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.STUDIO_LINK_ENABLED, config, browser_utility_identity);
-=======
     this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
->>>>>>> 36b2220 (WIP)
+    this._applyPropertyIfDefined(DesignJsonProperty.STUDIO_LINK_ENABLED, config, identity);
 
     return config;
   }
