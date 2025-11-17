@@ -10,5 +10,7 @@ module.exports = cx.templateElement
   .withLabel('Wertelisten Input')
   .withFile(require('./template.hbs'))
   .withTemplateParts(
-    cx.templatePart.DynamicValueList('Werteliste', 'dynamic-value-b4')
+    cx.templatePart.DynamicValueList('Werteliste', 'entityTypeAndInitialValue'),
+    cx.templatePart.PlainText('Id', 'id'),
+    cx.templatePart.PlainText('Name', 'name'),
   );
