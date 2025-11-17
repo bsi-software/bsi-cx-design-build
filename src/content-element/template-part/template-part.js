@@ -74,21 +74,14 @@ export default class TemplatePart extends AbstractBuilder {
     return this._config;
   }
 
-
-  // TODO description
-  withRawConfig(config) {
-    this._config = config;
-    return this;
-  }
-
-  // TODO description
-  withConfig(key, value) {
-    this._config = this.config || {};
-    this._config[key] = value;
-    return this;
-  }
-
-  // TODO description
+  /**
+   * Add new key-value pair to config object
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @param {boolean} isBoolean 
+   * @returns {this}
+   */
   addConfigValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
       this._config = this.config || {};

@@ -3307,8 +3307,6 @@ class _BsiCxWebpackPlugin {
     let fileObj = element[DesignJsonProperty.CONTEXT_FILE];
     if (fileObj) {
       fileObj.content = JSON.stringify(fileObj);
-      console.log("FileObject Content: " +  fileObj.content); 
-      // this._evalTemplateFile(fileObj.content);
       fileObj.path = "temp.json";
 
       let baseFolder = DistFolder.CONTEXT;

@@ -4342,9 +4342,15 @@ declare module "src/content-element/template-part/template-part" {
          * @returns {{}|undefined}
          */
         get config(): {} | undefined;
-        withRawConfig(config: any): this;
-        withConfig(key: any, value: any): this;
-        addConfigValueIfNotNull(key: any, value: any, isBoolean?: boolean): this;
+        /**
+         * Add new key-value pair to config object
+         *
+         * @param {string} key
+         * @param {string} value
+         * @param {boolean} isBoolean
+         * @returns {this}
+         */
+        addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
