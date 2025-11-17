@@ -88,6 +88,15 @@ export default class TemplatePart extends AbstractBuilder {
     return this;
   }
 
+  // TODO description
+  addConfigValueIfNotNull(key, value, isBoolean = false) {
+    if (value !== null) {
+      this._config = this.config || {};
+      this._config[key] = isBoolean ? !!value : value;
+    }
+    return this;
+  }
+
   _buildInternal() {
     let config = {};
 

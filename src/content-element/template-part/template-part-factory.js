@@ -21,8 +21,8 @@ export default class TemplatePartFactory {
    * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  MultiplePlainText(label, partContextId) {
-    return new TemplatePart('multiple-plain-text', label, partContextId)
+  MultilinePlainText(label, partContextId) {
+    return new TemplatePart('multiline-plain-text', label, partContextId)
   }
 
   /**
@@ -35,7 +35,7 @@ export default class TemplatePartFactory {
    */
   FormattedText(label, partContextId, htmlEditorConfig) {
     var part = new TemplatePart('formatted-text', label, partContextId)
-    return htmlEditorConfig ? part.withConfig(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier) : part;
+    return part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
   }
 
   /**
@@ -56,14 +56,14 @@ export default class TemplatePartFactory {
    * @param {string} partContextId
    * @param {boolean} altTextMandatory
    * @param {string[]} srcSetSizes ["400w", "800w", "1200w"]
-   * @param {HideAccessibilityFields} hideAccessibilityFields
+   * @param {boolean} hideAccessibilityFields
    * @returns {TemplatePart}
    */
   Image(label, partContextId, altTextMandatory, srcSetSizes, hideAccessibilityFields) {
     var part = new TemplatePart('image', label, partContextId);
-    part = altTextMandatory != null ? part.withConfig(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory) : part;
-    part = srcSetSizes != null ? part.withConfig(DesignJsonProperty.SRC_SET_SIZES, srcSetSizes) : part;
-    part = hideAccessibilityFields != null ? part.withConfig(DesignJsonProperty.HIDE_ACCESSIBILITY_FIELDS, hideAccessibilityFields) : part;
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.ALT_TEXT_MANDATORY, altTextMandatory, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.SRC_SET_SIZES, srcSetSizes);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.HIDE_ACCESSIBILITY_FIELDS, hideAccessibilityFields);
     return part;
   }
 
@@ -83,23 +83,25 @@ export default class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}]
+   * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
-    part = options != null ? part.withConfig(DesignJsonProperty.OPTIONS, options) : part;
-    return new TemplatePart('option', label, partContextId);
+    options = Array.isArray(options) ? options : Object.entries(options).map(([value, text]) => ({ "value": value, "text": text }))
+    return part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
   }
 
   /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
+   * Build a new dynamic value list content element part builder instance.
    *
-   * @param {string} partId
+   * @param {string} label
+   * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  raw(partId) {
-    return this.Raw(partId);
+  DynamicValueList(label, partContextId) {
+    // TODO: WTF???
+    return new TemplatePart('dynamic-value-list', label, partContextId);
   }
 
   /**

@@ -1,3 +1,4 @@
+/// <reference types="node" />
 declare module "src/abstract-constant" {
     /**
      * @abstract
@@ -616,7 +617,7 @@ declare module "src/object-cloner" {
          * @param {T} value
          * @returns {T}
          */
-        static cloneValue<T>(value: T): T;
+        static cloneValue<T_1>(value: T_1): T_1;
         /**
          * @template T
          * @param {T} source
@@ -849,7 +850,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
+        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
         /**
          * @returns {string[]}
          */
@@ -1047,7 +1048,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
+        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
         /**
          * @returns {string[]}
          */
@@ -1436,7 +1437,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
+        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
         /**
          * @returns {string[]}
          */
@@ -1521,7 +1522,7 @@ declare module "src/build-config/build-config" {
          * @param {number|'auto'} devServerPort - The development server port number.
          * @returns {BuildConfig}
          */
-        withDevServerPort(devServerPort: number | "auto"): BuildConfig;
+        withDevServerPort(devServerPort: number | 'auto'): BuildConfig;
         /**
          * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
          *
@@ -1593,7 +1594,7 @@ declare module "src/build-config/build-config" {
          * @param {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)} assetResourceRuleFilename
          * @returns {BuildConfig}
          */
-        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: PathData, assetInfo?: AssetInfo) => string)): BuildConfig;
+        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: any, assetInfo?: any) => string)): BuildConfig;
         /**
          * Additional file extensions for static assets. The following file extensions are defined by default: avif, png,
          * apng, jpg, jpeg, jfif, pjpeg, pjp, webp, gif, bmp, tiff, tif, raw, svg, eot, ttf, woff, woff2, pdf, ico,
@@ -2726,7 +2727,7 @@ declare module "src/css/css-property-resolver" {
          * @param {T} value
          * @returns {AbstractCssProperty|T}
          */
-        resolve<T>(value: T): AbstractCssProperty | T;
+        resolve<T>(value: T): import("src/css/abstract-css-property").default | T;
         /**
          * @param {string|number} value
          * @returns {AbstractCssProperty}
@@ -4340,6 +4341,7 @@ declare module "src/content-element/template-part/template-part" {
         get config(): {};
         withRawConfig(config: any): this;
         withConfig(key: any, value: any): this;
+        addConfigValueIfNotNull(key: any, value: any, isBoolean?: boolean): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -7514,7 +7516,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} partContextId
          * @returns {TemplatePart}
          */
-        MultiplePlainText(label: string, partContextId: string): TemplatePart;
+        MultilinePlainText(label: string, partContextId: string): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
          *
@@ -7539,10 +7541,10 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} partContextId
          * @param {boolean} altTextMandatory
          * @param {string[]} srcSetSizes ["400w", "800w", "1200w"]
-         * @param {HideAccessibilityFields} hideAccessibilityFields
+         * @param {boolean} hideAccessibilityFields
          * @returns {TemplatePart}
          */
-        Image(label: string, partContextId: string, altTextMandatory: boolean, srcSetSizes: string[], hideAccessibilityFields: HideAccessibilityFields): TemplatePart;
+        Image(label: string, partContextId: string, altTextMandatory: boolean, srcSetSizes: string[], hideAccessibilityFields: boolean): TemplatePart;
         /**
          * Build a new checkbox content element part builder instance.
          *
@@ -7556,7 +7558,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}]
+         * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
          * @returns {TemplatePart}
          */
         Option(label: string, partContextId: string, options: any): TemplatePart;
