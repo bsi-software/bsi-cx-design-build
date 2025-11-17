@@ -42,6 +42,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static FIELD_HEIGHT = 'fieldHeight';
+  /**
+   * @type {string}
+   */
   static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}

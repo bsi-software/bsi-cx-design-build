@@ -1,4 +1,3 @@
-/// <reference types="node" />
 declare module "src/abstract-constant" {
     /**
      * @abstract
@@ -134,7 +133,7 @@ declare module "src/version" {
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): import("src/design-type").DesignType[];
+        get allowedTypes(): DesignType[];
         /**
          * @returns {boolean}
          */
@@ -142,7 +141,7 @@ declare module "src/version" {
         /**
          * @returns {string|undefined}
          */
-        get schemaVersion(): string;
+        get schemaVersion(): string | undefined;
         /**
          * @param {Version} version
          * @returns {number}
@@ -264,6 +263,10 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static OPTIONS: string;
+        /**
+         * @type {string}
+         */
+        static FIELD_HEIGHT: string;
         /**
          * @type {string}
          */
@@ -507,15 +510,15 @@ declare module "src/abstract-builder" {
         /**
          * @return {Version}
          */
-        get minVersion(): import("src/version").Version;
+        get minVersion(): Version;
         /**
          * @return {Version|undefined}
          */
-        get maxVersion(): import("src/version").Version;
+        get maxVersion(): Version | undefined;
         /**
          * @returns {DesignType[]}
          */
-        get allowedTypes(): import("src/design-type").DesignType[];
+        get allowedTypes(): DesignType[];
         /**
          * Define a minimum CX version. Will be excluded from builds targeting a lower version.
          *
@@ -617,7 +620,7 @@ declare module "src/object-cloner" {
          * @param {T} value
          * @returns {T}
          */
-        static cloneValue<T_1>(value: T_1): T_1;
+        static cloneValue<T>(value: T): T;
         /**
          * @template T
          * @param {T} source
@@ -744,11 +747,11 @@ declare module "src/build-config/module-config" {
         /**
          * @returns {string|undefined}
          */
-        get name(): string;
+        get name(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get path(): string;
+        get path(): string | undefined;
         /**
          * The name for your JavaScript module. The name specified here must be unique in your build configuration.
          * This means you can't configure two modules with the same name. This will be the name of the resulting entry
@@ -798,11 +801,11 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): import("src/version").Version;
+        get targetVersion(): Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): import("src/design-type").DesignType;
+        get designType(): DesignType;
         /**
          * @returns {string}
          */
@@ -814,7 +817,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {number|'auto'}
          */
@@ -826,7 +829,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): import("src/build-config/module-config").default[];
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -850,7 +853,7 @@ declare module "src/build-config/build-config-interface" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
         /**
          * @returns {string[]}
          */
@@ -996,11 +999,11 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): import("src/version").Version;
+        get targetVersion(): Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): import("src/design-type").DesignType;
+        get designType(): DesignType;
         /**
          * @returns {string}
          */
@@ -1012,7 +1015,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {number|'auto'}
          */
@@ -1024,7 +1027,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): import("src/build-config/module-config").default[];
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -1048,7 +1051,7 @@ declare module "src/build-config/validated-build-config" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
         /**
          * @returns {string[]}
          */
@@ -1172,7 +1175,7 @@ declare module "src/build-config/build-config-validator" {
         /**
          * @returns {BuildConfig}
          */
-        get buildConfig(): import("src/build-config/build-config").default;
+        get buildConfig(): BuildConfig;
         /**
          * @returns {ValidatedBuildConfig}
          */
@@ -1385,11 +1388,11 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {Version}
          */
-        get targetVersion(): import("src/version").Version;
+        get targetVersion(): Version;
         /**
          * @returns {DesignType}
          */
-        get designType(): import("src/design-type").DesignType;
+        get designType(): DesignType;
         /**
          * @returns {string}
          */
@@ -1401,7 +1404,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {number|'auto'}
          */
@@ -1413,7 +1416,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {ModuleConfig[]}
          */
-        get modules(): import("src/build-config/module-config").default[];
+        get modules(): ModuleConfig[];
         /**
          * @returns {string}
          */
@@ -1437,7 +1440,7 @@ declare module "src/build-config/build-config" {
         /**
          * @returns {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)}
          */
-        get assetResourceRuleFilename(): string | ((pathData: any, assetInfo?: any) => string);
+        get assetResourceRuleFilename(): string | ((pathData: PathData, assetInfo?: AssetInfo) => string);
         /**
          * @returns {string[]}
          */
@@ -1522,7 +1525,7 @@ declare module "src/build-config/build-config" {
          * @param {number|'auto'} devServerPort - The development server port number.
          * @returns {BuildConfig}
          */
-        withDevServerPort(devServerPort: number | 'auto'): BuildConfig;
+        withDevServerPort(devServerPort: number | "auto"): BuildConfig;
         /**
          * Add a unique hash value to the name of the resulting ZIP file, e.g. landingpage-1.0.0-alpha-089a9.zip.
          *
@@ -1594,7 +1597,7 @@ declare module "src/build-config/build-config" {
          * @param {string | ((pathData: PathData, assetInfo?: AssetInfo) => string)} assetResourceRuleFilename
          * @returns {BuildConfig}
          */
-        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: any, assetInfo?: any) => string)): BuildConfig;
+        withAssetResourceRuleFilename(assetResourceRuleFilename: string | ((pathData: PathData, assetInfo?: AssetInfo) => string)): BuildConfig;
         /**
          * Additional file extensions for static assets. The following file extensions are defined by default: avif, png,
          * apng, jpg, jpeg, jfif, pjpeg, pjp, webp, gif, bmp, tiff, tif, raw, svg, eot, ttf, woff, woff2, pdf, ico,
@@ -2305,7 +2308,7 @@ declare module "src/property-context" {
         /**
          * @returns {string|undefined}
          */
-        get propertiesFilePath(): string;
+        get propertiesFilePath(): string | undefined;
         /**
          * @returns {ModuleLoader}
          */
@@ -2547,7 +2550,7 @@ declare module "src/css/css-dimension" {
         /**
          * @returns {string|undefined}
          */
-        get unit(): string;
+        get unit(): string | undefined;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
@@ -2727,7 +2730,7 @@ declare module "src/css/css-property-resolver" {
          * @param {T} value
          * @returns {AbstractCssProperty|T}
          */
-        resolve<T>(value: T): import("src/css/abstract-css-property").default | T;
+        resolve<T>(value: T): AbstractCssProperty | T;
         /**
          * @param {string|number} value
          * @returns {AbstractCssProperty}
@@ -3366,11 +3369,11 @@ declare module "src/style/css-class" {
         /**
          * @returns {string|undefined}
          */
-        get cssClass(): string;
+        get cssClass(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * Specify the CSS class to use.
          *
@@ -3466,15 +3469,15 @@ declare module "src/style/dom-manipulation" {
         /**
          * @returns {string|undefined}
          */
-        get selector(): string;
+        get selector(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get attribute(): string;
+        get attribute(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get value(): string;
+        get value(): string | undefined;
         /**
          * Specify the selector to use with this DOM manipulation.
          * Any DOM selector can be used, e.g. tag, class, id.
@@ -3578,19 +3581,19 @@ declare module "src/style/style-option" {
         /**
          * @returns {string|undefined}
          */
-        get styleId(): string;
+        get styleId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {string|undefined}
          */
-        get cssClass(): string;
+        get cssClass(): string | undefined;
         /**
          * @returns {RawValue|[DomManipulation]|undefined}
          */
-        get domManipulations(): RawValue | [import("src/style/dom-manipulation").default];
+        get domManipulations(): RawValue | [DomManipulation] | undefined;
         /**
          * Specify the style id to use.
          *
@@ -3746,19 +3749,19 @@ declare module "src/style/style" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {RawValue|[CssClass]|undefined}
          */
-        get cssClasses(): RawValue | [import("src/style/css-class").default];
+        get cssClasses(): RawValue | [CssClass] | undefined;
         /**
          * @returns {RawValue|[StyleOption]|undefined}
          */
-        get styles(): RawValue | [import("src/style/style-option").default];
+        get styles(): RawValue | [StyleOption] | undefined;
         /**
          * Set the unique identifier for this style configuration. If not specified, a UUID v4 will be used.
          * <strong>It is recommended to set this property.</strong>
@@ -4184,23 +4187,23 @@ declare module "src/content-element/part/part" {
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get config(): {};
+        get config(): {} | undefined;
         /**
          * @returns {RawValue|HtmlEditorConfig|undefined}
          */
-        get htmlEditorConfig(): any;
+        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
         /**
          * @returns {Boolean|undefined}
          */
-        get altTextMandatory(): boolean;
+        get altTextMandatory(): boolean | undefined;
         /**
          * @returns {Boolean|undefined}
          */
-        get captionEnabled(): boolean;
+        get captionEnabled(): boolean | undefined;
         /**
          * The ID of the part. You can apply an unique identifier to your content element part.
          * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -4334,11 +4337,11 @@ declare module "src/content-element/template-part/template-part" {
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get config(): {};
+        get config(): {} | undefined;
         withRawConfig(config: any): this;
         withConfig(key: any, value: any): this;
         addConfigValueIfNotNull(key: any, value: any, isBoolean?: boolean): this;
@@ -4400,27 +4403,27 @@ declare module "src/dropzone/dropzone" {
         /**
          * @returns {string|undefined}
          */
-        get dropzone(): string;
+        get dropzone(): string | undefined;
         /**
          * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
          */
-        get allowedElements(): RawValue | import("src/content-element/content-element").default[] | TemplateElement[];
+        get allowedElements(): RawValue | ContentElement[] | TemplateElement[] | undefined;
         /**
          * @returns {number|undefined}
          */
-        get maxAllowedElements(): number;
+        get maxAllowedElements(): number | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get removeAllowed(): boolean;
+        get removeAllowed(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get copyAllowed(): boolean;
+        get copyAllowed(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get moveAllowed(): boolean;
+        get moveAllowed(): boolean | undefined;
         /**
          * Set the identifier of this dropzone. <strong>It is highly recommended using a
          * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -4561,51 +4564,51 @@ declare module "src/content-element/template-element" {
         /**
          * @returns {string|undefined}
          */
-        get elementId(): string;
+        get elementId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get description(): any;
+        get description(): string | NLS | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {};
+        get file(): {} | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get contextFile(): {};
+        get contextFile(): {} | undefined;
         /**
          * @returns {RawValue|Icon|undefined}
          */
-        get icon(): RawValue | import("src/content-element/icon").Icon;
+        get icon(): RawValue | Icon | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean;
+        get hidden(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get archived(): boolean;
+        get archived(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get composite(): boolean;
+        get composite(): boolean | undefined;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): RawValue | import("src/style/style").default[];
+        get styleConfigs(): RawValue | Style[] | undefined;
         /**
          * @returns {RawValue|TemplatePart[]|undefined}
          */
-        get templateParts(): RawValue | TemplatePart[];
+        get templateParts(): RawValue | TemplatePart[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * Set the ID of this template element.
          *
@@ -4923,19 +4926,19 @@ declare module "src/content-element/content-element-group" {
         /**
          * @returns {string|undefined}
          */
-        get groupId(): string;
+        get groupId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean;
+        get hidden(): boolean | undefined;
         /**
          * @returns {RawValue|[ContentElement|TemplateElement]|undefined}
          */
-        get contentElements(): RawValue | [import("src/content-element/content-element").default | import("src/content-element/template-element").default];
+        get contentElements(): RawValue | [ContentElement | TemplateElement] | undefined;
         /**
          * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
          * <strong>It is recommended to set the group identifier.</strong>
@@ -5091,43 +5094,43 @@ declare module "src/content-element/content-element" {
         /**
          * @returns {string|undefined}
          */
-        get elementId(): string;
+        get elementId(): string | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get label(): any;
+        get label(): string | NLS | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get description(): any;
+        get description(): string | NLS | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {};
+        get file(): {} | undefined;
         /**
          * @returns {RawValue|Icon|undefined}
          */
-        get icon(): RawValue | import("src/content-element/icon").Icon;
+        get icon(): RawValue | Icon | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get hidden(): boolean;
+        get hidden(): boolean | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get archived(): boolean;
+        get archived(): boolean | undefined;
         /**
          * @returns {RawValue|Style[]|undefined}
          */
-        get styleConfigs(): RawValue | import("src/style/style").default[];
+        get styleConfigs(): RawValue | Style[] | undefined;
         /**
          * @returns {RawValue|Part[]|undefined}
          */
-        get parts(): RawValue | any[];
+        get parts(): RawValue | Part[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * Set the ID of this content element.
          *
@@ -5824,43 +5827,43 @@ declare module "src/html-editor-config/html-editor-config" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {RawValue|Feature[]|undefined}
          */
-        get features(): RawValue | import("src/html-editor-config/feature").Feature[];
+        get features(): RawValue | Feature[] | undefined;
         /**
          * @returns {string[]|undefined}
          */
-        get textColors(): string[];
+        get textColors(): string[] | undefined;
         /**
          * @returns {string[]|undefined}
          */
-        get backgroundColors(): string[];
+        get backgroundColors(): string[] | undefined;
         /**
          * @returns {RawValue|Format[]|undefined}
          */
-        get formats(): RawValue | import("src/html-editor-config/format").Format[];
+        get formats(): RawValue | Format[] | undefined;
         /**
          * @returns {number[]|undefined}
          */
-        get fontSizes(): number[];
+        get fontSizes(): number[] | undefined;
         /**
          * @returns {RawValue|FontSizeUnit|undefined}
          */
-        get fontSizeUnit(): RawValue | import("src/html-editor-config/font-size-unit").FontSizeUnit;
+        get fontSizeUnit(): RawValue | FontSizeUnit | undefined;
         /**
          * @returns {number|undefined}
          */
-        get fontSizeDefault(): number;
+        get fontSizeDefault(): number | undefined;
         /**
          * @returns {number[]|undefined}
          */
-        get lineHeights(): number[];
+        get lineHeights(): number[] | undefined;
         /**
          * @returns {RawValue|EnterMode|undefined}
          */
-        get enter(): RawValue | import("src/html-editor-config/enter-mode").EnterMode;
+        get enter(): RawValue | EnterMode | undefined;
         /**
          * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
          * It is recommended to set the identifier.
@@ -6058,15 +6061,15 @@ declare module "src/website/website" {
         /**
          * @returns {number|undefined}
          */
-        get maxNavigationLevel(): number;
+        get maxNavigationLevel(): number | undefined;
         /**
          * @returns {RawValue|Pagination|undefined}
          */
-        get pagination(): any;
+        get pagination(): RawValue | Pagination | undefined;
         /**
          * @returns {RawValue|AbstractInclude[]|undefined}
          */
-        get includes(): RawValue | AbstractInclude[];
+        get includes(): RawValue | AbstractInclude[] | undefined;
         /**
          * Define the maximum navigation level.
          *
@@ -6202,11 +6205,11 @@ declare module "src/nls/translation" {
         /**
          * @returns {Locale|RawValue|undefined}
          */
-        get locale(): RawValue | import("src/design/locale").Locale;
+        get locale(): Locale | RawValue | undefined;
         /**
          * @returns {string|undefined}
          */
-        get translation(): string;
+        get translation(): string | undefined;
         /**
          * Set the locale to use for this translation.
          *
@@ -6310,15 +6313,15 @@ declare module "src/nls/nls" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {Translation[]|undefined}
          */
-        get translations(): Translation[];
+        get translations(): Translation[] | undefined;
         /**
          * @returns {string|undefined}
          */
-        get nlsMarker(): string;
+        get nlsMarker(): string | undefined;
         /**
          * @param {string} identifier
          * @returns {NLS}
@@ -6470,59 +6473,59 @@ declare module "src/design/design" {
         /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
-        get schemaVersion(): RawValue | import("src/design/schema-version").SchemaVersion;
+        get schemaVersion(): RawValue | SchemaVersion | undefined;
         /**
          * @returns {string|undefined}
          */
-        get title(): string;
+        get title(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get author(): string;
+        get author(): string | undefined;
         /**
          * @returns {string|undefined}
          */
-        get date(): string;
+        get date(): string | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get previewImage(): {};
+        get previewImage(): {} | undefined;
         /**
          * @returns {RawValue|Locale|undefined}
          */
-        get defaultLocale(): RawValue | import("src/design/locale").Locale;
+        get defaultLocale(): RawValue | Locale | undefined;
         /**
          * @returns {RawValue|[Locale]|undefined}
          */
-        get locales(): RawValue | [import("src/design/locale").Locale];
+        get locales(): RawValue | [Locale] | undefined;
         /**
          * @returns {RawValue|ContentElementGroup[]|undefined}
          */
-        get contentElementGroups(): RawValue | import("src/content-element/content-element-group").default[];
+        get contentElementGroups(): RawValue | ContentElementGroup[] | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * @returns {RawValue|[Style]|undefined}
          */
-        get styleConfigs(): RawValue | [import("src/style/style").default];
+        get styleConfigs(): RawValue | [Style] | undefined;
         /**
          * @returns {RawValue|HtmlEditorConfig[]|undefined}
          */
-        get htmlEditorConfigs(): RawValue | import("src/html-editor-config/html-editor-config").default[];
+        get htmlEditorConfigs(): RawValue | HtmlEditorConfig[] | undefined;
         /**
          * @returns {RawValue|Website|undefined}
          */
-        get website(): RawValue | import("src/website/website").default;
+        get website(): RawValue | Website | undefined;
         /**
          * @returns {RawValue|NLS[]|undefined}
          */
-        get nls(): RawValue | import("src/nls/nls").default[];
+        get nls(): RawValue | NLS[] | undefined;
         /**
          * @returns {RawValue|[WebsiteContentType]|undefined}
          */
-        get websiteContentTypes(): RawValue | [import("src/design/websiteContentType").WebsiteContentType];
+        get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -7013,31 +7016,31 @@ declare module "src/website/abstract-include" {
         /**
          * @returns {string|undefined}
          */
-        get identifier(): string;
+        get identifier(): string | undefined;
         /**
          * @returns {boolean|undefined}
          */
-        get editable(): boolean;
+        get editable(): boolean | undefined;
         /**
          * @returns {string|undefined}
          */
-        get includeType(): string;
+        get includeType(): string | undefined;
         /**
          * @returns {string|WebsiteContentType|undefined}
          */
-        get websiteContentType(): any;
+        get websiteContentType(): string | WebsiteContentType | undefined;
         /**
          * @returns {{}|undefined}
          */
-        get file(): {};
+        get file(): {} | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
-        get name(): any;
+        get name(): string | NLS | undefined;
         /**
          * @returns {Dropzone[]|undefined}
          */
-        get dropzones(): import("src/dropzone/dropzone").default[];
+        get dropzones(): Dropzone[] | undefined;
         /**
          * Enable or disable edit mode on this include.
          *
@@ -7516,7 +7519,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} partContextId
          * @returns {TemplatePart}
          */
-        MultilinePlainText(label: string, partContextId: string): TemplatePart;
+        MultilinePlainText(label: string, partContextId: string, fieldHeight: any): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
          *
@@ -7563,12 +7566,13 @@ declare module "src/content-element/template-part/template-part-factory" {
          */
         Option(label: string, partContextId: string, options: any): TemplatePart;
         /**
-         * Create a raw element part builder instance. Can be used for custom element parts.
+         * Build a new dynamic value list content element part builder instance.
          *
-         * @param {string} partId
+         * @param {string} label
+         * @param {string} partContextId
          * @returns {TemplatePart}
          */
-        raw(partId: string): TemplatePart;
+        DynamicValueList(label: string, partContextId: string): TemplatePart;
         /**
          * Create a raw element part builder instance. Can be used for custom element parts.
          *
@@ -7606,11 +7610,11 @@ declare module "src/website/pagination" {
         /**
          * @returns {number|undefined}
          */
-        get numDataRecordsPerPage(): number;
+        get numDataRecordsPerPage(): number | undefined;
         /**
          * @returns {number|undefined}
          */
-        get numAdjacentPages(): number;
+        get numAdjacentPages(): number | undefined;
         /**
          * Define how many records are to be displayed simultaneously on a page.
          *

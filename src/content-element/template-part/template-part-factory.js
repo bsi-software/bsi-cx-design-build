@@ -21,8 +21,9 @@ export default class TemplatePartFactory {
    * @param {string} partContextId
    * @returns {TemplatePart}
    */
-  MultilinePlainText(label, partContextId) {
-    return new TemplatePart('multiline-plain-text', label, partContextId)
+  MultilinePlainText(label, partContextId, fieldHeight) {
+    var part = new TemplatePart('multiline-plain-text', label, partContextId);
+    return part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
   }
 
   /**
