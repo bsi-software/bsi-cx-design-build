@@ -2869,10 +2869,11 @@ class TemplatePart extends AbstractBuilder {
 
   /**
    * Add new key-value pair to config object
+   * No changes if value == null
    * 
    * @param {string} key 
    * @param {string} value 
-   * @param {boolean} isBoolean 
+   * @param {boolean?} [isBoolean=false] 
    * @returns {this}
    */
   addConfigValueIfNotNull(key, value, isBoolean = false) {
@@ -7106,12 +7107,13 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {boolean} studioLinkEnabled
+   * @param {boolean?} [studioLinkEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
   PlainText(label, partContextId, studioLinkEnabled = true) {
     var part = new TemplatePart('plain-text', label, partContextId);
-    return part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    return part;
   }
 
   /**
@@ -7119,14 +7121,15 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {int} fieldHeight
-   * @param {boolean} studioLinkEnabled
+   * @param {int?} [fieldHeight] - optional parameter
+   * @param {boolean?} [studioLinkEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
   MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true) {
     var part = new TemplatePart('multiline-plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
-    return part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    return part;
   }
 
   /**
@@ -7134,12 +7137,13 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
    * @returns {TemplatePart}
    */
   FormattedText(label, partContextId, htmlEditorConfig) {
     var part = new TemplatePart('formatted-text', label, partContextId)
-    return part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
+    return part;
   }
 
   /**
@@ -7158,9 +7162,9 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {boolean} altTextMandatory
-   * @param {string[]} srcSetSizes ["400w", "800w", "1200w"]
-   * @param {boolean} hideAccessibilityFields
+   * @param {boolean?} [altTextMandatory=true] - optional parameter
+   * @param {string[]?} [srcSetSizes] - optional parameter - example: ["400w", "800w", "1200w"]
+   * @param {boolean?} [hideAccessibilityFields=false] - optional parameter
    * @returns {TemplatePart}
    */
   Image(label, partContextId, altTextMandatory, srcSetSizes, hideAccessibilityFields) {
@@ -7184,16 +7188,18 @@ class TemplatePartFactory {
 
   /**
    * Build a new option content element part builder instance.
+   * Options must not be null.
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
     options = Array.isArray(options) ? options : Object.entries(options).map(([value, text]) => ({ "value": value, "text": text }))
-    return part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
+    return part;
   }
 
   /**

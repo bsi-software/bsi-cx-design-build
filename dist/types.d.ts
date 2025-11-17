@@ -4344,13 +4344,14 @@ declare module "src/content-element/template-part/template-part" {
         get config(): {} | undefined;
         /**
          * Add new key-value pair to config object
+         * No changes if value == null
          *
          * @param {string} key
          * @param {string} value
-         * @param {boolean} isBoolean
+         * @param {boolean?} [isBoolean=false]
          * @returns {this}
          */
-        addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean): this;
+        addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -7515,29 +7516,29 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {boolean} studioLinkEnabled
+         * @param {boolean?} [studioLinkEnabled=true] - optional parameter
          * @returns {TemplatePart}
          */
-        PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean): TemplatePart;
+        PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new multiple plain text content element part builder instance.
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {int} fieldHeight
-         * @param {boolean} studioLinkEnabled
+         * @param {int?} [fieldHeight] - optional parameter
+         * @param {boolean?} [studioLinkEnabled=true] - optional parameter
          * @returns {TemplatePart}
          */
-        MultilinePlainText(label: string, partContextId: string, fieldHeight: int, studioLinkEnabled?: boolean): TemplatePart;
+        MultilinePlainText(label: string, partContextId: string, fieldHeight?: int | null, studioLinkEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
          * @returns {TemplatePart}
          */
-        FormattedText(label: string, partContextId: string, htmlEditorConfig: HtmlEditorConfig): TemplatePart;
+        FormattedText(label: string, partContextId: string, htmlEditorConfig?: HtmlEditorConfig | null): TemplatePart;
         /**
          * Build a new link content element part builder instance.
          *
@@ -7551,12 +7552,12 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {boolean} altTextMandatory
-         * @param {string[]} srcSetSizes ["400w", "800w", "1200w"]
-         * @param {boolean} hideAccessibilityFields
+         * @param {boolean?} [altTextMandatory=true] - optional parameter
+         * @param {string[]?} [srcSetSizes] - optional parameter - example: ["400w", "800w", "1200w"]
+         * @param {boolean?} [hideAccessibilityFields=false] - optional parameter
          * @returns {TemplatePart}
          */
-        Image(label: string, partContextId: string, altTextMandatory: boolean, srcSetSizes: string[], hideAccessibilityFields: boolean): TemplatePart;
+        Image(label: string, partContextId: string, altTextMandatory?: boolean | null, srcSetSizes?: string[] | null, hideAccessibilityFields?: boolean | null): TemplatePart;
         /**
          * Build a new checkbox content element part builder instance.
          *
@@ -7567,10 +7568,11 @@ declare module "src/content-element/template-part/template-part-factory" {
         Checkbox(label: string, partContextId: string): TemplatePart;
         /**
          * Build a new option content element part builder instance.
+         * Options must not be null.
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {options[]} options [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
          * @returns {TemplatePart}
          */
         Option(label: string, partContextId: string, options: any): TemplatePart;

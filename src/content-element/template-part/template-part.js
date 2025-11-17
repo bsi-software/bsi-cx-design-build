@@ -76,10 +76,11 @@ export default class TemplatePart extends AbstractBuilder {
 
   /**
    * Add new key-value pair to config object
+   * No changes if value == null
    * 
    * @param {string} key 
    * @param {string} value 
-   * @param {boolean} isBoolean 
+   * @param {boolean?} [isBoolean=false] 
    * @returns {this}
    */
   addConfigValueIfNotNull(key, value, isBoolean = false) {
