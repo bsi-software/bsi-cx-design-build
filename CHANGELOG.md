@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add studioLink and studioLinkEnabled
 * Update sass-loader to get rid of warnings
 * Make all properties available as scss variables during the build
+* Add Template Element and Template Parts
 
 
 ## [2.0.0] - 09.10.2025
