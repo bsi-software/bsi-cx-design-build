@@ -7509,6 +7509,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
+         * @param {boolean} studioLinkEnabled
          * @returns {TemplatePart}
          */
         PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean): TemplatePart;
@@ -7517,9 +7518,11 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
+         * @param {int} fieldHeight
+         * @param {boolean} studioLinkEnabled
          * @returns {TemplatePart}
          */
-        MultilinePlainText(label: string, partContextId: string, fieldHeight: any, studioLinkEnabled?: boolean): TemplatePart;
+        MultilinePlainText(label: string, partContextId: string, fieldHeight: int, studioLinkEnabled?: boolean): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
          *
