@@ -290,7 +290,15 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static CONTEXT_FILE: string;
+        /**
+         * @type {string}
+         */
         static ICON: string;
+        /**
+         * @type {string}
+         */
+        static TEMPLATE_PARTS: string;
         /**
          * @type {string}
          */
@@ -323,6 +331,10 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static ARCHIVED: string;
+        /**
+         * @type {string}
+         */
+        static COMPOSITE: string;
         /**
          * @type {string}
          */
@@ -4264,8 +4276,550 @@ declare module "src/content-element/part/part" {
     }
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/content-element/template-part/template-part" {
+    export default class TemplatePart extends AbstractBuilder {
+        /**
+         * @param {string} partId
+         */
+        constructor(partId: string, label: any, id: any);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _id;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _partId;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _config;
+        /**
+         * @type {RawValue|HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _altTextMandatory;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _captionEnabled;
+        /**
+         * @returns {string}
+         */
+        get id(): string;
+        /**
+         * @returns {string}
+         */
+        get partId(): string;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get label(): string | NLS | undefined;
+        /**
+         * @returns {{}|undefined}
+         */
+        get config(): {} | undefined;
+        /**
+         * @returns {RawValue|HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get altTextMandatory(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get captionEnabled(): boolean | undefined;
+        /**
+         * The ID of the part. You can apply an unique identifier to your content element part.
+         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+         * This property is only for the design build and will not appear in the final build artifacts.
+         * The advantage of using this property is, that you don't have to care about the order of your parts
+         * in your specification. The build will reorder the part definitions in the order they appear in the
+         * corresponding template. This can be very handy in large and complex elements with many parts.
+         *
+         * @example
+         * // template.html
+         * <div data-bsi-element="title">
+         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+         * </div>
+         *
+         * // title.js
+         * module.exports = new ContentElement()
+         *   .withElementId('title')
+         *   .withLabel('Title')
+         *   .withFile(require('./template.html')
+         *   .withParts(
+         *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+         *    );
+         *
+         * // dist/title-4026bb9f6ec6c2284775.html
+         * <div data-bsi-element="title">
+         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+         * </div>
+         * @param {string} id - The ID to use.
+         * @returns {this}
+         */
+        withId(id: string): this;
+        /**
+         * The set content element part's label.
+         *
+         * @param {string|NLS} label - The label to set.
+         * @returns {this}
+         * @since Studio 1.0
+         */
+        withLabel(label: string | NLS): this;
+        withRawConfig(config: any): this;
+        withConfig(key: any, value: any): this;
+        /**
+         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
+         *
+         * @example
+         * let editorConfig = new HtmlEditorConfig()
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * // ...
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new FormattedTextPart()
+         *       .withLabel('Text')
+         *       .withHtmlEditorConfig(editorConfig))
+         * @see {withRawHtmlEditorConfig} to set a raw value
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+        /**
+         * Set a Boolean to indicate if the alt-text for this image is mandatory.
+         * If true users must describe the image before they can save it in the CX editor.
+         *
+         * @see {withAltTextMandatory}
+         * @param {Boolean} altTextMandatory
+         * @returns {Part}
+         */
+        withAltTextMandatory(altTextMandatory: boolean): Part;
+        /**
+         * Set a Boolean to indicate if caption is enabled in editor.
+         * If true users can add a caption for the table in CX editor.
+         *
+         * @see {withCaptionEnabled}
+         * @param {Boolean} captionEnabled
+         * @returns {Part}
+         */
+        withCaptionEnabled(captionEnabled: boolean): Part;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/content-element/template-element" {
+    /**
+     * TODO: MinVersion 25.1
+     */
+    export default class TemplateElement extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _elementId;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _description;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _file;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _contextFile;
+        /**
+         * @type {RawValue|Icon|undefined}
+         * @private
+         */
+        private _icon;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _hidden;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _composite;
+        /**
+         * @type {boolean|undefined}
+         * @private
+         */
+        private _archived;
+        /**
+         * @type {RawValue|[Style]|undefined}
+         * @private
+         */
+        private _styleConfigs;
+        /**
+         * @type {RawValue|[TemplatePart]|undefined}
+         * @private
+         */
+        private _templateParts;
+        /**
+         * @type {Dropzone[]|undefined}
+         * @private
+         */
+        private _dropzones;
+        /**
+         * @returns {string|undefined}
+         */
+        get elementId(): string | undefined;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get label(): string | NLS | undefined;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get description(): string | NLS | undefined;
+        /**
+         * @returns {{}|undefined}
+         */
+        get file(): {} | undefined;
+        /**
+         * @returns {{}|undefined}
+         */
+        get contextFile(): {} | undefined;
+        /**
+         * @returns {RawValue|Icon|undefined}
+         */
+        get icon(): RawValue | Icon | undefined;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get hidden(): boolean | undefined;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get archived(): boolean | undefined;
+        /**
+         * @returns {boolean|undefined}
+         */
+        get composite(): boolean | undefined;
+        /**
+         * @returns {RawValue|Style[]|undefined}
+         */
+        get styleConfigs(): RawValue | Style[] | undefined;
+        /**
+         * @returns {RawValue|TemplatePart[]|undefined}
+         */
+        get templateParts(): RawValue | TemplatePart[] | undefined;
+        /**
+         * @returns {Dropzone[]|undefined}
+         */
+        get dropzones(): Dropzone[] | undefined;
+        /**
+         * Set the ID of this template element.
+         *
+         * @param {string} elementId - The template element's ID.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withElementId(elementId: string): TemplateElement;
+        /**
+         * Set the label of the template element.
+         *
+         * @param {string|NLS} label - The label of the template element.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withLabel(label: string | NLS): TemplateElement;
+        /**
+         * Set the description of the template element.
+         *
+         * @param {string|NLS} description - The description of the template element.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withDescription(description: string | NLS): TemplateElement;
+        /**
+         * Set the template to use for this template element. Be aware, that you have to require the template.
+         *
+         * @example
+         * .withFile(require('./template.hbs'))
+         * @param {string} file - The reference to the required template.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withFile(file: string): TemplateElement;
+        /**
+         * Set the default values to use for this template element. Be aware, that you have to require the context file.
+         *
+         * @example
+         * .withFile(require('./context.json'))
+         * @param {string} contextFile - The default values for the template parts of this element.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withContextFile(contextFile: string): TemplateElement;
+        /**
+         * Set the icon for this template element.
+         *
+         * @example
+         * .withIcon(Icon.IMAGE)
+         * @see {@link Icon} for available icons
+         * @see {@link withRawIcon} to set a raw value
+         * @param {Icon} icon - The icon for this template element.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withIcon(icon: Icon): TemplateElement;
+        /**
+         * Set the icon for this template element as raw value.
+         *
+         * @example
+         * .withRawIcon('image')
+         * @see {@link withIcon}
+         * @param {string} icon - The raw icon for this template element.
+         * @returns {TemplateElement}
+         */
+        withRawIcon(icon: string): TemplateElement;
+        /**
+         * Declare this template element as hidden.
+         *
+         * @example
+         * .withHidden(true)
+         * @param {boolean} hidden - The hidden state.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withHidden(hidden: boolean): TemplateElement;
+        /**
+         * Declare this template element as composite. (Doku 2.3.1.1)
+         *
+         * @example
+         * .withComposite(true)
+         * @param {boolean} composite - The composite state.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withComposite(composite: boolean): TemplateElement;
+        /**
+         * Declare this template element as archived.
+         *
+         * @example
+         * .withArchived(true)
+         * @param {boolean} archived - The archived state.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withArchived(archived: boolean): TemplateElement;
+        /**
+         * Declare this template element as archived for a minimum CX version.
+         *
+         * @example
+         * .withArchivedMinVersion(Version.CX_25_1)
+         * @param {Version} minVersion
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withArchivedMinVersion(minVersion: Version): TemplateElement;
+        /**
+         * Declare the styles for this template element. You don't have to register the used styles in the design object
+         * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+         *
+         * @example
+         * let textColorStyle = cx.style
+         *   .withIdentifier('text-color')
+         *   .withLabel('Text Color')
+         *   .withCssClasses(
+         *     cx.cssClass
+         *       .withCssClass('blue-text')
+         *       .withLabel('Blue'),
+         *     cx.cssClass
+         *       .withCssClass('red-text')
+         *       .withLabel('Red'))
+         *  let textElement = cx.TemplateElement
+         *    .withStyleConfigs(
+         *      textColorStyle,
+         *      require('./styles/background-color'))
+         * @see {@link withRawStyleConfigs} to set a raw value
+         * @param {...Style} styleConfigs - Styles for this template element.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withStyleConfigs(...styleConfigs: Style[]): TemplateElement;
+        /**
+         * Declare the styles for this template element as raw value. Be aware, that you just pass the name of the referenced
+         * style rather than the style configuration itself (which is specified in the <code>styleConfigs</code> section
+         * in your design specification. Use {@link Design#withStyleConfigs} to do so.
+         *
+         * @example
+         * .withRawStyleConfigs('text-color', 'background-color')
+         * @see {@link withStyleConfigs}
+         * @param {...string} styleConfigs - Style config identifiers.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withRawStyleConfigs(...styleConfigs: string[]): TemplateElement;
+        /**
+       * Add styles to this template element. You don't have to register the used styles in the design object
+       * using {@link Design#withStyleConfigs}. This is only necessary for raw style configs.
+       *
+       * @example
+       *  let textElement = cx.TemplateElement
+       *    .withAddStyleConfigs(
+       *      require('./styles/background-color'))
+       * @see {@link withRawStyleConfigs} to set a raw value
+       * @param {...Style} styleConfigs - Styles for this template element.
+       * @returns {TemplateElement}
+       * @since BSI CX 25.1
+       */
+        withAddStyleConfigs(...styleConfigs: Style[]): TemplateElement;
+        /**
+       * Remove styles for this template element.
+       *
+       * @example
+       *  let textElement = cx.TemplateElement
+       *    .withRemoveStyleConfigs(
+       *      require('./styles/background-color'))
+       * @param {...Style} styleConfigs - Styles to be removed for this template element.
+       * @returns {TemplateElement}
+       * @since BSI CX 25.1
+       */
+        withRemoveStyleConfigs(...styleConfigs: Style[]): TemplateElement;
+        /**
+         * Specify the parts of your template element.
+         *
+         * @example
+         * .withParts(
+         *   cx.part.image
+         *     .withLabel('Image'),
+         *   cx.part.plainText
+         *     .withLabel('Description'))
+         * @see {@link withRawParts} to set a raw value
+         * @param {...TemplatePart} templateParts - The parts to use.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withTemplateParts(...templateParts: TemplatePart[]): TemplateElement;
+        /**
+         * Set the parts of your template element as raw value.
+         *
+         * @example
+         * .withRawTemplateParts(
+         *   {
+         *     partId: 'image',
+         *     partContextId: 'image',
+         *     label: 'Image'
+         *   },
+         *   {
+         *     partId: 'plain-text',
+         *     partContextId: 'plain-text',
+         *     label: 'Description'
+         *   }
+         * )
+         * @see {@link withTemplateParts}
+         * @param {...{}} templateParts - The template parts as raw value.
+         * @returns {TemplateElement}
+         * @since BSI CX 25.1
+         */
+        withRawTemplateParts(...templateParts: {}[]): TemplateElement;
+        /**
+         * Define the dropzones of this template element.
+         *
+         * @example
+         * .withDropzones(
+         *   cx.dropzone
+         *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+         *     .withAllowedElements(
+         *       require('./template-elements/basic/text'),
+         *       require('./template-elements/basic/image'))
+         *     .withMaxAllowedElements(1),
+         *   cx.dropzone
+         *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+         *     .withAllowedElements(
+         *       require('./template-elements/basic/text'),
+         *       require('./template-elements/basic/image'))
+         *     .withMaxAllowedElements(1))
+         * @param {...Dropzone} dropzones - The dropzones of this template element.
+         * @returns {TemplateElement}
+         */
+        withDropzones(...dropzones: Dropzone[]): TemplateElement;
+        /**
+         * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withExtendedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./template-elements/basic/text'),
+         *   require('./template-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
+         * @param {...TemplateElement} elements - The elements to add to the allowed elements list.
+         * @returns {TemplateElement}
+         */
+        withExtendedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
+        /**
+         * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * @example
+         * .withReducedDropzone(
+         *   'a5142bca-448b-40c5-bdde-942f531fcd12',
+         *   require('./template-elements/basic/text'),
+         *   require('./template-elements/basic/image'))
+         * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
+         * @param {...TemplateElement} elements - The elements to remove from the allowed elements list.
+         * @returns {TemplateElement}
+         */
+        withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {TemplateElement}
+         */
+        clone(shallow?: boolean): TemplateElement;
+        /**
+         * @return {boolean}
+         * @private
+         */
+        private _hasIncompatibleParts;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+    import TemplatePart from "src/content-element/template-part/template-part";
+}
 declare module "src/content-element/content-element-group" {
     /** @typedef {import('./content-element').default} ContentElement */
+    /** @typedef {import('./template-element').default} TemplateElement */
     /**
      * This is the builder class to specify content element groups.
      *
@@ -4294,7 +4848,7 @@ declare module "src/content-element/content-element-group" {
          */
         private _hidden;
         /**
-         * @type {RawValue|[ContentElement]|undefined}
+         * @type {RawValue|[ContentElement|TemplateElement]|undefined}
          * @private
          */
         private _contentElements;
@@ -4311,9 +4865,9 @@ declare module "src/content-element/content-element-group" {
          */
         get hidden(): boolean | undefined;
         /**
-         * @returns {RawValue|[ContentElement]|undefined}
+         * @returns {RawValue|[ContentElement|TemplateElement]|undefined}
          */
-        get contentElements(): RawValue | [ContentElement] | undefined;
+        get contentElements(): RawValue | [ContentElement | TemplateElement] | undefined;
         /**
          * Set an unique identifier for the content element group. If not set, a UUID v4 will be used.
          * <strong>It is recommended to set the group identifier.</strong>
@@ -4354,11 +4908,11 @@ declare module "src/content-element/content-element-group" {
          *       cx.part.plainText
          *         .withLabel('Description')))
          * @see {@link withRawContentElements} to set a raw value
-         * @see {@link ContentElement}
-         * @param {...ContentElement} contentElements - The content elements to use.
+         * @see {@link ContentElement}, {@link TemplateElement}
+         * @param {...(ContentElement|TemplateElement)} contentElements - The content or template elements to use.
          * @returns {ContentElementGroup}
          */
-        withContentElements(...contentElements: ContentElement[]): ContentElementGroup;
+        withContentElements(...contentElements: (ContentElement | TemplateElement)[]): ContentElementGroup;
         /**
          * Set the content elements of your group as raw value.
          *
@@ -4389,11 +4943,13 @@ declare module "src/content-element/content-element-group" {
         clone(shallow?: boolean): ContentElementGroup;
     }
     export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = import("src/content-element/template-element").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
 declare module "src/dropzone/dropzone" {
     /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/template-element').default} TemplateElement */
     /**
      * This is the builder class to specify a dropzone.
      *
@@ -4419,7 +4975,7 @@ declare module "src/dropzone/dropzone" {
          */
         private _dropzone;
         /**
-         * @type {RawValue|[ContentElement]|undefined}
+         * @type {RawValue|ContentElement[]|TemplateElement[]|undefined}
          * @private
          */
         private _allowedElements;
@@ -4448,9 +5004,9 @@ declare module "src/dropzone/dropzone" {
          */
         get dropzone(): string | undefined;
         /**
-         * @returns {RawValue|ContentElement[]|undefined}
+         * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
          */
-        get allowedElements(): RawValue | ContentElement[] | undefined;
+        get allowedElements(): RawValue | ContentElement[] | TemplateElement[] | undefined;
         /**
          * @returns {number|undefined}
          */
@@ -4477,15 +5033,16 @@ declare module "src/dropzone/dropzone" {
         withDropzone(dropzone: string): Dropzone;
         /**
          * Set the allowed elements.
+         * They should be of the same Type (ContentElement or Template Element)
          *
          * @example
          * .withAllowedElements(
          *   require('./content-elements/basic/text'),
          *   require('./content-elements/basic/image'))
-         * @param {...ContentElement} allowedElements - The allowed elements.
+         * @param {...(ContentElement|TemplateElement)} allowedElements - The allowed elements.
          * @returns {Dropzone}
          */
-        withAllowedElements(...allowedElements: ContentElement[]): Dropzone;
+        withAllowedElements(...allowedElements: (ContentElement | TemplateElement)[]): Dropzone;
         /**
          * Set the allowed elements as raw value.
          *
@@ -4530,8 +5087,10 @@ declare module "src/dropzone/dropzone" {
         clone(shallow?: boolean): Dropzone;
     }
     export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = import("src/content-element/template-element").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
+    import TemplateElement from "src/content-element/template-element";
 }
 declare module "src/content-element/content-element" {
     /** @typedef {import('../design/design').default} Design */
@@ -7235,6 +7794,25 @@ declare module "src/design/design-factory" {
          */
         get contentElement(): ContentElement;
         /**
+         * Get a new content element builder instance.
+         *
+         * @example
+         * .withTemplateElements(
+         *   cx.TemplateElement
+         *     .withElementId('image-with-text')
+         *     .withLabel('Image with text')
+         *     .withDescription('Displays an image with an optional text.')
+         *     .withFile(require('./template.twig'))
+         *     .withIcon(Icon.IMAGE)
+         *     .withParts(
+         *       cx.part.image
+         *         .withLabel('Image'),
+         *       cx.part.plainText
+         *         .withLabel('Description')))
+         * @returns {TemplateElement}
+         */
+        get templateElement(): TemplateElement;
+        /**
          * Get a new website builder instance.
          *
          * @example
@@ -7473,6 +8051,7 @@ declare module "src/design/design-factory" {
     import Design from "src/design/design";
     import ContentElementGroup from "src/content-element/content-element-group";
     import ContentElement from "src/content-element/content-element";
+    import TemplateElement from "src/content-element/template-element";
     import Website from "src/website/website";
     import Include from "src/website/include";
     import Dropzone from "src/dropzone/dropzone";
