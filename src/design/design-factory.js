@@ -1,6 +1,7 @@
 import ContentElement from '../content-element/content-element';
 import ContentElementGroup from '../content-element/content-element-group';
 import PartFactory from '../content-element/part/part-factory';
+import TemplateElement from '../content-element/template-element';
 import Dropzone from '../dropzone/dropzone';
 import HtmlEditorConfig from '../html-editor-config/html-editor-config';
 import NLS from '../nls/nls';
@@ -104,6 +105,28 @@ export default class DesignFactory {
    */
   get contentElement() {
     return new ContentElement();
+  }
+
+  /**
+   * Get a new content element builder instance.
+   *
+   * @example
+   * .withTemplateElements(
+   *   cx.TemplateElement
+   *     .withElementId('image-with-text')
+   *     .withLabel('Image with text')
+   *     .withDescription('Displays an image with an optional text.')
+   *     .withFile(require('./template.twig'))
+   *     .withIcon(Icon.IMAGE)
+   *     .withParts(
+   *       cx.part.image
+   *         .withLabel('Image'),
+   *       cx.part.plainText
+   *         .withLabel('Description')))
+   * @returns {TemplateElement}
+   */
+  get templateElement() {
+    return new TemplateElement();
   }
 
   /**

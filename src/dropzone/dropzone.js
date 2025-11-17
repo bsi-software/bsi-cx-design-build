@@ -1,9 +1,11 @@
 import AbstractBuilder from '../abstract-builder';
-import RawValue from '../raw-value';
-import {identity} from '../browser-utility';
+import { identity } from '../browser-utility';
+import TemplateElement from '../content-element/template-element';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
+import RawValue from '../raw-value';
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/template-element').default} TemplateElement */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -30,7 +32,7 @@ export default class Dropzone extends AbstractBuilder {
    */
   _dropzone = undefined;
   /**
-   * @type {RawValue|[ContentElement]|undefined}
+   * @type {RawValue|ContentElement[]|TemplateElement[]|undefined}
    * @private
    */
   _allowedElements = undefined;
@@ -63,7 +65,7 @@ export default class Dropzone extends AbstractBuilder {
   }
 
   /**
-   * @returns {RawValue|ContentElement[]|undefined}
+   * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
    */
   get allowedElements() {
     return this._allowedElements;
@@ -111,12 +113,13 @@ export default class Dropzone extends AbstractBuilder {
 
   /**
    * Set the allowed elements.
+   * They should be of the same Type (ContentElement or Template Element)
    *
    * @example
    * .withAllowedElements(
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
-   * @param {...ContentElement} allowedElements - The allowed elements.
+   * @param {...(ContentElement|TemplateElement)} allowedElements - The allowed elements.
    * @returns {Dropzone}
    */
   withAllowedElements(...allowedElements) {
