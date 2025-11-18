@@ -30,6 +30,22 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static SRC_SET_SIZES = 'srcSetSizes';
+  /**
+   * @type {string}
+   */
+  static HIDE_ACCESSIBILITY_FIELDS = 'hideAccessibilityFields';
+  /**
+   * @type {string}
+   */
+  static OPTIONS = 'options';
+  /**
+   * @type {string}
+   */
+  static FIELD_HEIGHT = 'fieldHeight';
+  /**
+   * @type {string}
+   */
   static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}
@@ -66,7 +82,15 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static CONTEXT_FILE = 'contextFile';
+  /**
+   * @type {string}
+   */
   static ICON = 'icon';
+  /**
+   * @type {string}
+   */
+  static TEMPLATE_PARTS = 'templateParts';
   /**
    * @type {string}
    */
@@ -75,6 +99,10 @@ export default class DesignJsonProperty {
    * @type {string}
    */
   static PART_ID = 'partId';
+  /**
+   * @type {string}
+   */
+  static PART_CONTEXT_ID = 'partContextId';
   /**
    * @type {string}
    */
@@ -99,6 +127,10 @@ export default class DesignJsonProperty {
    * @type {string}
    */
   static ARCHIVED = 'archived';
+  /**
+   * @type {string}
+   */
+  static COMPOSITE = 'composite';
   /**
    * @type {string}
    */

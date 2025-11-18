@@ -23,7 +23,9 @@ import StyleOption from '../src/style/style-option';
 import DomManipulation from '../src/style/dom-manipulation';
 import * as Icon from '../src/content-element/icon';
 import ContentElement from '../src/content-element/content-element';
+import TemplateElement from '../src/content-element/template-element';
 import Part from '../src/content-element/part/part';
+import TemplatePart from '../src/content-element/template-part/template-part';
 import Website from '../src/website/website';
 import PageInclude from '../src/website/page-include';
 import Include from '../src/website/include';
@@ -66,6 +68,8 @@ export {
   Icon,
   ContentElement,
   Part,
+  TemplateElement,
+  TemplatePart,
   Website,
   PageInclude,
   Include,
