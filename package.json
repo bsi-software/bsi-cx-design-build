@@ -58,7 +58,7 @@
     "slugify": "^1.6.6",
     "source-map-support": "^0.5.21",
     "terser-webpack-plugin": "^5.3.9",
-    "twing": "^5.1.5",
+    "twing": "^7.2.1",
     "wait-on": "^7.0.1",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
