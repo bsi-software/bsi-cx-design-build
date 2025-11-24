@@ -120,6 +120,13 @@ export default class Part extends AbstractBuilder {
   }
 
   /**
+   * @returns {Boolean|undefined}
+   */
+  get studioLinkEnabled() {
+    return this._studioLinkEnabled;
+  }
+
+  /**
    * The ID of the part. You can apply an unique identifier to your content element part.
    * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
    * This property is only for the design build and will not appear in the final build artifacts.

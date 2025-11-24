@@ -17,6 +17,7 @@ import Pagination from '../website/pagination';
 import Website from '../website/website';
 import Design from './design';
 import DesignHelper from './design-helper';
+import { Features } from './features';
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -228,6 +229,20 @@ export default class DesignFactory {
   }
 
   /**
+   * Get a new features config builder instance.
+   * !!! this is not a HTML Editor Feature but a Design Feature !!!
+   *
+   * @example
+   * .withFeatures(
+   *   cx.features.withFormFieldRules(true)
+   * )
+   * @returns {Features}
+   */
+  get features() {
+    return new Features();
+  }
+
+  /**
    * Get a new HTML editor config builder instance.
    *
    * @example
@@ -393,21 +408,21 @@ export default class DesignFactory {
     return new PartFactory();
   }
 
-    /**
-   * Get a content element template part factory instance to create new tepmlate element part builder objects.
-   * The template element part factory is also available under the template part constant.
-   *
-   * @example
-   * const {cx, templatePart} = require('@bsi-cx/design-build');
-   *
-   * // ...
-   * .withTemplateParts(
-   *   cx.templatePart.PlainText('Text', 'textId')
-   * @returns {TemplatePartFactory}
-   */
-    get templatePart() {
-      return new TemplatePartFactory();
-    }
+  /**
+ * Get a content element template part factory instance to create new tepmlate element part builder objects.
+ * The template element part factory is also available under the template part constant.
+ *
+ * @example
+ * const {cx, templatePart} = require('@bsi-cx/design-build');
+ *
+ * // ...
+ * .withTemplateParts(
+ *   cx.templatePart.PlainText('Text', 'textId')
+ * @returns {TemplatePartFactory}
+ */
+  get templatePart() {
+    return new TemplatePartFactory();
+  }
 
   /**
    * Get a collection of various helper methods.

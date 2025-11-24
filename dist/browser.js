@@ -159,8 +159,8 @@ __webpack_require__.d(schema_version_namespaceObject, {
   SchemaVersion: () => (SchemaVersion),
   V_1_0: () => (V_1_0),
   V_22_0: () => (V_22_0),
-  V_23_1: () => (V_23_1),
-  V_23_2: () => (V_23_2)
+  V_25_1: () => (V_25_1),
+  V_26_1: () => (V_26_1)
 });
 
 // NAMESPACE OBJECT: ./src/html-editor-config/feature.js
@@ -1444,21 +1444,21 @@ const V_1_0 = new SchemaVersion('1.0');
  */
 const V_22_0 = new SchemaVersion('22.0');
 /**
- * Use this in all templates for BSI CX 23.1.
+ * Use this in all templates for BSI CX 25.1.
  *
  * @see {@link Design#withSchemaVersion}
  * @type {SchemaVersion}
- * @since 23.1
+ * @since 25.1
  */
-const V_23_1 = new SchemaVersion('23.1');
+const V_25_1 = new SchemaVersion('25.1');
 /**
- * Use this in all templates for BSI CX 23.2.
+ * Use this in all templates for BSI CX 26.1.
  *
  * @see {@link Design#withSchemaVersion}
  * @type {SchemaVersion}
- * @since 23.2
+ * @since 26.1
  */
-const V_23_2 = new SchemaVersion('23.2');
+const V_26_1 = new SchemaVersion('26.1');
 
 ;// ./src/browser-utility.js
 /**
@@ -1540,7 +1540,55 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
+;// ./src/design/features.js
+
+
+
+
+/**
+ * Class to define a schema version.
+ */
+class Features extends AbstractBuilder {
+    /**
+     * @type {Boolean|undefined}
+     * @private
+     */
+    _formFieldRules = undefined;
+
+    /**
+     * @returns {Boolean|undefined}
+     */
+    get formFieldRules() {
+        return this._formFieldRules;
+    }
+
+    /**
+     * Set the value of the formFieldRules property.
+     *
+     * @see {@link withFeatures}
+     * @param {Boolean} enabled - enable or forbid formFieldRules
+     * @returns {Features}
+     */
+    withFormFieldRules(enabled) {
+        this._formFieldRules = enabled;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    _buildInternal() {
+        let config = {};
+
+        this._applyPropertyIfDefined('formFieldRules', config, identity);
+
+        return config;
+    }
+
+}
+
 ;// ./src/design/design.js
+
 
 
 
@@ -1549,6 +1597,7 @@ class DesignJsonPropertyExtension {
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./features').Features} Features */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -1649,6 +1698,11 @@ class Design extends AbstractBuilder {
    * @private
    */
   _websiteContentTypes = undefined;
+  /**
+   * @type {RawValue|Features|undefined}
+   * @private
+   */
+  _features = undefined;
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -1746,6 +1800,13 @@ class Design extends AbstractBuilder {
    */
   get websiteContentTypes() {
     return this._websiteContentTypes;
+  }
+
+  /**
+   * @returns {RawValue|Features|undefined}
+   */
+  get features() {
+    return this._features;
   }
 
   /**
@@ -2196,6 +2257,47 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the features object.
+   *
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withFeatures(features) {
+    this._features = features;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the features property.
+   *
+   * @example
+   * .withRawFeatures({ "formFieldRules": true })
+   * @see {@link withFeatures}
+   * @param {object} features - The raw value.
+   * @returns {Design}
+   */
+  withRawFeatures(features) {
+    this._features = new RawValue(features);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * Shortcut for `features(cx.features.withFormFieldRules(enable))`
+   * Remove if more than one feature is available.
+   *
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withFeatureFormFieldRules(enable) {
+    this._features = this._features || new Features();
+    this._features.withFormFieldRules(enable);
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -2215,6 +2317,7 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, config, builderObjectValue);
 
     return config;
   }
@@ -5657,6 +5760,13 @@ class Part extends AbstractBuilder {
   }
 
   /**
+   * @returns {Boolean|undefined}
+   */
+  get studioLinkEnabled() {
+    return this._studioLinkEnabled;
+  }
+
+  /**
    * The ID of the part. You can apply an unique identifier to your content element part.
    * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
    * This property is only for the design build and will not appear in the final build artifacts.
@@ -7457,6 +7567,7 @@ class DesignHelper {
 
 
 
+
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
  * The design factory is available under the <code>cx</code> constant.
@@ -7667,6 +7778,20 @@ class DesignFactory {
   }
 
   /**
+   * Get a new features config builder instance.
+   * !!! this is not a HTML Editor Feature but a Design Feature !!!
+   *
+   * @example
+   * .withFeatures(
+   *   cx.features.withFormFieldRules(true)
+   * )
+   * @returns {Features}
+   */
+  get features() {
+    return new Features();
+  }
+
+  /**
    * Get a new HTML editor config builder instance.
    *
    * @example
@@ -7832,21 +7957,21 @@ class DesignFactory {
     return new PartFactory();
   }
 
-    /**
-   * Get a content element template part factory instance to create new tepmlate element part builder objects.
-   * The template element part factory is also available under the template part constant.
-   *
-   * @example
-   * const {cx, templatePart} = require('@bsi-cx/design-build');
-   *
-   * // ...
-   * .withTemplateParts(
-   *   cx.templatePart.PlainText('Text', 'textId')
-   * @returns {TemplatePartFactory}
-   */
-    get templatePart() {
-      return new TemplatePartFactory();
-    }
+  /**
+ * Get a content element template part factory instance to create new tepmlate element part builder objects.
+ * The template element part factory is also available under the template part constant.
+ *
+ * @example
+ * const {cx, templatePart} = require('@bsi-cx/design-build');
+ *
+ * // ...
+ * .withTemplateParts(
+ *   cx.templatePart.PlainText('Text', 'textId')
+ * @returns {TemplatePartFactory}
+ */
+  get templatePart() {
+    return new TemplatePartFactory();
+  }
 
   /**
    * Get a collection of various helper methods.

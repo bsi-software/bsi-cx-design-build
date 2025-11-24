@@ -3,9 +3,11 @@ import { builderObjectValue, constantObjectValue, identity } from '../browser-ut
 import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
+import { Features } from './features';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./features').Features} Features */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -106,6 +108,11 @@ export default class Design extends AbstractBuilder {
    * @private
    */
   _websiteContentTypes = undefined;
+  /**
+   * @type {RawValue|Features|undefined}
+   * @private
+   */
+  _features = undefined;
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -203,6 +210,13 @@ export default class Design extends AbstractBuilder {
    */
   get websiteContentTypes() {
     return this._websiteContentTypes;
+  }
+
+  /**
+   * @returns {RawValue|Features|undefined}
+   */
+  get features() {
+    return this._features;
   }
 
   /**
@@ -653,6 +667,47 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the features object.
+   *
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withFeatures(features) {
+    this._features = features;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the features property.
+   *
+   * @example
+   * .withRawFeatures({ "formFieldRules": true })
+   * @see {@link withFeatures}
+   * @param {object} features - The raw value.
+   * @returns {Design}
+   */
+  withRawFeatures(features) {
+    this._features = new RawValue(features);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * Shortcut for `features(cx.features.withFormFieldRules(enable))`
+   * Remove if more than one feature is available.
+   *
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withFeatureFormFieldRules(enable) {
+    this._features = this._features || new Features();
+    this._features.withFormFieldRules(enable);
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -672,6 +727,7 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, config, builderObjectValue);
 
     return config;
   }

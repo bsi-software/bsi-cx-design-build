@@ -96,4 +96,5 @@ module.exports = cx.design
           .withEditable(false)
           .withFile(require('./includes/navigation.hbs'))))
   .withNLS(Object.values(require('./nls')))
+  .withFeatureFormFieldRules(true)
   .withWebsiteContentTypes(WebsiteContentType.BLOG, WebsiteContentType.CUSTOMER_PARTNER);
