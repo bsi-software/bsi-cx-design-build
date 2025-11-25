@@ -270,6 +270,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static SECURITY: string;
+        /**
+         * @type {string}
+         */
         static CAPTION_ENABLED: string;
         /**
          * @type {string}
@@ -3235,7 +3239,7 @@ declare module "export/main" {
 }
 declare module "src/design/features" {
     /**
-     * Class to define a schema version.
+     * Class to set design features.
      */
     export class Features extends AbstractBuilder {
         /**
@@ -3255,6 +3259,64 @@ declare module "src/design/features" {
          * @returns {Features}
          */
         withFormFieldRules(enabled: boolean): Features;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/design/security" {
+    /**
+     * Class to set security features.
+     */
+    export class Security extends AbstractBuilder {
+        /**
+         * @type {HtmlSanitization|undefined}
+         * @private
+         */
+        private _htmlSanitization;
+        /**
+         * @returns {HtmlSanitization|undefined}
+         */
+        get htmlSanitization(): HtmlSanitization | undefined;
+        /**
+         * Set the value of the formFieldRules property.
+         *
+         * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
+         * @returns {Security}
+         */
+        withHtmlSanitization(htmlSanitization: HtmlSanitization): Security;
+    }
+    export class HtmlSanitization extends AbstractBuilder {
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _allowEventAttributes;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _allowInlineScripts;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get allowEventAttributes(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get allowInlineScripts(): boolean | undefined;
+        /**
+         * Set the value of the allowEventAttributes property.
+         *
+         * @param {Boolean} allowEventAttributes - enable or forbid event attributes
+         * @returns {Security}
+         */
+        withAllowEventAttributes(allowEventAttributes: boolean): Security;
+        /**
+         * Set the value of the allowInlineScripts property.
+         *
+         * @param {Boolean} allowInlineScripts - enable or forbid inline scripts
+         * @returns {Security}
+         */
+        withAllowInlineScripts(allowInlineScripts: boolean): Security;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -6408,6 +6470,8 @@ declare module "src/design/design" {
     /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
     /** @typedef {import('./locale').Locale} Locale */
     /** @typedef {import('./features').Features} Features */
+    /** @typedef {import('./security').Security} Security */
+    /** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
     /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -6513,6 +6577,11 @@ declare module "src/design/design" {
          */
         private _features;
         /**
+         * @type {RawValue|Security|undefined}
+         * @private
+         */
+        private _security;
+        /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
         get schemaVersion(): RawValue | SchemaVersion | undefined;
@@ -6572,6 +6641,10 @@ declare module "src/design/design" {
          * @returns {RawValue|Features|undefined}
          */
         get features(): RawValue | Features | undefined;
+        /**
+         * @returns {RawValue|Security|undefined}
+         */
+        get security(): RawValue | Security | undefined;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -6926,14 +6999,46 @@ declare module "src/design/design" {
         withRawFeatures(features: object): Design;
         /**
          * Set the features.formFieldEnabled value.
-         * Shortcut for `features(cx.features.withFormFieldRules(enable))`
+         * Shortcut for `withFeatures(cx.features.withFormFieldRules(enable))`
          * Remove if more than one feature is available.
          *
-         * @see {@link withRawFeatures} to set a raw value
+         * @param {Boolean} enable
+         * @returns {Design}
+         */
+        withFeatureFormFieldRules(enable: boolean): Design;
+        /**
+         * Configure the security object.
+         *
+         * @see {@link withRawSecurity} to set a raw value
+         * @param {Security} security
+         * @returns {Design}
+         */
+        withSecurity(security: Security): Design;
+        /**
+         * Set the raw value of the security property.
+         *
+         * @example
+         * .withRawSecurity({ "formFieldRules": true })
+         * @see {@link withSecurity}
+         * @param {object} security - The raw value.
+         * @returns {Design}
+         */
+        withRawSecurity(security: object): Design;
+        /**
+         * Set the features.formFieldEnabled value.
+         * Shortcut for
+         * ```
+         * .withSecurity(
+         *    cx.security.withHtmlSanitization(
+         *        cx.htmlSanitization
+         *            .withAllowEventAttributes(allowEventAttributes)
+         *            .withAllowInlineScripts(allowInlineScripts)))
+         * ```
+         *
          * @param {Features} features
          * @returns {Design}
          */
-        withFeatureFormFieldRules(enable: any): Design;
+        withSecurityHtmlSanitization(allowEventAttributes?: boolean, allowInlineScripts?: boolean): Design;
         /**
          * Clone the configuration.
          *
@@ -6949,6 +7054,8 @@ declare module "src/design/design" {
     export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
     export type Locale = import("src/design/locale").Locale;
     export type Features = import("src/design/features").Features;
+    export type Security = import("src/design/security").Security;
+    export type HtmlSanitization = import("src/design/security").HtmlSanitization;
     export type WebsiteContentType = import("src/design/websiteContentType").WebsiteContentType;
     export type ContentElement = import("src/content-element/content-element").default;
     export type TemplateElement = import("src/content-element/template-element").default;
@@ -6962,6 +7069,8 @@ declare module "src/design/design" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
     import { Features } from "src/design/features";
+    import { Security } from "src/design/security";
+    import { HtmlSanitization } from "src/design/security";
 }
 declare module "src/design/locale" {
     /** @typedef {import('./design').default} Design */
@@ -8001,6 +8110,32 @@ declare module "src/design/design-factory" {
          */
         get features(): Features;
         /**
+         * Get a new security config builder instance.
+         *
+         * @example
+         * .withSecurity(
+         *   cx.security.withHtmlSanitization(
+         *      cx.htmlSanitization
+         *        .withAllowEventAttributes(true)
+         *        .withAllowInlineScripts(false)
+         *   )
+         * )
+         * @returns {Security}
+         */
+        get security(): Security;
+        /**
+         * Get a new security config builder instance.
+         *
+         * @example
+         *  .withHtmlSanitization(
+         *    cx.htmlSanitization
+         *      .withAllowEventAttributes(true)
+         *      .withAllowInlineScripts(false)
+         *  )
+         * @returns {HtmlSanitization}
+         */
+        get htmlSanitization(): HtmlSanitization;
+        /**
          * Get a new HTML editor config builder instance.
          *
          * @example
@@ -8177,6 +8312,8 @@ declare module "src/design/design-factory" {
     import PageInclude from "src/website/page-include";
     import Pagination from "src/website/pagination";
     import { Features } from "src/design/features";
+    import { Security } from "src/design/security";
+    import { HtmlSanitization } from "src/design/security";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
     import Style from "src/style/style";
     import CssClass from "src/style/css-class";

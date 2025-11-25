@@ -18,6 +18,7 @@ import Website from '../website/website';
 import Design from './design';
 import DesignHelper from './design-helper';
 import { Features } from './features';
+import { HtmlSanitization, Security } from './security';
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -240,6 +241,38 @@ export default class DesignFactory {
    */
   get features() {
     return new Features();
+  }
+
+  /**
+   * Get a new security config builder instance.
+   *
+   * @example
+   * .withSecurity(
+   *   cx.security.withHtmlSanitization(
+   *      cx.htmlSanitization
+   *        .withAllowEventAttributes(true)
+   *        .withAllowInlineScripts(false)
+   *   )
+   * )
+   * @returns {Security}
+   */
+  get security() {
+    return new Security();
+  }
+
+  /**
+   * Get a new htmlSanitization config builder instance for the security builder.
+   *
+   * @example
+   *  .withHtmlSanitization(
+   *    cx.htmlSanitization
+   *      .withAllowEventAttributes(true)
+   *      .withAllowInlineScripts(false)
+   *  )
+   * @returns {HtmlSanitization}
+   */
+  get htmlSanitization() {
+    return new HtmlSanitization();
   }
 
   /**

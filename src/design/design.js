@@ -4,10 +4,13 @@ import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
 import { Features } from './features';
+import { Security, HtmlSanitization } from './security';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
 /** @typedef {import('./features').Features} Features */
+/** @typedef {import('./security').Security} Security */
+/** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -115,6 +118,12 @@ export default class Design extends AbstractBuilder {
   _features = undefined;
 
   /**
+   * @type {RawValue|Security|undefined}
+   * @private
+   */
+  _security = undefined;
+
+  /**
    * @returns {RawValue|SchemaVersion|undefined}
    */
   get schemaVersion() {
@@ -217,6 +226,13 @@ export default class Design extends AbstractBuilder {
    */
   get features() {
     return this._features;
+  }
+
+  /**
+   * @returns {RawValue|Security|undefined}
+   */
+  get security() {
+    return this._security;
   }
 
   /**
@@ -694,16 +710,68 @@ export default class Design extends AbstractBuilder {
 
   /**
    * Set the features.formFieldEnabled value.
-   * Shortcut for `features(cx.features.withFormFieldRules(enable))`
+   * Shortcut for `withFeatures(cx.features.withFormFieldRules(enable))`
    * Remove if more than one feature is available.
    *
-   * @see {@link withRawFeatures} to set a raw value
-   * @param {Features} features
+   * @param {Boolean} enable
    * @returns {Design}
    */
   withFeatureFormFieldRules(enable) {
     this._features = this._features || new Features();
     this._features.withFormFieldRules(enable);
+    return this;
+  }
+
+  /**
+   * Configure the security object.
+   *
+   * @see {@link withRawSecurity} to set a raw value
+   * @param {Security} security
+   * @returns {Design}
+   */
+  withSecurity(security) {
+    this._security = security;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the security property.
+   *
+   * @example
+   * .withRawSecurity({ "formFieldRules": true })
+   * @see {@link withSecurity}
+   * @param {object} security - The raw value.
+   * @returns {Design}
+   */
+  withRawSecurity(security) {
+    this._security = new RawValue(security);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * Shortcut for 
+   * ```
+   * .withSecurity(
+   *    cx.security.withHtmlSanitization(
+   *        cx.htmlSanitization
+   *            .withAllowEventAttributes(allowEventAttributes)
+   *            .withAllowInlineScripts(allowInlineScripts)))
+   * ```
+   *
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withSecurityHtmlSanitization(allowEventAttributes = false, allowInlineScripts = false) {
+    this._security = this._security || new Security();
+    let htmlSanitization = this._security.htmlSanitization || new HtmlSanitization();
+    console.log('B4:');
+    htmlSanitization.withAllowEventAttributes(allowEventAttributes);
+    htmlSanitization.withAllowInlineScripts(allowInlineScripts);
+    console.log(htmlSanitization);
+    this._security.withHtmlSanitization(htmlSanitization);
+    console.log('B5:');
+    console.log(this._security.build())
     return this;
   }
 
@@ -728,6 +796,7 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.SECURITY, config, builderObjectValue);
 
     return config;
   }
