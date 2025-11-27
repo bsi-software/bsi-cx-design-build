@@ -1823,6 +1823,12 @@ class Design extends AbstractBuilder {
   _security = undefined;
 
   /**
+   * @type {Object}
+   * @private
+   */
+  _rawObjects = {};
+
+  /**
    * @returns {RawValue|SchemaVersion|undefined}
    */
   get schemaVersion() {
@@ -1932,6 +1938,13 @@ class Design extends AbstractBuilder {
    */
   get security() {
     return this._security;
+  }
+
+  /**
+   * @returns {Object}
+   */
+  get rawObjects() {
+    return this._rawObjects;
   }
 
   /**
@@ -2464,13 +2477,25 @@ class Design extends AbstractBuilder {
   withSecurityHtmlSanitization(allowEventAttributes = false, allowInlineScripts = false) {
     this._security = this._security || new Security();
     let htmlSanitization = this._security.htmlSanitization || new HtmlSanitization();
-    console.log('B4:');
     htmlSanitization.withAllowEventAttributes(allowEventAttributes);
     htmlSanitization.withAllowInlineScripts(allowInlineScripts);
-    console.log(htmlSanitization);
     this._security.withHtmlSanitization(htmlSanitization);
-    console.log('B5:');
-    console.log(this._security.build())
+    return this;
+  }
+
+  /**
+   * Add a raw key, value pair to the design object.
+   *
+   * @example
+    .withRawObject('newObjectProperty', { someObj: { crazyStuff: "yolo", someOtherStuff: false } })
+    .withRawObject('newProperty', 24)
+   * @param {String} key - The key
+   * @param {any} value - The value. Can be a value or an object
+   * @returns {Design}
+   */
+  withRawObject(key, value) {
+    this._rawObjects = this._rawObjects || {};
+    this._rawObjects[key] = value;
     return this;
   }
 
@@ -2496,6 +2521,8 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.SECURITY, config, builderObjectValue);
+
+    config = Object.assign(config, this._rawObjects);
 
     return config;
   }
@@ -7988,7 +8015,7 @@ class DesignFactory {
   }
 
   /**
-   * Get a new security config builder instance.
+   * Get a new htmlSanitization config builder instance for the security builder.
    *
    * @example
    *  .withHtmlSanitization(

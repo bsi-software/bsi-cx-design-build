@@ -6582,6 +6582,11 @@ declare module "src/design/design" {
          */
         private _security;
         /**
+         * @type {Object}
+         * @private
+         */
+        private _rawObjects;
+        /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
         get schemaVersion(): RawValue | SchemaVersion | undefined;
@@ -6645,6 +6650,10 @@ declare module "src/design/design" {
          * @returns {RawValue|Security|undefined}
          */
         get security(): RawValue | Security | undefined;
+        /**
+         * @returns {Object}
+         */
+        get rawObjects(): any;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -7039,6 +7048,17 @@ declare module "src/design/design" {
          * @returns {Design}
          */
         withSecurityHtmlSanitization(allowEventAttributes?: boolean, allowInlineScripts?: boolean): Design;
+        /**
+         * Add a raw key, value pair to the design object.
+         *
+         * @example
+          .withRawObject('newObjectProperty', { someObj: { crazyStuff: "yolo", someOtherStuff: false } })
+          .withRawObject('newProperty', 24)
+         * @param {String} key - The key
+         * @param {any} value - The value. Can be a value or an object
+         * @returns {Design}
+         */
+        withRawObject(key: string, value: any): Design;
         /**
          * Clone the configuration.
          *
@@ -8124,7 +8144,7 @@ declare module "src/design/design-factory" {
          */
         get security(): Security;
         /**
-         * Get a new security config builder instance.
+         * Get a new htmlSanitization config builder instance for the security builder.
          *
          * @example
          *  .withHtmlSanitization(

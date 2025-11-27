@@ -1,4 +1,4 @@
-const {cx, Locale, bsiProperty, WebsiteContentType} = require('@bsi-cx/design-build');
+const { cx, Locale, bsiProperty, WebsiteContentType } = require('@bsi-cx/design-build');
 
 /**
  * @type {string}
@@ -69,11 +69,11 @@ module.exports = cx.design
           .withName('Vorlage für Inhaltsseiten')
           .withEditable(true)
           .withFile(require('./includes/page.html')),
-          cx.pageInclude
-            .withName('Vorlage für Blog')
-            .withEditable(true)
-            .withFile(require('./includes/page.html'))
-            .withWebsiteContentType(WebsiteContentType.CUSTOMER_PARTNER),
+        cx.pageInclude
+          .withName('Vorlage für Blog')
+          .withEditable(true)
+          .withFile(require('./includes/page.html'))
+          .withWebsiteContentType(WebsiteContentType.CUSTOMER_PARTNER),
         cx.include
           .withIdentifier('pagination-element')
           .withName('Pagination')
@@ -98,4 +98,6 @@ module.exports = cx.design
   .withNLS(Object.values(require('./nls')))
   .withFeatureFormFieldRules(true)
   .withSecurityHtmlSanitization(true, false)
-  .withWebsiteContentTypes(WebsiteContentType.BLOG, WebsiteContentType.CUSTOMER_PARTNER);
+  .withWebsiteContentTypes(WebsiteContentType.BLOG, WebsiteContentType.CUSTOMER_PARTNER)
+  .withRawObject('b', 4)
+  .withRawObject('b4', { abc123: { allowSomeCrazyShit: "yolo", someOtherShit: false } });
