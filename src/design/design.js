@@ -3,9 +3,14 @@ import { builderObjectValue, constantObjectValue, identity } from '../browser-ut
 import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
+import { Features } from './features';
+import { Security, HtmlSanitization } from './security';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./features').Features} Features */
+/** @typedef {import('./security').Security} Security */
+/** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -106,6 +111,23 @@ export default class Design extends AbstractBuilder {
    * @private
    */
   _websiteContentTypes = undefined;
+  /**
+   * @type {RawValue|Features|undefined}
+   * @private
+   */
+  _features = undefined;
+
+  /**
+   * @type {RawValue|Security|undefined}
+   * @private
+   */
+  _security = undefined;
+
+  /**
+   * @type {Object}
+   * @private
+   */
+  _rawObjects = {};
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -203,6 +225,27 @@ export default class Design extends AbstractBuilder {
    */
   get websiteContentTypes() {
     return this._websiteContentTypes;
+  }
+
+  /**
+   * @returns {RawValue|Features|undefined}
+   */
+  get features() {
+    return this._features;
+  }
+
+  /**
+   * @returns {RawValue|Security|undefined}
+   */
+  get security() {
+    return this._security;
+  }
+
+  /**
+   * @returns {Object}
+   */
+  get rawObjects() {
+    return this._rawObjects;
   }
 
   /**
@@ -653,6 +696,111 @@ export default class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the features object.
+   *
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withFeatures(features) {
+    this._features = features;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the features property.
+   *
+   * @example
+   * .withRawFeatures({ "formFieldRules": true })
+   * @see {@link withFeatures}
+   * @param {object} features - The raw value.
+   * @returns {Design}
+   */
+  withRawFeatures(features) {
+    this._features = new RawValue(features);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * Shortcut for `withFeatures(cx.features.withFormFieldRules(enable))`
+   * Remove if more than one feature is available.
+   *
+   * @param {Boolean} enable
+   * @returns {Design}
+   */
+  withFeatureFormFieldRules(enable) {
+    this._features = this._features || new Features();
+    this._features.withFormFieldRules(enable);
+    return this;
+  }
+
+  /**
+   * Configure the security object.
+   *
+   * @see {@link withRawSecurity} to set a raw value
+   * @param {Security} security
+   * @returns {Design}
+   */
+  withSecurity(security) {
+    this._security = security;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the security property.
+   *
+   * @example
+   * .withRawSecurity({ "formFieldRules": true })
+   * @see {@link withSecurity}
+   * @param {object} security - The raw value.
+   * @returns {Design}
+   */
+  withRawSecurity(security) {
+    this._security = new RawValue(security);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * Shortcut for 
+   * ```
+   * .withSecurity(
+   *    cx.security.withHtmlSanitization(
+   *        cx.htmlSanitization
+   *            .withAllowEventAttributes(allowEventAttributes)
+   *            .withAllowInlineScripts(allowInlineScripts)))
+   * ```
+   *
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withSecurityHtmlSanitization(allowEventAttributes = false, allowInlineScripts = false) {
+    this._security = this._security || new Security();
+    let htmlSanitization = this._security.htmlSanitization || new HtmlSanitization();
+    htmlSanitization.withAllowEventAttributes(allowEventAttributes);
+    htmlSanitization.withAllowInlineScripts(allowInlineScripts);
+    this._security.withHtmlSanitization(htmlSanitization);
+    return this;
+  }
+
+  /**
+   * Add a raw key, value pair to the design object.
+   *
+   * @example
+    .withRawObject('newObjectProperty', { someObj: { crazyStuff: "yolo", someOtherStuff: false } })
+    .withRawObject('newProperty', 24)
+   * @param {String} key - The key
+   * @param {any} value - The value. Can be a value or an object
+   * @returns {Design}
+   */
+  withRawObject(key, value) {
+    this._rawObjects = this._rawObjects || {};
+    this._rawObjects[key] = value;
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -672,6 +820,10 @@ export default class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.SECURITY, config, builderObjectValue);
+
+    config = Object.assign(config, this._rawObjects);
 
     return config;
   }
