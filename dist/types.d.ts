@@ -3277,7 +3277,7 @@ declare module "src/design/security" {
          */
         get htmlSanitization(): HtmlSanitization | undefined;
         /**
-         * Set the value of the formFieldRules property.
+         * Set the value of the htmlSanitization property.
          *
          * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
          * @returns {Security}
