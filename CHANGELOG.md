@@ -6,13 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+
+
+## [2.0.1] - 03.12.2025
 * Add studioLink and studioLinkEnabled
 * Add Template Element and Template Parts
-* Make all properties available as scss variables during the build
-* Update sass-loader to get rid of warnings
 * Add features to design object
 * Add security obj to design object
 * Add withRawObject function to design object
+* Make all properties available as scss variables during the build
+* Update sass-loader to get rid of warnings
 
 
 ## [2.0.0] - 09.10.2025
