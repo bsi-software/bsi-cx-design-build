@@ -470,6 +470,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static SECURITY = 'security';
+  /**
+   * @type {string}
+   */
   static CAPTION_ENABLED = 'captionEnabled';
   /**
    * @type {string}
