@@ -20,7 +20,7 @@ export class Security extends AbstractBuilder {
     }
 
     /**
-     * Set the value of the formFieldRules property.
+     * Set the value of the htmlSanitization property.
      *
      * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
      * @returns {Security}
