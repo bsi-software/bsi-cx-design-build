@@ -1,6 +1,6 @@
 {
   "name": "@bsi-cx/design-build",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A webpack config builder to create a design for BSI CX.",
   "private": false,
   "engines": {
