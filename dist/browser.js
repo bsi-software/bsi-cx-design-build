@@ -1614,7 +1614,7 @@ class Security extends AbstractBuilder {
     }
 
     /**
-     * Set the value of the formFieldRules property.
+     * Set the value of the htmlSanitization property.
      *
      * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
      * @returns {Security}
@@ -3124,11 +3124,16 @@ class TemplatePart extends AbstractBuilder {
    * @private
    */
   _config = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _context = {};
 
   /**
    * @param {string} partId
    */
-  constructor(partId, label, partContextId) {
+  constructor(partId, label, partContextId, context) {
     super();
     /**
      * @type {string}
@@ -3176,6 +3181,13 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
+   * @returns {{}|undefined}
+   */
+  get context() {
+    return this._context;
+  }
+
+  /**
    * Add new key-value pair to config object
    * No changes if value == null
    * 
@@ -3186,9 +3198,123 @@ class TemplatePart extends AbstractBuilder {
    */
   addConfigValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
-      this._config = this.config || {};
+      this._config = this._config || {};
       this._config[key] = isBoolean ? !!value : value;
     }
+    return this;
+  }
+
+  /**
+   * Add new key-value pair to context object
+   * No changes if value == null
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @param {boolean?} [isBoolean=false] 
+   * @returns {this}
+   */
+  addContextValueIfNotNull(key, value, isBoolean = false) {
+    if (value !== null) {
+      this._context = this._context || {};
+      this._context[key] = isBoolean ? !!value : value;
+    }
+    return this;
+  }
+
+  /**
+   * Add new context object for a text template part.
+   * 
+   * @param {string} value 
+   * @returns {this}
+   */
+  withTextContext(value) {
+    this.addContextValueIfNotNull('value', value);
+    return this;
+  }
+
+  /**
+   * Add new context object for a checkbox template part.
+   * 
+   * @param {boolean?} isPreselected is checkbox selected by default
+   * @returns {this}
+   */
+  withCheckboxContext(isPreselected) {
+    this._context = { value: !!isPreselected };
+    return this;
+  }
+
+  /**
+   * Add new context object for a option template part.
+   * 
+   * @param {string} preselectedOption is checkbox selected by default
+   * @returns {this}
+   */
+  withOptionContext(preselectedOption) {
+    this.addContextValueIfNotNull('value', preselectedOption);
+    let options = this._config[DesignJsonProperty.OPTIONS];
+    if (preselectedOption && options && options.every(option => option.value !== preselectedOption)) {
+      console.warn(`Option ${preselectedOption} not found in Options`);
+    }
+    return this;
+  }
+
+  /**
+   * Add new context object for a formatted text template part.
+   * 
+   * @param {string} html HTML Text inside formatted text part 
+   * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+   * @returns {this}
+   */
+  withFormattedTextContext(html, languageTag) {
+    this.addContextValueIfNotNull('html', html);
+    this.addContextValueIfNotNull('languageTag', languageTag);
+    return this;
+  }
+
+  /**
+   * Add new context object for a link template part.
+   * 
+   * @param {string?} url The URL for the link.
+   * @param {string?} text The text for the link.
+   * @param {string?} description The description for the link.
+   * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+   * @returns {this}
+   */
+  withLinkContext(url, text, description, openInNewWindow) {
+    this.addContextValueIfNotNull('url', url);
+    this.addContextValueIfNotNull('text', text);
+    this.addContextValueIfNotNull('description', description);
+    this.addContextValueIfNotNull('openInNewWindow', openInNewWindow, true);
+    return this;
+  }
+
+  /**
+   * Add new context object for a image template part.
+   * 
+   * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
+   * @param {string?} srcUrl The URL that points to the selected image.
+   * @param {string?} altText Prefilled Alt Text
+   * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
+   * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
+   * @returns {this}
+   */
+  withImageContext(srcUrl, placeholderSrcUrl, altText, decorative, srcset) {
+    this.addContextValueIfNotNull('srcUrl', srcUrl);
+    this.addContextValueIfNotNull('placeholderSrcUrl', placeholderSrcUrl);
+    this.addContextValueIfNotNull('altText', altText);
+    this.addContextValueIfNotNull('decorative', decorative, true);
+    this.addContextValueIfNotNull('srcset', srcset);
+    return this;
+  }
+
+  /**
+   * Add new raw context object to template part
+   * 
+   * @param {context} contextObj 
+   * @returns {this}
+   */
+  withRawContext(context) {
+    this._context = context;
     return this;
   }
 
@@ -3243,7 +3369,7 @@ class TemplateElement extends AbstractBuilder {
    * @type {{}|undefined}
    * @private
    */
-  _contextFile = undefined;
+  _contextFile = {};
   /**
    * @type {RawValue|Icon|undefined}
    * @private
@@ -3418,7 +3544,7 @@ class TemplateElement extends AbstractBuilder {
    * Set the default values to use for this template element. Be aware, that you have to require the context file.
    *
    * @example
-   * .withFile(require('./context.json'))
+   * .withContextFile(require('./context.json'))
    * @param {string} contextFile - The default values for the template parts of this element.
    * @returns {TemplateElement}
    * @since BSI CX 25.1
@@ -3733,10 +3859,22 @@ class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
     // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
+
+    // Generate context from context file and template contexts
+    console.log('B4')
+    this._contextFile = this._contextFile || {};
+    // console.log(this._contextFile);
+    // let partContexts = Object.fromEntries(this._templateParts.map(templatePart => [templatePart.partContextId, templatePart.context]));
+    // Object.assign(this._contextFile, partContexts);
+    this.templateParts.forEach(templatePart => {
+      let partContextId = templatePart.partContextId;
+      this._contextFile[partContextId] = this._contextFile[partContextId] || {};
+      Object.assign(this._contextFile[partContextId], templatePart.context)
+    })
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
     return config;
   }

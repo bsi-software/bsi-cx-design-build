@@ -37,7 +37,7 @@ export default class TemplateElement extends AbstractBuilder {
    * @type {{}|undefined}
    * @private
    */
-  _contextFile = undefined;
+  _contextFile = {};
   /**
    * @type {RawValue|Icon|undefined}
    * @private
@@ -212,7 +212,7 @@ export default class TemplateElement extends AbstractBuilder {
    * Set the default values to use for this template element. Be aware, that you have to require the context file.
    *
    * @example
-   * .withFile(require('./context.json'))
+   * .withContextFile(require('./context.json'))
    * @param {string} contextFile - The default values for the template parts of this element.
    * @returns {TemplateElement}
    * @since BSI CX 25.1
@@ -527,10 +527,17 @@ export default class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
     // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
+
+    // Merge context from context file and template contexts
+    this.templateParts.forEach(templatePart => {
+      let partContextId = templatePart.partContextId;
+      this._contextFile[partContextId] = this._contextFile[partContextId] || {};
+      Object.assign(this._contextFile[partContextId], templatePart.context)
+    })
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
     return config;
   }

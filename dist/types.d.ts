@@ -4396,7 +4396,7 @@ declare module "src/content-element/template-part/template-part" {
         /**
          * @param {string} partId
          */
-        constructor(partId: string, label: any, partContextId: any);
+        constructor(partId: string, label: any, partContextId: any, context: any);
         /**
          * @type {string}
          * @private
@@ -4418,6 +4418,11 @@ declare module "src/content-element/template-part/template-part" {
          */
         private _config;
         /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _context;
+        /**
          * @returns {string}
          */
         get partContextId(): string;
@@ -4434,6 +4439,10 @@ declare module "src/content-element/template-part/template-part" {
          */
         get config(): {} | undefined;
         /**
+         * @returns {{}|undefined}
+         */
+        get context(): {} | undefined;
+        /**
          * Add new key-value pair to config object
          * No changes if value == null
          *
@@ -4443,6 +4452,73 @@ declare module "src/content-element/template-part/template-part" {
          * @returns {this}
          */
         addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        /**
+         * Add new key-value pair to context object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @param {boolean?} [isBoolean=false]
+         * @returns {this}
+         */
+        addContextValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        /**
+         * Add new context object for a text template part.
+         *
+         * @param {string} value
+         * @returns {this}
+         */
+        withTextContext(value: string): this;
+        /**
+         * Add new context object for a checkbox template part.
+         *
+         * @param {boolean?} isPreselected is checkbox selected by default
+         * @returns {this}
+         */
+        withCheckboxContext(isPreselected: boolean | null): this;
+        /**
+         * Add new context object for a option template part.
+         *
+         * @param {string} preselectedOption is checkbox selected by default
+         * @returns {this}
+         */
+        withOptionContext(preselectedOption: string): this;
+        /**
+         * Add new context object for a formatted text template part.
+         *
+         * @param {string} html HTML Text inside formatted text part
+         * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+         * @returns {this}
+         */
+        withFormattedTextContext(html: string, languageTag: string | null): this;
+        /**
+         * Add new context object for a link template part.
+         *
+         * @param {string?} url The URL for the link.
+         * @param {string?} text The text for the link.
+         * @param {string?} description The description for the link.
+         * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+         * @returns {this}
+         */
+        withLinkContext(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
+        /**
+         * Add new context object for a image template part.
+         *
+         * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
+         * @param {string?} srcUrl The URL that points to the selected image.
+         * @param {string?} altText Prefilled Alt Text
+         * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
+         * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
+         * @returns {this}
+         */
+        withImageContext(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
+        /**
+         * Add new raw context object to template part
+         *
+         * @param {context} contextObj
+         * @returns {this}
+         */
+        withRawContext(context: any): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -4745,7 +4821,7 @@ declare module "src/content-element/template-element" {
          * Set the default values to use for this template element. Be aware, that you have to require the context file.
          *
          * @example
-         * .withFile(require('./context.json'))
+         * .withContextFile(require('./context.json'))
          * @param {string} contextFile - The default values for the template parts of this element.
          * @returns {TemplateElement}
          * @since BSI CX 25.1
