@@ -1,8 +1,6 @@
 require("./styles.scss");
 const { TemplateElement, Icon, cx } = require("@bsi-cx/design-build");
 
-// import { context } from "./context.json";
-
 /**
  * @type {TemplateElement}
  */
@@ -11,9 +9,7 @@ module.exports = cx.templateElement
     .withIcon(Icon.ASTERISK)
     .withLabel("TemplatePartElement")
     .withFile(require("./template.hbs"))
-    // .withFile(require("./context.json"))
-    .withContextFile(require("./context.json"))
-    // .withContextFile(context)
+    .withRawContextFile(require("./context.json"))
     .withTemplateParts(
         cx.templatePart.Image("Bild", "image-part-01fb0560", true, ["400w", "800w", "1200w"], false),
         cx.templatePart.Checkbox("Hintergrund grün", "checkbox-part-95513657"),

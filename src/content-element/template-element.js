@@ -209,15 +209,15 @@ export default class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Set the default values to use for this template element. Be aware, that you have to require the context file.
+   * Set the raw values to use for this template element. Be aware, that you have to require the context file.
    *
    * @example
-   * .withContextFile(require('./context.json'))
+   * .withRawContextFile(require('./context.json'))
    * @param {string} contextFile - The default values for the template parts of this element.
    * @returns {TemplateElement}
    * @since BSI CX 25.1
    */
-  withContextFile(contextFile) {
+  withRawContextFile(contextFile) {
     this._contextFile = contextFile;
     return this;
   }

@@ -3103,6 +3103,7 @@ const PRE = new Format('pre');
 
 
 
+
 class TemplatePart extends AbstractBuilder {
   /**
    * @type {string}
@@ -3215,10 +3216,24 @@ class TemplatePart extends AbstractBuilder {
    */
   addContextValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
-      this._context = this._context || {};
       this._context[key] = isBoolean ? !!value : value;
     }
     return this;
+  }
+
+  /**
+   * Add new image src to context object
+   * No changes if value == null
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @returns {this}
+   */
+  addContextImageSrc(key, value) {
+    if(value) {
+      let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
+      this._context[key] = replacedValue;
+    }
   }
 
   /**
@@ -3291,19 +3306,21 @@ class TemplatePart extends AbstractBuilder {
   /**
    * Add new context object for a image template part.
    * 
-   * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
    * @param {string?} srcUrl The URL that points to the selected image.
+   * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
    * @param {string?} altText Prefilled Alt Text
    * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
    * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
    * @returns {this}
    */
   withImageContext(srcUrl, placeholderSrcUrl, altText, decorative, srcset) {
-    this.addContextValueIfNotNull('srcUrl', srcUrl);
-    this.addContextValueIfNotNull('placeholderSrcUrl', placeholderSrcUrl);
+    this.addContextImageSrc('srcUrl', srcUrl);
+    this.addContextImageSrc('placeholderSrcUrl', placeholderSrcUrl);
     this.addContextValueIfNotNull('altText', altText);
     this.addContextValueIfNotNull('decorative', decorative, true);
     this.addContextValueIfNotNull('srcset', srcset);
+    console.log('B4');
+    console.log(this._context)
     return this;
   }
 
@@ -3541,15 +3558,15 @@ class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Set the default values to use for this template element. Be aware, that you have to require the context file.
+   * Set the raw values to use for this template element. Be aware, that you have to require the context file.
    *
    * @example
-   * .withContextFile(require('./context.json'))
+   * .withRawContextFile(require('./context.json'))
    * @param {string} contextFile - The default values for the template parts of this element.
    * @returns {TemplateElement}
    * @since BSI CX 25.1
    */
-  withContextFile(contextFile) {
+  withRawContextFile(contextFile) {
     this._contextFile = contextFile;
     return this;
   }
@@ -3863,12 +3880,7 @@ class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
 
-    // Generate context from context file and template contexts
-    console.log('B4')
-    this._contextFile = this._contextFile || {};
-    // console.log(this._contextFile);
-    // let partContexts = Object.fromEntries(this._templateParts.map(templatePart => [templatePart.partContextId, templatePart.context]));
-    // Object.assign(this._contextFile, partContexts);
+    // Merge context from context file and template contexts
     this.templateParts.forEach(templatePart => {
       let partContextId = templatePart.partContextId;
       this._contextFile[partContextId] = this._contextFile[partContextId] || {};

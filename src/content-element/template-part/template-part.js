@@ -1,5 +1,6 @@
 import AbstractBuilder from '../../abstract-builder';
 import { identity } from '../../browser-utility';
+import Constant from '../../constant';
 import DesignJsonProperty from '../../design-json-property';
 
 export default class TemplatePart extends AbstractBuilder {
@@ -114,10 +115,24 @@ export default class TemplatePart extends AbstractBuilder {
    */
   addContextValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
-      this._context = this._context || {};
       this._context[key] = isBoolean ? !!value : value;
     }
     return this;
+  }
+
+  /**
+   * Add new image src to context object
+   * No changes if value == null
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @returns {this}
+   */
+  addContextImageSrc(key, value) {
+    if(value) {
+      let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
+      this._context[key] = replacedValue;
+    }
   }
 
   /**
@@ -190,16 +205,16 @@ export default class TemplatePart extends AbstractBuilder {
   /**
    * Add new context object for a image template part.
    * 
-   * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
    * @param {string?} srcUrl The URL that points to the selected image.
+   * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
    * @param {string?} altText Prefilled Alt Text
    * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
    * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
    * @returns {this}
    */
   withImageContext(srcUrl, placeholderSrcUrl, altText, decorative, srcset) {
-    this.addContextValueIfNotNull('srcUrl', srcUrl);
-    this.addContextValueIfNotNull('placeholderSrcUrl', placeholderSrcUrl);
+    this.addContextImageSrc('srcUrl', srcUrl);
+    this.addContextImageSrc('placeholderSrcUrl', placeholderSrcUrl);
     this.addContextValueIfNotNull('altText', altText);
     this.addContextValueIfNotNull('decorative', decorative, true);
     this.addContextValueIfNotNull('srcset', srcset);

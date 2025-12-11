@@ -4463,6 +4463,15 @@ declare module "src/content-element/template-part/template-part" {
          */
         addContextValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
         /**
+         * Add new image src to context object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @returns {this}
+         */
+        addContextImageSrc(key: string, value: string): this;
+        /**
          * Add new context object for a text template part.
          *
          * @param {string} value
@@ -4504,8 +4513,8 @@ declare module "src/content-element/template-part/template-part" {
         /**
          * Add new context object for a image template part.
          *
-         * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
          * @param {string?} srcUrl The URL that points to the selected image.
+         * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
          * @param {string?} altText Prefilled Alt Text
          * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
          * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
@@ -4818,15 +4827,15 @@ declare module "src/content-element/template-element" {
          */
         withFile(file: string): TemplateElement;
         /**
-         * Set the default values to use for this template element. Be aware, that you have to require the context file.
+         * Set the raw values to use for this template element. Be aware, that you have to require the context file.
          *
          * @example
-         * .withContextFile(require('./context.json'))
+         * .withRawContextFile(require('./context.json'))
          * @param {string} contextFile - The default values for the template parts of this element.
          * @returns {TemplateElement}
          * @since BSI CX 25.1
          */
-        withContextFile(contextFile: string): TemplateElement;
+        withRawContextFile(contextFile: string): TemplateElement;
         /**
          * Set the icon for this template element.
          *

@@ -11,5 +11,5 @@ module.exports = cx.templateElement
     .withFile(require("./template.hbs"))
     .withTemplateParts(
         cx.templatePart.MultilinePlainText("Multiline plain text", "multiline-plain-text-wmiRti", 5).withRawContext({ value: "Bennis Text" }),
-        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H").withLinkContext("[b4]", "ABC Text"),
+        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H").withLinkContext("[b4]", "ABC Text", "BFSG Descrip"),
     )
