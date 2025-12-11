@@ -52,10 +52,15 @@ export default class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
+   * @param {boolean?} [descriptionEnabled=true] - optional parameter to enable / disable description property
+   * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
    * @returns {TemplatePart}
    */
-  Link(label, partContextId) {
-    return new TemplatePart('link', label, partContextId);
+  Link(label, partContextId, descriptionEnabled=true, textEnabled=true) {
+    var part = new TemplatePart('link', label, partContextId);
+    part.addConfigValueIfNotNull(DesignJsonProperty.DESCRIPTION_ENABLED, descriptionEnabled);
+    part.addConfigValueIfNotNull(DesignJsonProperty.TEXT_ENABLED, textEnabled);
+    return part;
   }
 
   /**

@@ -422,6 +422,14 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static DESCRIPTION_ENABLED = 'descriptionEnabled';
+  /**
+   * @type {string}
+   */
+  static TEXT_ENABLED = 'textEnabled';
+  /**
+   * @type {string}
+   */
   static HIDDEN = 'hidden';
   /**
    * @type {string}
@@ -3129,7 +3137,7 @@ class TemplatePart extends AbstractBuilder {
    * @type {{}|undefined}
    * @private
    */
-  _context = {};
+  _prefill = {};
 
   /**
    * @param {string} partId - partId (eg "plainText")
@@ -3186,8 +3194,8 @@ class TemplatePart extends AbstractBuilder {
   /**
    * @returns {{}|undefined}
    */
-  get context() {
-    return this._context;
+  get prefill() {
+    return this._prefill;
   }
 
   /**
@@ -3208,7 +3216,7 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
-   * Add new key-value pair to context object
+   * Add new key-value pair to prefill object
    * No changes if value == null
    * 
    * @param {string} key 
@@ -3218,13 +3226,13 @@ class TemplatePart extends AbstractBuilder {
    */
   addPrefillValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
-      this._context[key] = isBoolean ? !!value : value;
+      this._prefill[key] = isBoolean ? !!value : value;
     }
     return this;
   }
 
   /**
-   * Add new image src to context object
+   * Add new image src to prefill object
    * No changes if value == null
    * 
    * @param {string} key 
@@ -3234,12 +3242,12 @@ class TemplatePart extends AbstractBuilder {
   addPrefillImageSrc(key, value) {
     if(value) {
       let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
-      this._context[key] = replacedValue;
+      this._prefill[key] = replacedValue;
     }
   }
 
   /**
-   * Add new context object for a text template part.
+   * Add new prefill object for a text template part.
    * 
    * @param {string} value 
    * @returns {this}
@@ -3250,18 +3258,18 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
-   * Add new context object for a checkbox template part.
+   * Add new prefill object for a checkbox template part.
    * 
    * @param {boolean?} isPreselected is checkbox selected by default
    * @returns {this}
    */
   withCheckboxPrefill(isPreselected) {
-    this._context = { value: !!isPreselected };
+    this._prefill = { value: !!isPreselected };
     return this;
   }
 
   /**
-   * Add new context object for a option template part.
+   * Add new prefill object for a option template part.
    * 
    * @param {string} preselectedOption is checkbox selected by default
    * @returns {this}
@@ -3276,7 +3284,7 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
-   * Add new context object for a formatted text template part.
+   * Add new prefill object for a formatted text template part.
    * 
    * @param {string} html HTML Text inside formatted text part 
    * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
@@ -3289,7 +3297,7 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
-   * Add new context object for a link template part.
+   * Add new prefill object for a link template part.
    * 
    * @param {string?} url The URL for the link.
    * @param {string?} text The text for the link.
@@ -3306,7 +3314,7 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
-   * Add new context object for a image template part.
+   * Add new prefill object for a image template part.
    * 
    * @param {string?} srcUrl The URL that points to the selected image.
    * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
@@ -3325,13 +3333,13 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
-   * Add new raw context object to template part
+   * Add new raw prefill object to template part
    * 
-   * @param {context} contextObj 
+   * @param {prefill} prefillObj 
    * @returns {this}
    */
-  withRawPrefill(context) {
-    this._context = context;
+  withRawPrefill(prefill) {
+    this._prefill = prefill;
     return this;
   }
 
@@ -7616,10 +7624,15 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
+   * @param {boolean?} [descriptionEnabled=true] - optional parameter to enable / disable description property
+   * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
    * @returns {TemplatePart}
    */
-  Link(label, partContextId) {
-    return new TemplatePart('link', label, partContextId);
+  Link(label, partContextId, descriptionEnabled=true, textEnabled=true) {
+    var part = new TemplatePart('link', label, partContextId);
+    part.addConfigValueIfNotNull(DesignJsonProperty.DESCRIPTION_ENABLED, descriptionEnabled);
+    part.addConfigValueIfNotNull(DesignJsonProperty.TEXT_ENABLED, textEnabled);
+    return part;
   }
 
   /**

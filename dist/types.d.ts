@@ -350,6 +350,14 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static DESCRIPTION_ENABLED: string;
+        /**
+         * @type {string}
+         */
+        static TEXT_ENABLED: string;
+        /**
+         * @type {string}
+         */
         static HIDDEN: string;
         /**
          * @type {string}
@@ -4423,7 +4431,7 @@ declare module "src/content-element/template-part/template-part" {
          * @type {{}|undefined}
          * @private
          */
-        private _context;
+        private _prefill;
         /**
          * @returns {string}
          */
@@ -4443,7 +4451,7 @@ declare module "src/content-element/template-part/template-part" {
         /**
          * @returns {{}|undefined}
          */
-        get context(): {} | undefined;
+        get prefill(): {} | undefined;
         /**
          * Add new key-value pair to config object
          * No changes if value == null
@@ -4455,7 +4463,7 @@ declare module "src/content-element/template-part/template-part" {
          */
         addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
         /**
-         * Add new key-value pair to context object
+         * Add new key-value pair to prefill object
          * No changes if value == null
          *
          * @param {string} key
@@ -4465,7 +4473,7 @@ declare module "src/content-element/template-part/template-part" {
          */
         addPrefillValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
         /**
-         * Add new image src to context object
+         * Add new image src to prefill object
          * No changes if value == null
          *
          * @param {string} key
@@ -4474,28 +4482,28 @@ declare module "src/content-element/template-part/template-part" {
          */
         addPrefillImageSrc(key: string, value: string): this;
         /**
-         * Add new context object for a text template part.
+         * Add new prefill object for a text template part.
          *
          * @param {string} value
          * @returns {this}
          */
         withTextPrefill(value: string): this;
         /**
-         * Add new context object for a checkbox template part.
+         * Add new prefill object for a checkbox template part.
          *
          * @param {boolean?} isPreselected is checkbox selected by default
          * @returns {this}
          */
         withCheckboxPrefill(isPreselected: boolean | null): this;
         /**
-         * Add new context object for a option template part.
+         * Add new prefill object for a option template part.
          *
          * @param {string} preselectedOption is checkbox selected by default
          * @returns {this}
          */
         withOptionPrefill(preselectedOption: string): this;
         /**
-         * Add new context object for a formatted text template part.
+         * Add new prefill object for a formatted text template part.
          *
          * @param {string} html HTML Text inside formatted text part
          * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
@@ -4503,7 +4511,7 @@ declare module "src/content-element/template-part/template-part" {
          */
         withFormattedTextPrefill(html: string, languageTag: string | null): this;
         /**
-         * Add new context object for a link template part.
+         * Add new prefill object for a link template part.
          *
          * @param {string?} url The URL for the link.
          * @param {string?} text The text for the link.
@@ -4513,7 +4521,7 @@ declare module "src/content-element/template-part/template-part" {
          */
         withLinkPrefill(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
         /**
-         * Add new context object for a image template part.
+         * Add new prefill object for a image template part.
          *
          * @param {string?} srcUrl The URL that points to the selected image.
          * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
@@ -4524,12 +4532,12 @@ declare module "src/content-element/template-part/template-part" {
          */
         withImagePrefill(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
         /**
-         * Add new raw context object to template part
+         * Add new raw prefill object to template part
          *
-         * @param {context} contextObj
+         * @param {prefill} prefillObj
          * @returns {this}
          */
-        withRawPrefill(context: any): this;
+        withRawPrefill(prefill: any): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -7829,9 +7837,11 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
+         * @param {boolean?} [descriptionEnabled=true] - optional parameter to enable / disable description property
+         * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
          * @returns {TemplatePart}
          */
-        Link(label: string, partContextId: string): TemplatePart;
+        Link(label: string, partContextId: string, descriptionEnabled?: boolean | null, textEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new image content element part builder instance.
          *

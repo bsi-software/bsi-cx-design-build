@@ -126,6 +126,14 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static DESCRIPTION_ENABLED = 'descriptionEnabled';
+  /**
+   * @type {string}
+   */
+  static TEXT_ENABLED = 'textEnabled';
+  /**
+   * @type {string}
+   */
   static HIDDEN = 'hidden';
   /**
    * @type {string}
