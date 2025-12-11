@@ -31,9 +31,11 @@ export default class TemplatePart extends AbstractBuilder {
   _context = {};
 
   /**
-   * @param {string} partId
+   * @param {string} partId - partId (eg "plainText")
+   * @param {string} label - label of the template part
+   * @param {string} partContextId - contextId of part (eg "label-bjp6Z6")
    */
-  constructor(partId, label, partContextId, context) {
+  constructor(partId, label, partContextId) {
     super();
     /**
      * @type {string}
@@ -113,7 +115,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {boolean?} [isBoolean=false] 
    * @returns {this}
    */
-  addContextValueIfNotNull(key, value, isBoolean = false) {
+  addPrefillValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
       this._context[key] = isBoolean ? !!value : value;
     }
@@ -128,7 +130,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {string} value 
    * @returns {this}
    */
-  addContextImageSrc(key, value) {
+  addPrefillImageSrc(key, value) {
     if(value) {
       let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
       this._context[key] = replacedValue;
@@ -141,7 +143,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {string} value 
    * @returns {this}
    */
-  withTextContext(value) {
+  withTextPrefill(value) {
     this.addContextValueIfNotNull('value', value);
     return this;
   }
@@ -152,7 +154,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {boolean?} isPreselected is checkbox selected by default
    * @returns {this}
    */
-  withCheckboxContext(isPreselected) {
+  withCheckboxPrefill(isPreselected) {
     this._context = { value: !!isPreselected };
     return this;
   }
@@ -163,8 +165,8 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {string} preselectedOption is checkbox selected by default
    * @returns {this}
    */
-  withOptionContext(preselectedOption) {
-    this.addContextValueIfNotNull('value', preselectedOption);
+  withOptionPrefill(preselectedOption) {
+    this.addPrefillValueIfNotNull('value', preselectedOption);
     let options = this._config[DesignJsonProperty.OPTIONS];
     if (preselectedOption && options && options.every(option => option.value !== preselectedOption)) {
       console.warn(`Option ${preselectedOption} not found in Options`);
@@ -179,9 +181,9 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
    * @returns {this}
    */
-  withFormattedTextContext(html, languageTag) {
-    this.addContextValueIfNotNull('html', html);
-    this.addContextValueIfNotNull('languageTag', languageTag);
+  withFormattedTextPrefill(html, languageTag) {
+    this.addPrefillValueIfNotNull('html', html);
+    this.addPrefillValueIfNotNull('languageTag', languageTag);
     return this;
   }
 
@@ -194,11 +196,11 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
    * @returns {this}
    */
-  withLinkContext(url, text, description, openInNewWindow) {
-    this.addContextValueIfNotNull('url', url);
-    this.addContextValueIfNotNull('text', text);
-    this.addContextValueIfNotNull('description', description);
-    this.addContextValueIfNotNull('openInNewWindow', openInNewWindow, true);
+  withLinkPrefill(url, text, description, openInNewWindow) {
+    this.addPrefillValueIfNotNull('url', url);
+    this.addPrefillValueIfNotNull('text', text);
+    this.addPrefillValueIfNotNull('description', description);
+    this.addPrefillValueIfNotNull('openInNewWindow', openInNewWindow, true);
     return this;
   }
 
@@ -212,12 +214,12 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
    * @returns {this}
    */
-  withImageContext(srcUrl, placeholderSrcUrl, altText, decorative, srcset) {
-    this.addContextImageSrc('srcUrl', srcUrl);
-    this.addContextImageSrc('placeholderSrcUrl', placeholderSrcUrl);
-    this.addContextValueIfNotNull('altText', altText);
-    this.addContextValueIfNotNull('decorative', decorative, true);
-    this.addContextValueIfNotNull('srcset', srcset);
+  withImagePrefill(srcUrl, placeholderSrcUrl, altText, decorative, srcset) {
+    this.addPrefillImageSrc('srcUrl', srcUrl);
+    this.addPrefillImageSrc('placeholderSrcUrl', placeholderSrcUrl);
+    this.addPrefillValueIfNotNull('altText', altText);
+    this.addPrefillValueIfNotNull('decorative', decorative, true);
+    this.addPrefillValueIfNotNull('srcset', srcset);
     return this;
   }
 
@@ -227,7 +229,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @param {context} contextObj 
    * @returns {this}
    */
-  withRawContext(context) {
+  withRawPrefill(context) {
     this._context = context;
     return this;
   }

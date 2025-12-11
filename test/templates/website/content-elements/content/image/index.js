@@ -8,5 +8,5 @@ module.exports = cx
   .withLabel('Hero (nur Bild)')
   .withDescription('')
   .withTemplateParts(
-    cx.templatePart.Image('Bild', 'image-f6zquy').withImageContext(require('../../../static/image.png'))
+    cx.templatePart.Image('Bild', 'image-f6zquy').withImagePrefill(require('../../../static/image.png'))
   );

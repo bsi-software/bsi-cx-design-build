@@ -4394,9 +4394,11 @@ declare module "src/content-element/part/part" {
 declare module "src/content-element/template-part/template-part" {
     export default class TemplatePart extends AbstractBuilder {
         /**
-         * @param {string} partId
+         * @param {string} partId - partId (eg "plainText")
+         * @param {string} label - label of the template part
+         * @param {string} partContextId - contextId of part (eg "label-bjp6Z6")
          */
-        constructor(partId: string, label: any, partContextId: any, context: any);
+        constructor(partId: string, label: string, partContextId: string);
         /**
          * @type {string}
          * @private
@@ -4461,7 +4463,7 @@ declare module "src/content-element/template-part/template-part" {
          * @param {boolean?} [isBoolean=false]
          * @returns {this}
          */
-        addContextValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        addPrefillValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
         /**
          * Add new image src to context object
          * No changes if value == null
@@ -4470,28 +4472,28 @@ declare module "src/content-element/template-part/template-part" {
          * @param {string} value
          * @returns {this}
          */
-        addContextImageSrc(key: string, value: string): this;
+        addPrefillImageSrc(key: string, value: string): this;
         /**
          * Add new context object for a text template part.
          *
          * @param {string} value
          * @returns {this}
          */
-        withTextContext(value: string): this;
+        withTextPrefill(value: string): this;
         /**
          * Add new context object for a checkbox template part.
          *
          * @param {boolean?} isPreselected is checkbox selected by default
          * @returns {this}
          */
-        withCheckboxContext(isPreselected: boolean | null): this;
+        withCheckboxPrefill(isPreselected: boolean | null): this;
         /**
          * Add new context object for a option template part.
          *
          * @param {string} preselectedOption is checkbox selected by default
          * @returns {this}
          */
-        withOptionContext(preselectedOption: string): this;
+        withOptionPrefill(preselectedOption: string): this;
         /**
          * Add new context object for a formatted text template part.
          *
@@ -4499,7 +4501,7 @@ declare module "src/content-element/template-part/template-part" {
          * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
          * @returns {this}
          */
-        withFormattedTextContext(html: string, languageTag: string | null): this;
+        withFormattedTextPrefill(html: string, languageTag: string | null): this;
         /**
          * Add new context object for a link template part.
          *
@@ -4509,7 +4511,7 @@ declare module "src/content-element/template-part/template-part" {
          * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
          * @returns {this}
          */
-        withLinkContext(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
+        withLinkPrefill(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
         /**
          * Add new context object for a image template part.
          *
@@ -4520,14 +4522,14 @@ declare module "src/content-element/template-part/template-part" {
          * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
          * @returns {this}
          */
-        withImageContext(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
+        withImagePrefill(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
         /**
          * Add new raw context object to template part
          *
          * @param {context} contextObj
          * @returns {this}
          */
-        withRawContext(context: any): this;
+        withRawPrefill(context: any): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }

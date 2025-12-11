@@ -10,6 +10,6 @@ module.exports = cx.templateElement
     .withLabel("Template Button")
     .withFile(require("./template.hbs"))
     .withTemplateParts(
-        cx.templatePart.MultilinePlainText("Multiline plain text", "multiline-plain-text-wmiRti", 5).withRawContext({ value: "Bennis Text" }),
-        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H").withLinkContext("[b4]", "ABC Text", "BFSG Descrip"),
+        cx.templatePart.MultilinePlainText("Multiline plain text", "multiline-plain-text-wmiRti", 5).withRawPrefill({ value: "Bennis Text" }),
+        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H").withLinkPrefill("[b4]", "ABC Text", "BFSG Descrip"),
     )
