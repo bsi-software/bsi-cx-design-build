@@ -7867,7 +7867,7 @@ declare module "src/content-element/template-part/template-part-factory" {
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
          * @returns {TemplatePart}
          */
         Option(label: string, partContextId: string, options: any): TemplatePart;

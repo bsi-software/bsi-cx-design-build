@@ -98,12 +98,21 @@ export default class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
-    options = Array.isArray(options) ? options : Object.entries(options).map(([value, text]) => ({ "value": value, "text": text }))
+    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
+    if(new Set(options.map(option => option.text)).size !== options.length) {
+      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+      throw new Error(`text in ${optionString} have to be unique`);
+    };
+    if(new Set(options.map(option => option.value)).size !== options.length) {
+      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+      throw new Error(`value in ${optionString} have to be unique`);
+    };
+
     part = part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
     return part;
   }

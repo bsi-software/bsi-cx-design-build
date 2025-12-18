@@ -144,7 +144,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   withTextPrefill(value) {
-    this.addContextValueIfNotNull('value', value);
+    this.addPrefillValueIfNotNull('value', value);
     return this;
   }
 

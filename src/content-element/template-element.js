@@ -525,7 +525,7 @@ export default class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
-    // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
@@ -535,7 +535,7 @@ export default class TemplateElement extends AbstractBuilder {
     this.templateParts.forEach(templatePart => {
       let partContextId = templatePart.partContextId;
       this._contextFile[partContextId] = this._contextFile[partContextId] || {};
-      Object.assign(this._contextFile[partContextId], templatePart.context)
+      Object.assign(this._contextFile[partContextId], templatePart.prefill)
     })
     this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 

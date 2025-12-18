@@ -3253,7 +3253,7 @@ class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   withTextPrefill(value) {
-    this.addContextValueIfNotNull('value', value);
+    this.addPrefillValueIfNotNull('value', value);
     return this;
   }
 
@@ -3882,7 +3882,7 @@ class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
-    // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
@@ -3892,7 +3892,7 @@ class TemplateElement extends AbstractBuilder {
     this.templateParts.forEach(templatePart => {
       let partContextId = templatePart.partContextId;
       this._contextFile[partContextId] = this._contextFile[partContextId] || {};
-      Object.assign(this._contextFile[partContextId], templatePart.context)
+      Object.assign(this._contextFile[partContextId], templatePart.prefill)
     })
     this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
@@ -7670,12 +7670,21 @@ class TemplatePartFactory {
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
-    options = Array.isArray(options) ? options : Object.entries(options).map(([value, text]) => ({ "value": value, "text": text }))
+    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
+    if(new Set(options.map(option => option.text)).size !== options.length) {
+      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+      throw new Error(`text in ${optionString} have to be unique`);
+    };
+    if(new Set(options.map(option => option.value)).size !== options.length) {
+      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+      throw new Error(`value in ${optionString} have to be unique`);
+    };
+
     part = part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
     return part;
   }
