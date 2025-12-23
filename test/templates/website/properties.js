@@ -12,4 +12,8 @@ module.exports = {
   emptyProperty: '',
   wrong: false,
   borderStyle: css.style('5px solid #ffffff'),
+  colorComplex: {
+    400: "#ffffff",
+    600: "#0437F2"
+  }
 };
