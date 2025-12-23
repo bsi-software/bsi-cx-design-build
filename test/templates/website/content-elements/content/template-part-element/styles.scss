@@ -9,6 +9,10 @@
         object-fit: contain;
     }
 
+    a {
+        border: bsiProperty("borderStyle", 2px dotted #ffffff);
+    }
+
     &::before {
         content: attr(option-tag);
         background-color: aqua;

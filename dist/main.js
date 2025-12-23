@@ -111,6 +111,7 @@ __webpack_require__.d(helper_namespaceObject, {
   color: () => (color),
   dataUri: () => (dataUri),
   number: () => (number),
+  style: () => (style),
   url: () => (url)
 });
 
@@ -5172,6 +5173,8 @@ class AbstractCssProperty {
   }
 
   /**
+   * Will be used in Scss files.
+   * 
    * @returns {*}
    * @abstract
    */
@@ -5927,7 +5930,82 @@ class CssBool extends AbstractCssProperty {
   }
 }
 
+;// ./src/css/css-style.js
+
+
+
+
+class CssStyle extends AbstractCssProperty {
+  /**
+   * @type {string}
+   * @private
+   */
+  _value = undefined;
+
+  /**
+   * @param {string} value
+   */
+  constructor(value) {
+    super();
+    /**
+     * @type {string}
+     * @private
+     */
+    this._value = value;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get value() {
+    return this._value;
+  }
+
+  /**
+   * @returns {*}
+   */
+  getLessNode() {
+    return this.value;
+  }
+
+  /**
+   * @returns {*}
+   */
+  getSassObject() {
+    return new (external_sass_default()).SassString(this.value, { quotes: false });
+  }
+
+  /**
+   * @returns {string}
+   */
+  toString() {
+    return this.value;
+  }
+
+  /**
+   * @param {string} value
+   * @returns {CssStyle}
+   */
+  static fromString(value) {
+    return new CssStyle(value);
+  }
+
+  /**
+   * @param {*} value
+   * @returns {(function(*): CssStyle)|undefined}
+   */
+  static getParser(value) {
+    switch (true) {
+      case typeof value === 'string' || value instanceof string:
+        return CssStyle.fromString;
+      default:
+        return undefined;
+    }
+  }
+}
+
 ;// ./src/css/css-property-resolver.js
+
 
 
 
@@ -5982,6 +6060,7 @@ class CssPropertyResolver {
       CssDimension,
       CssBool,
       CssUrl,
+      CssStyle,
       CssRaw
     ];
 
@@ -7057,6 +7136,7 @@ class WebpackConfigBuilder {
 
 
 
+
 /**
  * Create a <code>url()</code> object. The supplied path segments will be passed to <code>path.resolve</code>
  * to get the correct path. <strong>It is recommended to pass an absolute path.</strong>
@@ -7139,6 +7219,20 @@ function color(...channels) {
  */
 function number(value) {
   let parser = CssDimension.getParser(value);
+  return !!parser ? parser(value) : value;
+}
+
+/**
+ * Create a CSS string value with no quotes. Take a look at the example to find out more about the accepted input.
+ *
+ * @example
+ * css.style('solid');
+ * 
+ * @param {string} value - The value as string.
+ * @returns {CssStyle|string}
+ */
+function style(value) {
+  let parser = CssStyle.getParser(value);
   return !!parser ? parser(value) : value;
 }
 

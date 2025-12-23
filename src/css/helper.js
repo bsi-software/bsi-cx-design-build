@@ -3,6 +3,7 @@ import path from 'path';
 import CssColor from './css-color';
 import CssUrl from './css-url';
 import CssDimension from './css-dimension';
+import CssStyle from './css-style';
 
 /**
  * Create a <code>url()</code> object. The supplied path segments will be passed to <code>path.resolve</code>
@@ -86,5 +87,19 @@ export function color(...channels) {
  */
 export function number(value) {
   let parser = CssDimension.getParser(value);
+  return !!parser ? parser(value) : value;
+}
+
+/**
+ * Create a CSS string value with no quotes. Take a look at the example to find out more about the accepted input.
+ *
+ * @example
+ * css.style('solid');
+ * 
+ * @param {string} value - The value as string.
+ * @returns {CssStyle|string}
+ */
+export function style(value) {
+  let parser = CssStyle.getParser(value);
   return !!parser ? parser(value) : value;
 }

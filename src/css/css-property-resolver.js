@@ -3,6 +3,7 @@ import CssDimension from './css-dimension';
 import CssRaw from './css-raw';
 import CssUrl from './css-url';
 import CssBool from './css-bool';
+import CssStyle from './css-style';
 
 /** @typedef {import('./abstract-css-property').default} AbstractCssProperty */
 
@@ -52,6 +53,7 @@ export default class CssPropertyResolver {
       CssDimension,
       CssBool,
       CssUrl,
+      CssStyle,
       CssRaw
     ];
 

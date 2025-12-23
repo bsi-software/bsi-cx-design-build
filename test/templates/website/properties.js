@@ -10,5 +10,6 @@ module.exports = {
   secondaryColor: '#aabb44',
   hrefLink: 'https://someLink',
   emptyProperty: '',
-  wrong: false
+  wrong: false,
+  borderStyle: css.style('5px solid #ffffff'),
 };
