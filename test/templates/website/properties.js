@@ -11,7 +11,7 @@ module.exports = {
   hrefLink: 'https://someLink',
   emptyProperty: '',
   wrong: false,
-  borderStyle: css.style('5px solid #ffffff'),
+  borderStyle: '5px solid #ffffff',
   colorComplex: {
     400: "#ffffff",
     600: "#0437F2"

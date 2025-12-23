@@ -2378,6 +2378,8 @@ declare module "src/css/abstract-css-property" {
          */
         static getParser(value: any): (arg0: any) => AbstractCssProperty | undefined;
         /**
+         * Will be used in Less files.
+         *
          * @returns {*}
          * @abstract
          */
@@ -2727,34 +2729,6 @@ declare module "src/css/css-bool" {
          * @returns {boolean}
          */
         get value(): boolean;
-    }
-    import AbstractCssProperty from "src/css/abstract-css-property";
-}
-declare module "src/css/css-style" {
-    export default class CssStyle extends AbstractCssProperty {
-        /**
-         * @param {string} value
-         * @returns {CssStyle}
-         */
-        static fromString(value: string): CssStyle;
-        /**
-         * @param {*} value
-         * @returns {(function(*): CssStyle)|undefined}
-         */
-        static getParser(value: any): ((arg0: any) => CssStyle) | undefined;
-        /**
-         * @param {string} value
-         */
-        constructor(value: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _value;
-        /**
-         * @returns {string}
-         */
-        get value(): string;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }
@@ -3261,20 +3235,9 @@ declare module "src/css/helper" {
      * @returns {CssDimension|string}
      */
     export function number(value: string): CssDimension | string;
-    /**
-     * Create a CSS string value with no quotes. Take a look at the example to find out more about the accepted input.
-     *
-     * @example
-     * css.style('solid');
-     *
-     * @param {string} value - The value as string.
-     * @returns {CssStyle|string}
-     */
-    export function style(value: string): CssStyle | string;
     import CssUrl from "src/css/css-url";
     import CssColor from "src/css/css-color";
     import CssDimension from "src/css/css-dimension";
-    import CssStyle from "src/css/css-style";
 }
 declare module "export/main" {
     import * as Version from "src/version";
