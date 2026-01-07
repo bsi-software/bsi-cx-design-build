@@ -103,6 +103,9 @@ export default class TemplatePartFactory {
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
+    // Error handling: Validates the given array of option objects.
+    // Ensures that both "text" and "value" fields are unique.
+    // Duplicate "text" or "value" entries are not allowed and will throw an error.
     options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
     if(new Set(options.map(option => option.text)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
