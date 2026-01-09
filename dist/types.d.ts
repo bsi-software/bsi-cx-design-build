@@ -350,6 +350,14 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static DESCRIPTION_ENABLED: string;
+        /**
+         * @type {string}
+         */
+        static TEXT_ENABLED: string;
+        /**
+         * @type {string}
+         */
         static HIDDEN: string;
         /**
          * @type {string}
@@ -2370,11 +2378,15 @@ declare module "src/css/abstract-css-property" {
          */
         static getParser(value: any): (arg0: any) => AbstractCssProperty | undefined;
         /**
+         * Will be used in Less files.
+         *
          * @returns {*}
          * @abstract
          */
         getLessNode(): any;
         /**
+         * Will be used in Scss files.
+         *
          * @returns {*}
          * @abstract
          */
@@ -4394,9 +4406,11 @@ declare module "src/content-element/part/part" {
 declare module "src/content-element/template-part/template-part" {
     export default class TemplatePart extends AbstractBuilder {
         /**
-         * @param {string} partId
+         * @param {string} partId - partId (eg "plainText")
+         * @param {string} label - label of the template part
+         * @param {string} partContextId - contextId of part (eg "label-bjp6Z6")
          */
-        constructor(partId: string, label: any, partContextId: any);
+        constructor(partId: string, label: string, partContextId: string);
         /**
          * @type {string}
          * @private
@@ -4418,6 +4432,15 @@ declare module "src/content-element/template-part/template-part" {
          */
         private _config;
         /**
+         * This Prefill is not part of the json-data.
+         * The content of this object is loaded into the context.json of the TemplateElement
+         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+         *
+         * @type {{}|undefined}
+         * @private
+         */
+        private _prefill;
+        /**
          * @returns {string}
          */
         get partContextId(): string;
@@ -4434,6 +4457,14 @@ declare module "src/content-element/template-part/template-part" {
          */
         get config(): {} | undefined;
         /**
+         * This Prefill is not part of the json-data.
+         * The content of this object is loaded into the context.json of the TemplateElement
+         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+         *
+         * @returns {{}|undefined}
+         */
+        get prefill(): {} | undefined;
+        /**
          * Add new key-value pair to config object
          * No changes if value == null
          *
@@ -4443,6 +4474,82 @@ declare module "src/content-element/template-part/template-part" {
          * @returns {this}
          */
         addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        /**
+         * Add new key-value pair to prefill object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @param {boolean?} [isBoolean=false]
+         * @returns {this}
+         */
+        addPrefillValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        /**
+         * Add new image src to prefill object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @returns {this}
+         */
+        addPrefillImageSrc(key: string, value: string): this;
+        /**
+         * Add new prefill object for a text template part.
+         *
+         * @param {string} value
+         * @returns {this}
+         */
+        withTextPrefill(value: string): this;
+        /**
+         * Add new prefill object for a checkbox template part.
+         *
+         * @param {boolean?} isPreselected is checkbox selected by default
+         * @returns {this}
+         */
+        withCheckboxPrefill(isPreselected: boolean | null): this;
+        /**
+         * Add new prefill object for a option template part.
+         *
+         * @param {string} preselectedOption is checkbox selected by default
+         * @returns {this}
+         */
+        withOptionPrefill(preselectedOption: string): this;
+        /**
+         * Add new prefill object for a formatted text template part.
+         *
+         * @param {string} html HTML Text inside formatted text part
+         * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+         * @returns {this}
+         */
+        withFormattedTextPrefill(html: string, languageTag: string | null): this;
+        /**
+         * Add new prefill object for a link template part.
+         *
+         * @param {string?} url The URL for the link.
+         * @param {string?} text The text for the link.
+         * @param {string?} description The description for the link.
+         * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+         * @returns {this}
+         */
+        withLinkPrefill(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
+        /**
+         * Add new prefill object for a image template part.
+         *
+         * @param {string?} srcUrl The URL that points to the selected image.
+         * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
+         * @param {string?} altText Prefilled Alt Text
+         * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
+         * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
+         * @returns {this}
+         */
+        withImagePrefill(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
+        /**
+         * Add new raw prefill object to template part
+         *
+         * @param {prefill} prefillObj
+         * @returns {this}
+         */
+        withRawPrefill(prefill: any): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -4742,15 +4849,15 @@ declare module "src/content-element/template-element" {
          */
         withFile(file: string): TemplateElement;
         /**
-         * Set the default values to use for this template element. Be aware, that you have to require the context file.
+         * Set the raw values to use for this template element. Be aware, that you have to require the context file.
          *
          * @example
-         * .withFile(require('./context.json'))
+         * .withRawContextFile(require('./context.json'))
          * @param {string} contextFile - The default values for the template parts of this element.
          * @returns {TemplateElement}
          * @since BSI CX 25.1
          */
-        withContextFile(contextFile: string): TemplateElement;
+        withRawContextFile(contextFile: string): TemplateElement;
         /**
          * Set the icon for this template element.
          *
@@ -4963,6 +5070,10 @@ declare module "src/content-element/template-element" {
          * @returns {TemplateElement}
          */
         withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
+        /**
+         * Internal function to load prefill of template parts into context file
+         */
+        _loadPrefillIntoContextFile(): void;
         _buildInternal(): {
             type: string;
         };
@@ -7711,6 +7822,10 @@ declare module "src/content-element/template-part/template-part-factory" {
     export default class TemplatePartFactory {
         /**
          * Build a new plain text content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withTextPrefill()` function.
+         *
+         * @example cx.templatePart.PlainText("Vorname", "prename-abc123").withTextPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7720,6 +7835,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new multiple plain text content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withTextPrefill()` function.
+         *
+         * @example cx.templatePart.MultilinePlainText("Accordion Content", "accordion-content-abc123", 5, true).withTextPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7730,6 +7849,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         MultilinePlainText(label: string, partContextId: string, fieldHeight?: int | null, studioLinkEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withFormattedTextPrefill()` function.
+         *
+         * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123").withFormattedTextPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7739,14 +7862,24 @@ declare module "src/content-element/template-part/template-part-factory" {
         FormattedText(label: string, partContextId: string, htmlEditorConfig?: HtmlEditorConfig | null): TemplatePart;
         /**
          * Build a new link content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withLinkPrefill()` function.
+         *
+         * @example cx.templatePart.Link("Button", "button-abc123").withLinkPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
+         * @param {boolean?} [descriptionEnabled=true] - optional parameter to enable / disable description property
+         * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
          * @returns {TemplatePart}
          */
-        Link(label: string, partContextId: string): TemplatePart;
+        Link(label: string, partContextId: string, descriptionEnabled?: boolean | null, textEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new image content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withImagePrefill()` function.
+         *
+         * @example cx.templatePart.Image("Bild", "image-abc123").withImagePrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7758,6 +7891,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         Image(label: string, partContextId: string, altTextMandatory?: boolean | null, srcSetSizes?: string[] | null, hideAccessibilityFields?: boolean | null): TemplatePart;
         /**
          * Build a new checkbox content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withCheckboxPrefill()` function.
+         *
+         * @example cx.templatePart.Checkbox("Show some content", "show-content-abc123").withCheckboxPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7767,15 +7904,23 @@ declare module "src/content-element/template-part/template-part-factory" {
         /**
          * Build a new option content element part builder instance.
          * Options must not be null.
+         * All variables here define the options for the Content Editor.
+         * The content is prefilled by the `.withOptionPrefill()` function.
+         *
+         * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
          * @returns {TemplatePart}
          */
         Option(label: string, partContextId: string, options: any): TemplatePart;
         /**
          * Build a new dynamic value list content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content can not be prefilled yet.
+         *
+         * @example cx.templatePart.DynamicValueList("Load List", "list-abc123")
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7783,7 +7928,12 @@ declare module "src/content-element/template-part/template-part-factory" {
          */
         DynamicValueList(label: string, partContextId: string): TemplatePart;
         /**
-         * Create a raw element part builder instance. Can be used for custom element parts.
+         * Create a raw element part builder instance.
+         * It can be used for custom element parts.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withRawPrefill()` function.
+         *
+         * @example cx.templatePart.Raw("futurePart", "Future", "future-abc123").withRawPrefill(...)
          *
          * @param {string} partId
          * @param {string} label

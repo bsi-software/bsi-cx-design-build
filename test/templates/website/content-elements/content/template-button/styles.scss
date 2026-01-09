@@ -1,5 +1,3 @@
-@use "sass:map";
-
 .bsi-template-part-element {
     &.background-green {
         background-color: greenyellow;
@@ -11,12 +9,8 @@
         object-fit: contain;
     }
 
-    a {
-        border: bsiProperty("borderStyle", 2px dotted #ffffff);
-    }
-
     &::before {
         content: attr(option-tag);
-        background-color: map.get($colorComplex, 600);
+        background-color: aqua;
     }
 }

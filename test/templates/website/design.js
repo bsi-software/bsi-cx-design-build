@@ -41,6 +41,7 @@ module.exports = cx.design
       .withLabel(nls.templateParts)
       .withContentElements(
         require("./content-elements/content/template-part-element"),
+        require("./content-elements/content/template-button"),
         require("./content-elements/content/dynamic-value-list"),
       )
   )
@@ -50,6 +51,7 @@ module.exports = cx.design
       .withAllowedElements(
         require('./content-elements/content/pagination-element'),
         require('./content-elements/content/template-part-element'),
+        require('./content-elements/content/template-button'),
         require('./content-elements/content/dynamic-value-list'),
         require('./content-elements/content/title'),
         require('./content-elements/content/text'),

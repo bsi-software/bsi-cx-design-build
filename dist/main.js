@@ -550,6 +550,14 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static DESCRIPTION_ENABLED = 'descriptionEnabled';
+  /**
+   * @type {string}
+   */
+  static TEXT_ENABLED = 'textEnabled';
+  /**
+   * @type {string}
+   */
   static HIDDEN = 'hidden';
   /**
    * @type {string}
@@ -5156,6 +5164,8 @@ var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
 ;// ./src/css/abstract-css-property.js
 class AbstractCssProperty {
   /**
+   * Will be used in Less files.
+   * 
    * @returns {*}
    * @abstract
    */
@@ -5164,6 +5174,8 @@ class AbstractCssProperty {
   }
 
   /**
+   * Will be used in Scss files.
+   * 
    * @returns {*}
    * @abstract
    */
@@ -5623,7 +5635,7 @@ class CssRaw extends AbstractCssProperty {
    */
   getSassObject() {
     // noinspection JSUnresolvedVariable
-    return new (external_sass_default()).SassString(this.value);
+    return new (external_sass_default()).SassString(this.value, { quotes: false });
   }
 
   /**

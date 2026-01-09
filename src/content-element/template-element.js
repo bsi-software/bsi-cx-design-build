@@ -37,7 +37,7 @@ export default class TemplateElement extends AbstractBuilder {
    * @type {{}|undefined}
    * @private
    */
-  _contextFile = undefined;
+  _contextFile = {};
   /**
    * @type {RawValue|Icon|undefined}
    * @private
@@ -209,15 +209,15 @@ export default class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Set the default values to use for this template element. Be aware, that you have to require the context file.
+   * Set the raw values to use for this template element. Be aware, that you have to require the context file.
    *
    * @example
-   * .withFile(require('./context.json'))
+   * .withRawContextFile(require('./context.json'))
    * @param {string} contextFile - The default values for the template parts of this element.
    * @returns {TemplateElement}
    * @since BSI CX 25.1
    */
-  withContextFile(contextFile) {
+  withRawContextFile(contextFile) {
     this._contextFile = contextFile;
     return this;
   }
@@ -516,8 +516,21 @@ export default class TemplateElement extends AbstractBuilder {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
+  /**
+   * Internal function to load prefill of template parts into context file
+   */
+  _loadPrefillIntoContextFile() {
+    this.templateParts.forEach(templatePart => {
+      let partContextId = templatePart.partContextId;
+      let contextFileObj = this._contextFile[partContextId] || {};
+      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
+    })
+  }
+
   _buildInternal() {
     let config = { type: "template-element" };
+
+    this._loadPrefillIntoContextFile();
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -525,12 +538,12 @@ export default class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
-    // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
     return config;
   }

@@ -1,5 +1,7 @@
 export default class AbstractCssProperty {
   /**
+   * Will be used in Less files.
+   * 
    * @returns {*}
    * @abstract
    */
@@ -8,6 +10,8 @@ export default class AbstractCssProperty {
   }
 
   /**
+   * Will be used in Scss files.
+   * 
    * @returns {*}
    * @abstract
    */

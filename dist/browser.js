@@ -422,6 +422,14 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static DESCRIPTION_ENABLED = 'descriptionEnabled';
+  /**
+   * @type {string}
+   */
+  static TEXT_ENABLED = 'textEnabled';
+  /**
+   * @type {string}
+   */
   static HIDDEN = 'hidden';
   /**
    * @type {string}
@@ -1614,7 +1622,7 @@ class Security extends AbstractBuilder {
     }
 
     /**
-     * Set the value of the formFieldRules property.
+     * Set the value of the htmlSanitization property.
      *
      * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
      * @returns {Security}
@@ -3103,6 +3111,8 @@ const PRE = new Format('pre');
 
 
 
+
+
 class TemplatePart extends AbstractBuilder {
   /**
    * @type {string}
@@ -3124,9 +3134,20 @@ class TemplatePart extends AbstractBuilder {
    * @private
    */
   _config = undefined;
+  /**
+   * This Prefill is not part of the json-data.
+   * The content of this object is loaded into the context.json of the TemplateElement
+   * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+   * 
+   * @type {{}|undefined}
+   * @private
+   */
+  _prefill = {};
 
   /**
-   * @param {string} partId
+   * @param {string} partId - partId (eg "plainText")
+   * @param {string} label - label of the template part
+   * @param {string} partContextId - contextId of part (eg "label-bjp6Z6")
    */
   constructor(partId, label, partContextId) {
     super();
@@ -3176,6 +3197,17 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
+   * This Prefill is not part of the json-data.
+   * The content of this object is loaded into the context.json of the TemplateElement
+   * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+   * 
+   * @returns {{}|undefined}
+   */
+  get prefill() {
+    return this._prefill;
+  }
+
+  /**
    * Add new key-value pair to config object
    * No changes if value == null
    * 
@@ -3186,9 +3218,137 @@ class TemplatePart extends AbstractBuilder {
    */
   addConfigValueIfNotNull(key, value, isBoolean = false) {
     if (value !== null) {
-      this._config = this.config || {};
+      this._config = this._config || {};
       this._config[key] = isBoolean ? !!value : value;
     }
+    return this;
+  }
+
+  /**
+   * Add new key-value pair to prefill object
+   * No changes if value == null
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @param {boolean?} [isBoolean=false] 
+   * @returns {this}
+   */
+  addPrefillValueIfNotNull(key, value, isBoolean = false) {
+    if (value || isBoolean) {
+      this._prefill[key] = isBoolean ? !!value : value;
+    }
+    return this;
+  }
+
+  /**
+   * Add new image src to prefill object
+   * No changes if value == null
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @returns {this}
+   */
+  addPrefillImageSrc(key, value) {
+    if (value) {
+      let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
+      this._prefill[key] = replacedValue;
+    }
+  }
+
+  /**
+   * Add new prefill object for a text template part.
+   * 
+   * @param {string} value 
+   * @returns {this}
+   */
+  withTextPrefill(value) {
+    this.addPrefillValueIfNotNull('value', value);
+    return this;
+  }
+
+  /**
+   * Add new prefill object for a checkbox template part.
+   * 
+   * @param {boolean?} isPreselected is checkbox selected by default
+   * @returns {this}
+   */
+  withCheckboxPrefill(isPreselected) {
+    this._prefill = { value: !!isPreselected };
+    return this;
+  }
+
+  /**
+   * Add new prefill object for a option template part.
+   * 
+   * @param {string} preselectedOption is checkbox selected by default
+   * @returns {this}
+   */
+  withOptionPrefill(preselectedOption) {
+    this.addPrefillValueIfNotNull('value', preselectedOption);
+    let options = this._config[DesignJsonProperty.OPTIONS];
+    if (preselectedOption && options && options.every(option => option.value !== preselectedOption)) {
+      console.warn(`Option ${preselectedOption} not found in Options`);
+    }
+    return this;
+  }
+
+  /**
+   * Add new prefill object for a formatted text template part.
+   * 
+   * @param {string} html HTML Text inside formatted text part 
+   * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+   * @returns {this}
+   */
+  withFormattedTextPrefill(html, languageTag) {
+    this.addPrefillValueIfNotNull('html', html);
+    this.addPrefillValueIfNotNull('languageTag', languageTag);
+    return this;
+  }
+
+  /**
+   * Add new prefill object for a link template part.
+   * 
+   * @param {string?} url The URL for the link.
+   * @param {string?} text The text for the link.
+   * @param {string?} description The description for the link.
+   * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+   * @returns {this}
+   */
+  withLinkPrefill(url, text, description, openInNewWindow) {
+    this.addPrefillValueIfNotNull('url', url);
+    this.addPrefillValueIfNotNull('text', text);
+    this.addPrefillValueIfNotNull('description', description);
+    this.addPrefillValueIfNotNull('openInNewWindow', openInNewWindow, true);
+    return this;
+  }
+
+  /**
+   * Add new prefill object for a image template part.
+   * 
+   * @param {string?} srcUrl The URL that points to the selected image.
+   * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
+   * @param {string?} altText Prefilled Alt Text
+   * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
+   * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
+   * @returns {this}
+   */
+  withImagePrefill(srcUrl, placeholderSrcUrl, altText, decorative, srcset) {
+    this.addPrefillImageSrc('srcUrl', srcUrl);
+    this.addPrefillImageSrc('placeholderSrcUrl', placeholderSrcUrl);
+    this.addPrefillValueIfNotNull('altText', altText);
+    this.addPrefillValueIfNotNull('decorative', decorative, true);
+    this.addPrefillValueIfNotNull('srcset', srcset);
+    return this;
+  }
+
+  /**
+   * Add new raw prefill object to template part
+   * 
+   * @param {prefill} prefillObj 
+   * @returns {this}
+   */
+  withRawPrefill(prefill) {
+    this._prefill = prefill;
     return this;
   }
 
@@ -3243,7 +3403,7 @@ class TemplateElement extends AbstractBuilder {
    * @type {{}|undefined}
    * @private
    */
-  _contextFile = undefined;
+  _contextFile = {};
   /**
    * @type {RawValue|Icon|undefined}
    * @private
@@ -3415,15 +3575,15 @@ class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Set the default values to use for this template element. Be aware, that you have to require the context file.
+   * Set the raw values to use for this template element. Be aware, that you have to require the context file.
    *
    * @example
-   * .withFile(require('./context.json'))
+   * .withRawContextFile(require('./context.json'))
    * @param {string} contextFile - The default values for the template parts of this element.
    * @returns {TemplateElement}
    * @since BSI CX 25.1
    */
-  withContextFile(contextFile) {
+  withRawContextFile(contextFile) {
     this._contextFile = contextFile;
     return this;
   }
@@ -3722,8 +3882,21 @@ class TemplateElement extends AbstractBuilder {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
+  /**
+   * Internal function to load prefill of template parts into context file
+   */
+  _loadPrefillIntoContextFile() {
+    this.templateParts.forEach(templatePart => {
+      let partContextId = templatePart.partContextId;
+      let contextFileObj = this._contextFile[partContextId] || {};
+      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
+    })
+  }
+
   _buildInternal() {
     let config = { type: "template-element" };
+
+    this._loadPrefillIntoContextFile();
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -3731,12 +3904,12 @@ class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
-    // this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.COMPOSITE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
     return config;
   }
@@ -7419,6 +7592,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new plain text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withTextPrefill()` function.
+   * 
+   * @example cx.templatePart.PlainText("Vorname", "prename-abc123").withTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7433,6 +7610,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new multiple plain text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withTextPrefill()` function.
+   * 
+   * @example cx.templatePart.MultilinePlainText("Accordion Content", "accordion-content-abc123", 5, true).withTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7449,6 +7630,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new formatted text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withFormattedTextPrefill()` function.
+   * 
+   * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123").withFormattedTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7463,17 +7648,30 @@ class TemplatePartFactory {
 
   /**
    * Build a new link content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withLinkPrefill()` function.
+   * 
+   * @example cx.templatePart.Link("Button", "button-abc123").withLinkPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
+   * @param {boolean?} [descriptionEnabled=true] - optional parameter to enable / disable description property
+   * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
    * @returns {TemplatePart}
    */
-  Link(label, partContextId) {
-    return new TemplatePart('link', label, partContextId);
+  Link(label, partContextId, descriptionEnabled=true, textEnabled=true) {
+    var part = new TemplatePart('link', label, partContextId);
+    part.addConfigValueIfNotNull(DesignJsonProperty.DESCRIPTION_ENABLED, descriptionEnabled);
+    part.addConfigValueIfNotNull(DesignJsonProperty.TEXT_ENABLED, textEnabled);
+    return part;
   }
 
   /**
    * Build a new image content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withImagePrefill()` function.
+   * 
+   * @example cx.templatePart.Image("Bild", "image-abc123").withImagePrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7492,6 +7690,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new checkbox content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withCheckboxPrefill()` function.
+   * 
+   * @example cx.templatePart.Checkbox("Show some content", "show-content-abc123").withCheckboxPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7504,21 +7706,41 @@ class TemplatePartFactory {
   /**
    * Build a new option content element part builder instance.
    * Options must not be null.
+   * All variables here define the options for the Content Editor.
+   * The content is prefilled by the `.withOptionPrefill()` function.
+   * 
+   * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "yes": "Ja", "no": "Nein" }
+   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
-    options = Array.isArray(options) ? options : Object.entries(options).map(([value, text]) => ({ "value": value, "text": text }))
+    // Error handling: Validates the given array of option objects.
+    // Ensures that both "text" and "value" fields are unique.
+    // Duplicate "text" or "value" entries are not allowed and will throw an error.
+    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
+    if(new Set(options.map(option => option.text)).size !== options.length) {
+      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+      throw new Error(`text in ${optionString} have to be unique`);
+    };
+    if(new Set(options.map(option => option.value)).size !== options.length) {
+      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+      throw new Error(`value in ${optionString} have to be unique`);
+    };
+
     part = part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
     return part;
   }
 
   /**
    * Build a new dynamic value list content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content can not be prefilled yet.
+   * 
+   * @example cx.templatePart.DynamicValueList("Load List", "list-abc123")
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7529,7 +7751,12 @@ class TemplatePartFactory {
   }
 
   /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
+   * Create a raw element part builder instance. 
+   * It can be used for custom element parts.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withRawPrefill()` function.
+   * 
+   * @example cx.templatePart.Raw("futurePart", "Future", "future-abc123").withRawPrefill(...)
    *
    * @param {string} partId
    * @param {string} label

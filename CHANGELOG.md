@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+* Add prefill property to template parts and compile it into context.json
+* Add descriptionEnabled and textEnabled to TemplatePart Link
 
 
 ## [2.0.1] - 03.12.2025

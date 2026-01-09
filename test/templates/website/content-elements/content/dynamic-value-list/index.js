@@ -6,7 +6,7 @@ const {cx, Icon, ContentElement} = require('@bsi-cx/design-build');
 module.exports = cx.templateElement
   .withElementId('dynamic-value-list')
   .withIcon(Icon.DROPDOWN)
-  .withContextFile(require('./context.json'))
+  .withRawContextFile(require('./context.json'))
   .withLabel('Wertelisten Input')
   .withFile(require('./template.hbs'))
   .withTemplateParts(
