@@ -2,6 +2,7 @@ import AbstractBuilder from '../../abstract-builder';
 import { identity } from '../../browser-utility';
 import Constant from '../../constant';
 import DesignJsonProperty from '../../design-json-property';
+import TemplateElement from '../template-element';
 
 export default class TemplatePart extends AbstractBuilder {
   /**
@@ -25,6 +26,10 @@ export default class TemplatePart extends AbstractBuilder {
    */
   _config = undefined;
   /**
+   * This Prefill is not part of the json-data.
+   * The content of this object is loaded into the context.json of the TemplateElement
+   * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+   * 
    * @type {{}|undefined}
    * @private
    */
@@ -83,6 +88,10 @@ export default class TemplatePart extends AbstractBuilder {
   }
 
   /**
+   * This Prefill is not part of the json-data.
+   * The content of this object is loaded into the context.json of the TemplateElement
+   * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+   * 
    * @returns {{}|undefined}
    */
   get prefill() {
@@ -116,7 +125,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   addPrefillValueIfNotNull(key, value, isBoolean = false) {
-    if (value !== null) {
+    if (value || isBoolean) {
       this._prefill[key] = isBoolean ? !!value : value;
     }
     return this;
@@ -131,7 +140,7 @@ export default class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   addPrefillImageSrc(key, value) {
-    if(value) {
+    if (value) {
       let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
       this._prefill[key] = replacedValue;
     }

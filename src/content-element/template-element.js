@@ -516,8 +516,21 @@ export default class TemplateElement extends AbstractBuilder {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
+  /**
+   * Internal function to load prefill of template parts into context file
+   */
+  _loadPrefillIntoContextFile() {
+    this.templateParts.forEach(templatePart => {
+      let partContextId = templatePart.partContextId;
+      let contextFileObj = this._contextFile[partContextId] || {};
+      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
+    })
+  }
+
   _buildInternal() {
     let config = { type: "template-element" };
+
+    this._loadPrefillIntoContextFile();
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -530,13 +543,6 @@ export default class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
-
-    // Merge context from context file and template contexts
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      this._contextFile[partContextId] = this._contextFile[partContextId] || {};
-      Object.assign(this._contextFile[partContextId], templatePart.prefill)
-    })
     this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
     return config;

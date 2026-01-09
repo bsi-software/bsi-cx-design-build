@@ -4432,6 +4432,10 @@ declare module "src/content-element/template-part/template-part" {
          */
         private _config;
         /**
+         * This Prefill is not part of the json-data.
+         * The content of this object is loaded into the context.json of the TemplateElement
+         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+         *
          * @type {{}|undefined}
          * @private
          */
@@ -4453,6 +4457,10 @@ declare module "src/content-element/template-part/template-part" {
          */
         get config(): {} | undefined;
         /**
+         * This Prefill is not part of the json-data.
+         * The content of this object is loaded into the context.json of the TemplateElement
+         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+         *
          * @returns {{}|undefined}
          */
         get prefill(): {} | undefined;
@@ -5062,6 +5070,10 @@ declare module "src/content-element/template-element" {
          * @returns {TemplateElement}
          */
         withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
+        /**
+         * Internal function to load prefill of template parts into context file
+         */
+        _loadPrefillIntoContextFile(): void;
         _buildInternal(): {
             type: string;
         };
@@ -7810,6 +7822,10 @@ declare module "src/content-element/template-part/template-part-factory" {
     export default class TemplatePartFactory {
         /**
          * Build a new plain text content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withTextPrefill()` function.
+         *
+         * @example cx.templatePart.PlainText("Vorname", "prename-abc123").withTextPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7819,6 +7835,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new multiple plain text content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withTextPrefill()` function.
+         *
+         * @example cx.templatePart.MultilinePlainText("Accordion Content", "accordion-content-abc123", 5, true).withTextPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7829,6 +7849,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         MultilinePlainText(label: string, partContextId: string, fieldHeight?: int | null, studioLinkEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new formatted text content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withFormattedTextPrefill()` function.
+         *
+         * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123").withFormattedTextPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7838,6 +7862,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         FormattedText(label: string, partContextId: string, htmlEditorConfig?: HtmlEditorConfig | null): TemplatePart;
         /**
          * Build a new link content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withLinkPrefill()` function.
+         *
+         * @example cx.templatePart.Link("Button", "button-abc123").withLinkPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7848,6 +7876,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         Link(label: string, partContextId: string, descriptionEnabled?: boolean | null, textEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new image content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withImagePrefill()` function.
+         *
+         * @example cx.templatePart.Image("Bild", "image-abc123").withImagePrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7859,6 +7891,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         Image(label: string, partContextId: string, altTextMandatory?: boolean | null, srcSetSizes?: string[] | null, hideAccessibilityFields?: boolean | null): TemplatePart;
         /**
          * Build a new checkbox content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withCheckboxPrefill()` function.
+         *
+         * @example cx.templatePart.Checkbox("Show some content", "show-content-abc123").withCheckboxPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7868,6 +7904,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         /**
          * Build a new option content element part builder instance.
          * Options must not be null.
+         * All variables here define the options for the Content Editor.
+         * The content is prefilled by the `.withOptionPrefill()` function.
+         *
+         * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7877,6 +7917,10 @@ declare module "src/content-element/template-part/template-part-factory" {
         Option(label: string, partContextId: string, options: any): TemplatePart;
         /**
          * Build a new dynamic value list content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         * The content can not be prefilled yet.
+         *
+         * @example cx.templatePart.DynamicValueList("Load List", "list-abc123")
          *
          * @param {string} label
          * @param {string} partContextId
@@ -7884,7 +7928,12 @@ declare module "src/content-element/template-part/template-part-factory" {
          */
         DynamicValueList(label: string, partContextId: string): TemplatePart;
         /**
-         * Create a raw element part builder instance. Can be used for custom element parts.
+         * Create a raw element part builder instance.
+         * It can be used for custom element parts.
+         * All variables here define the behavior in the Content Editor.
+         * The content is prefilled by the `.withRawPrefill()` function.
+         *
+         * @example cx.templatePart.Raw("futurePart", "Future", "future-abc123").withRawPrefill(...)
          *
          * @param {string} partId
          * @param {string} label

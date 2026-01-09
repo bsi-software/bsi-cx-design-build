@@ -5,6 +5,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new plain text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withTextPrefill()` function.
+   * 
+   * @example cx.templatePart.PlainText("Vorname", "prename-abc123").withTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -19,6 +23,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new multiple plain text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withTextPrefill()` function.
+   * 
+   * @example cx.templatePart.MultilinePlainText("Accordion Content", "accordion-content-abc123", 5, true).withTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -35,6 +43,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new formatted text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withFormattedTextPrefill()` function.
+   * 
+   * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123").withFormattedTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -49,6 +61,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new link content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withLinkPrefill()` function.
+   * 
+   * @example cx.templatePart.Link("Button", "button-abc123").withLinkPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -65,6 +81,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new image content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withImagePrefill()` function.
+   * 
+   * @example cx.templatePart.Image("Bild", "image-abc123").withImagePrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -83,6 +103,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new checkbox content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withCheckboxPrefill()` function.
+   * 
+   * @example cx.templatePart.Checkbox("Show some content", "show-content-abc123").withCheckboxPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -95,6 +119,10 @@ export default class TemplatePartFactory {
   /**
    * Build a new option content element part builder instance.
    * Options must not be null.
+   * All variables here define the options for the Content Editor.
+   * The content is prefilled by the `.withOptionPrefill()` function.
+   * 
+   * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -122,6 +150,10 @@ export default class TemplatePartFactory {
 
   /**
    * Build a new dynamic value list content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content can not be prefilled yet.
+   * 
+   * @example cx.templatePart.DynamicValueList("Load List", "list-abc123")
    *
    * @param {string} label
    * @param {string} partContextId
@@ -132,7 +164,12 @@ export default class TemplatePartFactory {
   }
 
   /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
+   * Create a raw element part builder instance. 
+   * It can be used for custom element parts.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withRawPrefill()` function.
+   * 
+   * @example cx.templatePart.Raw("futurePart", "Future", "future-abc123").withRawPrefill(...)
    *
    * @param {string} partId
    * @param {string} label

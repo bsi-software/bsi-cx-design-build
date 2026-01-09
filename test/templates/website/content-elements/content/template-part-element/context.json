@@ -6,7 +6,7 @@
         "altText": "Test für alt Text",
         "srcUrl": "{{ bsi_cx_asset('./TemplatePartImage.jpg')}}",
         "srcset": "400w, 800w, 1200w",
-        "decorative": "false"
+        "decorative": false
     },
     "plain-text-Y3dhVu": {
         "value": "Peter Pan"

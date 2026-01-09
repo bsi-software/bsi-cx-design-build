@@ -3112,6 +3112,7 @@ const PRE = new Format('pre');
 
 
 
+
 class TemplatePart extends AbstractBuilder {
   /**
    * @type {string}
@@ -3134,6 +3135,10 @@ class TemplatePart extends AbstractBuilder {
    */
   _config = undefined;
   /**
+   * This Prefill is not part of the json-data.
+   * The content of this object is loaded into the context.json of the TemplateElement
+   * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+   * 
    * @type {{}|undefined}
    * @private
    */
@@ -3192,6 +3197,10 @@ class TemplatePart extends AbstractBuilder {
   }
 
   /**
+   * This Prefill is not part of the json-data.
+   * The content of this object is loaded into the context.json of the TemplateElement
+   * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+   * 
    * @returns {{}|undefined}
    */
   get prefill() {
@@ -3225,7 +3234,7 @@ class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   addPrefillValueIfNotNull(key, value, isBoolean = false) {
-    if (value !== null) {
+    if (value || isBoolean) {
       this._prefill[key] = isBoolean ? !!value : value;
     }
     return this;
@@ -3240,7 +3249,7 @@ class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   addPrefillImageSrc(key, value) {
-    if(value) {
+    if (value) {
       let replacedValue = value.replace(Constant.BSI_CX_DESIGN_BASE_URL, '.');
       this._prefill[key] = replacedValue;
     }
@@ -3873,8 +3882,21 @@ class TemplateElement extends AbstractBuilder {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
+  /**
+   * Internal function to load prefill of template parts into context file
+   */
+  _loadPrefillIntoContextFile() {
+    this.templateParts.forEach(templatePart => {
+      let partContextId = templatePart.partContextId;
+      let contextFileObj = this._contextFile[partContextId] || {};
+      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
+    })
+  }
+
   _buildInternal() {
     let config = { type: "template-element" };
+
+    this._loadPrefillIntoContextFile();
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -3887,13 +3909,6 @@ class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
-
-    // Merge context from context file and template contexts
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      this._contextFile[partContextId] = this._contextFile[partContextId] || {};
-      Object.assign(this._contextFile[partContextId], templatePart.prefill)
-    })
     this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
     return config;
@@ -7577,6 +7592,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new plain text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withTextPrefill()` function.
+   * 
+   * @example cx.templatePart.PlainText("Vorname", "prename-abc123").withTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7591,6 +7610,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new multiple plain text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withTextPrefill()` function.
+   * 
+   * @example cx.templatePart.MultilinePlainText("Accordion Content", "accordion-content-abc123", 5, true).withTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7607,6 +7630,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new formatted text content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withFormattedTextPrefill()` function.
+   * 
+   * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123").withFormattedTextPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7621,6 +7648,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new link content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withLinkPrefill()` function.
+   * 
+   * @example cx.templatePart.Link("Button", "button-abc123").withLinkPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7637,6 +7668,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new image content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withImagePrefill()` function.
+   * 
+   * @example cx.templatePart.Image("Bild", "image-abc123").withImagePrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7655,6 +7690,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new checkbox content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withCheckboxPrefill()` function.
+   * 
+   * @example cx.templatePart.Checkbox("Show some content", "show-content-abc123").withCheckboxPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7667,6 +7706,10 @@ class TemplatePartFactory {
   /**
    * Build a new option content element part builder instance.
    * Options must not be null.
+   * All variables here define the options for the Content Editor.
+   * The content is prefilled by the `.withOptionPrefill()` function.
+   * 
+   * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7675,6 +7718,9 @@ class TemplatePartFactory {
    */
   Option(label, partContextId, options) {
     var part = new TemplatePart('option', label, partContextId);
+    // Error handling: Validates the given array of option objects.
+    // Ensures that both "text" and "value" fields are unique.
+    // Duplicate "text" or "value" entries are not allowed and will throw an error.
     options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
     if(new Set(options.map(option => option.text)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
@@ -7691,6 +7737,10 @@ class TemplatePartFactory {
 
   /**
    * Build a new dynamic value list content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   * The content can not be prefilled yet.
+   * 
+   * @example cx.templatePart.DynamicValueList("Load List", "list-abc123")
    *
    * @param {string} label
    * @param {string} partContextId
@@ -7701,7 +7751,12 @@ class TemplatePartFactory {
   }
 
   /**
-   * Create a raw element part builder instance. Can be used for custom element parts.
+   * Create a raw element part builder instance. 
+   * It can be used for custom element parts.
+   * All variables here define the behavior in the Content Editor.
+   * The content is prefilled by the `.withRawPrefill()` function.
+   * 
+   * @example cx.templatePart.Raw("futurePart", "Future", "future-abc123").withRawPrefill(...)
    *
    * @param {string} partId
    * @param {string} label
