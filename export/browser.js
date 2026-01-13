@@ -33,6 +33,7 @@ import NLS from '../src/nls/nls';
 import Translation from '../src/nls/translation';
 import DesignFactory from '../src/design/design-factory';
 import bsiProperty from '../src/bsi-property';
+import bsiLoremIpsum from '../src/bsi-lorem-ipsum';
 
 /**
  * A collection of various builder factory methods.
@@ -76,5 +77,6 @@ export {
   NLS,
   Translation,
   cx,
-  bsiProperty
+  bsiProperty,
+  bsiLoremIpsum
 };

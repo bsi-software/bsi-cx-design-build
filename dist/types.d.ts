@@ -8503,6 +8503,18 @@ declare module "src/bsi-property" {
      */
     export default function bsiProperty(property: string, fallback?: any): any;
 }
+declare module "src/bsi-lorem-ipsum" {
+    /**
+     * Generates a Lorem Ipsum text.
+     *
+     * This function is intended to be used from JavaScript files
+     * and is imported directly in `browser.js`.
+     *
+     * @param {number} words number of words
+     * @returns {String} Lorem Impsum text with a specified number of words.
+     */
+    export default function bsiLoremIpsum(words: number): string;
+}
 declare module "export/browser" {
     import DesignJsonProperty from "src/design-json-property";
     import AbstractBuilder from "src/abstract-builder";
@@ -8544,8 +8556,9 @@ declare module "export/browser" {
      */
     export const cx: DesignFactory;
     import bsiProperty from "src/bsi-property";
+    import bsiLoremIpsum from "src/bsi-lorem-ipsum";
     import DesignFactory from "src/design/design-factory";
-    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, TemplateElement, TemplatePart, Website, PageInclude, Include, NLS, Translation, bsiProperty };
+    export { DesignJsonProperty, AbstractBuilder, AbstractConstant, BuilderObjectNormalizer, ObjectCloner, RawValue, Locale, WebsiteContentType, SchemaVersion, Design, ContentElementGroup, Dropzone, Version, DesignType, Feature, EnterMode, FontSizeUnit, Format, HtmlEditorConfig, Style, CssClass, StyleOption, DomManipulation, Icon, ContentElement, Part, TemplateElement, TemplatePart, Website, PageInclude, Include, NLS, Translation, bsiProperty, bsiLoremIpsum };
 }
 declare module "@bsi-cx/design-build" {
     export * from "export/main";
