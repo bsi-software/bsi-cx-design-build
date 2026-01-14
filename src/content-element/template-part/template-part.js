@@ -170,16 +170,18 @@ export default class TemplatePart extends AbstractBuilder {
 
   /**
    * Add new prefill object for a option template part.
+   * If preselectedOption is empty or not found the first option is prefilled.
    * 
-   * @param {string} preselectedOption is checkbox selected by default
+   * @param {string?} preselectedOption option to be prefilled. if empty: first option
    * @returns {this}
    */
   withOptionPrefill(preselectedOption) {
-    this.addPrefillValueIfNotNull('value', preselectedOption);
     let options = this._config[DesignJsonProperty.OPTIONS];
     if (preselectedOption && options && options.every(option => option.value !== preselectedOption)) {
-      console.warn(`Option ${preselectedOption} not found in Options`);
+      console.warn(`Option ${preselectedOption} not found in Options. First Option is used as prefill.`);
+      preselectedOption = options[0].value;
     }
+    this.addPrefillValueIfNotNull('value', preselectedOption);
     return this;
   }
 

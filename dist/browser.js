@@ -2707,6 +2707,41 @@ class ContentElementGroup extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Add new content element parts to group.
+   * Replaces elements with same Element Id in exisiting group
+   * 
+   * @example 
+   * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+   *  .addOrReplaceElements(
+   *    require("./my-group/new-element"), 
+   *    require("./my-group/overwrite-element"))
+   * 
+   * @param  {...(ContentElement|TemplateElement)} newContentElements 
+   */
+  addOrReplaceElements(...newContentElements) {
+    let newElemIds = newContentElements.map(elem => elem.elementId);
+    this.removeElementsWithId(...newElemIds);
+    this._contentElements = [...this._contentElements, ...newContentElements];
+    return this;
+  }
+
+
+  /**
+   * Remove content elements from group. 
+   * If elementId not exists in group, nothing happens.
+   * 
+   * @example 
+   * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+   *  .removeElementsWithId("not-used-element-id")
+   * 
+   * @param  {...(ContentElement|TemplateElement)} contentElementIds 
+   */
+  removeElementsWithId(...contentElementIds) {
+    this._contentElements = (this._contentElements || []).filter(elem => !contentElementIds.includes(elem.elementId));
+    return this;
+  }
+
   _buildInternal() {
     let config = {};
 
@@ -3280,16 +3315,18 @@ class TemplatePart extends AbstractBuilder {
 
   /**
    * Add new prefill object for a option template part.
+   * If preselectedOption is empty or not found the first option is prefilled.
    * 
-   * @param {string} preselectedOption is checkbox selected by default
+   * @param {string?} preselectedOption option to be prefilled. if empty: first option
    * @returns {this}
    */
   withOptionPrefill(preselectedOption) {
-    this.addPrefillValueIfNotNull('value', preselectedOption);
     let options = this._config[DesignJsonProperty.OPTIONS];
     if (preselectedOption && options && options.every(option => option.value !== preselectedOption)) {
-      console.warn(`Option ${preselectedOption} not found in Options`);
+      console.warn(`Option ${preselectedOption} not found in Options. First Option is used as prefill.`);
+      preselectedOption = options[0].value;
     }
+    this.addPrefillValueIfNotNull('value', preselectedOption);
     return this;
   }
 

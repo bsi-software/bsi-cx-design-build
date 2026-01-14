@@ -153,6 +153,41 @@ export default class ContentElementGroup extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Add new content element parts to group.
+   * Replaces elements with same Element Id in exisiting group
+   * 
+   * @example 
+   * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+   *  .addOrReplaceElements(
+   *    require("./my-group/new-element"), 
+   *    require("./my-group/overwrite-element"))
+   * 
+   * @param  {...(ContentElement|TemplateElement)} newContentElements 
+   */
+  addOrReplaceElements(...newContentElements) {
+    let newElemIds = newContentElements.map(elem => elem.elementId);
+    this.removeElementsWithId(...newElemIds);
+    this._contentElements = [...this._contentElements, ...newContentElements];
+    return this;
+  }
+
+
+  /**
+   * Remove content elements from group. 
+   * If elementId not exists in group, nothing happens.
+   * 
+   * @example 
+   * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+   *  .removeElementsWithId("not-used-element-id")
+   * 
+   * @param  {...(ContentElement|TemplateElement)} contentElementIds 
+   */
+  removeElementsWithId(...contentElementIds) {
+    this._contentElements = (this._contentElements || []).filter(elem => !contentElementIds.includes(elem.elementId));
+    return this;
+  }
+
   _buildInternal() {
     let config = {};
 
