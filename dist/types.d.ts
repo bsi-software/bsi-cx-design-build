@@ -4509,11 +4509,12 @@ declare module "src/content-element/template-part/template-part" {
         withCheckboxPrefill(isPreselected: boolean | null): this;
         /**
          * Add new prefill object for a option template part.
+         * If preselectedOption is empty or not found the first option is prefilled.
          *
-         * @param {string} preselectedOption is checkbox selected by default
+         * @param {string?} preselectedOption option to be prefilled. if empty: first option
          * @returns {this}
          */
-        withOptionPrefill(preselectedOption: string): this;
+        withOptionPrefill(preselectedOption: string | null): this;
         /**
          * Add new prefill object for a formatted text template part.
          *
@@ -5214,6 +5215,30 @@ declare module "src/content-element/content-element-group" {
          * @returns {ContentElementGroup}
          */
         withRawContentElements(...contentElements: {}[]): ContentElementGroup;
+        /**
+         * Add new content element parts to group.
+         * Replaces elements with same Element Id in exisiting group
+         *
+         * @example
+         * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+         *  .addOrReplaceElements(
+         *    require("./my-group/new-element"),
+         *    require("./my-group/overwrite-element"))
+         *
+         * @param  {...(ContentElement|TemplateElement)} newContentElements
+         */
+        addOrReplaceElements(...newContentElements: (ContentElement | TemplateElement)[]): this;
+        /**
+         * Remove content elements from group.
+         * If elementId not exists in group, nothing happens.
+         *
+         * @example
+         * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+         *  .removeElementsWithId("not-used-element-id")
+         *
+         * @param  {...(ContentElement|TemplateElement)} contentElementIds
+         */
+        removeElementsWithId(...contentElementIds: (ContentElement | TemplateElement)[]): this;
         /**
          * Clone the configuration.
          *
