@@ -8,6 +8,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 * Add prefill property to template parts and compile it into context.json
 * Add descriptionEnabled and textEnabled to TemplatePart Link
+* Add `bsiLoremIpsum()` function for js
+* Add functions to group for better extension: `addOrReplaceElements()`, `removeElementsWithId()`
 
 
 ## [2.0.1] - 03.12.2025
