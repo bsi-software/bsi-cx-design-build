@@ -342,6 +342,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static HTML_EDITOR_CONFIG_ID: string;
+        /**
+         * @type {string}
+         */
         static LABEL: string;
         /**
          * @type {string}
