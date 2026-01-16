@@ -542,6 +542,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static HTML_EDITOR_CONFIG_ID = 'htmlEditorConfigId';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
   /**
    * @type {string}

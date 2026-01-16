@@ -55,7 +55,7 @@ export default class TemplatePartFactory {
    */
   FormattedText(label, partContextId, htmlEditorConfig) {
     var part = new TemplatePart('formatted-text', label, partContextId)
-    part = part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG, htmlEditorConfig.identifier);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG_ID, htmlEditorConfig.identifier);
     return part;
   }
 
