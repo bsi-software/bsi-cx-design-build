@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add descriptionEnabled and textEnabled to TemplatePart Link
 * Add `bsiLoremIpsum()` function for js
 * Add functions to group for better extension: `addOrReplaceElements()`, `removeElementsWithId()`
+* Adds HTML_EDITOR_CONFIG to enable editor configs for template parts
 
 
 ## [2.0.1] - 03.12.2025
