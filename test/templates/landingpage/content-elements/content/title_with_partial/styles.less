@@ -1,0 +1,10 @@
+@import (less) '../../../shared/_mixins.less';
+
+.element.content-title {
+  > h2 {
+    #bsi.color(@mainColor);
+  }
+
+  color: darken(@mainColor, 10%);
+  padding: bsiProperty('unknown', 5%);
+}

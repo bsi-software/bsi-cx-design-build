@@ -3170,6 +3170,12 @@ declare module "src/webpack-config-builder" {
          * @returns {{}}
          */
         _getOutputConfig(): {};
+        /**
+         * Returns plugin to compile .hbs files.
+         *
+         * @returns {{}}
+         */
+        _getHbsPluginConfig(): {};
     }
     import BuildContext from "src/build-context";
     import TerserPlugin from "terser-webpack-plugin";

@@ -44,6 +44,7 @@
     "cssnano": "^6.1.2",
     "fast-glob": "^3.3.1",
     "handlebars": "^4.7.8",
+    "handlebars-webpack-plugin": "^2.2.1",
     "is-port-reachable": "^4.0.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",

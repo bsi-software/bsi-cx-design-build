@@ -88,7 +88,8 @@ export default class WebpackConfigBuilder {
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getAdditionalRules()
+          ...this._getAdditionalRules(),
+          ...this._getAdditionalHbsRuleConfig()
         ]
       },
       plugins: [
@@ -98,7 +99,8 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getAdditionalPlugins()
+        ...this._getAdditionalPlugins(),
+        ...this._getHbsPlugin()
       ],
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
@@ -263,11 +265,41 @@ export default class WebpackConfigBuilder {
   _getHtmlAndHbsRuleConfig() {
     return [
       {
-        test: /\.(html|hbs)$/i,
+        test: /\.(html)$/i,
         use: [
           this._getTemplateLoader(),
           'ref-loader',
         ]
+      },
+      {
+        test: /\.(hbs)$/i,
+        use: [
+          this._getTemplateLoader(), // hbsLoader
+          'ref-loader',
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Additional rule for Handlebars file handling to compile all helpers and partials.
+   *
+   * @returns {{}[]}
+   */
+  _getAdditionalHbsRuleConfig() {
+    return [
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+        options: {
+          // Register partials directory
+          partialDirs: [
+            path.resolve(__dirname, 'src', 'templates', 'partials')
+          ],
+          helperDirs: [
+            path.resolve(__dirname, 'src', 'templates', 'helpers')
+          ]
+        }
       }
     ];
   }
@@ -814,6 +846,42 @@ export default class WebpackConfigBuilder {
       library: {
         type: 'var',
         name: '[name]'
+      }
+    };
+  }
+
+  /**
+   * Returns plugin to compile .hbs files.
+   *
+   * @returns {{}}
+   */
+  _getHbsPlugin() {
+      return {
+      plugins: [
+        // TODO: fix paths
+        new HtmlWebpackPlugin({
+          template: path.resolve(__dirname, 'src', 'templates', 'main.hbs'),
+          filename: path.resolve(__dirname, 'dist', '[name].hbs'),
+          templateParameters: loadFlatData(path.resolve(__dirname, 'src', 'data', '*.json')),
+          minify: false // TODO: set to true for main build
+        })
+      ],
+      module: {
+        rules: [
+          {
+            test: /\.hbs$/,
+            loader: 'handlebars-loader',
+            options: {
+              // Register partials directory
+              partialDirs: [
+                path.resolve(__dirname, 'src', 'templates', 'partials')
+              ],
+              helperDirs: [
+                path.resolve(__dirname, 'src', 'templates', 'helpers')
+              ]
+            }
+          }
+        ]
       }
     };
   }
