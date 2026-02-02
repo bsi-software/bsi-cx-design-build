@@ -856,8 +856,7 @@ export default class WebpackConfigBuilder {
    * @returns {{}}
    */
   _getHbsPlugin() {
-      return {
-      plugins: [
+      return [
         // TODO: fix paths
         new HtmlWebpackPlugin({
           template: path.resolve(__dirname, 'src', 'templates', 'main.hbs'),
@@ -865,25 +864,7 @@ export default class WebpackConfigBuilder {
           templateParameters: loadFlatData(path.resolve(__dirname, 'src', 'data', '*.json')),
           minify: false // TODO: set to true for main build
         })
-      ],
-      module: {
-        rules: [
-          {
-            test: /\.hbs$/,
-            loader: 'handlebars-loader',
-            options: {
-              // Register partials directory
-              partialDirs: [
-                path.resolve(__dirname, 'src', 'templates', 'partials')
-              ],
-              helperDirs: [
-                path.resolve(__dirname, 'src', 'templates', 'helpers')
-              ]
-            }
-          }
-        ]
-      }
-    };
+      ]
   }
 
   /**
