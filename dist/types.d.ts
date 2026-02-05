@@ -3899,6 +3899,20 @@ declare module "src/style/style" {
          */
         withCssClasses(...cssClasses: CssClass[]): Style;
         /**
+         * Specify the css classes to use with this style configuration.
+         *
+         * @example
+         * .withCssClassObject( {
+         *   'text-red': 'Rot',
+         *   'text-blue': 'Blau'
+         * })
+         *
+         * @see {@link withCssClasses} to set s css
+         * @param {Object} cssClassObject - The css classes to use.
+         * @returns {Style}
+         */
+        withCssClassObject(cssClassObject: any): Style;
+        /**
          * Set the raw css classes to use with this style.
          *
          * @example
@@ -3992,6 +4006,7 @@ declare module "src/style/style" {
     export type StyleOption = import("src/style/style-option").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
+    import CssClass from "src/style/css-class";
 }
 declare module "src/content-element/icon" {
     export class Icon extends AbstractConstant {
@@ -8072,11 +8087,11 @@ declare module "src/content-element/template-part/template-part-factory" {
          * All variables here define the options for the Content Editor.
          * The content is prefilled by the `.withOptionPrefill()` function.
          *
-         * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
+         * @example cx.templatePart.Option("Button Style", "button-style-abc123", {"primary": "Primär", "secondary-outline": "Sekundär Outline", "outline-dark": "Outline dark"}).withOptionPrefill(...)
          *
          * @param {string} label
          * @param {string} partContextId
-         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
+         * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { yes: "Ja", no: "Nein" }
          * @returns {TemplatePart}
          */
         Option(label: string, partContextId: string, options: any): TemplatePart;

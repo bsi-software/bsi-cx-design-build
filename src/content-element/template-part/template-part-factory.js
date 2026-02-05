@@ -143,7 +143,7 @@ export default class TemplatePartFactory {
     // Ensures that both "text" and "value" fields are unique.
     // Duplicate "text" or "value" entries are not allowed and will throw an error.
     let keyIsNotUnique = (objArray, key) =>
-      new Set(objArray.map((obj) => obj[key])).size !== array.length;
+      new Set(objArray.map((obj) => obj[key])).size !== objArray.length;
     let optionString = options
       .map((option) => `{ text: ${option.text}, value: ${option.value} }`)
       .join(", ");
