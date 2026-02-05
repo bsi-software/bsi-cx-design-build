@@ -16,6 +16,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Update Twing from 5.x to 7.x
 * Add handlebars functions to twig
 * Add `withExtendAllDropzones()` to content-part and template-part
+* Switch template part objects to { value: text } structure
+* Add new function to define css classes `withCssClassObject()`
 
 
 ## [2.0.1] - 03.12.2025

@@ -1,7 +1,8 @@
-import DesignJsonProperty from '../design-json-property';
-import AbstractBuilder from '../abstract-builder';
-import {builderObjectValue, identity, uuid} from '../browser-utility';
-import RawValue from '../raw-value';
+import DesignJsonProperty from "../design-json-property";
+import AbstractBuilder from "../abstract-builder";
+import { builderObjectValue, identity, uuid } from "../browser-utility";
+import RawValue from "../raw-value";
+import CssClass from "./css-class";
 
 /** @typedef {import('./css-class').default} CssClass */
 /** @typedef {import('./style-option').default} StyleOption */
@@ -150,6 +151,26 @@ export default class Style extends AbstractBuilder {
    */
   withCssClasses(...cssClasses) {
     this._cssClasses = cssClasses;
+    return this;
+  }
+
+  /**
+   * Specify the css classes to use with this style configuration.
+   *
+   * @example
+   * .withCssClassObject( {
+   *   'text-red': 'Rot',
+   *   'text-blue': 'Blau'
+   * })
+   *
+   * @see {@link withCssClasses} to set s css
+   * @param {Object} cssClassObject - The css classes to use.
+   * @returns {Style}
+   */
+  withCssClassObject(cssClassObject) {
+    this._cssClasses = Object.entries(cssClassObject).map(([cssClass, label]) =>
+      CssClass.create(cssClass, label),
+    );
     return this;
   }
 

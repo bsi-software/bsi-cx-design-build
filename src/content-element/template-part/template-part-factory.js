@@ -121,28 +121,38 @@ export default class TemplatePartFactory {
    * Options must not be null.
    * All variables here define the options for the Content Editor.
    * The content is prefilled by the `.withOptionPrefill()` function.
-   * 
-   * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
+   *
+   * @example cx.templatePart.Option("Button Style", "button-style-abc123", {"primary": "Primär", "secondary-outline": "Sekundär Outline", "outline-dark": "Outline dark"}).withOptionPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
+   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { yes: "Ja", no: "Nein" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
-    var part = new TemplatePart('option', label, partContextId);
+    var part = new TemplatePart("option", label, partContextId);
+    // map options object to array
+    if (typeof options === "object") {
+      options = Object.entries(options).map(([value, text]) => ({
+        text: text,
+        value: value,
+      }));
+    }
+
     // Error handling: Validates the given array of option objects.
     // Ensures that both "text" and "value" fields are unique.
     // Duplicate "text" or "value" entries are not allowed and will throw an error.
-    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
-    if(new Set(options.map(option => option.text)).size !== options.length) {
-      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+    let keyIsNotUnique = (objArray, key) =>
+      new Set(objArray.map((obj) => obj[key])).size !== array.length;
+    let optionString = options
+      .map((option) => `{ text: ${option.text}, value: ${option.value} }`)
+      .join(", ");
+    if (keyIsNotUnique(options, "text")) {
       throw new Error(`text in ${optionString} have to be unique`);
-    };
-    if(new Set(options.map(option => option.value)).size !== options.length) {
-      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+    }
+    if (keyIsNotUnique(options, "value")) {
       throw new Error(`value in ${optionString} have to be unique`);
-    };
+    }
 
     part = part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
     return part;
