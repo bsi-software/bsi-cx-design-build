@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import glob from 'glob';
 
 import Asset from 'webpack/lib';
 import ZipPlugin from 'zip-webpack-plugin';
@@ -99,8 +100,8 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getAdditionalPlugins(),
-        ...this._getHbsPlugin()
+        ...this._getHbsPlugin(),
+        ...this._getAdditionalPlugins()
       ],
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
@@ -292,12 +293,13 @@ export default class WebpackConfigBuilder {
         test: /\.hbs$/,
         loader: 'handlebars-loader',
         options: {
-          // Register partials directory
-          partialDirs: [
-            path.resolve(__dirname, 'src', 'templates', 'partials')
+          // Register partials directory, TODO: fix paths
+          partialDirs: [ 
+            path.resolve(this.config.rootPath, 'template.hbs'),
+            //path.resolve('test', 'templates', 'landingpage', 'partials')
           ],
           helperDirs: [
-            path.resolve(__dirname, 'src', 'templates', 'helpers')
+            path.resolve(this.config.rootPath, 'test', 'templates', 'landingpage', 'helpers')
           ]
         }
       }
@@ -708,6 +710,23 @@ export default class WebpackConfigBuilder {
     return this.config.webpackPlugins;
   }
 
+    /**
+   * Returns plugin to compile .hbs files.
+   *
+   * @returns {Object[]}
+   */
+  _getHbsPlugin() {
+      return [
+        // TODO: fix paths
+        new HtmlWebpackPlugin({
+          template:  path.resolve(this.config.rootPath, 'templates', 'landingpage', 'content-elements', 'title_with_partial', 'template.hbs'), //path.resolve('test', 'templates', '**', 'text.hbs'),
+          filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
+          templateParameters: this.__loadFlatData(path.resolve(this.config.rootPath, 'templates', 'landingpage', '*.json')), // TODO: check if properties js is compatible as well
+          minify: false // TODO: set to true for main build
+        })
+      ]
+  }
+
   /**
    * BSI CX legacy design format plugin config.
    *
@@ -850,22 +869,15 @@ export default class WebpackConfigBuilder {
     };
   }
 
-  /**
-   * Returns plugin to compile .hbs files.
-   *
-   * @returns {{}}
-   */
-  _getHbsPlugin() {
-      return [
-        // TODO: fix paths
-        new HtmlWebpackPlugin({
-          template: path.resolve(__dirname, 'src', 'templates', 'main.hbs'),
-          filename: path.resolve(__dirname, 'dist', '[name].hbs'),
-          templateParameters: loadFlatData(path.resolve(__dirname, 'src', 'data', '*.json')),
-          minify: false // TODO: set to true for main build
-        })
-      ]
-  }
+  // Merge all JSON files into one flat object to pass it to the plugin as glob
+__loadFlatData(pattern) {
+  const files = glob.sync(pattern);
+  return files.reduce((acc, file) => {
+    const json = JSON.parse(fs.readFileSync(file, 'utf8'));
+    return { ...acc, ...json }; // merge keys into root
+  }, {});
+}
+
 
   /**
    * Build the configuration for webpack from {@link BuildConfig} objects.

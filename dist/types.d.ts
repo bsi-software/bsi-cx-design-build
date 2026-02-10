@@ -2910,7 +2910,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: TerserPlugin<import("terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
+                minimizer: TerserPlugin<import("terser-webpack-plugin/node_modules/terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -2957,7 +2957,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: TerserPlugin<import("terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
+                minimizer: TerserPlugin<import("terser-webpack-plugin/node_modules/terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -3010,6 +3010,12 @@ declare module "src/webpack-config-builder" {
          * @returns {{}[]}
          */
         _getHtmlAndHbsRuleConfig(): {}[];
+        /**
+         * Additional rule for Handlebars file handling to compile all helpers and partials.
+         *
+         * @returns {{}[]}
+         */
+        _getAdditionalHbsRuleConfig(): {}[];
         /**
          * Rules for LESS, SASS/SCSS and CSS file handling.
          *
@@ -3123,6 +3129,12 @@ declare module "src/webpack-config-builder" {
          */
         private _getAdditionalPlugins;
         /**
+       * Returns plugin to compile .hbs files.
+       *
+       * @returns {Object[]}
+       */
+        _getHbsPlugin(): any[];
+        /**
          * BSI CX legacy design format plugin config.
          *
          * @returns {BsiCxWebpackLegacyDesignPlugin[]}
@@ -3170,12 +3182,7 @@ declare module "src/webpack-config-builder" {
          * @returns {{}}
          */
         _getOutputConfig(): {};
-        /**
-         * Returns plugin to compile .hbs files.
-         *
-         * @returns {{}}
-         */
-        _getHbsPluginConfig(): {};
+        __loadFlatData(pattern: any): any;
     }
     import BuildContext from "src/build-context";
     import TerserPlugin from "terser-webpack-plugin";

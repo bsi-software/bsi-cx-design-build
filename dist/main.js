@@ -1066,6 +1066,8 @@ class ValidationError extends Error {
 }
 
 ;// ./src/utility.js
+/* unused harmony import specifier */ var path;
+/* unused harmony import specifier */ var fs;
 
 
 
@@ -2586,6 +2588,9 @@ class BuildConfig {
   }
 }
 
+;// external "glob"
+const external_glob_namespaceObject = require("glob");
+var external_glob_default = /*#__PURE__*/__webpack_require__.n(external_glob_namespaceObject);
 ;// external "webpack/lib"
 const lib_namespaceObject = require("webpack/lib");
 ;// external "zip-webpack-plugin"
@@ -6219,6 +6224,7 @@ class PropertiesToScssConverter {
 
 
 
+
 class WebpackConfigBuilder {
   /**
    * @type {string}
@@ -6282,7 +6288,8 @@ class WebpackConfigBuilder {
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getAdditionalRules()
+          ...this._getAdditionalRules(),
+          ...this._getAdditionalHbsRuleConfig()
         ]
       },
       plugins: [
@@ -6292,6 +6299,7 @@ class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
+        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins()
       ],
       devtool: this._getDevToolConfig(),
@@ -6457,11 +6465,42 @@ class WebpackConfigBuilder {
   _getHtmlAndHbsRuleConfig() {
     return [
       {
-        test: /\.(html|hbs)$/i,
+        test: /\.(html)$/i,
         use: [
           this._getTemplateLoader(),
           'ref-loader',
         ]
+      },
+      {
+        test: /\.(hbs)$/i,
+        use: [
+          this._getTemplateLoader(), // hbsLoader
+          'ref-loader',
+        ]
+      }
+    ];
+  }
+
+  /**
+   * Additional rule for Handlebars file handling to compile all helpers and partials.
+   *
+   * @returns {{}[]}
+   */
+  _getAdditionalHbsRuleConfig() {
+    return [
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+        options: {
+          // Register partials directory, TODO: fix paths
+          partialDirs: [ 
+            external_path_default().resolve(this.config.rootPath, 'template.hbs'),
+            //path.resolve('test', 'templates', 'landingpage', 'partials')
+          ],
+          helperDirs: [
+            external_path_default().resolve(this.config.rootPath, 'test', 'templates', 'landingpage', 'helpers')
+          ]
+        }
       }
     ];
   }
@@ -6870,6 +6909,23 @@ class WebpackConfigBuilder {
     return this.config.webpackPlugins;
   }
 
+    /**
+   * Returns plugin to compile .hbs files.
+   *
+   * @returns {Object[]}
+   */
+  _getHbsPlugin() {
+      return [
+        // TODO: fix paths
+        new HtmlWebpackPlugin({
+          template:  external_path_default().resolve(this.config.rootPath, 'templates', 'landingpage', 'content-elements', 'title_with_partial', 'template.hbs'), //path.resolve('test', 'templates', '**', 'text.hbs'),
+          filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
+          templateParameters: this.__loadFlatData(external_path_default().resolve(this.config.rootPath, 'templates', 'landingpage', '*.json')), // TODO: check if properties js is compatible as well
+          minify: false // TODO: set to true for main build
+        })
+      ]
+  }
+
   /**
    * BSI CX legacy design format plugin config.
    *
@@ -7011,6 +7067,16 @@ class WebpackConfigBuilder {
       }
     };
   }
+
+  // Merge all JSON files into one flat object to pass it to the plugin as glob
+__loadFlatData(pattern) {
+  const files = external_glob_default().sync(pattern);
+  return files.reduce((acc, file) => {
+    const json = JSON.parse(external_fs_default().readFileSync(file, 'utf8'));
+    return { ...acc, ...json }; // merge keys into root
+  }, {});
+}
+
 
   /**
    * Build the configuration for webpack from {@link BuildConfig} objects.
