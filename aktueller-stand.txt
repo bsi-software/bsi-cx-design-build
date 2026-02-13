@@ -25,3 +25,9 @@ Bisher für offenen Punkt versucht:
 Es kann sein, dass im aktuellen Git-Stand noch Dinge vom Testing umgestellt sind.
 Im Zweifelsfall gerne im anderen Build Repo den aktuellen Stand anschauen. Das ist unser einfacher "Chemiebaukasten" für den Build mit ähnlicher Struktur.
 Da klappt alles und sollte größtenteils übernehmbar sein.
+
+---
+Ich bin mir nicht sicher, ob du die richtigen Module importierst.
+- HtmlWebpackPlugin war weder installiert noch referenziert
+- handlebars-loader war referenziert, aber nicht installiert
+- HandlebarsWebpackPlugin war installiert, aber nicht verwendet

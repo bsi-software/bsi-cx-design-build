@@ -2910,7 +2910,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: TerserPlugin<import("terser-webpack-plugin/node_modules/terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
+                minimizer: TerserPlugin<import("terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -2957,7 +2957,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: TerserPlugin<import("terser-webpack-plugin/node_modules/terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
+                minimizer: TerserPlugin<import("terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -3182,7 +3182,6 @@ declare module "src/webpack-config-builder" {
          * @returns {{}}
          */
         _getOutputConfig(): {};
-        __loadFlatData(pattern: any): any;
     }
     import BuildContext from "src/build-context";
     import TerserPlugin from "terser-webpack-plugin";

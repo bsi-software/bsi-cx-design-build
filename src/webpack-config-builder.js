@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import glob from 'glob';
 
 import Asset from 'webpack/lib';
 import ZipPlugin from 'zip-webpack-plugin';
@@ -25,6 +24,8 @@ import DistFolder from './dist-folder';
 import * as Version from './version';
 import * as DesignType from './design-type';
 import {createPathHash} from './path-hash-utility';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+// const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 export default class WebpackConfigBuilder {
   /**
@@ -272,13 +273,13 @@ export default class WebpackConfigBuilder {
           'ref-loader',
         ]
       },
-      {
-        test: /\.(hbs)$/i,
-        use: [
-          this._getTemplateLoader(), // hbsLoader
-          'ref-loader',
-        ]
-      }
+      // {
+      //   test: /\.(hbs)$/i,
+      //   use: [
+      //     this._getTemplateLoader(), // hbsLoader
+      //     'ref-loader',
+      //   ]
+      // }
     ];
   }
 
@@ -721,7 +722,7 @@ export default class WebpackConfigBuilder {
         new HtmlWebpackPlugin({
           template:  path.resolve(this.config.rootPath, 'templates', 'landingpage', 'content-elements', 'title_with_partial', 'template.hbs'), //path.resolve('test', 'templates', '**', 'text.hbs'),
           filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
-          templateParameters: this.__loadFlatData(path.resolve(this.config.rootPath, 'templates', 'landingpage', '*.json')), // TODO: check if properties js is compatible as well
+          templateParameters: this.properties,
           minify: false // TODO: set to true for main build
         })
       ]
@@ -868,15 +869,6 @@ export default class WebpackConfigBuilder {
       }
     };
   }
-
-  // Merge all JSON files into one flat object to pass it to the plugin as glob
-__loadFlatData(pattern) {
-  const files = glob.sync(pattern);
-  return files.reduce((acc, file) => {
-    const json = JSON.parse(fs.readFileSync(file, 'utf8'));
-    return { ...acc, ...json }; // merge keys into root
-  }, {});
-}
 
 
   /**

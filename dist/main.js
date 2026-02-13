@@ -2588,9 +2588,6 @@ class BuildConfig {
   }
 }
 
-;// external "glob"
-const external_glob_namespaceObject = require("glob");
-var external_glob_default = /*#__PURE__*/__webpack_require__.n(external_glob_namespaceObject);
 ;// external "webpack/lib"
 const lib_namespaceObject = require("webpack/lib");
 ;// external "zip-webpack-plugin"
@@ -6196,6 +6193,9 @@ class PropertiesToScssConverter {
   }
 };
 
+;// external "html-webpack-plugin"
+const external_html_webpack_plugin_namespaceObject = require("html-webpack-plugin");
+var external_html_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(external_html_webpack_plugin_namespaceObject);
 ;// ./src/webpack-config-builder.js
 
 
@@ -6224,6 +6224,7 @@ class PropertiesToScssConverter {
 
 
 
+// const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 class WebpackConfigBuilder {
   /**
@@ -6471,13 +6472,13 @@ class WebpackConfigBuilder {
           'ref-loader',
         ]
       },
-      {
-        test: /\.(hbs)$/i,
-        use: [
-          this._getTemplateLoader(), // hbsLoader
-          'ref-loader',
-        ]
-      }
+      // {
+      //   test: /\.(hbs)$/i,
+      //   use: [
+      //     this._getTemplateLoader(), // hbsLoader
+      //     'ref-loader',
+      //   ]
+      // }
     ];
   }
 
@@ -6917,10 +6918,10 @@ class WebpackConfigBuilder {
   _getHbsPlugin() {
       return [
         // TODO: fix paths
-        new HtmlWebpackPlugin({
+        new (external_html_webpack_plugin_default())({
           template:  external_path_default().resolve(this.config.rootPath, 'templates', 'landingpage', 'content-elements', 'title_with_partial', 'template.hbs'), //path.resolve('test', 'templates', '**', 'text.hbs'),
           filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
-          templateParameters: this.__loadFlatData(external_path_default().resolve(this.config.rootPath, 'templates', 'landingpage', '*.json')), // TODO: check if properties js is compatible as well
+          templateParameters: this.properties,
           minify: false // TODO: set to true for main build
         })
       ]
@@ -7067,15 +7068,6 @@ class WebpackConfigBuilder {
       }
     };
   }
-
-  // Merge all JSON files into one flat object to pass it to the plugin as glob
-__loadFlatData(pattern) {
-  const files = external_glob_default().sync(pattern);
-  return files.reduce((acc, file) => {
-    const json = JSON.parse(external_fs_default().readFileSync(file, 'utf8'));
-    return { ...acc, ...json }; // merge keys into root
-  }, {});
-}
 
 
   /**

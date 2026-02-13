@@ -18,7 +18,8 @@
     "preserve": "node \"./test/install.js\"",
     "serve": "cd test && webpack serve --config webpack.config.js --mode development --progress",
     "postserve": "node \"./test/uninstall.js\"",
-    "buildAndTest": "webpack --config webpack.config.js --mode production && node \"./test/install.js\" && cd test && webpack --config webpack.config.js --mode development --progress"
+    "buildAndTest": "webpack --config webpack.config.js --mode production && node \"./test/install.js\" && cd test && webpack --config webpack.config.js --mode development --progress",
+    "b4Test": "node \"./test/test_webpack.config.js\""
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",
@@ -43,8 +44,10 @@
     "css-loader": "^6.8.1",
     "cssnano": "^6.1.2",
     "fast-glob": "^3.3.1",
+    "glob": "^13.0.2",
     "handlebars": "^4.7.8",
-    "handlebars-webpack-plugin": "^2.2.1",
+    "handlebars-loader": "^1.7.3",
+    "html-webpack-plugin": "^5.6.6",
     "is-port-reachable": "^4.0.0",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
