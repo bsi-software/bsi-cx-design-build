@@ -2947,11 +2947,13 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static DESIGN_JSON = new RegExp('^' + escapeRegex(File.DESIGN_JSON) + '$');
+  static DESIGN_JSON = new RegExp("^" + escapeRegex(File.DESIGN_JSON) + "$");
   /**
    * @type {RegExp}
    */
-  static DESIGN_JSON_CHUNK = new RegExp('^' + escapeRegex(File.DESIGN_JSON_CHUNK) + '$');
+  static DESIGN_JSON_CHUNK = new RegExp(
+    "^" + escapeRegex(File.DESIGN_JSON_CHUNK) + "$",
+  );
   /**
    * @type {RegExp}
    */
@@ -2964,32 +2966,45 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = new RegExp(`^${DistFolder.STATIC}\/styles-[0-9a-z]+\.css$`);
+  static STYLES_CSS = new RegExp(
+    `^${DistFolder.STATIC}\/styles-[0-9a-z]+\.css$`,
+  );
   /**
    * @type {RegExp}
    */
-  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, 'g');
+  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, "g");
   /**
    * @type {RegExp}
    */
-  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, 'g');
+  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, "g");
 
   /**
    * @type {RegExp}
    */
-  static JS_MODULE = new RegExp(`${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`, 'g');
+  static JS_MODULE = new RegExp(
+    `${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`,
+    "g",
+  );
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME_HREF = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_HREF, 'g');
+  static JS_MODULE_RUNTIME_HREF = new RegExp(
+    Constant.BSI_CX_MODULE_RUNTIME_HREF,
+    "g",
+  );
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME_INLINE = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
+  static JS_MODULE_RUNTIME_INLINE = new RegExp(
+    Constant.BSI_CX_MODULE_RUNTIME_INLINE,
+    "g",
+  );
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME = new RegExp(`^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
+  static JS_MODULE_RUNTIME = new RegExp(
+    `^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`,
+  );
 
   /**
    * @type {number}
@@ -3074,11 +3089,17 @@ class _BsiCxWebpackPlugin {
    */
   _importDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
+    let designJsonChunkPath = this._getAssetName(
+      _BsiCxWebpackPlugin.DESIGN_JSON_CHUNK,
+    );
     /**
      * @type {*}
      */
-    let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
+    let designJson = this._loadAssets(
+      "json",
+      designJsonChunkPath,
+      designJsonPath,
+    );
 
     return BuilderObjectNormalizer.normalize(designJson);
   }
@@ -3101,13 +3122,17 @@ class _BsiCxWebpackPlugin {
 
     this._addDropzonesToReplaceMap(designJsonObj, replaceMap, knownElements);
 
-    designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
-      ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.forEach(element => this._addElementToReplaceMap(element, replaceMap, knownElements)));
+    designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]?.forEach((group) =>
+      group[DesignJsonProperty.CONTENT_ELEMENTS]?.forEach((element) =>
+        this._addElementToReplaceMap(element, replaceMap, knownElements),
+      ),
+    );
 
     let website = designJsonObj[DesignJsonProperty.WEBSITE] ?? {};
-    Object.values(website[DesignJsonProperty.INCLUDES] ?? {})
-      .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap, knownElements));
+    Object.values(website[DesignJsonProperty.INCLUDES] ?? {}).forEach(
+      (include) =>
+        this._addDropzonesToReplaceMap(include, replaceMap, knownElements),
+    );
 
     return replaceMap;
   }
@@ -3118,9 +3143,13 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _createSetOfKnownElements(designJsonObj) {
-    let knownElements = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
-      ?.flatMap(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.map(element => element[DesignJsonProperty.ELEMENT_ID]));
+    let knownElements = designJsonObj[
+      DesignJsonProperty.CONTENT_ELEMENT_GROUPS
+    ]?.flatMap((group) =>
+      group[DesignJsonProperty.CONTENT_ELEMENTS]?.map(
+        (element) => element[DesignJsonProperty.ELEMENT_ID],
+      ),
+    );
 
     return new Set(knownElements);
   }
@@ -3135,8 +3164,8 @@ class _BsiCxWebpackPlugin {
     this._addDropzonesToReplaceMap(element, replaceMap, knownElements);
 
     element[DesignJsonProperty.PARTS]
-      ?.filter(part => !!part[DesignJsonProperty.ID])
-      .forEach(part => {
+      ?.filter((part) => !!part[DesignJsonProperty.ID])
+      .forEach((part) => {
         /**
          * @type {string}
          */
@@ -3148,9 +3177,9 @@ class _BsiCxWebpackPlugin {
         /**
          * @type {RegExp}
          */
-        let needle = new RegExp(escapeRegex(id), 'g');
+        let needle = new RegExp(escapeRegex(id), "g");
 
-        replaceMap.set(id, haystack => haystack.replace(needle, partId));
+        replaceMap.set(id, (haystack) => haystack.replace(needle, partId));
       });
   }
 
@@ -3166,10 +3195,15 @@ class _BsiCxWebpackPlugin {
      */
     let dropzones = objScope[DesignJsonPropertyExtension.DROPZONES] ?? [];
 
-    dropzones.forEach(dropzone => {
+    dropzones.forEach((dropzone) => {
       let dropzoneId = dropzone[DesignJsonPropertyExtension.DROPZONE];
-      let allowedElements = dropzone[DesignJsonPropertyExtension.ALLOWED_ELEMENTS]?.filter(id => knownElements.has(id)).join(' ');
-      let maxElements = dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
+      let allowedElements = dropzone[
+        DesignJsonPropertyExtension.ALLOWED_ELEMENTS
+      ]
+        ?.filter((id) => knownElements.has(id))
+        .join(" ");
+      let maxElements =
+        dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
       let removeAllowed = dropzone[DesignJsonPropertyExtension.REMOVE_ALLOWED];
       let moveAllowed = dropzone[DesignJsonPropertyExtension.MOVE_ALLOWED];
       let copyAllowed = dropzone[DesignJsonPropertyExtension.COPY_ALLOWED];
@@ -3179,22 +3213,59 @@ class _BsiCxWebpackPlugin {
       }
 
       let replacement = [
-        [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined, v => v],
-        [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined, v => v],
-        [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined, v => v],
-        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === false, () => ''],
-        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === false, () => ''],
-        [copyAllowed, BsiHtmlAttributes.HIDE_COPY_BUTTON, v => v === false, () => ''],
-      ].map(prop => {
-        let [value, attribute, check, converter] = prop;
+        [
+          dropzoneId,
+          BsiHtmlAttributes.DROPZONE,
+          (v) => v !== undefined,
+          (v) => v,
+        ],
+        [
+          allowedElements,
+          BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS,
+          (v) => v !== undefined,
+          (v) => v,
+        ],
+        [
+          maxElements,
+          BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS,
+          (v) => v !== undefined,
+          (v) => v,
+        ],
+        [
+          removeAllowed,
+          BsiHtmlAttributes.HIDE_REMOVE_BUTTON,
+          (v) => v === false,
+          () => "",
+        ],
+        [
+          moveAllowed,
+          BsiHtmlAttributes.HIDE_MOVE_BUTTON,
+          (v) => v === false,
+          () => "",
+        ],
+        [
+          copyAllowed,
+          BsiHtmlAttributes.HIDE_COPY_BUTTON,
+          (v) => v === false,
+          () => "",
+        ],
+      ]
+        .map((prop) => {
+          let [value, attribute, check, converter] = prop;
 
-        return !!check(value) ? `${attribute}="${converter(value)}"` : undefined;
-      }).filter(attribute => attribute !== undefined).join(' ');
+          return !!check(value)
+            ? `${attribute}="${converter(value)}"`
+            : undefined;
+        })
+        .filter((attribute) => attribute !== undefined)
+        .join(" ");
 
       let dropzoneAttr = `${BsiHtmlAttributes.DROPZONE}="${dropzoneId}"`;
-      let needle = new RegExp(escapeRegex(dropzoneAttr), 'g');
+      let needle = new RegExp(escapeRegex(dropzoneAttr), "g");
 
-      replaceMap.set(dropzoneId, haystack => haystack.replace(needle, replacement));
+      replaceMap.set(dropzoneId, (haystack) =>
+        haystack.replace(needle, replacement),
+      );
     });
 
     delete objScope[DesignJsonPropertyExtension.DROPZONES];
@@ -3206,7 +3277,7 @@ class _BsiCxWebpackPlugin {
    */
   _exportDesignHtml(replaceMap) {
     let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
-    this._updateHtmlTemplate(designHtmlPath, 'design', replaceMap);
+    this._updateHtmlTemplate(designHtmlPath, "design", replaceMap);
   }
 
   /**
@@ -3215,7 +3286,11 @@ class _BsiCxWebpackPlugin {
    */
   _exportPreviewHtml(replaceMap) {
     let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
-    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview', replaceMap);
+    let previewTemplate = this._updateHtmlTemplate(
+      previewFilePath,
+      "preview",
+      replaceMap,
+    );
 
     if (/\.hbs$/.test(previewFilePath)) {
       this._handlePreviewHandlebars(previewFilePath, previewTemplate);
@@ -3229,21 +3304,26 @@ class _BsiCxWebpackPlugin {
    */
   _exportDesignJson(designJsonObj, replaceMap) {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
-    let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
+    let designJsonChunkPath = this._getAssetName(
+      _BsiCxWebpackPlugin.DESIGN_JSON_CHUNK,
+    );
+    let contentElementGroups =
+      designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
     let metaPropertyMap = new Map([
       [DesignJsonProperty.HTML_EDITOR_CONFIG, {}],
-      [DesignJsonProperty.STYLE_CONFIGS, {}]
+      [DesignJsonProperty.STYLE_CONFIGS, {}],
     ]);
 
     this._adjustDesignJsonSchemaVersion(designJsonObj);
     this._handleDesignPreviewImage(designJsonObj);
 
-    contentElementGroups
-      .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        .forEach(element => this._handleElement(element, replaceMap, metaPropertyMap)));
+    contentElementGroups.forEach((group) =>
+      group[DesignJsonProperty.CONTENT_ELEMENTS].forEach((element) =>
+        this._handleElement(element, replaceMap, metaPropertyMap),
+      ),
+    );
 
     this._applyExtractedMetaProperties(designJsonObj, metaPropertyMap);
 
@@ -3251,14 +3331,11 @@ class _BsiCxWebpackPlugin {
       this._handleInclude(id, include, replaceMap);
     }
 
-    const {
-      schemaVersion,
-      ...rest
-    } = designJsonObj;
+    const { schemaVersion, ...rest } = designJsonObj;
 
     const json = {
       schemaVersion: schemaVersion,
-      ...rest
+      ...rest,
     };
 
     let jsonStr = JSON.stringify(json, null, 2);
@@ -3267,14 +3344,22 @@ class _BsiCxWebpackPlugin {
   }
 
   _adjustDesignJsonSchemaVersion(designJsonObj) {
-    if (typeof designJsonObj[DesignJsonProperty.SCHEMA_VERSION] === 'undefined') {
-      designJsonObj[DesignJsonProperty.SCHEMA_VERSION] = this._config.targetVersion.schemaVersion;
+    if (
+      typeof designJsonObj[DesignJsonProperty.SCHEMA_VERSION] === "undefined"
+    ) {
+      designJsonObj[DesignJsonProperty.SCHEMA_VERSION] =
+        this._config.targetVersion.schemaVersion;
     }
   }
 
   _handleDesignPreviewImage(designJsonObj) {
-    if (typeof designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] !== 'undefined') {
-      designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] = this._removeDesignBaseUrl(designJsonObj[DesignJsonProperty.PREVIEW_IMAGE]);
+    if (
+      typeof designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] !== "undefined"
+    ) {
+      designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] =
+        this._removeDesignBaseUrl(
+          designJsonObj[DesignJsonProperty.PREVIEW_IMAGE],
+        );
     }
   }
 
@@ -3289,7 +3374,11 @@ class _BsiCxWebpackPlugin {
     this._sortElementPartsById(element);
     this._handleElementFile(element, replaceMap);
     this._handleElementContextFile(element, replaceMap);
-    this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
+    this._extractMetaConfigProperties(
+      element,
+      DesignJsonProperty.STYLE_CONFIGS,
+      metaPropertyMap,
+    );
     this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
   }
 
@@ -3300,7 +3389,14 @@ class _BsiCxWebpackPlugin {
   _importElementFile(element) {
     let fileObj = element[DesignJsonProperty.FILE];
 
-    fileObj.content = this._evalTemplateFile(fileObj.content);
+    // Handle HBS files
+    if (fileObj.path.endsWith("hbs")) {
+      // Ansatz, wenn "ref-loader" aktiv
+      // fileObj.content = this._eval(fileObj.content);
+      fileObj.content = fileObj.content();
+    } else {
+      fileObj.content = this._evalTemplateFile(fileObj.content);
+    }
   }
 
   /**
@@ -3313,7 +3409,13 @@ class _BsiCxWebpackPlugin {
     let baseFolder = DistFolder.CONTENT_ELEMENTS;
     let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
-    element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+    element[DesignJsonProperty.FILE] = this._handleTemplateFile(
+      fileObj,
+      baseFolder,
+      filenamePrefix,
+      replaceMap,
+      false,
+    );
   }
 
   /**
@@ -3330,9 +3432,14 @@ class _BsiCxWebpackPlugin {
       let baseFolder = DistFolder.CONTEXT;
       let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
-      element[DesignJsonProperty.CONTEXT_FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+      element[DesignJsonProperty.CONTEXT_FILE] = this._handleTemplateFile(
+        fileObj,
+        baseFolder,
+        filenamePrefix,
+        replaceMap,
+        false,
+      );
     }
-    
   }
 
   /**
@@ -3344,10 +3451,12 @@ class _BsiCxWebpackPlugin {
   _extractMetaConfigProperties(targetObj, property, metaPropertyMap) {
     let metaProperty = `_${property}`;
     let rawMetaConfigs = targetObj[metaProperty] ?? [];
-    let metaConfigs = Array.isArray(rawMetaConfigs) ? rawMetaConfigs : [rawMetaConfigs];
+    let metaConfigs = Array.isArray(rawMetaConfigs)
+      ? rawMetaConfigs
+      : [rawMetaConfigs];
     let configMap = metaPropertyMap.get(property);
 
-    metaConfigs.forEach(metaConfig => {
+    metaConfigs.forEach((metaConfig) => {
       let name = Object.keys(metaConfig).pop();
 
       configMap[name] = metaConfig[name];
@@ -3362,8 +3471,15 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _extractMetaConfigPropertiesFromParts(element, metaPropertyMap) {
-    element[DesignJsonProperty.PARTS]
-      .forEach(part => this._extractMetaConfigProperties(part, DesignJsonProperty.HTML_EDITOR_CONFIG, metaPropertyMap));
+    if (element[DesignJsonProperty.PARTS]) {
+      element[DesignJsonProperty.PARTS].forEach((part) =>
+        this._extractMetaConfigProperties(
+          part,
+          DesignJsonProperty.HTML_EDITOR_CONFIG,
+          metaPropertyMap,
+        ),
+      );
+    }
   }
 
   /**
@@ -3373,10 +3489,20 @@ class _BsiCxWebpackPlugin {
    */
   _applyExtractedMetaProperties(designJsonObj, metaPropertyMap) {
     let styleConfigs = metaPropertyMap.get(DesignJsonProperty.STYLE_CONFIGS);
-    let htmlEditorConfigs = metaPropertyMap.get(DesignJsonProperty.HTML_EDITOR_CONFIG);
+    let htmlEditorConfigs = metaPropertyMap.get(
+      DesignJsonProperty.HTML_EDITOR_CONFIG,
+    );
 
-    this._applyExtractedMetaProperty(designJsonObj, DesignJsonProperty.STYLE_CONFIGS, styleConfigs);
-    this._applyExtractedMetaProperty(designJsonObj, DesignJsonProperty.HTML_EDITOR_CONFIGS, htmlEditorConfigs);
+    this._applyExtractedMetaProperty(
+      designJsonObj,
+      DesignJsonProperty.STYLE_CONFIGS,
+      styleConfigs,
+    );
+    this._applyExtractedMetaProperty(
+      designJsonObj,
+      DesignJsonProperty.HTML_EDITOR_CONFIGS,
+      htmlEditorConfigs,
+    );
   }
 
   /**
@@ -3386,7 +3512,11 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyExtractedMetaProperty(designJsonObj, property, configs) {
-    designJsonObj[property] = Object.assign({}, configs, designJsonObj[property] ?? {});
+    designJsonObj[property] = Object.assign(
+      {},
+      configs,
+      designJsonObj[property] ?? {},
+    );
   }
 
   /**
@@ -3397,37 +3527,42 @@ class _BsiCxWebpackPlugin {
     /**
      * @type {Map<string, {id:string}>}
      */
-    let idPartMap = new Map();
-    let parts = element[DesignJsonProperty.PARTS] ?? [];
-    parts
-      .filter(part => !!part[DesignJsonProperty.ID])
-      .forEach(part => {
-        idPartMap.set(part[DesignJsonProperty.ID], part);
-        delete part[DesignJsonProperty.ID];
-      });
-    // abort if not all parts have an ID
-    if (idPartMap.size !== parts.length) {
-      return;
-    }
-
-    let template = element[DesignJsonProperty.FILE].content;
-    let orderedParts = [];
-    idPartMap.forEach((part, id) => {
-      let index = template.indexOf(id);
-      if (index !== -1) {
-        orderedParts[index] = part;
+    if (element[DesignJsonProperty.PARTS]) {
+      let idPartMap = new Map();
+      let parts = element[DesignJsonProperty.PARTS] ?? [];
+      parts
+        .filter((part) => !!part[DesignJsonProperty.ID])
+        .forEach((part) => {
+          idPartMap.set(part[DesignJsonProperty.ID], part);
+          delete part[DesignJsonProperty.ID];
+        });
+      // abort if not all parts have an ID
+      if (idPartMap.size !== parts.length) {
+        return;
       }
-    });
 
-    // filter all the empty array slots
-    orderedParts = orderedParts.filter(part => !!part);
+      let template = element[DesignJsonProperty.FILE].content;
+      let orderedParts = [];
+      idPartMap.forEach((part, id) => {
+        let index = template.indexOf(id);
+        if (index !== -1) {
+          orderedParts[index] = part;
+        }
+      });
 
-    // abort if not all parts are mapped to the template
-    if (orderedParts.length !== parts.length) {
-      return;
+      // filter all the empty array slots
+      orderedParts = orderedParts.filter((part) => !!part);
+
+      // abort if not all parts are mapped to the template
+      if (orderedParts.length !== parts.length) {
+        return;
+      }
+
+      element[DesignJsonProperty.PARTS] = orderedParts;
+    } else {
+      console.log("B4 skipped:");
+      console.log(element);
     }
-
-    element[DesignJsonProperty.PARTS] = orderedParts;
   }
 
   /**
@@ -3440,15 +3575,22 @@ class _BsiCxWebpackPlugin {
     let fileObj = include[DesignJsonProperty.FILE];
     let baseFolder = DistFolder.INCLUDES;
 
-    include[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, id, replaceMap, true);
+    include[DesignJsonProperty.FILE] = this._handleTemplateFile(
+      fileObj,
+      baseFolder,
+      id,
+      replaceMap,
+      true,
+    );
   }
-
 
   /**
    * @param {string} rawContent
    */
   _evalTemplateFile(rawContent) {
-    return /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
+    return /^module\.exports/.test(rawContent)
+      ? this._eval(rawContent)
+      : rawContent;
   }
 
   /**
@@ -3459,20 +3601,30 @@ class _BsiCxWebpackPlugin {
    * @param {boolean} evalFirst
    * @returns {string}
    */
-  _handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, evalFirst) {
+  _handleTemplateFile(
+    fileObj,
+    baseFolder,
+    filenamePrefix,
+    replaceMap,
+    evalFirst,
+  ) {
     let content = fileObj.content;
 
     if (!!evalFirst) {
-      content = /^module\.exports/.test(content) ? this._eval(content) : content;
+      content = /^module\.exports/.test(content)
+        ? this._eval(content)
+        : content;
     }
 
     let extension = this._getTemplateFileExtension(fileObj.path);
     let prefix = external_slugify_default()(filenamePrefix ?? uuid());
 
     let pathForHash = external_path_default().relative(this._config.rootPath, fileObj.path);
-    let pathHash = createPathHash(external_path_default().posix.join(this._config.designType.toString(), pathForHash));
+    let pathHash = createPathHash(
+      external_path_default().posix.join(this._config.designType.toString(), pathForHash),
+    );
 
-    let filename = prefix + '-' + pathHash + '.' + extension;
+    let filename = prefix + "-" + pathHash + "." + extension;
     let elementFilePath = baseFolder + (external_path_default()).posix.sep + filename;
 
     content = this._applyReplaceMap(content, replaceMap);
@@ -3489,7 +3641,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyReplaceMap(content, replaceMap) {
-    replaceMap.forEach(replaceFunc => content = replaceFunc(content));
+    replaceMap.forEach((replaceFunc) => (content = replaceFunc(content)));
 
     return content;
   }
@@ -3502,10 +3654,10 @@ class _BsiCxWebpackPlugin {
     let parser = this._getHandlebarsParser();
     let template = parser.compile(previewTemplate);
     let rendered = template({
-      designBaseUrl: '.',
-      bsi: this._getHandlebarsHelpers()
+      designBaseUrl: ".",
+      bsi: this._getHandlebarsHelpers(),
     });
-    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, '.html');
+    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, ".html");
 
     this._emitAsset(previewHtmlPath, rendered);
     this._deleteAsset(previewFilePath);
@@ -3518,13 +3670,13 @@ class _BsiCxWebpackPlugin {
   _getTemplateFileExtension(fileName) {
     switch (true) {
       case /\.hbs\.twig$/.test(fileName):
-        return 'hbs';
+        return "hbs";
       case /\.hbs$/.test(fileName):
-        return 'hbs';
+        return "hbs";
       case /\.json$/.test(fileName):
-        return 'json';
+        return "json";
       default:
-        return 'html';
+        return "html";
     }
   }
 
@@ -3537,7 +3689,7 @@ class _BsiCxWebpackPlugin {
      * @type {string[]}
      */
     let assetNames = Object.keys(this._compilation.assets);
-    return assetNames.filter(name => nameRegEx.test(name));
+    return assetNames.filter((name) => nameRegEx.test(name));
   }
 
   /**
@@ -3550,7 +3702,7 @@ class _BsiCxWebpackPlugin {
 
   _eval(source) {
     let script = new (external_vm_default()).Script(source);
-    let context = {module: {}};
+    let context = { module: {} };
     script.runInNewContext(context);
     return context.module.exports;
   }
@@ -3572,7 +3724,7 @@ class _BsiCxWebpackPlugin {
   _loadAssets(scope, ...assetNames) {
     let context = {
       self: {},
-      console: console
+      console: console,
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
@@ -3587,14 +3739,14 @@ class _BsiCxWebpackPlugin {
       let source = asset.source.source();
       let code = utility_toString(source);
       let script = new (external_vm_default()).Script(code, {
-        filename: assetFilename
+        filename: assetFilename,
       });
 
       script.runInContext(context);
     }
 
     let defaultLocale = context[scope][DesignJsonProperty.DEFAULT_LOCALE];
-    if (typeof defaultLocale !== 'undefined') {
+    if (typeof defaultLocale !== "undefined") {
       context[Constant.BSI_CX_DEFAULT_LOCALE] = defaultLocale;
     }
 
@@ -3642,20 +3794,33 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _handleStylesheets(content) {
-    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let publicPath = this._compiler.options.output.publicPath.replace(
+      /\/$/,
+      "",
+    );
     let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
 
     if (cssStylesFilename === undefined) {
       return content;
     }
 
-    let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
-    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/${DistFolder.STATIC}/` : `./${DistFolder.STATIC}/`;
-    let staticFolderUrlPattern = new RegExp(`\.\.\/${DistFolder.STATIC}\/`, 'g');
+    let linkStyleUrl =
+      publicPath.length > 0
+        ? `${publicPath}/${cssStylesFilename}`
+        : `./${cssStylesFilename}`;
+    let inlineSourceAssetsUrl =
+      publicPath.length > 0
+        ? `${publicPath}/${DistFolder.STATIC}/`
+        : `./${DistFolder.STATIC}/`;
+    let staticFolderUrlPattern = new RegExp(
+      `\.\.\/${DistFolder.STATIC}\/`,
+      "g",
+    );
     let asset = this._compilation.getAsset(cssStylesFilename);
-    let source = asset.source.source()
+    let source = asset.source
+      .source()
       .trim()
-      .replace(/\n/g, '')
+      .replace(/\n/g, "")
       .replace(staticFolderUrlPattern, inlineSourceAssetsUrl);
 
     content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
@@ -3673,7 +3838,11 @@ class _BsiCxWebpackPlugin {
     let importedModules = [];
 
     for (const match of jsModuleMatches) {
-      content = this._handleFoundJavaScriptModule(content, match, importedModules);
+      content = this._handleFoundJavaScriptModule(
+        content,
+        match,
+        importedModules,
+      );
     }
 
     content = this._injectModuleRuntime(content);
@@ -3682,20 +3851,25 @@ class _BsiCxWebpackPlugin {
   }
 
   _injectModuleRuntime(content) {
-    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let publicPath = this._compiler.options.output.publicPath.replace(
+      /\/$/,
+      "",
+    );
     let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
 
     if (filename === undefined) {
       return content;
     }
 
-    let url = publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
+    let url =
+      publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
     let asset = this._compilation.getAsset(filename);
-    let source = asset.source.source()
-      .trim()
-      .replace(/\n/g, '');
+    let source = asset.source.source().trim().replace(/\n/g, "");
 
-    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
+    content = content.replace(
+      _BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE,
+      source,
+    );
     content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
 
     return content;
@@ -3713,12 +3887,18 @@ class _BsiCxWebpackPlugin {
      */
     let metaInfo = JSON.parse(match.groups.metaInfo);
     let strToReplace = match[0];
-    let replacement = '';
+    let replacement = "";
 
-    if (typeof metaInfo.module !== 'undefined') {
-      replacement = this._handleFoundJavaScriptModuleImport(metaInfo, importedModules);
-    } else if (typeof metaInfo.chunks !== 'undefined') {
-      replacement = this._handleFoundJavaScriptModuleChunks(metaInfo, importedModules);
+    if (typeof metaInfo.module !== "undefined") {
+      replacement = this._handleFoundJavaScriptModuleImport(
+        metaInfo,
+        importedModules,
+      );
+    } else if (typeof metaInfo.chunks !== "undefined") {
+      replacement = this._handleFoundJavaScriptModuleChunks(
+        metaInfo,
+        importedModules,
+      );
     }
 
     return content.replace(strToReplace, replacement);
@@ -3732,14 +3912,16 @@ class _BsiCxWebpackPlugin {
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
     let inline = metaInfo.inline;
-    let moduleAssetRegex = new RegExp(`^${DistFolder.MODULES}\/${module}\-[0-9a-z]+\.js$`);
+    let moduleAssetRegex = new RegExp(
+      `^${DistFolder.MODULES}\/${module}\-[0-9a-z]+\.js$`,
+    );
     let moduleAssetPath = this._getAssetName(moduleAssetRegex);
 
     if (!moduleAssetPath) {
       throw this._webpackError(
         `Module "${module}" does not exist.`,
         `The module "${module}" does not exist. You need to include it in your modules configuration.`,
-        metaInfo.template
+        metaInfo.template,
       );
     }
 
@@ -3765,12 +3947,18 @@ class _BsiCxWebpackPlugin {
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS}|${DistFolder.SHARED})\/.*\.js$`);
+    let assetRegex = new RegExp(
+      `^(${DistFolder.MODULES}|${DistFolder.VENDORS}|${DistFolder.SHARED})\/.*\.js$`,
+    );
     let assetPaths = this._getAssetNames(assetRegex);
 
     return assetPaths
-      .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
-      .map(assetPath => {
+      .filter(
+        (assetPath) =>
+          !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) &&
+          importedModules.indexOf(assetPath) === -1,
+      )
+      .map((assetPath) => {
         importedModules.push(assetPath);
         if (inline) {
           let asset = this._compilation.getAsset(assetPath);
@@ -3781,7 +3969,8 @@ class _BsiCxWebpackPlugin {
           let url = buildPublicPath(this._config, assetPath);
           return `<script src="${url}" defer="defer" data-bsi-remove-if="draft"></script>`;
         }
-      }).join('');
+      })
+      .join("");
   }
 
   /**
@@ -3795,7 +3984,7 @@ class _BsiCxWebpackPlugin {
     error.details = details;
     if (!!location) {
       error.loc = {
-        name: this._getContextRelativePath(location)
+        name: this._getContextRelativePath(location),
       };
     }
     return error;
@@ -3804,7 +3993,7 @@ class _BsiCxWebpackPlugin {
   _getContextRelativePath(absolutePath) {
     let contextPath = this._compiler.context;
     let relativePath = toPosixPath(external_path_default().relative(contextPath, absolutePath));
-    return '.' + (external_path_default()).posix.sep + relativePath;
+    return "." + (external_path_default()).posix.sep + relativePath;
   }
 
   /**
@@ -3812,9 +4001,9 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _createContentHash(content) {
-    return (0,external_crypto_namespaceObject.createHash)('sha256')
+    return (0,external_crypto_namespaceObject.createHash)("sha256")
       .update(content)
-      .digest('hex')
+      .digest("hex")
       .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
   }
 
@@ -3831,7 +4020,7 @@ class _BsiCxWebpackPlugin {
   _getHandlebarsHelpers() {
     let helpersObj = {};
     for (const [name, func] of Object.entries(handlebars_helpers)) {
-      let fixedName = name.replace(/^bsi\./, '');
+      let fixedName = name.replace(/^bsi\./, "");
       helpersObj[fixedName] = func;
     }
     return helpersObj;
@@ -3842,7 +4031,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _removeDesignBaseUrl(url) {
-    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
+    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, "");
   }
 }
 
@@ -3850,7 +4039,7 @@ class BsiCxWebpackPlugin {
   /**
    * @type {string}
    */
-  static PLUGIN_NAME = 'BsiCxWebpackPlugin';
+  static PLUGIN_NAME = "BsiCxWebpackPlugin";
 
   /**
    * @type {BuildContext}
@@ -3870,19 +4059,30 @@ class BsiCxWebpackPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
-      compilation.hooks.processAssets.tap(
-        {
-          name: BsiCxWebpackPlugin.PLUGIN_NAME,
-          stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
-        },
-        () => {
-          const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
-        })
-    });
+    compiler.hooks.thisCompilation.tap(
+      BsiCxWebpackPlugin.PLUGIN_NAME,
+      (compilation) => {
+        compilation.hooks.processAssets.tap(
+          {
+            name: BsiCxWebpackPlugin.PLUGIN_NAME,
+            stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
+          },
+          () => {
+            const logger = compilation.getLogger(
+              BsiCxWebpackPlugin.PLUGIN_NAME,
+            );
+            new _BsiCxWebpackPlugin(
+              this._context,
+              compiler,
+              compilation,
+              logger,
+            ).apply();
+          },
+        );
+      },
+    );
   }
-};
+}
 
 ;// ./src/java-property-file-builder.js
 class JavaPropertyFileBuilder {
@@ -6230,7 +6430,7 @@ class WebpackConfigBuilder {
   /**
    * @type {string}
    */
-  static DESIGN_LAYER = 'design';
+  static DESIGN_LAYER = "design";
   /**
    * @type {RegExp}
    */
@@ -6274,12 +6474,12 @@ class WebpackConfigBuilder {
   }
 
   build() {
-    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '9001';
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = "9001";
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,
       context: this.config.rootPath,
-      target: 'web',
+      target: "web",
       module: {
         rules: [
           ...this._getTwigRuleConfig(),
@@ -6290,8 +6490,8 @@ class WebpackConfigBuilder {
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
           ...this._getAdditionalRules(),
-          ...this._getAdditionalHbsRuleConfig()
-        ]
+          ...this._getHbsRuleConfig(),
+        ],
       },
       plugins: [
         ...this._getBsiCxTwigContextWebpackPlugin(),
@@ -6300,8 +6500,8 @@ class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getHbsPlugin(),
-        ...this._getAdditionalPlugins()
+        // ...this._getHbsPlugin(),
+        ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
@@ -6311,16 +6511,16 @@ class WebpackConfigBuilder {
         minimize: true,
         minimizer: this._getOptimizationMinimizerConfig(),
         splitChunks: {
-          chunks: 'all',
+          chunks: "all",
           cacheGroups: {
             ...this._getOptimizationCacheGroupsConfig(),
-          }
-        }
+          },
+        },
       },
       output: this._getOutputConfig(),
       experiments: {
-        layers: true
-      }
+        layers: true,
+      },
     };
   }
 
@@ -6337,12 +6537,12 @@ class WebpackConfigBuilder {
         filename: File.DESIGN_JSON,
         layer: WebpackConfigBuilder.DESIGN_LAYER,
         library: {
-          type: 'var',
-          name: 'json'
-        }
+          type: "var",
+          name: "json",
+        },
       },
-      design: this._evaluateEntryTemplate('design'),
-      preview: this._evaluateEntryTemplate('preview')
+      design: this._evaluateEntryTemplate("design"),
+      preview: this._evaluateEntryTemplate("preview"),
     };
   }
 
@@ -6356,10 +6556,10 @@ class WebpackConfigBuilder {
     let twigFilePath = external_path_default().resolve(this.config.rootPath, `${name}.twig`);
     let hbsFilePath = external_path_default().resolve(this.config.rootPath, `${name}.hbs.twig`);
     let isTwig = external_fs_default().existsSync(twigFilePath);
-    let extension = isTwig ? 'html' : 'hbs';
+    let extension = isTwig ? "html" : "hbs";
     return {
       import: isTwig ? twigFilePath : hbsFilePath,
-      filename: `${name}.${extension}`
+      filename: `${name}.${extension}`,
     };
   }
 
@@ -6401,18 +6601,28 @@ class WebpackConfigBuilder {
     }
 
     if (!external_fs_default().existsSync(importPath)) {
-      throw new Error(`The file ${importPath} for module ${config.name} does not exist.`);
+      throw new Error(
+        `The file ${importPath} for module ${config.name} does not exist.`,
+      );
     }
 
     if (!external_fs_default().statSync(importPath).isFile()) {
-      throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
+      throw new Error(
+        `The path ${importPath} for module ${config.name} does not point to a file.`,
+      );
     }
 
-    let pathHash = createPathHash(external_path_default().posix.join(this.config.designType.toString(), DistFolder.MODULES, config.name));
+    let pathHash = createPathHash(
+      external_path_default().posix.join(
+        this.config.designType.toString(),
+        DistFolder.MODULES,
+        config.name,
+      ),
+    );
     return {
       import: importPath,
       filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
-      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
+      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH,
     };
   }
 
@@ -6426,11 +6636,11 @@ class WebpackConfigBuilder {
     const designs = {};
 
     for (const [name, version] of Object.entries(version_namespaceObject)) {
-      versions[name] = name === 'TARGET' ? this.config.targetVersion : version;
+      versions[name] = name === "TARGET" ? this.config.targetVersion : version;
     }
 
     for (const [name, type] of Object.entries(design_type_namespaceObject)) {
-      designs[name] = name === 'TARGET' ? this.config.designType : type;
+      designs[name] = name === "TARGET" ? this.config.designType : type;
     }
 
     return [
@@ -6438,7 +6648,7 @@ class WebpackConfigBuilder {
         test: /\.twig$/i,
         use: [
           this._getTemplateLoader(),
-          'ref-loader',
+          "ref-loader",
           {
             loader: this._getTwingLoader(),
             options: {
@@ -6448,13 +6658,13 @@ class WebpackConfigBuilder {
                 designBaseUrl: buildPublicPath(this.config),
                 cx: {
                   version: versions,
-                  design: designs
-                }
-              }
-            }
-          }
-        ]
-      }
+                  design: designs,
+                },
+              },
+            },
+          },
+        ],
+      },
     ];
   }
 
@@ -6467,10 +6677,7 @@ class WebpackConfigBuilder {
     return [
       {
         test: /\.(html)$/i,
-        use: [
-          this._getTemplateLoader(),
-          'ref-loader',
-        ]
+        use: [this._getTemplateLoader(), "ref-loader"],
       },
       // {
       //   test: /\.(hbs)$/i,
@@ -6487,22 +6694,34 @@ class WebpackConfigBuilder {
    *
    * @returns {{}[]}
    */
-  _getAdditionalHbsRuleConfig() {
+  _getHbsRuleConfig() {
     return [
       {
         test: /\.hbs$/,
-        loader: 'handlebars-loader',
-        options: {
-          // Register partials directory, TODO: fix paths
-          partialDirs: [ 
-            external_path_default().resolve(this.config.rootPath, 'template.hbs'),
-            //path.resolve('test', 'templates', 'landingpage', 'partials')
-          ],
-          helperDirs: [
-            external_path_default().resolve(this.config.rootPath, 'test', 'templates', 'landingpage', 'helpers')
-          ]
-        }
-      }
+        use: [
+          this._getTemplateLoader(),
+          // 'ref-loader', // needed for dropzones
+          {
+            loader: "handlebars-loader",
+            options: {
+              // Register partials directory, TODO: fix paths
+              partialDirs: [
+                external_path_default().resolve(this.config.rootPath, "template.hbs"),
+                //path.resolve('test', 'templates', 'landingpage', 'partials')
+              ],
+              helperDirs: [
+                external_path_default().resolve(
+                  this.config.rootPath,
+                  "test",
+                  "templates",
+                  "landingpage",
+                  "helpers",
+                ),
+              ],
+            },
+          },
+        ],
+      },
     ];
   }
 
@@ -6518,40 +6737,39 @@ class WebpackConfigBuilder {
         use: [
           ...this._getCssLoaderChain(),
           {
-            loader: 'less-loader',
+            loader: "less-loader",
             options: {
               sourceMap: true,
               lessOptions: {
-                plugins: [
-                  new BsiLessPropertyPlugin(this.context),
-                ],
-              }
-            }
-          }
-        ]
+                plugins: [new BsiLessPropertyPlugin(this.context)],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.s[ac]ss$/i,
         use: [
           ...this._getCssLoaderChain(),
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               sourceMap: true,
               sassOptions: {
-                functions: new BsiSassPropertyPlugin(this.context).getFunction()
+                functions: new BsiSassPropertyPlugin(
+                  this.context,
+                ).getFunction(),
               },
-              additionalData: new PropertiesToScssConverter(this.context).scssData
-            }
-          }
-        ]
+              additionalData: new PropertiesToScssConverter(this.context)
+                .scssData,
+            },
+          },
+        ],
       },
       {
         test: /\.css$/i,
-        use: [
-          ...this._getCssLoaderChain()
-        ]
-      }
+        use: [...this._getCssLoaderChain()],
+      },
     ];
   }
 
@@ -6568,11 +6786,11 @@ class WebpackConfigBuilder {
       {
         test: /[\\/]node_modules[\\/]/,
         resourceQuery: assetQueryRegex,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: `${DistFolder.VENDORS}/[contenthash][ext]`
-        }
-      }
+          filename: `${DistFolder.VENDORS}/[contenthash][ext]`,
+        },
+      },
     ];
   }
 
@@ -6583,49 +6801,54 @@ class WebpackConfigBuilder {
    */
   _getStaticAssetFileExtensions() {
     const defaults = [
-      'avif',
-      'png',
-      'apng',
-      'jpg',
-      'jpeg',
-      'jfif',
-      'pjpeg',
-      'pjp',
-      'webp',
-      'gif',
-      'bmp',
-      'tiff',
-      'tif',
-      'raw',
-      'svg',
-      'eot',
-      'ttf',
-      'woff',
-      'woff2',
-      'pdf',
-      'ico',
-      'cur',
-      'mkv',
-      '3gp',
-      'mp3',
-      'mp4',
-      'm4v',
-      'm4p',
-      'ogv',
-      'webm',
-      'aac',
-      'flac',
-      'mpg',
-      'mpeg',
-      'oga',
-      'ogg',
-      'wav',
-      'json5'
+      "avif",
+      "png",
+      "apng",
+      "jpg",
+      "jpeg",
+      "jfif",
+      "pjpeg",
+      "pjp",
+      "webp",
+      "gif",
+      "bmp",
+      "tiff",
+      "tif",
+      "raw",
+      "svg",
+      "eot",
+      "ttf",
+      "woff",
+      "woff2",
+      "pdf",
+      "ico",
+      "cur",
+      "mkv",
+      "3gp",
+      "mp3",
+      "mp4",
+      "m4v",
+      "m4p",
+      "ogv",
+      "webm",
+      "aac",
+      "flac",
+      "mpg",
+      "mpeg",
+      "oga",
+      "ogg",
+      "wav",
+      "json5",
     ];
 
-    const extensions = new Set([...defaults, ...this.config.additionalStaticAssetFileExtensions]);
+    const extensions = new Set([
+      ...defaults,
+      ...this.config.additionalStaticAssetFileExtensions,
+    ]);
 
-    return [...extensions.values()].map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+    return [...extensions.values()].map((ext) =>
+      ext.startsWith(".") ? ext : `.${ext}`,
+    );
   }
 
   /**
@@ -6634,8 +6857,10 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStaticAssetsRuleConfig() {
-    let fileExtensions = this._getStaticAssetFileExtensions().map(escapeRegex).join('|');
-    let testRegex = new RegExp(fileExtensions, 'i');
+    let fileExtensions = this._getStaticAssetFileExtensions()
+      .map(escapeRegex)
+      .join("|");
+    let testRegex = new RegExp(fileExtensions, "i");
     let inlineQueryRegex = new RegExp(QueryConstant.INLINE);
 
     return [
@@ -6644,21 +6869,24 @@ class WebpackConfigBuilder {
         oneOf: [
           {
             resourceQuery: inlineQueryRegex,
-            type: 'asset/inline'
+            type: "asset/inline",
           },
           {
             resourceQuery: {
-              not: [
-                inlineQueryRegex
-              ]
+              not: [inlineQueryRegex],
             },
-            type: 'asset/resource',
+            type: "asset/resource",
             generator: {
-              filename: asset => this._getAssetResourceFilename(asset, this.config.designType, this.config.assetResourceRuleFilename)
+              filename: (asset) =>
+                this._getAssetResourceFilename(
+                  asset,
+                  this.config.designType,
+                  this.config.assetResourceRuleFilename,
+                ),
             },
           },
-        ]
-      }
+        ],
+      },
     ];
   }
 
@@ -6671,11 +6899,12 @@ class WebpackConfigBuilder {
     return [
       {
         resource: (file) => this._isStaticJavaScriptFile(file),
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: asset => this._getAssetResourceFilename(asset, this.config.designType)
-        }
-      }
+          filename: (asset) =>
+            this._getAssetResourceFilename(asset, this.config.designType),
+        },
+      },
     ];
   }
 
@@ -6688,18 +6917,22 @@ class WebpackConfigBuilder {
    * @returns {string}
    */
   _getAssetResourceFilename(asset, designType, assetResourceRuleFilename) {
-    const isCustomPath = this._isValidAssetResourceRuleFilename(assetResourceRuleFilename);
+    const isCustomPath = this._isValidAssetResourceRuleFilename(
+      assetResourceRuleFilename,
+    );
     if (isCustomPath && assetResourceRuleFilename.includes("[contenthash]")) {
       return assetResourceRuleFilename;
     }
 
-    const pathHash = createPathHash(external_path_default().posix.join(designType.toString(), asset.filename));
-    if(isCustomPath && assetResourceRuleFilename.includes("[pathhash]")) {
+    const pathHash = createPathHash(
+      external_path_default().posix.join(designType.toString(), asset.filename),
+    );
+    if (isCustomPath && assetResourceRuleFilename.includes("[pathhash]")) {
       // 'pathhash' is not a standard webpack feature
       return assetResourceRuleFilename.replace("[pathhash]", pathHash);
     } else {
       return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
-    }  
+    }
   }
 
   /**
@@ -6709,7 +6942,12 @@ class WebpackConfigBuilder {
    * @returns {boolean}
    */
   _isValidAssetResourceRuleFilename(filename) {
-    return filename && filename.length > 0 && filename.includes("[name]") && filename.includes("[ext]");
+    return (
+      filename &&
+      filename.length > 0 &&
+      filename.includes("[name]") &&
+      filename.includes("[ext]")
+    );
   }
 
   /**
@@ -6717,10 +6955,14 @@ class WebpackConfigBuilder {
    * @returns {boolean}
    */
   _isStaticJavaScriptFile(fileToCheck) {
-    let staticFilePath = external_path_default().resolve(this.config.staticFileFolderPath) + (external_path_default()).sep;
+    let staticFilePath =
+      external_path_default().resolve(this.config.staticFileFolderPath) + (external_path_default()).sep;
     let isInsideStaticFolder = fileToCheck.startsWith(staticFilePath);
 
-    return isInsideStaticFolder && WebpackConfigBuilder.STATIC_JS_FILE_EXTENSION.test(fileToCheck);
+    return (
+      isInsideStaticFolder &&
+      WebpackConfigBuilder.STATIC_JS_FILE_EXTENSION.test(fileToCheck)
+    );
   }
 
   /**
@@ -6735,14 +6977,14 @@ class WebpackConfigBuilder {
         exclude: /(node_modules|bower_components)/,
         include: this.config.modulesRootPath,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-transform-runtime'],
-            cacheDirectory: true
-          }
-        }
-      }
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+            plugins: ["@babel/plugin-transform-runtime"],
+            cacheDirectory: true,
+          },
+        },
+      },
     ];
   }
 
@@ -6779,29 +7021,26 @@ class WebpackConfigBuilder {
       {
         loader: (external_mini_css_extract_plugin_default()).loader,
         options: {
-          publicPath: '../'
-        }
+          publicPath: "../",
+        },
       },
       {
-        loader: 'css-loader',
+        loader: "css-loader",
         options: {
           sourceMap: true,
-        }
-      }
+        },
+      },
     ];
 
     if (this.config.postcssEnabled) {
       chain.push({
-        loader: 'postcss-loader',
+        loader: "postcss-loader",
         options: {
           sourceMap: true,
           postcssOptions: {
-            plugins: [
-              'postcss-preset-env',
-              'cssnano'
-            ]
-          }
-        }
+            plugins: ["postcss-preset-env", "cssnano"],
+          },
+        },
       });
     }
 
@@ -6814,11 +7053,17 @@ class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
-    let pathHash = createPathHash(external_path_default().posix.join(this.config.designType.toString(), DistFolder.STATIC, 'styles.css'));
+    let pathHash = createPathHash(
+      external_path_default().posix.join(
+        this.config.designType.toString(),
+        DistFolder.STATIC,
+        "styles.css",
+      ),
+    );
     return [
       new (external_mini_css_extract_plugin_default())({
         filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
-      })
+      }),
     ];
   }
 
@@ -6837,16 +7082,16 @@ class WebpackConfigBuilder {
             from: `${copyAssetsFolderPath}/**/*`,
             globOptions: {
               dot: true,
-              ignore: ['**/.gitkeep', '**/.gitignore']
+              ignore: ["**/.gitkeep", "**/.gitignore"],
             },
             noErrorOnMissing: true,
             info: {
-              minimized: true
+              minimized: true,
             },
           },
-          ...this.config.additionalFilesToCopy
-        ]
-      })
+          ...this.config.additionalFilesToCopy,
+        ],
+      }),
     ];
   }
 
@@ -6856,9 +7101,7 @@ class WebpackConfigBuilder {
    * @private
    */
   _getBsiCxTwigContextWebpackPlugin() {
-    return [
-      new BsiCxTwigContextWebpackPlugin(this.properties)
-    ]
+    return [new BsiCxTwigContextWebpackPlugin(this.properties)];
   }
 
   /**
@@ -6866,9 +7109,7 @@ class WebpackConfigBuilder {
    * @private
    */
   _getBsiCxWebpackPluginConfig() {
-    return [
-      new BsiCxWebpackPlugin(this.context)
-    ];
+    return [new BsiCxWebpackPlugin(this.context)];
   }
 
   /**
@@ -6883,20 +7124,28 @@ class WebpackConfigBuilder {
     let plugins = [
       new (external_zip_webpack_plugin_default())({
         filename: getZipArchiveName(this.config.name, this.config.version),
-        exclude: [/\.map$/]
-      })
+        exclude: [/\.map$/],
+      }),
     ];
 
     if (this.config.sourceMapEnabled) {
       plugins.push(
         new (external_zip_webpack_plugin_default())({
-          filename: getZipArchiveName(this.config.name, this.config.version, 'dev'),
-        })
+          filename: getZipArchiveName(
+            this.config.name,
+            this.config.version,
+            "dev",
+          ),
+        }),
       );
     }
 
     plugins.push(
-      new BsiCxWebpackZipHashPlugin(this.config.name, this.config.version, this.config.hashZipFiles)
+      new BsiCxWebpackZipHashPlugin(
+        this.config.name,
+        this.config.version,
+        this.config.hashZipFiles,
+      ),
     );
 
     return plugins;
@@ -6910,21 +7159,28 @@ class WebpackConfigBuilder {
     return this.config.webpackPlugins;
   }
 
-    /**
+  /**
    * Returns plugin to compile .hbs files.
    *
    * @returns {Object[]}
    */
   _getHbsPlugin() {
-      return [
-        // TODO: fix paths
-        new (external_html_webpack_plugin_default())({
-          template:  external_path_default().resolve(this.config.rootPath, 'templates', 'landingpage', 'content-elements', 'title_with_partial', 'template.hbs'), //path.resolve('test', 'templates', '**', 'text.hbs'),
-          filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
-          templateParameters: this.properties,
-          minify: false // TODO: set to true for main build
-        })
-      ]
+    return [
+      // TODO: fix paths
+      new (external_html_webpack_plugin_default())({
+        template: external_path_default().resolve(
+          this.config.rootPath,
+          "templates",
+          "landingpage",
+          "content-elements",
+          "title_with_partial",
+          "template.hbs",
+        ), //path.resolve('test', 'templates', '**', 'text.hbs'),
+        filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
+        templateParameters: this.properties,
+        minify: false, // TODO: set to true for main build
+      }),
+    ];
   }
 
   /**
@@ -6935,9 +7191,7 @@ class WebpackConfigBuilder {
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
     if (this.config.targetVersion.legacyFormat) {
-      plugins.push(
-        new BsiCxWebpackLegacyDesignPlugin(this.config)
-      );
+      plugins.push(new BsiCxWebpackLegacyDesignPlugin(this.config));
     }
     return plugins;
   }
@@ -6948,7 +7202,7 @@ class WebpackConfigBuilder {
    * @returns {string|boolean}
    */
   _getDevToolConfig() {
-    return this.config.sourceMapEnabled ? 'source-map' : false;
+    return this.config.sourceMapEnabled ? "source-map" : false;
   }
 
   /**
@@ -6967,7 +7221,7 @@ class WebpackConfigBuilder {
       client: false,
       devMiddleware: {
         writeToDisk: true,
-      }
+      },
     };
   }
 
@@ -6989,14 +7243,14 @@ class WebpackConfigBuilder {
    * @returns {{}}
    */
   _getPerformanceConfig() {
-    let excludedAssets = [
-      File.DESIGN_JSON,
-    ];
+    let excludedAssets = [File.DESIGN_JSON];
     let excludedExtensions = /\.(map|zip|html|hbs)$/;
 
     return {
-      assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
-      hints: false
+      assetFilter: (assetFilename) =>
+        !excludedAssets.includes(assetFilename) &&
+        !excludedExtensions.test(assetFilename),
+      hints: false,
     };
   }
 
@@ -7008,8 +7262,8 @@ class WebpackConfigBuilder {
   _getOptimizationMinimizerConfig() {
     return [
       new (external_terser_webpack_plugin_default())({
-        extractComments: false
-      })
+        extractComments: false,
+      }),
     ];
   }
 
@@ -7024,31 +7278,31 @@ class WebpackConfigBuilder {
         priority: 0,
         minChunks: 2,
         reuseExistingChunk: true,
-        filename: `${DistFolder.SHARED}/[chunkhash].js`
+        filename: `${DistFolder.SHARED}/[chunkhash].js`,
       },
       defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
         priority: 10,
         reuseExistingChunk: true,
-        filename: `${DistFolder.VENDORS}/[chunkhash].js`
+        filename: `${DistFolder.VENDORS}/[chunkhash].js`,
       },
       design: {
-        test: module => {
+        test: (module) => {
           return module.layer === WebpackConfigBuilder.DESIGN_LAYER;
         },
         priority: 20,
         reuseExistingChunk: false,
-        chunks: 'all',
+        chunks: "all",
         enforce: true,
-        filename: File.DESIGN_JSON_CHUNK
+        filename: File.DESIGN_JSON_CHUNK,
       },
       styles: {
-        name: 'styles',
-        type: 'css/mini-extract',
-        chunks: 'all',
+        name: "styles",
+        type: "css/mini-extract",
+        chunks: "all",
         priority: 30,
         enforce: true,
-      }
+      },
     };
   }
 
@@ -7060,15 +7314,14 @@ class WebpackConfigBuilder {
   _getOutputConfig() {
     return {
       path: this.config.outputPath,
-      publicPath: buildPublicPath(this.config, '/'),
+      publicPath: buildPublicPath(this.config, "/"),
       clean: true,
       library: {
-        type: 'var',
-        name: '[name]'
-      }
+        type: "var",
+        name: "[name]",
+      },
     };
   }
-
 
   /**
    * Build the configuration for webpack from {@link BuildConfig} objects.
@@ -7086,17 +7339,24 @@ class WebpackConfigBuilder {
     let commonContentBase = undefined;
 
     let buildConfigs = configs
-      .map(config => config.validate())
-      .map(config => new WebpackConfigBuilder(config))
-      .map(config => config.build());
+      .map((config) => config.validate())
+      .map((config) => new WebpackConfigBuilder(config))
+      .map((config) => config.build());
 
     buildConfigs.forEach((config, index) => {
       if (index === 0) {
         commonDevServerPort = config.devServer.port;
-        commonContentBase = toPosixPath(config.devServer.static.directory).split((external_path_default()).posix.sep);
+        commonContentBase = toPosixPath(
+          config.devServer.static.directory,
+        ).split((external_path_default()).posix.sep);
       } else {
-        let currentStaticDirectory = toPosixPath(config.devServer.static.directory).split((external_path_default()).posix.sep);
-        commonContentBase = findArraySimilarities(commonContentBase, currentStaticDirectory);
+        let currentStaticDirectory = toPosixPath(
+          config.devServer.static.directory,
+        ).split((external_path_default()).posix.sep);
+        commonContentBase = findArraySimilarities(
+          commonContentBase,
+          currentStaticDirectory,
+        );
       }
 
       if (index > 0) {

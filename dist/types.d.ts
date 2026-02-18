@@ -3015,7 +3015,7 @@ declare module "src/webpack-config-builder" {
          *
          * @returns {{}[]}
          */
-        _getAdditionalHbsRuleConfig(): {}[];
+        _getHbsRuleConfig(): {}[];
         /**
          * Rules for LESS, SASS/SCSS and CSS file handling.
          *
@@ -3129,10 +3129,10 @@ declare module "src/webpack-config-builder" {
          */
         private _getAdditionalPlugins;
         /**
-       * Returns plugin to compile .hbs files.
-       *
-       * @returns {Object[]}
-       */
+         * Returns plugin to compile .hbs files.
+         *
+         * @returns {Object[]}
+         */
         _getHbsPlugin(): any[];
         /**
          * BSI CX legacy design format plugin config.

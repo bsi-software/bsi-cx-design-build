@@ -27,7 +27,17 @@ Im Zweifelsfall gerne im anderen Build Repo den aktuellen Stand anschauen. Das i
 Da klappt alles und sollte größtenteils übernehmbar sein.
 
 ---
-Ich bin mir nicht sicher, ob du die richtigen Module importierst.
-- HtmlWebpackPlugin war weder installiert noch referenziert
-- handlebars-loader war referenziert, aber nicht installiert
-- HandlebarsWebpackPlugin war installiert, aber nicht verwendet
+Stand 18.02.
+
+- HBS compiler in bsi-cx-webpack-plugin integriert
+
+Was fehlt (und warum)
+- Dropzones
+    - hängt mit "ref-loader" zusammen (auskommentiert)
+        - wenn aktiv: HBS Loader geht nicht
+        - wenn inaktiv: Dropzone und Bildreferenzen nicht mehr möglich
+- partials
+    - Funktionen schreiben
+    - Path referenzieren und testen
+- properties
+    - variablen (/context?!) einbinden und testen

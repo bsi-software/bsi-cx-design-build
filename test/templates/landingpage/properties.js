@@ -1,6 +1,7 @@
 module.exports = {
-  author: 'John Doe',
+  author: "John Doe",
   date: Date.now(),
-  other: require('./other-properties'),
-  test: 'test'
+  other: require("./other-properties"),
+  test: "test",
+  properties: { test: "b4" },
 };
