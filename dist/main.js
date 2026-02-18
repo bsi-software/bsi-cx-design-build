@@ -3527,42 +3527,37 @@ class _BsiCxWebpackPlugin {
     /**
      * @type {Map<string, {id:string}>}
      */
-    if (element[DesignJsonProperty.PARTS]) {
-      let idPartMap = new Map();
-      let parts = element[DesignJsonProperty.PARTS] ?? [];
-      parts
-        .filter((part) => !!part[DesignJsonProperty.ID])
-        .forEach((part) => {
-          idPartMap.set(part[DesignJsonProperty.ID], part);
-          delete part[DesignJsonProperty.ID];
-        });
-      // abort if not all parts have an ID
-      if (idPartMap.size !== parts.length) {
-        return;
-      }
-
-      let template = element[DesignJsonProperty.FILE].content;
-      let orderedParts = [];
-      idPartMap.forEach((part, id) => {
-        let index = template.indexOf(id);
-        if (index !== -1) {
-          orderedParts[index] = part;
-        }
+    let idPartMap = new Map();
+    let parts = element[DesignJsonProperty.PARTS] ?? [];
+    parts
+      .filter((part) => !!part[DesignJsonProperty.ID])
+      .forEach((part) => {
+        idPartMap.set(part[DesignJsonProperty.ID], part);
+        delete part[DesignJsonProperty.ID];
       });
-
-      // filter all the empty array slots
-      orderedParts = orderedParts.filter((part) => !!part);
-
-      // abort if not all parts are mapped to the template
-      if (orderedParts.length !== parts.length) {
-        return;
-      }
-
-      element[DesignJsonProperty.PARTS] = orderedParts;
-    } else {
-      console.log("B4 skipped:");
-      console.log(element);
+    // abort if not all parts have an ID
+    if (idPartMap.size !== parts.length) {
+      return;
     }
+
+    let template = element[DesignJsonProperty.FILE].content;
+    let orderedParts = [];
+    idPartMap.forEach((part, id) => {
+      let index = template.indexOf(id);
+      if (index !== -1) {
+        orderedParts[index] = part;
+      }
+    });
+
+    // filter all the empty array slots
+    orderedParts = orderedParts.filter((part) => !!part);
+
+    // abort if not all parts are mapped to the template
+    if (orderedParts.length !== parts.length) {
+      return;
+    }
+
+    element[DesignJsonProperty.PARTS] = orderedParts;
   }
 
   /**
@@ -6709,6 +6704,7 @@ class WebpackConfigBuilder {
                 external_path_default().resolve(this.config.rootPath, "template.hbs"),
                 //path.resolve('test', 'templates', 'landingpage', 'partials')
               ],
+              properties: this.properties,
               helperDirs: [
                 external_path_default().resolve(
                   this.config.rootPath,
@@ -7010,6 +7006,18 @@ class WebpackConfigBuilder {
    */
   _getTwingLoader() {
     return `${package_namespaceObject.UU}/dist/twing-loader`;
+  }
+
+  /**
+   * TODO: 
+   * - compile hbs-partial functions to dist/hbs-partials
+   * - reference in plugin
+   *  
+   * @returns {string}
+   * @private
+   */
+  _getHbsPartials() {
+    return `${package_namespaceObject.UU}/dist/hbs-partials`;
   }
 
   /**

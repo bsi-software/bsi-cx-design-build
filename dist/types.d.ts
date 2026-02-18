@@ -3090,6 +3090,15 @@ declare module "src/webpack-config-builder" {
          */
         private _getTwingLoader;
         /**
+         * TODO:
+         * - compile hbs-partial functions to dist/hbs-partials
+         * - reference in plugin
+         *
+         * @returns {string}
+         * @private
+         */
+        private _getHbsPartials;
+        /**
          * @returns {{}[]}
          * @private
          */
