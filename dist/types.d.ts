@@ -886,6 +886,10 @@ declare module "src/build-config/build-config-interface" {
          * @returns {boolean}
          */
         get postcssEnabled(): boolean;
+        /**
+         * @returns {string[]}
+         */
+        get hbsPartialDirs(): string[];
     }
     export type PathData = import("webpack").PathData;
     export type AssetInfo = import("webpack").AssetInfo;
@@ -1005,6 +1009,10 @@ declare module "src/build-config/validated-build-config" {
          */
         private _postcssEnabled;
         /**
+         * @returns {string[]}
+         */
+        _hbsPartialDirs: any;
+        /**
          * @returns {string}
          */
         get name(): string;
@@ -1084,6 +1092,10 @@ declare module "src/build-config/validated-build-config" {
          * @returns {boolean}
          */
         get postcssEnabled(): boolean;
+        /**
+         * @returns {string[]}
+         */
+        get hbsPartialDirs(): string[];
     }
     export type PathData = import("webpack").PathData;
     export type AssetInfo = import("webpack").AssetInfo;
@@ -1394,6 +1406,10 @@ declare module "src/build-config/build-config" {
          */
         private _postcssEnabled;
         /**
+         * @returns {string[]}
+         */
+        _hbsPartialDirs: any[];
+        /**
          * @returns {string}
          */
         get name(): string;
@@ -1473,6 +1489,10 @@ declare module "src/build-config/build-config" {
          * @returns {boolean}
          */
         get postcssEnabled(): boolean;
+        /**
+         * @returns {string[]}
+         */
+        get hbsPartialDirs(): string[];
         /**
          * The name of this template, e.g. landingpage. This will be included in the name of the resulting ZIP file in the dist folder.
          * Be aware, that you should use a normalized name without any umlauts, special chars, spaces or slashes.
@@ -1649,6 +1669,15 @@ declare module "src/build-config/build-config" {
          */
         withPostcssEnabled(postcssEnabled: boolean): BuildConfig;
         /**
+         * The data properties file for your Twig templates. This file will be required and the contents of this file will be
+         * available as "properties" variable inside your Twig templates and trough the <code>bsiProperty</code> functions inside
+         * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
+         *
+         * @param {string} propertiesFilePath - The path to your properties file.
+         * @returns {BuildConfig}
+         */
+        withHbsPartialDirs(...partialDirs: any[]): BuildConfig;
+        /**
          * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
          * A shallow clone will be created by default. This means nested objects will still reference the same origin.
          *
@@ -1676,10 +1705,7 @@ declare module "src/build-config/build-config" {
     export type ValidatedBuildConfig = import("src/build-config/validated-build-config").default;
 }
 declare module "src/handlebars-helpers" {
-    const _default: {
-        'bsi.nls': (key: any) => any;
-        'bsi.linkValue': (linkPartId: any) => string;
-    };
+    const _default: any;
     export default _default;
 }
 declare module "src/builder-object-normalizer" {

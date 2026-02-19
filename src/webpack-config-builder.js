@@ -296,6 +296,8 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getHbsRuleConfig() {
+    console.log('Partials')
+    console.log(this.config.hbsPartialDirs)
     return [
       {
         test: /\.hbs$/,
@@ -306,11 +308,14 @@ export default class WebpackConfigBuilder {
             loader: "handlebars-loader",
             options: {
               // Register partials directory, TODO: fix paths
-              // partials: this._getHbsPartials(),
-              // partialDirs: [
-              //   //path.resolve('test', 'templates', 'landingpage', 'partials')
-              // ],
-              properties: this.properties, // TODO Lukas: get this in bsi_cx_webpack_plugin
+              partials: this.config.hbsPartialDirs,
+              partialDirs: [
+                ...this.config.hbsPartialDirs,
+                // path.resolve(__dirname, '..', 'test', 'templates', 'landingpage', 'partials'),
+                // path.resolve(__filename, 'templates', 'shared'),
+                // path.resolve(__filename, 'shared'),
+              ],
+              // properties: this.properties, // TODO Lukas: get this in bsi_cx_webpack_plugin
               // helpers: this._getHbsPartials(),
               // helperDirs: [
               //   this._getHbsPartials()

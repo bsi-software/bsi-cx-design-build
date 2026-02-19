@@ -475,7 +475,7 @@ class _BsiCxWebpackPlugin {
       // Ansatz, wenn "ref-loader" aktiv
       // fileObj.content = this._eval(fileObj.content);
       // TODO Lukas: properties und helper
-      fileObj.content = fileObj.content({property: this.context.properties, bsi: this._getHandlebarsHelpers()});
+      fileObj.content = fileObj.content({ bsi: this._getHandlebarsHelpers()});
     } else {
       fileObj.content = this._evalTemplateFile(fileObj.content);
     }

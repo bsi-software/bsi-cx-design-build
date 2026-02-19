@@ -117,6 +117,10 @@ export default class BuildConfig {
    * @private
    */
   _postcssEnabled = undefined;
+  /**
+   * @returns {string[]}
+   */
+  _hbsPartialDirs = [];
 
   /**
    * @returns {string}
@@ -256,6 +260,13 @@ export default class BuildConfig {
    */
   get postcssEnabled() {
     return this._postcssEnabled;
+  }
+
+  /**
+   * @returns {string[]}
+   */
+  get hbsPartialDirs() {
+    return this._hbsPartialDirs;
   }
 
   /**
@@ -510,6 +521,19 @@ export default class BuildConfig {
    */
   withPostcssEnabled(postcssEnabled) {
     this._postcssEnabled = postcssEnabled;
+    return this;
+  }
+
+  /**
+   * The data properties file for your Twig templates. This file will be required and the contents of this file will be
+   * available as "properties" variable inside your Twig templates and trough the <code>bsiProperty</code> functions inside
+   * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
+   *
+   * @param {string} propertiesFilePath - The path to your properties file.
+   * @returns {BuildConfig}
+   */
+  withHbsPartialDirs(...partialDirs) {
+    this._hbsPartialDirs = partialDirs;
     return this;
   }
 

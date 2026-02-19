@@ -109,6 +109,10 @@ export default class ValidatedBuildConfig {
    * @private
    */
   _postcssEnabled = undefined;
+  /**
+   * @returns {string[]}
+   */
+  _hbsPartialDirs = undefined;
 
   /**
    * @returns {string}
@@ -248,5 +252,12 @@ export default class ValidatedBuildConfig {
    */
   get postcssEnabled() {
     return this._postcssEnabled;
+  }
+  
+  /**
+   * @returns {string[]}
+   */
+  get hbsPartialDirs() {
+    return this._hbsPartialDirs;
   }
 }

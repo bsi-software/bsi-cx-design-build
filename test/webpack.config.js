@@ -15,6 +15,7 @@ const buildConfig = new BuildConfig()
     $: 'jquery',
     jQuery: 'jquery'
   }))
+  .withHbsPartialDirs(path.resolve(__dirname, 'templates', 'shared'))
   .withModules(
     new ModuleConfig()
       .withName('main')
@@ -35,6 +36,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withPropertiesFilePath('properties.js')
     .withAssetResourceRuleFilename('static/[name]-xxx-[pathhash][ext]')
     .withAdditionalStaticAssetFileExtensions('md')
+    .withHbsPartialDirs(path.resolve(__dirname, 'templates', 'shared'))
     .withWebpackPlugins(new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'

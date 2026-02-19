@@ -127,4 +127,10 @@ export default class BuildConfigInterface {
    */
   get postcssEnabled() {
   }
+
+  /**
+   * @returns {string[]}
+   */
+  get hbsPartialDirs() {
+  }
 }

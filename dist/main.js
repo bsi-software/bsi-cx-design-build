@@ -1431,6 +1431,10 @@ class ValidatedBuildConfig {
    * @private
    */
   _postcssEnabled = undefined;
+  /**
+   * @returns {string[]}
+   */
+  _hbsPartialDirs = undefined;
 
   /**
    * @returns {string}
@@ -1570,6 +1574,13 @@ class ValidatedBuildConfig {
    */
   get postcssEnabled() {
     return this._postcssEnabled;
+  }
+  
+  /**
+   * @returns {string[]}
+   */
+  get hbsPartialDirs() {
+    return this._hbsPartialDirs;
   }
 }
 
@@ -1807,6 +1818,7 @@ class BuildConfigValidator {
     this._validateProperty('additionalStaticAssetFileExtensions', ArrayType);
     this._validateProperty('webpackPlugins', ArrayType, true, false);
     this._validateProperty('webpackRules', ArrayType, true, false);
+    this._validateProperty('hbsPartialDirs', ArrayType, true, false);
   }
 
   /**
@@ -2170,6 +2182,10 @@ class BuildConfig {
    * @private
    */
   _postcssEnabled = undefined;
+  /**
+   * @returns {string[]}
+   */
+  _hbsPartialDirs = [];
 
   /**
    * @returns {string}
@@ -2309,6 +2325,13 @@ class BuildConfig {
    */
   get postcssEnabled() {
     return this._postcssEnabled;
+  }
+
+  /**
+   * @returns {string[]}
+   */
+  get hbsPartialDirs() {
+    return this._hbsPartialDirs;
   }
 
   /**
@@ -2567,6 +2590,19 @@ class BuildConfig {
   }
 
   /**
+   * The data properties file for your Twig templates. This file will be required and the contents of this file will be
+   * available as "properties" variable inside your Twig templates and trough the <code>bsiProperty</code> functions inside
+   * your LESS and SASS files. You can use a relative path. Relative paths will be resolved in relation to your {@link withRootPath|template root}.
+   *
+   * @param {string} propertiesFilePath - The path to your properties file.
+   * @returns {BuildConfig}
+   */
+  withHbsPartialDirs(...partialDirs) {
+    this._hbsPartialDirs = partialDirs;
+    return this;
+  }
+
+  /**
    * Create a clone of this copy. Can be useful if different templates should be created from the same sources.
    * A shallow clone will be created by default. This means nested objects will still reference the same origin.
    *
@@ -2615,9 +2651,42 @@ var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_ha
 ;// external "webpack"
 const external_webpack_namespaceObject = require("webpack");
 ;// ./src/handlebars-helpers.js
+const capitalized = (text) => text.charAt(0).toUpperCase() + text.slice(1);
+
+const createFunction = (elementPart, elementPartValue) => [
+  `bsi.${elementPart}${capitalized(elementPartValue)}`,
+  (partId) => `{{ ${partId}.${elementPartValue} }}`,
+];
+
+const functions = Object.fromEntries(
+  [
+    ["text", "value"],
+    ["formattedText", "language"],
+    ["link", "url"],
+    ["link", "text"],
+    ["link", "description"],
+    ["link", "openInNewWindow"],
+    ["image", "srcUrl"],
+    ["image", "altText"],
+    ["image", "srcset"],
+    ["image", "placeholderSrcUrl"],
+    ["image", "decorative"],
+    ["checkbox", "value"],
+    ["option", "value"],
+    ["checkbox", "value"],
+    ["checkbox", "value"],
+  ].map(([part, partValue]) => createFunction(part, partValue)),
+);
+
+
 /* harmony default export */ const handlebars_helpers = ({
-  'bsi.nls': key => key,
-  'bsi.linkValue': linkPartId => `{{ ${linkPartId}.value }}`
+  "bsi.nls": (key) => key,
+  ...functions,
+  "bsi.formattedTextHtml": (partId) => `{{{ ${partId}.html }}}`,
+  "bsi.dynamicDataModelValue": (partId) =>
+    `{{ ${partId}.dataModelValue.value }}`,
+  "bsi.dynamicDataModelType": (partId) => `{{ ${partId}.dataModelValue.type }}`,
+  "bsi.dynamicDisplayText": (partId) => `{{ ${partId}.displayText }}`,
 });
 
 ;// ./src/builder-object-normalizer.js
@@ -3395,7 +3464,7 @@ class _BsiCxWebpackPlugin {
       // Ansatz, wenn "ref-loader" aktiv
       // fileObj.content = this._eval(fileObj.content);
       // TODO Lukas: properties und helper
-      fileObj.content = fileObj.content({property: this.context.properties, bsi: this._getHandlebarsHelpers()});
+      fileObj.content = fileObj.content({ bsi: this._getHandlebarsHelpers()});
     } else {
       fileObj.content = this._evalTemplateFile(fileObj.content);
     }
@@ -6686,6 +6755,8 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getHbsRuleConfig() {
+    console.log('Partials')
+    console.log(this.config.hbsPartialDirs)
     return [
       {
         test: /\.hbs$/,
@@ -6696,11 +6767,14 @@ class WebpackConfigBuilder {
             loader: "handlebars-loader",
             options: {
               // Register partials directory, TODO: fix paths
-              // partials: this._getHbsPartials(),
-              // partialDirs: [
-              //   //path.resolve('test', 'templates', 'landingpage', 'partials')
-              // ],
-              properties: this.properties, // TODO Lukas: get this in bsi_cx_webpack_plugin
+              partials: this.config.hbsPartialDirs,
+              partialDirs: [
+                ...this.config.hbsPartialDirs,
+                // path.resolve(__dirname, '..', 'test', 'templates', 'landingpage', 'partials'),
+                // path.resolve(__filename, 'templates', 'shared'),
+                // path.resolve(__filename, 'shared'),
+              ],
+              // properties: this.properties, // TODO Lukas: get this in bsi_cx_webpack_plugin
               // helpers: this._getHbsPartials(),
               // helperDirs: [
               //   this._getHbsPartials()

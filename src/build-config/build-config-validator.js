@@ -103,6 +103,7 @@ export default class BuildConfigValidator {
     this._validateProperty('additionalStaticAssetFileExtensions', ArrayType);
     this._validateProperty('webpackPlugins', ArrayType, true, false);
     this._validateProperty('webpackRules', ArrayType, true, false);
+    this._validateProperty('hbsPartialDirs', ArrayType, true, false);
   }
 
   /**
