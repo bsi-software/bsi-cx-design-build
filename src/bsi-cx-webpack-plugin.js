@@ -474,7 +474,8 @@ class _BsiCxWebpackPlugin {
     if (fileObj.path.endsWith("hbs")) {
       // Ansatz, wenn "ref-loader" aktiv
       // fileObj.content = this._eval(fileObj.content);
-      fileObj.content = fileObj.content();
+      // TODO Lukas: properties und helper
+      fileObj.content = fileObj.content({property: this.context.properties, bsi: this._getHandlebarsHelpers()});
     } else {
       fileObj.content = this._evalTemplateFile(fileObj.content);
     }

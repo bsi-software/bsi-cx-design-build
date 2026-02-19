@@ -32,12 +32,14 @@ Stand 18.02.
 - HBS compiler in bsi-cx-webpack-plugin integriert
 
 Was fehlt (und warum)
-- Dropzones
-    - hängt mit "ref-loader" zusammen (auskommentiert)
-        - wenn aktiv: HBS Loader geht nicht
-        - wenn inaktiv: Dropzone und Bildreferenzen nicht mehr möglich
 - partials
     - Funktionen schreiben
     - Path referenzieren und testen
 - properties
     - variablen (/context?!) einbinden und testen
+- Dropzones
+    - hängt mit "ref-loader" zusammen (auskommentiert)
+        - wenn aktiv: HBS Loader geht nicht
+        - wenn inaktiv: Dropzone und Bildreferenzen nicht mehr möglich
+- Referenz auf Bilder
+    - benötigt "ref-loader"?

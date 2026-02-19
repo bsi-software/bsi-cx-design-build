@@ -1678,6 +1678,7 @@ declare module "src/build-config/build-config" {
 declare module "src/handlebars-helpers" {
     const _default: {
         'bsi.nls': (key: any) => any;
+        'bsi.linkValue': (linkPartId: any) => string;
     };
     export default _default;
 }
@@ -3090,15 +3091,6 @@ declare module "src/webpack-config-builder" {
          */
         private _getTwingLoader;
         /**
-         * TODO:
-         * - compile hbs-partial functions to dist/hbs-partials
-         * - reference in plugin
-         *
-         * @returns {string}
-         * @private
-         */
-        private _getHbsPartials;
-        /**
          * @returns {{}[]}
          * @private
          */
@@ -3138,6 +3130,8 @@ declare module "src/webpack-config-builder" {
          */
         private _getAdditionalPlugins;
         /**
+         * TODO Lukas: check if necessary - maybe for partials?
+         * !!! Auskommentiert - zum Testen einkommentieren !!!
          * Returns plugin to compile .hbs files.
          *
          * @returns {Object[]}

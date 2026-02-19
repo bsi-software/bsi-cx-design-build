@@ -31,6 +31,7 @@ import * as Version from "./version";
 import * as DesignType from "./design-type";
 import { createPathHash } from "./path-hash-utility";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import { helpers } from "handlebars";
 // const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 export default class WebpackConfigBuilder {
@@ -285,14 +286,7 @@ export default class WebpackConfigBuilder {
       {
         test: /\.(html)$/i,
         use: [this._getTemplateLoader(), "ref-loader"],
-      },
-      // {
-      //   test: /\.(hbs)$/i,
-      //   use: [
-      //     this._getTemplateLoader(), // hbsLoader
-      //     'ref-loader',
-      //   ]
-      // }
+      }
     ];
   }
 
@@ -312,20 +306,22 @@ export default class WebpackConfigBuilder {
             loader: "handlebars-loader",
             options: {
               // Register partials directory, TODO: fix paths
-              partialDirs: [
-                path.resolve(this.config.rootPath, "template.hbs"),
-                //path.resolve('test', 'templates', 'landingpage', 'partials')
-              ],
-              properties: this.properties,
-              helperDirs: [
-                path.resolve(
-                  this.config.rootPath,
-                  "test",
-                  "templates",
-                  "landingpage",
-                  "helpers",
-                ),
-              ],
+              // partials: this._getHbsPartials(),
+              // partialDirs: [
+              //   //path.resolve('test', 'templates', 'landingpage', 'partials')
+              // ],
+              properties: this.properties, // TODO Lukas: get this in bsi_cx_webpack_plugin
+              // helpers: this._getHbsPartials(),
+              // helperDirs: [
+              //   this._getHbsPartials()
+              //   // path.resolve(
+              //   //   this.config.rootPath,
+              //   //   "test",
+              //   //   "templates",
+              //   //   "landingpage",
+              //   //   "helpers",
+              //   // ),
+              // ],
             },
           },
         ],
@@ -621,18 +617,6 @@ export default class WebpackConfigBuilder {
   }
 
   /**
-   * TODO: 
-   * - compile hbs-partial functions to dist/hbs-partials
-   * - reference in plugin
-   *  
-   * @returns {string}
-   * @private
-   */
-  _getHbsPartials() {
-    return `${packageJson.name}/dist/hbs-partials`;
-  }
-
-  /**
    * @returns {{}[]}
    * @private
    */
@@ -780,6 +764,8 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * TODO Lukas: check if necessary - maybe for partials?
+   * !!! Auskommentiert - zum Testen einkommentieren !!!
    * Returns plugin to compile .hbs files.
    *
    * @returns {Object[]}

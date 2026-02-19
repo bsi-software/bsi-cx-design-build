@@ -2616,7 +2616,8 @@ var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_ha
 const external_webpack_namespaceObject = require("webpack");
 ;// ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
-  'bsi.nls': key => key
+  'bsi.nls': key => key,
+  'bsi.linkValue': linkPartId => `{{ ${linkPartId}.value }}`
 });
 
 ;// ./src/builder-object-normalizer.js
@@ -3393,7 +3394,8 @@ class _BsiCxWebpackPlugin {
     if (fileObj.path.endsWith("hbs")) {
       // Ansatz, wenn "ref-loader" aktiv
       // fileObj.content = this._eval(fileObj.content);
-      fileObj.content = fileObj.content();
+      // TODO Lukas: properties und helper
+      fileObj.content = fileObj.content({property: this.context.properties, bsi: this._getHandlebarsHelpers()});
     } else {
       fileObj.content = this._evalTemplateFile(fileObj.content);
     }
@@ -6419,6 +6421,7 @@ var external_html_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(ex
 
 
 
+
 // const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 class WebpackConfigBuilder {
@@ -6673,14 +6676,7 @@ class WebpackConfigBuilder {
       {
         test: /\.(html)$/i,
         use: [this._getTemplateLoader(), "ref-loader"],
-      },
-      // {
-      //   test: /\.(hbs)$/i,
-      //   use: [
-      //     this._getTemplateLoader(), // hbsLoader
-      //     'ref-loader',
-      //   ]
-      // }
+      }
     ];
   }
 
@@ -6700,20 +6696,22 @@ class WebpackConfigBuilder {
             loader: "handlebars-loader",
             options: {
               // Register partials directory, TODO: fix paths
-              partialDirs: [
-                external_path_default().resolve(this.config.rootPath, "template.hbs"),
-                //path.resolve('test', 'templates', 'landingpage', 'partials')
-              ],
-              properties: this.properties,
-              helperDirs: [
-                external_path_default().resolve(
-                  this.config.rootPath,
-                  "test",
-                  "templates",
-                  "landingpage",
-                  "helpers",
-                ),
-              ],
+              // partials: this._getHbsPartials(),
+              // partialDirs: [
+              //   //path.resolve('test', 'templates', 'landingpage', 'partials')
+              // ],
+              properties: this.properties, // TODO Lukas: get this in bsi_cx_webpack_plugin
+              // helpers: this._getHbsPartials(),
+              // helperDirs: [
+              //   this._getHbsPartials()
+              //   // path.resolve(
+              //   //   this.config.rootPath,
+              //   //   "test",
+              //   //   "templates",
+              //   //   "landingpage",
+              //   //   "helpers",
+              //   // ),
+              // ],
             },
           },
         ],
@@ -7009,18 +7007,6 @@ class WebpackConfigBuilder {
   }
 
   /**
-   * TODO: 
-   * - compile hbs-partial functions to dist/hbs-partials
-   * - reference in plugin
-   *  
-   * @returns {string}
-   * @private
-   */
-  _getHbsPartials() {
-    return `${package_namespaceObject.UU}/dist/hbs-partials`;
-  }
-
-  /**
    * @returns {{}[]}
    * @private
    */
@@ -7168,6 +7154,8 @@ class WebpackConfigBuilder {
   }
 
   /**
+   * TODO Lukas: check if necessary - maybe for partials?
+   * !!! Auskommentiert - zum Testen einkommentieren !!!
    * Returns plugin to compile .hbs files.
    *
    * @returns {Object[]}
