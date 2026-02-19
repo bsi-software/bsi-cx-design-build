@@ -31,12 +31,17 @@ Stand 18.02.
 
 - HBS compiler in bsi-cx-webpack-plugin integriert
 
-Was fehlt (und warum)
+WIP
 - partials
     - Funktionen schreiben
     - Path referenzieren und testen
 - properties
     - variablen (/context?!) einbinden und testen
+
+Was fehlt (und warum)
+- partials
+    - => register in Build?!
+    - vielleicht auch an das bsi-cx-webpack-plugin weitergeben und dort parsen
 - Dropzones
     - hängt mit "ref-loader" zusammen (auskommentiert)
         - wenn aktiv: HBS Loader geht nicht
