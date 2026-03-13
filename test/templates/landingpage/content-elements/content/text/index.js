@@ -5,6 +5,10 @@ module.exports = cx.contentElement
   .withElementId('text-kkq2fq')
   .withLabel('Text')
   .withIcon(Icon.TEXT)
-  .withParts(
-    cx.part.FormattedText('Text', 'text-part-Fjse59',
-      require('../../../html-editor-configs/full.js')));
+  .withRawTemplateParts([{
+    partId: "multiline-plain-text",
+    partContextId: "text",
+    label: "Text",
+  }])
+  // TODO: in konstante auslagern
+  .withType("template-element");

@@ -346,6 +346,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static TYPE: string;
+        /**
+         * @type {string}
+         */
         static LABEL: string;
         /**
          * @type {string}
@@ -1678,6 +1682,8 @@ declare module "src/build-config/build-config" {
 declare module "src/handlebars-helpers" {
     const _default: {
         'bsi.nls': (key: any) => any;
+        'bsi.hbsAttrScope': (contextScope: any) => string;
+        'bsi.hbsVar': (variableName: any, contextScope: any) => string;
     };
     export default _default;
 }
@@ -3451,6 +3457,246 @@ declare module "src/design/websiteContentType" {
     export type Design = import("src/design/design").default;
     import AbstractConstant from "src/abstract-constant";
 }
+declare module "src/content-element/icon" {
+    export class Icon extends AbstractConstant {
+    }
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const HEADING: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const TEXT: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const TEXT_WITH_IMAGE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const IMAGE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const TABLE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const LIST: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const VIDEO: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const MEGAPHONE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const SOCIAL_FOLLOW: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const SOCIAL_SHARE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const SNIPPET: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const QRCODE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const PAPERCLIP: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const DOCUMENT: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const PHONE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const COMMUNICATION: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const HANDSHAKE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const HEART: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const INFO: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const ENVELOPE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const FACEBOOK: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const YOUTUBE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const PERSON_MALE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const PERSON_FEMALE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const ASTERISK: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const SMILEY: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const DIVIDER: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const PARAMETER: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const TWITTER: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const HEADSET: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const METADATA: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const PILE: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const CHAIN: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const SIGNPOST: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const COMPASS: Icon;
+    /**
+     * @type {Icon}
+     * @since 22.0
+     */
+    export const DIAGRAM_LINE: Icon;
+    /**
+     * @type {Icon}
+     * @since 22.0
+     */
+    export const DIAGRAM_AREA: Icon;
+    /**
+     * @type {Icon}
+     * @since 22.0
+     */
+    export const DIAGRAM_BAR: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const RADIOBUTTON: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const CHECKBOX: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const TEXTAREA: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const FORMFIELD: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const DROPDOWN: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const ONE_COLUMN: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const TWO_COLUMNS: Icon;
+    /**
+     * @type {Icon}
+     * @since Studio 1.0
+     */
+    export const THREE_COLUMNS: Icon;
+    /**
+     * @type {Icon}
+     * @since CX 23.2
+     */
+    export const CALENDAR_CLOCK: Icon;
+    import AbstractConstant from "src/abstract-constant";
+}
 declare module "src/style/css-class" {
     /** @typedef {import('./style').default} Style */
     /**
@@ -4014,571 +4260,6 @@ declare module "src/style/style" {
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }
-declare module "src/content-element/icon" {
-    export class Icon extends AbstractConstant {
-    }
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const HEADING: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const TEXT: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const TEXT_WITH_IMAGE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const IMAGE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const TABLE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const LIST: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const VIDEO: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const MEGAPHONE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const SOCIAL_FOLLOW: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const SOCIAL_SHARE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const SNIPPET: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const QRCODE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const PAPERCLIP: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const DOCUMENT: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const PHONE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const COMMUNICATION: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const HANDSHAKE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const HEART: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const INFO: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const ENVELOPE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const FACEBOOK: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const YOUTUBE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const PERSON_MALE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const PERSON_FEMALE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const ASTERISK: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const SMILEY: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const DIVIDER: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const PARAMETER: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const TWITTER: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const HEADSET: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const METADATA: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const PILE: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const CHAIN: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const SIGNPOST: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const COMPASS: Icon;
-    /**
-     * @type {Icon}
-     * @since 22.0
-     */
-    export const DIAGRAM_LINE: Icon;
-    /**
-     * @type {Icon}
-     * @since 22.0
-     */
-    export const DIAGRAM_AREA: Icon;
-    /**
-     * @type {Icon}
-     * @since 22.0
-     */
-    export const DIAGRAM_BAR: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const RADIOBUTTON: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const CHECKBOX: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const TEXTAREA: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const FORMFIELD: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const DROPDOWN: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const ONE_COLUMN: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const TWO_COLUMNS: Icon;
-    /**
-     * @type {Icon}
-     * @since Studio 1.0
-     */
-    export const THREE_COLUMNS: Icon;
-    /**
-     * @type {Icon}
-     * @since CX 23.2
-     */
-    export const CALENDAR_CLOCK: Icon;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/content-element/part/part" {
-    export default class Part extends AbstractBuilder {
-        /**
-         * @param {string} partId
-         */
-        constructor(partId: string, label: any, id: any);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _id;
-        /**
-         * @type {string}
-         * @private
-         */
-        private _partId;
-        /**
-         * @type {string|NLS|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @type {{}|undefined}
-         * @private
-         */
-        private _config;
-        /**
-         * @type {RawValue|HtmlEditorConfig|undefined}
-         * @private
-         */
-        private _htmlEditorConfig;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _altTextMandatory;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _captionEnabled;
-        /**
-         * @type {Boolean|undefined}
-         * @private
-         */
-        private _studioLinkEnabled;
-        /**
-         * @returns {string}
-         */
-        get id(): string;
-        /**
-         * @returns {string}
-         */
-        get partId(): string;
-        /**
-         * @returns {string|NLS|undefined}
-         */
-        get label(): string | NLS | undefined;
-        /**
-         * @returns {{}|undefined}
-         */
-        get config(): {} | undefined;
-        /**
-         * @returns {RawValue|HtmlEditorConfig|undefined}
-         */
-        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get altTextMandatory(): boolean | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get captionEnabled(): boolean | undefined;
-        /**
-         * @returns {Boolean|undefined}
-         */
-        get studioLinkEnabled(): boolean | undefined;
-        /**
-         * The ID of the part. You can apply an unique identifier to your content element part.
-         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
-         * This property is only for the design build and will not appear in the final build artifacts.
-         * The advantage of using this property is, that you don't have to care about the order of your parts
-         * in your specification. The build will reorder the part definitions in the order they appear in the
-         * corresponding template. This can be very handy in large and complex elements with many parts.
-         *
-         * @example
-         * // template.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
-         * </div>
-         *
-         * // title.js
-         * module.exports = new ContentElement()
-         *   .withElementId('title')
-         *   .withLabel('Title')
-         *   .withFile(require('./template.html')
-         *   .withParts(
-         *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
-         *    );
-         *
-         * // dist/title-4026bb9f6ec6c2284775.html
-         * <div data-bsi-element="title">
-         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
-         * </div>
-         * @param {string} id - The ID to use.
-         * @returns {this}
-         */
-        withId(id: string): this;
-        /**
-         * The set content element part's label.
-         *
-         * @param {string|NLS} label - The label to set.
-         * @returns {this}
-         * @since Studio 1.0
-         */
-        withLabel(label: string | NLS): this;
-        withRawConfig(config: any): this;
-        withConfig(key: any, value: any): this;
-        /**
-         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
-         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
-         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
-         *
-         * @example
-         * let editorConfig = new HtmlEditorConfig()
-         *   .withIdentifier('minimal')
-         *   .withRawEnterMode('p')
-         *   .withFeatures(
-         *     Feature.BOLD,
-         *     Feature.ITALIC,
-         *     Feature.UNDERLINE);
-         * // ...
-         * let element = new ContentElement()
-         *   .withElementId('element')
-         *   .withParts(
-         *     new FormattedTextPart()
-         *       .withLabel('Text')
-         *       .withHtmlEditorConfig(editorConfig))
-         * @see {withRawHtmlEditorConfig} to set a raw value
-         * @param {HtmlEditorConfig} htmlEditorConfig
-         * @returns {FormattedTextPart}
-         */
-        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
-        /**
-         * Set a Boolean to indicate if the alt-text for this image is mandatory.
-         * If true users must describe the image before they can save it in the CX editor.
-         *
-         * @see {withAltTextMandatory}
-         * @param {Boolean} altTextMandatory
-         * @returns {Part}
-         */
-        withAltTextMandatory(altTextMandatory: boolean): Part;
-        /**
-         * Set a Boolean to indicate if caption is enabled in editor.
-         * If true users can add a caption for the table in CX editor.
-         *
-         * @see {withCaptionEnabled}
-         * @param {Boolean} captionEnabled
-         * @returns {Part}
-         */
-        withCaptionEnabled(captionEnabled: boolean): Part;
-        /**
-         * Set a Boolean to indicate if studioLink is enabled in the editor.
-         * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
-         *
-         * @see {withStudioLinkEnabled}
-         * @param {Boolean} studioLinkEnabled
-         * @returns {Part}
-         */
-        withStudioLinkEnabled(studioLinkEnabled: boolean): Part;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-}
-declare module "src/content-element/template-part/template-part" {
-    export default class TemplatePart extends AbstractBuilder {
-        /**
-         * @param {string} partId - partId (eg "plainText")
-         * @param {string} label - label of the template part
-         * @param {string} partContextId - contextId of part (eg "label-bjp6Z6")
-         */
-        constructor(partId: string, label: string, partContextId: string);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _partContextId;
-        /**
-         * @type {string}
-         * @private
-         */
-        private _partId;
-        /**
-         * @type {string|NLS|undefined}
-         * @private
-         */
-        private _label;
-        /**
-         * @type {{}|undefined}
-         * @private
-         */
-        private _config;
-        /**
-         * This Prefill is not part of the json-data.
-         * The content of this object is loaded into the context.json of the TemplateElement
-         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
-         *
-         * @type {{}|undefined}
-         * @private
-         */
-        private _prefill;
-        /**
-         * @returns {string}
-         */
-        get partContextId(): string;
-        /**
-         * @returns {string}
-         */
-        get partId(): string;
-        /**
-         * @returns {string|NLS|undefined}
-         */
-        get label(): string | NLS | undefined;
-        /**
-         * @returns {{}|undefined}
-         */
-        get config(): {} | undefined;
-        /**
-         * This Prefill is not part of the json-data.
-         * The content of this object is loaded into the context.json of the TemplateElement
-         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
-         *
-         * @returns {{}|undefined}
-         */
-        get prefill(): {} | undefined;
-        /**
-         * Add new key-value pair to config object
-         * No changes if value == null
-         *
-         * @param {string} key
-         * @param {string} value
-         * @param {boolean?} [isBoolean=false]
-         * @returns {this}
-         */
-        addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
-        /**
-         * Add new key-value pair to prefill object
-         * No changes if value == null
-         *
-         * @param {string} key
-         * @param {string} value
-         * @param {boolean?} [isBoolean=false]
-         * @returns {this}
-         */
-        addPrefillValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
-        /**
-         * Add new image src to prefill object
-         * No changes if value == null
-         *
-         * @param {string} key
-         * @param {string} value
-         * @returns {this}
-         */
-        addPrefillImageSrc(key: string, value: string): this;
-        /**
-         * Add new prefill object for a text template part.
-         *
-         * @param {string} value
-         * @returns {this}
-         */
-        withTextPrefill(value: string): this;
-        /**
-         * Add new prefill object for a checkbox template part.
-         *
-         * @param {boolean?} isPreselected is checkbox selected by default
-         * @returns {this}
-         */
-        withCheckboxPrefill(isPreselected: boolean | null): this;
-        /**
-         * Add new prefill object for a option template part.
-         * If preselectedOption is empty or not found the first option is prefilled.
-         *
-         * @param {string?} preselectedOption option to be prefilled. if empty: first option
-         * @returns {this}
-         */
-        withOptionPrefill(preselectedOption: string | null): this;
-        /**
-         * Add new prefill object for a formatted text template part.
-         *
-         * @param {string} html HTML Text inside formatted text part
-         * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
-         * @returns {this}
-         */
-        withFormattedTextPrefill(html: string, languageTag: string | null): this;
-        /**
-         * Add new prefill object for a link template part.
-         *
-         * @param {string?} url The URL for the link.
-         * @param {string?} text The text for the link.
-         * @param {string?} description The description for the link.
-         * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
-         * @returns {this}
-         */
-        withLinkPrefill(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
-        /**
-         * Add new prefill object for a image template part.
-         *
-         * @param {string?} srcUrl The URL that points to the selected image.
-         * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
-         * @param {string?} altText Prefilled Alt Text
-         * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
-         * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
-         * @returns {this}
-         */
-        withImagePrefill(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
-        /**
-         * Add new raw prefill object to template part
-         *
-         * @param {prefill} prefillObj
-         * @returns {this}
-         */
-        withRawPrefill(prefill: any): this;
-    }
-    import AbstractBuilder from "src/abstract-builder";
-}
 declare module "src/dropzone/dropzone" {
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -5123,6 +4804,331 @@ declare module "src/content-element/template-element" {
     import RawValue from "src/raw-value";
     import TemplatePart from "src/content-element/template-part/template-part";
 }
+declare module "src/content-element/template-part/template-part" {
+    export default class TemplatePart extends AbstractBuilder {
+        /**
+         * @param {string} partId - partId (eg "plainText")
+         * @param {string} label - label of the template part
+         * @param {string} partContextId - contextId of part (eg "label-bjp6Z6")
+         */
+        constructor(partId: string, label: string, partContextId: string);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _partContextId;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _partId;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _config;
+        /**
+         * This Prefill is not part of the json-data.
+         * The content of this object is loaded into the context.json of the TemplateElement
+         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+         *
+         * @type {{}|undefined}
+         * @private
+         */
+        private _prefill;
+        /**
+         * @returns {string}
+         */
+        get partContextId(): string;
+        /**
+         * @returns {string}
+         */
+        get partId(): string;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get label(): string | NLS | undefined;
+        /**
+         * @returns {{}|undefined}
+         */
+        get config(): {} | undefined;
+        /**
+         * This Prefill is not part of the json-data.
+         * The content of this object is loaded into the context.json of the TemplateElement
+         * @see {@link TemplateElement#_loadPrefillIntoContextFile}
+         *
+         * @returns {{}|undefined}
+         */
+        get prefill(): {} | undefined;
+        /**
+         * Add new key-value pair to config object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @param {boolean?} [isBoolean=false]
+         * @returns {this}
+         */
+        addConfigValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        /**
+         * Add new key-value pair to prefill object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @param {boolean?} [isBoolean=false]
+         * @returns {this}
+         */
+        addPrefillValueIfNotNull(key: string, value: string, isBoolean?: boolean | null): this;
+        /**
+         * Add new image src to prefill object
+         * No changes if value == null
+         *
+         * @param {string} key
+         * @param {string} value
+         * @returns {this}
+         */
+        addPrefillImageSrc(key: string, value: string): this;
+        /**
+         * Add new prefill object for a text template part.
+         *
+         * @param {string} value
+         * @returns {this}
+         */
+        withTextPrefill(value: string): this;
+        /**
+         * Add new prefill object for a checkbox template part.
+         *
+         * @param {boolean?} isPreselected is checkbox selected by default
+         * @returns {this}
+         */
+        withCheckboxPrefill(isPreselected: boolean | null): this;
+        /**
+         * Add new prefill object for a option template part.
+         * If preselectedOption is empty or not found the first option is prefilled.
+         *
+         * @param {string?} preselectedOption option to be prefilled. if empty: first option
+         * @returns {this}
+         */
+        withOptionPrefill(preselectedOption: string | null): this;
+        /**
+         * Add new prefill object for a formatted text template part.
+         *
+         * @param {string} html HTML Text inside formatted text part
+         * @param {string?} languageTag Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+         * @returns {this}
+         */
+        withFormattedTextPrefill(html: string, languageTag: string | null): this;
+        /**
+         * Add new prefill object for a link template part.
+         *
+         * @param {string?} url The URL for the link.
+         * @param {string?} text The text for the link.
+         * @param {string?} description The description for the link.
+         * @param {boolean?} openInNewWindow Language tag as a string, that can be used with the lang HTML attribute to hint the language to e.g. screen readers
+         * @returns {this}
+         */
+        withLinkPrefill(url: string | null, text: string | null, description: string | null, openInNewWindow: boolean | null): this;
+        /**
+         * Add new prefill object for a image template part.
+         *
+         * @param {string?} srcUrl The URL that points to the selected image.
+         * @param {string?} placeholderSrcUrl The URL pointing to a placeholder image (used for the content editor)
+         * @param {string?} altText Prefilled Alt Text
+         * @param {boolean?} decorative boolean indicator to set 'aria-hidden="true"' on the img-tag
+         * @param {string?} srcset Srcset-String. Only relevant if sizes have been defined in the design
+         * @returns {this}
+         */
+        withImagePrefill(srcUrl: string | null, placeholderSrcUrl: string | null, altText: string | null, decorative: boolean | null, srcset: string | null): this;
+        /**
+         * Add new raw prefill object to template part
+         *
+         * @param {prefill} prefillObj
+         * @returns {this}
+         */
+        withRawPrefill(prefill: any): this;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/content-element/part/part" {
+    export default class Part extends AbstractBuilder {
+        /**
+         * @param {string} partId
+         */
+        constructor(partId: string, label: any, id: any);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _id;
+        /**
+         * @type {string}
+         * @private
+         */
+        private _partId;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
+        private _label;
+        /**
+         * @type {{}|undefined}
+         * @private
+         */
+        private _config;
+        /**
+         * @type {RawValue|HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _altTextMandatory;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _captionEnabled;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _studioLinkEnabled;
+        /**
+         * @returns {string}
+         */
+        get id(): string;
+        /**
+         * @returns {string}
+         */
+        get partId(): string;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get label(): string | NLS | undefined;
+        /**
+         * @returns {{}|undefined}
+         */
+        get config(): {} | undefined;
+        /**
+         * @returns {RawValue|HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): RawValue | HtmlEditorConfig | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get altTextMandatory(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get captionEnabled(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get studioLinkEnabled(): boolean | undefined;
+        /**
+         * The ID of the part. You can apply an unique identifier to your content element part.
+         * <strong>It is highly recommended to use a {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
+         * This property is only for the design build and will not appear in the final build artifacts.
+         * The advantage of using this property is, that you don't have to care about the order of your parts
+         * in your specification. The build will reorder the part definitions in the order they appear in the
+         * corresponding template. This can be very handy in large and complex elements with many parts.
+         *
+         * @example
+         * // template.html
+         * <div data-bsi-element="title">
+         *   <h1 data-bsi-element-part="539a1787-7df2-43ab-9a67-e1f913ad5d7c">Lorem ipsum</h1>
+         * </div>
+         *
+         * // title.js
+         * module.exports = new ContentElement()
+         *   .withElementId('title')
+         *   .withLabel('Title')
+         *   .withFile(require('./template.html')
+         *   .withParts(
+         *     cx.part.PlainText('Title', '539a1787-7df2-43ab-9a67-e1f913ad5d7c')
+         *    );
+         *
+         * // dist/title-4026bb9f6ec6c2284775.html
+         * <div data-bsi-element="title">
+         *   <h1 data-bsi-element-part="plain-text">Lorem ipsum</h1>
+         * </div>
+         * @param {string} id - The ID to use.
+         * @returns {this}
+         */
+        withId(id: string): this;
+        /**
+         * The set content element part's label.
+         *
+         * @param {string|NLS} label - The label to set.
+         * @returns {this}
+         * @since Studio 1.0
+         */
+        withLabel(label: string | NLS): this;
+        withRawConfig(config: any): this;
+        withConfig(key: any, value: any): this;
+        /**
+         * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
+         * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
+         * using {@link Design#withHtmlEditorConfigs}. This is only necessary for raw editor configs.
+         *
+         * @example
+         * let editorConfig = new HtmlEditorConfig()
+         *   .withIdentifier('minimal')
+         *   .withRawEnterMode('p')
+         *   .withFeatures(
+         *     Feature.BOLD,
+         *     Feature.ITALIC,
+         *     Feature.UNDERLINE);
+         * // ...
+         * let element = new ContentElement()
+         *   .withElementId('element')
+         *   .withParts(
+         *     new FormattedTextPart()
+         *       .withLabel('Text')
+         *       .withHtmlEditorConfig(editorConfig))
+         * @see {withRawHtmlEditorConfig} to set a raw value
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {FormattedTextPart}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): FormattedTextPart;
+        /**
+         * Set a Boolean to indicate if the alt-text for this image is mandatory.
+         * If true users must describe the image before they can save it in the CX editor.
+         *
+         * @see {withAltTextMandatory}
+         * @param {Boolean} altTextMandatory
+         * @returns {Part}
+         */
+        withAltTextMandatory(altTextMandatory: boolean): Part;
+        /**
+         * Set a Boolean to indicate if caption is enabled in editor.
+         * If true users can add a caption for the table in CX editor.
+         *
+         * @see {withCaptionEnabled}
+         * @param {Boolean} captionEnabled
+         * @returns {Part}
+         */
+        withCaptionEnabled(captionEnabled: boolean): Part;
+        /**
+         * Set a Boolean to indicate if studioLink is enabled in the editor.
+         * If true users can use the studioLink feature for plainTexts and multilineTexts in CX editor.
+         *
+         * @see {withStudioLinkEnabled}
+         * @param {Boolean} studioLinkEnabled
+         * @returns {Part}
+         */
+        withStudioLinkEnabled(studioLinkEnabled: boolean): Part;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
 declare module "src/content-element/content-element-group" {
     /** @typedef {import('./content-element').default} ContentElement */
     /** @typedef {import('./template-element').default} TemplateElement */
@@ -5314,6 +5320,11 @@ declare module "src/content-element/content-element" {
          * @type {string|NLS|undefined}
          * @private
          */
+        private _type;
+        /**
+         * @type {string|NLS|undefined}
+         * @private
+         */
         private _description;
         /**
          * @type {{}|undefined}
@@ -5346,6 +5357,11 @@ declare module "src/content-element/content-element" {
          */
         private _parts;
         /**
+         * @type {RawValue|[TemplatePart]|undefined}
+         * @private
+         */
+        private _templateParts;
+        /**
          * @type {Dropzone[]|undefined}
          * @private
          */
@@ -5354,6 +5370,10 @@ declare module "src/content-element/content-element" {
          * @returns {string|undefined}
          */
         get elementId(): string | undefined;
+        /**
+         * @returns {string|NLS|undefined}
+         */
+        get type(): string | NLS | undefined;
         /**
          * @returns {string|NLS|undefined}
          */
@@ -5398,6 +5418,15 @@ declare module "src/content-element/content-element" {
          * @since Studio 1.0
          */
         withElementId(elementId: string): ContentElement;
+        /**
+         * TODO: LHE verify param etc.
+         * Set the label of the content element.
+         *
+         * @param {string} elementType - The label of the content element.
+         * @returns {ContentElement}
+         * @since Studio 1.0
+         */
+        withType(elementType: string): ContentElement;
         /**
          * Set the label of the content element.
          *
@@ -5555,6 +5584,22 @@ declare module "src/content-element/content-element" {
          * @since Studio 1.0
          */
         withParts(...parts: Part[]): ContentElement;
+        /**
+         * TODO: LHE change naming
+         * Specify the template parts of your content element.
+         *
+         * @example
+         * .withParts(
+         *   cx.part.image
+         *     .withLabel('Image'),
+         *   cx.part.plainText
+         *     .withLabel('Description'))
+         * @see {@link withRawParts} to set a raw value
+         * @param {...Part} parts - The parts to use.
+         * @returns {ContentElement}
+         * @since Studio 1.0
+         */
+        withRawTemplateParts(...templateParts: any[]): ContentElement;
         /**
          * Set the parts of your content element as raw value.
          *

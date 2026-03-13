@@ -41,3 +41,11 @@ Was fehlt (und warum)
     - Path referenzieren und testen
 - properties
     - variablen (/context?!) einbinden und testen
+
+
+weitere TODOs:
+- helpers:
+    - flexibel bauen, aktuell nur im template
+    - naming: bsi_ prefix einbauen
+    
+- "TODO: fix paths" (workspace suche)

@@ -107,7 +107,7 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        // ...this._getHbsPlugin(),
+        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
@@ -317,12 +317,11 @@ export default class WebpackConfigBuilder {
                 //path.resolve('test', 'templates', 'landingpage', 'partials')
               ],
               properties: this.properties,
+              explicitlyHandlebars: true,
+              preventIndent: true,
               helperDirs: [
                 path.resolve(
                   this.config.rootPath,
-                  "test",
-                  "templates",
-                  "landingpage",
                   "helpers",
                 ),
               ],
@@ -790,15 +789,16 @@ export default class WebpackConfigBuilder {
       new HtmlWebpackPlugin({
         template: path.resolve(
           this.config.rootPath,
-          "templates",
-          "landingpage",
           "content-elements",
-          "title_with_partial",
+          "content",
+          "text",
           "template.hbs",
         ), //path.resolve('test', 'templates', '**', 'text.hbs'),
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
         templateParameters: this.properties,
         minify: false, // TODO: set to true for main build
+        cache: false,
+        inject: false
       }),
     ];
   }

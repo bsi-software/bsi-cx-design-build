@@ -546,6 +546,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static TYPE = 'type';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
   /**
    * @type {string}
@@ -2616,7 +2620,9 @@ var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_ha
 const external_webpack_namespaceObject = require("webpack");
 ;// ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
-  'bsi.nls': key => key
+  'bsi.nls': key => key,
+  'bsi.hbsAttrScope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
+  'bsi.hbsVar': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
 });
 
 ;// ./src/builder-object-normalizer.js
@@ -6495,7 +6501,7 @@ class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        // ...this._getHbsPlugin(),
+        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
@@ -6705,12 +6711,11 @@ class WebpackConfigBuilder {
                 //path.resolve('test', 'templates', 'landingpage', 'partials')
               ],
               properties: this.properties,
+              explicitlyHandlebars: true,
+              preventIndent: true,
               helperDirs: [
                 external_path_default().resolve(
                   this.config.rootPath,
-                  "test",
-                  "templates",
-                  "landingpage",
                   "helpers",
                 ),
               ],
@@ -7178,15 +7183,16 @@ class WebpackConfigBuilder {
       new (external_html_webpack_plugin_default())({
         template: external_path_default().resolve(
           this.config.rootPath,
-          "templates",
-          "landingpage",
           "content-elements",
-          "title_with_partial",
+          "content",
+          "text",
           "template.hbs",
         ), //path.resolve('test', 'templates', '**', 'text.hbs'),
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
         templateParameters: this.properties,
         minify: false, // TODO: set to true for main build
+        cache: false,
+        inject: false
       }),
     ];
   }

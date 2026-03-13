@@ -25,7 +25,6 @@ const buildConfig = new BuildConfig()
   console.log(buildConfig);
 
 module.exports = WebpackConfigBuilder.fromConfigs(
-  buildConfig,
   new BuildConfig()
     .withName('landingpage')
     .withVersion('1.0.0-alpha')

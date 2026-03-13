@@ -1,3 +1,5 @@
 export default {
-  'bsi.nls': key => key
+  'bsi.nls': key => key,
+  'bsi.hbsAttrScope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
+  'bsi.hbsVar': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
 };
