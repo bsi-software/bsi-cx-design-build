@@ -2613,6 +2613,9 @@ const external_crypto_namespaceObject = require("crypto");
 ;// external "vm"
 const external_vm_namespaceObject = require("vm");
 var external_vm_default = /*#__PURE__*/__webpack_require__.n(external_vm_namespaceObject);
+;// external "module"
+const external_module_namespaceObject = require("module");
+var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
 ;// external "handlebars"
 const external_handlebars_namespaceObject = require("handlebars");
 var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_handlebars_namespaceObject);
@@ -2949,6 +2952,8 @@ function createPathHash(filePath) {
 
 
 
+
+
 class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
@@ -3084,6 +3089,9 @@ class _BsiCxWebpackPlugin {
       if (error instanceof lib_namespaceObject.WebpackError) {
         this._compilation.errors.push(error);
       } else {
+        let wrappedError = new lib_namespaceObject.WebpackError(error?.message ?? String(error));
+        wrappedError.cause = error;
+        this._compilation.errors.push(wrappedError);
         this._logger.error(error);
       }
     }
@@ -3395,13 +3403,98 @@ class _BsiCxWebpackPlugin {
   _importElementFile(element) {
     let fileObj = element[DesignJsonProperty.FILE];
 
+    if (!fileObj) {
+      return;
+    }
+
+    let rawContent = fileObj.content;
+
+    if (rawContent && typeof rawContent === "object") {
+      if (typeof rawContent.path === "string" && !fileObj.path) {
+        fileObj.path = rawContent.path;
+      }
+      if (Object.prototype.hasOwnProperty.call(rawContent, "content")) {
+        rawContent = rawContent.content;
+      }
+    }
+
+    if (typeof rawContent === "function") {
+      if (!fileObj.path) {
+        fileObj.path = "inline-template.hbs";
+      }
+      rawContent = rawContent({});
+    }
+
+    if (typeof rawContent !== "string") {
+      fileObj.content = String(rawContent ?? "");
+      return;
+    }
+
+    fileObj.content = rawContent;
+
+    let isPrecompiledHandlebarsSource =
+      /handlebars\/runtime\.js/.test(rawContent) ||
+      /\.template\(\{/.test(rawContent);
+
+    let evaluatedFile = this._evalTemplateFile(fileObj.content, fileObj.path);
+    if (evaluatedFile && typeof evaluatedFile === "object") {
+      if (typeof evaluatedFile.path === "string" && !fileObj.path) {
+        fileObj.path = evaluatedFile.path;
+      }
+      if (Object.prototype.hasOwnProperty.call(evaluatedFile, "content")) {
+        fileObj.content = evaluatedFile.content;
+      }
+    } else if (typeof evaluatedFile !== "undefined") {
+      fileObj.content = evaluatedFile;
+    }
+
+    if (!fileObj.path && isPrecompiledHandlebarsSource) {
+      fileObj.path = "inline-template.hbs";
+    }
+
     // Handle HBS files
     if (fileObj.path && fileObj.path.endsWith("hbs")) {
-      // Ansatz, wenn "ref-loader" aktiv
-      fileObj.content = this._eval(fileObj.content);
-    } else {
-      fileObj.content = this._evalTemplateFile(fileObj.content);
+      if (typeof fileObj.content === "string") {
+        fileObj.content = this._resolveHandlebarsPartials(fileObj.content);
+      }
+      if (typeof fileObj.content === "function") {
+        fileObj.content = fileObj.content({});
+      }
+      if (typeof fileObj.content !== "string") {
+        fileObj.content = String(fileObj.content ?? "");
+      }
     }
+  }
+
+  /**
+   * Resolve handlebars partial includes ({{> partialName}}) by inlining partial source files.
+   *
+   * @param {string} content
+   * @param {number} depth
+   * @returns {string}
+   * @private
+   */
+  _resolveHandlebarsPartials(content, depth = 0) {
+    if (typeof content !== "string" || depth > 10) {
+      return content;
+    }
+
+    let partialsPath = external_path_default().resolve(this._config.rootPath, "partials");
+    if (!external_fs_default().existsSync(partialsPath)) {
+      return content;
+    }
+
+    return content.replace(/\{\{\s*>\s*([^\s\}]+)\s*\}\}/g, (match, partialName) => {
+      let normalizedName = String(partialName).replace(/^['"]|['"]$/g, "");
+      let partialFilePath = external_path_default().resolve(partialsPath, `${normalizedName}.hbs`);
+
+      if (!external_fs_default().existsSync(partialFilePath)) {
+        return match;
+      }
+
+      let partialContent = external_fs_default().readFileSync(partialFilePath, "utf8");
+      return this._resolveHandlebarsPartials(partialContent, depth + 1);
+    });
   }
 
   /**
@@ -3587,9 +3680,11 @@ class _BsiCxWebpackPlugin {
   /**
    * @param {string} rawContent
    */
-  _evalTemplateFile(rawContent) {
+  _evalTemplateFile(rawContent, filename) {
     return /^module\.exports/.test(rawContent)
-      ? this._eval(rawContent)
+      ? this._eval(rawContent, filename)
+      : /module\.exports\s*=\s*\{/.test(rawContent)
+        ? this._eval(rawContent, filename)
       : rawContent;
   }
 
@@ -3608,7 +3703,12 @@ class _BsiCxWebpackPlugin {
     replaceMap,
     evalFirst,
   ) {
-    let content = fileObj.content;
+    let content = fileObj?.content ?? fileObj;
+    let sourcePath = fileObj?.path;
+
+    if (typeof content !== "string") {
+      content = String(content ?? "");
+    }
 
     if (!!evalFirst) {
       content = /^module\.exports/.test(content)
@@ -3616,10 +3716,12 @@ class _BsiCxWebpackPlugin {
         : content;
     }
 
-    let extension = this._getTemplateFileExtension(fileObj.path);
+    let extension = this._getTemplateFileExtension(sourcePath ?? "");
     let prefix = external_slugify_default()(filenamePrefix ?? uuid());
 
-    let pathForHash = external_path_default().relative(this._config.rootPath, fileObj.path);
+    let pathForHash = sourcePath
+      ? external_path_default().relative(this._config.rootPath, sourcePath)
+      : `inline-${createPathHash(content)}`;
     let pathHash = createPathHash(
       external_path_default().posix.join(this._config.designType.toString(), pathForHash),
     );
@@ -3700,9 +3802,28 @@ class _BsiCxWebpackPlugin {
     return this._getAssetNames(nameRegEx).shift();
   }
 
-  _eval(source) {
-    let script = new (external_vm_default()).Script(source);
-    let context = { module: {} };
+  _eval(source, filename) {
+    let inferredFilename = filename;
+    if (!inferredFilename) {
+      let pathMatch = source.match(/path:\s*"([^"]+)"/);
+      if (pathMatch?.[1]) {
+        inferredFilename = pathMatch[1].replace(/\\\\/g, "\\");
+      }
+    }
+
+    let script = new (external_vm_default()).Script(
+      source,
+      inferredFilename ? { filename: inferredFilename } : undefined,
+    );
+    let scopedRequire = inferredFilename
+      ? (0,external_module_namespaceObject.createRequire)(inferredFilename)
+      : undefined;
+    let context = {
+      module: { exports: {} },
+      exports: {},
+      require: scopedRequire,
+    };
+    context.exports = context.module.exports;
     script.runInNewContext(context);
     return context.module.exports;
   }
@@ -5119,9 +5240,6 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
   }
 }
 
-;// external "module"
-const external_module_namespaceObject = require("module");
-var external_module_default = /*#__PURE__*/__webpack_require__.n(external_module_namespaceObject);
 ;// ./src/module-loader.js
 
 
@@ -6489,7 +6607,6 @@ class WebpackConfigBuilder {
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getHbsRuleConfig(),
           ...this._getAdditionalRules(),
         ],
       },
@@ -6500,7 +6617,6 @@ class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
@@ -6681,31 +6797,8 @@ class WebpackConfigBuilder {
       },
       {
         test: /\.(hbs)$/i,
-        use: ["handlebars-loader"],
+        use: [this._getTemplateLoader(), "ref-loader"],
       },
-      // {
-      //   test: /\.(hbs)$/i,
-      //   use: [
-      //     this._getTemplateLoader(), // hbsLoader
-      //     'ref-loader',
-      //   ]
-      // }
-      {
-        // test: /\.(hbs)$/i,
-        // use: [this._getTemplateLoader(), "handlebars-loader"],
-        // options: {
-        //   // Register partials directory
-        //   partialDirs: [
-        //     path.resolve(__dirname, 'src', 'templates', 'partials')
-        //   ],
-        //   helperDirs: [
-        //     path.resolve(__dirname, 'src', 'templates', 'helpers')
-        //   ]
-        // } 
-
-        // {  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}{  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}
-
-      }
     ];
   }
 

@@ -96,7 +96,6 @@ export default class WebpackConfigBuilder {
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getHbsRuleConfig(),
           ...this._getAdditionalRules(),
         ],
       },
@@ -107,7 +106,6 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
@@ -288,31 +286,8 @@ export default class WebpackConfigBuilder {
       },
       {
         test: /\.(hbs)$/i,
-        use: ["handlebars-loader"],
+        use: [this._getTemplateLoader(), "ref-loader"],
       },
-      // {
-      //   test: /\.(hbs)$/i,
-      //   use: [
-      //     this._getTemplateLoader(), // hbsLoader
-      //     'ref-loader',
-      //   ]
-      // }
-      {
-        // test: /\.(hbs)$/i,
-        // use: [this._getTemplateLoader(), "handlebars-loader"],
-        // options: {
-        //   // Register partials directory
-        //   partialDirs: [
-        //     path.resolve(__dirname, 'src', 'templates', 'partials')
-        //   ],
-        //   helperDirs: [
-        //     path.resolve(__dirname, 'src', 'templates', 'helpers')
-        //   ]
-        // } 
-
-        // {  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}{  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}
-
-      }
     ];
   }
 
