@@ -43,6 +43,10 @@ Was fehlt (und warum)
     - variablen (/context?!) einbinden und testen
 
 
+
+-----
+Stand 12.03.
+
 weitere TODOs:
 - helpers:
     - flexibel bauen, aktuell nur im template

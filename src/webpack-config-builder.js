@@ -96,8 +96,8 @@ export default class WebpackConfigBuilder {
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getAdditionalRules(),
           ...this._getHbsRuleConfig(),
+          ...this._getAdditionalRules(),
         ],
       },
       plugins: [
@@ -286,6 +286,10 @@ export default class WebpackConfigBuilder {
         test: /\.(html)$/i,
         use: [this._getTemplateLoader(), "ref-loader"],
       },
+      {
+        test: /\.(hbs)$/i,
+        use: ["handlebars-loader"],
+      },
       // {
       //   test: /\.(hbs)$/i,
       //   use: [
@@ -293,6 +297,22 @@ export default class WebpackConfigBuilder {
       //     'ref-loader',
       //   ]
       // }
+      {
+        // test: /\.(hbs)$/i,
+        // use: [this._getTemplateLoader(), "handlebars-loader"],
+        // options: {
+        //   // Register partials directory
+        //   partialDirs: [
+        //     path.resolve(__dirname, 'src', 'templates', 'partials')
+        //   ],
+        //   helperDirs: [
+        //     path.resolve(__dirname, 'src', 'templates', 'helpers')
+        //   ]
+        // } 
+
+        // {  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}{  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}
+
+      }
     ];
   }
 
@@ -319,6 +339,7 @@ export default class WebpackConfigBuilder {
               properties: this.properties,
               explicitlyHandlebars: true,
               preventIndent: true,
+              knownHelpersOnly: false,
               helperDirs: [
                 path.resolve(
                   this.config.rootPath,

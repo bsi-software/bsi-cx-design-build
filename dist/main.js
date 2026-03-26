@@ -3396,10 +3396,9 @@ class _BsiCxWebpackPlugin {
     let fileObj = element[DesignJsonProperty.FILE];
 
     // Handle HBS files
-    if (fileObj.path.endsWith("hbs")) {
+    if (fileObj.path && fileObj.path.endsWith("hbs")) {
       // Ansatz, wenn "ref-loader" aktiv
-      // fileObj.content = this._eval(fileObj.content);
-      fileObj.content = fileObj.content();
+      fileObj.content = this._eval(fileObj.content);
     } else {
       fileObj.content = this._evalTemplateFile(fileObj.content);
     }
@@ -6490,8 +6489,8 @@ class WebpackConfigBuilder {
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getAdditionalRules(),
           ...this._getHbsRuleConfig(),
+          ...this._getAdditionalRules(),
         ],
       },
       plugins: [
@@ -6680,6 +6679,10 @@ class WebpackConfigBuilder {
         test: /\.(html)$/i,
         use: [this._getTemplateLoader(), "ref-loader"],
       },
+      {
+        test: /\.(hbs)$/i,
+        use: ["handlebars-loader"],
+      },
       // {
       //   test: /\.(hbs)$/i,
       //   use: [
@@ -6687,6 +6690,22 @@ class WebpackConfigBuilder {
       //     'ref-loader',
       //   ]
       // }
+      {
+        // test: /\.(hbs)$/i,
+        // use: [this._getTemplateLoader(), "handlebars-loader"],
+        // options: {
+        //   // Register partials directory
+        //   partialDirs: [
+        //     path.resolve(__dirname, 'src', 'templates', 'partials')
+        //   ],
+        //   helperDirs: [
+        //     path.resolve(__dirname, 'src', 'templates', 'helpers')
+        //   ]
+        // } 
+
+        // {  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}{  ...  module: {rules: [      ...      { test: /\.handlebars$/, loader: "handlebars-loader" }]}}
+
+      }
     ];
   }
 
@@ -6713,6 +6732,7 @@ class WebpackConfigBuilder {
               properties: this.properties,
               explicitlyHandlebars: true,
               preventIndent: true,
+              knownHelpersOnly: false,
               helperDirs: [
                 external_path_default().resolve(
                   this.config.rootPath,

@@ -471,10 +471,9 @@ class _BsiCxWebpackPlugin {
     let fileObj = element[DesignJsonProperty.FILE];
 
     // Handle HBS files
-    if (fileObj.path.endsWith("hbs")) {
+    if (fileObj.path && fileObj.path.endsWith("hbs")) {
       // Ansatz, wenn "ref-loader" aktiv
-      // fileObj.content = this._eval(fileObj.content);
-      fileObj.content = fileObj.content();
+      fileObj.content = this._eval(fileObj.content);
     } else {
       fileObj.content = this._evalTemplateFile(fileObj.content);
     }
