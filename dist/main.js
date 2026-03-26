@@ -2953,7 +2953,6 @@ function createPathHash(filePath) {
 
 
 
-
 class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
@@ -3403,6 +3402,16 @@ class _BsiCxWebpackPlugin {
   _importElementFile(element) {
     let fileObj = element[DesignJsonProperty.FILE];
 
+    // Depending on active loader chain, file payload can be string/function/object.
+    // Normalize to a stable {content, path} shape for the following logic.
+    if (fileObj && typeof fileObj !== "object") {
+      fileObj = {
+        content: fileObj,
+        path: undefined,
+      };
+      element[DesignJsonProperty.FILE] = fileObj;
+    }
+
     if (!fileObj) {
       return;
     }
@@ -3432,6 +3441,7 @@ class _BsiCxWebpackPlugin {
 
     fileObj.content = rawContent;
 
+    // Detect precompiled Handlebars module sources emitted by handlebars-loader.
     let isPrecompiledHandlebarsSource =
       /handlebars\/runtime\.js/.test(rawContent) ||
       /\.template\(\{/.test(rawContent);
@@ -3454,9 +3464,14 @@ class _BsiCxWebpackPlugin {
 
     // Handle HBS files
     if (fileObj.path && fileObj.path.endsWith("hbs")) {
-      if (typeof fileObj.content === "string") {
-        fileObj.content = this._resolveHandlebarsPartials(fileObj.content);
+      // If still a JS module source, evaluate first to get executable template fn.
+      if (
+        typeof fileObj.content === "string" &&
+        /module\.exports\s*=/.test(fileObj.content)
+      ) {
+        fileObj.content = this._eval(fileObj.content, fileObj.path);
       }
+      // Execute compiled template function to emit final template text.
       if (typeof fileObj.content === "function") {
         fileObj.content = fileObj.content({});
       }
@@ -3464,37 +3479,6 @@ class _BsiCxWebpackPlugin {
         fileObj.content = String(fileObj.content ?? "");
       }
     }
-  }
-
-  /**
-   * Resolve handlebars partial includes ({{> partialName}}) by inlining partial source files.
-   *
-   * @param {string} content
-   * @param {number} depth
-   * @returns {string}
-   * @private
-   */
-  _resolveHandlebarsPartials(content, depth = 0) {
-    if (typeof content !== "string" || depth > 10) {
-      return content;
-    }
-
-    let partialsPath = external_path_default().resolve(this._config.rootPath, "partials");
-    if (!external_fs_default().existsSync(partialsPath)) {
-      return content;
-    }
-
-    return content.replace(/\{\{\s*>\s*([^\s\}]+)\s*\}\}/g, (match, partialName) => {
-      let normalizedName = String(partialName).replace(/^['"]|['"]$/g, "");
-      let partialFilePath = external_path_default().resolve(partialsPath, `${normalizedName}.hbs`);
-
-      if (!external_fs_default().existsSync(partialFilePath)) {
-        return match;
-      }
-
-      let partialContent = external_fs_default().readFileSync(partialFilePath, "utf8");
-      return this._resolveHandlebarsPartials(partialContent, depth + 1);
-    });
   }
 
   /**
@@ -6602,6 +6586,7 @@ class WebpackConfigBuilder {
         rules: [
           ...this._getTwigRuleConfig(),
           ...this._getHtmlAndHbsRuleConfig(),
+          ...this._getHbsRuleConfig(),
           ...this._getStyleRulesConfig(),
           ...this._getStaticAssetsRuleConfig(),
           ...this._getNodeModuleAssetsRule(),
@@ -6617,6 +6602,7 @@ class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
+        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
@@ -6795,10 +6781,6 @@ class WebpackConfigBuilder {
         test: /\.(html)$/i,
         use: [this._getTemplateLoader(), "ref-loader"],
       },
-      {
-        test: /\.(hbs)$/i,
-        use: [this._getTemplateLoader(), "ref-loader"],
-      },
     ];
   }
 
@@ -6808,19 +6790,50 @@ class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getHbsRuleConfig() {
+    let partialsPath = external_path_default().resolve(this.config.rootPath, "partials");
+
     return [
+      // Partials must be compiled without template-loader metadata wrapper,
+      // otherwise Handlebars may receive object payloads instead of template text.
       {
         test: /\.hbs$/,
+        include: partialsPath,
         use: [
-          this._getTemplateLoader(),
-          // 'ref-loader', // needed for dropzones
+          "ref-loader",
           {
             loader: "handlebars-loader",
             options: {
-              // Register partials directory, TODO: fix paths
+              runtime: "handlebars",
+              partialDirs: [partialsPath],
+              properties: this.properties,
+              explicitlyHandlebars: true,
+              preventIndent: true,
+              knownHelpersOnly: false,
+              helperDirs: [
+                external_path_default().resolve(
+                  this.config.rootPath,
+                  "helpers",
+                ),
+              ],
+            },
+          },
+        ],
+      },
+      // Regular element templates keep template-loader so downstream processing
+      // still has path/content information for hashing and export.
+      {
+        test: /\.hbs$/,
+        exclude: partialsPath,
+        use: [
+          this._getTemplateLoader(),
+          "ref-loader",
+          {
+            loader: "handlebars-loader",
+            options: {
+              runtime: "handlebars",
+              // Register partials directory
               partialDirs: [
-                external_path_default().resolve(this.config.rootPath, "template.hbs"),
-                //path.resolve('test', 'templates', 'landingpage', 'partials')
+                partialsPath,
               ],
               properties: this.properties,
               explicitlyHandlebars: true,
@@ -7291,16 +7304,24 @@ class WebpackConfigBuilder {
    * @returns {Object[]}
    */
   _getHbsPlugin() {
+    let templatePath = external_path_default().resolve(
+        this.config.rootPath,
+        "content-elements",
+        "content",
+        "text",
+        "template.hbs",
+      )
+      .replace(/\\/g, "/");
+    let helperDir = external_path_default().resolve(this.config.rootPath, "helpers")
+      .replace(/\\/g, "/");
+    let partialDir = external_path_default().resolve(this.config.rootPath, "partials")
+      .replace(/\\/g, "/");
+
     return [
-      // TODO: fix paths
       new (external_html_webpack_plugin_default())({
-        template: external_path_default().resolve(
-          this.config.rootPath,
-          "content-elements",
-          "content",
-          "text",
-          "template.hbs",
-        ), //path.resolve('test', 'templates', '**', 'text.hbs'),
+        // Force an explicit loader chain here to avoid interference from global
+        // module rules when compiling this dedicated template artifact.
+        template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
         templateParameters: this.properties,
         minify: false, // TODO: set to true for main build

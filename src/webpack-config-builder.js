@@ -91,6 +91,7 @@ export default class WebpackConfigBuilder {
         rules: [
           ...this._getTwigRuleConfig(),
           ...this._getHtmlAndHbsRuleConfig(),
+          ...this._getHbsRuleConfig(),
           ...this._getStyleRulesConfig(),
           ...this._getStaticAssetsRuleConfig(),
           ...this._getNodeModuleAssetsRule(),
@@ -106,6 +107,7 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
+        ...this._getHbsPlugin(),
         ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
@@ -284,10 +286,6 @@ export default class WebpackConfigBuilder {
         test: /\.(html)$/i,
         use: [this._getTemplateLoader(), "ref-loader"],
       },
-      {
-        test: /\.(hbs)$/i,
-        use: [this._getTemplateLoader(), "ref-loader"],
-      },
     ];
   }
 
@@ -297,19 +295,50 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getHbsRuleConfig() {
+    let partialsPath = path.resolve(this.config.rootPath, "partials");
+
     return [
+      // Partials must be compiled without template-loader metadata wrapper,
+      // otherwise Handlebars may receive object payloads instead of template text.
       {
         test: /\.hbs$/,
+        include: partialsPath,
         use: [
-          this._getTemplateLoader(),
-          // 'ref-loader', // needed for dropzones
+          "ref-loader",
           {
             loader: "handlebars-loader",
             options: {
-              // Register partials directory, TODO: fix paths
+              runtime: "handlebars",
+              partialDirs: [partialsPath],
+              properties: this.properties,
+              explicitlyHandlebars: true,
+              preventIndent: true,
+              knownHelpersOnly: false,
+              helperDirs: [
+                path.resolve(
+                  this.config.rootPath,
+                  "helpers",
+                ),
+              ],
+            },
+          },
+        ],
+      },
+      // Regular element templates keep template-loader so downstream processing
+      // still has path/content information for hashing and export.
+      {
+        test: /\.hbs$/,
+        exclude: partialsPath,
+        use: [
+          this._getTemplateLoader(),
+          "ref-loader",
+          {
+            loader: "handlebars-loader",
+            options: {
+              runtime: "handlebars",
+              // Register partials directory
               partialDirs: [
-                path.resolve(this.config.rootPath, "template.hbs"),
-                //path.resolve('test', 'templates', 'landingpage', 'partials')
+                partialsPath,
               ],
               properties: this.properties,
               explicitlyHandlebars: true,
@@ -780,16 +809,27 @@ export default class WebpackConfigBuilder {
    * @returns {Object[]}
    */
   _getHbsPlugin() {
+    let templatePath = path
+      .resolve(
+        this.config.rootPath,
+        "content-elements",
+        "content",
+        "text",
+        "template.hbs",
+      )
+      .replace(/\\/g, "/");
+    let helperDir = path
+      .resolve(this.config.rootPath, "helpers")
+      .replace(/\\/g, "/");
+    let partialDir = path
+      .resolve(this.config.rootPath, "partials")
+      .replace(/\\/g, "/");
+
     return [
-      // TODO: fix paths
       new HtmlWebpackPlugin({
-        template: path.resolve(
-          this.config.rootPath,
-          "content-elements",
-          "content",
-          "text",
-          "template.hbs",
-        ), //path.resolve('test', 'templates', '**', 'text.hbs'),
+        // Force an explicit loader chain here to avoid interference from global
+        // module rules when compiling this dedicated template artifact.
+        template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
         templateParameters: this.properties,
         minify: false, // TODO: set to true for main build

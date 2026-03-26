@@ -2,7 +2,6 @@ import path from "path";
 import { createHash } from "crypto";
 import vm from "vm";
 import { createRequire } from "module";
-import fs from "fs";
 
 import Handlebars from "handlebars";
 import { sources } from "webpack";
@@ -475,6 +474,16 @@ class _BsiCxWebpackPlugin {
   _importElementFile(element) {
     let fileObj = element[DesignJsonProperty.FILE];
 
+    // Depending on active loader chain, file payload can be string/function/object.
+    // Normalize to a stable {content, path} shape for the following logic.
+    if (fileObj && typeof fileObj !== "object") {
+      fileObj = {
+        content: fileObj,
+        path: undefined,
+      };
+      element[DesignJsonProperty.FILE] = fileObj;
+    }
+
     if (!fileObj) {
       return;
     }
@@ -504,6 +513,7 @@ class _BsiCxWebpackPlugin {
 
     fileObj.content = rawContent;
 
+    // Detect precompiled Handlebars module sources emitted by handlebars-loader.
     let isPrecompiledHandlebarsSource =
       /handlebars\/runtime\.js/.test(rawContent) ||
       /\.template\(\{/.test(rawContent);
@@ -526,9 +536,14 @@ class _BsiCxWebpackPlugin {
 
     // Handle HBS files
     if (fileObj.path && fileObj.path.endsWith("hbs")) {
-      if (typeof fileObj.content === "string") {
-        fileObj.content = this._resolveHandlebarsPartials(fileObj.content);
+      // If still a JS module source, evaluate first to get executable template fn.
+      if (
+        typeof fileObj.content === "string" &&
+        /module\.exports\s*=/.test(fileObj.content)
+      ) {
+        fileObj.content = this._eval(fileObj.content, fileObj.path);
       }
+      // Execute compiled template function to emit final template text.
       if (typeof fileObj.content === "function") {
         fileObj.content = fileObj.content({});
       }
@@ -536,37 +551,6 @@ class _BsiCxWebpackPlugin {
         fileObj.content = String(fileObj.content ?? "");
       }
     }
-  }
-
-  /**
-   * Resolve handlebars partial includes ({{> partialName}}) by inlining partial source files.
-   *
-   * @param {string} content
-   * @param {number} depth
-   * @returns {string}
-   * @private
-   */
-  _resolveHandlebarsPartials(content, depth = 0) {
-    if (typeof content !== "string" || depth > 10) {
-      return content;
-    }
-
-    let partialsPath = path.resolve(this._config.rootPath, "partials");
-    if (!fs.existsSync(partialsPath)) {
-      return content;
-    }
-
-    return content.replace(/\{\{\s*>\s*([^\s\}]+)\s*\}\}/g, (match, partialName) => {
-      let normalizedName = String(partialName).replace(/^['"]|['"]$/g, "");
-      let partialFilePath = path.resolve(partialsPath, `${normalizedName}.hbs`);
-
-      if (!fs.existsSync(partialFilePath)) {
-        return match;
-      }
-
-      let partialContent = fs.readFileSync(partialFilePath, "utf8");
-      return this._resolveHandlebarsPartials(partialContent, depth + 1);
-    });
   }
 
   /**
