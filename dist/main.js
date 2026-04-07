@@ -2624,8 +2624,9 @@ const external_webpack_namespaceObject = require("webpack");
 ;// ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key,
-  'bsi.hbsAttrScope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
-  'bsi.hbsVar': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
+  // TODO: remove if not needed
+  'bsi.bsi_hbs_attr_scope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
+  'bsi.bsi_hbs_var': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
 });
 
 ;// ./src/builder-object-normalizer.js
@@ -7317,12 +7318,13 @@ class WebpackConfigBuilder {
     let partialDir = external_path_default().resolve(this.config.rootPath, "partials")
       .replace(/\\/g, "/");
 
+    // TODO: verify function calls after loader-chain resolution
     return [
       new (external_html_webpack_plugin_default())({
         // Force an explicit loader chain here to avoid interference from global
         // module rules when compiling this dedicated template artifact.
         template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
-        filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
+        filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`,
         templateParameters: this.properties,
         minify: false, // TODO: set to true for main build
         cache: false,

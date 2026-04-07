@@ -1682,8 +1682,8 @@ declare module "src/build-config/build-config" {
 declare module "src/handlebars-helpers" {
     const _default: {
         'bsi.nls': (key: any) => any;
-        'bsi.hbsAttrScope': (contextScope: any) => string;
-        'bsi.hbsVar': (variableName: any, contextScope: any) => string;
+        'bsi.bsi_hbs_attr_scope': (contextScope: any) => string;
+        'bsi.bsi_hbs_var': (variableName: any, contextScope: any) => string;
     };
     export default _default;
 }

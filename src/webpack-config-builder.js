@@ -825,12 +825,13 @@ export default class WebpackConfigBuilder {
       .resolve(this.config.rootPath, "partials")
       .replace(/\\/g, "/");
 
+    // TODO: verify function calls after loader-chain resolution
     return [
       new HtmlWebpackPlugin({
         // Force an explicit loader chain here to avoid interference from global
         // module rules when compiling this dedicated template artifact.
         template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
-        filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`, // path.resolve('test', 'dist', '[name].hbs'),
+        filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`,
         templateParameters: this.properties,
         minify: false, // TODO: set to true for main build
         cache: false,
