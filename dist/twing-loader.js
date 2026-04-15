@@ -74,7 +74,7 @@ var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_nam
 ;// external "twing"
 const external_twing_namespaceObject = require("twing");
 ;// ./src/constant.js
-class constant_Constant {
+class Constant {
   /**
    * @type {string}
    */
@@ -198,43 +198,48 @@ class DesignType extends AbstractConstant {
  * @type {DesignType}
  * @since Studio 1.0
  */
-const design_type_LANDINGPAGE = new DesignType('landingpage');
+const LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
  * @since Studio 1.0
  */
-const design_type_EMAIL = new DesignType('email');
+const EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
  * @since BSI CX 1.3
  */
-const design_type_WEBSITE = new DesignType('website');
+const WEBSITE = new DesignType('website');
 
 /**
  * @type {DesignType[]}
  */
 const LEGACY_TYPES = [
-  design_type_LANDINGPAGE,
-  design_type_EMAIL
+  LANDINGPAGE,
+  EMAIL
 ];
 
 /**
  * @type {DesignType[]}
  */
 const ALL_TYPES = [
-  design_type_LANDINGPAGE,
-  design_type_EMAIL,
-  design_type_WEBSITE
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
 ];
 
 /**
  * @type {DesignType}
  */
-const TARGET = __webpack_require__.g[constant_Constant.BSI_CX_TARGET_TYPE];
+const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
 ;// ./src/utility.js
+/* unused harmony import specifier */ var path;
+/* unused harmony import specifier */ var utility_Constant;
+/* unused harmony import specifier */ var utility_LANDINGPAGE;
+/* unused harmony import specifier */ var utility_EMAIL;
+/* unused harmony import specifier */ var utility_WEBSITE;
 
 
 
@@ -268,10 +273,10 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.designType === LANDINGPAGE || config.designType === EMAIL || (config.targetVersion.legacyFormat && config.designType !== WEBSITE)) {
+  if (config.designType === utility_LANDINGPAGE || config.designType === utility_EMAIL || (config.targetVersion.legacyFormat && config.designType !== utility_WEBSITE)) {
     return '.' + pathSuffix;
   } else {
-    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+    return utility_Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
   }
 }
 
@@ -419,7 +424,7 @@ function bsiCxJsModuleImport(template, config, inline) {
     template: templatePath,
     inline: inline
   };
-  let placeholder = constant_Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + constant_Constant.BSI_CX_JS_MODULE_END;
+  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
   return strToPromise(placeholder);
 }
 
@@ -439,14 +444,14 @@ const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asse
  * Get URL to the CSS asset.
  */
 const bsiCxCssHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_css_href', () => {
-  return strToPromise(constant_Constant.BSI_CX_CSS_HREF);
+  return strToPromise(Constant.BSI_CX_CSS_HREF);
 }, [], {});
 
 /**
  * Get the contents of the CSS asset.
  */
 const bsiCxCssInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_css_inline', () => {
-  return strToPromise(constant_Constant.BSI_CX_CSS_INLINE);
+  return strToPromise(Constant.BSI_CX_CSS_INLINE);
 }, [], {});
 
 /**
@@ -495,14 +500,14 @@ const bsiCxJsModuleMissingChunksInline = new external_twing_namespaceObject.Twin
  * Get URL to the JS runtime module.
  */
 const bsiCxJsModuleRuntimeHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_href', () => {
-  return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_HREF);
+  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_HREF);
 }, [], {});
 
 /**
  * Get the contents of the JS runtime module.
  */
 const bsiCxJsModuleRuntimeInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_inline', () => {
-  return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_INLINE);
+  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
 }, [], {});
 
 /**
@@ -517,6 +522,7 @@ const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lore
 }, [], {})
 
 ;// ./src/twing-environment.js
+Object.defineProperty(twing_environment, "name", { value: "default", configurable: true });
 
 
 
@@ -569,6 +575,7 @@ class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesy
 }
 
 ;// ./src/twing-loader.js
+Object.defineProperty(twing_loader, "name", { value: "default", configurable: true });
 
 
 

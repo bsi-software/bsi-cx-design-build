@@ -2237,6 +2237,11 @@ declare module "src/bsi-cx-twig-context-webpack-plugin" {
 declare module "src/bsi-less-property-plugin" {
     export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
         /**
+       * @type {*}
+       * @private
+       */
+        private _lessInstance;
+        /**
          * @returns {number[]}
          */
         get minVersion(): number[];
@@ -2507,6 +2512,10 @@ declare module "src/css/css-color" {
          */
         get rgba(): string;
         /**
+         * @returns {Color}
+         */
+        getLessNode(lessInstance: any): Color;
+        /**
          * @param {number} color
          * @returns {number}
          * @private
@@ -2571,6 +2580,10 @@ declare module "src/css/css-dimension" {
          * @returns {string|undefined}
          */
         get unit(): string | undefined;
+        /**
+         * @returns {*}
+         */
+        getLessNode(lessInstance: any): any;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
 }

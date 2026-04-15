@@ -1,6 +1,7 @@
 import sass from 'sass';
-import Color from 'less/lib/less/tree/color';
-import colors from 'less/lib/less/data/colors';
+import less from 'less';
+
+const colors = less.data.colors;
 
 import AbstractCssProperty from './abstract-css-property';
 
@@ -121,12 +122,13 @@ export default class CssColor extends AbstractCssProperty {
   /**
    * @returns {Color}
    */
-  getLessNode() {
+  getLessNode(lessInstance) {
+    let colorClass = lessInstance?.tree?.Color ?? less.tree.Color;
     let rgb = [this.red, this.green, this.blue];
     let alpha = this.alpha / 255;
 
     // noinspection JSValidateTypes
-    return new Color(rgb, alpha);
+    return new colorClass(rgb, alpha);
   }
 
   /**

@@ -1066,6 +1066,8 @@ class ValidationError extends Error {
 }
 
 ;// ./src/utility.js
+/* unused harmony import specifier */ var path;
+/* unused harmony import specifier */ var fs;
 
 
 
@@ -4872,6 +4874,12 @@ class BsiCxTwigContextWebpackPlugin {
 
 
 class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+    /**
+   * @type {*}
+   * @private
+   */
+  _lessInstance = undefined;
+
   /**
    * @returns {number[]}
    */
@@ -4904,8 +4912,10 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
 
     let value = super.getProperty(property, fallback);
 
-    return typeof value.getLessNode === 'function' ? value.getLessNode() : value;
-  }
+    return typeof value.getLessNode === 'function'
+        ? value.getLessNode(this._lessInstance)
+        : value;
+    }
 
   /**
    * @param lessInstance
@@ -4913,6 +4923,7 @@ class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @param functions
    */
   install(lessInstance, pluginManager, functions) {
+    this._lessInstance = lessInstance;
     functions.add('bsiProperty', (property, fallback) => this.getProperty(property, fallback));
   }
 }
@@ -5159,12 +5170,9 @@ class PropertyContext {
 ;// external "sass"
 const external_sass_namespaceObject = require("sass");
 var external_sass_default = /*#__PURE__*/__webpack_require__.n(external_sass_namespaceObject);
-;// external "less/lib/less/tree/color"
-const color_namespaceObject = require("less/lib/less/tree/color");
-var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
-;// external "less/lib/less/data/colors"
-const colors_namespaceObject = require("less/lib/less/data/colors");
-var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
+;// external "less"
+const external_less_namespaceObject = require("less");
+var external_less_default = /*#__PURE__*/__webpack_require__.n(external_less_namespaceObject);
 ;// ./src/css/abstract-css-property.js
 class AbstractCssProperty {
   /**
@@ -5219,6 +5227,7 @@ class AbstractCssProperty {
 
 
 
+const colors = (external_less_default()).data.colors;
 
 
 
@@ -5234,7 +5243,7 @@ class CssColor extends AbstractCssProperty {
   /**
    * @type {{}}
    */
-  static COLORS = Object.assign({}, (colors_default()), { transparent: '#00000000' });
+  static COLORS = Object.assign({}, colors, { transparent: '#00000000' });
 
   /**
    * @type {number}
@@ -5339,12 +5348,13 @@ class CssColor extends AbstractCssProperty {
   /**
    * @returns {Color}
    */
-  getLessNode() {
+  getLessNode(lessInstance) {
+    let colorClass = lessInstance?.tree?.Color ?? (external_less_default()).tree.Color;
     let rgb = [this.red, this.green, this.blue];
     let alpha = this.alpha / 255;
 
     // noinspection JSValidateTypes
-    return new (color_default())(rgb, alpha);
+    return new colorClass(rgb, alpha);
   }
 
   /**
@@ -5462,7 +5472,7 @@ class CssColor extends AbstractCssProperty {
    */
   static fromKeyword(color) {
     if (CssColor.COLORS.hasOwnProperty(color)) {
-      return CssColor.fromHex((colors_default())[color]);
+      return CssColor.fromHex(colors[color]);
     } else {
       throw new Error(`Unknown color keyword: ${color}`);
     }
@@ -5486,9 +5496,6 @@ class CssColor extends AbstractCssProperty {
   }
 }
 
-;// external "less/lib/less/tree/dimension"
-const dimension_namespaceObject = require("less/lib/less/tree/dimension");
-var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceObject);
 ;// ./src/css/css-dimension.js
 
 
@@ -5547,9 +5554,10 @@ class CssDimension extends AbstractCssProperty {
   /**
    * @returns {*}
    */
-  getLessNode() {
+  getLessNode(lessInstance) {
+    let dimensionClass = lessInstance?.tree?.Dimension ?? (external_less_default()).tree.Dimension;
     // noinspection JSValidateTypes
-    return new (dimension_default())(this.value, this.unit);
+    return new dimensionClass(this.value, this.unit);
   }
 
   /**

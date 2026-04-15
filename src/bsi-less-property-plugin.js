@@ -1,6 +1,12 @@
 import AbstractPropertyPlugin from './abstract-property-plugin';
 
 export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
+    /**
+   * @type {*}
+   * @private
+   */
+  _lessInstance = undefined;
+
   /**
    * @returns {number[]}
    */
@@ -33,8 +39,10 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
 
     let value = super.getProperty(property, fallback);
 
-    return typeof value.getLessNode === 'function' ? value.getLessNode() : value;
-  }
+    return typeof value.getLessNode === 'function'
+        ? value.getLessNode(this._lessInstance)
+        : value;
+    }
 
   /**
    * @param lessInstance
@@ -42,6 +50,7 @@ export default class BsiLessPropertyPlugin extends AbstractPropertyPlugin {
    * @param functions
    */
   install(lessInstance, pluginManager, functions) {
+    this._lessInstance = lessInstance;
     functions.add('bsiProperty', (property, fallback) => this.getProperty(property, fallback));
   }
 }

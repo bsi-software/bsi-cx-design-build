@@ -1,5 +1,5 @@
 import sass from 'sass';
-import Dimension from 'less/lib/less/tree/dimension';
+import less from 'less';
 
 import AbstractCssProperty from './abstract-css-property';
 
@@ -55,9 +55,10 @@ export default class CssDimension extends AbstractCssProperty {
   /**
    * @returns {*}
    */
-  getLessNode() {
+  getLessNode(lessInstance) {
+    let dimensionClass = lessInstance?.tree?.Dimension ?? less.tree.Dimension;
     // noinspection JSValidateTypes
-    return new Dimension(this.value, this.unit);
+    return new dimensionClass(this.value, this.unit);
   }
 
   /**
