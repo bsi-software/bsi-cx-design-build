@@ -1682,8 +1682,6 @@ declare module "src/build-config/build-config" {
 declare module "src/handlebars-helpers" {
     const _default: {
         'bsi.nls': (key: any) => any;
-        'bsi.bsi_hbs_attr_scope': (contextScope: any) => string;
-        'bsi.bsi_hbs_var': (variableName: any, contextScope: any) => string;
     };
     export default _default;
 }
@@ -3149,6 +3147,12 @@ declare module "src/webpack-config-builder" {
          * @returns {Object[]}
          */
         _getHbsPlugin(): any[];
+        /**
+         * BSI CX legacy design format plugin config.
+         *
+         * @returns {BsiCxWebpackLegacyDesignPlugin[]}
+         */
+        _loadFlatData(pattern: any): BsiCxWebpackLegacyDesignPlugin[];
         /**
          * BSI CX legacy design format plugin config.
          *

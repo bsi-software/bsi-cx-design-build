@@ -1,7 +1,39 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 410
+(module) {
+
+module.exports = require("glob");
+
+/***/ }
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -2625,8 +2657,8 @@ const external_webpack_namespaceObject = require("webpack");
 /* harmony default export */ const handlebars_helpers = ({
   'bsi.nls': key => key,
   // TODO: remove if not needed
-  'bsi.bsi_hbs_attr_scope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
-  'bsi.bsi_hbs_var': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
+  // 'bsi.hbsAttrScope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
+  // 'bsi.hbsVar': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
 });
 
 ;// ./src/builder-object-normalizer.js
@@ -6527,6 +6559,7 @@ var external_html_webpack_plugin_default = /*#__PURE__*/__webpack_require__.n(ex
 
 
 
+const glob = __webpack_require__(410);
 // const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 class WebpackConfigBuilder {
@@ -7325,12 +7358,27 @@ class WebpackConfigBuilder {
         // module rules when compiling this dedicated template artifact.
         template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`,
-        templateParameters: this.properties,
+        // TODO: either pointer to data for hbs-context or the data-file itself seems to be incorrect
+        // UPDATE: implement setup to load properties as JSON
+        templateParameters: this._loadFlatData(external_path_default().resolve(this.config.rootPath, "data", "data.json")),
         minify: false, // TODO: set to true for main build
         cache: false,
         inject: false
       }),
     ];
+  }
+
+  /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {BsiCxWebpackLegacyDesignPlugin[]}
+   */
+  _loadFlatData(pattern) {
+    const files = glob.sync(pattern);
+    return files.reduce((acc, file) => {
+      const json = JSON.parse(external_fs_default().readFileSync(file, 'utf8'));
+      return { ...acc, ...json }; // merge keys into root
+    }, {});
   }
 
   /**

@@ -31,6 +31,7 @@ import * as Version from "./version";
 import * as DesignType from "./design-type";
 import { createPathHash } from "./path-hash-utility";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+const glob = require('glob');
 // const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 export default class WebpackConfigBuilder {
@@ -832,12 +833,27 @@ export default class WebpackConfigBuilder {
         // module rules when compiling this dedicated template artifact.
         template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`,
-        templateParameters: this.properties,
+        // TODO: either pointer to data for hbs-context or the data-file itself seems to be incorrect
+        // UPDATE: implement setup to load properties as JSON
+        templateParameters: this._loadFlatData(path.resolve(this.config.rootPath, "data", "data.json")),
         minify: false, // TODO: set to true for main build
         cache: false,
         inject: false
       }),
     ];
+  }
+
+  /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {BsiCxWebpackLegacyDesignPlugin[]}
+   */
+  _loadFlatData(pattern) {
+    const files = glob.sync(pattern);
+    return files.reduce((acc, file) => {
+      const json = JSON.parse(fs.readFileSync(file, 'utf8'));
+      return { ...acc, ...json }; // merge keys into root
+    }, {});
   }
 
   /**

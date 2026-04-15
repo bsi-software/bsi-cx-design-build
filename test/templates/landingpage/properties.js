@@ -4,4 +4,5 @@ module.exports = {
   other: require("./other-properties"),
   test: "test",
   properties: { test: "b4" },
+  contextScope: "root",
 };
