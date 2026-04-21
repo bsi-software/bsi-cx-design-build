@@ -522,6 +522,7 @@ const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lore
 }, [], {})
 
 ;// ./src/twing-environment.js
+Object.defineProperty(twing_environment, "name", { value: "default", configurable: true });
 
 
 
@@ -574,6 +575,7 @@ class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesy
 }
 
 ;// ./src/twing-loader.js
+Object.defineProperty(twing_loader, "name", { value: "default", configurable: true });
 
 
 

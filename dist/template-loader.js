@@ -45,6 +45,7 @@ __webpack_require__.d(__webpack_exports__, {
 ;// external "source-map-support/register"
 const register_namespaceObject = require("source-map-support/register");
 ;// ./src/template-loader.js
+Object.defineProperty(template_loader, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function template_loader(sourceToConvert) {

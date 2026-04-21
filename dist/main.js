@@ -3117,6 +3117,7 @@ class _BsiCxWebpackPlugin {
       this._exportDesignJson(designJsonObj, replaceMap);
       this._exportDesignHtml(replaceMap);
       this._exportPreviewHtml(replaceMap);
+      this._resolveStandaloneHandlebarsTemplateAsset();
     } catch (error) {
       if (error instanceof lib_namespaceObject.WebpackError) {
         this._compilation.errors.push(error);
@@ -3340,6 +3341,43 @@ class _BsiCxWebpackPlugin {
 
     if (/\.hbs$/.test(previewFilePath)) {
       this._handlePreviewHandlebars(previewFilePath, previewTemplate);
+    }
+  }
+
+  /**
+   * Resolves embedded precompiled Handlebars module snippets in the dedicated
+   * standalone content-elements/template.hbs artifact.
+   *
+   * @private
+   */
+  _resolveStandaloneHandlebarsTemplateAsset() {
+    let filePath = `${DistFolder.CONTENT_ELEMENTS}/template.hbs`;
+    let absoluteFilePath = external_path_default().resolve(this._compiler.outputPath, filePath);
+    let asset = this._compilation.getAsset(filePath);
+
+    if (!asset) {
+      return;
+    }
+
+    let content = utility_toString(asset.source.source());
+    let precompiledModuleRegex =
+      /var\s+Handlebars\s*=\s*require\("handlebars"\);[\s\S]*?module\.exports\s*=\s*\(Handlebars\["default"\]\s*\|\|\s*Handlebars\)\.template\(\{[\s\S]*?\}\);?/g;
+    let hasChanges = false;
+
+    content = content.replace(precompiledModuleRegex, (moduleSource) => {
+      let templateFunc = this._eval(moduleSource, absoluteFilePath);
+      let rendered = templateFunc;
+
+      if (typeof templateFunc === "function") {
+        rendered = templateFunc({}, { helpers: this._getHandlebarsHelpers() });
+      }
+
+      hasChanges = true;
+      return typeof rendered === "string" ? rendered : String(rendered ?? "");
+    });
+
+    if (hasChanges) {
+      this._updateAsset(filePath, content);
     }
   }
 
@@ -4200,21 +4238,35 @@ class BsiCxWebpackPlugin {
     compiler.hooks.thisCompilation.tap(
       BsiCxWebpackPlugin.PLUGIN_NAME,
       (compilation) => {
+        const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
+
         compilation.hooks.processAssets.tap(
           {
             name: BsiCxWebpackPlugin.PLUGIN_NAME,
             stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
           },
           () => {
-            const logger = compilation.getLogger(
-              BsiCxWebpackPlugin.PLUGIN_NAME,
-            );
             new _BsiCxWebpackPlugin(
               this._context,
               compiler,
               compilation,
               logger,
             ).apply();
+          },
+        );
+
+        compilation.hooks.processAssets.tap(
+          {
+            name: `${BsiCxWebpackPlugin.PLUGIN_NAME}:standalone-hbs-finalize`,
+            stage: lib_namespaceObject.Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+          },
+          () => {
+            new _BsiCxWebpackPlugin(
+              this._context,
+              compiler,
+              compilation,
+              logger,
+            )._resolveStandaloneHandlebarsTemplateAsset();
           },
         );
       },
