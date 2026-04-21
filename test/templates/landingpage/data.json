@@ -1,5 +1,9 @@
 {
   "siteTitle": "A crazy website with hbs",
   "siteSubtitle": "For testing purpose only",
-  "varForTestingFunctions": "someValue"
+  "varForTestingFunctions": "someValue",
+  "text": {
+    "prefill": "Es klappt",
+    "value": "Hier steht ein Wert"
+  }
 }
