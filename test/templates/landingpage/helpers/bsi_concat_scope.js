@@ -1,2 +1,2 @@
 module.exports = (parentContextScope, contextScope) =>
-    (parentContextScope ? parentContextScope + "_" : "") + contextScope;
+    (parentContextScope ? parentContextScope + "." : "") + contextScope;

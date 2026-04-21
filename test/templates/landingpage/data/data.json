@@ -8,5 +8,9 @@
     "url": "https://www.bsi-software.com",
     "text": "BSI Software",
     "description": "Wir sind Handwerker!"
+  },
+  "text": {
+    "prefill": "Es klappt",
+    "value": "Hier steht ein Wert"
   }
 }

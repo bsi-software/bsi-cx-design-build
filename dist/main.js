@@ -2986,6 +2986,7 @@ function createPathHash(filePath) {
 
 
 
+
 class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
@@ -3079,6 +3080,11 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _propertyPlugin = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _templateHandlebarsHelpers = undefined;
 
   /**
    * @param {BuildContext} context
@@ -3360,25 +3366,225 @@ class _BsiCxWebpackPlugin {
     }
 
     let content = utility_toString(asset.source.source());
-    let precompiledModuleRegex =
-      /var\s+Handlebars\s*=\s*require\("handlebars"\);[\s\S]*?module\.exports\s*=\s*\(Handlebars\["default"\]\s*\|\|\s*Handlebars\)\.template\(\{[\s\S]*?\}\);?/g;
+    let modules = this._extractStandalonePrecompiledHandlebarsModules(content);
     let hasChanges = false;
+    let cursor = 0;
+    let output = "";
 
-    content = content.replace(precompiledModuleRegex, (moduleSource) => {
-      let templateFunc = this._eval(moduleSource, absoluteFilePath);
-      let rendered = templateFunc;
-
-      if (typeof templateFunc === "function") {
-        rendered = templateFunc({}, { helpers: this._getHandlebarsHelpers() });
-      }
-
+    modules.forEach((module) => {
+      output += content.slice(cursor, module.start);
+      output += this._renderStandalonePrecompiledHandlebarsModule(
+        module.source,
+        absoluteFilePath,
+      );
+      cursor = module.end;
       hasChanges = true;
-      return typeof rendered === "string" ? rendered : String(rendered ?? "");
     });
 
     if (hasChanges) {
-      this._updateAsset(filePath, content);
+      output += content.slice(cursor);
+      this._updateAsset(filePath, output);
     }
+  }
+
+  /**
+   * @param {string} moduleSource
+   * @param {string} absoluteFilePath
+   * @returns {string}
+   * @private
+   */
+  _renderStandalonePrecompiledHandlebarsModule(moduleSource, absoluteFilePath) {
+    let helperDir = external_path_default().resolve(this._config.rootPath, "helpers");
+    let templateRequire = this._createStandaloneTemplateRequire(
+      absoluteFilePath,
+      helperDir,
+    );
+    let templateFunc = this._eval(
+      moduleSource,
+      absoluteFilePath,
+      templateRequire,
+    );
+    let rendered = templateFunc;
+
+    if (typeof templateFunc === "function") {
+      rendered = templateFunc({ contextScope: "root" }, {
+        helpers: this._getTemplateHandlebarsHelpers(),
+      });
+    }
+
+    return typeof rendered === "string" ? rendered : String(rendered ?? "");
+  }
+
+  /**
+   * @param {string} filename
+   * @param {string} helperDir
+   * @returns {function(string):*}
+   * @private
+   */
+  _createStandaloneTemplateRequire(filename, helperDir) {
+    let scopedRequire = (0,external_module_namespaceObject.createRequire)(filename);
+
+    return (requestPath) => {
+      if (/^\.\.\/helpers\//.test(requestPath)) {
+        let helperPath = external_path_default().resolve(helperDir, external_path_default().basename(requestPath));
+        return scopedRequire(helperPath);
+      }
+
+      return scopedRequire(requestPath);
+    };
+  }
+
+  /**
+   * @param {string} source
+   * @returns {{start:number,end:number,source:string}[]}
+   * @private
+   */
+  _extractStandalonePrecompiledHandlebarsModules(source) {
+    let modules = [];
+    let moduleStartToken = 'var Handlebars = require("handlebars");';
+    let anchorRegex =
+      /module\.exports\s*=\s*\(Handlebars\["default"\]\s*\|\|\s*Handlebars\)\.template\s*\(/g;
+    let searchIndex = 0;
+
+    while (searchIndex < source.length) {
+      let moduleStart = source.indexOf(moduleStartToken, searchIndex);
+      if (moduleStart === -1) {
+        break;
+      }
+
+      anchorRegex.lastIndex = moduleStart;
+      let anchor = anchorRegex.exec(source);
+      if (!anchor || anchor.index < moduleStart) {
+        searchIndex = moduleStart + moduleStartToken.length;
+        continue;
+      }
+
+      let templateCallOpen = anchorRegex.lastIndex - 1;
+      let objectStart = this._skipWhitespace(source, templateCallOpen + 1);
+      if (source[objectStart] !== "{") {
+        searchIndex = templateCallOpen + 1;
+        continue;
+      }
+
+      let objectEnd = this._findMatchingBracket(source, objectStart, "{", "}");
+      if (objectEnd === -1) {
+        searchIndex = objectStart + 1;
+        continue;
+      }
+
+      let moduleEnd = this._skipWhitespace(source, objectEnd + 1);
+      if (source[moduleEnd] !== ")") {
+        searchIndex = objectEnd + 1;
+        continue;
+      }
+
+      moduleEnd += 1;
+      if (source[moduleEnd] === ";") {
+        moduleEnd += 1;
+      }
+
+      modules.push({
+        start: moduleStart,
+        end: moduleEnd,
+        source: source.slice(moduleStart, moduleEnd),
+      });
+      searchIndex = moduleEnd;
+    }
+
+    return modules;
+  }
+
+  /**
+   * @param {string} source
+   * @param {number} index
+   * @returns {number}
+   * @private
+   */
+  _skipWhitespace(source, index) {
+    let i = index;
+
+    while (i < source.length && /\s/.test(source[i])) {
+      i += 1;
+    }
+
+    return i;
+  }
+
+  /**
+   * @param {string} source
+   * @param {number} startIndex
+   * @param {string} openChar
+   * @param {string} closeChar
+   * @returns {number}
+   * @private
+   */
+  _findMatchingBracket(source, startIndex, openChar, closeChar) {
+    let depth = 0;
+    let quote = "";
+    let inLineComment = false;
+    let inBlockComment = false;
+
+    for (let i = startIndex; i < source.length; i += 1) {
+      let ch = source[i];
+      let next = source[i + 1];
+
+      if (inLineComment) {
+        if (ch === "\n") {
+          inLineComment = false;
+        }
+        continue;
+      }
+
+      if (inBlockComment) {
+        if (ch === "*" && next === "/") {
+          inBlockComment = false;
+          i += 1;
+        }
+        continue;
+      }
+
+      if (quote) {
+        if (ch === "\\") {
+          i += 1;
+          continue;
+        }
+        if (ch === quote) {
+          quote = "";
+        }
+        continue;
+      }
+
+      if (ch === "/" && next === "/") {
+        inLineComment = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === "/" && next === "*") {
+        inBlockComment = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === '"' || ch === "'") {
+        quote = ch;
+        continue;
+      }
+
+      if (ch === openChar) {
+        depth += 1;
+        continue;
+      }
+
+      if (ch === closeChar) {
+        depth -= 1;
+        if (depth === 0) {
+          return i;
+        }
+      }
+    }
+
+    return -1;
   }
 
   /**
@@ -3502,7 +3708,9 @@ class _BsiCxWebpackPlugin {
       if (!fileObj.path) {
         fileObj.path = "inline-template.hbs";
       }
-      rawContent = rawContent({});
+      rawContent = rawContent({}, {
+        helpers: this._getTemplateHandlebarsHelpers(),
+      });
     }
 
     if (typeof rawContent !== "string") {
@@ -3544,7 +3752,9 @@ class _BsiCxWebpackPlugin {
       }
       // Execute compiled template function to emit final template text.
       if (typeof fileObj.content === "function") {
-        fileObj.content = fileObj.content({});
+        fileObj.content = fileObj.content({}, {
+          helpers: this._getTemplateHandlebarsHelpers(),
+        });
       }
       if (typeof fileObj.content !== "string") {
         fileObj.content = String(fileObj.content ?? "");
@@ -3857,7 +4067,7 @@ class _BsiCxWebpackPlugin {
     return this._getAssetNames(nameRegEx).shift();
   }
 
-  _eval(source, filename) {
+  _eval(source, filename, customRequire) {
     let inferredFilename = filename;
     if (!inferredFilename) {
       let pathMatch = source.match(/path:\s*"([^"]+)"/);
@@ -3876,7 +4086,7 @@ class _BsiCxWebpackPlugin {
     let context = {
       module: { exports: {} },
       exports: {},
-      require: scopedRequire,
+      require: customRequire ?? scopedRequire,
     };
     context.exports = context.module.exports;
     script.runInNewContext(context);
@@ -4199,6 +4409,41 @@ class _BsiCxWebpackPlugin {
       let fixedName = name.replace(/^bsi\./, "");
       helpersObj[fixedName] = func;
     }
+    return helpersObj;
+  }
+
+  /**
+   * @returns {{}}
+   */
+  _getTemplateHandlebarsHelpers() {
+    if (this._templateHandlebarsHelpers) {
+      return this._templateHandlebarsHelpers;
+    }
+
+    let helpersObj = this._getHandlebarsHelpers();
+    let helperDir = external_path_default().resolve(this._config.rootPath, "helpers");
+
+    if (!external_fs_default().existsSync(helperDir)) {
+      this._templateHandlebarsHelpers = helpersObj;
+      return helpersObj;
+    }
+
+    let helperRequire = (0,external_module_namespaceObject.createRequire)(external_path_default().join(helperDir, "index.js"));
+    let helperFiles = external_fs_default().readdirSync(helperDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && /\.js$/i.test(entry.name));
+
+    helperFiles.forEach((entry) => {
+      let helperName = entry.name.replace(/\.js$/i, "");
+      let helperPath = external_path_default().join(helperDir, entry.name);
+      let helperExport = helperRequire(helperPath);
+
+      helpersObj[helperName] =
+        helperExport && typeof helperExport === "object"
+          ? (helperExport.default ?? helperExport)
+          : helperExport;
+    });
+
+    this._templateHandlebarsHelpers = helpersObj;
     return helpersObj;
   }
 
