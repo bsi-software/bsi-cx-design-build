@@ -3085,6 +3085,11 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _templateHandlebarsHelpers = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _defaultContextScope = undefined;
 
   /**
    * @param {BuildContext} context
@@ -3407,7 +3412,7 @@ class _BsiCxWebpackPlugin {
     let rendered = templateFunc;
 
     if (typeof templateFunc === "function") {
-      rendered = templateFunc({ contextScope: "root" }, {
+      rendered = templateFunc({ contextScope: this._getDefaultContextScope() }, {
         helpers: this._getTemplateHandlebarsHelpers(),
       });
     }
@@ -3708,7 +3713,7 @@ class _BsiCxWebpackPlugin {
       if (!fileObj.path) {
         fileObj.path = "inline-template.hbs";
       }
-      rawContent = rawContent({}, {
+      rawContent = rawContent({ contextScope: this._getDefaultContextScope() }, {
         helpers: this._getTemplateHandlebarsHelpers(),
       });
     }
@@ -3752,7 +3757,7 @@ class _BsiCxWebpackPlugin {
       }
       // Execute compiled template function to emit final template text.
       if (typeof fileObj.content === "function") {
-        fileObj.content = fileObj.content({}, {
+        fileObj.content = fileObj.content({ contextScope: this._getDefaultContextScope() }, {
           helpers: this._getTemplateHandlebarsHelpers(),
         });
       }
@@ -4445,6 +4450,35 @@ class _BsiCxWebpackPlugin {
 
     this._templateHandlebarsHelpers = helpersObj;
     return helpersObj;
+  }
+
+  /**
+   * @returns {string}
+   */
+  _getDefaultContextScope() {
+    if (typeof this._defaultContextScope === "string") {
+      return this._defaultContextScope;
+    }
+
+    let defaultScope = "root";
+
+    try {
+      let dataPath = external_path_default().resolve(this._config.rootPath, "data", "data.json");
+
+      if (external_fs_default().existsSync(dataPath)) {
+        let data = JSON.parse(external_fs_default().readFileSync(dataPath, "utf8"));
+        if (typeof data?.contextScope === "string" && data.contextScope.length > 0) {
+          defaultScope = data.contextScope;
+        }
+      }
+    } catch (error) {
+      this._logger.warn(
+        `Failed to read default contextScope from data/data.json, fallback to \"root\": ${error?.message ?? error}`,
+      );
+    }
+
+    this._defaultContextScope = defaultScope;
+    return defaultScope;
   }
 
   /**
