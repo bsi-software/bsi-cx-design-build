@@ -826,15 +826,13 @@ export default class WebpackConfigBuilder {
       .resolve(this.config.rootPath, "partials")
       .replace(/\\/g, "/");
 
-    // TODO: verify function calls after loader-chain resolution
     return [
       new HtmlWebpackPlugin({
         // Force an explicit loader chain here to avoid interference from global
         // module rules when compiling this dedicated template artifact.
         template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
         filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`,
-        // TODO: either pointer to data for hbs-context or the data-file itself seems to be incorrect
-        // UPDATE: implement setup to load properties as JSON
+        // TODO: implement setup to load properties as JSON
         templateParameters: this._loadFlatData(path.resolve(this.config.rootPath, "data", "data.json")),
         minify: false, // TODO: set to true for main build
         cache: false,
