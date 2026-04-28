@@ -2655,10 +2655,7 @@ var external_handlebars_default = /*#__PURE__*/__webpack_require__.n(external_ha
 const external_webpack_namespaceObject = require("webpack");
 ;// ./src/handlebars-helpers.js
 /* harmony default export */ const handlebars_helpers = ({
-  'bsi.nls': key => key,
-  // TODO: remove if not needed -> seems like not necessary
-  // 'bsi.hbsAttrScope': contextScope => contextScope ? "data-bsi-context-scope=\"" + contextScope + "\"" : "",
-  // 'bsi.hbsVar': (variableName, contextScope) => "{{" + (contextScope ? contextScope + "." : "") + variableName + "}}"
+  'bsi.nls': key => key
 });
 
 ;// ./src/builder-object-normalizer.js
