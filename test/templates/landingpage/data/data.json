@@ -10,7 +10,11 @@
     "description": "Wir sind Handwerker!"
   },
   "text": {
-    "prefill": "Es klappt",
-    "value": "Hier steht ein Wert"
+    "prefill": "Text Prefill",
+    "value": "Text Wert"
+  },
+  "title": {
+    "prefill": "Titel Prefill",
+    "value": "Titel Wert"
   }
 }
