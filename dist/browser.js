@@ -6136,6 +6136,26 @@ class PartFactory {
   }
 
   /**
+   * Get a new basic dynamic value list form field content element part builder instance.
+   *
+   * @returns {Part}
+   */
+  get basicDynamicValueList() {
+    return this.BasicDynamicValueList();
+  }
+
+  /**
+   * Build a new basic dynamic value list form field content element part builder instance.
+   *
+   * @param {string} label
+   * @param {string} id
+   * @returns {Part}
+   */
+  BasicDynamicValueList(label, id) {
+    return new Part('basic-dynamic-value-list', label, id);
+  }
+
+  /**
    * Get a new textarea form field content element part builder instance.
    *
    * @returns {Part}

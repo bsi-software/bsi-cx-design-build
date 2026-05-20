@@ -8,6 +8,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 * Add studioLink and studioLinkEnabled
 * Add functions to group for better extension: `addOrReplaceElements()`, `removeElementsWithId()`
+* Add content-element setter for part "Basic Dynamic Value List"
+
 
 
 ## [1.13.8] - 09.10.2025
