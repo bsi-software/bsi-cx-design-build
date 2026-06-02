@@ -4,6 +4,7 @@ import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
 import { TARGET as TARGET_VERSION } from '../version';
+import TemplatePart from './template-part/template-part';
 
 /** @typedef {import('../design/design').default} Design */
 /** @typedef {import('../style/style').default} Style */
@@ -42,6 +43,11 @@ export default class ContentElement extends AbstractBuilder {
    * @type {string|NLS|undefined}
    * @private
    */
+  _type = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
   _description = undefined;
   /**
    * @type {{}|undefined}
@@ -74,6 +80,11 @@ export default class ContentElement extends AbstractBuilder {
    */
   _parts = undefined;
   /**
+   * @type {RawValue|[TemplatePart]|undefined}
+   * @private
+   */
+  _templateParts = undefined;
+  /**
    * @type {Dropzone[]|undefined}
    * @private
    */
@@ -84,6 +95,13 @@ export default class ContentElement extends AbstractBuilder {
    */
   get elementId() {
     return this._elementId;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get type() {
+    return this._type;
   }
 
   /**
@@ -158,6 +176,19 @@ export default class ContentElement extends AbstractBuilder {
    */
   withElementId(elementId) {
     this._elementId = elementId;
+    return this;
+  }
+
+  /**
+   * TODO: LHE verify param etc.
+   * Set the label of the content element.
+   *
+   * @param {string} elementType - The label of the content element.
+   * @returns {ContentElement}
+   * @since Studio 1.0
+   */
+  withType(elementType) {
+    this._type = elementType;
     return this;
   }
 
@@ -374,6 +405,27 @@ export default class ContentElement extends AbstractBuilder {
     this._parts = parts;
     return this;
   }
+ 
+ 
+  /**
+   * TODO: LHE change naming
+   * Specify the template parts of your content element.
+   *
+   * @example
+   * .withParts(
+   *   cx.part.image
+   *     .withLabel('Image'),
+   *   cx.part.plainText
+   *     .withLabel('Description'))
+   * @see {@link withRawParts} to set a raw value
+   * @param {...Part} parts - The parts to use.
+   * @returns {ContentElement}
+   * @since Studio 1.0
+   */
+  withRawTemplateParts(...templateParts) {
+    this._templateParts = new RawValue(templateParts);
+    return this;
+  }
 
   /**
    * Set the parts of your content element as raw value.
@@ -482,12 +534,14 @@ export default class ContentElement extends AbstractBuilder {
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.TYPE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.DESCRIPTION, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ICON, config, constantObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.HIDDEN, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.ARCHIVED, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.FILE, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PARTS, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.TEMPLATE_PARTS, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.STYLE_CONFIGS, config, v => v.identifier, false, true);
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
 

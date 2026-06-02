@@ -33,8 +33,9 @@ module.exports = cx.design
         require('./content-elements/content/column-2')
           .withReducedDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348', require('./content-elements/content/title')),
         require('./content-elements/content/text'),
-        require('../website/content-elements/content/template-button'))
-      )
+        // require('./content-elements/content/title_with_partial'),
+        // require('../website/content-elements/content/template-button'))
+      ))
   .withDropzones(
     cx.dropzone
       .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')
@@ -43,7 +44,8 @@ module.exports = cx.design
         require('./content-elements/content/text'),
         require('./content-elements/content/column-1'),
         require('./content-elements/content/column-2'),
-        require('../website/content-elements/content/template-button')))
+        // require('../website/content-elements/content/template-button')
+      ))
   .withHtmlEditorConfigs(
     require('./html-editor-configs/normal'))
   .withNLS(...require('./nls'));

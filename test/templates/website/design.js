@@ -81,7 +81,7 @@ module.exports = cx.design
           .withName('Pagination')
           .withEditable(false)
           .withIncludeType('pre-defined')
-          .withFile(require('./includes/pagination-element.hbs')),
+          .withFile(require('./includes/pagination-element.hbs.twig')),
         cx.include
           .withIdentifier('footer')
           .withName(nls.footer)
@@ -96,7 +96,7 @@ module.exports = cx.design
           .withIdentifier('navigation')
           .withName('Navigation')
           .withEditable(false)
-          .withFile(require('./includes/navigation.hbs'))))
+          .withFile(require('./includes/navigation.hbs.twig'))))
   .withNLS(Object.values(require('./nls')))
   .withFeatureFormFieldRules(true)
   .withSecurityHtmlSanitization(true, false)

@@ -122,6 +122,10 @@ export default class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static TYPE = 'type';
+  /**
+   * @type {string}
+   */
   static LABEL = 'label';
   /**
    * @type {string}

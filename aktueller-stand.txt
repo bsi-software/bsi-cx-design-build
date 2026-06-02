@@ -1,0 +1,55 @@
+Umgesetzt:
+- plugin (konstruktor: _getHbsPlugin() in webpack-config-builder.js)
+- config (konstruktor: _getAdditionalHbsRuleConfig() in webpack-config-builder.js)
+    -> beides eingebunden im build() innerhalb vom selben file
+- pfade entsprechen überall dem bisher verwendeten aufbau:
+    - inputs: path.resolve(this.config.rootPath, 'test', 'templates', 'landingpage', 'helpers')
+        -> hier also immer this.config.rootPath und von dem root aus den weiteren pfad bauen
+    - outputs: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`
+        -> hier über die konstante vom dist verzeichnis. sollte am ende dynamisch über [name].hbs klappen, hab's aktuell mit fixem namen gebaut
+- debug funktionalität für workspace: definiert im launch.json vom .vscode verzeichnis
+    -> lässt sich einfach per f5 starten und dann wie gewohnt steppen usw.
+    -> das auszuführende file kann hier geändert werden:
+        - "program": "${workspaceFolder}\\test\\webpack.config.js" - hier einfach nach bedarf pfad/filename ändern. geht sicher auch dynamischer, ist aber low-prio. so funktioniert es schon bestens.
+- aktuell ist fürs einfache testing noch ein data.json file eingebunden. das sollte auf das properties.js geändert werden, wenn es durchläuft.
+
+Offen:
+- beim debuggen läuft der build durch, kommt aber nicht in die neue config und auch nicht ins neue plugin.
+    -> die fehlermeldung sagt, dass die jeweiligen setter nicht existieren. gerne per debugger nachprüfen.
+
+Bisher für offenen Punkt versucht:
+- alle möglichen VSCode fehlerursachen (cache leeren, restart, frisches terminal, build etc neu bauen lassen)
+- andere pfad-syntax für inputs und outputs (auch mit fixen pfaden hat es nicht geklappt)
+- analyse der configs zu verschiedenen zeitpunkten der buildausführung (das plugin und die config scheinen zu keinem zeitpunkt referenzierbar zu sein, obwohl beide funktionen korrekt eingebunden sind)
+
+Es kann sein, dass im aktuellen Git-Stand noch Dinge vom Testing umgestellt sind.
+Im Zweifelsfall gerne im anderen Build Repo den aktuellen Stand anschauen. Das ist unser einfacher "Chemiebaukasten" für den Build mit ähnlicher Struktur.
+Da klappt alles und sollte größtenteils übernehmbar sein.
+
+---
+Stand 18.02.
+
+- HBS compiler in bsi-cx-webpack-plugin integriert
+
+Was fehlt (und warum)
+- Dropzones
+    - hängt mit "ref-loader" zusammen (auskommentiert)
+        - wenn aktiv: HBS Loader geht nicht
+        - wenn inaktiv: Dropzone und Bildreferenzen nicht mehr möglich
+- partials
+    - Funktionen schreiben
+    - Path referenzieren und testen
+- properties
+    - variablen (/context?!) einbinden und testen
+
+
+
+-----
+Stand 12.03.
+
+weitere TODOs:
+- helpers:
+    - flexibel bauen, aktuell nur im template
+    - naming: bsi_ prefix einbauen
+    
+- "TODO: fix paths" (workspace suche)

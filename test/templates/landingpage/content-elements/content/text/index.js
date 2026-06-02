@@ -1,10 +1,14 @@
 const { cx, Icon } = require('@bsi-cx/design-build');
 
 module.exports = cx.contentElement
-  .withFile(require('./template.twig'))
+  .withFile(require('./template.hbs'))
   .withElementId('text-kkq2fq')
   .withLabel('Text')
   .withIcon(Icon.TEXT)
-  .withParts(
-    cx.part.FormattedText('Text', 'text-part-Fjse59',
-      require('../../../html-editor-configs/full.js')));
+  .withRawTemplateParts([{
+    partId: "multiline-plain-text",
+    partContextId: "text",
+    label: "Text",
+  }])
+  // TODO: in konstante auslagern
+  .withType("template-element");

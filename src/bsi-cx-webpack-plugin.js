@@ -1,33 +1,42 @@
-import path from 'path';
-import {createHash} from 'crypto';
-import vm from 'vm';
+import path from "path";
+import fs from "fs";
+import { createHash } from "crypto";
+import vm from "vm";
+import { createRequire } from "module";
 
-import Handlebars from 'handlebars';
-import {sources} from 'webpack';
-import {Compilation, Compiler, WebpackError, WebpackLogger} from 'webpack/lib';
-import handlebarsHelpers from './handlebars-helpers';
-import Constant from './constant';
-import {buildPublicPath, escapeRegex, toPosixPath, toString} from './utility';
-import DesignJsonProperty from './design-json-property';
-import BuilderObjectNormalizer from './builder-object-normalizer';
-import File from './file';
-import DistFolder from './dist-folder';
-import {uuid} from './browser-utility';
-import slugify from 'slugify';
-import DesignJsonPropertyExtension from './design-json-property-extension';
-import BsiHtmlAttributes from './bsi-html-attributes';
-import BsiJsPropertyPlugin from './bsi-js-property-plugin';
-import {createPathHash} from './path-hash-utility';
+import Handlebars from "handlebars";
+import { sources } from "webpack";
+import {
+  Compilation,
+  Compiler,
+  WebpackError,
+  WebpackLogger,
+} from "webpack/lib";
+import handlebarsHelpers from "./handlebars-helpers";
+import Constant from "./constant";
+import { buildPublicPath, escapeRegex, toPosixPath, toString } from "./utility";
+import DesignJsonProperty from "./design-json-property";
+import BuilderObjectNormalizer from "./builder-object-normalizer";
+import File from "./file";
+import DistFolder from "./dist-folder";
+import { uuid } from "./browser-utility";
+import slugify from "slugify";
+import DesignJsonPropertyExtension from "./design-json-property-extension";
+import BsiHtmlAttributes from "./bsi-html-attributes";
+import BsiJsPropertyPlugin from "./bsi-js-property-plugin";
+import { createPathHash } from "./path-hash-utility";
 
 class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static DESIGN_JSON = new RegExp('^' + escapeRegex(File.DESIGN_JSON) + '$');
+  static DESIGN_JSON = new RegExp("^" + escapeRegex(File.DESIGN_JSON) + "$");
   /**
    * @type {RegExp}
    */
-  static DESIGN_JSON_CHUNK = new RegExp('^' + escapeRegex(File.DESIGN_JSON_CHUNK) + '$');
+  static DESIGN_JSON_CHUNK = new RegExp(
+    "^" + escapeRegex(File.DESIGN_JSON_CHUNK) + "$",
+  );
   /**
    * @type {RegExp}
    */
@@ -40,32 +49,45 @@ class _BsiCxWebpackPlugin {
   /**
    * @type {RegExp}
    */
-  static STYLES_CSS = new RegExp(`^${DistFolder.STATIC}\/styles-[0-9a-z]+\.css$`);
+  static STYLES_CSS = new RegExp(
+    `^${DistFolder.STATIC}\/styles-[0-9a-z]+\.css$`,
+  );
   /**
    * @type {RegExp}
    */
-  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, 'g');
+  static CSS_INLINE = new RegExp(Constant.BSI_CX_CSS_INLINE, "g");
   /**
    * @type {RegExp}
    */
-  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, 'g');
+  static CSS_HREF = new RegExp(Constant.BSI_CX_CSS_HREF, "g");
 
   /**
    * @type {RegExp}
    */
-  static JS_MODULE = new RegExp(`${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`, 'g');
+  static JS_MODULE = new RegExp(
+    `${Constant.BSI_CX_JS_MODULE_START}(?<metaInfo>.+)${Constant.BSI_CX_JS_MODULE_END}`,
+    "g",
+  );
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME_HREF = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_HREF, 'g');
+  static JS_MODULE_RUNTIME_HREF = new RegExp(
+    Constant.BSI_CX_MODULE_RUNTIME_HREF,
+    "g",
+  );
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME_INLINE = new RegExp(Constant.BSI_CX_MODULE_RUNTIME_INLINE, 'g');
+  static JS_MODULE_RUNTIME_INLINE = new RegExp(
+    Constant.BSI_CX_MODULE_RUNTIME_INLINE,
+    "g",
+  );
   /**
    * @type {RegExp}
    */
-  static JS_MODULE_RUNTIME = new RegExp(`^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`);
+  static JS_MODULE_RUNTIME = new RegExp(
+    `^${Constant.BSI_CX_MODULE_RUNTIME_PATH}\.js$`,
+  );
 
   /**
    * @type {number}
@@ -97,6 +119,16 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _propertyPlugin = undefined;
+  /**
+   * @type {{}|undefined}
+   * @private
+   */
+  _templateHandlebarsHelpers = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _defaultContextScope = undefined;
 
   /**
    * @param {BuildContext} context
@@ -135,10 +167,14 @@ class _BsiCxWebpackPlugin {
       this._exportDesignJson(designJsonObj, replaceMap);
       this._exportDesignHtml(replaceMap);
       this._exportPreviewHtml(replaceMap);
+      this._resolveStandaloneHandlebarsTemplateAsset();
     } catch (error) {
       if (error instanceof WebpackError) {
         this._compilation.errors.push(error);
       } else {
+        let wrappedError = new WebpackError(error?.message ?? String(error));
+        wrappedError.cause = error;
+        this._compilation.errors.push(wrappedError);
         this._logger.error(error);
       }
     }
@@ -150,11 +186,17 @@ class _BsiCxWebpackPlugin {
    */
   _importDesignJson() {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
+    let designJsonChunkPath = this._getAssetName(
+      _BsiCxWebpackPlugin.DESIGN_JSON_CHUNK,
+    );
     /**
      * @type {*}
      */
-    let designJson = this._loadAssets('json', designJsonChunkPath, designJsonPath);
+    let designJson = this._loadAssets(
+      "json",
+      designJsonChunkPath,
+      designJsonPath,
+    );
 
     return BuilderObjectNormalizer.normalize(designJson);
   }
@@ -177,13 +219,17 @@ class _BsiCxWebpackPlugin {
 
     this._addDropzonesToReplaceMap(designJsonObj, replaceMap, knownElements);
 
-    designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
-      ?.forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.forEach(element => this._addElementToReplaceMap(element, replaceMap, knownElements)));
+    designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]?.forEach((group) =>
+      group[DesignJsonProperty.CONTENT_ELEMENTS]?.forEach((element) =>
+        this._addElementToReplaceMap(element, replaceMap, knownElements),
+      ),
+    );
 
     let website = designJsonObj[DesignJsonProperty.WEBSITE] ?? {};
-    Object.values(website[DesignJsonProperty.INCLUDES] ?? {})
-      .forEach(include => this._addDropzonesToReplaceMap(include, replaceMap, knownElements));
+    Object.values(website[DesignJsonProperty.INCLUDES] ?? {}).forEach(
+      (include) =>
+        this._addDropzonesToReplaceMap(include, replaceMap, knownElements),
+    );
 
     return replaceMap;
   }
@@ -194,9 +240,13 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _createSetOfKnownElements(designJsonObj) {
-    let knownElements = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS]
-      ?.flatMap(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        ?.map(element => element[DesignJsonProperty.ELEMENT_ID]));
+    let knownElements = designJsonObj[
+      DesignJsonProperty.CONTENT_ELEMENT_GROUPS
+    ]?.flatMap((group) =>
+      group[DesignJsonProperty.CONTENT_ELEMENTS]?.map(
+        (element) => element[DesignJsonProperty.ELEMENT_ID],
+      ),
+    );
 
     return new Set(knownElements);
   }
@@ -211,8 +261,8 @@ class _BsiCxWebpackPlugin {
     this._addDropzonesToReplaceMap(element, replaceMap, knownElements);
 
     element[DesignJsonProperty.PARTS]
-      ?.filter(part => !!part[DesignJsonProperty.ID])
-      .forEach(part => {
+      ?.filter((part) => !!part[DesignJsonProperty.ID])
+      .forEach((part) => {
         /**
          * @type {string}
          */
@@ -224,9 +274,9 @@ class _BsiCxWebpackPlugin {
         /**
          * @type {RegExp}
          */
-        let needle = new RegExp(escapeRegex(id), 'g');
+        let needle = new RegExp(escapeRegex(id), "g");
 
-        replaceMap.set(id, haystack => haystack.replace(needle, partId));
+        replaceMap.set(id, (haystack) => haystack.replace(needle, partId));
       });
   }
 
@@ -242,10 +292,15 @@ class _BsiCxWebpackPlugin {
      */
     let dropzones = objScope[DesignJsonPropertyExtension.DROPZONES] ?? [];
 
-    dropzones.forEach(dropzone => {
+    dropzones.forEach((dropzone) => {
       let dropzoneId = dropzone[DesignJsonPropertyExtension.DROPZONE];
-      let allowedElements = dropzone[DesignJsonPropertyExtension.ALLOWED_ELEMENTS]?.filter(id => knownElements.has(id)).join(' ');
-      let maxElements = dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
+      let allowedElements = dropzone[
+        DesignJsonPropertyExtension.ALLOWED_ELEMENTS
+      ]
+        ?.filter((id) => knownElements.has(id))
+        .join(" ");
+      let maxElements =
+        dropzone[DesignJsonPropertyExtension.MAX_ALLOWED_ELEMENTS];
       let removeAllowed = dropzone[DesignJsonPropertyExtension.REMOVE_ALLOWED];
       let moveAllowed = dropzone[DesignJsonPropertyExtension.MOVE_ALLOWED];
       let copyAllowed = dropzone[DesignJsonPropertyExtension.COPY_ALLOWED];
@@ -255,22 +310,59 @@ class _BsiCxWebpackPlugin {
       }
 
       let replacement = [
-        [dropzoneId, BsiHtmlAttributes.DROPZONE, v => v !== undefined, v => v],
-        [allowedElements, BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS, v => v !== undefined, v => v],
-        [maxElements, BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS, v => v !== undefined, v => v],
-        [removeAllowed, BsiHtmlAttributes.HIDE_REMOVE_BUTTON, v => v === false, () => ''],
-        [moveAllowed, BsiHtmlAttributes.HIDE_MOVE_BUTTON, v => v === false, () => ''],
-        [copyAllowed, BsiHtmlAttributes.HIDE_COPY_BUTTON, v => v === false, () => ''],
-      ].map(prop => {
-        let [value, attribute, check, converter] = prop;
+        [
+          dropzoneId,
+          BsiHtmlAttributes.DROPZONE,
+          (v) => v !== undefined,
+          (v) => v,
+        ],
+        [
+          allowedElements,
+          BsiHtmlAttributes.DROPZONE_ALLOWED_ELEMENTS,
+          (v) => v !== undefined,
+          (v) => v,
+        ],
+        [
+          maxElements,
+          BsiHtmlAttributes.DROPZONE_MAX_NUMBER_OF_ELEMENTS,
+          (v) => v !== undefined,
+          (v) => v,
+        ],
+        [
+          removeAllowed,
+          BsiHtmlAttributes.HIDE_REMOVE_BUTTON,
+          (v) => v === false,
+          () => "",
+        ],
+        [
+          moveAllowed,
+          BsiHtmlAttributes.HIDE_MOVE_BUTTON,
+          (v) => v === false,
+          () => "",
+        ],
+        [
+          copyAllowed,
+          BsiHtmlAttributes.HIDE_COPY_BUTTON,
+          (v) => v === false,
+          () => "",
+        ],
+      ]
+        .map((prop) => {
+          let [value, attribute, check, converter] = prop;
 
-        return !!check(value) ? `${attribute}="${converter(value)}"` : undefined;
-      }).filter(attribute => attribute !== undefined).join(' ');
+          return !!check(value)
+            ? `${attribute}="${converter(value)}"`
+            : undefined;
+        })
+        .filter((attribute) => attribute !== undefined)
+        .join(" ");
 
       let dropzoneAttr = `${BsiHtmlAttributes.DROPZONE}="${dropzoneId}"`;
-      let needle = new RegExp(escapeRegex(dropzoneAttr), 'g');
+      let needle = new RegExp(escapeRegex(dropzoneAttr), "g");
 
-      replaceMap.set(dropzoneId, haystack => haystack.replace(needle, replacement));
+      replaceMap.set(dropzoneId, (haystack) =>
+        haystack.replace(needle, replacement),
+      );
     });
 
     delete objScope[DesignJsonPropertyExtension.DROPZONES];
@@ -282,7 +374,7 @@ class _BsiCxWebpackPlugin {
    */
   _exportDesignHtml(replaceMap) {
     let designHtmlPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_HTML);
-    this._updateHtmlTemplate(designHtmlPath, 'design', replaceMap);
+    this._updateHtmlTemplate(designHtmlPath, "design", replaceMap);
   }
 
   /**
@@ -291,11 +383,252 @@ class _BsiCxWebpackPlugin {
    */
   _exportPreviewHtml(replaceMap) {
     let previewFilePath = this._getAssetName(_BsiCxWebpackPlugin.PREVIEW_HTML);
-    let previewTemplate = this._updateHtmlTemplate(previewFilePath, 'preview', replaceMap);
+    let previewTemplate = this._updateHtmlTemplate(
+      previewFilePath,
+      "preview",
+      replaceMap,
+    );
 
     if (/\.hbs$/.test(previewFilePath)) {
       this._handlePreviewHandlebars(previewFilePath, previewTemplate);
     }
+  }
+
+  /**
+   * Resolves embedded precompiled Handlebars module snippets in the dedicated
+   * standalone content-elements/template.hbs artifact.
+   *
+   * @private
+   */
+  _resolveStandaloneHandlebarsTemplateAsset() {
+    let filePath = `${DistFolder.CONTENT_ELEMENTS}/template.hbs`;
+    let absoluteFilePath = path.resolve(this._compiler.outputPath, filePath);
+    let asset = this._compilation.getAsset(filePath);
+
+    if (!asset) {
+      return;
+    }
+
+    let content = toString(asset.source.source());
+    let modules = this._extractStandalonePrecompiledHandlebarsModules(content);
+    let hasChanges = false;
+    let cursor = 0;
+    let output = "";
+
+    modules.forEach((module) => {
+      output += content.slice(cursor, module.start);
+      output += this._renderStandalonePrecompiledHandlebarsModule(
+        module.source,
+        absoluteFilePath,
+      );
+      cursor = module.end;
+      hasChanges = true;
+    });
+
+    if (hasChanges) {
+      output += content.slice(cursor);
+      this._updateAsset(filePath, output);
+    }
+  }
+
+  /**
+   * @param {string} moduleSource
+   * @param {string} absoluteFilePath
+   * @returns {string}
+   * @private
+   */
+  _renderStandalonePrecompiledHandlebarsModule(moduleSource, absoluteFilePath) {
+    let helperDir = path.resolve(this._config.rootPath, "helpers");
+    let templateRequire = this._createStandaloneTemplateRequire(
+      absoluteFilePath,
+      helperDir,
+    );
+    let templateFunc = this._eval(
+      moduleSource,
+      absoluteFilePath,
+      templateRequire,
+    );
+    let rendered = templateFunc;
+
+    if (typeof templateFunc === "function") {
+      rendered = templateFunc({ contextScope: this._getDefaultContextScope() }, {
+        helpers: this._getTemplateHandlebarsHelpers(),
+      });
+    }
+
+    return typeof rendered === "string" ? rendered : String(rendered ?? "");
+  }
+
+  /**
+   * @param {string} filename
+   * @param {string} helperDir
+   * @returns {function(string):*}
+   * @private
+   */
+  _createStandaloneTemplateRequire(filename, helperDir) {
+    let scopedRequire = createRequire(filename);
+
+    return (requestPath) => {
+      if (/^\.\.\/helpers\//.test(requestPath)) {
+        let helperPath = path.resolve(helperDir, path.basename(requestPath));
+        return scopedRequire(helperPath);
+      }
+
+      return scopedRequire(requestPath);
+    };
+  }
+
+  /**
+   * @param {string} source
+   * @returns {{start:number,end:number,source:string}[]}
+   * @private
+   */
+  _extractStandalonePrecompiledHandlebarsModules(source) {
+    let modules = [];
+    let moduleStartToken = 'var Handlebars = require("handlebars");';
+    let anchorRegex =
+      /module\.exports\s*=\s*\(Handlebars\["default"\]\s*\|\|\s*Handlebars\)\.template\s*\(/g;
+    let searchIndex = 0;
+
+    while (searchIndex < source.length) {
+      let moduleStart = source.indexOf(moduleStartToken, searchIndex);
+      if (moduleStart === -1) {
+        break;
+      }
+
+      anchorRegex.lastIndex = moduleStart;
+      let anchor = anchorRegex.exec(source);
+      if (!anchor || anchor.index < moduleStart) {
+        searchIndex = moduleStart + moduleStartToken.length;
+        continue;
+      }
+
+      let templateCallOpen = anchorRegex.lastIndex - 1;
+      let objectStart = this._skipWhitespace(source, templateCallOpen + 1);
+      if (source[objectStart] !== "{") {
+        searchIndex = templateCallOpen + 1;
+        continue;
+      }
+
+      let objectEnd = this._findMatchingBracket(source, objectStart, "{", "}");
+      if (objectEnd === -1) {
+        searchIndex = objectStart + 1;
+        continue;
+      }
+
+      let moduleEnd = this._skipWhitespace(source, objectEnd + 1);
+      if (source[moduleEnd] !== ")") {
+        searchIndex = objectEnd + 1;
+        continue;
+      }
+
+      moduleEnd += 1;
+      if (source[moduleEnd] === ";") {
+        moduleEnd += 1;
+      }
+
+      modules.push({
+        start: moduleStart,
+        end: moduleEnd,
+        source: source.slice(moduleStart, moduleEnd),
+      });
+      searchIndex = moduleEnd;
+    }
+
+    return modules;
+  }
+
+  /**
+   * @param {string} source
+   * @param {number} index
+   * @returns {number}
+   * @private
+   */
+  _skipWhitespace(source, index) {
+    let i = index;
+
+    while (i < source.length && /\s/.test(source[i])) {
+      i += 1;
+    }
+
+    return i;
+  }
+
+  /**
+   * @param {string} source
+   * @param {number} startIndex
+   * @param {string} openChar
+   * @param {string} closeChar
+   * @returns {number}
+   * @private
+   */
+  _findMatchingBracket(source, startIndex, openChar, closeChar) {
+    let depth = 0;
+    let quote = "";
+    let inLineComment = false;
+    let inBlockComment = false;
+
+    for (let i = startIndex; i < source.length; i += 1) {
+      let ch = source[i];
+      let next = source[i + 1];
+
+      if (inLineComment) {
+        if (ch === "\n") {
+          inLineComment = false;
+        }
+        continue;
+      }
+
+      if (inBlockComment) {
+        if (ch === "*" && next === "/") {
+          inBlockComment = false;
+          i += 1;
+        }
+        continue;
+      }
+
+      if (quote) {
+        if (ch === "\\") {
+          i += 1;
+          continue;
+        }
+        if (ch === quote) {
+          quote = "";
+        }
+        continue;
+      }
+
+      if (ch === "/" && next === "/") {
+        inLineComment = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === "/" && next === "*") {
+        inBlockComment = true;
+        i += 1;
+        continue;
+      }
+
+      if (ch === '"' || ch === "'") {
+        quote = ch;
+        continue;
+      }
+
+      if (ch === openChar) {
+        depth += 1;
+        continue;
+      }
+
+      if (ch === closeChar) {
+        depth -= 1;
+        if (depth === 0) {
+          return i;
+        }
+      }
+    }
+
+    return -1;
   }
 
   /**
@@ -305,21 +638,26 @@ class _BsiCxWebpackPlugin {
    */
   _exportDesignJson(designJsonObj, replaceMap) {
     let designJsonPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON);
-    let designJsonChunkPath = this._getAssetName(_BsiCxWebpackPlugin.DESIGN_JSON_CHUNK);
-    let contentElementGroups = designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
+    let designJsonChunkPath = this._getAssetName(
+      _BsiCxWebpackPlugin.DESIGN_JSON_CHUNK,
+    );
+    let contentElementGroups =
+      designJsonObj[DesignJsonProperty.CONTENT_ELEMENT_GROUPS] || [];
     let website = designJsonObj[DesignJsonProperty.WEBSITE] || {};
     let websiteIncludes = website[DesignJsonProperty.INCLUDES] || {};
     let metaPropertyMap = new Map([
       [DesignJsonProperty.HTML_EDITOR_CONFIG, {}],
-      [DesignJsonProperty.STYLE_CONFIGS, {}]
+      [DesignJsonProperty.STYLE_CONFIGS, {}],
     ]);
 
     this._adjustDesignJsonSchemaVersion(designJsonObj);
     this._handleDesignPreviewImage(designJsonObj);
 
-    contentElementGroups
-      .forEach(group => group[DesignJsonProperty.CONTENT_ELEMENTS]
-        .forEach(element => this._handleElement(element, replaceMap, metaPropertyMap)));
+    contentElementGroups.forEach((group) =>
+      group[DesignJsonProperty.CONTENT_ELEMENTS].forEach((element) =>
+        this._handleElement(element, replaceMap, metaPropertyMap),
+      ),
+    );
 
     this._applyExtractedMetaProperties(designJsonObj, metaPropertyMap);
 
@@ -327,14 +665,11 @@ class _BsiCxWebpackPlugin {
       this._handleInclude(id, include, replaceMap);
     }
 
-    const {
-      schemaVersion,
-      ...rest
-    } = designJsonObj;
+    const { schemaVersion, ...rest } = designJsonObj;
 
     const json = {
       schemaVersion: schemaVersion,
-      ...rest
+      ...rest,
     };
 
     let jsonStr = JSON.stringify(json, null, 2);
@@ -343,14 +678,22 @@ class _BsiCxWebpackPlugin {
   }
 
   _adjustDesignJsonSchemaVersion(designJsonObj) {
-    if (typeof designJsonObj[DesignJsonProperty.SCHEMA_VERSION] === 'undefined') {
-      designJsonObj[DesignJsonProperty.SCHEMA_VERSION] = this._config.targetVersion.schemaVersion;
+    if (
+      typeof designJsonObj[DesignJsonProperty.SCHEMA_VERSION] === "undefined"
+    ) {
+      designJsonObj[DesignJsonProperty.SCHEMA_VERSION] =
+        this._config.targetVersion.schemaVersion;
     }
   }
 
   _handleDesignPreviewImage(designJsonObj) {
-    if (typeof designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] !== 'undefined') {
-      designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] = this._removeDesignBaseUrl(designJsonObj[DesignJsonProperty.PREVIEW_IMAGE]);
+    if (
+      typeof designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] !== "undefined"
+    ) {
+      designJsonObj[DesignJsonProperty.PREVIEW_IMAGE] =
+        this._removeDesignBaseUrl(
+          designJsonObj[DesignJsonProperty.PREVIEW_IMAGE],
+        );
     }
   }
 
@@ -365,7 +708,11 @@ class _BsiCxWebpackPlugin {
     this._sortElementPartsById(element);
     this._handleElementFile(element, replaceMap);
     this._handleElementContextFile(element, replaceMap);
-    this._extractMetaConfigProperties(element, DesignJsonProperty.STYLE_CONFIGS, metaPropertyMap);
+    this._extractMetaConfigProperties(
+      element,
+      DesignJsonProperty.STYLE_CONFIGS,
+      metaPropertyMap,
+    );
     this._extractMetaConfigPropertiesFromParts(element, metaPropertyMap);
   }
 
@@ -376,7 +723,87 @@ class _BsiCxWebpackPlugin {
   _importElementFile(element) {
     let fileObj = element[DesignJsonProperty.FILE];
 
-    fileObj.content = this._evalTemplateFile(fileObj.content);
+    // Depending on active loader chain, file payload can be string/function/object.
+    // Normalize to a stable {content, path} shape for the following logic.
+    if (fileObj && typeof fileObj !== "object") {
+      fileObj = {
+        content: fileObj,
+        path: undefined,
+      };
+      element[DesignJsonProperty.FILE] = fileObj;
+    }
+
+    if (!fileObj) {
+      return;
+    }
+
+    let rawContent = fileObj.content;
+
+    if (rawContent && typeof rawContent === "object") {
+      if (typeof rawContent.path === "string" && !fileObj.path) {
+        fileObj.path = rawContent.path;
+      }
+      if (Object.prototype.hasOwnProperty.call(rawContent, "content")) {
+        rawContent = rawContent.content;
+      }
+    }
+
+    if (typeof rawContent === "function") {
+      if (!fileObj.path) {
+        fileObj.path = "inline-template.hbs";
+      }
+      rawContent = rawContent({ contextScope: this._getDefaultContextScope() }, {
+        helpers: this._getTemplateHandlebarsHelpers(),
+      });
+    }
+
+    if (typeof rawContent !== "string") {
+      fileObj.content = String(rawContent ?? "");
+      return;
+    }
+
+    fileObj.content = rawContent;
+
+    // Detect precompiled Handlebars module sources emitted by handlebars-loader.
+    let isPrecompiledHandlebarsSource =
+      /handlebars\/runtime\.js/.test(rawContent) ||
+      /\.template\(\{/.test(rawContent);
+
+    let evaluatedFile = this._evalTemplateFile(fileObj.content, fileObj.path);
+    if (evaluatedFile && typeof evaluatedFile === "object") {
+      if (typeof evaluatedFile.path === "string" && !fileObj.path) {
+        fileObj.path = evaluatedFile.path;
+      }
+      if (Object.prototype.hasOwnProperty.call(evaluatedFile, "content")) {
+        fileObj.content = evaluatedFile.content;
+      }
+    } else if (typeof evaluatedFile !== "undefined") {
+      fileObj.content = evaluatedFile;
+    }
+
+    if (!fileObj.path && isPrecompiledHandlebarsSource) {
+      fileObj.path = "inline-template.hbs";
+    }
+
+    // Handle HBS files
+    if (fileObj.path && fileObj.path.endsWith("hbs")) {
+      // If still a JS module source, evaluate first to get executable template fn.
+      if (
+        typeof fileObj.content === "string" &&
+        /module\.exports\s*=/.test(fileObj.content)
+      ) {
+        fileObj.content = this._eval(fileObj.content, fileObj.path);
+      }
+      // Execute compiled template function to emit final template text.
+      if (typeof fileObj.content === "function") {
+        fileObj.content = fileObj.content({ contextScope: this._getDefaultContextScope() }, {
+          helpers: this._getTemplateHandlebarsHelpers(),
+        });
+      }
+      if (typeof fileObj.content !== "string") {
+        fileObj.content = String(fileObj.content ?? "");
+      }
+    }
   }
 
   /**
@@ -389,7 +816,13 @@ class _BsiCxWebpackPlugin {
     let baseFolder = DistFolder.CONTENT_ELEMENTS;
     let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
-    element[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+    element[DesignJsonProperty.FILE] = this._handleTemplateFile(
+      fileObj,
+      baseFolder,
+      filenamePrefix,
+      replaceMap,
+      false,
+    );
   }
 
   /**
@@ -406,9 +839,14 @@ class _BsiCxWebpackPlugin {
       let baseFolder = DistFolder.CONTEXT;
       let filenamePrefix = element[DesignJsonProperty.ELEMENT_ID];
 
-      element[DesignJsonProperty.CONTEXT_FILE] = this._handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, false);
+      element[DesignJsonProperty.CONTEXT_FILE] = this._handleTemplateFile(
+        fileObj,
+        baseFolder,
+        filenamePrefix,
+        replaceMap,
+        false,
+      );
     }
-    
   }
 
   /**
@@ -420,10 +858,12 @@ class _BsiCxWebpackPlugin {
   _extractMetaConfigProperties(targetObj, property, metaPropertyMap) {
     let metaProperty = `_${property}`;
     let rawMetaConfigs = targetObj[metaProperty] ?? [];
-    let metaConfigs = Array.isArray(rawMetaConfigs) ? rawMetaConfigs : [rawMetaConfigs];
+    let metaConfigs = Array.isArray(rawMetaConfigs)
+      ? rawMetaConfigs
+      : [rawMetaConfigs];
     let configMap = metaPropertyMap.get(property);
 
-    metaConfigs.forEach(metaConfig => {
+    metaConfigs.forEach((metaConfig) => {
       let name = Object.keys(metaConfig).pop();
 
       configMap[name] = metaConfig[name];
@@ -438,8 +878,15 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _extractMetaConfigPropertiesFromParts(element, metaPropertyMap) {
-    element[DesignJsonProperty.PARTS]
-      .forEach(part => this._extractMetaConfigProperties(part, DesignJsonProperty.HTML_EDITOR_CONFIG, metaPropertyMap));
+    if (element[DesignJsonProperty.PARTS]) {
+      element[DesignJsonProperty.PARTS].forEach((part) =>
+        this._extractMetaConfigProperties(
+          part,
+          DesignJsonProperty.HTML_EDITOR_CONFIG,
+          metaPropertyMap,
+        ),
+      );
+    }
   }
 
   /**
@@ -449,10 +896,20 @@ class _BsiCxWebpackPlugin {
    */
   _applyExtractedMetaProperties(designJsonObj, metaPropertyMap) {
     let styleConfigs = metaPropertyMap.get(DesignJsonProperty.STYLE_CONFIGS);
-    let htmlEditorConfigs = metaPropertyMap.get(DesignJsonProperty.HTML_EDITOR_CONFIG);
+    let htmlEditorConfigs = metaPropertyMap.get(
+      DesignJsonProperty.HTML_EDITOR_CONFIG,
+    );
 
-    this._applyExtractedMetaProperty(designJsonObj, DesignJsonProperty.STYLE_CONFIGS, styleConfigs);
-    this._applyExtractedMetaProperty(designJsonObj, DesignJsonProperty.HTML_EDITOR_CONFIGS, htmlEditorConfigs);
+    this._applyExtractedMetaProperty(
+      designJsonObj,
+      DesignJsonProperty.STYLE_CONFIGS,
+      styleConfigs,
+    );
+    this._applyExtractedMetaProperty(
+      designJsonObj,
+      DesignJsonProperty.HTML_EDITOR_CONFIGS,
+      htmlEditorConfigs,
+    );
   }
 
   /**
@@ -462,7 +919,11 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyExtractedMetaProperty(designJsonObj, property, configs) {
-    designJsonObj[property] = Object.assign({}, configs, designJsonObj[property] ?? {});
+    designJsonObj[property] = Object.assign(
+      {},
+      configs,
+      designJsonObj[property] ?? {},
+    );
   }
 
   /**
@@ -476,8 +937,8 @@ class _BsiCxWebpackPlugin {
     let idPartMap = new Map();
     let parts = element[DesignJsonProperty.PARTS] ?? [];
     parts
-      .filter(part => !!part[DesignJsonProperty.ID])
-      .forEach(part => {
+      .filter((part) => !!part[DesignJsonProperty.ID])
+      .forEach((part) => {
         idPartMap.set(part[DesignJsonProperty.ID], part);
         delete part[DesignJsonProperty.ID];
       });
@@ -496,7 +957,7 @@ class _BsiCxWebpackPlugin {
     });
 
     // filter all the empty array slots
-    orderedParts = orderedParts.filter(part => !!part);
+    orderedParts = orderedParts.filter((part) => !!part);
 
     // abort if not all parts are mapped to the template
     if (orderedParts.length !== parts.length) {
@@ -516,15 +977,24 @@ class _BsiCxWebpackPlugin {
     let fileObj = include[DesignJsonProperty.FILE];
     let baseFolder = DistFolder.INCLUDES;
 
-    include[DesignJsonProperty.FILE] = this._handleTemplateFile(fileObj, baseFolder, id, replaceMap, true);
+    include[DesignJsonProperty.FILE] = this._handleTemplateFile(
+      fileObj,
+      baseFolder,
+      id,
+      replaceMap,
+      true,
+    );
   }
-
 
   /**
    * @param {string} rawContent
    */
-  _evalTemplateFile(rawContent) {
-    return /^module\.exports/.test(rawContent) ? this._eval(rawContent) : rawContent;
+  _evalTemplateFile(rawContent, filename) {
+    return /^module\.exports/.test(rawContent)
+      ? this._eval(rawContent, filename)
+      : /module\.exports\s*=\s*\{/.test(rawContent)
+        ? this._eval(rawContent, filename)
+      : rawContent;
   }
 
   /**
@@ -535,20 +1005,37 @@ class _BsiCxWebpackPlugin {
    * @param {boolean} evalFirst
    * @returns {string}
    */
-  _handleTemplateFile(fileObj, baseFolder, filenamePrefix, replaceMap, evalFirst) {
-    let content = fileObj.content;
+  _handleTemplateFile(
+    fileObj,
+    baseFolder,
+    filenamePrefix,
+    replaceMap,
+    evalFirst,
+  ) {
+    let content = fileObj?.content ?? fileObj;
+    let sourcePath = fileObj?.path;
 
-    if (!!evalFirst) {
-      content = /^module\.exports/.test(content) ? this._eval(content) : content;
+    if (typeof content !== "string") {
+      content = String(content ?? "");
     }
 
-    let extension = this._getTemplateFileExtension(fileObj.path);
+    if (!!evalFirst) {
+      content = /^module\.exports/.test(content)
+        ? this._eval(content)
+        : content;
+    }
+
+    let extension = this._getTemplateFileExtension(sourcePath ?? "");
     let prefix = slugify(filenamePrefix ?? uuid());
 
-    let pathForHash = path.relative(this._config.rootPath, fileObj.path);
-    let pathHash = createPathHash(path.posix.join(this._config.designType.toString(), pathForHash));
+    let pathForHash = sourcePath
+      ? path.relative(this._config.rootPath, sourcePath)
+      : `inline-${createPathHash(content)}`;
+    let pathHash = createPathHash(
+      path.posix.join(this._config.designType.toString(), pathForHash),
+    );
 
-    let filename = prefix + '-' + pathHash + '.' + extension;
+    let filename = prefix + "-" + pathHash + "." + extension;
     let elementFilePath = baseFolder + path.posix.sep + filename;
 
     content = this._applyReplaceMap(content, replaceMap);
@@ -565,7 +1052,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _applyReplaceMap(content, replaceMap) {
-    replaceMap.forEach(replaceFunc => content = replaceFunc(content));
+    replaceMap.forEach((replaceFunc) => (content = replaceFunc(content)));
 
     return content;
   }
@@ -578,10 +1065,10 @@ class _BsiCxWebpackPlugin {
     let parser = this._getHandlebarsParser();
     let template = parser.compile(previewTemplate);
     let rendered = template({
-      designBaseUrl: '.',
-      bsi: this._getHandlebarsHelpers()
+      designBaseUrl: ".",
+      bsi: this._getHandlebarsHelpers(),
     });
-    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, '.html');
+    let previewHtmlPath = previewFilePath.replace(/\.hbs$/, ".html");
 
     this._emitAsset(previewHtmlPath, rendered);
     this._deleteAsset(previewFilePath);
@@ -594,13 +1081,13 @@ class _BsiCxWebpackPlugin {
   _getTemplateFileExtension(fileName) {
     switch (true) {
       case /\.hbs\.twig$/.test(fileName):
-        return 'hbs';
+        return "hbs";
       case /\.hbs$/.test(fileName):
-        return 'hbs';
+        return "hbs";
       case /\.json$/.test(fileName):
-        return 'json';
+        return "json";
       default:
-        return 'html';
+        return "html";
     }
   }
 
@@ -613,7 +1100,7 @@ class _BsiCxWebpackPlugin {
      * @type {string[]}
      */
     let assetNames = Object.keys(this._compilation.assets);
-    return assetNames.filter(name => nameRegEx.test(name));
+    return assetNames.filter((name) => nameRegEx.test(name));
   }
 
   /**
@@ -624,9 +1111,28 @@ class _BsiCxWebpackPlugin {
     return this._getAssetNames(nameRegEx).shift();
   }
 
-  _eval(source) {
-    let script = new vm.Script(source);
-    let context = {module: {}};
+  _eval(source, filename, customRequire) {
+    let inferredFilename = filename;
+    if (!inferredFilename) {
+      let pathMatch = source.match(/path:\s*"([^"]+)"/);
+      if (pathMatch?.[1]) {
+        inferredFilename = pathMatch[1].replace(/\\\\/g, "\\");
+      }
+    }
+
+    let script = new vm.Script(
+      source,
+      inferredFilename ? { filename: inferredFilename } : undefined,
+    );
+    let scopedRequire = inferredFilename
+      ? createRequire(inferredFilename)
+      : undefined;
+    let context = {
+      module: { exports: {} },
+      exports: {},
+      require: customRequire ?? scopedRequire,
+    };
+    context.exports = context.module.exports;
     script.runInNewContext(context);
     return context.module.exports;
   }
@@ -648,7 +1154,7 @@ class _BsiCxWebpackPlugin {
   _loadAssets(scope, ...assetNames) {
     let context = {
       self: {},
-      console: console
+      console: console,
     };
 
     context[Constant.BSI_CX_JS_PROPERTY_PLUGIN] = this._propertyPlugin;
@@ -663,14 +1169,14 @@ class _BsiCxWebpackPlugin {
       let source = asset.source.source();
       let code = toString(source);
       let script = new vm.Script(code, {
-        filename: assetFilename
+        filename: assetFilename,
       });
 
       script.runInContext(context);
     }
 
     let defaultLocale = context[scope][DesignJsonProperty.DEFAULT_LOCALE];
-    if (typeof defaultLocale !== 'undefined') {
+    if (typeof defaultLocale !== "undefined") {
       context[Constant.BSI_CX_DEFAULT_LOCALE] = defaultLocale;
     }
 
@@ -718,20 +1224,33 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _handleStylesheets(content) {
-    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let publicPath = this._compiler.options.output.publicPath.replace(
+      /\/$/,
+      "",
+    );
     let cssStylesFilename = this._getAssetName(_BsiCxWebpackPlugin.STYLES_CSS);
 
     if (cssStylesFilename === undefined) {
       return content;
     }
 
-    let linkStyleUrl = publicPath.length > 0 ? `${publicPath}/${cssStylesFilename}` : `./${cssStylesFilename}`;
-    let inlineSourceAssetsUrl = publicPath.length > 0 ? `${publicPath}/${DistFolder.STATIC}/` : `./${DistFolder.STATIC}/`;
-    let staticFolderUrlPattern = new RegExp(`\.\.\/${DistFolder.STATIC}\/`, 'g');
+    let linkStyleUrl =
+      publicPath.length > 0
+        ? `${publicPath}/${cssStylesFilename}`
+        : `./${cssStylesFilename}`;
+    let inlineSourceAssetsUrl =
+      publicPath.length > 0
+        ? `${publicPath}/${DistFolder.STATIC}/`
+        : `./${DistFolder.STATIC}/`;
+    let staticFolderUrlPattern = new RegExp(
+      `\.\.\/${DistFolder.STATIC}\/`,
+      "g",
+    );
     let asset = this._compilation.getAsset(cssStylesFilename);
-    let source = asset.source.source()
+    let source = asset.source
+      .source()
       .trim()
-      .replace(/\n/g, '')
+      .replace(/\n/g, "")
       .replace(staticFolderUrlPattern, inlineSourceAssetsUrl);
 
     content = content.replace(_BsiCxWebpackPlugin.CSS_INLINE, source);
@@ -749,7 +1268,11 @@ class _BsiCxWebpackPlugin {
     let importedModules = [];
 
     for (const match of jsModuleMatches) {
-      content = this._handleFoundJavaScriptModule(content, match, importedModules);
+      content = this._handleFoundJavaScriptModule(
+        content,
+        match,
+        importedModules,
+      );
     }
 
     content = this._injectModuleRuntime(content);
@@ -758,20 +1281,25 @@ class _BsiCxWebpackPlugin {
   }
 
   _injectModuleRuntime(content) {
-    let publicPath = this._compiler.options.output.publicPath.replace(/\/$/, '');
+    let publicPath = this._compiler.options.output.publicPath.replace(
+      /\/$/,
+      "",
+    );
     let filename = this._getAssetName(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME);
 
     if (filename === undefined) {
       return content;
     }
 
-    let url = publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
+    let url =
+      publicPath.length > 0 ? `${publicPath}/${filename}` : `./${filename}`;
     let asset = this._compilation.getAsset(filename);
-    let source = asset.source.source()
-      .trim()
-      .replace(/\n/g, '');
+    let source = asset.source.source().trim().replace(/\n/g, "");
 
-    content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE, source);
+    content = content.replace(
+      _BsiCxWebpackPlugin.JS_MODULE_RUNTIME_INLINE,
+      source,
+    );
     content = content.replace(_BsiCxWebpackPlugin.JS_MODULE_RUNTIME_HREF, url);
 
     return content;
@@ -789,12 +1317,18 @@ class _BsiCxWebpackPlugin {
      */
     let metaInfo = JSON.parse(match.groups.metaInfo);
     let strToReplace = match[0];
-    let replacement = '';
+    let replacement = "";
 
-    if (typeof metaInfo.module !== 'undefined') {
-      replacement = this._handleFoundJavaScriptModuleImport(metaInfo, importedModules);
-    } else if (typeof metaInfo.chunks !== 'undefined') {
-      replacement = this._handleFoundJavaScriptModuleChunks(metaInfo, importedModules);
+    if (typeof metaInfo.module !== "undefined") {
+      replacement = this._handleFoundJavaScriptModuleImport(
+        metaInfo,
+        importedModules,
+      );
+    } else if (typeof metaInfo.chunks !== "undefined") {
+      replacement = this._handleFoundJavaScriptModuleChunks(
+        metaInfo,
+        importedModules,
+      );
     }
 
     return content.replace(strToReplace, replacement);
@@ -808,14 +1342,16 @@ class _BsiCxWebpackPlugin {
   _handleFoundJavaScriptModuleImport(metaInfo, importedModules) {
     let module = metaInfo.module;
     let inline = metaInfo.inline;
-    let moduleAssetRegex = new RegExp(`^${DistFolder.MODULES}\/${module}\-[0-9a-z]+\.js$`);
+    let moduleAssetRegex = new RegExp(
+      `^${DistFolder.MODULES}\/${module}\-[0-9a-z]+\.js$`,
+    );
     let moduleAssetPath = this._getAssetName(moduleAssetRegex);
 
     if (!moduleAssetPath) {
       throw this._webpackError(
         `Module "${module}" does not exist.`,
         `The module "${module}" does not exist. You need to include it in your modules configuration.`,
-        metaInfo.template
+        metaInfo.template,
       );
     }
 
@@ -841,12 +1377,18 @@ class _BsiCxWebpackPlugin {
    */
   _handleFoundJavaScriptModuleChunks(metaInfo, importedModules) {
     let inline = metaInfo.inline;
-    let assetRegex = new RegExp(`^(${DistFolder.MODULES}|${DistFolder.VENDORS}|${DistFolder.SHARED})\/.*\.js$`);
+    let assetRegex = new RegExp(
+      `^(${DistFolder.MODULES}|${DistFolder.VENDORS}|${DistFolder.SHARED})\/.*\.js$`,
+    );
     let assetPaths = this._getAssetNames(assetRegex);
 
     return assetPaths
-      .filter(assetPath => !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) && importedModules.indexOf(assetPath) === -1)
-      .map(assetPath => {
+      .filter(
+        (assetPath) =>
+          !assetPath.startsWith(Constant.BSI_CX_MODULE_RUNTIME_PATH) &&
+          importedModules.indexOf(assetPath) === -1,
+      )
+      .map((assetPath) => {
         importedModules.push(assetPath);
         if (inline) {
           let asset = this._compilation.getAsset(assetPath);
@@ -857,7 +1399,8 @@ class _BsiCxWebpackPlugin {
           let url = buildPublicPath(this._config, assetPath);
           return `<script src="${url}" defer="defer" data-bsi-remove-if="draft"></script>`;
         }
-      }).join('');
+      })
+      .join("");
   }
 
   /**
@@ -871,7 +1414,7 @@ class _BsiCxWebpackPlugin {
     error.details = details;
     if (!!location) {
       error.loc = {
-        name: this._getContextRelativePath(location)
+        name: this._getContextRelativePath(location),
       };
     }
     return error;
@@ -880,7 +1423,7 @@ class _BsiCxWebpackPlugin {
   _getContextRelativePath(absolutePath) {
     let contextPath = this._compiler.context;
     let relativePath = toPosixPath(path.relative(contextPath, absolutePath));
-    return '.' + path.posix.sep + relativePath;
+    return "." + path.posix.sep + relativePath;
   }
 
   /**
@@ -888,9 +1431,9 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _createContentHash(content) {
-    return createHash('sha256')
+    return createHash("sha256")
       .update(content)
-      .digest('hex')
+      .digest("hex")
       .substr(0, _BsiCxWebpackPlugin.ELEMENT_FILE_HASH_LENGTH);
   }
 
@@ -907,10 +1450,75 @@ class _BsiCxWebpackPlugin {
   _getHandlebarsHelpers() {
     let helpersObj = {};
     for (const [name, func] of Object.entries(handlebarsHelpers)) {
-      let fixedName = name.replace(/^bsi\./, '');
+      let fixedName = name.replace(/^bsi\./, "");
       helpersObj[fixedName] = func;
     }
     return helpersObj;
+  }
+
+  /**
+   * @returns {{}}
+   */
+  _getTemplateHandlebarsHelpers() {
+    if (this._templateHandlebarsHelpers) {
+      return this._templateHandlebarsHelpers;
+    }
+
+    let helpersObj = this._getHandlebarsHelpers();
+    let helperDir = path.resolve(this._config.rootPath, "helpers");
+
+    if (!fs.existsSync(helperDir)) {
+      this._templateHandlebarsHelpers = helpersObj;
+      return helpersObj;
+    }
+
+    let helperRequire = createRequire(path.join(helperDir, "index.js"));
+    let helperFiles = fs
+      .readdirSync(helperDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && /\.js$/i.test(entry.name));
+
+    helperFiles.forEach((entry) => {
+      let helperName = entry.name.replace(/\.js$/i, "");
+      let helperPath = path.join(helperDir, entry.name);
+      let helperExport = helperRequire(helperPath);
+
+      helpersObj[helperName] =
+        helperExport && typeof helperExport === "object"
+          ? (helperExport.default ?? helperExport)
+          : helperExport;
+    });
+
+    this._templateHandlebarsHelpers = helpersObj;
+    return helpersObj;
+  }
+
+  /**
+   * @returns {string}
+   */
+  _getDefaultContextScope() {
+    if (typeof this._defaultContextScope === "string") {
+      return this._defaultContextScope;
+    }
+
+    let defaultScope = "root";
+
+    try {
+      let dataPath = path.resolve(this._config.rootPath, "data", "data.json");
+
+      if (fs.existsSync(dataPath)) {
+        let data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+        if (typeof data?.contextScope === "string" && data.contextScope.length > 0) {
+          defaultScope = data.contextScope;
+        }
+      }
+    } catch (error) {
+      this._logger.warn(
+        `Failed to read default contextScope from data/data.json, fallback to \"root\": ${error?.message ?? error}`,
+      );
+    }
+
+    this._defaultContextScope = defaultScope;
+    return defaultScope;
   }
 
   /**
@@ -918,7 +1526,7 @@ class _BsiCxWebpackPlugin {
    * @returns {string}
    */
   _removeDesignBaseUrl(url) {
-    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, '');
+    return url.replace(`${Constant.BSI_CX_DESIGN_BASE_URL}/`, "");
   }
 }
 
@@ -926,7 +1534,7 @@ export default class BsiCxWebpackPlugin {
   /**
    * @type {string}
    */
-  static PLUGIN_NAME = 'BsiCxWebpackPlugin';
+  static PLUGIN_NAME = "BsiCxWebpackPlugin";
 
   /**
    * @type {BuildContext}
@@ -946,16 +1554,41 @@ export default class BsiCxWebpackPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.thisCompilation.tap(BsiCxWebpackPlugin.PLUGIN_NAME, compilation => {
-      compilation.hooks.processAssets.tap(
-        {
-          name: BsiCxWebpackPlugin.PLUGIN_NAME,
-          stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE
-        },
-        () => {
-          const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
-          new _BsiCxWebpackPlugin(this._context, compiler, compilation, logger).apply();
-        })
-    });
+    compiler.hooks.thisCompilation.tap(
+      BsiCxWebpackPlugin.PLUGIN_NAME,
+      (compilation) => {
+        const logger = compilation.getLogger(BsiCxWebpackPlugin.PLUGIN_NAME);
+
+        compilation.hooks.processAssets.tap(
+          {
+            name: BsiCxWebpackPlugin.PLUGIN_NAME,
+            stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
+          },
+          () => {
+            new _BsiCxWebpackPlugin(
+              this._context,
+              compiler,
+              compilation,
+              logger,
+            ).apply();
+          },
+        );
+
+        compilation.hooks.processAssets.tap(
+          {
+            name: `${BsiCxWebpackPlugin.PLUGIN_NAME}:standalone-hbs-finalize`,
+            stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+          },
+          () => {
+            new _BsiCxWebpackPlugin(
+              this._context,
+              compiler,
+              compilation,
+              logger,
+            )._resolveStandaloneHandlebarsTemplateAsset();
+          },
+        );
+      },
+    );
   }
-};
+}

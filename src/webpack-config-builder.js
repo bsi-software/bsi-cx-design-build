@@ -1,35 +1,44 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import Asset from 'webpack/lib';
-import ZipPlugin from 'zip-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import CopyPlugin from 'copy-webpack-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
+import Asset from "webpack/lib";
+import ZipPlugin from "zip-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 
-import packageJson from '../package.json';
-import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
-import BsiCxWebpackLegacyDesignPlugin from './bsi-cx-webpack-legacy-design-plugin';
-import BsiCxWebpackZipHashPlugin from './bsi-cx-webpack-zip-hash-plugin';
-import Constant from './constant';
-import File from './file';
-import {buildPublicPath, escapeRegex, findArraySimilarities, getZipArchiveName, toPosixPath} from './utility';
-import BsiCxTwigContextWebpackPlugin from './bsi-cx-twig-context-webpack-plugin';
-import BsiLessPropertyPlugin from './bsi-less-property-plugin';
-import BuildContext from './build-context';
-import BsiSassPropertyPlugin from './bsi-sass-property-plugin';
-import PropertiesToScssConverter from './bsi-sass-properties-to-scss';
-import QueryConstant from './query-constant';
-import DistFolder from './dist-folder';
-import * as Version from './version';
-import * as DesignType from './design-type';
-import {createPathHash} from './path-hash-utility';
+import packageJson from "../package.json";
+import BsiCxWebpackPlugin from "./bsi-cx-webpack-plugin";
+import BsiCxWebpackLegacyDesignPlugin from "./bsi-cx-webpack-legacy-design-plugin";
+import BsiCxWebpackZipHashPlugin from "./bsi-cx-webpack-zip-hash-plugin";
+import Constant from "./constant";
+import File from "./file";
+import {
+  buildPublicPath,
+  escapeRegex,
+  findArraySimilarities,
+  getZipArchiveName,
+  toPosixPath,
+} from "./utility";
+import BsiCxTwigContextWebpackPlugin from "./bsi-cx-twig-context-webpack-plugin";
+import BsiLessPropertyPlugin from "./bsi-less-property-plugin";
+import BuildContext from "./build-context";
+import BsiSassPropertyPlugin from "./bsi-sass-property-plugin";
+import PropertiesToScssConverter from "./bsi-sass-properties-to-scss";
+import QueryConstant from "./query-constant";
+import DistFolder from "./dist-folder";
+import * as Version from "./version";
+import * as DesignType from "./design-type";
+import { createPathHash } from "./path-hash-utility";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+const glob = require('glob');
+// const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 export default class WebpackConfigBuilder {
   /**
    * @type {string}
    */
-  static DESIGN_LAYER = 'design';
+  static DESIGN_LAYER = "design";
   /**
    * @type {RegExp}
    */
@@ -73,23 +82,24 @@ export default class WebpackConfigBuilder {
   }
 
   build() {
-    process.env.WEBPACK_DEV_SERVER_BASE_PORT = '9001';
+    process.env.WEBPACK_DEV_SERVER_BASE_PORT = "9001";
     return {
       entry: this._getEntryConfig(),
       name: this.config.name,
       context: this.config.rootPath,
-      target: 'web',
+      target: "web",
       module: {
         rules: [
           ...this._getTwigRuleConfig(),
           ...this._getHtmlAndHbsRuleConfig(),
+          ...this._getHbsRuleConfig(),
           ...this._getStyleRulesConfig(),
           ...this._getStaticAssetsRuleConfig(),
           ...this._getNodeModuleAssetsRule(),
           ...this._getStaticJavaScriptFileRuleConfig(),
           ...this._getRegularJavaScriptFileRuleConfig(),
-          ...this._getAdditionalRules()
-        ]
+          ...this._getAdditionalRules(),
+        ],
       },
       plugins: [
         ...this._getBsiCxTwigContextWebpackPlugin(),
@@ -98,7 +108,8 @@ export default class WebpackConfigBuilder {
         ...this._getBsiCxWebpackPluginConfig(),
         ...this._getBsiCxWebpackLegacyDesignPluginConfig(),
         ...this._getZipPluginConfig(),
-        ...this._getAdditionalPlugins()
+        ...this._getHbsPlugin(),
+        ...this._getAdditionalPlugins(),
       ],
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
@@ -108,16 +119,16 @@ export default class WebpackConfigBuilder {
         minimize: true,
         minimizer: this._getOptimizationMinimizerConfig(),
         splitChunks: {
-          chunks: 'all',
+          chunks: "all",
           cacheGroups: {
             ...this._getOptimizationCacheGroupsConfig(),
-          }
-        }
+          },
+        },
       },
       output: this._getOutputConfig(),
       experiments: {
-        layers: true
-      }
+        layers: true,
+      },
     };
   }
 
@@ -134,12 +145,12 @@ export default class WebpackConfigBuilder {
         filename: File.DESIGN_JSON,
         layer: WebpackConfigBuilder.DESIGN_LAYER,
         library: {
-          type: 'var',
-          name: 'json'
-        }
+          type: "var",
+          name: "json",
+        },
       },
-      design: this._evaluateEntryTemplate('design'),
-      preview: this._evaluateEntryTemplate('preview')
+      design: this._evaluateEntryTemplate("design"),
+      preview: this._evaluateEntryTemplate("preview"),
     };
   }
 
@@ -153,10 +164,10 @@ export default class WebpackConfigBuilder {
     let twigFilePath = path.resolve(this.config.rootPath, `${name}.twig`);
     let hbsFilePath = path.resolve(this.config.rootPath, `${name}.hbs.twig`);
     let isTwig = fs.existsSync(twigFilePath);
-    let extension = isTwig ? 'html' : 'hbs';
+    let extension = isTwig ? "html" : "hbs";
     return {
       import: isTwig ? twigFilePath : hbsFilePath,
-      filename: `${name}.${extension}`
+      filename: `${name}.${extension}`,
     };
   }
 
@@ -198,18 +209,28 @@ export default class WebpackConfigBuilder {
     }
 
     if (!fs.existsSync(importPath)) {
-      throw new Error(`The file ${importPath} for module ${config.name} does not exist.`);
+      throw new Error(
+        `The file ${importPath} for module ${config.name} does not exist.`,
+      );
     }
 
     if (!fs.statSync(importPath).isFile()) {
-      throw new Error(`The path ${importPath} for module ${config.name} does not point to a file.`);
+      throw new Error(
+        `The path ${importPath} for module ${config.name} does not point to a file.`,
+      );
     }
 
-    let pathHash = createPathHash(path.posix.join(this.config.designType.toString(), DistFolder.MODULES, config.name));
+    let pathHash = createPathHash(
+      path.posix.join(
+        this.config.designType.toString(),
+        DistFolder.MODULES,
+        config.name,
+      ),
+    );
     return {
       import: importPath,
       filename: `${DistFolder.MODULES}/[name]-${pathHash}.js`,
-      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH
+      runtime: Constant.BSI_CX_MODULE_RUNTIME_PATH,
     };
   }
 
@@ -223,11 +244,11 @@ export default class WebpackConfigBuilder {
     const designs = {};
 
     for (const [name, version] of Object.entries(Version)) {
-      versions[name] = name === 'TARGET' ? this.config.targetVersion : version;
+      versions[name] = name === "TARGET" ? this.config.targetVersion : version;
     }
 
     for (const [name, type] of Object.entries(DesignType)) {
-      designs[name] = name === 'TARGET' ? this.config.designType : type;
+      designs[name] = name === "TARGET" ? this.config.designType : type;
     }
 
     return [
@@ -235,7 +256,7 @@ export default class WebpackConfigBuilder {
         test: /\.twig$/i,
         use: [
           this._getTemplateLoader(),
-          'ref-loader',
+          "ref-loader",
           {
             loader: this._getTwingLoader(),
             options: {
@@ -245,13 +266,13 @@ export default class WebpackConfigBuilder {
                 designBaseUrl: buildPublicPath(this.config),
                 cx: {
                   version: versions,
-                  design: designs
-                }
-              }
-            }
-          }
-        ]
-      }
+                  design: designs,
+                },
+              },
+            },
+          },
+        ],
+      },
     ];
   }
 
@@ -263,12 +284,77 @@ export default class WebpackConfigBuilder {
   _getHtmlAndHbsRuleConfig() {
     return [
       {
-        test: /\.(html|hbs)$/i,
+        test: /\.(html)$/i,
+        use: [this._getTemplateLoader(), "ref-loader"],
+      },
+    ];
+  }
+
+  /**
+   * Additional rule for Handlebars file handling to compile all helpers and partials.
+   *
+   * @returns {{}[]}
+   */
+  _getHbsRuleConfig() {
+    let partialsPath = path.resolve(this.config.rootPath, "partials");
+
+    return [
+      // Partials must be compiled without template-loader metadata wrapper,
+      // otherwise Handlebars may receive object payloads instead of template text.
+      {
+        test: /\.hbs$/,
+        include: partialsPath,
+        use: [
+          "ref-loader",
+          {
+            loader: "handlebars-loader",
+            options: {
+              runtime: "handlebars",
+              partialDirs: [partialsPath],
+              properties: this.properties,
+              explicitlyHandlebars: true,
+              preventIndent: true,
+              knownHelpersOnly: false,
+              helperDirs: [
+                path.resolve(
+                  this.config.rootPath,
+                  "helpers",
+                ),
+              ],
+            },
+          },
+        ],
+      },
+      // Regular element templates keep template-loader so downstream processing
+      // still has path/content information for hashing and export.
+      {
+        test: /\.hbs$/,
+        exclude: partialsPath,
         use: [
           this._getTemplateLoader(),
-          'ref-loader',
-        ]
-      }
+          "ref-loader",
+          {
+            loader: "handlebars-loader",
+            options: {
+              runtime: "handlebars",
+              // Register partials directory
+              partialDirs: [
+                partialsPath,
+              ],
+              properties: this.properties,
+              explicitlyHandlebars: true,
+              preventIndent: true,
+              knownHelpersOnly: false,
+              helperDirs: [
+                path.resolve(
+                  this.config.rootPath,
+                  "helpers",
+                ),
+              ],
+            },
+          },
+        ],
+      },
     ];
   }
 
@@ -284,40 +370,39 @@ export default class WebpackConfigBuilder {
         use: [
           ...this._getCssLoaderChain(),
           {
-            loader: 'less-loader',
+            loader: "less-loader",
             options: {
               sourceMap: true,
               lessOptions: {
-                plugins: [
-                  new BsiLessPropertyPlugin(this.context),
-                ],
-              }
-            }
-          }
-        ]
+                plugins: [new BsiLessPropertyPlugin(this.context)],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.s[ac]ss$/i,
         use: [
           ...this._getCssLoaderChain(),
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               sourceMap: true,
               sassOptions: {
-                functions: new BsiSassPropertyPlugin(this.context).getFunction()
+                functions: new BsiSassPropertyPlugin(
+                  this.context,
+                ).getFunction(),
               },
-              additionalData: new PropertiesToScssConverter(this.context).scssData
-            }
-          }
-        ]
+              additionalData: new PropertiesToScssConverter(this.context)
+                .scssData,
+            },
+          },
+        ],
       },
       {
         test: /\.css$/i,
-        use: [
-          ...this._getCssLoaderChain()
-        ]
-      }
+        use: [...this._getCssLoaderChain()],
+      },
     ];
   }
 
@@ -334,11 +419,11 @@ export default class WebpackConfigBuilder {
       {
         test: /[\\/]node_modules[\\/]/,
         resourceQuery: assetQueryRegex,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: `${DistFolder.VENDORS}/[contenthash][ext]`
-        }
-      }
+          filename: `${DistFolder.VENDORS}/[contenthash][ext]`,
+        },
+      },
     ];
   }
 
@@ -349,49 +434,54 @@ export default class WebpackConfigBuilder {
    */
   _getStaticAssetFileExtensions() {
     const defaults = [
-      'avif',
-      'png',
-      'apng',
-      'jpg',
-      'jpeg',
-      'jfif',
-      'pjpeg',
-      'pjp',
-      'webp',
-      'gif',
-      'bmp',
-      'tiff',
-      'tif',
-      'raw',
-      'svg',
-      'eot',
-      'ttf',
-      'woff',
-      'woff2',
-      'pdf',
-      'ico',
-      'cur',
-      'mkv',
-      '3gp',
-      'mp3',
-      'mp4',
-      'm4v',
-      'm4p',
-      'ogv',
-      'webm',
-      'aac',
-      'flac',
-      'mpg',
-      'mpeg',
-      'oga',
-      'ogg',
-      'wav',
-      'json5'
+      "avif",
+      "png",
+      "apng",
+      "jpg",
+      "jpeg",
+      "jfif",
+      "pjpeg",
+      "pjp",
+      "webp",
+      "gif",
+      "bmp",
+      "tiff",
+      "tif",
+      "raw",
+      "svg",
+      "eot",
+      "ttf",
+      "woff",
+      "woff2",
+      "pdf",
+      "ico",
+      "cur",
+      "mkv",
+      "3gp",
+      "mp3",
+      "mp4",
+      "m4v",
+      "m4p",
+      "ogv",
+      "webm",
+      "aac",
+      "flac",
+      "mpg",
+      "mpeg",
+      "oga",
+      "ogg",
+      "wav",
+      "json5",
     ];
 
-    const extensions = new Set([...defaults, ...this.config.additionalStaticAssetFileExtensions]);
+    const extensions = new Set([
+      ...defaults,
+      ...this.config.additionalStaticAssetFileExtensions,
+    ]);
 
-    return [...extensions.values()].map(ext => ext.startsWith('.') ? ext : `.${ext}`);
+    return [...extensions.values()].map((ext) =>
+      ext.startsWith(".") ? ext : `.${ext}`,
+    );
   }
 
   /**
@@ -400,8 +490,10 @@ export default class WebpackConfigBuilder {
    * @returns {{}[]}
    */
   _getStaticAssetsRuleConfig() {
-    let fileExtensions = this._getStaticAssetFileExtensions().map(escapeRegex).join('|');
-    let testRegex = new RegExp(fileExtensions, 'i');
+    let fileExtensions = this._getStaticAssetFileExtensions()
+      .map(escapeRegex)
+      .join("|");
+    let testRegex = new RegExp(fileExtensions, "i");
     let inlineQueryRegex = new RegExp(QueryConstant.INLINE);
 
     return [
@@ -410,21 +502,24 @@ export default class WebpackConfigBuilder {
         oneOf: [
           {
             resourceQuery: inlineQueryRegex,
-            type: 'asset/inline'
+            type: "asset/inline",
           },
           {
             resourceQuery: {
-              not: [
-                inlineQueryRegex
-              ]
+              not: [inlineQueryRegex],
             },
-            type: 'asset/resource',
+            type: "asset/resource",
             generator: {
-              filename: asset => this._getAssetResourceFilename(asset, this.config.designType, this.config.assetResourceRuleFilename)
+              filename: (asset) =>
+                this._getAssetResourceFilename(
+                  asset,
+                  this.config.designType,
+                  this.config.assetResourceRuleFilename,
+                ),
             },
           },
-        ]
-      }
+        ],
+      },
     ];
   }
 
@@ -437,11 +532,12 @@ export default class WebpackConfigBuilder {
     return [
       {
         resource: (file) => this._isStaticJavaScriptFile(file),
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: asset => this._getAssetResourceFilename(asset, this.config.designType)
-        }
-      }
+          filename: (asset) =>
+            this._getAssetResourceFilename(asset, this.config.designType),
+        },
+      },
     ];
   }
 
@@ -454,18 +550,22 @@ export default class WebpackConfigBuilder {
    * @returns {string}
    */
   _getAssetResourceFilename(asset, designType, assetResourceRuleFilename) {
-    const isCustomPath = this._isValidAssetResourceRuleFilename(assetResourceRuleFilename);
+    const isCustomPath = this._isValidAssetResourceRuleFilename(
+      assetResourceRuleFilename,
+    );
     if (isCustomPath && assetResourceRuleFilename.includes("[contenthash]")) {
       return assetResourceRuleFilename;
     }
 
-    const pathHash = createPathHash(path.posix.join(designType.toString(), asset.filename));
-    if(isCustomPath && assetResourceRuleFilename.includes("[pathhash]")) {
+    const pathHash = createPathHash(
+      path.posix.join(designType.toString(), asset.filename),
+    );
+    if (isCustomPath && assetResourceRuleFilename.includes("[pathhash]")) {
       // 'pathhash' is not a standard webpack feature
       return assetResourceRuleFilename.replace("[pathhash]", pathHash);
     } else {
       return `${DistFolder.STATIC}/[name]-${pathHash}[ext]`;
-    }  
+    }
   }
 
   /**
@@ -475,7 +575,12 @@ export default class WebpackConfigBuilder {
    * @returns {boolean}
    */
   _isValidAssetResourceRuleFilename(filename) {
-    return filename && filename.length > 0 && filename.includes("[name]") && filename.includes("[ext]");
+    return (
+      filename &&
+      filename.length > 0 &&
+      filename.includes("[name]") &&
+      filename.includes("[ext]")
+    );
   }
 
   /**
@@ -483,10 +588,14 @@ export default class WebpackConfigBuilder {
    * @returns {boolean}
    */
   _isStaticJavaScriptFile(fileToCheck) {
-    let staticFilePath = path.resolve(this.config.staticFileFolderPath) + path.sep;
+    let staticFilePath =
+      path.resolve(this.config.staticFileFolderPath) + path.sep;
     let isInsideStaticFolder = fileToCheck.startsWith(staticFilePath);
 
-    return isInsideStaticFolder && WebpackConfigBuilder.STATIC_JS_FILE_EXTENSION.test(fileToCheck);
+    return (
+      isInsideStaticFolder &&
+      WebpackConfigBuilder.STATIC_JS_FILE_EXTENSION.test(fileToCheck)
+    );
   }
 
   /**
@@ -501,14 +610,14 @@ export default class WebpackConfigBuilder {
         exclude: /(node_modules|bower_components)/,
         include: this.config.modulesRootPath,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-transform-runtime'],
-            cacheDirectory: true
-          }
-        }
-      }
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+            plugins: ["@babel/plugin-transform-runtime"],
+            cacheDirectory: true,
+          },
+        },
+      },
     ];
   }
 
@@ -537,6 +646,18 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * TODO: 
+   * - compile hbs-partial functions to dist/hbs-partials
+   * - reference in plugin
+   *  
+   * @returns {string}
+   * @private
+   */
+  _getHbsPartials() {
+    return `${packageJson.name}/dist/hbs-partials`;
+  }
+
+  /**
    * @returns {{}[]}
    * @private
    */
@@ -545,29 +666,26 @@ export default class WebpackConfigBuilder {
       {
         loader: MiniCssExtractPlugin.loader,
         options: {
-          publicPath: '../'
-        }
+          publicPath: "../",
+        },
       },
       {
-        loader: 'css-loader',
+        loader: "css-loader",
         options: {
           sourceMap: true,
-        }
-      }
+        },
+      },
     ];
 
     if (this.config.postcssEnabled) {
       chain.push({
-        loader: 'postcss-loader',
+        loader: "postcss-loader",
         options: {
           sourceMap: true,
           postcssOptions: {
-            plugins: [
-              'postcss-preset-env',
-              'cssnano'
-            ]
-          }
-        }
+            plugins: ["postcss-preset-env", "cssnano"],
+          },
+        },
       });
     }
 
@@ -580,11 +698,17 @@ export default class WebpackConfigBuilder {
    * @returns {MiniCssExtractPlugin[]}
    */
   _getMiniCssExtractPluginConfig() {
-    let pathHash = createPathHash(path.posix.join(this.config.designType.toString(), DistFolder.STATIC, 'styles.css'));
+    let pathHash = createPathHash(
+      path.posix.join(
+        this.config.designType.toString(),
+        DistFolder.STATIC,
+        "styles.css",
+      ),
+    );
     return [
       new MiniCssExtractPlugin({
         filename: `${DistFolder.STATIC}/styles-${pathHash}.css`,
-      })
+      }),
     ];
   }
 
@@ -603,16 +727,16 @@ export default class WebpackConfigBuilder {
             from: `${copyAssetsFolderPath}/**/*`,
             globOptions: {
               dot: true,
-              ignore: ['**/.gitkeep', '**/.gitignore']
+              ignore: ["**/.gitkeep", "**/.gitignore"],
             },
             noErrorOnMissing: true,
             info: {
-              minimized: true
+              minimized: true,
             },
           },
-          ...this.config.additionalFilesToCopy
-        ]
-      })
+          ...this.config.additionalFilesToCopy,
+        ],
+      }),
     ];
   }
 
@@ -622,9 +746,7 @@ export default class WebpackConfigBuilder {
    * @private
    */
   _getBsiCxTwigContextWebpackPlugin() {
-    return [
-      new BsiCxTwigContextWebpackPlugin(this.properties)
-    ]
+    return [new BsiCxTwigContextWebpackPlugin(this.properties)];
   }
 
   /**
@@ -632,9 +754,7 @@ export default class WebpackConfigBuilder {
    * @private
    */
   _getBsiCxWebpackPluginConfig() {
-    return [
-      new BsiCxWebpackPlugin(this.context)
-    ];
+    return [new BsiCxWebpackPlugin(this.context)];
   }
 
   /**
@@ -649,20 +769,28 @@ export default class WebpackConfigBuilder {
     let plugins = [
       new ZipPlugin({
         filename: getZipArchiveName(this.config.name, this.config.version),
-        exclude: [/\.map$/]
-      })
+        exclude: [/\.map$/],
+      }),
     ];
 
     if (this.config.sourceMapEnabled) {
       plugins.push(
         new ZipPlugin({
-          filename: getZipArchiveName(this.config.name, this.config.version, 'dev'),
-        })
+          filename: getZipArchiveName(
+            this.config.name,
+            this.config.version,
+            "dev",
+          ),
+        }),
       );
     }
 
     plugins.push(
-      new BsiCxWebpackZipHashPlugin(this.config.name, this.config.version, this.config.hashZipFiles)
+      new BsiCxWebpackZipHashPlugin(
+        this.config.name,
+        this.config.version,
+        this.config.hashZipFiles,
+      ),
     );
 
     return plugins;
@@ -677,6 +805,56 @@ export default class WebpackConfigBuilder {
   }
 
   /**
+   * Returns plugin to compile .hbs files.
+   *
+   * @returns {Object[]}
+   */
+  _getHbsPlugin() {
+    let templatePath = path
+      .resolve(
+        this.config.rootPath,
+        "content-elements",
+        "content",
+        "text",
+        "template.hbs",
+      )
+      .replace(/\\/g, "/");
+    let helperDir = path
+      .resolve(this.config.rootPath, "helpers")
+      .replace(/\\/g, "/");
+    let partialDir = path
+      .resolve(this.config.rootPath, "partials")
+      .replace(/\\/g, "/");
+
+    return [
+      new HtmlWebpackPlugin({
+        // Force an explicit loader chain here to avoid interference from global
+        // module rules when compiling this dedicated template artifact.
+        template: `!!handlebars-loader?runtime=handlebars&helperDirs[]=${helperDir}&partialDirs[]=${partialDir}!${templatePath}`,
+        filename: `${DistFolder.CONTENT_ELEMENTS}/template.hbs`,
+        // TODO: implement setup to load properties as JSON
+        templateParameters: this._loadFlatData(path.resolve(this.config.rootPath, "data", "data.json")),
+        minify: false, // TODO: set to true for main build
+        cache: false,
+        inject: false
+      }),
+    ];
+  }
+
+  /**
+   * BSI CX legacy design format plugin config.
+   *
+   * @returns {BsiCxWebpackLegacyDesignPlugin[]}
+   */
+  _loadFlatData(pattern) {
+    const files = glob.sync(pattern);
+    return files.reduce((acc, file) => {
+      const json = JSON.parse(fs.readFileSync(file, 'utf8'));
+      return { ...acc, ...json }; // merge keys into root
+    }, {});
+  }
+
+  /**
    * BSI CX legacy design format plugin config.
    *
    * @returns {BsiCxWebpackLegacyDesignPlugin[]}
@@ -684,9 +862,7 @@ export default class WebpackConfigBuilder {
   _getBsiCxWebpackLegacyDesignPluginConfig() {
     let plugins = [];
     if (this.config.targetVersion.legacyFormat) {
-      plugins.push(
-        new BsiCxWebpackLegacyDesignPlugin(this.config)
-      );
+      plugins.push(new BsiCxWebpackLegacyDesignPlugin(this.config));
     }
     return plugins;
   }
@@ -697,7 +873,7 @@ export default class WebpackConfigBuilder {
    * @returns {string|boolean}
    */
   _getDevToolConfig() {
-    return this.config.sourceMapEnabled ? 'source-map' : false;
+    return this.config.sourceMapEnabled ? "source-map" : false;
   }
 
   /**
@@ -716,7 +892,7 @@ export default class WebpackConfigBuilder {
       client: false,
       devMiddleware: {
         writeToDisk: true,
-      }
+      },
     };
   }
 
@@ -738,14 +914,14 @@ export default class WebpackConfigBuilder {
    * @returns {{}}
    */
   _getPerformanceConfig() {
-    let excludedAssets = [
-      File.DESIGN_JSON,
-    ];
+    let excludedAssets = [File.DESIGN_JSON];
     let excludedExtensions = /\.(map|zip|html|hbs)$/;
 
     return {
-      assetFilter: (assetFilename) => !excludedAssets.includes(assetFilename) && !excludedExtensions.test(assetFilename),
-      hints: false
+      assetFilter: (assetFilename) =>
+        !excludedAssets.includes(assetFilename) &&
+        !excludedExtensions.test(assetFilename),
+      hints: false,
     };
   }
 
@@ -757,8 +933,8 @@ export default class WebpackConfigBuilder {
   _getOptimizationMinimizerConfig() {
     return [
       new TerserPlugin({
-        extractComments: false
-      })
+        extractComments: false,
+      }),
     ];
   }
 
@@ -773,31 +949,31 @@ export default class WebpackConfigBuilder {
         priority: 0,
         minChunks: 2,
         reuseExistingChunk: true,
-        filename: `${DistFolder.SHARED}/[chunkhash].js`
+        filename: `${DistFolder.SHARED}/[chunkhash].js`,
       },
       defaultVendors: {
         test: /[\\/]node_modules[\\/]/,
         priority: 10,
         reuseExistingChunk: true,
-        filename: `${DistFolder.VENDORS}/[chunkhash].js`
+        filename: `${DistFolder.VENDORS}/[chunkhash].js`,
       },
       design: {
-        test: module => {
+        test: (module) => {
           return module.layer === WebpackConfigBuilder.DESIGN_LAYER;
         },
         priority: 20,
         reuseExistingChunk: false,
-        chunks: 'all',
+        chunks: "all",
         enforce: true,
-        filename: File.DESIGN_JSON_CHUNK
+        filename: File.DESIGN_JSON_CHUNK,
       },
       styles: {
-        name: 'styles',
-        type: 'css/mini-extract',
-        chunks: 'all',
+        name: "styles",
+        type: "css/mini-extract",
+        chunks: "all",
         priority: 30,
         enforce: true,
-      }
+      },
     };
   }
 
@@ -809,12 +985,12 @@ export default class WebpackConfigBuilder {
   _getOutputConfig() {
     return {
       path: this.config.outputPath,
-      publicPath: buildPublicPath(this.config, '/'),
+      publicPath: buildPublicPath(this.config, "/"),
       clean: true,
       library: {
-        type: 'var',
-        name: '[name]'
-      }
+        type: "var",
+        name: "[name]",
+      },
     };
   }
 
@@ -834,17 +1010,24 @@ export default class WebpackConfigBuilder {
     let commonContentBase = undefined;
 
     let buildConfigs = configs
-      .map(config => config.validate())
-      .map(config => new WebpackConfigBuilder(config))
-      .map(config => config.build());
+      .map((config) => config.validate())
+      .map((config) => new WebpackConfigBuilder(config))
+      .map((config) => config.build());
 
     buildConfigs.forEach((config, index) => {
       if (index === 0) {
         commonDevServerPort = config.devServer.port;
-        commonContentBase = toPosixPath(config.devServer.static.directory).split(path.posix.sep);
+        commonContentBase = toPosixPath(
+          config.devServer.static.directory,
+        ).split(path.posix.sep);
       } else {
-        let currentStaticDirectory = toPosixPath(config.devServer.static.directory).split(path.posix.sep);
-        commonContentBase = findArraySimilarities(commonContentBase, currentStaticDirectory);
+        let currentStaticDirectory = toPosixPath(
+          config.devServer.static.directory,
+        ).split(path.posix.sep);
+        commonContentBase = findArraySimilarities(
+          commonContentBase,
+          currentStaticDirectory,
+        );
       }
 
       if (index > 0) {
