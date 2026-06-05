@@ -7841,6 +7841,20 @@ declare module "src/content-element/part/part-factory" {
          */
         FormSelect(label: string, id: string): Part;
         /**
+         * Get a new basic dynamic value list form field content element part builder instance.
+         *
+         * @returns {Part}
+         */
+        get basicDynamicValueList(): Part;
+        /**
+         * Build a new basic dynamic value list form field content element part builder instance.
+         *
+         * @param {string} label
+         * @param {string} id
+         * @returns {Part}
+         */
+        BasicDynamicValueList(label: string, id: string): Part;
+        /**
          * Get a new textarea form field content element part builder instance.
          *
          * @returns {Part}
