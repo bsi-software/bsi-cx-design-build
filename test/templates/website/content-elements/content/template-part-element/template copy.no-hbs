@@ -1,0 +1,9 @@
+<div class="bsi-template-part-element {{#if checkbox-part-95513657.value }}background-green{{/if}}"
+    data-bsi-element="template-part-element-97112d7d" option-tag="{{ option-0CxEy6.value }}">
+    <img src="{{image-part-01fb0560.srcUrl}}" srcset="{{image-part-01fb0560.srcset}}"
+        alt="{{image-part-01fb0560.altText}}" />
+    <div>{{ plain-text-Y3dhVu.value }}</div>
+    <div>{{ multiline-plain-text-0pQpp9.value }}</div>
+    <a href="{{ link-1wfD2H.url }}" target="{{#if link-1wfD2H.openInNewWindow}}_blank{{else}}_target{{/if}}">{{ link-1wfD2H.description }}</a>
+    <div lang="{{ formatted-text-fC3iJv.languageTag }}">{{{ formatted-text-fC3iJv.html }}}</div>
+</div>

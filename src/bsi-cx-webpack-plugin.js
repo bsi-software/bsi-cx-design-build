@@ -97,6 +97,7 @@ class _BsiCxWebpackPlugin {
    * @private
    */
   _propertyPlugin = undefined;
+  _properties = {};
 
   /**
    * @param {BuildContext} context
@@ -125,10 +126,14 @@ class _BsiCxWebpackPlugin {
      * @type {BsiJsPropertyPlugin}
      */
     this._propertyPlugin = new BsiJsPropertyPlugin(context);
+
+    this._properties = context.properties.proxy;
+
   }
 
   apply() {
     try {
+      this._initHBS();
       let designJsonObj = this._importDesignJson();
       let replaceMap = this._createReplaceMap(designJsonObj);
 
@@ -142,6 +147,14 @@ class _BsiCxWebpackPlugin {
         this._logger.error(error);
       }
     }
+  }
+
+  _initHBS() {
+    Handlebars.registerHelper(
+      "valueOf",
+      (partId, scope = "") =>
+        `{{ ${ scope ? scope + "." : "" }${partId}.value }}`,
+    );
   }
 
   /**
@@ -551,8 +564,18 @@ class _BsiCxWebpackPlugin {
     let filename = prefix + '-' + pathHash + '.' + extension;
     let elementFilePath = baseFolder + path.posix.sep + filename;
 
+    // TODO else?
     content = this._applyReplaceMap(content, replaceMap);
 
+    // Hier wird kompiliert
+    if ("hbs" === extension) {
+      let template = Handlebars.compile(content);
+      content = template({
+        property: this._properties,
+        designBaseUrl: ".",
+        bsi: this._getHandlebarsHelpers(),
+      });
+    }
     this._emitAsset(elementFilePath, content);
 
     return elementFilePath;
@@ -575,6 +598,7 @@ class _BsiCxWebpackPlugin {
    * @param {string} previewTemplate
    */
   _handlePreviewHandlebars(previewFilePath, previewTemplate) {
+    // Referenz für handlebars compilarion
     let parser = this._getHandlebarsParser();
     let template = parser.compile(previewTemplate);
     let rendered = template({
@@ -898,7 +922,10 @@ class _BsiCxWebpackPlugin {
    * @returns {Handlebars}
    */
   _getHandlebarsParser() {
-    return Handlebars.create();
+    // TODO: static Handlebars Parser or always new?
+    // Handlebars.helpers
+    let hbs = Handlebars.create();
+    return hbs;
   }
 
   /**

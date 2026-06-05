@@ -1678,6 +1678,7 @@ declare module "src/build-config/build-config" {
 declare module "src/handlebars-helpers" {
     const _default: {
         'bsi.nls': (key: any) => any;
+        'bsi.b4': (key: any) => string;
     };
     export default _default;
 }

@@ -100,6 +100,9 @@ export default class WebpackConfigBuilder {
         ...this._getZipPluginConfig(),
         ...this._getAdditionalPlugins()
       ],
+      // macros: {
+      //   linkTarget: (partId) => `"{{ ${partId}.target }"`
+      // },
       devtool: this._getDevToolConfig(),
       devServer: this._getDevServerConfig(),
       stats: this._getStatsConfig(),
@@ -262,6 +265,14 @@ export default class WebpackConfigBuilder {
    */
   _getHtmlAndHbsRuleConfig() {
     return [
+      {
+        test: /\.bsi.hbs$/i,
+        use: [
+          this._getTemplateLoader(),
+          'ref-loader',
+          'handlebars-template-loader',
+        ]
+      },
       {
         test: /\.(html|hbs)$/i,
         use: [
