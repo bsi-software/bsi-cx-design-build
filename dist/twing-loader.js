@@ -406,6 +406,10 @@ function strToPromise(resolve) {
   return Promise.resolve(resolve);
 }
 
+function strToPromise2(resolve) {
+  return Promise.resolve(new Map([[0,resolve]]));
+}
+
 /**
  * @param {TwingTemplate} template
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
@@ -434,6 +438,15 @@ const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asse
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);
 }, [], {needs_template: true});
+
+const bsiCxAsset2 = (0,external_twing_namespaceObject.createFunction)('bsi_cs_asset', (template, assetPath, inline) => {
+  let templatePath = template.source.getResolvedName();
+  let templateDirPath = external_path_default().dirname(templatePath);
+  let absoluteAssetPath = toPosixPath(external_path_default().resolve(templateDirPath, assetPath));
+  let assetQuery = !!inline ? QueryConstant.INLINE : '';
+  let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
+  return strToPromise2(`@ref(${assetRequest})`);
+})
 
 /**
  * Get URL to the CSS asset.

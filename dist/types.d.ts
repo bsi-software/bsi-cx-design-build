@@ -1675,6 +1675,28 @@ declare module "src/build-config/build-config" {
     export type BuildConfigInterface = import("src/build-config/build-config-interface").default;
     export type ValidatedBuildConfig = import("src/build-config/validated-build-config").default;
 }
+declare module "src/query-constant" {
+    export default class QueryConstant {
+        /**
+         * @type {string}
+         */
+        static INLINE: string;
+        /**
+         * @type {string}
+         */
+        static ASSET: string;
+    }
+}
+declare module "src/twig-functions2" {
+    export const bsiCxAsset2: import("twing").TwingFunction;
+    /**
+     * Lorem ipsum generator.
+     */
+    export const bsiCxLorem: import("twing").TwingFunction;
+}
+declare module "src/twing-environment-2" {
+    export const twingEnvironment: import("twing").TwingEnvironment;
+}
 declare module "src/handlebars-helpers" {
     const _default: {
         'bsi.nls': (key: any) => any;
@@ -2601,18 +2623,6 @@ declare module "src/css/css-raw" {
         get value(): any;
     }
     import AbstractCssProperty from "src/css/abstract-css-property";
-}
-declare module "src/query-constant" {
-    export default class QueryConstant {
-        /**
-         * @type {string}
-         */
-        static INLINE: string;
-        /**
-         * @type {string}
-         */
-        static ASSET: string;
-    }
 }
 declare module "src/css/css-url" {
     export default class CssUrl extends AbstractCssProperty {

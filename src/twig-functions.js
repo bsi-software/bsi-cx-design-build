@@ -1,6 +1,6 @@
 import path from 'path';
 
-import {TwingFunction, TwingTemplate} from 'twing';
+import {createFunction, TwingFunction, TwingTemplate} from 'twing';
 
 import Constant from './constant';
 import QueryConstant from './query-constant';
@@ -18,6 +18,10 @@ const LOREM_IPSUM = 'Vivamus dapibus lobortis risus, nec fringilla lectus consec
  */
 function strToPromise(resolve) {
   return Promise.resolve(resolve);
+}
+
+function strToPromise2(resolve) {
+  return Promise.resolve(new Map([[0,resolve]]));
 }
 
 /**
@@ -48,6 +52,15 @@ export const bsiCxAsset = new TwingFunction('bsi_cx_asset', (template, assetPath
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);
 }, [], {needs_template: true});
+
+export const bsiCxAsset2 = createFunction('bsi_cs_asset', (template, assetPath, inline) => {
+  let templatePath = template.source.getResolvedName();
+  let templateDirPath = path.dirname(templatePath);
+  let absoluteAssetPath = toPosixPath(path.resolve(templateDirPath, assetPath));
+  let assetQuery = !!inline ? QueryConstant.INLINE : '';
+  let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
+  return strToPromise2(`@ref(${assetRequest})`);
+})
 
 /**
  * Get URL to the CSS asset.

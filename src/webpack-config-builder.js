@@ -6,6 +6,8 @@ import ZipPlugin from 'zip-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import {createEnvironment, createFilesystemLoader, TwingExtension} from "twing";
+import {twingEnvironment} from './twing-environment-2';
 
 import packageJson from '../package.json';
 import BsiCxWebpackPlugin from './bsi-cx-webpack-plugin';
@@ -234,20 +236,12 @@ export default class WebpackConfigBuilder {
       {
         test: /\.twig$/i,
         use: [
-          this._getTemplateLoader(),
+          // this._getTemplateLoader(),
           'ref-loader',
           {
-            loader: this._getTwingLoader(),
+            loader: 'twing-loader',
             options: {
-              templateRoot: this.config.rootPath,
-              renderContext: {
-                properties: this.properties.proxy,
-                designBaseUrl: buildPublicPath(this.config),
-                cx: {
-                  version: versions,
-                  design: designs
-                }
-              }
+              environment: twingEnvironment
             }
           }
         ]

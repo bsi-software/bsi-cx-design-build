@@ -376,7 +376,9 @@ class _BsiCxWebpackPlugin {
   _importElementFile(element) {
     let fileObj = element[DesignJsonProperty.FILE];
 
-    fileObj.content = this._evalTemplateFile(fileObj.content);
+    console.log(this._eval(fileObj))
+    // console.log(this._evalTemplateFile(fileObj.content));
+    // fileObj.content = "";
   }
 
   /**
