@@ -1,4 +1,6 @@
-import {TwingEnvironment, TwingLoaderChain, TwingLoaderFilesystem, TwingLoaderRelativeFilesystem} from 'twing';
+import fs from 'fs';
+
+import {createEnvironment, createChainLoader, createFilesystemLoader} from 'twing';
 
 import {
   bsiCxAsset,
@@ -14,33 +16,25 @@ import {
 } from './twig-functions';
 import {findNodeModulesFolder} from './utility';
 
-class NodeModulesLoader extends TwingLoaderFilesystem {
-  constructor() {
-    super();
-
-    let nodeModulesPath = findNodeModulesFolder(__dirname);
-
-    this.addPath(nodeModulesPath);
-  }
-
-  parseName(name, default_ = NodeModulesLoader.MAIN_NAMESPACE) {
-    return [default_, name];
-  }
-}
-
 /**
  * @param {string} templateRoot
  * @param {{}} [globals]
  * @returns {TwingEnvironment}
  */
 export default function (templateRoot, globals) {
-  let relativeFilesystemLoader = new TwingLoaderRelativeFilesystem();
-  let filesystemLoader = new TwingLoaderFilesystem();
-  let nodeModulesLoader = new NodeModulesLoader();
+  let relativeFilesystemLoader = createFilesystemLoader(fs);
+  let filesystemLoader = createFilesystemLoader(fs);
+  let nodeModulesLoader = createFilesystemLoader(fs);
+  let nodeModulesPath = findNodeModulesFolder(__dirname);
 
+  relativeFilesystemLoader.addPath('.');
   filesystemLoader.addPath(templateRoot);
+  nodeModulesLoader.addPath(nodeModulesPath);
 
-  let twing = new TwingEnvironment(new TwingLoaderChain([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]));
+  let twing = createEnvironment(
+    createChainLoader([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]),
+    {globals: globals ?? {}}
+  );
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);
@@ -52,10 +46,5 @@ export default function (templateRoot, globals) {
   twing.addFunction(bsiCxJsModuleRuntimeHref);
   twing.addFunction(bsiCxJsModuleRuntimeInline);
   twing.addFunction(bsiCxLorem);
-
-  for (const [key, value] of Object.entries(globals ?? {})) {
-    twing.addGlobal(key, value);
-  }
-
   return twing;
 }

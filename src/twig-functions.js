@@ -1,6 +1,6 @@
 import path from 'path';
 
-import {TwingFunction, TwingTemplate} from 'twing';
+import {createFunction, createMarkup} from 'twing';
 
 import Constant from './constant';
 import QueryConstant from './query-constant';
@@ -21,13 +21,13 @@ function strToPromise(resolve) {
 }
 
 /**
- * @param {TwingTemplate} template
+ * @param {{template:{source:{name:string}}}} executionContext
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
  * @param {boolean} inline
  * @returns {Promise<string>}
  */
-function bsiCxJsModuleImport(template, config, inline) {
-  let templatePath = template.source.getResolvedName();
+function bsiCxJsModuleImport(executionContext, config, inline) {
+  let templatePath = executionContext.template.source.name;
   let metaInfo = {
     ...config,
     template: templatePath,
@@ -40,92 +40,92 @@ function bsiCxJsModuleImport(template, config, inline) {
 /**
  * Resolve static assets.
  */
-export const bsiCxAsset = new TwingFunction('bsi_cx_asset', (template, assetPath, inline) => {
-  let templatePath = template.source.getResolvedName();
+export const bsiCxAsset = createFunction('bsi_cx_asset', (executionContext, assetPath, inline) => {
+  let templatePath = executionContext.template.source.name;
   let templateDirPath = path.dirname(templatePath);
   let absoluteAssetPath = toPosixPath(path.resolve(templateDirPath, assetPath));
   let assetQuery = !!inline ? QueryConstant.INLINE : '';
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);
-}, [], {needs_template: true});
+}, [{name: 'assetPath'}, {name: 'inline', defaultValue: false}]);
 
 /**
  * Get URL to the CSS asset.
  */
-export const bsiCxCssHref = new TwingFunction('bsi_cx_css_href', () => {
+export const bsiCxCssHref = createFunction('bsi_cx_css_href', () => {
   return strToPromise(Constant.BSI_CX_CSS_HREF);
-}, [], {});
+}, []);
 
 /**
  * Get the contents of the CSS asset.
  */
-export const bsiCxCssInline = new TwingFunction('bsi_cx_css_inline', () => {
+export const bsiCxCssInline = createFunction('bsi_cx_css_inline', () => {
   return strToPromise(Constant.BSI_CX_CSS_INLINE);
-}, [], {});
+}, []);
 
 /**
  * Get URL to the requested JS module.
  */
-export const bsiCxJsModuleHref = new TwingFunction('bsi_cx_js_module_href', (template, module) => {
+export const bsiCxJsModuleHref = createFunction('bsi_cx_js_module_href', async (executionContext, module) => {
   let config = {
     module: module
   };
-  return bsiCxJsModuleImport(template, config, false);
-}, [], {needs_template: true, is_safe: ['html']});
+  return createMarkup(await bsiCxJsModuleImport(executionContext, config, false));
+}, [{name: 'module'}]);
 
 /**
  * Get the content of the requested JS module.
  */
-export const bsiCxJsModuleInline = new TwingFunction('bsi_cx_js_module_inline', (template, module) => {
+export const bsiCxJsModuleInline = createFunction('bsi_cx_js_module_inline', async (executionContext, module) => {
   let config = {
     module: module
   };
-  return bsiCxJsModuleImport(template, config, true);
-}, [], {needs_template: true, is_safe: ['html']});
+  return createMarkup(await bsiCxJsModuleImport(executionContext, config, true));
+}, [{name: 'module'}]);
 
 /**
  * Import all missing JS module chunks.
  */
-export const bsiCxJsModuleMissingChunksImport = new TwingFunction('bsi_cx_js_module_missing_chunks_import', (template, attributes) => {
+export const bsiCxJsModuleMissingChunksImport = createFunction('bsi_cx_js_module_missing_chunks_import', async (executionContext, attributes) => {
   let config = {
     chunks: true,
     attributes: attributes || {}
   };
-  return bsiCxJsModuleImport(template, config, false);
-}, [], {needs_template: true, is_safe: ['html']});
+  return createMarkup(await bsiCxJsModuleImport(executionContext, config, false));
+}, [{name: 'attributes', defaultValue: {}}]);
 
 /**
  * Inline all missing JS module chunks.
  */
-export const bsiCxJsModuleMissingChunksInline = new TwingFunction('bsi_cx_js_module_missing_chunks_inline', (template, attributes) => {
+export const bsiCxJsModuleMissingChunksInline = createFunction('bsi_cx_js_module_missing_chunks_inline', async (executionContext, attributes) => {
   let config = {
     chunks: true,
     attributes: attributes || {}
   };
-  return bsiCxJsModuleImport(template, config, true);
-}, [], {needs_template: true, is_safe: ['html']});
+  return createMarkup(await bsiCxJsModuleImport(executionContext, config, true));
+}, [{name: 'attributes', defaultValue: {}}]);
 
 /**
  * Get URL to the JS runtime module.
  */
-export const bsiCxJsModuleRuntimeHref = new TwingFunction('bsi_cx_js_module_runtime_href', () => {
+export const bsiCxJsModuleRuntimeHref = createFunction('bsi_cx_js_module_runtime_href', () => {
   return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_HREF);
-}, [], {});
+}, []);
 
 /**
  * Get the contents of the JS runtime module.
  */
-export const bsiCxJsModuleRuntimeInline = new TwingFunction('bsi_cx_js_module_runtime_inline', () => {
+export const bsiCxJsModuleRuntimeInline = createFunction('bsi_cx_js_module_runtime_inline', () => {
   return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
-}, [], {});
+}, []);
 
 /**
  * Lorem ipsum generator.
  */
-export const bsiCxLorem = new TwingFunction('bsi_cx_lorem', (words) => {
+export const bsiCxLorem = createFunction('bsi_cx_lorem', (executionContext, words) => {
   let numOfWords = parseInt(words, 10);
   let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
   return strToPromise(phrase);
-}, [], {})
+}, [{name: 'words', defaultValue: ''}])

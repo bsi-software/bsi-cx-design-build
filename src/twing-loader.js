@@ -35,16 +35,21 @@ export default function (source) {
   let resourcePath = slash(this.resourcePath);
 
   this.cacheable(false);
+  this.addDependency(path.resolve(resourcePath));
 
-  currentEnvironment.on('template', async (name, from) => {
-    try {
-      let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
-      let resolvedPath = path.resolve(sourceContext.getResolvedName());
-      this.addDependency(resolvedPath);
-    } catch (error) {
-      // NOP
-    }
-  });
+  if (currentEnvironment.loader?.resolve) {
+    const originalResolve = currentEnvironment.loader.resolve.bind(currentEnvironment.loader);
+
+    currentEnvironment.loader.resolve = async (name, from) => {
+      let resolved = await originalResolve(name, from);
+
+      if (resolved) {
+        this.addDependency(path.resolve(resolved));
+      }
+
+      return resolved;
+    };
+  }
 
   currentEnvironment.render(resourcePath, renderContext).then((result) => {
     callback(null, `module.exports = ${JSON.stringify(result)};`);
