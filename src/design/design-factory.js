@@ -1,24 +1,25 @@
-import ContentElement from '../content-element/content-element';
-import ContentElementGroup from '../content-element/content-element-group';
-import PartFactory from '../content-element/part/part-factory';
-import TemplateElement from '../content-element/template-element';
-import TemplatePartFactory from '../content-element/template-part/template-part-factory';
-import Dropzone from '../dropzone/dropzone';
-import HtmlEditorConfig from '../html-editor-config/html-editor-config';
-import NLS from '../nls/nls';
-import Translation from '../nls/translation';
-import CssClass from '../style/css-class';
-import DomManipulation from '../style/dom-manipulation';
-import Style from '../style/style';
-import StyleOption from '../style/style-option';
-import Include from '../website/include';
-import PageInclude from '../website/page-include';
-import Pagination from '../website/pagination';
-import Website from '../website/website';
-import Design from './design';
-import DesignHelper from './design-helper';
-import { Features } from './features';
-import { HtmlSanitization, Security } from './security';
+import ContentElement from "../content-element/content-element";
+import ContentElementGroup from "../content-element/content-element-group";
+import PartFactory from "../content-element/part/part-factory";
+import TemplateElement from "../content-element/template-element";
+import TemplatePartFactory from "../content-element/template-part/template-part-factory";
+import Dropzone from "../dropzone/dropzone";
+import ScopePrefill from "../dropzone/scope-prefill";
+import HtmlEditorConfig from "../html-editor-config/html-editor-config";
+import NLS from "../nls/nls";
+import Translation from "../nls/translation";
+import CssClass from "../style/css-class";
+import DomManipulation from "../style/dom-manipulation";
+import Style from "../style/style";
+import StyleOption from "../style/style-option";
+import Include from "../website/include";
+import PageInclude from "../website/page-include";
+import Pagination from "../website/pagination";
+import Website from "../website/website";
+import Design from "./design";
+import DesignHelper from "./design-helper";
+import { Features } from "./features";
+import { HtmlSanitization, Security } from "./security";
 
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
@@ -194,6 +195,38 @@ export default class DesignFactory {
    */
   get dropzone() {
     return new Dropzone();
+  }
+
+  /**
+   * Shorthand for creating a Dropzone
+   * 
+   * @example cx.Dropzone("dropzoneId-123", [require('element1'), require('element2')]) ;
+   *
+   * @param {string} dropzoneId
+   * @param {Array<[ContentElement | TemplateElement]>} allowedElements
+   * @param {number} maxAllowedElements
+   * @returns {Dropzone}
+   */
+  Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
+    return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
+  }
+
+  /**
+   * Get a new scopePrefill Object.
+   * 
+   * @example cx.ScopePrefill('scopeA', require('./my-element'));
+   * 
+   * use it within the Dropzone to define the prefill
+   * 
+   * @example cx.Dropzone(..)
+   *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
+   *
+   * @param {string} scope
+   * @param {TemplateElement} element
+   * @returns {ScopePrefill}
+   */
+  ScopePrefill(scope, element) {
+    return new ScopePrefill(scope, element);
   }
 
   /**
@@ -442,17 +475,17 @@ export default class DesignFactory {
   }
 
   /**
- * Get a content element template part factory instance to create new tepmlate element part builder objects.
- * The template element part factory is also available under the template part constant.
- *
- * @example
- * const {cx, templatePart} = require('@bsi-cx/design-build');
- *
- * // ...
- * .withTemplateParts(
- *   cx.templatePart.PlainText('Text', 'textId')
- * @returns {TemplatePartFactory}
- */
+   * Get a content element template part factory instance to create new tepmlate element part builder objects.
+   * The template element part factory is also available under the template part constant.
+   *
+   * @example
+   * const {cx, templatePart} = require('@bsi-cx/design-build');
+   *
+   * // ...
+   * .withTemplateParts(
+   *   cx.templatePart.PlainText('Text', 'textId')
+   * @returns {TemplatePartFactory}
+   */
   get templatePart() {
     return new TemplatePartFactory();
   }

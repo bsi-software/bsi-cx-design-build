@@ -35,6 +35,10 @@ module.exports = cx.design
             require('./content-elements/content/title'),
             require('./content-elements/content/text')),
         require('./content-elements/content/column-2')
+          .withExtendAllDropzones(
+            require('./content-elements/content/title'),
+            require('./content-elements/content/text'),
+            require('./content-elements/content/image'))
       ).removeElementsWithId('pagination-element'),
     cx.contentElementGroup
       .withGroupId('template-parts')

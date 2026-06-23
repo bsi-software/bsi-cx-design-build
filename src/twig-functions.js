@@ -122,10 +122,122 @@ export const bsiCxJsModuleRuntimeInline = createFunction('bsi_cx_js_module_runti
 /**
  * Lorem ipsum generator.
  */
-export const bsiCxLorem = createFunction('bsi_cx_lorem', (executionContext, words) => {
+export const bsiCxLorem = createFunction('bsi_cx_lorem', (words) => {
   let numOfWords = parseInt(words, 10);
   let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
   return strToPromise(phrase);
 }, [{name: 'words', defaultValue: ''}])
+
+
+/**
+ * Helper function to create scoped template element
+ */
+export const bsiTemplatePart = createFunction(
+  "templateElement",
+  (elementId, scope) =>
+  strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
+  [{name: 'elementId'}, {name: 'scope', defaultValue: null}],
+  { is_safe: ["html"] },
+);
+
+/**
+ * Helper functions to create hbs variables
+ */
+const scopeVariable = (scope, partId, variable) =>
+  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+
+const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
+  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+
+
+export const templatePartHelper = [
+  createFunction(
+    "textValue",
+    (partId, scope) =>  scopeVariable(scope, partId, "value"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "formattedHtml",
+    (partId, scope) => scopeVariable(scope, partId, "html"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "formattedLanguage",
+    (partId, scope) => scopeVariable(scope, partId, "languageTag"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "linkUrl",
+    (partId, scope) => scopeVariable(scope, partId, "url"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "linkText",
+    (partId, scope) => scopeVariable(scope, partId, "text"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "linkDescription",
+    (partId, scope) => scopeVariable(scope, partId, "description"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "ifLinkTarget",
+    (partId, scope, ifBlock, elseBlock) =>
+      ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "imageAlt",
+    (partId, scope) => scopeVariable(scope, partId, "altText"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "imageSrc",
+    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "imagePlaceholderSrc",
+    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "imageSrcset",
+    (partId, scope) => scopeVariable(scope, partId, "srcset"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "imageDecorative",
+    (partId, scope) => scopeVariable(scope, partId, "decorative"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "ifCheckboxValue",
+    (partId, scope, ifBlock, elseBlock) =>
+      ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    {},
+  ),
+  createFunction(
+    "optionValue",
+    (partId, scope) => scopeVariable(scope, partId, "value"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  // TODO: dynamic-value-list
+];

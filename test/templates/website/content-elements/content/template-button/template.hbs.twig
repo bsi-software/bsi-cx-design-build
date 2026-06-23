@@ -1,0 +1,5 @@
+{% set linkPartId = 'link-1wfD2H' %}
+<div class="bsi-template-button" {{ templateElement("template-button-3seC3G", scope) }}>
+    <a href="{{ linkUrl(linkPartId, scope) }}" target="{{ ifLinkTarget(linkPartId, scope, '_blank', '_target')}}" aria-label="{{ linkDescription(linkPartId, scope) }}">{{ linkText(linkPartId, scope) }}</a>
+    <div>{{ textValue('multiline-plain-text-wmiRti', scope) }}</div>
+</div>

@@ -6,6 +6,7 @@ import RawValue from '../raw-value';
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
+/** @typedef {import('./scope-prefill').default} ScopePrefill */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -56,6 +57,11 @@ export default class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
+  /**
+   * @type {ScopePrefill[]}
+   * @private
+   */
+  _scopePrefills = [];
 
   /**
    * @returns {string|undefined}
@@ -100,6 +106,27 @@ export default class Dropzone extends AbstractBuilder {
   }
 
   /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get scopePrefills() {
+    return this._scopePrefills;
+  }
+
+  /**
+   * Constructor for Dropzone.
+   * 
+   * @param {string?} dropzoneId 
+   * @param {TemplateElement[]?} allowedElements 
+   * @param {number?} maxAllowedElements 
+   */
+  constructor (dropzoneId="", allowedElements=[], maxAllowedElements=undefined) {
+    super();
+    this._dropzone = dropzoneId;
+    this._allowedElements = allowedElements;
+    this._maxAllowedElements = maxAllowedElements;
+  }
+
+  /**
    * Set the identifier of this dropzone. <strong>It is highly recommended using a
    * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
    *
@@ -123,7 +150,7 @@ export default class Dropzone extends AbstractBuilder {
    * @returns {Dropzone}
    */
   withAllowedElements(...allowedElements) {
-    this._allowedElements = allowedElements;
+    this._allowedElements = [...new Set(allowedElements)];
     return this;
   }
 
@@ -180,6 +207,27 @@ export default class Dropzone extends AbstractBuilder {
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
     return this;
+  }
+  /**
+   * Define prefill for this dropzone.
+   * Scope must be identical to scope variable in template file
+   * 
+   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
+   * @returns {Dropzone}
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
+    return this;
+  }
+
+  /**
+   * Adds prefill for Dropzone to context file.
+   * 
+   * @protected
+   * @param {Object} contextFile 
+   */
+  addPrefillTo(contextFile) {
+    this.scopePrefills.forEach(scopePrefill => scopePrefill.addPrefillTo(contextFile));
   }
 
   _buildInternal() {

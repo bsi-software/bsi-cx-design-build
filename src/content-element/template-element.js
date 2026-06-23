@@ -64,15 +64,15 @@ export default class TemplateElement extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[TemplatePart]|undefined}
+   * @type {RawValue|TemplatePart[]}
    * @private
    */
-  _templateParts = undefined;
+  _templateParts = [];
   /**
-   * @type {Dropzone[]|undefined}
+   * @type {Dropzone[]}
    * @private
    */
-  _dropzones = undefined;
+  _dropzones = [];
 
   /**
    * @returns {string|undefined}
@@ -464,14 +464,39 @@ export default class TemplateElement extends AbstractBuilder {
   }
 
   /**
+   * Extend the allowed elements list of all dropzones. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   * 
+   * In case you want to extend the allowed elements list of a specific dropzone, use {@link withExtendedDropzone} instead.
+   *
+   * @example
+   * .withExtendAllDropzones(
+   *   require('./template-elements/basic/text'),
+   *   require('./template-elements/basic/image'))
+   * 
+   * @param {...TemplateElement} elements - The elements to add to the allowed elements list.
+   * @returns {TemplateElement}
+   */
+  withExtendAllDropzones(...elements) {
+    this._dropzones?.forEach(dropzone => {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    });
+
+    return this;
+  }
+
+  /**
    * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
    * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   * 
+   * In case you want to extend the allowed elements list of all dropzones, use {@link withExtendAllDropzones} instead.
    *
    * @example
    * .withExtendedDropzone(
    *   'a5142bca-448b-40c5-bdde-942f531fcd12',
    *   require('./template-elements/basic/text'),
    *   require('./template-elements/basic/image'))
+   * 
    * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
    * @param {...TemplateElement} elements - The elements to add to the allowed elements list.
    * @returns {TemplateElement}
@@ -524,7 +549,8 @@ export default class TemplateElement extends AbstractBuilder {
       let partContextId = templatePart.partContextId;
       let contextFileObj = this._contextFile[partContextId] || {};
       this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    })
+    });
+    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
   }
 
   _buildInternal() {
