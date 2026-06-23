@@ -8,7 +8,7 @@ module.exports = cx.templateElement
     .withElementId("template-button-3seC3G")
     .withIcon(Icon.ASTERISK)
     .withLabel("Template Button")
-    .withFile(require("./template.hbs"))
+    .withFile(require("./template.hbs.twig"))
     .withTemplateParts(
         cx.templatePart.MultilinePlainText("Multiline plain text", "multiline-plain-text-wmiRti", 5).withRawPrefill({ value: "Bennis Text" }),
         cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H").withLinkPrefill("[b4]", "ABC Text", "BFSG Descrip"),

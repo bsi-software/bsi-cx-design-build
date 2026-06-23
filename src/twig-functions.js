@@ -1,16 +1,19 @@
-import path from 'path';
+import path from "path";
 
 import {createFunction, createMarkup} from 'twing';
 
-import Constant from './constant';
-import QueryConstant from './query-constant';
-import {toPosixPath} from './utility';
+import Constant from "./constant";
+import QueryConstant from "./query-constant";
+import { toPosixPath } from "./utility";
 
 /**
  *
  * @type {string[]}
  */
-const LOREM_IPSUM = 'Vivamus dapibus lobortis risus, nec fringilla lectus consectetur at. Nam placerat elementum elit, sit amet sagittis magna efficitur at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent et congue massa, sit amet feugiat lorem. Nunc venenatis, dolor a ullamcorper cursus, lacus nibh congue arcu, vel lobortis nulla sem id nunc. Suspendisse consectetur nunc id velit scelerisque commodo eget sed tellus. Vestibulum finibus odio ex, vel lacinia ipsum rutrum in. Pellentesque vel eleifend nisl, tempus luctus lacus. Quisque rutrum neque quis eleifend imperdiet. Quisque sapien enim, pellentesque at augue at, consectetur congue mauris. Phasellus posuere nisi erat, ac condimentum odio iaculis sed.'.split(' ');
+const LOREM_IPSUM =
+  "Vivamus dapibus lobortis risus, nec fringilla lectus consectetur at. Nam placerat elementum elit, sit amet sagittis magna efficitur at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent et congue massa, sit amet feugiat lorem. Nunc venenatis, dolor a ullamcorper cursus, lacus nibh congue arcu, vel lobortis nulla sem id nunc. Suspendisse consectetur nunc id velit scelerisque commodo eget sed tellus. Vestibulum finibus odio ex, vel lacinia ipsum rutrum in. Pellentesque vel eleifend nisl, tempus luctus lacus. Quisque rutrum neque quis eleifend imperdiet. Quisque sapien enim, pellentesque at augue at, consectetur congue mauris. Phasellus posuere nisi erat, ac condimentum odio iaculis sed.".split(
+    " ",
+  );
 
 /**
  * @param {string} resolve
@@ -31,9 +34,12 @@ function bsiCxJsModuleImport(executionContext, config, inline) {
   let metaInfo = {
     ...config,
     template: templatePath,
-    inline: inline
+    inline: inline,
   };
-  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
+  let placeholder =
+    Constant.BSI_CX_JS_MODULE_START +
+    JSON.stringify(metaInfo) +
+    Constant.BSI_CX_JS_MODULE_END;
   return strToPromise(placeholder);
 }
 
@@ -127,5 +133,172 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (executionContext, word
   let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
-  return strToPromise(phrase);
-}, [{name: 'words', defaultValue: ''}])
+    return strToPromise(phrase);
+  },
+  [],
+  {},
+);
+
+/**
+ * Helper function to create scoped template element
+ */
+export const bsiTemplatePart = new TwingFunction(
+  "template_element",
+  (elementId, scope) =>
+    ` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`,
+  [],
+  {},
+);
+
+const scopeVariable = (scope, partId, variable) =>
+  `{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`;
+
+const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
+  `{{#if ${scope ? scope + "." : ""}${partId}.${variable} }} ${ifBlock} ${elseBlock ? "{{else}}" + elseBlock : ""} {{/if }}`;
+
+/**
+ * Helper functions to create hbs variables
+ */
+// export const bsiTextValue = new TwingFunction(
+//   "bsi_text_value",
+//   (partId, scope) => scopeVariable(scope, partId, "value"),
+// );
+// export const bsiFormattedHtml = new TwingFunction(
+//   "bsi_formatted_html",
+//   (partId, scope) => scopeVariable(scope, partId, "html"),
+// );
+// export const bsiFormattedLanguage = new TwingFunction(
+//   "bsi_formatted_language",
+//   (partId, scope) => scopeVariable(scope, partId, "languageTag"),
+// );
+// export const bsiLinkUrl = new TwingFunction("bsi_link_url", (partId, scope) =>
+//   scopeVariable(scope, partId, "url"),
+// );
+// export const bsiLinkText = new TwingFunction("bsi_link_text", (partId, scope) =>
+//   scopeVariable(scope, partId, "text"),
+// );
+// export const bsiLinkDescription = new TwingFunction(
+//   "bsi_link_description",
+//   (partId, scope) => scopeVariable(scope, partId, "description"),
+// );
+// export const bsiLinkTarget = new TwingFunction(
+//   "bsi_link_target",
+//   (partId, scope) => scopeVariable(scope, partId, "openInNewWindow"),
+// );
+// export const bsiImageAlt = new TwingFunction("bsi_image_alt", (partId, scope) =>
+//   scopeVariable(scope, partId, "altText"),
+// );
+// export const bsiImageSrc = new TwingFunction("bsi_image_src", (partId, scope) =>
+//   scopeVariable(scope, partId, "srcUrl"),
+// );
+// export const bsiImagePlaceholderSrc = new TwingFunction(
+//   "bsi_image_placeholder_src",
+//   (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
+// );
+// export const bsiImageSrcset = new TwingFunction(
+//   "bsi_image_srcset",
+//   (partId, scope) => scopeVariable(scope, partId, "srcset"),
+// );
+// export const bsiImageDecorative = new TwingFunction(
+//   "bsi_image_decorative",
+//   (partId, scope) => scopeVariable(scope, partId, "decorative"),
+// );
+// export const bsiCheckboxValue = new TwingFunction(
+//   "bsi_checkbox_value",
+//   (partId, scope) => scopeVariable(scope, partId, "value"),
+// );
+// export const bsiOptionValue = new TwingFunction(
+//   "bsi_option_value",
+//   (partId, scope) => scopeVariable(scope, partId, "value"),
+// );
+// TODO: dynamic-value-list
+
+export const templatePartHelper = [
+  new TwingFunction(
+    "text_value",
+    (partId, scope) => scopeVariable(scope, partId, "value"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "formatted_html",
+    (partId, scope) => scopeVariable(scope, partId, "html"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "formatted_language",
+    (partId, scope) => scopeVariable(scope, partId, "languageTag"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "link_url",
+    (partId, scope) => scopeVariable(scope, partId, "url"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "link_text",
+    (partId, scope) => scopeVariable(scope, partId, "text"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "link_description",
+    (partId, scope) => scopeVariable(scope, partId, "description"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "if_link_target",
+    (partId, scope, ifBlock, elseBlock) =>
+      ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "image_alt",
+    (partId, scope) => scopeVariable(scope, partId, "altText"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "image_src",
+    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "image_placeholder_src",
+    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "image_srcset",
+    (partId, scope) => scopeVariable(scope, partId, "srcset"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "image_decorative",
+    (partId, scope) => scopeVariable(scope, partId, "decorative"),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "if_checkbox_value",
+    (partId, scope, ifBlock, elseBlock) =>
+      ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
+    [],
+    {},
+  ),
+  new TwingFunction(
+    "option_value",
+    (partId, scope) => scopeVariable(scope, partId, "value"),
+    [],
+    {},
+  ),
+  // TODO: dynamic-value-list
+];

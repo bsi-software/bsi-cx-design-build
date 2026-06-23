@@ -12,7 +12,9 @@ import {
   bsiCxJsModuleMissingChunksInline,
   bsiCxJsModuleRuntimeHref,
   bsiCxJsModuleRuntimeInline,
-  bsiCxLorem
+  bsiCxLorem,
+  bsiTemplatePart,
+  templatePartHelper,
 } from './twig-functions';
 import {findNodeModulesFolder} from './utility';
 
@@ -46,5 +48,13 @@ export default function (templateRoot, globals) {
   twing.addFunction(bsiCxJsModuleRuntimeHref);
   twing.addFunction(bsiCxJsModuleRuntimeInline);
   twing.addFunction(bsiCxLorem);
+
+  twing.addFunction(bsiTemplatePart);
+  templatePartHelper.forEach(helper => twing.addFunction(helper));
+
+  for (const [key, value] of Object.entries(globals ?? {})) {
+    twing.addGlobal(key, value);
+  }
+
   return twing;
 }
