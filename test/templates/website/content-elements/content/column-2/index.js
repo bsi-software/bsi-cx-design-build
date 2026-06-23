@@ -7,14 +7,10 @@ module.exports = cx.templateElement
   .withFile(require("./template.hbs.twig"))
   .withDropzones(
     cx
-      .Dropzone(
-        "20816df1-f8c0-47d1-94a1-1cd124c2b348"[
-          (require("../column-1"),
-          require("../title"),
-          require("../text"),
-          require("../image"))
-        ],
-      )
+      .Dropzone("20816df1-f8c0-47d1-94a1-1cd124c2b348", [
+        require("../column-1"),
+        require("../title"),
+      ])
       .withScopePrefills(
         cx
           .ScopePrefill("buttonLeft", require("../template-button"))

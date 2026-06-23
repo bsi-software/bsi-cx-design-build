@@ -3872,14 +3872,39 @@ class TemplateElement extends AbstractBuilder {
   }
 
   /**
+   * Extend the allowed elements list of all dropzones. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   * 
+   * In case you want to extend the allowed elements list of a specific dropzone, use {@link withExtendedDropzone} instead.
+   *
+   * @example
+   * .withExtendAllDropzones(
+   *   require('./template-elements/basic/text'),
+   *   require('./template-elements/basic/image'))
+   * 
+   * @param {...TemplateElement} elements - The elements to add to the allowed elements list.
+   * @returns {TemplateElement}
+   */
+  withExtendAllDropzones(...elements) {
+    this._dropzones?.forEach(dropzone => {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    });
+
+    return this;
+  }
+
+  /**
    * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
    * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   * 
+   * In case you want to extend the allowed elements list of all dropzones, use {@link withExtendAllDropzones} instead.
    *
    * @example
    * .withExtendedDropzone(
    *   'a5142bca-448b-40c5-bdde-942f531fcd12',
    *   require('./template-elements/basic/text'),
    *   require('./template-elements/basic/image'))
+   * 
    * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
    * @param {...TemplateElement} elements - The elements to add to the allowed elements list.
    * @returns {TemplateElement}
@@ -4131,7 +4156,7 @@ class Dropzone extends AbstractBuilder {
    * @returns {Dropzone}
    */
   withAllowedElements(...allowedElements) {
-    this._allowedElements = allowedElements;
+    this._allowedElements = [...new Set(allowedElements)];
     return this;
   }
 
@@ -6016,14 +6041,40 @@ class ContentElement extends AbstractBuilder {
   }
 
   /**
+   * Extend the allowed elements list of all dropzone. Be aware that this only works when you define your allowed
+   * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   * 
+   * In case you want to extend the allowed elements list of a specific dropzone, use {@link withExtendedDropzone} instead.
+   *
+   * @example
+   * .withExtendAllDropzones(
+   *   require('./content-elements/basic/text'),
+   *   require('./content-elements/basic/image'))
+   * 
+   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @returns {ContentElement}
+   */
+  withExtendAllDropzones(...elements) {
+    this._dropzones?.forEach(dropzone => {
+      dropzone.withAllowedElements(...dropzone.allowedElements, ...elements);
+    });
+
+    return this;
+  }
+
+
+  /**
    * Extend the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
    * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+   * 
+   * In case you want to extend the allowed elements list of all dropzones, use {@link withExtendAllDropzones} instead.
    *
    * @example
    * .withExtendedDropzone(
    *   'a5142bca-448b-40c5-bdde-942f531fcd12',
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
+   * 
    * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
    * @param {...ContentElement} elements - The elements to add to the allowed elements list.
    * @returns {ContentElement}

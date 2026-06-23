@@ -150,7 +150,7 @@ export default class Dropzone extends AbstractBuilder {
    * @returns {Dropzone}
    */
   withAllowedElements(...allowedElements) {
-    this._allowedElements = allowedElements;
+    this._allowedElements = [...new Set(allowedElements)];
     return this;
   }
 
