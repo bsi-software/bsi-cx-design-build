@@ -71,6 +71,9 @@ const register_namespaceObject = require("source-map-support/register");
 ;// external "path"
 const external_path_namespaceObject = require("path");
 var external_path_default = /*#__PURE__*/__webpack_require__.n(external_path_namespaceObject);
+;// external "fs"
+const external_fs_namespaceObject = require("fs");
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// external "twing"
 const external_twing_namespaceObject = require("twing");
 ;// ./src/constant.js
@@ -137,9 +140,6 @@ class QueryConstant {
   static ASSET = 'asset';
 }
 
-;// external "fs"
-const external_fs_namespaceObject = require("fs");
-var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespaceObject);
 ;// ./src/abstract-constant.js
 /**
  * @abstract
@@ -407,13 +407,13 @@ function strToPromise(resolve) {
 }
 
 /**
- * @param {TwingTemplate} template
+ * @param {{template:{source:{name:string}}}} executionContext
  * @param {{module:string|undefined,chunks:boolean|undefined,attributes:{}|undefined}} config
  * @param {boolean} inline
  * @returns {Promise<string>}
  */
-function bsiCxJsModuleImport(template, config, inline) {
-  let templatePath = template.source.getResolvedName();
+function bsiCxJsModuleImport(executionContext, config, inline) {
+  let templatePath = executionContext.template.source.name;
   let metaInfo = {
     ...config,
     template: templatePath,
@@ -426,95 +426,95 @@ function bsiCxJsModuleImport(template, config, inline) {
 /**
  * Resolve static assets.
  */
-const bsiCxAsset = new external_twing_namespaceObject.TwingFunction('bsi_cx_asset', (template, assetPath, inline) => {
-  let templatePath = template.source.getResolvedName();
+const bsiCxAsset = (0,external_twing_namespaceObject.createFunction)('bsi_cx_asset', (executionContext, assetPath, inline) => {
+  let templatePath = executionContext.template.source.name;
   let templateDirPath = external_path_default().dirname(templatePath);
   let absoluteAssetPath = toPosixPath(external_path_default().resolve(templateDirPath, assetPath));
   let assetQuery = !!inline ? QueryConstant.INLINE : '';
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);
-}, [], {needs_template: true});
+}, [{name: 'assetPath'}, {name: 'inline', defaultValue: false}]);
 
 /**
  * Get URL to the CSS asset.
  */
-const bsiCxCssHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_css_href', () => {
+const bsiCxCssHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_css_href', () => {
   return strToPromise(constant_Constant.BSI_CX_CSS_HREF);
-}, [], {});
+}, []);
 
 /**
  * Get the contents of the CSS asset.
  */
-const bsiCxCssInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_css_inline', () => {
+const bsiCxCssInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_css_inline', () => {
   return strToPromise(constant_Constant.BSI_CX_CSS_INLINE);
-}, [], {});
+}, []);
 
 /**
  * Get URL to the requested JS module.
  */
-const bsiCxJsModuleHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_href', (template, module) => {
+const bsiCxJsModuleHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_href', async (executionContext, module) => {
   let config = {
     module: module
   };
-  return bsiCxJsModuleImport(template, config, false);
-}, [], {needs_template: true, is_safe: ['html']});
+  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, false));
+}, [{name: 'module'}]);
 
 /**
  * Get the content of the requested JS module.
  */
-const bsiCxJsModuleInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_inline', (template, module) => {
+const bsiCxJsModuleInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_inline', async (executionContext, module) => {
   let config = {
     module: module
   };
-  return bsiCxJsModuleImport(template, config, true);
-}, [], {needs_template: true, is_safe: ['html']});
+  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, true));
+}, [{name: 'module'}]);
 
 /**
  * Import all missing JS module chunks.
  */
-const bsiCxJsModuleMissingChunksImport = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_missing_chunks_import', (template, attributes) => {
+const bsiCxJsModuleMissingChunksImport = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_missing_chunks_import', async (executionContext, attributes) => {
   let config = {
     chunks: true,
     attributes: attributes || {}
   };
-  return bsiCxJsModuleImport(template, config, false);
-}, [], {needs_template: true, is_safe: ['html']});
+  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, false));
+}, [{name: 'attributes', defaultValue: {}}]);
 
 /**
  * Inline all missing JS module chunks.
  */
-const bsiCxJsModuleMissingChunksInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_missing_chunks_inline', (template, attributes) => {
+const bsiCxJsModuleMissingChunksInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_missing_chunks_inline', async (executionContext, attributes) => {
   let config = {
     chunks: true,
     attributes: attributes || {}
   };
-  return bsiCxJsModuleImport(template, config, true);
-}, [], {needs_template: true, is_safe: ['html']});
+  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, true));
+}, [{name: 'attributes', defaultValue: {}}]);
 
 /**
  * Get URL to the JS runtime module.
  */
-const bsiCxJsModuleRuntimeHref = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_href', () => {
+const bsiCxJsModuleRuntimeHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_runtime_href', () => {
   return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_HREF);
-}, [], {});
+}, []);
 
 /**
  * Get the contents of the JS runtime module.
  */
-const bsiCxJsModuleRuntimeInline = new external_twing_namespaceObject.TwingFunction('bsi_cx_js_module_runtime_inline', () => {
+const bsiCxJsModuleRuntimeInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_runtime_inline', () => {
   return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_INLINE);
-}, [], {});
+}, []);
 
 /**
  * Lorem ipsum generator.
  */
-const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lorem', (words) => {
+const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lorem', (executionContext, words) => {
   let numOfWords = parseInt(words, 10);
   let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
   return strToPromise(phrase);
-}, [], {})
+}, [{name: 'words', defaultValue: ''}])
 
 ;// ./src/twing-environment.js
 
@@ -522,19 +522,7 @@ const bsiCxLorem = new external_twing_namespaceObject.TwingFunction('bsi_cx_lore
 
 
 
-class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesystem {
-  constructor() {
-    super();
 
-    let nodeModulesPath = findNodeModulesFolder(__dirname);
-
-    this.addPath(nodeModulesPath);
-  }
-
-  parseName(name, default_ = NodeModulesLoader.MAIN_NAMESPACE) {
-    return [default_, name];
-  }
-}
 
 /**
  * @param {string} templateRoot
@@ -542,13 +530,19 @@ class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesy
  * @returns {TwingEnvironment}
  */
 /* harmony default export */ function twing_environment(templateRoot, globals) {
-  let relativeFilesystemLoader = new external_twing_namespaceObject.TwingLoaderRelativeFilesystem();
-  let filesystemLoader = new external_twing_namespaceObject.TwingLoaderFilesystem();
-  let nodeModulesLoader = new NodeModulesLoader();
+  let relativeFilesystemLoader = (0,external_twing_namespaceObject.createFilesystemLoader)((external_fs_default()));
+  let filesystemLoader = (0,external_twing_namespaceObject.createFilesystemLoader)((external_fs_default()));
+  let nodeModulesLoader = (0,external_twing_namespaceObject.createFilesystemLoader)((external_fs_default()));
+  let nodeModulesPath = findNodeModulesFolder(__dirname);
 
+  relativeFilesystemLoader.addPath('.');
   filesystemLoader.addPath(templateRoot);
+  nodeModulesLoader.addPath(nodeModulesPath);
 
-  let twing = new external_twing_namespaceObject.TwingEnvironment(new external_twing_namespaceObject.TwingLoaderChain([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]));
+  let twing = (0,external_twing_namespaceObject.createEnvironment)(
+    (0,external_twing_namespaceObject.createChainLoader)([relativeFilesystemLoader, filesystemLoader, nodeModulesLoader]),
+    {globals: globals ?? {}}
+  );
 
   twing.addFunction(bsiCxAsset);
   twing.addFunction(bsiCxCssHref);
@@ -560,11 +554,6 @@ class NodeModulesLoader extends external_twing_namespaceObject.TwingLoaderFilesy
   twing.addFunction(bsiCxJsModuleRuntimeHref);
   twing.addFunction(bsiCxJsModuleRuntimeInline);
   twing.addFunction(bsiCxLorem);
-
-  for (const [key, value] of Object.entries(globals ?? {})) {
-    twing.addGlobal(key, value);
-  }
-
   return twing;
 }
 
@@ -606,16 +595,21 @@ function slash(pathToConvert) {
   let resourcePath = slash(this.resourcePath);
 
   this.cacheable(false);
+  this.addDependency(external_path_default().resolve(resourcePath));
 
-  currentEnvironment.on('template', async (name, from) => {
-    try {
-      let sourceContext = await currentEnvironment.getLoader().getSourceContext(name, from);
-      let resolvedPath = external_path_default().resolve(sourceContext.getResolvedName());
-      this.addDependency(resolvedPath);
-    } catch (error) {
-      // NOP
-    }
-  });
+  if (currentEnvironment.loader?.resolve) {
+    const originalResolve = currentEnvironment.loader.resolve.bind(currentEnvironment.loader);
+
+    currentEnvironment.loader.resolve = async (name, from) => {
+      let resolved = await originalResolve(name, from);
+
+      if (resolved) {
+        this.addDependency(external_path_default().resolve(resolved));
+      }
+
+      return resolved;
+    };
+  }
 
   currentEnvironment.render(resourcePath, renderContext).then((result) => {
     callback(null, `module.exports = ${JSON.stringify(result)};`);
