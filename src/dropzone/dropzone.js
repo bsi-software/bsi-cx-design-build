@@ -6,6 +6,7 @@ import RawValue from '../raw-value';
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
+/** @typedef {import('./scope-prefill').default} ScopePrefill */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -56,6 +57,11 @@ export default class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
+  /**
+   * @type {Array<ScopePrefill>|undefined}
+   * @private
+   */
+  _scopePrefills = undefined;
 
   /**
    * @returns {string|undefined}
@@ -98,6 +104,19 @@ export default class Dropzone extends AbstractBuilder {
   get moveAllowed() {
     return this._moveAllowed;
   }
+
+  /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get prefillScopes() {
+    return this._scopePrefills;
+  }
+
+  // constructor (dropzoneId="", allowedElements=[], maxAllowedElements=0) {
+  //   this._dropzone = dropzoneId;
+  //   this._allowedElements = allowedElements;
+  //   this._maxAllowedElements = maxAllowedElements
+  // }
 
   /**
    * Set the identifier of this dropzone. <strong>It is highly recommended using a
@@ -179,6 +198,15 @@ export default class Dropzone extends AbstractBuilder {
    */
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
+    return this;
+  }
+  /**
+   * TODO
+   * @param {boolean} moveAllowed - Enable or disable the move button.
+   * @returns {Dropzone}
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
     return this;
   }
 

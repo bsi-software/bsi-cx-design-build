@@ -4558,9 +4558,49 @@ declare module "src/content-element/template-part/template-part" {
     }
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/dropzone/scope-prefill" {
+    /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/template-element').default} TemplateElement */
+    /**
+     * This is the builder class to specify a scope prefill for a dropzone.
+     *
+     * @example
+     * .withDropzones(
+     *   cx.dropzone
+     *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+     *     .withAllowedElements(
+     *       require('./content-elements/basic/text'),
+     *       require('./content-elements/basic/image'))
+     *     .withMaxAllowedElements(1),
+     *   cx.dropzone
+     *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+     *     .withAllowedElements(
+     *       require('./content-elements/basic/text'),
+     *       require('./content-elements/basic/image'))
+     *     .withMaxAllowedElements(1))
+     */
+    export default class ScopePrefill extends AbstractBuilder {
+        constructor(scope: any, element: any);
+        _scope: any;
+        _element: any;
+        /**
+         * @returns {string}
+         */
+        get scope(): string;
+        /**
+         * @returns {TemplateElement}
+         */
+        get element(): TemplateElement;
+    }
+    export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = import("src/content-element/template-element").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import TemplateElement from "src/content-element/template-element";
+}
 declare module "src/dropzone/dropzone" {
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/template-element').default} TemplateElement */
+    /** @typedef {import('./scope-prefill').default} ScopePrefill */
     /**
      * This is the builder class to specify a dropzone.
      *
@@ -4611,6 +4651,11 @@ declare module "src/dropzone/dropzone" {
          */
         private _moveAllowed;
         /**
+         * @type {Array<ScopePrefill>|undefined}
+         * @private
+         */
+        private _prefillScopes;
+        /**
          * @returns {string|undefined}
          */
         get dropzone(): string | undefined;
@@ -4634,6 +4679,10 @@ declare module "src/dropzone/dropzone" {
          * @returns {boolean|undefined}
          */
         get moveAllowed(): boolean | undefined;
+        /**
+         * @returns {Array<ScopePrefill>|undefined}
+         */
+        get prefillScopes(): Array<ScopePrefill> | undefined;
         /**
          * Set the identifier of this dropzone. <strong>It is highly recommended using a
          * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -4699,6 +4748,7 @@ declare module "src/dropzone/dropzone" {
     }
     export type ContentElement = import("src/content-element/content-element").default;
     export type TemplateElement = import("src/content-element/template-element").default;
+    export type ScopePrefill = import("src/dropzone/scope-prefill").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
     import TemplateElement from "src/content-element/template-element";
@@ -8271,6 +8321,14 @@ declare module "src/design/design-factory" {
          */
         get dropzone(): Dropzone;
         /**
+         * TODO B4
+         *
+         * @param {string} scope
+         * @param {TemplateElement} element
+         * @returns { ScopePrefill}
+         */
+        scopePrefill(scope: string, element: TemplateElement): ScopePrefill;
+        /**
          * Get a new website page include builder instance.
          *
          * @example
@@ -8477,17 +8535,17 @@ declare module "src/design/design-factory" {
          */
         get part(): PartFactory;
         /**
-       * Get a content element template part factory instance to create new tepmlate element part builder objects.
-       * The template element part factory is also available under the template part constant.
-       *
-       * @example
-       * const {cx, templatePart} = require('@bsi-cx/design-build');
-       *
-       * // ...
-       * .withTemplateParts(
-       *   cx.templatePart.PlainText('Text', 'textId')
-       * @returns {TemplatePartFactory}
-       */
+         * Get a content element template part factory instance to create new tepmlate element part builder objects.
+         * The template element part factory is also available under the template part constant.
+         *
+         * @example
+         * const {cx, templatePart} = require('@bsi-cx/design-build');
+         *
+         * // ...
+         * .withTemplateParts(
+         *   cx.templatePart.PlainText('Text', 'textId')
+         * @returns {TemplatePartFactory}
+         */
         get templatePart(): TemplatePartFactory;
         /**
          * Get a collection of various helper methods.
@@ -8508,6 +8566,7 @@ declare module "src/design/design-factory" {
     import Website from "src/website/website";
     import Include from "src/website/include";
     import Dropzone from "src/dropzone/dropzone";
+    import ScopePrefill from "src/dropzone/scope-prefill";
     import PageInclude from "src/website/page-include";
     import Pagination from "src/website/pagination";
     import { Features } from "src/design/features";

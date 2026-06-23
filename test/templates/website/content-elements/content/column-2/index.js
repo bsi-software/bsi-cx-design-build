@@ -15,7 +15,8 @@ element.withElementId('column-2')
         require('../column-1'),
         require('../title'),
         require('../text'),
-        require('../image')),
+        require('../image'))
+        .withScopePrefill(cx.scopePrefill('B4', require('../template-button'))),
     cx.dropzone
       .withDropzone('5971732b-bf41-493d-a678-0fce1a2b5771')
       .withAllowedElements(

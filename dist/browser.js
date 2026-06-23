@@ -3932,7 +3932,13 @@ class TemplateElement extends AbstractBuilder {
       let partContextId = templatePart.partContextId;
       let contextFileObj = this._contextFile[partContextId] || {};
       this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    })
+    });
+    (this.dropzones || []).forEach((dropzone) => {
+      dropzone.prefillScopes.forEach((scope) => {
+        scope.element._loadPrefillIntoContextFile();
+        this._contextFile[scope] = scope.element.contextFile;
+      });
+    });
   }
 
   _buildInternal() {
@@ -3986,6 +3992,7 @@ class TemplateElement extends AbstractBuilder {
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
+/** @typedef {import('./scope-prefill').default} ScopePrefill */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -4036,6 +4043,11 @@ class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
+  /**
+   * @type {Array<ScopePrefill>|undefined}
+   * @private
+   */
+  _prefillScopes = undefined;
 
   /**
    * @returns {string|undefined}
@@ -4078,6 +4090,19 @@ class Dropzone extends AbstractBuilder {
   get moveAllowed() {
     return this._moveAllowed;
   }
+
+  /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get prefillScopes() {
+    return this._prefillScopes;
+  }
+
+  // constructor (dropzoneId="", allowedElements=[], maxAllowedElements=0) {
+  //   this._dropzone = dropzoneId;
+  //   this._allowedElements = allowedElements;
+  //   this._maxAllowedElements = maxAllowedElements
+  // }
 
   /**
    * Set the identifier of this dropzone. <strong>It is highly recommended using a
@@ -7810,6 +7835,58 @@ class TemplatePartFactory {
   }
 }
 
+;// ./src/dropzone/scope-prefill.js
+
+
+
+
+
+
+/** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/template-element').default} TemplateElement */
+
+/**
+ * This is the builder class to specify a scope prefill for a dropzone.
+ *
+ * @example
+ * .withDropzones(
+ *   cx.dropzone
+ *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
+ *     .withAllowedElements(
+ *       require('./content-elements/basic/text'),
+ *       require('./content-elements/basic/image'))
+ *     .withMaxAllowedElements(1),
+ *   cx.dropzone
+ *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
+ *     .withAllowedElements(
+ *       require('./content-elements/basic/text'),
+ *       require('./content-elements/basic/image'))
+ *     .withMaxAllowedElements(1))
+ */
+class ScopePrefill extends AbstractBuilder {
+  _scope = undefined;
+  _element = undefined;
+
+  constructor(scope, element) {
+    super();
+    this._scope = scope;
+    this._element = element;
+  }
+
+  /**
+   * @returns {string}
+   */
+  get scope() {
+    return this._scope;
+  }
+  /**
+   * @returns {TemplateElement}
+   */
+  get element() {
+    return this._element;
+  }
+}
+
 ;// ./src/website/pagination.js
 
 
@@ -8043,6 +8120,7 @@ class DesignHelper {
 
 
 
+
 /**
  * Use the design factory to minimize the amount of imports when specifying a design.
  * The design factory is available under the <code>cx</code> constant.
@@ -8217,6 +8295,29 @@ class DesignFactory {
    */
   get dropzone() {
     return new Dropzone();
+  }
+
+  // /**
+  //  * TODO B4
+  //  *
+  //  * @param {string} dropzoneId
+  //  * @param {Array<[ContentElement | TemplateElement]>} allowedElements
+  //  * @param {number} maxAllowedElements
+  //  * @returns {Dropzone}
+  //  */
+  // Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
+  //   return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
+  // }
+
+  /**
+   * TODO B4
+   * 
+   * @param {string} scope 
+   * @param {TemplateElement} element 
+   * @returns { ScopePrefill}
+   */
+  scopePrefill(scope, element) {
+    return new ScopePrefill(scope, element);
   }
 
   /**
@@ -8465,17 +8566,17 @@ class DesignFactory {
   }
 
   /**
- * Get a content element template part factory instance to create new tepmlate element part builder objects.
- * The template element part factory is also available under the template part constant.
- *
- * @example
- * const {cx, templatePart} = require('@bsi-cx/design-build');
- *
- * // ...
- * .withTemplateParts(
- *   cx.templatePart.PlainText('Text', 'textId')
- * @returns {TemplatePartFactory}
- */
+   * Get a content element template part factory instance to create new tepmlate element part builder objects.
+   * The template element part factory is also available under the template part constant.
+   *
+   * @example
+   * const {cx, templatePart} = require('@bsi-cx/design-build');
+   *
+   * // ...
+   * .withTemplateParts(
+   *   cx.templatePart.PlainText('Text', 'textId')
+   * @returns {TemplatePartFactory}
+   */
   get templatePart() {
     return new TemplatePartFactory();
   }
