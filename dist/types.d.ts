@@ -8543,6 +8543,23 @@ declare module "src/design/design-factory" {
          */
         get style(): Style;
         /**
+         * Create a new style configuration.
+         * CssClasses can be specified as an object with the css class as key and the label as value.
+         * @see {@link Style#withCssClassObject} to set a css class object
+         *
+         * @example
+         * module.exports = cx.Style('Text Color', 'text-color-id', {
+         *   'text-red': 'Red',
+         *   'text-blue': 'Blue'
+         * });
+         *
+         * @param {string} label
+         * @param {string} id
+         * @param {Object?} cssClassObject
+         * @returns {Style}
+         */
+        Style(label: string, id: string, cssClassObject: any | null): Style;
+        /**
          * Get a new css class builder instance.
          *
          * @example

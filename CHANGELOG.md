@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add `withExtendAllDropzones()` to content-part and template-part
 * Switch template part objects to { value: text } structure
 * Add new function to define css classes `withCssClassObject()`
+* Add new function `cx.Style('Style Label', 'styleId', {'text-red': 'Roter Text', 'text-blue': 'Blauer Text'})`
 
 
 ## [2.0.1] - 03.12.2025
