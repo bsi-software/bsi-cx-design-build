@@ -200,6 +200,22 @@ declare module "src/version" {
     /**
      * @type {Version}
      */
+    export const CX_26_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_26_2: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_27_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_27_2: Version;
+    /**
+     * @type {Version}
+     */
     export const TARGET: Version;
     export type DesignType = import("src/design-type").DesignType;
     import AbstractConstant from "src/abstract-constant";
@@ -4350,8 +4366,29 @@ declare module "src/content-element/part/part" {
          * @since Studio 1.0
          */
         withLabel(label: string | NLS): this;
+        /**
+         * Insert a raw configuration object for this part.
+         *
+         * You probably want to use {@link withConfig} instead of this method.
+         * This is only useful if you want to override the whole configuration of the part.
+         *
+         * <strong>!!! Be aware, that this is a raw value and will not be validated by the design build.</strong>
+         * <strong>It is highly recommended to use the provided methods to set configuration values.</strong>
+         *
+         * @param {Object} config
+         * @returns
+         */
         withRawConfig(config: any): this;
-        withConfig(key: any, value: any): this;
+        /**
+         * Add value to the part's config. If the config object is not defined, it will be created.
+         *
+         * This is useful if you want to add a configuration that is not supported by the design build API.
+         *
+         * @param {string} key
+         * @param {string} value
+         * @returns
+         */
+        withConfig(key: string, value: string): this;
         /**
          * Set a HTML editor configuration to use with this part. Be aware, that you have to reference an existing
          * {@link HtmlEditorConfig} object. You don't have to register the used HTML editor config in the design object
@@ -5076,8 +5113,7 @@ declare module "src/content-element/template-part/template-part" {
         private _prefill;
         /**
          * This Config is not part of the json-data.
-         * It's stored here to propagate it to the design json where the definiton is stored
-         * @see {@link TemplateElement#TODO}
+         * It's stored here to propagate it to the design json where the definition is stored
          *
          * @type {HtmlEditorConfig|undefined}
          * @private
@@ -5109,8 +5145,7 @@ declare module "src/content-element/template-part/template-part" {
         get prefill(): {} | undefined;
         /**
          * This Config is not part of the json-data.
-         * It's stored here to propagate it to the design json where the definiton is stored
-         * @see {@link TemplateElement#TODO}
+         * It's stored here to propagate it to the design json where the definition is stored
          *
          * @returns {HtmlEditorConfig|undefined}
          */

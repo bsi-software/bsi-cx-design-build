@@ -56,6 +56,14 @@
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/set anonymous default export name */
+/******/ 	(() => {
+/******/ 		// set .name for anonymous default exports per ES spec
+/******/ 		__webpack_require__.dn = (x) => {
+/******/ 			(Object.getOwnPropertyDescriptor(x, "name") || {}).writable || Object.defineProperty(x, "name", { value: "default", configurable: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // ESM COMPAT FLAG
@@ -77,7 +85,7 @@ var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespa
 ;// external "twing"
 const external_twing_namespaceObject = require("twing");
 ;// ./src/constant.js
-class constant_Constant {
+class Constant {
   /**
    * @type {string}
    */
@@ -198,43 +206,48 @@ class DesignType extends AbstractConstant {
  * @type {DesignType}
  * @since Studio 1.0
  */
-const design_type_LANDINGPAGE = new DesignType('landingpage');
+const LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
  * @since Studio 1.0
  */
-const design_type_EMAIL = new DesignType('email');
+const EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
  * @since BSI CX 1.3
  */
-const design_type_WEBSITE = new DesignType('website');
+const WEBSITE = new DesignType('website');
 
 /**
  * @type {DesignType[]}
  */
-const LEGACY_TYPES = [
-  design_type_LANDINGPAGE,
-  design_type_EMAIL
-];
+const LEGACY_TYPES = (/* unused pure expression or super */ null && ([
+  LANDINGPAGE,
+  EMAIL
+]));
 
 /**
  * @type {DesignType[]}
  */
-const ALL_TYPES = [
-  design_type_LANDINGPAGE,
-  design_type_EMAIL,
-  design_type_WEBSITE
-];
+const ALL_TYPES = (/* unused pure expression or super */ null && ([
+  LANDINGPAGE,
+  EMAIL,
+  WEBSITE
+]));
 
 /**
  * @type {DesignType}
  */
-const TARGET = __webpack_require__.g[constant_Constant.BSI_CX_TARGET_TYPE];
+const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
 
 ;// ./src/utility.js
+/* unused harmony import specifier */ var path;
+/* unused harmony import specifier */ var utility_Constant;
+/* unused harmony import specifier */ var utility_LANDINGPAGE;
+/* unused harmony import specifier */ var utility_EMAIL;
+/* unused harmony import specifier */ var utility_WEBSITE;
 
 
 
@@ -268,10 +281,10 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.designType === LANDINGPAGE || config.designType === EMAIL || (config.targetVersion.legacyFormat && config.designType !== WEBSITE)) {
+  if (config.designType === utility_LANDINGPAGE || config.designType === utility_EMAIL || (config.targetVersion.legacyFormat && config.designType !== utility_WEBSITE)) {
     return '.' + pathSuffix;
   } else {
-    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+    return utility_Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
   }
 }
 
@@ -419,7 +432,7 @@ function bsiCxJsModuleImport(executionContext, config, inline) {
     template: templatePath,
     inline: inline
   };
-  let placeholder = constant_Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + constant_Constant.BSI_CX_JS_MODULE_END;
+  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
   return strToPromise(placeholder);
 }
 
@@ -439,14 +452,14 @@ const bsiCxAsset = (0,external_twing_namespaceObject.createFunction)('bsi_cx_ass
  * Get URL to the CSS asset.
  */
 const bsiCxCssHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_css_href', () => {
-  return strToPromise(constant_Constant.BSI_CX_CSS_HREF);
+  return strToPromise(Constant.BSI_CX_CSS_HREF);
 }, []);
 
 /**
  * Get the contents of the CSS asset.
  */
 const bsiCxCssInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_css_inline', () => {
-  return strToPromise(constant_Constant.BSI_CX_CSS_INLINE);
+  return strToPromise(Constant.BSI_CX_CSS_INLINE);
 }, []);
 
 /**
@@ -495,14 +508,14 @@ const bsiCxJsModuleMissingChunksInline = (0,external_twing_namespaceObject.creat
  * Get URL to the JS runtime module.
  */
 const bsiCxJsModuleRuntimeHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_runtime_href', () => {
-  return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_HREF);
+  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_HREF);
 }, []);
 
 /**
  * Get the contents of the JS runtime module.
  */
 const bsiCxJsModuleRuntimeInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_runtime_inline', () => {
-  return strToPromise(constant_Constant.BSI_CX_MODULE_RUNTIME_INLINE);
+  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
 }, []);
 
 /**
@@ -629,6 +642,7 @@ const templatePartHelper = [
 ];
 
 ;// ./src/twing-environment.js
+__webpack_require__.dn(twing_environment);
 
 
 
@@ -674,6 +688,7 @@ const templatePartHelper = [
 }
 
 ;// ./src/twing-loader.js
+__webpack_require__.dn(twing_loader);
 
 
 

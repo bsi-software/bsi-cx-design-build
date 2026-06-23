@@ -37,8 +37,7 @@ export default class TemplatePart extends AbstractBuilder {
   _prefill = {};
   /**
    * This Config is not part of the json-data.
-    * It's stored here to propagate it to the design json where the definition is stored
-   * @see {@link TemplateElement#TODO}
+   * It's stored here to propagate it to the design json where the definition is stored
    * 
    * @type {HtmlEditorConfig|undefined}
    * @private
@@ -110,8 +109,7 @@ export default class TemplatePart extends AbstractBuilder {
 
   /**
    * This Config is not part of the json-data.
-    * It's stored here to propagate it to the design json where the definition is stored
-   * @see {@link TemplateElement#TODO}
+   * It's stored here to propagate it to the design json where the definition is stored
    * 
    * @returns {HtmlEditorConfig|undefined}
    */
