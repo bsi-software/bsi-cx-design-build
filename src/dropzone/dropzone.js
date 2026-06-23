@@ -58,10 +58,10 @@ export default class Dropzone extends AbstractBuilder {
    */
   _moveAllowed = undefined;
   /**
-   * @type {Array<ScopePrefill>|undefined}
+   * @type {ScopePrefill[]}
    * @private
    */
-  _scopePrefills = undefined;
+  _scopePrefills = [];
 
   /**
    * @returns {string|undefined}
@@ -108,15 +108,23 @@ export default class Dropzone extends AbstractBuilder {
   /**
    * @returns {Array<ScopePrefill>|undefined}
    */
-  get prefillScopes() {
+  get scopePrefills() {
     return this._scopePrefills;
   }
 
-  // constructor (dropzoneId="", allowedElements=[], maxAllowedElements=0) {
-  //   this._dropzone = dropzoneId;
-  //   this._allowedElements = allowedElements;
-  //   this._maxAllowedElements = maxAllowedElements
-  // }
+  /**
+   * Constructor for Dropzone.
+   * 
+   * @param {string?} dropzoneId 
+   * @param {TemplateElement[]?} allowedElements 
+   * @param {number?} maxAllowedElements 
+   */
+  constructor (dropzoneId="", allowedElements=[], maxAllowedElements=undefined) {
+    super();
+    this._dropzone = dropzoneId;
+    this._allowedElements = allowedElements;
+    this._maxAllowedElements = maxAllowedElements;
+  }
 
   /**
    * Set the identifier of this dropzone. <strong>It is highly recommended using a
@@ -201,13 +209,25 @@ export default class Dropzone extends AbstractBuilder {
     return this;
   }
   /**
-   * TODO
-   * @param {boolean} moveAllowed - Enable or disable the move button.
+   * Define prefill for this dropzone.
+   * Scope must be identical to scope variable in template file
+   * 
+   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
    * @returns {Dropzone}
    */
   withScopePrefills(...scopePrefills) {
     this._scopePrefills = scopePrefills;
     return this;
+  }
+
+  /**
+   * Adds prefill for Dropzone to context file.
+   * 
+   * @protected
+   * @param {Object} contextFile 
+   */
+  addPrefillTo(contextFile) {
+    this.scopePrefills.forEach(scopePrefill => scopePrefill.addPrefillTo(contextFile));
   }
 
   _buildInternal() {

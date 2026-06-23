@@ -64,15 +64,15 @@ export default class TemplateElement extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[TemplatePart]|undefined}
+   * @type {RawValue|TemplatePart[]}
    * @private
    */
-  _templateParts = undefined;
+  _templateParts = [];
   /**
-   * @type {Dropzone[]|undefined}
+   * @type {Dropzone[]}
    * @private
    */
-  _dropzones = undefined;
+  _dropzones = [];
 
   /**
    * @returns {string|undefined}
@@ -525,12 +525,7 @@ export default class TemplateElement extends AbstractBuilder {
       let contextFileObj = this._contextFile[partContextId] || {};
       this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
     });
-    (this.dropzones || []).forEach((dropzone) => {
-      dropzone.prefillScopes.forEach((scope) => {
-        scope.element._loadPrefillIntoContextFile();
-        this._contextFile[scope] = scope.element.contextFile;
-      });
-    });
+    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
   }
 
   _buildInternal() {

@@ -11,6 +11,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add `bsiLoremIpsum()` function for js
 * Add functions to group for better extension: `addOrReplaceElements()`, `removeElementsWithId()`
 * Adds HTML_EDITOR_CONFIG_ID to enable editor configs for template parts
+* Add `scopePrefill` for prefilling Dropzones
+* Add shorthand `cx.Dropzone('dropzoneId', [require('elem1'), require('elem2')])`
 * Update Twing from 5.x to 7.x
 
 

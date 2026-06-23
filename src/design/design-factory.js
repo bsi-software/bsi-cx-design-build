@@ -197,26 +197,35 @@ export default class DesignFactory {
     return new Dropzone();
   }
 
-  // /**
-  //  * TODO B4
-  //  *
-  //  * @param {string} dropzoneId
-  //  * @param {Array<[ContentElement | TemplateElement]>} allowedElements
-  //  * @param {number} maxAllowedElements
-  //  * @returns {Dropzone}
-  //  */
-  // Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
-  //   return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
-  // }
+  /**
+   * Shorthand for creating a Dropzone
+   * 
+   * @example cx.Dropzone("dropzoneId-123", [require('element1'), require('element2')]) ;
+   *
+   * @param {string} dropzoneId
+   * @param {Array<[ContentElement | TemplateElement]>} allowedElements
+   * @param {number} maxAllowedElements
+   * @returns {Dropzone}
+   */
+  Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
+    return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
+  }
 
   /**
-   * TODO B4
+   * Get a new scopePrefill Object.
    * 
-   * @param {string} scope 
-   * @param {TemplateElement} element 
-   * @returns { ScopePrefill}
+   * @example cx.ScopePrefill('scopeA', require('./my-element'));
+   * 
+   * use it within the Dropzone to define the prefill
+   * 
+   * @example cx.Dropzone(..)
+   *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
+   *
+   * @param {string} scope
+   * @param {TemplateElement} element
+   * @returns {ScopePrefill}
    */
-  scopePrefill(scope, element) {
+  ScopePrefill(scope, element) {
     return new ScopePrefill(scope, element);
   }
 

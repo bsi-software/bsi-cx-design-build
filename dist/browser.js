@@ -3472,15 +3472,15 @@ class TemplateElement extends AbstractBuilder {
    */
   _styleConfigs = undefined;
   /**
-   * @type {RawValue|[TemplatePart]|undefined}
+   * @type {RawValue|TemplatePart[]}
    * @private
    */
-  _templateParts = undefined;
+  _templateParts = [];
   /**
-   * @type {Dropzone[]|undefined}
+   * @type {Dropzone[]}
    * @private
    */
-  _dropzones = undefined;
+  _dropzones = [];
 
   /**
    * @returns {string|undefined}
@@ -3933,12 +3933,7 @@ class TemplateElement extends AbstractBuilder {
       let contextFileObj = this._contextFile[partContextId] || {};
       this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
     });
-    (this.dropzones || []).forEach((dropzone) => {
-      dropzone.prefillScopes.forEach((scope) => {
-        scope.element._loadPrefillIntoContextFile();
-        this._contextFile[scope] = scope.element.contextFile;
-      });
-    });
+    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
   }
 
   _buildInternal() {
@@ -4044,10 +4039,10 @@ class Dropzone extends AbstractBuilder {
    */
   _moveAllowed = undefined;
   /**
-   * @type {Array<ScopePrefill>|undefined}
+   * @type {ScopePrefill[]}
    * @private
    */
-  _prefillScopes = undefined;
+  _scopePrefills = [];
 
   /**
    * @returns {string|undefined}
@@ -4094,15 +4089,23 @@ class Dropzone extends AbstractBuilder {
   /**
    * @returns {Array<ScopePrefill>|undefined}
    */
-  get prefillScopes() {
-    return this._prefillScopes;
+  get scopePrefills() {
+    return this._scopePrefills;
   }
 
-  // constructor (dropzoneId="", allowedElements=[], maxAllowedElements=0) {
-  //   this._dropzone = dropzoneId;
-  //   this._allowedElements = allowedElements;
-  //   this._maxAllowedElements = maxAllowedElements
-  // }
+  /**
+   * Constructor for Dropzone.
+   * 
+   * @param {string?} dropzoneId 
+   * @param {TemplateElement[]?} allowedElements 
+   * @param {number?} maxAllowedElements 
+   */
+  constructor (dropzoneId="", allowedElements=[], maxAllowedElements=undefined) {
+    super();
+    this._dropzone = dropzoneId;
+    this._allowedElements = allowedElements;
+    this._maxAllowedElements = maxAllowedElements;
+  }
 
   /**
    * Set the identifier of this dropzone. <strong>It is highly recommended using a
@@ -4185,6 +4188,27 @@ class Dropzone extends AbstractBuilder {
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
     return this;
+  }
+  /**
+   * Define prefill for this dropzone.
+   * Scope must be identical to scope variable in template file
+   * 
+   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
+   * @returns {Dropzone}
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
+    return this;
+  }
+
+  /**
+   * Adds prefill for Dropzone to context file.
+   * 
+   * @protected
+   * @param {Object} contextFile 
+   */
+  addPrefillTo(contextFile) {
+    this.scopePrefills.forEach(scopePrefill => scopePrefill.addPrefillTo(contextFile));
   }
 
   _buildInternal() {
@@ -7839,33 +7863,35 @@ class TemplatePartFactory {
 
 
 
-
-
-
-/** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
 
 /**
  * This is the builder class to specify a scope prefill for a dropzone.
  *
- * @example
- * .withDropzones(
- *   cx.dropzone
- *     .withDropzone('a5142bca-448b-40c5-bdde-942f531fcd12')
- *     .withAllowedElements(
- *       require('./content-elements/basic/text'),
- *       require('./content-elements/basic/image'))
- *     .withMaxAllowedElements(1),
- *   cx.dropzone
- *     .withDropzone('3b369b8b-f1f6-4754-bb0f-e49a46c315e1')
- *     .withAllowedElements(
- *       require('./content-elements/basic/text'),
- *       require('./content-elements/basic/image'))
- *     .withMaxAllowedElements(1))
+ * @example cx.ScopePrefill('scopeA', require('./my-element'));
+ *
+ * use it within the Dropzone to define the prefill
+ *
+ * @example cx.Dropzone(..)
+ *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
+ *
  */
 class ScopePrefill extends AbstractBuilder {
-  _scope = undefined;
-  _element = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+  _scope;
+  /**
+   * @type {TemplateElement}
+   * @private
+   */
+  _element;
+  /**
+   * @type {Object}
+   * @private
+   */
+  _overrideValues = {};
 
   constructor(scope, element) {
     super();
@@ -7884,6 +7910,45 @@ class ScopePrefill extends AbstractBuilder {
    */
   get element() {
     return this._element;
+  }
+  /**
+   * @returns {Object}
+   */
+  get overrideValues() {
+    return this._overrideValues;
+  }
+
+  /**
+   * Shorthand to overwrite prefill values within the element.
+   *
+   * @example
+   * cx.scopePrefill('scope', require('element'))
+   *   .withOverwriteValue('part-id', 'different-text')
+   *
+   * @param {string} templatePartId
+   * @param {string} value
+   * @returns {ScopePrefill}
+   */
+  withOverrideValue(templatePartId, value) {
+    this._overrideValues[templatePartId] = value;
+    return this;
+  }
+
+  /**
+   * Add scope with element to contextFile
+   * 
+   * @protected
+   * @param {Object} contextFile 
+   */
+  addPrefillTo(contextFile) {
+    this.element._loadPrefillIntoContextFile();
+    const context = this.element.contextFile;
+    let override = Object.entries(this.overrideValues);
+    override.forEach(
+      ([templatePartId, value]) =>
+        (context[templatePartId].value = value),
+    );
+    contextFile[this.scope] = context;
   }
 }
 
@@ -8297,26 +8362,35 @@ class DesignFactory {
     return new Dropzone();
   }
 
-  // /**
-  //  * TODO B4
-  //  *
-  //  * @param {string} dropzoneId
-  //  * @param {Array<[ContentElement | TemplateElement]>} allowedElements
-  //  * @param {number} maxAllowedElements
-  //  * @returns {Dropzone}
-  //  */
-  // Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
-  //   return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
-  // }
+  /**
+   * Shorthand for creating a Dropzone
+   * 
+   * @example cx.Dropzone("dropzoneId-123", [require('element1'), require('element2')]) ;
+   *
+   * @param {string} dropzoneId
+   * @param {Array<[ContentElement | TemplateElement]>} allowedElements
+   * @param {number} maxAllowedElements
+   * @returns {Dropzone}
+   */
+  Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
+    return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
+  }
 
   /**
-   * TODO B4
+   * Get a new scopePrefill Object.
    * 
-   * @param {string} scope 
-   * @param {TemplateElement} element 
-   * @returns { ScopePrefill}
+   * @example cx.ScopePrefill('scopeA', require('./my-element'));
+   * 
+   * use it within the Dropzone to define the prefill
+   * 
+   * @example cx.Dropzone(..)
+   *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
+   *
+   * @param {string} scope
+   * @param {TemplateElement} element
+   * @returns {ScopePrefill}
    */
-  scopePrefill(scope, element) {
+  ScopePrefill(scope, element) {
     return new ScopePrefill(scope, element);
   }
 
