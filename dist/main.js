@@ -1066,8 +1066,6 @@ class ValidationError extends Error {
 }
 
 ;// ./src/utility.js
-/* unused harmony import specifier */ var path;
-/* unused harmony import specifier */ var fs;
 
 
 

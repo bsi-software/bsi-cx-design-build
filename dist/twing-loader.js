@@ -77,7 +77,7 @@ var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_namespa
 ;// external "twing"
 const external_twing_namespaceObject = require("twing");
 ;// ./src/constant.js
-class Constant {
+class constant_Constant {
   /**
    * @type {string}
    */
@@ -198,48 +198,43 @@ class DesignType extends AbstractConstant {
  * @type {DesignType}
  * @since Studio 1.0
  */
-const LANDINGPAGE = new DesignType('landingpage');
+const design_type_LANDINGPAGE = new DesignType('landingpage');
 
 /**
  * @type {DesignType}
  * @since Studio 1.0
  */
-const EMAIL = new DesignType('email');
+const design_type_EMAIL = new DesignType('email');
 
 /**
  * @type {DesignType}
  * @since BSI CX 1.3
  */
-const WEBSITE = new DesignType('website');
+const design_type_WEBSITE = new DesignType('website');
 
 /**
  * @type {DesignType[]}
  */
 const LEGACY_TYPES = [
-  LANDINGPAGE,
-  EMAIL
+  design_type_LANDINGPAGE,
+  design_type_EMAIL
 ];
 
 /**
  * @type {DesignType[]}
  */
 const ALL_TYPES = [
-  LANDINGPAGE,
-  EMAIL,
-  WEBSITE
+  design_type_LANDINGPAGE,
+  design_type_EMAIL,
+  design_type_WEBSITE
 ];
 
 /**
  * @type {DesignType}
  */
-const TARGET = __webpack_require__.g[Constant.BSI_CX_TARGET_TYPE];
+const TARGET = __webpack_require__.g[constant_Constant.BSI_CX_TARGET_TYPE];
 
 ;// ./src/utility.js
-/* unused harmony import specifier */ var path;
-/* unused harmony import specifier */ var utility_Constant;
-/* unused harmony import specifier */ var utility_LANDINGPAGE;
-/* unused harmony import specifier */ var utility_EMAIL;
-/* unused harmony import specifier */ var utility_WEBSITE;
 
 
 
@@ -273,10 +268,10 @@ function buildPublicPath(config, suffix) {
 
   let pathSuffix = suffix ? path : '';
 
-  if (config.designType === utility_LANDINGPAGE || config.designType === utility_EMAIL || (config.targetVersion.legacyFormat && config.designType !== utility_WEBSITE)) {
+  if (config.designType === LANDINGPAGE || config.designType === EMAIL || (config.targetVersion.legacyFormat && config.designType !== WEBSITE)) {
     return '.' + pathSuffix;
   } else {
-    return utility_Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
+    return Constant.BSI_CX_DESIGN_BASE_URL + pathSuffix;
   }
 }
 
@@ -424,7 +419,7 @@ function bsiCxJsModuleImport(executionContext, config, inline) {
     template: templatePath,
     inline: inline
   };
-  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
+  let placeholder = constant_Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + constant_Constant.BSI_CX_JS_MODULE_END;
   return strToPromise(placeholder);
 }
 
