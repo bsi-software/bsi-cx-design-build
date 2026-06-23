@@ -4605,7 +4605,7 @@ declare module "src/dropzone/scope-prefill" {
          *
          * @example
          * cx.scopePrefill('scope', require('element'))
-         *   .withOverwriteValue('part-id', 'different-text')
+         *   .withOverrideValue('part-id', 'different-text')
          *
          * @param {string} templatePartId
          * @param {string} value

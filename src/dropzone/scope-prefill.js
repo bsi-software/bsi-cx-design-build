@@ -61,7 +61,7 @@ export default class ScopePrefill extends AbstractBuilder {
    *
    * @example
    * cx.scopePrefill('scope', require('element'))
-   *   .withOverwriteValue('part-id', 'different-text')
+   *   .withOverrideValue('part-id', 'different-text')
    *
    * @param {string} templatePartId
    * @param {string} value
