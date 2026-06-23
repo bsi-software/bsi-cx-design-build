@@ -519,8 +519,122 @@ const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lor
   let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
-  return strToPromise(phrase);
-}, [{name: 'words', defaultValue: ''}])
+    return strToPromise(phrase);
+  },
+  [{name: 'words'}],
+  {},
+);
+
+/**
+ * Helper function to create scoped template element
+ */
+const bsiTemplatePart = (0,external_twing_namespaceObject.createFunction)(
+  "template_element",
+  (elementId, scope) =>
+  strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
+  [{name: 'elementId'}, {name: 'scope', defaultValue: null}],
+  { is_safe: ["html"] },
+);
+
+/**
+ * Helper functions to create hbs variables
+ */
+const scopeVariable = (scope, partId, variable) =>
+  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+
+const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
+  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }} ${ifBlock} ${elseBlock ? "{{else}} " + elseBlock : ""} {{/if }}`);
+
+
+const templatePartHelper = [
+  (0,external_twing_namespaceObject.createFunction)(
+    "text_value",
+    (partId, scope) =>  scopeVariable(scope, partId, "value"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "formatted_html",
+    (partId, scope) => scopeVariable(scope, partId, "html"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "formatted_language",
+    (partId, scope) => scopeVariable(scope, partId, "languageTag"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "link_url",
+    (partId, scope) => scopeVariable(scope, partId, "url"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "link_text",
+    (partId, scope) => scopeVariable(scope, partId, "text"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "link_description",
+    (partId, scope) => scopeVariable(scope, partId, "description"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "if_link_target",
+    (partId, scope, ifBlock, elseBlock) =>
+      ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "image_alt",
+    (partId, scope) => scopeVariable(scope, partId, "altText"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "image_src",
+    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "image_placeholder_src",
+    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "image_srcset",
+    (partId, scope) => scopeVariable(scope, partId, "srcset"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "image_decorative",
+    (partId, scope) => scopeVariable(scope, partId, "decorative"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "if_checkbox_value",
+    (partId, scope, ifBlock, elseBlock) =>
+      ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "option_value",
+    (partId, scope) => scopeVariable(scope, partId, "value"),
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    {},
+  ),
+  // TODO: dynamic-value-list
+];
 
 ;// ./src/twing-environment.js
 
@@ -560,6 +674,15 @@ const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lor
   twing.addFunction(bsiCxJsModuleRuntimeHref);
   twing.addFunction(bsiCxJsModuleRuntimeInline);
   twing.addFunction(bsiCxLorem);
+
+  twing.addFunction(bsiTemplatePart);
+  // twing.addFunction(templatePartHelper[0]);
+  templatePartHelper.forEach(helper => twing.addFunction(helper));
+
+  // for (const [key, value] of Object.entries(globals ?? {})) {
+  //   twing.addGlobal(key, value);
+  // }
+
   return twing;
 }
 

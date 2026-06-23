@@ -4565,7 +4565,7 @@ declare module "src/dropzone/scope-prefill" {
      *
      * @example cx.ScopePrefill('scopeA', require('./my-element'));
      *
-     * use it within the Dropzone to define the prefill
+     * Use it within the Dropzone to define the prefill
      *
      * @example cx.Dropzone(..)
      *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));

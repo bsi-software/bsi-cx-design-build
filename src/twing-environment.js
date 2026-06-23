@@ -53,9 +53,9 @@ export default function (templateRoot, globals) {
   // twing.addFunction(templatePartHelper[0]);
   templatePartHelper.forEach(helper => twing.addFunction(helper));
 
-  for (const [key, value] of Object.entries(globals ?? {})) {
-    twing.addGlobal(key, value);
-  }
+  // for (const [key, value] of Object.entries(globals ?? {})) {
+  //   twing.addGlobal(key, value);
+  // }
 
   return twing;
 }

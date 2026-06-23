@@ -135,18 +135,18 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (executionContext, word
 
     return strToPromise(phrase);
   },
-  [],
+  [{name: 'words'}],
   {},
 );
 
 /**
  * Helper function to create scoped template element
  */
-export const bsiTemplatePart = new TwingFunction(
+export const bsiTemplatePart = createFunction(
   "template_element",
   (elementId, scope) =>
   strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
-  [],
+  [{name: 'elementId'}, {name: 'scope', defaultValue: null}],
   { is_safe: ["html"] },
 );
 
@@ -161,90 +161,90 @@ const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
 
 
 export const templatePartHelper = [
-  new TwingFunction(
+  createFunction(
     "text_value",
     (partId, scope) =>  scopeVariable(scope, partId, "value"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "formatted_html",
     (partId, scope) => scopeVariable(scope, partId, "html"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "formatted_language",
     (partId, scope) => scopeVariable(scope, partId, "languageTag"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "link_url",
     (partId, scope) => scopeVariable(scope, partId, "url"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "link_text",
     (partId, scope) => scopeVariable(scope, partId, "text"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "link_description",
     (partId, scope) => scopeVariable(scope, partId, "description"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "if_link_target",
     (partId, scope, ifBlock, elseBlock) =>
       ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "image_alt",
     (partId, scope) => scopeVariable(scope, partId, "altText"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "image_src",
     (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "image_placeholder_src",
     (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "image_srcset",
     (partId, scope) => scopeVariable(scope, partId, "srcset"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "image_decorative",
     (partId, scope) => scopeVariable(scope, partId, "decorative"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "if_checkbox_value",
     (partId, scope, ifBlock, elseBlock) =>
       ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
     {},
   ),
-  new TwingFunction(
+  createFunction(
     "option_value",
     (partId, scope) => scopeVariable(scope, partId, "value"),
-    [],
+    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
     {},
   ),
   // TODO: dynamic-value-list
