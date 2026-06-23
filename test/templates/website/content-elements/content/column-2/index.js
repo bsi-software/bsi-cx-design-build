@@ -17,8 +17,8 @@ module.exports = cx.templateElement
       )
       .withScopePrefills(
         cx
-          .ScopePrefill("B4", require("../template-button"))
-          .withOverrideValue("multiline-plain-text-wmiRti", "Benni"),
+          .ScopePrefill("buttonLeft", require("../template-button"))
+          .withOverrideValue("multiline-plain-text-wmiRti", "Andere Info"),
       ),
     cx.dropzone
       .withDropzone("5971732b-bf41-493d-a678-0fce1a2b5771")

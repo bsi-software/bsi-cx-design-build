@@ -7942,7 +7942,7 @@ class ScopePrefill extends AbstractBuilder {
    */
   addPrefillTo(contextFile) {
     this.element._loadPrefillIntoContextFile();
-    const context = this.element.contextFile;
+    const context = JSON.parse(JSON.stringify(this.element.contextFile));
     let override = Object.entries(this.overrideValues);
     override.forEach(
       ([templatePartId, value]) =>
