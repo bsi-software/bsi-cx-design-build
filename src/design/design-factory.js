@@ -346,6 +346,32 @@ export default class DesignFactory {
   }
 
   /**
+   * Create a new style configuration.
+   * CssClasses can be specified as an object with the css class as key and the label as value.
+   * @see {@link Style#withCssClassObject} to set a css class object
+   *
+   * @example
+   * module.exports = cx.Style('Text Color', 'text-color-id', {
+   *   'text-red': 'Red',
+   *   'text-blue': 'Blue'
+   * });
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {Object?} cssClassObject 
+   * @returns {Style}
+   */
+  Style(label, id, cssClassObject) {
+    let styleConfig = new Style();
+    styleConfig.withLabel(label);
+    styleConfig.withIdentifier(id);
+    if (cssClassObject) {
+      styleConfig.withCssClassObject(cssClassObject);
+    }
+    return styleConfig;
+  }
+
+  /**
    * Get a new css class builder instance.
    *
    * @example

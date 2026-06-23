@@ -4629,7 +4629,116 @@ class HtmlEditorConfig extends AbstractBuilder {
   }
 }
 
+;// ./src/style/css-class.js
+
+
+
+
+/** @typedef {import('./style').default} Style */
+
+/**
+ * This is the builder class for css class objects (required by the {@link Style|style} configuration object).
+ *
+ * @example
+ * module.exports = cx.style
+ *   .withIdentifier('text-color')
+ *   .withLabel('Text Color')
+ *   .withCssClasses(
+ *     cx.cssClass
+ *       .withCssClass('text-red')
+ *       .withLabel('Red'),
+ *     cx.cssClass
+ *       .withCssClass('text-blue')
+ *       .withLabel('Blue'));
+ * @since Studio 1.1
+ */
+class CssClass extends AbstractBuilder {
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _cssClass = undefined;
+  /**
+   * @type {string|NLS|undefined}
+   * @private
+   */
+  _label = undefined;
+
+  /**
+   * @returns {string|undefined}
+   */
+  get cssClass() {
+    return this._cssClass;
+  }
+
+  /**
+   * @returns {string|NLS|undefined}
+   */
+  get label() {
+    return this._label;
+  }
+
+  /**
+   * Specify the CSS class to use.
+   *
+   * @example
+   * .withCssClass('text-red')
+   * @param {string} cssClass - The CSS class to use.
+   * @returns {CssClass}
+   */
+  withCssClass(cssClass) {
+    this._cssClass = cssClass;
+    return this;
+  }
+
+  /**
+   * Specify the label to use with this CSS class.
+   *
+   * @param {string|NLS} label - The label to use.
+   * @returns {CssClass}
+   */
+  withLabel(label) {
+    this._label = label;
+    return this;
+  }
+
+  _buildInternal() {
+    let config = {};
+
+    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
+    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
+
+    return config;
+  }
+
+  /**
+   * Clone the configuration.
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {CssClass}
+   */
+  clone(shallow) {
+    return this._clone(new CssClass(), shallow);
+  }
+
+  /**
+   * Static helper method to create a new CSS class object.
+   *
+   * @example
+   * CssClass.create('text-red','Red')
+   * @param {string} cssClass - The CSS class to use.
+   * @param {string} label - The label to use.
+   * @returns {CssClass}
+   */
+  static create(cssClass, label) {
+    return new CssClass()
+      .withCssClass(cssClass)
+      .withLabel(label);
+  }
+}
+
 ;// ./src/style/style.js
+
 
 
 
@@ -4786,6 +4895,26 @@ class Style extends AbstractBuilder {
   }
 
   /**
+   * Specify the css classes to use with this style configuration.
+   *
+   * @example
+   * .withCssClassObject( {
+   *   'text-red': 'Rot',
+   *   'text-blue': 'Blau'
+   * })
+   *
+   * @see {@link withCssClasses} to set s css
+   * @param {Object} cssClassObject - The css classes to use.
+   * @returns {Style}
+   */
+  withCssClassObject(cssClassObject) {
+    this._cssClasses = Object.entries(cssClassObject).map(([cssClass, label]) =>
+      CssClass.create(cssClass, label),
+    );
+    return this;
+  }
+
+  /**
    * Set the raw css classes to use with this style.
    *
    * @example
@@ -4900,114 +5029,6 @@ class Style extends AbstractBuilder {
    */
   clone(shallow) {
     return this._clone(new Style(), shallow);
-  }
-}
-
-;// ./src/style/css-class.js
-
-
-
-
-/** @typedef {import('./style').default} Style */
-
-/**
- * This is the builder class for css class objects (required by the {@link Style|style} configuration object).
- *
- * @example
- * module.exports = cx.style
- *   .withIdentifier('text-color')
- *   .withLabel('Text Color')
- *   .withCssClasses(
- *     cx.cssClass
- *       .withCssClass('text-red')
- *       .withLabel('Red'),
- *     cx.cssClass
- *       .withCssClass('text-blue')
- *       .withLabel('Blue'));
- * @since Studio 1.1
- */
-class CssClass extends AbstractBuilder {
-  /**
-   * @type {string|undefined}
-   * @private
-   */
-  _cssClass = undefined;
-  /**
-   * @type {string|NLS|undefined}
-   * @private
-   */
-  _label = undefined;
-
-  /**
-   * @returns {string|undefined}
-   */
-  get cssClass() {
-    return this._cssClass;
-  }
-
-  /**
-   * @returns {string|NLS|undefined}
-   */
-  get label() {
-    return this._label;
-  }
-
-  /**
-   * Specify the CSS class to use.
-   *
-   * @example
-   * .withCssClass('text-red')
-   * @param {string} cssClass - The CSS class to use.
-   * @returns {CssClass}
-   */
-  withCssClass(cssClass) {
-    this._cssClass = cssClass;
-    return this;
-  }
-
-  /**
-   * Specify the label to use with this CSS class.
-   *
-   * @param {string|NLS} label - The label to use.
-   * @returns {CssClass}
-   */
-  withLabel(label) {
-    this._label = label;
-    return this;
-  }
-
-  _buildInternal() {
-    let config = {};
-
-    this._applyPropertyIfDefined(DesignJsonProperty.CSS_CLASS, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
-
-    return config;
-  }
-
-  /**
-   * Clone the configuration.
-   *
-   * @param {boolean} [shallow=true] - Create a shallow clone.
-   * @returns {CssClass}
-   */
-  clone(shallow) {
-    return this._clone(new CssClass(), shallow);
-  }
-
-  /**
-   * Static helper method to create a new CSS class object.
-   *
-   * @example
-   * CssClass.create('text-red','Red')
-   * @param {string} cssClass - The CSS class to use.
-   * @param {string} label - The label to use.
-   * @returns {CssClass}
-   */
-  static create(cssClass, label) {
-    return new CssClass()
-      .withCssClass(cssClass)
-      .withLabel(label);
   }
 }
 
@@ -7850,28 +7871,38 @@ class TemplatePartFactory {
    * Options must not be null.
    * All variables here define the options for the Content Editor.
    * The content is prefilled by the `.withOptionPrefill()` function.
-   * 
-   * @example cx.templatePart.Option("Button Style", "button-style-abc123", ["Primär": "primary", "Sekundär Outline": "secondary-outline", "Outline dark": "outline-dark"]).withOptionPrefill(...)
+   *
+   * @example cx.templatePart.Option("Button Style", "button-style-abc123", {"primary": "Primär", "secondary-outline": "Sekundär Outline", "outline-dark": "Outline dark"}).withOptionPrefill(...)
    *
    * @param {string} label
    * @param {string} partContextId
-   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { "Ja": "Yes", "Nein": "No" }
+   * @param {options[]} options - mandatory - [{"text": "Ja", "value": "yes"}, {"text": "Nein", "value": "no"}] or { yes: "Ja", no: "Nein" }
    * @returns {TemplatePart}
    */
   Option(label, partContextId, options) {
-    var part = new TemplatePart('option', label, partContextId);
+    var part = new TemplatePart("option", label, partContextId);
+    // map options object to array
+    if (typeof options === "object") {
+      options = Object.entries(options).map(([value, text]) => ({
+        text: text,
+        value: value,
+      }));
+    }
+
     // Error handling: Validates the given array of option objects.
     // Ensures that both "text" and "value" fields are unique.
     // Duplicate "text" or "value" entries are not allowed and will throw an error.
-    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
-    if(new Set(options.map(option => option.text)).size !== options.length) {
-      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+    let keyIsNotUnique = (objArray, key) =>
+      new Set(objArray.map((obj) => obj[key])).size !== objArray.length;
+    let optionString = options
+      .map((option) => `{ text: ${option.text}, value: ${option.value} }`)
+      .join(", ");
+    if (keyIsNotUnique(options, "text")) {
       throw new Error(`text in ${optionString} have to be unique`);
-    };
-    if(new Set(options.map(option => option.value)).size !== options.length) {
-      let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
+    }
+    if (keyIsNotUnique(options, "value")) {
       throw new Error(`value in ${optionString} have to be unique`);
-    };
+    }
 
     part = part.addConfigValueIfNotNull(DesignJsonProperty.OPTIONS, options);
     return part;
@@ -8559,6 +8590,32 @@ class DesignFactory {
    */
   get style() {
     return new Style();
+  }
+
+  /**
+   * Create a new style configuration.
+   * CssClasses can be specified as an object with the css class as key and the label as value.
+   * @see {@link Style#withCssClassObject} to set a css class object
+   *
+   * @example
+   * module.exports = cx.Style('Text Color', 'text-color-id', {
+   *   'text-red': 'Red',
+   *   'text-blue': 'Blue'
+   * });
+   *
+   * @param {string} label
+   * @param {string} id
+   * @param {Object?} cssClassObject 
+   * @returns {Style}
+   */
+  Style(label, id, cssClassObject) {
+    let styleConfig = new Style();
+    styleConfig.withLabel(label);
+    styleConfig.withIdentifier(id);
+    if (cssClassObject) {
+      styleConfig.withCssClassObject(cssClassObject);
+    }
+    return styleConfig;
   }
 
   /**
