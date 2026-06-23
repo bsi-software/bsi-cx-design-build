@@ -37,7 +37,7 @@ export default class TemplatePart extends AbstractBuilder {
   _prefill = {};
   /**
    * This Config is not part of the json-data.
-   * It's stored here to propagate it to the design json where the definiton is stored
+    * It's stored here to propagate it to the design json where the definition is stored
    * @see {@link TemplateElement#TODO}
    * 
    * @type {HtmlEditorConfig|undefined}
@@ -110,7 +110,7 @@ export default class TemplatePart extends AbstractBuilder {
 
   /**
    * This Config is not part of the json-data.
-   * It's stored here to propagate it to the design json where the definiton is stored
+    * It's stored here to propagate it to the design json where the definition is stored
    * @see {@link TemplateElement#TODO}
    * 
    * @returns {HtmlEditorConfig|undefined}
@@ -286,7 +286,7 @@ export default class TemplatePart extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
-    // Add HtmlEdiorConfig as MetaProperty
+    // Add HtmlEditorConfig as meta property
     if(this.htmlEditorConfig){
       this._applyMetaPropertyFromValue(DesignJsonProperty.HTML_EDITOR_CONFIG, config, this.htmlEditorConfig);
     }
