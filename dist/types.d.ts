@@ -4407,6 +4407,636 @@ declare module "src/content-element/part/part" {
     }
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/html-editor-config/enter-mode" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+    export class EnterMode extends AbstractConstant {
+    }
+    /**
+     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const P: EnterMode;
+    /**
+     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const BR: EnterMode;
+    /**
+     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
+     *
+     * @see {@link HtmlEditorConfig#withEnterMode}
+     * @type {EnterMode}
+     */
+    export const DIV: EnterMode;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/feature" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+    export class Feature extends AbstractConstant {
+    }
+    /**
+     * Bold formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const BOLD: Feature;
+    /**
+     * Italic formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const ITALIC: Feature;
+    /**
+     * Underline formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const UNDERLINE: Feature;
+    /**
+     * Strike trough formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const STRIKE_THROUGH: Feature;
+    /**
+     * Subscript formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const SUBSCRIPT: Feature;
+    /**
+     * Superscript formatting option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const SUPERSCRIPT: Feature;
+    /**
+     * Set the font size in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizes}
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const FONT_SIZE: Feature;
+    /**
+     * Set the line height in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withLineHeights}
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const LINE_HEIGHT: Feature;
+    /**
+     * Set the text color in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withTextColors}
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const TEXT_COLOR: Feature;
+    /**
+     * Set the background color in the editor.
+     *
+     * @see {@link HtmlEditorConfig#withBackgroundColors}
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const BACKGROUND_COLOR: Feature;
+    /**
+     * Align the text left.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const ALIGN_LEFT: Feature;
+    /**
+     * Align the text center.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const ALIGN_CENTER: Feature;
+    /**
+     * Align the text right.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const ALIGN_RIGHT: Feature;
+    /**
+     * Align the text justify.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const ALIGN_JUSTIFY: Feature;
+    /**
+     * Create an ordered list.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const FORMAT_OL: Feature;
+    /**
+     * Create an unordered list.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const FORMAT_UL: Feature;
+    /**
+     * Outdent the text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const OUTDENT: Feature;
+    /**
+     * Indent the text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const INDENT: Feature;
+    /**
+     * Enable paragraph format options.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const PARAGRAPH_FORMAT: Feature;
+    /**
+     * Quote the text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const QUOTE: Feature;
+    /**
+     * Insert special characters.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const SPECIAL_CHARACTERS: Feature;
+    /**
+     * Insert emoticons.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const EMOTICONS: Feature;
+    /**
+     * Insert a link.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const INSERT_LINK: Feature;
+    /**
+     * Clear all applied styles and formatting.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const CLEAR_FORMATTING: Feature;
+    /**
+     * Undo the previous action.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const UNDO: Feature;
+    /**
+     * Redo the previous action.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const REDO: Feature;
+    /**
+     * Show the editor in fullscreen mode.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const FULLSCREEN: Feature;
+    /**
+     * Select all text.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const SELECT_ALL: Feature;
+    /**
+     * Edit the raw HTML code.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const HTML: Feature;
+    /**
+     * Show the editor help.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const HELP: Feature;
+    /**
+     * Show the cx link option.
+     *
+     * @see {@link HtmlEditorConfig#withFeatures}
+     * @type {Feature}
+     */
+    export const STUDIO_LINK: Feature;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/format" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+    export class Format extends AbstractConstant {
+    }
+    /**
+     * Allow <code>&lt;p&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const P: Format;
+    /**
+     * Allow <code>&lt;h1&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const H1: Format;
+    /**
+     * Allow <code>&lt;h2&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const H2: Format;
+    /**
+     * Allow <code>&lt;h3&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const H3: Format;
+    /**
+     * Allow <code>&lt;h4&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const H4: Format;
+    /**
+     * Allow <code>&lt;h5&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const H5: Format;
+    /**
+     * Allow <code>&lt;h6&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const H6: Format;
+    /**
+     * Allow <code>&lt;pre&gt;</code> tags.
+     *
+     * @see {@link HtmlEditorConfig#withFormats}
+     * @type {Format}
+     */
+    export const PRE: Format;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/font-size-unit" {
+    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
+    export class FontSizeUnit extends AbstractConstant {
+    }
+    /**
+     * Font sizes as pixel values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const PX: FontSizeUnit;
+    /**
+     * Font sizes as em values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const EM: FontSizeUnit;
+    /**
+     * Font sizes as rem values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const REM: FontSizeUnit;
+    /**
+     * Font sizes as pt values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const PT: FontSizeUnit;
+    /**
+     * Font sizes as cm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const CM: FontSizeUnit;
+    /**
+     * Font sizes as mm values.
+     *
+     * @see {@link HtmlEditorConfig#withFontSizeUnit}
+     * @type {FontSizeUnit}
+     */
+    export const MM: FontSizeUnit;
+    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
+    import AbstractConstant from "src/abstract-constant";
+}
+declare module "src/html-editor-config/html-editor-config" {
+    /** @typedef {import('./enter-mode').EnterMode} EnterMode */
+    /** @typedef {import('./feature').Feature} Feature */
+    /** @typedef {import('./format').Format} Format */
+    /** @typedef {import('./font-size-unit').FontSizeUnit} FontSizeUnit */
+    /**
+     * This is the builder class to specify a HTML editor configuration.
+     *
+     * @example
+     * module.exports = cx.htmlEditorConfig
+     *   .withIdentifier('minimal')
+     *   .withRawEnterMode('p')
+     *   .withFeatures(
+     *     Feature.BOLD,
+     *     Feature.ITALIC,
+     *     Feature.UNDERLINE);
+     */
+    export default class HtmlEditorConfig extends AbstractBuilder {
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        private _identifier;
+        /**
+         * @type {RawValue|Feature[]|undefined}
+         * @private
+         */
+        private _features;
+        /**
+         * @type {string[]|undefined}
+         * @private
+         */
+        private _textColors;
+        /**
+         * @type {string[]|undefined}
+         * @private
+         */
+        private _backgroundColors;
+        /**
+         * @type {RawValue|Format[]|undefined}
+         * @private
+         */
+        private _formats;
+        /**
+         * @type {number[]|undefined}
+         * @private
+         */
+        private _fontSizes;
+        /**
+         * @type {RawValue|FontSizeUnit|undefined}
+         * @private
+         */
+        private _fontSizeUnit;
+        /**
+         * @type {number|undefined}
+         * @private
+         */
+        private _fontSizeDefault;
+        /**
+         * @type {number[]|undefined}
+         * @private
+         */
+        private _lineHeights;
+        /**
+         * @type {RawValue|EnterMode|undefined}
+         * @private
+         */
+        private _enterMode;
+        /**
+         * @returns {string|undefined}
+         */
+        get identifier(): string | undefined;
+        /**
+         * @returns {RawValue|Feature[]|undefined}
+         */
+        get features(): RawValue | Feature[] | undefined;
+        /**
+         * @returns {string[]|undefined}
+         */
+        get textColors(): string[] | undefined;
+        /**
+         * @returns {string[]|undefined}
+         */
+        get backgroundColors(): string[] | undefined;
+        /**
+         * @returns {RawValue|Format[]|undefined}
+         */
+        get formats(): RawValue | Format[] | undefined;
+        /**
+         * @returns {number[]|undefined}
+         */
+        get fontSizes(): number[] | undefined;
+        /**
+         * @returns {RawValue|FontSizeUnit|undefined}
+         */
+        get fontSizeUnit(): RawValue | FontSizeUnit | undefined;
+        /**
+         * @returns {number|undefined}
+         */
+        get fontSizeDefault(): number | undefined;
+        /**
+         * @returns {number[]|undefined}
+         */
+        get lineHeights(): number[] | undefined;
+        /**
+         * @returns {RawValue|EnterMode|undefined}
+         */
+        get enter(): RawValue | EnterMode | undefined;
+        /**
+         * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
+         * It is recommended to set the identifier.
+         *
+         * @param {string} identifier - The unique identifier for this editor config.
+         * @returns {HtmlEditorConfig}
+         */
+        withIdentifier(identifier: string): HtmlEditorConfig;
+        /**
+         * The features enable in this HTML editor configuration.
+         *
+         * @example
+         * .withFeatures(Feature.ITALIC, Feature.BOLD, Feature.UNDERLINE)
+         * @see {@link Feature} for available features
+         * @see {@link withRawFeatures} to set a raw value
+         * @param {...Feature} features - The features to enable.
+         * @returns {HtmlEditorConfig}
+         */
+        withFeatures(...features: Feature[]): HtmlEditorConfig;
+        /**
+         * Set the raw <code>features</code> property.
+         *
+         * @example
+         * .withRawFeatures('bold', 'italic', 'underline')
+         * @see {@link withFeatures}
+         * @param {...string} features - The raw features to enable.
+         * @returns {HtmlEditorConfig}
+         */
+        withRawFeatures(...features: string[]): HtmlEditorConfig;
+        /**
+         * Set the available text colors. Specify the colors in the hexadecimal format.
+         *
+         * @example
+         * .withTextColors('#ff00ff', '#ff0000', '#00ff00')
+         * @see {@link TEXT_COLOR} to enable the feature
+         * @param {...string} textColors - The text colors to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withTextColors(...textColors: string[]): HtmlEditorConfig;
+        /**
+         * Set the available background colors. Specify the colors in the hexadecimal format.
+         *
+         * @example
+         * .withBackgroundColors('#ff00ff', '#ff0000', '#00ff00')
+         * @see {@link BACKGROUND_COLOR} to enable the feature
+         * @param {...string} backgroundColors - The background colors to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withBackgroundColors(...backgroundColors: string[]): HtmlEditorConfig;
+        /**
+         * Specify the available formats.
+         *
+         * @example
+         * .withFormats(Format.P, Format.PRE)
+         * @see {@link Format} for available formats
+         * @see {@link withRawFormats} to set a raw value
+         * @param {...Format} formats - The formats to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withFormats(...formats: Format[]): HtmlEditorConfig;
+        /**
+         * Specify a raw value for the <code>formats</code> field.
+         *
+         * @example
+         * .withRawFormats('p', 'pre')
+         * @see {@link withFormats}
+         * @param {...string} formats - The raw formats to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withRawFormats(...formats: string[]): HtmlEditorConfig;
+        /**
+         * Specify the available font sizes.
+         *
+         * @example
+         * .withFontSizes(12, 13, 14, 15, 16)
+         * @see {@link FONT_SIZE} to enable this feature
+         * @param {...number} fontSizes - The font sizes to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withFontSizes(...fontSizes: number[]): HtmlEditorConfig;
+        /**
+         * Specify the font size unit to use.
+         *
+         * @example
+         * .withFontSizeUnit(FontSizeUnit.PX)
+         * @see {@link withRawFontSizeUnit} to set the raw value
+         * @param {FontSizeUnit} fontSizeUnit - The font size unit to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
+        /**
+         * Set the raw value for the <code>fontSizeUnit</code> property.
+         *
+         * @example
+         * .withRawFontSizeUnit('px')
+         * @see {@link withFontSizeUnit}
+         * @param {string} fontSizeUnit - The raw font size unit to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withRawFontSizeUnit(fontSizeUnit: string): HtmlEditorConfig;
+        /**
+         * Set the default font size to use.
+         *
+         * @example
+         * .withFontSizeDefault(16)
+         * @param {number} fontSizeDefault - The default font size to set.
+         * @returns {HtmlEditorConfig}
+         */
+        withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
+        /**
+         * Set the available line heights.
+         *
+         * @example
+         * .withLineHeights(1, 1.15 , 1.5, 2)
+         * @see {@link LINE_HEIGHT} to enable this feature
+         * @param {...number} lineHeights - The line heights.
+         * @returns {HtmlEditorConfig}
+         */
+        withLineHeights(...lineHeights: number[]): HtmlEditorConfig;
+        /**
+         * Define the enter mode to use.
+         *
+         * @example
+         * .withEnterMode(EnterMode.P)
+         * @see {@link withRawEnterMode} to set the raw value
+         * @param {EnterMode} enterMode - The enter mode.
+         * @returns {HtmlEditorConfig}
+         */
+        withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
+        /**
+         * Set the raw enter mode.
+         *
+         * @example
+         * .withRawEnterMode('p')
+         * @param {string} enterMode - The raw enter mode.
+         * @returns {HtmlEditorConfig}
+         */
+        withRawEnterMode(enterMode: string): HtmlEditorConfig;
+        /**
+         * Clone the configuration.
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {HtmlEditorConfig}
+         */
+        clone(shallow?: boolean): HtmlEditorConfig;
+    }
+    export type EnterMode = import("src/html-editor-config/enter-mode").EnterMode;
+    export type Feature = import("src/html-editor-config/feature").Feature;
+    export type Format = import("src/html-editor-config/format").Format;
+    export type FontSizeUnit = import("src/html-editor-config/font-size-unit").FontSizeUnit;
+    import AbstractBuilder from "src/abstract-builder";
+    import RawValue from "src/raw-value";
+}
 declare module "src/content-element/template-part/template-part" {
     export default class TemplatePart extends AbstractBuilder {
         /**
@@ -4445,6 +5075,15 @@ declare module "src/content-element/template-part/template-part" {
          */
         private _prefill;
         /**
+         * This Config is not part of the json-data.
+         * It's stored here to propagate it to the design json where the definiton is stored
+         * @see {@link TemplateElement#TODO}
+         *
+         * @type {HtmlEditorConfig|undefined}
+         * @private
+         */
+        private _htmlEditorConfig;
+        /**
          * @returns {string}
          */
         get partContextId(): string;
@@ -4468,6 +5107,23 @@ declare module "src/content-element/template-part/template-part" {
          * @returns {{}|undefined}
          */
         get prefill(): {} | undefined;
+        /**
+         * This Config is not part of the json-data.
+         * It's stored here to propagate it to the design json where the definiton is stored
+         * @see {@link TemplateElement#TODO}
+         *
+         * @returns {HtmlEditorConfig|undefined}
+         */
+        get htmlEditorConfig(): HtmlEditorConfig | undefined;
+        /**
+         * Used internally
+         * Set the htmlEditorConfig like this:
+         * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123", require('../my-html-editor-config.js'))
+         *
+         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @returns {this}
+         */
+        withHtmlEditorConfig(htmlEditorConfig: HtmlEditorConfig): this;
         /**
          * Add new key-value pair to config object
          * No changes if value == null
@@ -4557,6 +5213,7 @@ declare module "src/content-element/template-part/template-part" {
         withRawPrefill(prefill: any): this;
     }
     import AbstractBuilder from "src/abstract-builder";
+    import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
 declare module "src/dropzone/scope-prefill" {
     /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -5758,636 +6415,6 @@ declare module "src/content-element/content-element" {
     export type Part = import("src/content-element/part/part").Part;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
-    import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
-}
-declare module "src/html-editor-config/enter-mode" {
-    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
-    export class EnterMode extends AbstractConstant {
-    }
-    /**
-     * Wrap paragraphs with <code>&lt;p&gt;&lt;/p&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const P: EnterMode;
-    /**
-     * Add a <code>&lt;/br&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const BR: EnterMode;
-    /**
-     * Wrap paragraphs with <code>&lt;div&gt;&lt;/div&gt;</code> on a line feed in the HTML editor.
-     *
-     * @see {@link HtmlEditorConfig#withEnterMode}
-     * @type {EnterMode}
-     */
-    export const DIV: EnterMode;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/feature" {
-    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
-    export class Feature extends AbstractConstant {
-    }
-    /**
-     * Bold formatting option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const BOLD: Feature;
-    /**
-     * Italic formatting option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const ITALIC: Feature;
-    /**
-     * Underline formatting option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const UNDERLINE: Feature;
-    /**
-     * Strike trough formatting option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const STRIKE_THROUGH: Feature;
-    /**
-     * Subscript formatting option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const SUBSCRIPT: Feature;
-    /**
-     * Superscript formatting option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const SUPERSCRIPT: Feature;
-    /**
-     * Set the font size in the editor.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizes}
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const FONT_SIZE: Feature;
-    /**
-     * Set the line height in the editor.
-     *
-     * @see {@link HtmlEditorConfig#withLineHeights}
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const LINE_HEIGHT: Feature;
-    /**
-     * Set the text color in the editor.
-     *
-     * @see {@link HtmlEditorConfig#withTextColors}
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const TEXT_COLOR: Feature;
-    /**
-     * Set the background color in the editor.
-     *
-     * @see {@link HtmlEditorConfig#withBackgroundColors}
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const BACKGROUND_COLOR: Feature;
-    /**
-     * Align the text left.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const ALIGN_LEFT: Feature;
-    /**
-     * Align the text center.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const ALIGN_CENTER: Feature;
-    /**
-     * Align the text right.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const ALIGN_RIGHT: Feature;
-    /**
-     * Align the text justify.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const ALIGN_JUSTIFY: Feature;
-    /**
-     * Create an ordered list.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const FORMAT_OL: Feature;
-    /**
-     * Create an unordered list.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const FORMAT_UL: Feature;
-    /**
-     * Outdent the text.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const OUTDENT: Feature;
-    /**
-     * Indent the text.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const INDENT: Feature;
-    /**
-     * Enable paragraph format options.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const PARAGRAPH_FORMAT: Feature;
-    /**
-     * Quote the text.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const QUOTE: Feature;
-    /**
-     * Insert special characters.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const SPECIAL_CHARACTERS: Feature;
-    /**
-     * Insert emoticons.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const EMOTICONS: Feature;
-    /**
-     * Insert a link.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const INSERT_LINK: Feature;
-    /**
-     * Clear all applied styles and formatting.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const CLEAR_FORMATTING: Feature;
-    /**
-     * Undo the previous action.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const UNDO: Feature;
-    /**
-     * Redo the previous action.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const REDO: Feature;
-    /**
-     * Show the editor in fullscreen mode.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const FULLSCREEN: Feature;
-    /**
-     * Select all text.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const SELECT_ALL: Feature;
-    /**
-     * Edit the raw HTML code.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const HTML: Feature;
-    /**
-     * Show the editor help.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const HELP: Feature;
-    /**
-     * Show the cx link option.
-     *
-     * @see {@link HtmlEditorConfig#withFeatures}
-     * @type {Feature}
-     */
-    export const STUDIO_LINK: Feature;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/format" {
-    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
-    export class Format extends AbstractConstant {
-    }
-    /**
-     * Allow <code>&lt;p&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const P: Format;
-    /**
-     * Allow <code>&lt;h1&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const H1: Format;
-    /**
-     * Allow <code>&lt;h2&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const H2: Format;
-    /**
-     * Allow <code>&lt;h3&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const H3: Format;
-    /**
-     * Allow <code>&lt;h4&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const H4: Format;
-    /**
-     * Allow <code>&lt;h5&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const H5: Format;
-    /**
-     * Allow <code>&lt;h6&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const H6: Format;
-    /**
-     * Allow <code>&lt;pre&gt;</code> tags.
-     *
-     * @see {@link HtmlEditorConfig#withFormats}
-     * @type {Format}
-     */
-    export const PRE: Format;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/font-size-unit" {
-    /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
-    export class FontSizeUnit extends AbstractConstant {
-    }
-    /**
-     * Font sizes as pixel values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const PX: FontSizeUnit;
-    /**
-     * Font sizes as em values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const EM: FontSizeUnit;
-    /**
-     * Font sizes as rem values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const REM: FontSizeUnit;
-    /**
-     * Font sizes as pt values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const PT: FontSizeUnit;
-    /**
-     * Font sizes as cm values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const CM: FontSizeUnit;
-    /**
-     * Font sizes as mm values.
-     *
-     * @see {@link HtmlEditorConfig#withFontSizeUnit}
-     * @type {FontSizeUnit}
-     */
-    export const MM: FontSizeUnit;
-    export type HtmlEditorConfig = import("src/html-editor-config/html-editor-config").default;
-    import AbstractConstant from "src/abstract-constant";
-}
-declare module "src/html-editor-config/html-editor-config" {
-    /** @typedef {import('./enter-mode').EnterMode} EnterMode */
-    /** @typedef {import('./feature').Feature} Feature */
-    /** @typedef {import('./format').Format} Format */
-    /** @typedef {import('./font-size-unit').FontSizeUnit} FontSizeUnit */
-    /**
-     * This is the builder class to specify a HTML editor configuration.
-     *
-     * @example
-     * module.exports = cx.htmlEditorConfig
-     *   .withIdentifier('minimal')
-     *   .withRawEnterMode('p')
-     *   .withFeatures(
-     *     Feature.BOLD,
-     *     Feature.ITALIC,
-     *     Feature.UNDERLINE);
-     */
-    export default class HtmlEditorConfig extends AbstractBuilder {
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        private _identifier;
-        /**
-         * @type {RawValue|Feature[]|undefined}
-         * @private
-         */
-        private _features;
-        /**
-         * @type {string[]|undefined}
-         * @private
-         */
-        private _textColors;
-        /**
-         * @type {string[]|undefined}
-         * @private
-         */
-        private _backgroundColors;
-        /**
-         * @type {RawValue|Format[]|undefined}
-         * @private
-         */
-        private _formats;
-        /**
-         * @type {number[]|undefined}
-         * @private
-         */
-        private _fontSizes;
-        /**
-         * @type {RawValue|FontSizeUnit|undefined}
-         * @private
-         */
-        private _fontSizeUnit;
-        /**
-         * @type {number|undefined}
-         * @private
-         */
-        private _fontSizeDefault;
-        /**
-         * @type {number[]|undefined}
-         * @private
-         */
-        private _lineHeights;
-        /**
-         * @type {RawValue|EnterMode|undefined}
-         * @private
-         */
-        private _enterMode;
-        /**
-         * @returns {string|undefined}
-         */
-        get identifier(): string | undefined;
-        /**
-         * @returns {RawValue|Feature[]|undefined}
-         */
-        get features(): RawValue | Feature[] | undefined;
-        /**
-         * @returns {string[]|undefined}
-         */
-        get textColors(): string[] | undefined;
-        /**
-         * @returns {string[]|undefined}
-         */
-        get backgroundColors(): string[] | undefined;
-        /**
-         * @returns {RawValue|Format[]|undefined}
-         */
-        get formats(): RawValue | Format[] | undefined;
-        /**
-         * @returns {number[]|undefined}
-         */
-        get fontSizes(): number[] | undefined;
-        /**
-         * @returns {RawValue|FontSizeUnit|undefined}
-         */
-        get fontSizeUnit(): RawValue | FontSizeUnit | undefined;
-        /**
-         * @returns {number|undefined}
-         */
-        get fontSizeDefault(): number | undefined;
-        /**
-         * @returns {number[]|undefined}
-         */
-        get lineHeights(): number[] | undefined;
-        /**
-         * @returns {RawValue|EnterMode|undefined}
-         */
-        get enter(): RawValue | EnterMode | undefined;
-        /**
-         * Set an unique identifier for the editor configuration. If not set, a UUID v4 will be used.
-         * It is recommended to set the identifier.
-         *
-         * @param {string} identifier - The unique identifier for this editor config.
-         * @returns {HtmlEditorConfig}
-         */
-        withIdentifier(identifier: string): HtmlEditorConfig;
-        /**
-         * The features enable in this HTML editor configuration.
-         *
-         * @example
-         * .withFeatures(Feature.ITALIC, Feature.BOLD, Feature.UNDERLINE)
-         * @see {@link Feature} for available features
-         * @see {@link withRawFeatures} to set a raw value
-         * @param {...Feature} features - The features to enable.
-         * @returns {HtmlEditorConfig}
-         */
-        withFeatures(...features: Feature[]): HtmlEditorConfig;
-        /**
-         * Set the raw <code>features</code> property.
-         *
-         * @example
-         * .withRawFeatures('bold', 'italic', 'underline')
-         * @see {@link withFeatures}
-         * @param {...string} features - The raw features to enable.
-         * @returns {HtmlEditorConfig}
-         */
-        withRawFeatures(...features: string[]): HtmlEditorConfig;
-        /**
-         * Set the available text colors. Specify the colors in the hexadecimal format.
-         *
-         * @example
-         * .withTextColors('#ff00ff', '#ff0000', '#00ff00')
-         * @see {@link TEXT_COLOR} to enable the feature
-         * @param {...string} textColors - The text colors to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withTextColors(...textColors: string[]): HtmlEditorConfig;
-        /**
-         * Set the available background colors. Specify the colors in the hexadecimal format.
-         *
-         * @example
-         * .withBackgroundColors('#ff00ff', '#ff0000', '#00ff00')
-         * @see {@link BACKGROUND_COLOR} to enable the feature
-         * @param {...string} backgroundColors - The background colors to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withBackgroundColors(...backgroundColors: string[]): HtmlEditorConfig;
-        /**
-         * Specify the available formats.
-         *
-         * @example
-         * .withFormats(Format.P, Format.PRE)
-         * @see {@link Format} for available formats
-         * @see {@link withRawFormats} to set a raw value
-         * @param {...Format} formats - The formats to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withFormats(...formats: Format[]): HtmlEditorConfig;
-        /**
-         * Specify a raw value for the <code>formats</code> field.
-         *
-         * @example
-         * .withRawFormats('p', 'pre')
-         * @see {@link withFormats}
-         * @param {...string} formats - The raw formats to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withRawFormats(...formats: string[]): HtmlEditorConfig;
-        /**
-         * Specify the available font sizes.
-         *
-         * @example
-         * .withFontSizes(12, 13, 14, 15, 16)
-         * @see {@link FONT_SIZE} to enable this feature
-         * @param {...number} fontSizes - The font sizes to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withFontSizes(...fontSizes: number[]): HtmlEditorConfig;
-        /**
-         * Specify the font size unit to use.
-         *
-         * @example
-         * .withFontSizeUnit(FontSizeUnit.PX)
-         * @see {@link withRawFontSizeUnit} to set the raw value
-         * @param {FontSizeUnit} fontSizeUnit - The font size unit to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withFontSizeUnit(fontSizeUnit: FontSizeUnit): HtmlEditorConfig;
-        /**
-         * Set the raw value for the <code>fontSizeUnit</code> property.
-         *
-         * @example
-         * .withRawFontSizeUnit('px')
-         * @see {@link withFontSizeUnit}
-         * @param {string} fontSizeUnit - The raw font size unit to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withRawFontSizeUnit(fontSizeUnit: string): HtmlEditorConfig;
-        /**
-         * Set the default font size to use.
-         *
-         * @example
-         * .withFontSizeDefault(16)
-         * @param {number} fontSizeDefault - The default font size to set.
-         * @returns {HtmlEditorConfig}
-         */
-        withFontSizeDefault(fontSizeDefault: number): HtmlEditorConfig;
-        /**
-         * Set the available line heights.
-         *
-         * @example
-         * .withLineHeights(1, 1.15 , 1.5, 2)
-         * @see {@link LINE_HEIGHT} to enable this feature
-         * @param {...number} lineHeights - The line heights.
-         * @returns {HtmlEditorConfig}
-         */
-        withLineHeights(...lineHeights: number[]): HtmlEditorConfig;
-        /**
-         * Define the enter mode to use.
-         *
-         * @example
-         * .withEnterMode(EnterMode.P)
-         * @see {@link withRawEnterMode} to set the raw value
-         * @param {EnterMode} enterMode - The enter mode.
-         * @returns {HtmlEditorConfig}
-         */
-        withEnterMode(enterMode: EnterMode): HtmlEditorConfig;
-        /**
-         * Set the raw enter mode.
-         *
-         * @example
-         * .withRawEnterMode('p')
-         * @param {string} enterMode - The raw enter mode.
-         * @returns {HtmlEditorConfig}
-         */
-        withRawEnterMode(enterMode: string): HtmlEditorConfig;
-        /**
-         * Clone the configuration.
-         *
-         * @param {boolean} [shallow=true] - Create a shallow clone.
-         * @returns {HtmlEditorConfig}
-         */
-        clone(shallow?: boolean): HtmlEditorConfig;
-    }
-    export type EnterMode = import("src/html-editor-config/enter-mode").EnterMode;
-    export type Feature = import("src/html-editor-config/feature").Feature;
-    export type Format = import("src/html-editor-config/format").Format;
-    export type FontSizeUnit = import("src/html-editor-config/font-size-unit").FontSizeUnit;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
 }

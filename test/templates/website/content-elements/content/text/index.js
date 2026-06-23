@@ -2,7 +2,7 @@ require('./styles.scss');
 
 const { ContentElement, Icon, cx } = require('@bsi-cx/design-build');
 
-const full = require('../../../html-editor-configs/full');
+const full = require('../../../html-editor-configs/normal');
 
 /**
  * @type {ContentElement}
