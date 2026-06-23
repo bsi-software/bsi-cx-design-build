@@ -1066,6 +1066,8 @@ class ValidationError extends Error {
 }
 
 ;// ./src/utility.js
+/* unused harmony import specifier */ var path;
+/* unused harmony import specifier */ var fs;
 
 
 
@@ -5159,12 +5161,12 @@ class PropertyContext {
 ;// external "sass"
 const external_sass_namespaceObject = require("sass");
 var external_sass_default = /*#__PURE__*/__webpack_require__.n(external_sass_namespaceObject);
-;// external "less/lib/less/tree/color"
-const color_namespaceObject = require("less/lib/less/tree/color");
-var color_default = /*#__PURE__*/__webpack_require__.n(color_namespaceObject);
-;// external "less/lib/less/data/colors"
-const colors_namespaceObject = require("less/lib/less/data/colors");
-var colors_default = /*#__PURE__*/__webpack_require__.n(colors_namespaceObject);
+;// external "less/lib/less/tree/color.js"
+const color_js_namespaceObject = require("less/lib/less/tree/color.js");
+var color_js_default = /*#__PURE__*/__webpack_require__.n(color_js_namespaceObject);
+;// external "less/lib/less/data/colors.js"
+const colors_js_namespaceObject = require("less/lib/less/data/colors.js");
+var colors_js_default = /*#__PURE__*/__webpack_require__.n(colors_js_namespaceObject);
 ;// ./src/css/abstract-css-property.js
 class AbstractCssProperty {
   /**
@@ -5234,7 +5236,7 @@ class CssColor extends AbstractCssProperty {
   /**
    * @type {{}}
    */
-  static COLORS = Object.assign({}, (colors_default()), { transparent: '#00000000' });
+  static COLORS = Object.assign({}, (colors_js_default()), { transparent: '#00000000' });
 
   /**
    * @type {number}
@@ -5344,7 +5346,7 @@ class CssColor extends AbstractCssProperty {
     let alpha = this.alpha / 255;
 
     // noinspection JSValidateTypes
-    return new (color_default())(rgb, alpha);
+    return new (color_js_default())(rgb, alpha);
   }
 
   /**
@@ -5462,7 +5464,7 @@ class CssColor extends AbstractCssProperty {
    */
   static fromKeyword(color) {
     if (CssColor.COLORS.hasOwnProperty(color)) {
-      return CssColor.fromHex((colors_default())[color]);
+      return CssColor.fromHex((colors_js_default())[color]);
     } else {
       throw new Error(`Unknown color keyword: ${color}`);
     }
@@ -5486,9 +5488,9 @@ class CssColor extends AbstractCssProperty {
   }
 }
 
-;// external "less/lib/less/tree/dimension"
-const dimension_namespaceObject = require("less/lib/less/tree/dimension");
-var dimension_default = /*#__PURE__*/__webpack_require__.n(dimension_namespaceObject);
+;// external "less/lib/less/tree/dimension.js"
+const dimension_js_namespaceObject = require("less/lib/less/tree/dimension.js");
+var dimension_js_default = /*#__PURE__*/__webpack_require__.n(dimension_js_namespaceObject);
 ;// ./src/css/css-dimension.js
 
 
@@ -5549,7 +5551,7 @@ class CssDimension extends AbstractCssProperty {
    */
   getLessNode() {
     // noinspection JSValidateTypes
-    return new (dimension_default())(this.value, this.unit);
+    return new (dimension_js_default())(this.value, this.unit);
   }
 
   /**
