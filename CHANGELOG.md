@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add `scopePrefill` for prefilling Dropzones
 * Add shorthand `cx.Dropzone('dropzoneId', [require('elem1'), require('elem2')])`
 * Update Twing from 5.x to 7.x
+* Add handlebars functions to twig
 
 
 ## [2.0.1] - 03.12.2025
