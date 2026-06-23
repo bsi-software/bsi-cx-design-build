@@ -1,6 +1,6 @@
 {% set linkPartId = 'link-1wfD2H' %}
-{% set scope = 'b5' %}
-<div class="bsi-template-button" data-bsi-element="template-button-3seC3G">
+{# {% set scope = 'b5' %} Test scoping #}
+<div class="bsi-template-button" {{ template_element("template-button-3seC3G", scope) }}>
     <a href="{{ link_url(linkPartId, scope) }}" target="{{ if_link_target(linkPartId, scope, '_blank', '_target')}}" aria-label="{{ link_description(linkPartId, scope) }}">{{ link_text(linkPartId, scope) }}</a>
     <div>{{ text_value('multiline-plain-text-wmiRti', scope) }}</div>
 </div>

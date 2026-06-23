@@ -145,78 +145,25 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (executionContext, word
 export const bsiTemplatePart = new TwingFunction(
   "template_element",
   (elementId, scope) =>
-    ` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`,
+  strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
   [],
-  {},
+  { is_safe: ["html"] },
 );
-
-const scopeVariable = (scope, partId, variable) =>
-  `{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`;
-
-const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  `{{#if ${scope ? scope + "." : ""}${partId}.${variable} }} ${ifBlock} ${elseBlock ? "{{else}}" + elseBlock : ""} {{/if }}`;
 
 /**
  * Helper functions to create hbs variables
  */
-// export const bsiTextValue = new TwingFunction(
-//   "bsi_text_value",
-//   (partId, scope) => scopeVariable(scope, partId, "value"),
-// );
-// export const bsiFormattedHtml = new TwingFunction(
-//   "bsi_formatted_html",
-//   (partId, scope) => scopeVariable(scope, partId, "html"),
-// );
-// export const bsiFormattedLanguage = new TwingFunction(
-//   "bsi_formatted_language",
-//   (partId, scope) => scopeVariable(scope, partId, "languageTag"),
-// );
-// export const bsiLinkUrl = new TwingFunction("bsi_link_url", (partId, scope) =>
-//   scopeVariable(scope, partId, "url"),
-// );
-// export const bsiLinkText = new TwingFunction("bsi_link_text", (partId, scope) =>
-//   scopeVariable(scope, partId, "text"),
-// );
-// export const bsiLinkDescription = new TwingFunction(
-//   "bsi_link_description",
-//   (partId, scope) => scopeVariable(scope, partId, "description"),
-// );
-// export const bsiLinkTarget = new TwingFunction(
-//   "bsi_link_target",
-//   (partId, scope) => scopeVariable(scope, partId, "openInNewWindow"),
-// );
-// export const bsiImageAlt = new TwingFunction("bsi_image_alt", (partId, scope) =>
-//   scopeVariable(scope, partId, "altText"),
-// );
-// export const bsiImageSrc = new TwingFunction("bsi_image_src", (partId, scope) =>
-//   scopeVariable(scope, partId, "srcUrl"),
-// );
-// export const bsiImagePlaceholderSrc = new TwingFunction(
-//   "bsi_image_placeholder_src",
-//   (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
-// );
-// export const bsiImageSrcset = new TwingFunction(
-//   "bsi_image_srcset",
-//   (partId, scope) => scopeVariable(scope, partId, "srcset"),
-// );
-// export const bsiImageDecorative = new TwingFunction(
-//   "bsi_image_decorative",
-//   (partId, scope) => scopeVariable(scope, partId, "decorative"),
-// );
-// export const bsiCheckboxValue = new TwingFunction(
-//   "bsi_checkbox_value",
-//   (partId, scope) => scopeVariable(scope, partId, "value"),
-// );
-// export const bsiOptionValue = new TwingFunction(
-//   "bsi_option_value",
-//   (partId, scope) => scopeVariable(scope, partId, "value"),
-// );
-// TODO: dynamic-value-list
+const scopeVariable = (scope, partId, variable) =>
+  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+
+const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
+  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }} ${ifBlock} ${elseBlock ? "{{else}} " + elseBlock : ""} {{/if }}`);
+
 
 export const templatePartHelper = [
   new TwingFunction(
     "text_value",
-    (partId, scope) => scopeVariable(scope, partId, "value"),
+    (partId, scope) =>  scopeVariable(scope, partId, "value"),
     [],
     {},
   ),
