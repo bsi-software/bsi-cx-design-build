@@ -128,6 +128,9 @@ export default class TemplatePart extends AbstractBuilder {
    * @returns {this}
    */
   withHtmlEditorConfig(htmlEditorConfig) {
+    if (!htmlEditorConfig || htmlEditorConfig.identifier == null) {
+      throw new Error('htmlEditorConfig with identifier is required.');
+    }
     this._htmlEditorConfig = htmlEditorConfig;
     return this;
   }
