@@ -4285,6 +4285,30 @@ declare module "src/content-element/content-element-group" {
          */
         withContentElements(...contentElements: ContentElement[]): ContentElementGroup;
         /**
+         * Add new content element parts to group.
+         * Replaces elements with same Element Id in exisiting group
+         *
+         * @example
+         * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+         *  .addOrReplaceElements(
+         *    require("./my-group/new-element"),
+         *    require("./my-group/overwrite-element"))
+         *
+         * @param  {...ContentElement} newContentElements
+         */
+        addOrReplaceElements(...newContentElements: ContentElement[]): this;
+        /**
+         * Remove content elements from group.
+         * If elementId not exists in group, nothing happens.
+         *
+         * @example
+         * require("@bsi-cx/design-standard-library-web/content-elements/my-group")
+         *  .removeElementsWithId("not-used-element-id")
+         *
+         * @param  {...ContentElement} contentElementIds
+         */
+        removeElementsWithId(...contentElementIds: ContentElement[]): this;
+        /**
          * Set the content elements of your group as raw value.
          *
          * @example
