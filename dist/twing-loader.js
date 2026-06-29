@@ -535,7 +535,7 @@ const scopeVariable = (scope, partId, variable) =>
   strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }} ${ifBlock} ${elseBlock ? "{{else}} " + elseBlock : ""} {{/if }}`);
+  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 const templatePartHelper = [
@@ -668,12 +668,7 @@ const templatePartHelper = [
   twing.addFunction(bsiCxLorem);
 
   twing.addFunction(bsiTemplatePart);
-  // twing.addFunction(templatePartHelper[0]);
   templatePartHelper.forEach(helper => twing.addFunction(helper));
-
-  // for (const [key, value] of Object.entries(globals ?? {})) {
-  //   twing.addGlobal(key, value);
-  // }
 
   return twing;
 }

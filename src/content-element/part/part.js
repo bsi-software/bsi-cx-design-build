@@ -254,6 +254,20 @@ export default class Part extends AbstractBuilder {
     return this.withConfig(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled);
   }
 
+  /**
+   * Set a Boolean to indicate if companion is enabled in the editor.
+   * If false the companion is not shown in the editor.
+   * Only possible for PlainText and FormattedText
+   * 
+   * @since 26.2
+   *
+   * @param {boolean} companionEnabled 
+   * @returns 
+   */
+  withCompanionEnabled(companionEnabled) {
+    return this.withConfig(DesignJsonProperty.COMPANION_ENABLED, companionEnabled);
+  }
+
   _buildInternal() {
     let config = {};
 
