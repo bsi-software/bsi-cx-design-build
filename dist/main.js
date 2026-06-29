@@ -557,6 +557,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static COMPANION_ENABLED = 'companionEnabled';
+  /**
+   * @type {string}
+   */
   static DEFAULT_LOCALE = 'defaultLocale';
   /**
    * @type {string}

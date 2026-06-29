@@ -1,6 +1,6 @@
 {% import './macro.twig' as macro %}
 <div data-bsi-element="title" class="element content-title">
   {{ macro.version() }}
-  <h2 data-bsi-element-part="plain-text">Titel</h2>
+  <h2>{{ textValue('title', scope) }}</h2>
   <img src="{{ bsi_cx_asset('./placeholder.png') }}" alt="Titel"/>
 </div>

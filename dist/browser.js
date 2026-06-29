@@ -374,6 +374,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static COMPANION_ENABLED = 'companionEnabled';
+  /**
+   * @type {string}
+   */
   static DEFAULT_LOCALE = 'defaultLocale';
   /**
    * @type {string}
@@ -6515,6 +6519,20 @@ class Part extends AbstractBuilder {
     return this.withConfig(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled);
   }
 
+  /**
+   * Set a Boolean to indicate if companion is enabled in the editor.
+   * If false the companion is not shown in the editor.
+   * Only possible for PlainText and FormattedText
+   * 
+   * @since 26.2
+   *
+   * @param {boolean} companionEnabled 
+   * @returns 
+   */
+  withCompanionEnabled(companionEnabled) {
+    return this.withConfig(DesignJsonProperty.COMPANION_ENABLED, companionEnabled);
+  }
+
   _buildInternal() {
     let config = {};
 
@@ -7596,12 +7614,15 @@ class PartFactory {
    *
    * @param {string} label
    * @param {string} id
-   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @param {HtmlEditorConfig?} htmlEditorConfig
+   * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  FormattedText(label, id, htmlEditorConfig) {
+  FormattedText(label, id, htmlEditorConfig, companionEnabled) {
     var part = new Part('formatted-text', label, id)
-    return htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+    part  = htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+    part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
+    return part;
   }
 
   /**
@@ -7720,12 +7741,15 @@ class PartFactory {
    *
    * @param {string} label
    * @param {string} id
-   * @param {Boolean} studioLinkEnabled
+   * @param {boolean?} studioLinkEnabled
+   * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  PlainText(label, id, studioLinkEnabled) {
+  PlainText(label, id, studioLinkEnabled, companionEnabled) {
     var part = new Part('plain-text', label, id);
-    return studioLinkEnabled !== null ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
+    part = studioLinkEnabled !== undefined ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
+    part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
+    return part;
   }
 
   /**
@@ -7869,11 +7893,13 @@ class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} companionEnabled - optional parameter
    * @returns {TemplatePart}
    */
-  PlainText(label, partContextId, studioLinkEnabled = true) {
+  PlainText(label, partContextId, studioLinkEnabled = true, companionEnabled) {
     var part = new TemplatePart('plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -7907,9 +7933,10 @@ class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
+   * @param {boolean?} companionEnabled - optional parameter
    * @returns {TemplatePart}
    */
-  FormattedText(label, partContextId, htmlEditorConfig) {
+  FormattedText(label, partContextId, htmlEditorConfig, companionEnabled) {
     var part = new TemplatePart('formatted-text', label, partContextId)
     if (htmlEditorConfig) {
       part.withHtmlEditorConfig(htmlEditorConfig);

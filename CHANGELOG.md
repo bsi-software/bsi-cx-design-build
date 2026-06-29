@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+* Add `companionEnabled` property on plain-text and formatted-text
 
 
 
@@ -22,6 +23,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add handlebars functions to twig
 * Add `withExtendAllDropzones()` to content-part and template-part
 * Add content-element setter for part "Basic Dynamic Value List"
+
 
 [2.0.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/2.0.1...2.0.2
 
