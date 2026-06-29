@@ -458,6 +458,10 @@ class DesignJsonProperty {
   /**
    * @type {string}
    */
+  static STUDIO_LINK_ENABLED = 'studioLinkEnabled';
+  /**
+   * @type {string}
+   */
   static DEFAULT_LOCALE = 'defaultLocale';
   /**
    * @type {string}

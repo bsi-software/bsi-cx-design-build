@@ -17,7 +17,8 @@
     "test": "cd test && webpack --config webpack.config.js --mode development --progress",
     "preserve": "node \"./test/install.js\"",
     "serve": "cd test && webpack serve --config webpack.config.js --mode development --progress",
-    "postserve": "node \"./test/uninstall.js\""
+    "postserve": "node \"./test/uninstall.js\"",
+    "buildAndTest": "webpack --config webpack.config.js --mode production && node \"./test/install.js\" && cd test && webpack --config webpack.config.js --mode development --progress"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",
