@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add studioLink and studioLinkEnabled
 * Add functions to group for better extension: `addOrReplaceElements()`, `removeElementsWithId()`
 * Add content-element setter for part "Basic Dynamic Value List"
+* Add `withExtendAllDropzones()` to content-part
 
 
 

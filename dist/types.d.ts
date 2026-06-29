@@ -4816,6 +4816,21 @@ declare module "src/content-element/content-element" {
          */
         withExtendedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
         /**
+         * Extend the allowed elements list of all dropzone. Be aware that this only works when you define your allowed
+         * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
+         *
+         * In case you want to extend the allowed elements list of a specific dropzone, use {@link withExtendedDropzone} instead.
+         *
+         * @example
+         * .withExtendAllDropzones(
+         *   require('./content-elements/basic/text'),
+         *   require('./content-elements/basic/image'))
+         *
+         * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+         * @returns {ContentElement}
+         */
+        withExtendAllDropzones(...elements: ContentElement[]): ContentElement;
+        /**
          * Reduces the allowed elements list of a defined dropzone. Be aware that this only works when you define your allowed
          * elements by using the provided builder class with the {@link Dropzone#withAllowedElements} method.
          *
