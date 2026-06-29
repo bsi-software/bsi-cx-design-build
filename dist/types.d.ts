@@ -282,6 +282,10 @@ declare module "src/design-json-property" {
         /**
          * @type {string}
          */
+        static COMPANION_ENABLED: string;
+        /**
+         * @type {string}
+         */
         static DEFAULT_LOCALE: string;
         /**
          * @type {string}
@@ -4404,6 +4408,17 @@ declare module "src/content-element/part/part" {
          * @returns {Part}
          */
         withStudioLinkEnabled(studioLinkEnabled: boolean): Part;
+        /**
+         * Set a Boolean to indicate if companion is enabled in the editor.
+         * If false the companion is not shown in the editor.
+         * Only possible for PlainText and FormattedText
+         *
+         * @since 26.2
+         *
+         * @param {boolean} companionEnabled
+         * @returns
+         */
+        withCompanionEnabled(companionEnabled: boolean): this;
     }
     import AbstractBuilder from "src/abstract-builder";
 }
@@ -7803,10 +7818,11 @@ declare module "src/content-element/part/part-factory" {
          *
          * @param {string} label
          * @param {string} id
-         * @param {HtmlEditorConfig} htmlEditorConfig
+         * @param {HtmlEditorConfig?} htmlEditorConfig
+         * @param {boolean?} companionEnabled
          * @returns {Part}
          */
-        FormattedText(label: string, id: string, htmlEditorConfig: HtmlEditorConfig): Part;
+        FormattedText(label: string, id: string, htmlEditorConfig: HtmlEditorConfig | null, companionEnabled: boolean | null): Part;
         /**
          * Get a new HTML content element part builder instance.
          *
@@ -7889,10 +7905,11 @@ declare module "src/content-element/part/part-factory" {
          *
          * @param {string} label
          * @param {string} id
-         * @param {Boolean} studioLinkEnabled
+         * @param {boolean?} studioLinkEnabled
+         * @param {boolean?} companionEnabled
          * @returns {Part}
          */
-        PlainText(label: string, id: string, studioLinkEnabled: boolean): Part;
+        PlainText(label: string, id: string, studioLinkEnabled: boolean | null, companionEnabled: boolean | null): Part;
         /**
          * Get a new social follow content element part builder instance.
          *
@@ -7995,9 +8012,10 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} label
          * @param {string} partContextId
          * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+         * @param {boolean?} companionEnabled - optional parameter
          * @returns {TemplatePart}
          */
-        PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean | null): TemplatePart;
+        PlainText(label: string, partContextId: string, studioLinkEnabled?: boolean | null, companionEnabled: boolean | null): TemplatePart;
         /**
          * Build a new multiple plain text content element part builder instance.
          * All variables here define the behavior in the Content Editor.
@@ -8022,9 +8040,10 @@ declare module "src/content-element/template-part/template-part-factory" {
          * @param {string} label
          * @param {string} partContextId
          * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
+         * @param {boolean?} companionEnabled - optional parameter
          * @returns {TemplatePart}
          */
-        FormattedText(label: string, partContextId: string, htmlEditorConfig?: HtmlEditorConfig | null): TemplatePart;
+        FormattedText(label: string, partContextId: string, htmlEditorConfig?: HtmlEditorConfig | null, companionEnabled: boolean | null): TemplatePart;
         /**
          * Build a new link content element part builder instance.
          * All variables here define the behavior in the Content Editor.

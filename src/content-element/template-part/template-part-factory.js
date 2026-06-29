@@ -13,11 +13,13 @@ export default class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  PlainText(label, partContextId, studioLinkEnabled = true) {
+  PlainText(label, partContextId, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -51,11 +53,13 @@ export default class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  FormattedText(label, partContextId, htmlEditorConfig) {
+  FormattedText(label, partContextId, htmlEditorConfig, companionEnabled) {
     var part = new TemplatePart('formatted-text', label, partContextId)
     part = part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG_ID, htmlEditorConfig.identifier);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 

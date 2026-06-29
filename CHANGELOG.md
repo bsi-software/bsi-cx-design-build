@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Update Twing from 5.x to 7.x
 * Add handlebars functions to twig
 * Add `withExtendAllDropzones()` to content-part and template-part
+* Add `companionEnabled` property on plain-text and formatted-text
 
 
 ## [2.0.1] - 03.12.2025

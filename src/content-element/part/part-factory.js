@@ -155,12 +155,15 @@ export default class PartFactory {
    *
    * @param {string} label
    * @param {string} id
-   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @param {HtmlEditorConfig?} htmlEditorConfig
+   * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  FormattedText(label, id, htmlEditorConfig) {
+  FormattedText(label, id, htmlEditorConfig, companionEnabled) {
     var part = new Part('formatted-text', label, id)
-    return htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+    part  = htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+    part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
+    return part;
   }
 
   /**
@@ -279,12 +282,15 @@ export default class PartFactory {
    *
    * @param {string} label
    * @param {string} id
-   * @param {Boolean} studioLinkEnabled
+   * @param {boolean?} studioLinkEnabled
+   * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  PlainText(label, id, studioLinkEnabled) {
+  PlainText(label, id, studioLinkEnabled, companionEnabled) {
     var part = new Part('plain-text', label, id);
-    return studioLinkEnabled !== null ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
+    part = studioLinkEnabled !== undefined ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
+    part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
+    return part;
   }
 
   /**
