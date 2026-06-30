@@ -20,4 +20,5 @@ element.withElementId('column-2')
       .withDropzone('5971732b-bf41-493d-a678-0fce1a2b5771')
       .withAllowedElements(
         require('../column-1'),
-        require('../title')));
+        require('../title')))
+    .withExtendAllDropzones(require('../text'));

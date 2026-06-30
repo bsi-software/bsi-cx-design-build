@@ -32,7 +32,9 @@ module.exports = cx.design
             require('./content-elements/content/title')),
         require('./content-elements/content/column-2')
           .withReducedDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348', require('./content-elements/content/title')),
-        require('./content-elements/content/text')))
+        )
+        .addOrReplaceElements(require('./content-elements/content/text'))
+      )
   .withDropzones(
     cx.dropzone
       .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')
