@@ -433,12 +433,14 @@ class _BsiCxWebpackPlugin {
   }
 
   /**
-   * @param {{parts:[]}} element
+   * @param {{parts:[], templateParts:[]}} element
    * @param {Map<string, {}>} metaPropertyMap
    * @private
    */
   _extractMetaConfigPropertiesFromParts(element, metaPropertyMap) {
     element[DesignJsonProperty.PARTS]
+      .forEach(part => this._extractMetaConfigProperties(part, DesignJsonProperty.HTML_EDITOR_CONFIG, metaPropertyMap));
+    (element[DesignJsonProperty.TEMPLATE_PARTS] || [])
       .forEach(part => this._extractMetaConfigProperties(part, DesignJsonProperty.HTML_EDITOR_CONFIG, metaPropertyMap));
   }
 

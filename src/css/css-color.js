@@ -1,6 +1,6 @@
 import sass from 'sass';
-import Color from 'less/lib/less/tree/color';
-import colors from 'less/lib/less/data/colors';
+import Color from 'less/lib/less/tree/color.js';
+import colors from 'less/lib/less/data/colors.js';
 
 import AbstractCssProperty from './abstract-css-property';
 

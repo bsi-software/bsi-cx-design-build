@@ -1,6 +1,7 @@
 import AbstractBuilder from '../../abstract-builder';
 import { identity } from '../../browser-utility';
 import DesignJsonProperty from '../../design-json-property';
+import {CX_26_1, TARGET as TARGET_VERSION} from '../../version';
 
 export default class Part extends AbstractBuilder {
   /**
@@ -173,13 +174,32 @@ export default class Part extends AbstractBuilder {
     return this;
   }
 
-  // TODO description
+  /**
+   * Insert a raw configuration object for this part. 
+   * 
+   * You probably want to use {@link withConfig} instead of this method.
+   * This is only useful if you want to override the whole configuration of the part.
+   * 
+   * <strong>!!! Be aware, that this is a raw value and will not be validated by the design build.</strong>
+   * <strong>It is highly recommended to use the provided methods to set configuration values.</strong>
+   * 
+   * @param {Object} config 
+   * @returns 
+   */
   withRawConfig(config) {
     this._config = config;
     return this;
   }
 
-  // TODO description
+  /**
+   * Add value to the part's config. If the config object is not defined, it will be created.
+   * 
+   * This is useful if you want to add a configuration that is not supported by the design build API.
+   * 
+   * @param {string} key 
+   * @param {string} value 
+   * @returns 
+   */
   withConfig(key, value) {
     this._config = this.config || {};
     this._config[key] = value;
@@ -261,12 +281,18 @@ export default class Part extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
-    // Deprecated properties, only for older cx-versions
-    this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
-    this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
-    this._applyPropertyIfDefined(DesignJsonProperty.STUDIO_LINK_ENABLED, config, identity);
-
+    
+    // Deprecated properties, only for CX Version < 26.1
+    if(CX_26_1.compareTo(TARGET_VERSION) > 0) {
+      this._applyPropertyIfDefined(DesignJsonProperty.HTML_EDITOR_CONFIG, config, v => v.identifier, false, true);
+      this._applyPropertyIfDefined(DesignJsonProperty.ALT_TEXT_MANDATORY, config, identity);
+      this._applyPropertyIfDefined(DesignJsonProperty.CAPTION_ENABLED, config, identity);
+      this._applyPropertyIfDefined(DesignJsonProperty.STUDIO_LINK_ENABLED, config, identity);
+    }
+    else {
+      // write HTMLEditorConfig into Meta Property
+      this._applyMetaPropertyFromValue(DesignJsonProperty.HTML_EDITOR_CONFIG, config, this.htmlEditorConfig)
+    }
     return config;
   }
 }

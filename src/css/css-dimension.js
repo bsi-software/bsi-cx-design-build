@@ -1,5 +1,5 @@
 import sass from 'sass';
-import Dimension from 'less/lib/less/tree/dimension';
+import Dimension from 'less/lib/less/tree/dimension.js';
 
 import AbstractCssProperty from './abstract-css-property';
 

@@ -3,6 +3,7 @@ import { identity } from '../../browser-utility';
 import Constant from '../../constant';
 import DesignJsonProperty from '../../design-json-property';
 import TemplateElement from '../template-element';
+import HtmlEditorConfig from '../../html-editor-config/html-editor-config';
 
 export default class TemplatePart extends AbstractBuilder {
   /**
@@ -34,6 +35,14 @@ export default class TemplatePart extends AbstractBuilder {
    * @private
    */
   _prefill = {};
+  /**
+   * This Config is not part of the json-data.
+   * It's stored here to propagate it to the design json where the definition is stored
+   * 
+   * @type {HtmlEditorConfig|undefined}
+   * @private
+   */
+  _htmlEditorConfig = undefined;
 
   /**
    * @param {string} partId - partId (eg "plainText")
@@ -96,6 +105,32 @@ export default class TemplatePart extends AbstractBuilder {
    */
   get prefill() {
     return this._prefill;
+  }
+
+  /**
+   * This Config is not part of the json-data.
+   * It's stored here to propagate it to the design json where the definition is stored
+   * 
+   * @returns {HtmlEditorConfig|undefined}
+   */
+  get htmlEditorConfig() {
+    return this._htmlEditorConfig;
+  }
+
+  /**
+   * Used internally
+   * Set the htmlEditorConfig like this:
+   * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123", require('../my-html-editor-config.js'))
+   * 
+   * @param {HtmlEditorConfig} htmlEditorConfig 
+   * @returns {this}
+   */
+  withHtmlEditorConfig(htmlEditorConfig) {
+    if (!htmlEditorConfig || htmlEditorConfig.identifier == null) {
+      throw new Error('htmlEditorConfig with identifier is required.');
+    }
+    this._htmlEditorConfig = htmlEditorConfig;
+    return this;
   }
 
   /**
@@ -252,7 +287,10 @@ export default class TemplatePart extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.PART_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.PART_CONFIG, config, identity);
-
+    // Add HtmlEditorConfig as meta property
+    if(this.htmlEditorConfig){
+      this._applyMetaPropertyFromValue(DesignJsonProperty.HTML_EDITOR_CONFIG, config, this.htmlEditorConfig);
+    }
     return config;
   }
 }

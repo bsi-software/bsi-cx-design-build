@@ -103,22 +103,22 @@ export const CX_22_0 = new Version([22, 0, 0], ALL_TYPES, false, '22.0');
 /**
  * @type {Version}
  */
-export const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '23.1');
+export const CX_23_1 = new Version([23, 1, 0], ALL_TYPES, false, '22.0');
 
 /**
  * @type {Version}
  */
-export const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '23.2');
+export const CX_23_2 = new Version([23, 2, 0], ALL_TYPES, false, '22.0');
 
 /**
  * @type {Version}
  */
-export const CX_24_1 = new Version([24, 1, 0], ALL_TYPES, false, '24.1');
+export const CX_24_1 = new Version([24, 1, 0], ALL_TYPES, false, '22.0');
 
 /**
  * @type {Version}
  */
-export const CX_24_2 = new Version([24, 2, 0], ALL_TYPES, false, '24.2');
+export const CX_24_2 = new Version([24, 2, 0], ALL_TYPES, false, '22.0');
 
 /**
  * @type {Version}
@@ -128,7 +128,27 @@ export const CX_25_1 = new Version([25, 1, 0], ALL_TYPES, false, '25.1');
 /**
  * @type {Version}
  */
-export const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
+export const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_26_1 = new Version([26, 1, 0], ALL_TYPES, false, '26.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_26_2 = new Version([26, 2, 0], ALL_TYPES, false, '26.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_27_1 = new Version([27, 1, 0], ALL_TYPES, false, '26.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_27_2 = new Version([27, 2, 0], ALL_TYPES, false, '26.1');
 
 /**
  * @type {Version}
