@@ -20,7 +20,10 @@
     "postserve": "node \"./test/uninstall.js\"",
     "buildAndTest": "webpack --config webpack.config.js --mode production && node \"./test/install.js\" && cd test && webpack --config webpack.config.js --mode development --progress"
   },
-  "repository": "github:bsi-software/bsi-cx-design-build",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bsi-software/bsi-cx-design-build.git"
+  },
   "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",
   "bugs": {
     "url": "https://github.com/bsi-software/bsi-cx-design-build/issues"
