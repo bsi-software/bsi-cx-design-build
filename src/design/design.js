@@ -737,6 +737,13 @@ export default class Design extends AbstractBuilder {
 
   /**
    * Configure the security object.
+   * 
+   * @example
+   * .withSecurity(
+   *    cx.security.withHtmlSanitization(
+   *        cx.htmlSanitization
+   *            .withAllowEventAttributes(true)
+   *            .withAllowInlineScripts(false)))
    *
    * @see {@link withRawSecurity} to set a raw value
    * @param {Security} security
@@ -763,16 +770,13 @@ export default class Design extends AbstractBuilder {
 
   /**
    * Set the features.formFieldEnabled value.
-   * Shortcut for 
-   * ```
-   * .withSecurity(
-   *    cx.security.withHtmlSanitization(
-   *        cx.htmlSanitization
-   *            .withAllowEventAttributes(allowEventAttributes)
-   *            .withAllowInlineScripts(allowInlineScripts)))
-   * ```
+   * 
+   * @example
+   * .withSecurityHtmlSanitization(true, false)
    *
-   * @param {Features} features
+   * @see {@link withSecurity} to set a security object
+   * @param {boolean} allowEventAttributes
+   * @param {boolean} allowInlineScripts
    * @returns {Design}
    */
   withSecurityHtmlSanitization(allowEventAttributes = false, allowInlineScripts = false) {

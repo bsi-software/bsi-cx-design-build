@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+
+
+
+## [2.0.2] - 02.07.2025
 * Add prefill property to template parts and compile it into context.json
 * Add descriptionEnabled and textEnabled to TemplatePart Link
 * Add `bsiLoremIpsum()` function for js
@@ -19,6 +23,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add `withExtendAllDropzones()` to content-part and template-part
 * Add content-element setter for part "Basic Dynamic Value List"
 
+[2.0.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/2.0.1...2.0.2
 
 ## [2.0.1] - 03.12.2025
 * Add studioLink and studioLinkEnabled
@@ -28,6 +33,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add withRawObject function to design object
 * Make all properties available as scss variables during the build
 * Update sass-loader to get rid of warnings
+
+[2.0.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/2.0.0...2.0.1
 
 
 ## [2.0.0] - 09.10.2025
