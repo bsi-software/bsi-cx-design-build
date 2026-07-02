@@ -16,7 +16,7 @@ module.exports = cx.templateElement
         cx.templatePart.PlainText("Plain text", "plain-text-Y3dhVu").withRawPrefill({"value": "Peter Pfau"}),
         cx.templatePart.MultilinePlainText("Multiline plain text", "multiline-plain-text-0pQpp9", 5),
         cx.templatePart.FormattedText(bsiLoremIpsum(3), "formatted-text-fC3iJv", require("../../../html-editor-configs/full")).withFormattedTextPrefill('<div> Some HTML </div>'),
-        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H"),
+        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H", false, true),
         cx.templatePart.Option("Was willst du kaufen?", "option-0CxEy6", [{"text": "Auto", "value": "car"}, {"text": "Haus", "value": "house"}, {"text": "Yacht", "value" : "yacht"}]), //{ "Auto": "car"  , "Auto" : "house", "Yacht" : "yacht" }
         // Test both ways to fill option part
         // cx.templatePart.Option("Was willst du kaufen?", "option-0CxEy6", [{ "value": "car", "text": "Auto" }, { "value": "house", "text": "Haus" }, { "value": "yacht", "text": "Yacht" }])
