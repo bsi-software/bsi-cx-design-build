@@ -4,13 +4,13 @@ import DesignJsonProperty from '../design-json-property';
 import DesignJsonPropertyExtension from '../design-json-property-extension';
 import RawValue from '../raw-value';
 import { Features } from './features';
-import { Security, HtmlSanitization } from './security';
+import { Security, HtmlSanitization } from './src/design/security';
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
 /** @typedef {import('./features').Features} Features */
-/** @typedef {import('./security').Security} Security */
-/** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
+/** @typedef {import('./src/design/security').Security} Security */
+/** @typedef {import('./src/design/security').HtmlSanitization} HtmlSanitization */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
@@ -455,7 +455,7 @@ export default class Design extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to extend (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to add to the allowed elements list.
+   * @param {...(ContentElement | TemplateElement)} elements - The elements to add to the allowed elements list.
    * @returns {Design}
    */
   withExtendedDropzone(id, ...elements) {
@@ -478,7 +478,7 @@ export default class Design extends AbstractBuilder {
    *   require('./content-elements/basic/text'),
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
-   * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
+   * @param {...(ContentElement | TemplateElement)} elements - The elements to remove from the allowed elements list.
    * @returns {Design}
    */
   withReducedDropzone(id, ...elements) {
@@ -737,13 +737,6 @@ export default class Design extends AbstractBuilder {
 
   /**
    * Configure the security object.
-   * 
-   * @example
-   * .withSecurity(
-   *    cx.security.withHtmlSanitization(
-   *        cx.htmlSanitization
-   *            .withAllowEventAttributes(allowEventAttributes)
-   *            .withAllowInlineScripts(allowInlineScripts)))
    *
    * @see {@link withRawSecurity} to set a raw value
    * @param {Security} security
@@ -770,13 +763,16 @@ export default class Design extends AbstractBuilder {
 
   /**
    * Set the features.formFieldEnabled value.
-   * 
-   * @example
-   * .withSecurityHtmlSanitization(true, false)
+   * Shortcut for 
+   * ```
+   * .withSecurity(
+   *    cx.security.withHtmlSanitization(
+   *        cx.htmlSanitization
+   *            .withAllowEventAttributes(allowEventAttributes)
+   *            .withAllowInlineScripts(allowInlineScripts)))
+   * ```
    *
-   * @see {@link withSecurity} to set a security object
-   * @param {boolean} allowEventAttributes
-   * @param {boolean} allowInlineScripts
+   * @param {Features} features
    * @returns {Design}
    */
   withSecurityHtmlSanitization(allowEventAttributes = false, allowInlineScripts = false) {
