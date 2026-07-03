@@ -7356,6 +7356,13 @@ declare module "src/design/design" {
         /**
          * Configure the security object.
          *
+         * @example
+         * .withSecurity(
+         *    cx.security.withHtmlSanitization(
+         *        cx.htmlSanitization
+         *            .withAllowEventAttributes(true)
+         *            .withAllowInlineScripts(false)))
+         *
          * @see {@link withRawSecurity} to set a raw value
          * @param {Security} security
          * @returns {Design}
@@ -7373,16 +7380,13 @@ declare module "src/design/design" {
         withRawSecurity(security: object): Design;
         /**
          * Set the features.formFieldEnabled value.
-         * Shortcut for
-         * ```
-         * .withSecurity(
-         *    cx.security.withHtmlSanitization(
-         *        cx.htmlSanitization
-         *            .withAllowEventAttributes(allowEventAttributes)
-         *            .withAllowInlineScripts(allowInlineScripts)))
-         * ```
          *
-         * @param {Features} features
+         * @example
+         * .withSecurityHtmlSanitization(true, false)
+         *
+         * @see {@link withSecurity} to set a security object
+         * @param {boolean} allowEventAttributes
+         * @param {boolean} allowInlineScripts
          * @returns {Design}
          */
         withSecurityHtmlSanitization(allowEventAttributes?: boolean, allowInlineScripts?: boolean): Design;
