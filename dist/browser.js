@@ -1689,7 +1689,6 @@ class HtmlSanitization extends AbstractBuilder {
 /** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
-/** @typedef {import('../content-element/template-element').default} TemplateElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */

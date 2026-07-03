@@ -7,6 +7,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
 ## latest
+
+
+## [1.14.1] - 03.07.2026
 * Add functions to design.js: `withFeatureFormFieldRules()`, `withSecurityHtmlSanitization()` and `withRawObject()`
 
 
