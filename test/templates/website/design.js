@@ -85,4 +85,6 @@ module.exports = cx.design
           .withEditable(false)
           .withFile(require('./includes/navigation.hbs'))))
   .withNLS(Object.values(require('./nls')))
-  .withWebsiteContentTypes(WebsiteContentType.BLOG, WebsiteContentType.CUSTOMER_PARTNER);
+  .withWebsiteContentTypes(WebsiteContentType.BLOG, WebsiteContentType.CUSTOMER_PARTNER)
+  .withRawObject('newObjectProperty', { someObj: { crazyStuff: "yolo", someOtherStuff: false } })
+  .withSecurityHtmlSanitization(false);

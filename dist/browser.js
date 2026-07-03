@@ -1,16 +1,31 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	const __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
+/******/ 		// define getter/value functions for harmony exports
 /******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			if(Array.isArray(definition)) {
+/******/ 				var i = 0;
+/******/ 				while(i < definition.length) {
+/******/ 					var key = definition[i++];
+/******/ 					var binding = definition[i++];
+/******/ 					if(!__webpack_require__.o(exports, key)) {
+/******/ 						if(binding === 0) {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
+/******/ 						} else {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
+/******/ 						}
+/******/ 					} else if(binding === 0) { i++; }
+/******/ 				}
+/******/ 			} else {
+/******/ 				for(var key in definition) {
+/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 					}
 /******/ 				}
 /******/ 			}
 /******/ 		};
@@ -37,7 +52,7 @@
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
 /******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			if(Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
@@ -45,7 +60,7 @@
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+let __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -1506,7 +1521,161 @@ class DesignJsonPropertyExtension {
   static MOVE_ALLOWED = 'moveAllowed';
 }
 
+;// ./src/design/features.js
+
+
+
+
+/**
+ * Class to set design features.
+ */
+class Features extends AbstractBuilder {
+    /**
+     * @type {Boolean|undefined}
+     * @private
+     */
+    _formFieldRules = undefined;
+
+    /**
+     * @returns {Boolean|undefined}
+     */
+    get formFieldRules() {
+        return this._formFieldRules;
+    }
+
+    /**
+     * Set the value of the formFieldRules property.
+     *
+     * @see {@link withFeatures}
+     * @param {Boolean} enabled - enable or forbid formFieldRules
+     * @returns {Features}
+     */
+    withFormFieldRules(enabled) {
+        this._formFieldRules = enabled;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    _buildInternal() {
+        let config = {};
+
+        this._applyPropertyIfDefined('formFieldRules', config, identity);
+
+        return config;
+    }
+
+}
+
+;// ./src/design/security.js
+
+
+
+
+/**
+ * Class to set security features.
+ */
+class Security extends AbstractBuilder {
+    /**
+     * @type {HtmlSanitization|undefined}
+     * @private
+     */
+    _htmlSanitization = undefined;
+
+    /**
+     * @returns {HtmlSanitization|undefined}
+     */
+    get htmlSanitization() {
+        return this._htmlSanitization;
+    }
+
+    /**
+     * Set the value of the htmlSanitization property.
+     *
+     * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
+     * @returns {Security}
+     */
+    withHtmlSanitization(htmlSanitization) {
+        this._htmlSanitization = htmlSanitization;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    _buildInternal() {
+        let config = {};
+
+        this._applyPropertyIfDefined('htmlSanitization', config, builderObjectValue);
+
+        return config;
+    }
+}
+
+class HtmlSanitization extends AbstractBuilder {
+    /**
+     * @type {Boolean|undefined}
+     * @private
+     */
+    _allowEventAttributes = undefined;
+    /**
+     * @type {Boolean|undefined}
+     * @private
+     */
+    _allowInlineScripts = undefined;
+
+    /**
+     * @returns {Boolean|undefined}
+     */
+    get allowEventAttributes() {
+        return this._allowEventAttributes;
+    }
+    
+    /**
+     * @returns {Boolean|undefined}
+     */
+    get allowInlineScripts() {
+        return this._allowInlineScripts;
+    }
+
+    /**
+     * Set the value of the allowEventAttributes property.
+     *
+     * @param {Boolean} allowEventAttributes - enable or forbid event attributes
+     * @returns {Security}
+     */
+    withAllowEventAttributes(allowEventAttributes) {
+        this._allowEventAttributes = allowEventAttributes;
+        return this;
+    }
+
+    /**
+     * Set the value of the allowInlineScripts property.
+     *
+     * @param {Boolean} allowInlineScripts - enable or forbid inline scripts
+     * @returns {Security}
+     */
+    withAllowInlineScripts(allowInlineScripts) {
+        this._allowInlineScripts = allowInlineScripts;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    _buildInternal() {
+        let config = {};
+
+        this._applyPropertyIfDefined('allowEventAttributes', config, identity);
+        this._applyPropertyIfDefined('allowInlineScripts', config, identity);
+
+        return config;
+    }
+}
 ;// ./src/design/design.js
+
+
 
 
 
@@ -1515,8 +1684,12 @@ class DesignJsonPropertyExtension {
 
 /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
 /** @typedef {import('./locale').Locale} Locale */
+/** @typedef {import('./features').Features} Features */
+/** @typedef {import('./security').Security} Security */
+/** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
 /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
 /** @typedef {import('../content-element/content-element').default} ContentElement */
+/** @typedef {import('../content-element/template-element').default} TemplateElement */
 /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
 /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
 /** @typedef {import('../dropzone/dropzone').default} Dropzone */
@@ -1614,6 +1787,23 @@ class Design extends AbstractBuilder {
    * @private
    */
   _websiteContentTypes = undefined;
+  /**
+   * @type {RawValue|Features|undefined}
+   * @private
+   */
+  _features = undefined;
+
+  /**
+   * @type {RawValue|Security|undefined}
+   * @private
+   */
+  _security = undefined;
+
+  /**
+   * @type {Object}
+   * @private
+   */
+  _rawObjects = {};
 
   /**
    * @returns {RawValue|SchemaVersion|undefined}
@@ -1711,6 +1901,27 @@ class Design extends AbstractBuilder {
    */
   get websiteContentTypes() {
     return this._websiteContentTypes;
+  }
+
+  /**
+   * @returns {RawValue|Features|undefined}
+   */
+  get features() {
+    return this._features;
+  }
+
+  /**
+   * @returns {RawValue|Security|undefined}
+   */
+  get security() {
+    return this._security;
+  }
+
+  /**
+   * @returns {Object}
+   */
+  get rawObjects() {
+    return this._rawObjects;
   }
 
   /**
@@ -1944,7 +2155,7 @@ class Design extends AbstractBuilder {
    *   require('./content-elements/basic/image'))
    * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
    * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
-   * @returns {ContentElement}
+   * @returns {Design}
    */
   withReducedDropzone(id, ...elements) {
     let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === id);
@@ -2161,6 +2372,115 @@ class Design extends AbstractBuilder {
   }
 
   /**
+   * Configure the features object.
+   *
+   * @see {@link withRawFeatures} to set a raw value
+   * @param {Features} features
+   * @returns {Design}
+   */
+  withFeatures(features) {
+    this._features = features;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the features property.
+   *
+   * @example
+   * .withRawFeatures({ "formFieldRules": true })
+   * @see {@link withFeatures}
+   * @param {object} features - The raw value.
+   * @returns {Design}
+   */
+  withRawFeatures(features) {
+    this._features = new RawValue(features);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * Shortcut for `withFeatures(cx.features.withFormFieldRules(enable))`
+   * Remove if more than one feature is available.
+   *
+   * @param {Boolean} enable
+   * @returns {Design}
+   */
+  withFeatureFormFieldRules(enable) {
+    this._features = this._features || new Features();
+    this._features.withFormFieldRules(enable);
+    return this;
+  }
+
+  /**
+   * Configure the security object.
+   * 
+   * @example
+   * .withSecurity(
+   *    cx.security.withHtmlSanitization(
+   *        cx.htmlSanitization
+   *            .withAllowEventAttributes(allowEventAttributes)
+   *            .withAllowInlineScripts(allowInlineScripts)))
+   *
+   * @see {@link withRawSecurity} to set a raw value
+   * @param {Security} security
+   * @returns {Design}
+   */
+  withSecurity(security) {
+    this._security = security;
+    return this;
+  }
+
+  /**
+   * Set the raw value of the security property.
+   *
+   * @example
+   * .withRawSecurity({ "formFieldRules": true })
+   * @see {@link withSecurity}
+   * @param {object} security - The raw value.
+   * @returns {Design}
+   */
+  withRawSecurity(security) {
+    this._security = new RawValue(security);
+    return this;
+  }
+
+  /**
+   * Set the features.formFieldEnabled value.
+   * 
+   * @example
+   * .withSecurityHtmlSanitization(true, false)
+   *
+   * @see {@link withSecurity} to set a security object
+   * @param {boolean} allowEventAttributes
+   * @param {boolean} allowInlineScripts
+   * @returns {Design}
+   */
+  withSecurityHtmlSanitization(allowEventAttributes = false, allowInlineScripts = false) {
+    this._security = this._security || new Security();
+    let htmlSanitization = this._security.htmlSanitization || new HtmlSanitization();
+    htmlSanitization.withAllowEventAttributes(allowEventAttributes);
+    htmlSanitization.withAllowInlineScripts(allowInlineScripts);
+    this._security.withHtmlSanitization(htmlSanitization);
+    return this;
+  }
+
+  /**
+   * Add a raw key, value pair to the design object.
+   *
+   * @example
+    .withRawObject('newObjectProperty', { someObj: { crazyStuff: "yolo", someOtherStuff: false } })
+    .withRawObject('newProperty', 24)
+   * @param {String} key - The key
+   * @param {any} value - The value. Can be a value or an object
+   * @returns {Design}
+   */
+  withRawObject(key, value) {
+    this._rawObjects = this._rawObjects || {};
+    this._rawObjects[key] = value;
+    return this;
+  }
+
+  /**
    * @inheritDoc
    */
   _buildInternal() {
@@ -2180,6 +2500,10 @@ class Design extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.NLS, config, builderObjectValue, true);
     this._applyPropertyIfDefined(DesignJsonProperty.WEBSITE_CONTENT_TYPES, config, constantObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.FEATURES, config, builderObjectValue);
+    this._applyPropertyIfDefined(DesignJsonProperty.SECURITY, config, builderObjectValue);
+
+    config = Object.assign(config, this._rawObjects);
 
     return config;
   }
@@ -7130,7 +7454,7 @@ const cx = new DesignFactory();
 
 
 
-var __webpack_export_target__ = exports;
+const __webpack_export_target__ = exports;
 for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()

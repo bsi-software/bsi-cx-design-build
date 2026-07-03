@@ -3122,6 +3122,89 @@ declare module "export/main" {
     import * as css from "src/css/helper";
     export { Version, DesignType, BuildConfig, ModuleConfig, DefaultBuildConfig, WebpackConfigBuilder, css };
 }
+declare module "src/design/features" {
+    /**
+     * Class to set design features.
+     */
+    export class Features extends AbstractBuilder {
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _formFieldRules;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get formFieldRules(): boolean | undefined;
+        /**
+         * Set the value of the formFieldRules property.
+         *
+         * @see {@link withFeatures}
+         * @param {Boolean} enabled - enable or forbid formFieldRules
+         * @returns {Features}
+         */
+        withFormFieldRules(enabled: boolean): Features;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
+declare module "src/design/security" {
+    /**
+     * Class to set security features.
+     */
+    export class Security extends AbstractBuilder {
+        /**
+         * @type {HtmlSanitization|undefined}
+         * @private
+         */
+        private _htmlSanitization;
+        /**
+         * @returns {HtmlSanitization|undefined}
+         */
+        get htmlSanitization(): HtmlSanitization | undefined;
+        /**
+         * Set the value of the htmlSanitization property.
+         *
+         * @param {HtmlSanitization} htmlSanitization - enable or forbid formFieldRules
+         * @returns {Security}
+         */
+        withHtmlSanitization(htmlSanitization: HtmlSanitization): Security;
+    }
+    export class HtmlSanitization extends AbstractBuilder {
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _allowEventAttributes;
+        /**
+         * @type {Boolean|undefined}
+         * @private
+         */
+        private _allowInlineScripts;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get allowEventAttributes(): boolean | undefined;
+        /**
+         * @returns {Boolean|undefined}
+         */
+        get allowInlineScripts(): boolean | undefined;
+        /**
+         * Set the value of the allowEventAttributes property.
+         *
+         * @param {Boolean} allowEventAttributes - enable or forbid event attributes
+         * @returns {Security}
+         */
+        withAllowEventAttributes(allowEventAttributes: boolean): Security;
+        /**
+         * Set the value of the allowInlineScripts property.
+         *
+         * @param {Boolean} allowInlineScripts - enable or forbid inline scripts
+         * @returns {Security}
+         */
+        withAllowInlineScripts(allowInlineScripts: boolean): Security;
+    }
+    import AbstractBuilder from "src/abstract-builder";
+}
 declare module "src/design/schema-version" {
     /** @typedef {import('./design').default} Design */
     /**
@@ -5850,8 +5933,12 @@ declare module "src/nls/nls" {
 declare module "src/design/design" {
     /** @typedef {import('./schema-version').SchemaVersion} SchemaVersion */
     /** @typedef {import('./locale').Locale} Locale */
+    /** @typedef {import('./features').Features} Features */
+    /** @typedef {import('./security').Security} Security */
+    /** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
     /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
     /** @typedef {import('../content-element/content-element').default} ContentElement */
+    /** @typedef {import('../content-element/template-element').default} TemplateElement */
     /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
@@ -5949,6 +6036,21 @@ declare module "src/design/design" {
          */
         private _websiteContentTypes;
         /**
+         * @type {RawValue|Features|undefined}
+         * @private
+         */
+        private _features;
+        /**
+         * @type {RawValue|Security|undefined}
+         * @private
+         */
+        private _security;
+        /**
+         * @type {Object}
+         * @private
+         */
+        private _rawObjects;
+        /**
          * @returns {RawValue|SchemaVersion|undefined}
          */
         get schemaVersion(): RawValue | SchemaVersion | undefined;
@@ -6004,6 +6106,18 @@ declare module "src/design/design" {
          * @returns {RawValue|[WebsiteContentType]|undefined}
          */
         get websiteContentTypes(): RawValue | [WebsiteContentType] | undefined;
+        /**
+         * @returns {RawValue|Features|undefined}
+         */
+        get features(): RawValue | Features | undefined;
+        /**
+         * @returns {RawValue|Security|undefined}
+         */
+        get security(): RawValue | Security | undefined;
+        /**
+         * @returns {Object}
+         */
+        get rawObjects(): any;
         /**
          * The schema version to use. This is relevant for website templates and all templates for BSI CX 22.0 onwards.
          *
@@ -6174,9 +6288,9 @@ declare module "src/design/design" {
          *   require('./content-elements/basic/image'))
          * @param {string} id - The ID of the dropzone to reduce (set with {@link Dropzone#withDropzone}).
          * @param {...ContentElement} elements - The elements to remove from the allowed elements list.
-         * @returns {ContentElement}
+         * @returns {Design}
          */
-        withReducedDropzone(id: string, ...elements: ContentElement[]): ContentElement;
+        withReducedDropzone(id: string, ...elements: ContentElement[]): Design;
         /**
          * The style configurations of your design. This is only necessary if you use
          * {@link ContentElement#withRawStyleConfigs} to reference your style configurations.
@@ -6339,6 +6453,81 @@ declare module "src/design/design" {
          */
         withRawWebsiteContentTypes(...websiteContentTypes: string[]): Design;
         /**
+         * Configure the features object.
+         *
+         * @see {@link withRawFeatures} to set a raw value
+         * @param {Features} features
+         * @returns {Design}
+         */
+        withFeatures(features: Features): Design;
+        /**
+         * Set the raw value of the features property.
+         *
+         * @example
+         * .withRawFeatures({ "formFieldRules": true })
+         * @see {@link withFeatures}
+         * @param {object} features - The raw value.
+         * @returns {Design}
+         */
+        withRawFeatures(features: object): Design;
+        /**
+         * Set the features.formFieldEnabled value.
+         * Shortcut for `withFeatures(cx.features.withFormFieldRules(enable))`
+         * Remove if more than one feature is available.
+         *
+         * @param {Boolean} enable
+         * @returns {Design}
+         */
+        withFeatureFormFieldRules(enable: boolean): Design;
+        /**
+         * Configure the security object.
+         *
+         * @example
+         * .withSecurity(
+         *    cx.security.withHtmlSanitization(
+         *        cx.htmlSanitization
+         *            .withAllowEventAttributes(allowEventAttributes)
+         *            .withAllowInlineScripts(allowInlineScripts)))
+         *
+         * @see {@link withRawSecurity} to set a raw value
+         * @param {Security} security
+         * @returns {Design}
+         */
+        withSecurity(security: Security): Design;
+        /**
+         * Set the raw value of the security property.
+         *
+         * @example
+         * .withRawSecurity({ "formFieldRules": true })
+         * @see {@link withSecurity}
+         * @param {object} security - The raw value.
+         * @returns {Design}
+         */
+        withRawSecurity(security: object): Design;
+        /**
+         * Set the features.formFieldEnabled value.
+         *
+         * @example
+         * .withSecurityHtmlSanitization(true, false)
+         *
+         * @see {@link withSecurity} to set a security object
+         * @param {boolean} allowEventAttributes
+         * @param {boolean} allowInlineScripts
+         * @returns {Design}
+         */
+        withSecurityHtmlSanitization(allowEventAttributes?: boolean, allowInlineScripts?: boolean): Design;
+        /**
+         * Add a raw key, value pair to the design object.
+         *
+         * @example
+          .withRawObject('newObjectProperty', { someObj: { crazyStuff: "yolo", someOtherStuff: false } })
+          .withRawObject('newProperty', 24)
+         * @param {String} key - The key
+         * @param {any} value - The value. Can be a value or an object
+         * @returns {Design}
+         */
+        withRawObject(key: string, value: any): Design;
+        /**
          * Clone the configuration.
          *
          * @example
@@ -6352,8 +6541,12 @@ declare module "src/design/design" {
     }
     export type SchemaVersion = import("src/design/schema-version").SchemaVersion;
     export type Locale = import("src/design/locale").Locale;
+    export type Features = import("src/design/features").Features;
+    export type Security = import("src/design/security").Security;
+    export type HtmlSanitization = import("src/design/security").HtmlSanitization;
     export type WebsiteContentType = import("src/design/websiteContentType").WebsiteContentType;
     export type ContentElement = import("src/content-element/content-element").default;
+    export type TemplateElement = any;
     export type FormattedTextPart = any;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
@@ -6363,6 +6556,9 @@ declare module "src/design/design" {
     export type NLS = import("src/nls/nls").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
+    import { Features } from "src/design/features";
+    import { Security } from "src/design/security";
+    import { HtmlSanitization } from "src/design/security";
 }
 declare module "src/design/locale" {
     /** @typedef {import('./design').default} Design */
