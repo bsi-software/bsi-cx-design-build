@@ -5938,7 +5938,6 @@ declare module "src/design/design" {
     /** @typedef {import('./security').HtmlSanitization} HtmlSanitization */
     /** @typedef {import('./websiteContentType').WebsiteContentType} WebsiteContentType */
     /** @typedef {import('../content-element/content-element').default} ContentElement */
-    /** @typedef {import('../content-element/template-element').default} TemplateElement */
     /** @typedef {import('../content-element/part/formatted-text-part').default} FormattedTextPart */
     /** @typedef {import('../content-element/content-element-group').default} ContentElementGroup */
     /** @typedef {import('../dropzone/dropzone').default} Dropzone */
@@ -6546,7 +6545,6 @@ declare module "src/design/design" {
     export type HtmlSanitization = import("src/design/security").HtmlSanitization;
     export type WebsiteContentType = import("src/design/websiteContentType").WebsiteContentType;
     export type ContentElement = import("src/content-element/content-element").default;
-    export type TemplateElement = any;
     export type FormattedTextPart = any;
     export type ContentElementGroup = import("src/content-element/content-element-group").default;
     export type Dropzone = import("src/dropzone/dropzone").default;
