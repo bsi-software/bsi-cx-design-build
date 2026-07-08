@@ -7,12 +7,19 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
 ## latest
+
+
+
+## [1.14.2] - 08.07.2026
 * Rollback tsconfig.json
+
+[1.14.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.14.1...1.14.2
 
 
 ## [1.14.1] - 03.07.2026
 * Add functions to design.js: `withFeatureFormFieldRules()`, `withSecurityHtmlSanitization()` and `withRawObject()`
 
+[1.14.1]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.14.0...1.14.1
 
 ## [1.14.0] - 30.06.2026
 * Add studioLink and studioLinkEnabled
@@ -20,6 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add content-element setter for part "Basic Dynamic Value List"
 * Add `withExtendAllDropzones()` to content-part
 
+[1.14.0]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.13.8...1.14.0
 
 
 ## [1.13.8] - 09.10.2025
