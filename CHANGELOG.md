@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
 ## latest
+* Rollback tsconfig.json
 
 
 ## [1.14.1] - 03.07.2026

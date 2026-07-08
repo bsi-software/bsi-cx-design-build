@@ -839,8 +839,8 @@ declare module "src/build-config/build-config-interface" {
          */
         get postcssEnabled(): boolean;
     }
-    export type PathData = import("webpack").PathData;
-    export type AssetInfo = import("webpack").AssetInfo;
+    export type PathData = any;
+    export type AssetInfo = any;
     export type Version = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
     export type ModuleConfig = import("src/build-config/module-config").default;
@@ -1037,8 +1037,8 @@ declare module "src/build-config/validated-build-config" {
          */
         get postcssEnabled(): boolean;
     }
-    export type PathData = import("webpack").PathData;
-    export type AssetInfo = import("webpack").AssetInfo;
+    export type PathData = any;
+    export type AssetInfo = any;
     export type Version = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
     export type ModuleConfig = import("src/build-config/module-config").default;
@@ -1612,8 +1612,8 @@ declare module "src/build-config/build-config" {
          */
         validate(): ValidatedBuildConfig;
     }
-    export type PathData = import("webpack").PathData;
-    export type AssetInfo = import("webpack").AssetInfo;
+    export type PathData = any;
+    export type AssetInfo = any;
     export type Version = import("src/version").Version;
     export type CX_22_0 = import("src/version").Version;
     export type DesignType = import("src/design-type").DesignType;
@@ -2779,7 +2779,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: TerserPlugin<import("terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
+                minimizer: TerserPlugin[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -2826,7 +2826,7 @@ declare module "src/webpack-config-builder" {
             performance: {};
             optimization: {
                 minimize: boolean;
-                minimizer: TerserPlugin<import("terser", { with: { "resolution-mode": "import" } }).MinifyOptions>[];
+                minimizer: TerserPlugin[];
                 splitChunks: {
                     chunks: string;
                     cacheGroups: {};
@@ -3041,10 +3041,7 @@ declare module "src/webpack-config-builder" {
         _getOutputConfig(): {};
     }
     import BuildContext from "src/build-context";
-    import TerserPlugin from "terser-webpack-plugin";
     import * as DesignType from "src/design-type";
-    import MiniCssExtractPlugin from "mini-css-extract-plugin";
-    import CopyPlugin from "copy-webpack-plugin";
     import BsiCxWebpackLegacyDesignPlugin from "src/bsi-cx-webpack-legacy-design-plugin";
 }
 declare module "src/css/helper" {
