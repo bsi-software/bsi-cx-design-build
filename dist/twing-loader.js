@@ -424,7 +424,10 @@ function findNodeModulesFolder(startFolder) {
  *
  * @type {string[]}
  */
-const LOREM_IPSUM = 'Vivamus dapibus lobortis risus, nec fringilla lectus consectetur at. Nam placerat elementum elit, sit amet sagittis magna efficitur at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent et congue massa, sit amet feugiat lorem. Nunc venenatis, dolor a ullamcorper cursus, lacus nibh congue arcu, vel lobortis nulla sem id nunc. Suspendisse consectetur nunc id velit scelerisque commodo eget sed tellus. Vestibulum finibus odio ex, vel lacinia ipsum rutrum in. Pellentesque vel eleifend nisl, tempus luctus lacus. Quisque rutrum neque quis eleifend imperdiet. Quisque sapien enim, pellentesque at augue at, consectetur congue mauris. Phasellus posuere nisi erat, ac condimentum odio iaculis sed.'.split(' ');
+const LOREM_IPSUM =
+  "Vivamus dapibus lobortis risus, nec fringilla lectus consectetur at. Nam placerat elementum elit, sit amet sagittis magna efficitur at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent et congue massa, sit amet feugiat lorem. Nunc venenatis, dolor a ullamcorper cursus, lacus nibh congue arcu, vel lobortis nulla sem id nunc. Suspendisse consectetur nunc id velit scelerisque commodo eget sed tellus. Vestibulum finibus odio ex, vel lacinia ipsum rutrum in. Pellentesque vel eleifend nisl, tempus luctus lacus. Quisque rutrum neque quis eleifend imperdiet. Quisque sapien enim, pellentesque at augue at, consectetur congue mauris. Phasellus posuere nisi erat, ac condimentum odio iaculis sed.".split(
+    " ",
+  );
 
 /**
  * @param {string} resolve
@@ -445,105 +448,157 @@ function bsiCxJsModuleImport(executionContext, config, inline) {
   let metaInfo = {
     ...config,
     template: templatePath,
-    inline: inline
+    inline: inline,
   };
-  let placeholder = Constant.BSI_CX_JS_MODULE_START + JSON.stringify(metaInfo) + Constant.BSI_CX_JS_MODULE_END;
+  let placeholder =
+    Constant.BSI_CX_JS_MODULE_START +
+    JSON.stringify(metaInfo) +
+    Constant.BSI_CX_JS_MODULE_END;
   return strToPromise(placeholder);
 }
 
 /**
  * Resolve static assets.
  */
-const bsiCxAsset = (0,external_twing_namespaceObject.createFunction)('bsi_cx_asset', (executionContext, assetPath, inline) => {
-  let templatePath = executionContext.template.source.name;
-  let templateDirPath = external_path_default().dirname(templatePath);
-  let absoluteAssetPath = toPosixPath(external_path_default().resolve(templateDirPath, assetPath));
-  let assetQuery = !!inline ? QueryConstant.INLINE : '';
-  let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
-  return strToPromise(`@ref(${assetRequest})`);
-}, [{name: 'assetPath'}, {name: 'inline', defaultValue: false}]);
+const bsiCxAsset = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_asset",
+  (executionContext, assetPath, inline) => {
+    let templatePath = executionContext.template.source.name;
+    let templateDirPath = external_path_default().dirname(templatePath);
+    let absoluteAssetPath = toPosixPath(
+      external_path_default().resolve(templateDirPath, assetPath),
+    );
+    let assetQuery = !!inline ? QueryConstant.INLINE : "";
+    let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, "");
+    return strToPromise(`@ref(${assetRequest})`);
+  },
+  [{ name: "assetPath" }, { name: "inline", defaultValue: false }],
+);
 
 /**
  * Get URL to the CSS asset.
  */
-const bsiCxCssHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_css_href', () => {
-  return strToPromise(Constant.BSI_CX_CSS_HREF);
-}, []);
+const bsiCxCssHref = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_css_href",
+  () => {
+    return strToPromise(Constant.BSI_CX_CSS_HREF);
+  },
+  [],
+);
 
 /**
  * Get the contents of the CSS asset.
  */
-const bsiCxCssInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_css_inline', () => {
-  return strToPromise(Constant.BSI_CX_CSS_INLINE);
-}, []);
+const bsiCxCssInline = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_css_inline",
+  () => {
+    return strToPromise(Constant.BSI_CX_CSS_INLINE);
+  },
+  [],
+);
 
 /**
  * Get URL to the requested JS module.
  */
-const bsiCxJsModuleHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_href', async (executionContext, module) => {
-  let config = {
-    module: module
-  };
-  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, false));
-}, [{name: 'module'}]);
+const bsiCxJsModuleHref = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_js_module_href",
+  async (executionContext, module) => {
+    let config = {
+      module: module,
+    };
+    return (0,external_twing_namespaceObject.createMarkup)(
+      await bsiCxJsModuleImport(executionContext, config, false),
+    );
+  },
+  [{ name: "module" }],
+);
 
 /**
  * Get the content of the requested JS module.
  */
-const bsiCxJsModuleInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_inline', async (executionContext, module) => {
-  let config = {
-    module: module
-  };
-  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, true));
-}, [{name: 'module'}]);
+const bsiCxJsModuleInline = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_js_module_inline",
+  async (executionContext, module) => {
+    let config = {
+      module: module,
+    };
+    return (0,external_twing_namespaceObject.createMarkup)(
+      await bsiCxJsModuleImport(executionContext, config, true),
+    );
+  },
+  [{ name: "module" }],
+);
 
 /**
  * Import all missing JS module chunks.
  */
-const bsiCxJsModuleMissingChunksImport = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_missing_chunks_import', async (executionContext, attributes) => {
-  let config = {
-    chunks: true,
-    attributes: attributes || {}
-  };
-  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, false));
-}, [{name: 'attributes', defaultValue: {}}]);
+const bsiCxJsModuleMissingChunksImport = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_js_module_missing_chunks_import",
+  async (executionContext, attributes) => {
+    let config = {
+      chunks: true,
+      attributes: attributes || {},
+    };
+    return (0,external_twing_namespaceObject.createMarkup)(
+      await bsiCxJsModuleImport(executionContext, config, false),
+    );
+  },
+  [{ name: "attributes", defaultValue: {} }],
+);
 
 /**
  * Inline all missing JS module chunks.
  */
-const bsiCxJsModuleMissingChunksInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_missing_chunks_inline', async (executionContext, attributes) => {
-  let config = {
-    chunks: true,
-    attributes: attributes || {}
-  };
-  return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, true));
-}, [{name: 'attributes', defaultValue: {}}]);
+const bsiCxJsModuleMissingChunksInline = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_js_module_missing_chunks_inline",
+  async (executionContext, attributes) => {
+    let config = {
+      chunks: true,
+      attributes: attributes || {},
+    };
+    return (0,external_twing_namespaceObject.createMarkup)(
+      await bsiCxJsModuleImport(executionContext, config, true),
+    );
+  },
+  [{ name: "attributes", defaultValue: {} }],
+);
 
 /**
  * Get URL to the JS runtime module.
  */
-const bsiCxJsModuleRuntimeHref = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_runtime_href', () => {
-  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_HREF);
-}, []);
+const bsiCxJsModuleRuntimeHref = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_js_module_runtime_href",
+  () => {
+    return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_HREF);
+  },
+  [],
+);
 
 /**
  * Get the contents of the JS runtime module.
  */
-const bsiCxJsModuleRuntimeInline = (0,external_twing_namespaceObject.createFunction)('bsi_cx_js_module_runtime_inline', () => {
-  return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
-}, []);
+const bsiCxJsModuleRuntimeInline = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_js_module_runtime_inline",
+  () => {
+    return strToPromise(Constant.BSI_CX_MODULE_RUNTIME_INLINE);
+  },
+  [],
+);
 
 /**
  * Lorem ipsum generator.
  */
-const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lorem', (words) => {
-  let numOfWords = parseInt(words, 10);
-  let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
-  let phrase = LOREM_IPSUM.slice(0, end).join(' ');
+const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)(
+  "bsi_cx_lorem",
+  (words) => {
+    let numOfWords = parseInt(words, 10);
+    let end = isNaN(numOfWords) ? LOREM_IPSUM.length : numOfWords;
+    let phrase = LOREM_IPSUM.slice(0, end).join(" ");
 
-  return strToPromise(phrase);
-}, [{name: 'words', defaultValue: ''}])
-
+    return strToPromise(phrase);
+  },
+  [{ name: "words", defaultValue: "" }],
+);
 
 /**
  * Helper function to create scoped template element
@@ -551,8 +606,10 @@ const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lor
 const bsiTemplatePart = (0,external_twing_namespaceObject.createFunction)(
   "templateElement",
   (elementId, scope) =>
-  strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
-  [{name: 'elementId'}, {name: 'scope', defaultValue: null}],
+    strToPromise(
+      ` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`,
+    ),
+  [{ name: "elementId" }, { name: "scope", defaultValue: null }],
   { is_safe: ["html"] },
 );
 
@@ -560,97 +617,169 @@ const bsiTemplatePart = (0,external_twing_namespaceObject.createFunction)(
  * Helper functions to create hbs variables
  */
 const scopeVariable = (scope, partId, variable) =>
+  `{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`;
+
+const scopeVariablePromise = (scope, partId, variable) =>
   strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+  strToPromise(
+    `{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`,
+  );
 
+// const setAttributeIfScopeVariable = (scope, partId, variable) =>
+//   strToPromise(
+//     ifScopeVariable(
+//       scope,
+//       partId,
+//       "openInNewWindow",
+//       `target="${scopeVariable(scope, partId, "openInNewWindow")}`,
+//     ),
+//   );
 
 const templatePartHelper = [
   (0,external_twing_namespaceObject.createFunction)(
     "textValue",
-    (partId, scope) =>  scopeVariable(scope, partId, "value"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => {
+      scopeVariablePromise(scope, partId, "value");
+    },
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "formattedHtml",
-    (partId, scope) => scopeVariable(scope, partId, "html"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) =>
+      strToPromise(`{${scopeVariable(scope, partId, "html")}}`),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
-    "formattedLanguage",
-    (partId, scope) => scopeVariable(scope, partId, "languageTag"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    "formattedLanguageTag",
+    (partId, scope) =>
+      ifScopeVariable(
+        scope,
+        partId,
+        "languageTag",
+        `lang="${scopeVariable(scope, partId, "languageTag")}"`,
+      ),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "linkUrl",
-    (partId, scope) => scopeVariable(scope, partId, "url"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "url"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "linkText",
-    (partId, scope) => scopeVariable(scope, partId, "text"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "text"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "linkDescription",
-    (partId, scope) => scopeVariable(scope, partId, "description"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "description"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "linkDescriptionAttr",
+    (partId, scope) =>
+      ifScopeVariable(
+        scope,
+        partId,
+        "description",
+        `attr=${scopeVariable(scope, partId, "description")}`,
+      ),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "linkTargetAttr",
+    (partId, scope) =>
+      ifScopeVariable(
+        scope,
+        partId,
+        "openInNewWindow",
+        `target="${scopeVariable(scope, partId, "openInNewWindow")}`,
+      ),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "ifLinkTarget",
     (partId, scope, ifBlock, elseBlock) =>
       ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    [
+      { name: "partId" },
+      { name: "scope", defaultValue: null },
+      { name: "ifBlock" },
+      { name: "elseBlock", defaultValue: null },
+    ],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageAlt",
-    (partId, scope) => scopeVariable(scope, partId, "altText"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "altText"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageSrc",
-    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "srcUrl"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imagePlaceholderSrc",
-    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "placeholderSrcUrl"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageSrcset",
-    (partId, scope) => scopeVariable(scope, partId, "srcset"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "srcset"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageDecorative",
-    (partId, scope) => scopeVariable(scope, partId, "decorative"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "decorative"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "ifCheckboxValue",
     (partId, scope, ifBlock, elseBlock) =>
       ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    [
+      { name: "partId" },
+      { name: "scope", defaultValue: null },
+      { name: "ifBlock" },
+      { name: "elseBlock", defaultValue: null },
+    ],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "optionValue",
-    (partId, scope) => scopeVariable(scope, partId, "value"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (partId, scope) => scopeVariablePromise(scope, partId, "value"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "ifOptionEquals",
+    (partId, scope, equals, ifBlock, elseBlock) =>
+      strToPromise(
+        `{{#if ${scope ? scope + "." : ""}${partId}.value == ${equals} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`,
+      ),
+    [
+      { name: "partId" },
+      { name: "scope", defaultValue: null },
+      { name: "equals" },
+      { name: "ifBlock" },
+      { name: "elseBlock", defaultValue: null },
+    ],
     {},
   ),
   // TODO: dynamic-value-list

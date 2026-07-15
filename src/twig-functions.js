@@ -203,23 +203,39 @@ export const bsiTemplatePart = createFunction(
  * Helper functions to create hbs variables
  */
 const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+  `{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`;
+
+const scopeVariablePromise = (scope, partId, variable) =>
+  strToPromise(scopeVariable(scope, partId, variable));
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
   strToPromise(
     `{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`,
   );
 
+// const setAttributeIfScopeVariable = (scope, partId, variable) =>
+//   strToPromise(
+//     ifScopeVariable(
+//       scope,
+//       partId,
+//       "openInNewWindow",
+//       `target="${scopeVariable(scope, partId, "openInNewWindow")}`,
+//     ),
+//   );
+
 export const templatePartHelper = [
   createFunction(
     "textValue",
-    (partId, scope) => scopeVariable(scope, partId, "value"),
+    (partId, scope) => {
+      scopeVariablePromise(scope, partId, "value");
+    },
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "formattedHtml",
-    (partId, scope) => `{${scopeVariable(scope, partId, "html")}}`,
+    (partId, scope) =>
+      strToPromise(`{${scopeVariable(scope, partId, "html")}}`),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
@@ -237,19 +253,43 @@ export const templatePartHelper = [
   ),
   createFunction(
     "linkUrl",
-    (partId, scope) => scopeVariable(scope, partId, "url"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "url"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "linkText",
-    (partId, scope) => scopeVariable(scope, partId, "text"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "text"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "linkDescription",
-    (partId, scope) => scopeVariable(scope, partId, "description"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "description"),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
+    {},
+  ),
+  createFunction(
+    "linkDescriptionAttr",
+    (partId, scope) =>
+      ifScopeVariable(
+        scope,
+        partId,
+        "description",
+        `attr=${scopeVariable(scope, partId, "description")}`,
+      ),
+    [{ name: "partId" }, { name: "scope", defaultValue: null }],
+    {},
+  ),
+  createFunction(
+    "linkTargetAttr",
+    (partId, scope) =>
+      ifScopeVariable(
+        scope,
+        partId,
+        "openInNewWindow",
+        `target="${scopeVariable(scope, partId, "openInNewWindow")}`,
+      ),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
@@ -267,31 +307,31 @@ export const templatePartHelper = [
   ),
   createFunction(
     "imageAlt",
-    (partId, scope) => scopeVariable(scope, partId, "altText"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "altText"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "imageSrc",
-    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "srcUrl"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "imagePlaceholderSrc",
-    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "placeholderSrcUrl"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "imageSrcset",
-    (partId, scope) => scopeVariable(scope, partId, "srcset"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "srcset"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
   createFunction(
     "imageDecorative",
-    (partId, scope) => scopeVariable(scope, partId, "decorative"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "decorative"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
   ),
@@ -309,8 +349,23 @@ export const templatePartHelper = [
   ),
   createFunction(
     "optionValue",
-    (partId, scope) => scopeVariable(scope, partId, "value"),
+    (partId, scope) => scopeVariablePromise(scope, partId, "value"),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
+    {},
+  ),
+  createFunction(
+    "ifOptionEquals",
+    (partId, scope, equals, ifBlock, elseBlock) =>
+      strToPromise(
+        `{{#if ${scope ? scope + "." : ""}${partId}.value == ${equals} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`,
+      ),
+    [
+      { name: "partId" },
+      { name: "scope", defaultValue: null },
+      { name: "equals" },
+      { name: "ifBlock" },
+      { name: "elseBlock", defaultValue: null },
+    ],
     {},
   ),
   // TODO: dynamic-value-list
