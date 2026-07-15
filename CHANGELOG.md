@@ -9,6 +9,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 
 
+## [1.14.3] - 08.07.2026
+* Add newer CX versions
+* Add studioLink getter
+* Limit less version to <4.6.0
+* Rollback rollback (1.14.2)
+
+[1.14.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.14.2...1.14.3
+
 
 ## [1.14.2] - 08.07.2026
 * Rollback tsconfig.json
