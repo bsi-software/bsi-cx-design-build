@@ -13,7 +13,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add newer CX versions
 * Add studioLink getter
 * Limit less version to <4.6.0
-* Replace @ofabel/twing with twing
 * Rollback rollback (1.14.2)
 
 [1.14.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/1.14.2...1.14.3
