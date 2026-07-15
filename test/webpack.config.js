@@ -8,7 +8,7 @@ module.exports = WebpackConfigBuilder.fromConfigs(
     .withName('website')
     .withVersion('1.0.0-alpha')
     .withDesignType(DesignType.WEBSITE)
-    .withTargetVersion(Version.CX_22_0)
+    .withTargetVersion(Version.CX_25_1)
     .withRootPath(path.resolve(__dirname, 'templates', 'website'))
     .withPropertiesFilePath('properties.js')
     .withAdditionalStaticAssetFileExtensions('md')

@@ -200,6 +200,22 @@ declare module "src/version" {
     /**
      * @type {Version}
      */
+    export const CX_26_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_26_2: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_27_1: Version;
+    /**
+     * @type {Version}
+     */
+    export const CX_27_2: Version;
+    /**
+     * @type {Version}
+     */
     export const TARGET: Version;
     export type DesignType = import("src/design-type").DesignType;
     import AbstractConstant from "src/abstract-constant";

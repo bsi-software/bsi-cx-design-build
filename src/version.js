@@ -133,4 +133,24 @@ export const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
 /**
  * @type {Version}
  */
+export const CX_26_1 = new Version([26, 1, 0], ALL_TYPES, false, '26.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_26_2 = new Version([26, 2, 0], ALL_TYPES, false, '26.2');
+
+/**
+ * @type {Version}
+ */
+export const CX_27_1 = new Version([27, 1, 0], ALL_TYPES, false, '27.1');
+
+/**
+ * @type {Version}
+ */
+export const CX_27_2 = new Version([27, 2, 0], ALL_TYPES, false, '27.2');
+
+/**
+ * @type {Version}
+ */
 export const TARGET = global[Constant.BSI_CX_TARGET_VERSION];

@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
 ## [1.14.3] - 08.07.2026
+* Add newer CX versions
 * Add studioLink getter
 * Limit less version to <4.6.0
 * Replace @ofabel/twing with twing

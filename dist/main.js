@@ -125,6 +125,10 @@ __webpack_require__.d(src_version_namespaceObject, {
   CX_24_2: () => (CX_24_2),
   CX_25_1: () => (CX_25_1),
   CX_25_2: () => (CX_25_2),
+  CX_26_1: () => (CX_26_1),
+  CX_26_2: () => (CX_26_2),
+  CX_27_1: () => (CX_27_1),
+  CX_27_2: () => (CX_27_2),
   STUDIO_1_0: () => (STUDIO_1_0),
   STUDIO_1_1: () => (STUDIO_1_1),
   STUDIO_1_2: () => (STUDIO_1_2),
@@ -144,6 +148,10 @@ __webpack_require__.d(version_namespaceObject, {
   CX_24_2: () => (CX_24_2),
   CX_25_1: () => (CX_25_1),
   CX_25_2: () => (CX_25_2),
+  CX_26_1: () => (CX_26_1),
+  CX_26_2: () => (CX_26_2),
+  CX_27_1: () => (CX_27_1),
+  CX_27_2: () => (CX_27_2),
   STUDIO_1_0: () => (STUDIO_1_0),
   STUDIO_1_1: () => (STUDIO_1_1),
   STUDIO_1_2: () => (STUDIO_1_2),
@@ -441,6 +449,26 @@ const CX_25_1 = new Version([25, 1, 0], ALL_TYPES, false, '25.1');
  * @type {Version}
  */
 const CX_25_2 = new Version([25, 2, 0], ALL_TYPES, false, '25.2');
+
+/**
+ * @type {Version}
+ */
+const CX_26_1 = new Version([26, 1, 0], ALL_TYPES, false, '26.1');
+
+/**
+ * @type {Version}
+ */
+const CX_26_2 = new Version([26, 2, 0], ALL_TYPES, false, '26.2');
+
+/**
+ * @type {Version}
+ */
+const CX_27_1 = new Version([27, 1, 0], ALL_TYPES, false, '27.1');
+
+/**
+ * @type {Version}
+ */
+const CX_27_2 = new Version([27, 2, 0], ALL_TYPES, false, '27.2');
 
 /**
  * @type {Version}
