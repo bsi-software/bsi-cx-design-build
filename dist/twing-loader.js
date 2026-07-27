@@ -620,7 +620,7 @@ const scopeVariable = (scope, partId, variable) =>
   `{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`;
 
 const scopeVariablePromise = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+  strToPromise(scopeVariable(scope, partId, variable));
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
   strToPromise(
@@ -690,7 +690,7 @@ const templatePartHelper = [
         scope,
         partId,
         "description",
-        `attr=${scopeVariable(scope, partId, "description")}`,
+        `aria-label="${scopeVariable(scope, partId, "description")}"`,
       ),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},

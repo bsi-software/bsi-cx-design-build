@@ -4402,12 +4402,15 @@ class TemplateElement extends AbstractBuilder {
   /**
    * Internal function to load prefill of template parts into context file
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
+  _loadPrefillIntoContextFile(scope = "root") {
+    if (this.templateParts.length) {
+      this._contextFile[scope] = {};
+      this.templateParts.forEach(templatePart => {
+        let partContextId = templatePart.partContextId;
+        let contextFileObj = this._contextFile[partContextId] || {};
+        this._contextFile[scope][partContextId] = Object.assign(contextFileObj, templatePart.prefill);
+      });
+    }
     this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
   }
 
@@ -4668,6 +4671,13 @@ class Dropzone extends AbstractBuilder {
    * Define prefill for this dropzone.
    * Scope must be identical to scope variable in template file
    * 
+   * @example 
+   * .withScopePrefills(
+   *    cx
+   *      .ScopePrefill("prefillScopeId", require("../my-element"))
+   *      .withOverrideValue("partId", "New text"),
+   * )
+   *
    * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
    * @returns {Dropzone}
    */
@@ -8116,19 +8126,24 @@ class ScopePrefill extends AbstractBuilder {
 
   /**
    * Add scope with element to contextFile
-   * 
+   *
    * @protected
-   * @param {Object} contextFile 
+   * @param {Object} contextFile
    */
   addPrefillTo(contextFile) {
-    this.element._loadPrefillIntoContextFile();
-    const context = JSON.parse(JSON.stringify(this.element.contextFile));
-    let override = Object.entries(this.overrideValues);
-    override.forEach(
-      ([templatePartId, value]) =>
-        (context[templatePartId].value = value),
-    );
-    contextFile[this.scope] = context;
+    if (this.element.contextFile) {
+      this.element._loadPrefillIntoContextFile(this.scope);
+      const context = JSON.parse(JSON.stringify(this.element.contextFile));
+      let override = Object.entries(this.overrideValues);
+      override.forEach(
+        ([templatePartId, value]) => (context[templatePartId].value = value),
+      );
+      contextFile[this.scope] = context;
+    }
+    // Fallback for contentElements
+    else {
+      contextFile[this.scope] = {};
+    }
   }
 }
 

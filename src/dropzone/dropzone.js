@@ -212,6 +212,13 @@ export default class Dropzone extends AbstractBuilder {
    * Define prefill for this dropzone.
    * Scope must be identical to scope variable in template file
    * 
+   * @example 
+   * .withScopePrefills(
+   *    cx
+   *      .ScopePrefill("prefillScopeId", require("../my-element"))
+   *      .withOverrideValue("partId", "New text"),
+   * )
+   *
    * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
    * @returns {Dropzone}
    */

@@ -74,18 +74,23 @@ export default class ScopePrefill extends AbstractBuilder {
 
   /**
    * Add scope with element to contextFile
-   * 
+   *
    * @protected
-   * @param {Object} contextFile 
+   * @param {Object} contextFile
    */
   addPrefillTo(contextFile) {
-    this.element._loadPrefillIntoContextFile();
-    const context = JSON.parse(JSON.stringify(this.element.contextFile));
-    let override = Object.entries(this.overrideValues);
-    override.forEach(
-      ([templatePartId, value]) =>
-        (context[templatePartId].value = value),
-    );
-    contextFile[this.scope] = context;
+    if (this.element.contextFile) {
+      this.element._loadPrefillIntoContextFile(this.scope);
+      const context = JSON.parse(JSON.stringify(this.element.contextFile));
+      let override = Object.entries(this.overrideValues);
+      override.forEach(
+        ([templatePartId, value]) => (context[templatePartId].value = value),
+      );
+      contextFile[this.scope] = context;
+    }
+    // Fallback for contentElements
+    else {
+      contextFile[this.scope] = {};
+    }
   }
 }

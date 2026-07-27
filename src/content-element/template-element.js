@@ -544,12 +544,15 @@ export default class TemplateElement extends AbstractBuilder {
   /**
    * Internal function to load prefill of template parts into context file
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
+  _loadPrefillIntoContextFile(scope = "root") {
+    if (this.templateParts.length) {
+      this._contextFile[scope] = {};
+      this.templateParts.forEach(templatePart => {
+        let partContextId = templatePart.partContextId;
+        let contextFileObj = this._contextFile[partContextId] || {};
+        this._contextFile[scope][partContextId] = Object.assign(contextFileObj, templatePart.prefill);
+      });
+    }
     this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
   }
 

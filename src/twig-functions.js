@@ -276,7 +276,7 @@ export const templatePartHelper = [
         scope,
         partId,
         "description",
-        `attr=${scopeVariable(scope, partId, "description")}`,
+        `aria-label="${scopeVariable(scope, partId, "description")}"`,
       ),
     [{ name: "partId" }, { name: "scope", defaultValue: null }],
     {},
