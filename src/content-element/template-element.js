@@ -73,6 +73,12 @@ export default class TemplateElement extends AbstractBuilder {
    * @private
    */
   _dropzones = [];
+  /**
+   * @type {ScopePrefill[]}
+   * @private
+   */
+  _scopePrefills = [];
+
 
   /**
    * @returns {string|undefined}
@@ -156,6 +162,13 @@ export default class TemplateElement extends AbstractBuilder {
    */
   get dropzones() {
     return this._dropzones;
+  }
+
+  /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get scopePrefills() {
+    return this._scopePrefills;
   }
 
   /**
@@ -537,6 +550,18 @@ export default class TemplateElement extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Define prefill for this dropzone.
+   * Scope must be identical to scope variable in template file
+   * 
+   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
+   * @returns {Dropzone}
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
+    return this;
+  }
+
   isCompatible() {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
@@ -544,19 +569,19 @@ export default class TemplateElement extends AbstractBuilder {
   /**
    * Internal function to load prefill of template parts into context file
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
-    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
+  _loadPrefillIntoContextFile(context, scope="") {
+    let defaultScope = scope || "root";
+    if(this.templateParts && this.templateParts.length) {
+      let entries = this.templateParts.map(tP => [tP.partContextId, tP.prefill]);
+      context[defaultScope] = Object.fromEntries(entries);
+    }
+    this._scopePrefills.forEach((sP) => sP.addPrefillTo(this._contextFile, scope));
   }
 
   _buildInternal() {
     let config = { type: "template-element" };
 
-    this._loadPrefillIntoContextFile();
+    this._loadPrefillIntoContextFile(this._contextFile);
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);

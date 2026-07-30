@@ -1,10 +1,10 @@
 import path from 'path';
 
-import {createFunction, createMarkup} from 'twing';
+import { createFunction, createMarkup } from 'twing';
 
 import Constant from './constant';
 import QueryConstant from './query-constant';
-import {toPosixPath} from './utility';
+import { toPosixPath } from './utility';
 
 /**
  *
@@ -47,7 +47,7 @@ export const bsiCxAsset = createFunction('bsi_cx_asset', (executionContext, asse
   let assetQuery = !!inline ? QueryConstant.INLINE : '';
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);
-}, [{name: 'assetPath'}, {name: 'inline', defaultValue: false}]);
+}, [{ name: 'assetPath' }, { name: 'inline', defaultValue: false }]);
 
 /**
  * Get URL to the CSS asset.
@@ -71,7 +71,7 @@ export const bsiCxJsModuleHref = createFunction('bsi_cx_js_module_href', async (
     module: module
   };
   return createMarkup(await bsiCxJsModuleImport(executionContext, config, false));
-}, [{name: 'module'}]);
+}, [{ name: 'module' }]);
 
 /**
  * Get the content of the requested JS module.
@@ -81,7 +81,7 @@ export const bsiCxJsModuleInline = createFunction('bsi_cx_js_module_inline', asy
     module: module
   };
   return createMarkup(await bsiCxJsModuleImport(executionContext, config, true));
-}, [{name: 'module'}]);
+}, [{ name: 'module' }]);
 
 /**
  * Import all missing JS module chunks.
@@ -92,7 +92,7 @@ export const bsiCxJsModuleMissingChunksImport = createFunction('bsi_cx_js_module
     attributes: attributes || {}
   };
   return createMarkup(await bsiCxJsModuleImport(executionContext, config, false));
-}, [{name: 'attributes', defaultValue: {}}]);
+}, [{ name: 'attributes', defaultValue: {} }]);
 
 /**
  * Inline all missing JS module chunks.
@@ -103,7 +103,7 @@ export const bsiCxJsModuleMissingChunksInline = createFunction('bsi_cx_js_module
     attributes: attributes || {}
   };
   return createMarkup(await bsiCxJsModuleImport(executionContext, config, true));
-}, [{name: 'attributes', defaultValue: {}}]);
+}, [{ name: 'attributes', defaultValue: {} }]);
 
 /**
  * Get URL to the JS runtime module.
@@ -128,7 +128,7 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (words) => {
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
   return strToPromise(phrase);
-}, [{name: 'words', defaultValue: ''}])
+}, [{ name: 'words', defaultValue: '' }])
 
 
 /**
@@ -136,9 +136,20 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (words) => {
  */
 export const bsiTemplatePart = createFunction(
   "templateElement",
-  (elementId, scope) =>
-  strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
-  [{name: 'elementId'}, {name: 'scope', defaultValue: null}],
+  (e, elementId, scope) =>
+    strToPromise(` data-bsi-element="${elementId}" data-bsi-context-scope="${scope || "root"}"`),
+  [{ name: 'elementId' }, { name: 'scope', defaultValue: "root" }],
+  { is_safe: ["html"] },
+);
+
+/**
+ * Helper function to create scoped template element
+ */
+export const templateScope = createFunction(
+  "templateScope",
+  (e, elementScope, scope) =>
+    strToPromise(scope ? `${scope}_${elementScope}` : elementScope),
+  [{ name: 'elementScope' }, { name: 'scope', defaultValue: "root" }],
   { is_safe: ["html"] },
 );
 
@@ -146,97 +157,97 @@ export const bsiTemplatePart = createFunction(
  * Helper functions to create hbs variables
  */
 const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+  strToPromise(`{{ ${scope || "root"}.${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+  strToPromise(`{{#if ${scope || "root"}.${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 export const templatePartHelper = [
   createFunction(
     "textValue",
-    (partId, scope) =>  scopeVariable(scope, partId, "value"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "value"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "formattedHtml",
-    (partId, scope) => scopeVariable(scope, partId, "html"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "html"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "formattedLanguage",
-    (partId, scope) => scopeVariable(scope, partId, "languageTag"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "languageTag"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "linkUrl",
-    (partId, scope) => scopeVariable(scope, partId, "url"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "url"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "linkText",
-    (partId, scope) => scopeVariable(scope, partId, "text"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "text"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "linkDescription",
-    (partId, scope) => scopeVariable(scope, partId, "description"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "description"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "ifLinkTarget",
-    (partId, scope, ifBlock, elseBlock) =>
+    (e, partId, scope, ifBlock, elseBlock) =>
       ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
     {},
   ),
   createFunction(
     "imageAlt",
-    (partId, scope) => scopeVariable(scope, partId, "altText"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "altText"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "imageSrc",
-    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "srcUrl"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "imagePlaceholderSrc",
-    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "imageSrcset",
-    (partId, scope) => scopeVariable(scope, partId, "srcset"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "srcset"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "imageDecorative",
-    (partId, scope) => scopeVariable(scope, partId, "decorative"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "decorative"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   createFunction(
     "ifCheckboxValue",
-    (partId, scope, ifBlock, elseBlock) =>
+    (e, partId, scope, ifBlock, elseBlock) =>
       ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
     {},
   ),
   createFunction(
     "optionValue",
-    (partId, scope) => scopeVariable(scope, partId, "value"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId, scope) => scopeVariable(scope, partId, "value"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
     {},
   ),
   // TODO: dynamic-value-list
