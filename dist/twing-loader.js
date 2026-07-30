@@ -531,10 +531,10 @@ const bsiTemplatePart = (0,external_twing_namespaceObject.createFunction)(
  * Helper functions to create hbs variables
  */
 const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+  strToPromise(`{{ ${scope || "root"}.${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+  strToPromise(`{{#if ${scope || "root"}.${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 const templatePartHelper = [
@@ -667,6 +667,7 @@ const templatePartHelper = [
   twing.addFunction(bsiCxLorem);
 
   twing.addFunction(bsiTemplatePart);
+  twing.addFunction(templateScope);
   templatePartHelper.forEach(helper => twing.addFunction(helper));
 
   return twing;

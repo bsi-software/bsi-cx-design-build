@@ -11,5 +11,6 @@ module.exports = cx.templateElement
     .withFile(require("./template.hbs.twig"))
     .withTemplateParts(
         cx.templatePart.MultilinePlainText("Multiline plain text", "multiline-plain-text-wmiRti", 5).withRawPrefill({ value: "Bennis Text" }),
-        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H").withLinkPrefill("[b4]", "ABC Text", "BFSG Descrip"),
+        cx.templatePart.Link("Link auf Multiline Text", "link-1wfD2H")
+            .withLinkPrefill("[b4]", "ABC Text", "BFSG Descrip"),
     )

@@ -136,8 +136,20 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (executionContext, word
  */
 export const bsiTemplatePart = createFunction(
   "templateElement",
-  (executionContext, elementId, scope) => strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
-  [{ name: 'elementId' }, { name: 'scope', defaultValue: null }],
+  (executionContext, elementId, scope) =>
+    strToPromise(` data-bsi-element="${elementId}" data-bsi-context-scope="${scope || "root"}"`),
+  [{ name: 'elementId' }, { name: 'scope', defaultValue: "root" }],
+  { is_safe: ["html"] },
+);
+
+/**
+ * Helper function to create scoped template element
+ */
+export const templateScope = createFunction(
+  "templateScope",
+  (executionContext, elementScope, scope) =>
+    strToPromise(scope ? `${scope}_${elementScope}` : elementScope),
+  [{ name: 'elementScope' }, { name: 'scope', defaultValue: "root" }],
   { is_safe: ["html"] },
 );
 
@@ -145,10 +157,10 @@ export const bsiTemplatePart = createFunction(
  * Helper functions to create hbs variables
  */
 const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+  strToPromise(`{{ ${scope || "root"}.${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+  strToPromise(`{{#if ${scope || "root"}.${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 export const templatePartHelper = [

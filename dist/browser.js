@@ -3941,6 +3941,12 @@ class TemplateElement extends AbstractBuilder {
    * @private
    */
   _dropzones = [];
+  /**
+   * @type {ScopePrefill[]}
+   * @private
+   */
+  _scopePrefills = [];
+
 
   /**
    * @returns {string|undefined}
@@ -4024,6 +4030,13 @@ class TemplateElement extends AbstractBuilder {
    */
   get dropzones() {
     return this._dropzones;
+  }
+
+  /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get scopePrefills() {
+    return this._scopePrefills;
   }
 
   /**
@@ -4405,6 +4418,18 @@ class TemplateElement extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Define prefill for this dropzone.
+   * Scope must be identical to scope variable in template file
+   * 
+   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
+   * @returns {Dropzone}
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
+    return this;
+  }
+
   isCompatible() {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
@@ -4426,19 +4451,19 @@ class TemplateElement extends AbstractBuilder {
    *
    * @private
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
-    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
+  _loadPrefillIntoContextFile(context, scope="") {
+    let defaultScope = scope || "root";
+    if(this.templateParts && this.templateParts.length) {
+      let entries = this.templateParts.map(tP => [tP.partContextId, tP.prefill]);
+      context[defaultScope] = Object.fromEntries(entries);
+    }
+    this._scopePrefills.forEach((sP) => sP.addPrefillTo(this._contextFile, scope));
   }
 
   _buildInternal() {
     let config = { type: "template-element" };
 
-    this._loadPrefillIntoContextFile();
+    this._loadPrefillIntoContextFile(this._contextFile);
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -4486,7 +4511,6 @@ class TemplateElement extends AbstractBuilder {
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
-/** @typedef {import('./scope-prefill').default} ScopePrefill */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -4537,11 +4561,6 @@ class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
-  /**
-   * @type {ScopePrefill[]}
-   * @private
-   */
-  _scopePrefills = [];
 
   /**
    * @returns {string|undefined}
@@ -4583,13 +4602,6 @@ class Dropzone extends AbstractBuilder {
    */
   get moveAllowed() {
     return this._moveAllowed;
-  }
-
-  /**
-   * @returns {Array<ScopePrefill>|undefined}
-   */
-  get scopePrefills() {
-    return this._scopePrefills;
   }
 
   /**
@@ -4687,27 +4699,6 @@ class Dropzone extends AbstractBuilder {
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
     return this;
-  }
-  /**
-   * Define prefill for this dropzone.
-   * Scope must be identical to scope variable in template file
-   * 
-   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
-   * @returns {Dropzone}
-   */
-  withScopePrefills(...scopePrefills) {
-    this._scopePrefills = scopePrefills;
-    return this;
-  }
-
-  /**
-   * Adds prefill for Dropzone to context file.
-   * 
-   * @protected
-   * @param {Object} contextFile 
-   */
-  addPrefillTo(contextFile) {
-    this.scopePrefills.forEach(scopePrefill => scopePrefill.addPrefillTo(contextFile));
   }
 
   _buildInternal() {
@@ -8063,11 +8054,11 @@ class TemplatePartFactory {
   }
 }
 
-;// ./src/dropzone/scope-prefill.js
+;// ./src/content-element/template-part/scope-prefill.js
 
 
 
-/** @typedef {import('../content-element/template-element').default} TemplateElement */
+/** @typedef {import('../template-element').default} TemplateElement */
 
 /**
  * This is the builder class to specify a scope prefill for a dropzone.
@@ -8138,21 +8129,22 @@ class ScopePrefill extends AbstractBuilder {
     return this;
   }
 
+  // TODO: nicht nur values überschreiben
+
   /**
    * Add scope with element to contextFile
    * 
    * @protected
    * @param {Object} contextFile 
    */
-  addPrefillTo(contextFile) {
-    this.element._loadPrefillIntoContextFile();
-    const context = JSON.parse(JSON.stringify(this.element.contextFile));
+  addPrefillTo(contextFile, parentScope) {
+    let combinedScope = parentScope ? `${parentScope}_${this.scope}` : this.scope;
+    this.element._loadPrefillIntoContextFile(contextFile, combinedScope);
     let override = Object.entries(this.overrideValues);
     override.forEach(
       ([templatePartId, value]) =>
-        (context[templatePartId].value = value),
+        (contextFile[combinedScope][templatePartId].value = value),
     );
-    contextFile[this.scope] = context;
   }
 }
 

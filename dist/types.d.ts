@@ -5271,76 +5271,9 @@ declare module "src/content-element/template-part/template-part" {
     import AbstractBuilder from "src/abstract-builder";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
-declare module "src/dropzone/scope-prefill" {
-    /** @typedef {import('../content-element/template-element').default} TemplateElement */
-    /**
-     * This is the builder class to specify a scope prefill for a dropzone.
-     *
-     * @example cx.ScopePrefill('scopeA', require('./my-element'));
-     *
-     * Use it within the Dropzone to define the prefill
-     *
-     * @example cx.Dropzone(..)
-     *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
-     *
-     */
-    export default class ScopePrefill extends AbstractBuilder {
-        constructor(scope: any, element: any);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _scope;
-        /**
-         * @type {TemplateElement}
-         * @private
-         */
-        private _element;
-        /**
-         * @type {Object}
-         * @private
-         */
-        private _overrideValues;
-        /**
-         * @returns {string}
-         */
-        get scope(): string;
-        /**
-         * @returns {TemplateElement}
-         */
-        get element(): TemplateElement;
-        /**
-         * @returns {Object}
-         */
-        get overrideValues(): any;
-        /**
-         * Shorthand to overwrite prefill values within the element.
-         *
-         * @example
-         * cx.scopePrefill('scope', require('element'))
-         *   .withOverrideValue('part-id', 'different-text')
-         *
-         * @param {string} templatePartId
-         * @param {string} value
-         * @returns {ScopePrefill}
-         */
-        withOverrideValue(templatePartId: string, value: string): ScopePrefill;
-        /**
-         * Add scope with element to contextFile
-         *
-         * @protected
-         * @param {Object} contextFile
-         */
-        protected addPrefillTo(contextFile: any): void;
-    }
-    export type TemplateElement = import("src/content-element/template-element").default;
-    import AbstractBuilder from "src/abstract-builder";
-    import TemplateElement from "src/content-element/template-element";
-}
 declare module "src/dropzone/dropzone" {
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/template-element').default} TemplateElement */
-    /** @typedef {import('./scope-prefill').default} ScopePrefill */
     /**
      * This is the builder class to specify a dropzone.
      *
@@ -5399,11 +5332,6 @@ declare module "src/dropzone/dropzone" {
          */
         private _moveAllowed;
         /**
-         * @type {ScopePrefill[]}
-         * @private
-         */
-        private _scopePrefills;
-        /**
          * @returns {string|undefined}
          */
         get dropzone(): string | undefined;
@@ -5427,10 +5355,6 @@ declare module "src/dropzone/dropzone" {
          * @returns {boolean|undefined}
          */
         get moveAllowed(): boolean | undefined;
-        /**
-         * @returns {Array<ScopePrefill>|undefined}
-         */
-        get scopePrefills(): Array<ScopePrefill> | undefined;
         /**
          * Set the identifier of this dropzone. <strong>It is highly recommended using a
          * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
@@ -5487,21 +5411,6 @@ declare module "src/dropzone/dropzone" {
          */
         withMoveAllowed(moveAllowed: boolean): Dropzone;
         /**
-         * Define prefill for this dropzone.
-         * Scope must be identical to scope variable in template file
-         *
-         * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
-         * @returns {Dropzone}
-         */
-        withScopePrefills(...scopePrefills: ScopePrefill[]): Dropzone;
-        /**
-         * Adds prefill for Dropzone to context file.
-         *
-         * @protected
-         * @param {Object} contextFile
-         */
-        protected addPrefillTo(contextFile: any): void;
-        /**
          * Clone the configuration.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -5511,7 +5420,6 @@ declare module "src/dropzone/dropzone" {
     }
     export type ContentElement = import("src/content-element/content-element").default;
     export type TemplateElement = import("src/content-element/template-element").default;
-    export type ScopePrefill = import("src/dropzone/scope-prefill").default;
     import AbstractBuilder from "src/abstract-builder";
     import RawValue from "src/raw-value";
     import TemplateElement from "src/content-element/template-element";
@@ -5585,6 +5493,11 @@ declare module "src/content-element/template-element" {
          */
         private _dropzones;
         /**
+         * @type {ScopePrefill[]}
+         * @private
+         */
+        private _scopePrefills;
+        /**
          * @returns {string|undefined}
          */
         get elementId(): string | undefined;
@@ -5632,6 +5545,10 @@ declare module "src/content-element/template-element" {
          * @returns {Dropzone[]|undefined}
          */
         get dropzones(): Dropzone[] | undefined;
+        /**
+         * @returns {Array<ScopePrefill>|undefined}
+         */
+        get scopePrefills(): Array<ScopePrefill> | undefined;
         /**
          * Set the ID of this template element.
          *
@@ -8224,6 +8141,72 @@ declare module "src/content-element/template-part/template-part-factory" {
     }
     import TemplatePart from "src/content-element/template-part/template-part";
 }
+declare module "src/content-element/template-part/scope-prefill" {
+    /** @typedef {import('../template-element').default} TemplateElement */
+    /**
+     * This is the builder class to specify a scope prefill for a dropzone.
+     *
+     * @example cx.ScopePrefill('scopeA', require('./my-element'));
+     *
+     * Use it within the Dropzone to define the prefill
+     *
+     * @example cx.Dropzone(..)
+     *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
+     *
+     */
+    export default class ScopePrefill extends AbstractBuilder {
+        constructor(scope: any, element: any);
+        /**
+         * @type {string}
+         * @private
+         */
+        private _scope;
+        /**
+         * @type {TemplateElement}
+         * @private
+         */
+        private _element;
+        /**
+         * @type {Object}
+         * @private
+         */
+        private _overrideValues;
+        /**
+         * @returns {string}
+         */
+        get scope(): string;
+        /**
+         * @returns {TemplateElement}
+         */
+        get element(): TemplateElement;
+        /**
+         * @returns {Object}
+         */
+        get overrideValues(): any;
+        /**
+         * Shorthand to overwrite prefill values within the element.
+         *
+         * @example
+         * cx.scopePrefill('scope', require('element'))
+         *   .withOverrideValue('part-id', 'different-text')
+         *
+         * @param {string} templatePartId
+         * @param {string} value
+         * @returns {ScopePrefill}
+         */
+        withOverrideValue(templatePartId: string, value: string): ScopePrefill;
+        /**
+         * Add scope with element to contextFile
+         *
+         * @protected
+         * @param {Object} contextFile
+         */
+        protected addPrefillTo(contextFile: any, parentScope: any): void;
+    }
+    export type TemplateElement = import("src/content-element/template-element").default;
+    import AbstractBuilder from "src/abstract-builder";
+    import TemplateElement from "src/content-element/template-element";
+}
 declare module "src/website/pagination" {
     /**
      * This is the builder class for {@link Website|website} pagination.
@@ -8785,7 +8768,7 @@ declare module "src/design/design-factory" {
     import Website from "src/website/website";
     import Include from "src/website/include";
     import Dropzone from "src/dropzone/dropzone";
-    import ScopePrefill from "src/dropzone/scope-prefill";
+    import ScopePrefill from "src/content-element/template-part/scope-prefill";
     import PageInclude from "src/website/page-include";
     import Pagination from "src/website/pagination";
     import { Features } from "src/design/features";
