@@ -176,10 +176,10 @@ export default class PartFactory {
    * @param {string} label
    * @param {string} id
    * @param {HtmlEditorConfig?} htmlEditorConfig
-   * @param {boolean?} companionEnabled
+   * @param {boolean?} [companionEnabled=true]
    * @returns {Part}
    */
-  FormattedText(label, id, htmlEditorConfig, companionEnabled) {
+  FormattedText(label, id, htmlEditorConfig, companionEnabled=true) {
     var part = new Part('formatted-text', label, id)
     part  = htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
     part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
@@ -306,7 +306,7 @@ export default class PartFactory {
    * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  PlainText(label, id, studioLinkEnabled, companionEnabled) {
+  PlainText(label, id, studioLinkEnabled, companionEnabled = true) {
     var part = new Part('plain-text', label, id);
     part = studioLinkEnabled !== undefined ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
     part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;

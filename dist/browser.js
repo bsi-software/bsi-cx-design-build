@@ -7615,10 +7615,10 @@ class PartFactory {
    * @param {string} label
    * @param {string} id
    * @param {HtmlEditorConfig?} htmlEditorConfig
-   * @param {boolean?} companionEnabled
+   * @param {boolean?} [companionEnabled=true]
    * @returns {Part}
    */
-  FormattedText(label, id, htmlEditorConfig, companionEnabled) {
+  FormattedText(label, id, htmlEditorConfig, companionEnabled=true) {
     var part = new Part('formatted-text', label, id)
     part  = htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
     part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
@@ -7745,7 +7745,7 @@ class PartFactory {
    * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  PlainText(label, id, studioLinkEnabled, companionEnabled) {
+  PlainText(label, id, studioLinkEnabled, companionEnabled = true) {
     var part = new Part('plain-text', label, id);
     part = studioLinkEnabled !== undefined ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
     part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
@@ -7893,10 +7893,10 @@ class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
-   * @param {boolean?} companionEnabled - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  PlainText(label, partContextId, studioLinkEnabled = true, companionEnabled) {
+  PlainText(label, partContextId, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
@@ -7914,12 +7914,14 @@ class TemplatePartFactory {
    * @param {string} partContextId
    * @param {int?} [fieldHeight] - optional parameter
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true) {
+  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('multiline-plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -7933,10 +7935,10 @@ class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
-   * @param {boolean?} companionEnabled - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  FormattedText(label, partContextId, htmlEditorConfig, companionEnabled) {
+  FormattedText(label, partContextId, htmlEditorConfig, companionEnabled = true) {
     var part = new TemplatePart('formatted-text', label, partContextId)
     if (htmlEditorConfig) {
       part.withHtmlEditorConfig(htmlEditorConfig);
@@ -7957,7 +7959,7 @@ class TemplatePartFactory {
    * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
    * @returns {TemplatePart}
    */
-  Link(label, partContextId, descriptionEnabled=true, textEnabled=true) {
+  Link(label, partContextId, descriptionEnabled = true, textEnabled = true) {
     var part = new TemplatePart('link', label, partContextId);
     part.addConfigValueIfNotNull(DesignJsonProperty.DESCRIPTION_ENABLED, descriptionEnabled);
     part.addConfigValueIfNotNull(DesignJsonProperty.TEXT_ENABLED, textEnabled);
@@ -8019,12 +8021,12 @@ class TemplatePartFactory {
     // Error handling: Validates the given array of option objects.
     // Ensures that both "text" and "value" fields are unique.
     // Duplicate "text" or "value" entries are not allowed and will throw an error.
-    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
-    if(new Set(options.map(option => option.text)).size !== options.length) {
+    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({ "text": text, "value": value }))
+    if (new Set(options.map(option => option.text)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
       throw new Error(`text in ${optionString} have to be unique`);
     };
-    if(new Set(options.map(option => option.value)).size !== options.length) {
+    if (new Set(options.map(option => option.value)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
       throw new Error(`value in ${optionString} have to be unique`);
     };
