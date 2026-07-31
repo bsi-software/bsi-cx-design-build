@@ -1,31 +1,16 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
-/******/ 	const __webpack_require__ = {};
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
-/******/ 		// define getter/value functions for harmony exports
+/******/ 		// define getter functions for harmony exports
 /******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			if(Array.isArray(definition)) {
-/******/ 				var i = 0;
-/******/ 				while(i < definition.length) {
-/******/ 					var key = definition[i++];
-/******/ 					var binding = definition[i++];
-/******/ 					if(!__webpack_require__.o(exports, key)) {
-/******/ 						if(binding === 0) {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
-/******/ 						} else {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
-/******/ 						}
-/******/ 					} else if(binding === 0) { i++; }
-/******/ 				}
-/******/ 			} else {
-/******/ 				for(var key in definition) {
-/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 					}
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
@@ -52,7 +37,7 @@
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
 /******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(Symbol.toStringTag) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
@@ -60,7 +45,7 @@
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-let __webpack_exports__ = {};
+var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -371,6 +356,10 @@ class DesignJsonProperty {
    * @type {string}
    */
   static STUDIO_LINK_ENABLED = 'studioLinkEnabled';
+  /**
+   * @type {string}
+   */
+  static COMPANION_ENABLED = 'companionEnabled';
   /**
    * @type {string}
    */
@@ -6515,6 +6504,20 @@ class Part extends AbstractBuilder {
     return this.withConfig(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled);
   }
 
+  /**
+   * Set a Boolean to indicate if companion is enabled in the editor.
+   * If false the companion is not shown in the editor.
+   * Only possible for PlainText and FormattedText
+   * 
+   * @since 26.2
+   *
+   * @param {boolean} companionEnabled 
+   * @returns 
+   */
+  withCompanionEnabled(companionEnabled) {
+    return this.withConfig(DesignJsonProperty.COMPANION_ENABLED, companionEnabled);
+  }
+
   _buildInternal() {
     let config = {};
 
@@ -7596,12 +7599,15 @@ class PartFactory {
    *
    * @param {string} label
    * @param {string} id
-   * @param {HtmlEditorConfig} htmlEditorConfig
+   * @param {HtmlEditorConfig?} htmlEditorConfig
+   * @param {boolean?} [companionEnabled=true]
    * @returns {Part}
    */
-  FormattedText(label, id, htmlEditorConfig) {
+  FormattedText(label, id, htmlEditorConfig, companionEnabled=true) {
     var part = new Part('formatted-text', label, id)
-    return htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+    part  = htmlEditorConfig ? part.withHtmlEditorConfig(htmlEditorConfig) : part;
+    part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
+    return part;
   }
 
   /**
@@ -7720,12 +7726,15 @@ class PartFactory {
    *
    * @param {string} label
    * @param {string} id
-   * @param {Boolean} studioLinkEnabled
+   * @param {boolean?} studioLinkEnabled
+   * @param {boolean?} companionEnabled
    * @returns {Part}
    */
-  PlainText(label, id, studioLinkEnabled) {
+  PlainText(label, id, studioLinkEnabled, companionEnabled = true) {
     var part = new Part('plain-text', label, id);
-    return studioLinkEnabled !== null ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
+    part = studioLinkEnabled !== undefined ? part.withStudioLinkEnabled(studioLinkEnabled) : part;
+    part = companionEnabled !== undefined ? part.withCompanionEnabled(companionEnabled) : part;
+    return part;
   }
 
   /**
@@ -7869,11 +7878,13 @@ class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  PlainText(label, partContextId, studioLinkEnabled = true) {
+  PlainText(label, partContextId, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -7888,12 +7899,14 @@ class TemplatePartFactory {
    * @param {string} partContextId
    * @param {int?} [fieldHeight] - optional parameter
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true) {
+  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('multiline-plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -7907,13 +7920,16 @@ class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  FormattedText(label, partContextId, htmlEditorConfig) {
+  FormattedText(label, partContextId, htmlEditorConfig, companionEnabled = true) {
     var part = new TemplatePart('formatted-text', label, partContextId)
     if (htmlEditorConfig) {
       part.withHtmlEditorConfig(htmlEditorConfig);
     }
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG_ID, htmlEditorConfig.identifier);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -7930,7 +7946,7 @@ class TemplatePartFactory {
    * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
    * @returns {TemplatePart}
    */
-  Link(label, partContextId, descriptionEnabled=true, textEnabled=true) {
+  Link(label, partContextId, descriptionEnabled = true, textEnabled = true) {
     var part = new TemplatePart('link', label, partContextId);
     part.addConfigValueIfNotNull(DesignJsonProperty.DESCRIPTION_ENABLED, descriptionEnabled);
     part.addConfigValueIfNotNull(DesignJsonProperty.TEXT_ENABLED, textEnabled);
@@ -7992,12 +8008,12 @@ class TemplatePartFactory {
     // Error handling: Validates the given array of option objects.
     // Ensures that both "text" and "value" fields are unique.
     // Duplicate "text" or "value" entries are not allowed and will throw an error.
-    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
-    if(new Set(options.map(option => option.text)).size !== options.length) {
+    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({ "text": text, "value": value }))
+    if (new Set(options.map(option => option.text)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
       throw new Error(`text in ${optionString} have to be unique`);
     };
-    if(new Set(options.map(option => option.value)).size !== options.length) {
+    if (new Set(options.map(option => option.value)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
       throw new Error(`value in ${optionString} have to be unique`);
     };
@@ -8944,7 +8960,7 @@ const cx = new DesignFactory();
 
 
 
-const __webpack_export_target__ = exports;
+var __webpack_export_target__ = exports;
 for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()

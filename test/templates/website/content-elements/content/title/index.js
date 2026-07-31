@@ -6,7 +6,7 @@ const nls = require('../../../nls');
 /**
  * @type {ContentElement}
  */
-module.exports = cx.contentElement
+module.exports = cx.templateElement
   .withElementId('title')
   .withIcon(Icon.HEADING)
   .withLabel(nls.title)
@@ -14,6 +14,5 @@ module.exports = cx.contentElement
     require('../../../styles/text-color'),
     require('../../../styles/background-color'))
   .withFile(require('./template.hbs.twig'))
-  .withParts(
-    cx.part.plainText
-      .withLabel(nls.title));
+  .withTemplateParts(
+    cx.templatePart.PlainText(nls.title, 'title', false, true).withTextPrefill('Design Team'));

@@ -13,11 +13,13 @@ export default class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  PlainText(label, partContextId, studioLinkEnabled = true) {
+  PlainText(label, partContextId, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -32,12 +34,14 @@ export default class TemplatePartFactory {
    * @param {string} partContextId
    * @param {int?} [fieldHeight] - optional parameter
    * @param {boolean?} [studioLinkEnabled=true] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true) {
+  MultilinePlainText(label, partContextId, fieldHeight, studioLinkEnabled = true, companionEnabled = true) {
     var part = new TemplatePart('multiline-plain-text', label, partContextId);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.FIELD_HEIGHT, fieldHeight);
     part = part.addConfigValueIfNotNull(DesignJsonProperty.STUDIO_LINK_ENABLED, studioLinkEnabled, true);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -51,13 +55,16 @@ export default class TemplatePartFactory {
    * @param {string} label
    * @param {string} partContextId
    * @param {HtmlEditorConfig?} [htmlEditorConfig] - optional parameter
+   * @param {boolean?} [companionEnabled=true] - optional parameter
    * @returns {TemplatePart}
    */
-  FormattedText(label, partContextId, htmlEditorConfig) {
+  FormattedText(label, partContextId, htmlEditorConfig, companionEnabled = true) {
     var part = new TemplatePart('formatted-text', label, partContextId)
     if (htmlEditorConfig) {
       part.withHtmlEditorConfig(htmlEditorConfig);
     }
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.HTML_EDITOR_CONFIG_ID, htmlEditorConfig.identifier);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.COMPANION_ENABLED, companionEnabled, true);
     return part;
   }
 
@@ -74,7 +81,7 @@ export default class TemplatePartFactory {
    * @param {boolean?} [textEnabled=true] - optional parameter to enable / disable text property
    * @returns {TemplatePart}
    */
-  Link(label, partContextId, descriptionEnabled=true, textEnabled=true) {
+  Link(label, partContextId, descriptionEnabled = true, textEnabled = true) {
     var part = new TemplatePart('link', label, partContextId);
     part.addConfigValueIfNotNull(DesignJsonProperty.DESCRIPTION_ENABLED, descriptionEnabled);
     part.addConfigValueIfNotNull(DesignJsonProperty.TEXT_ENABLED, textEnabled);
@@ -136,12 +143,12 @@ export default class TemplatePartFactory {
     // Error handling: Validates the given array of option objects.
     // Ensures that both "text" and "value" fields are unique.
     // Duplicate "text" or "value" entries are not allowed and will throw an error.
-    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({  "text": text, "value": value }))
-    if(new Set(options.map(option => option.text)).size !== options.length) {
+    options = Array.isArray(options) ? options : Object.entries(options).map(([text, value]) => ({ "text": text, "value": value }))
+    if (new Set(options.map(option => option.text)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
       throw new Error(`text in ${optionString} have to be unique`);
     };
-    if(new Set(options.map(option => option.value)).size !== options.length) {
+    if (new Set(options.map(option => option.value)).size !== options.length) {
       let optionString = options.map(option => `{ text: ${option.text}, value: ${option.value} }`).join(', ');
       throw new Error(`value in ${optionString} have to be unique`);
     };
