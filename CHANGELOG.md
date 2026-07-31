@@ -25,7 +25,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 * Add `withExtendAllDropzones()` to content-part and template-part
 * Add content-element setter for part "Basic Dynamic Value List"
 
-
 [2.0.2]: https://github.com/bsi-software/bsi-cx-design-build/compare/2.0.1...2.0.2
 
 ## [2.0.1] - 03.12.2025
