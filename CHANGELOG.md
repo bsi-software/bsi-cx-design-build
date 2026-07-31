@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 * Add `companionEnabled` property on plain-text and formatted-text
+* Limit version of less package to last working state
 
 
 
