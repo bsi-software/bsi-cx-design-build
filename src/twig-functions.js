@@ -3,6 +3,7 @@ import path from 'path';
 import { createFunction, createMarkup } from 'twing';
 
 import Constant from './constant';
+import ContextScope from './context-scope';
 import QueryConstant from './query-constant';
 import { toPosixPath } from './utility';
 
@@ -132,122 +133,123 @@ export const bsiCxLorem = createFunction('bsi_cx_lorem', (words) => {
 
 
 /**
- * Helper function to create scoped template element
+ * Attributes of a template element: the element ID and - only if the element has one - the context
+ * scope. The scope is not known while the template is rendered, it is inserted by the design build,
+ * see {@link ContextScope}.
  */
 export const bsiTemplatePart = createFunction(
   "templateElement",
-  (e, elementId, scope) =>
-    strToPromise(` data-bsi-element="${elementId}" data-bsi-context-scope="${scope || "root"}"`),
-  [{ name: 'elementId' }, { name: 'scope', defaultValue: "root" }],
+  (e, elementId) => strToPromise(` data-bsi-element="${elementId}"` + ContextScope.ATTRIBUTE),
+  [{ name: 'elementId' }],
   { is_safe: ["html"] },
 );
 
 /**
- * Helper function to create scoped template element
+ * Marks the position of the content elements which are placed into the given dropzone
+ * (Dropzone#withContentElements). They are rendered into this template by the design build.
  */
-export const templateScope = createFunction(
-  "templateScope",
-  (e, elementScope, scope) =>
-    strToPromise(scope ? `${scope}_${elementScope}` : elementScope),
-  [{ name: 'elementScope' }, { name: 'scope', defaultValue: "root" }],
+export const bsiDropzone = createFunction(
+  "dropzone",
+  (e, dropzoneId) => strToPromise(ContextScope.dropzone(dropzoneId)),
+  [{ name: 'dropzoneId' }],
   { is_safe: ["html"] },
 );
 
 /**
  * Helper functions to create hbs variables
  */
-const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope || "root"}.${partId}.${variable} }}`);
+const scopeVariable = (partId, variable) =>
+  strToPromise(`{{ ${ContextScope.VARIABLE_PREFIX}${partId}.${variable} }}`);
 
-const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope || "root"}.${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+const ifScopeVariable = (partId, variable, ifBlock, elseBlock) =>
+  strToPromise(`{{#if ${ContextScope.VARIABLE_PREFIX}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 export const templatePartHelper = [
   createFunction(
     "textValue",
-    (e, partId, scope) => scopeVariable(scope, partId, "value"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "value"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "formattedHtml",
-    (e, partId, scope) => scopeVariable(scope, partId, "html"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "html"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "formattedLanguage",
-    (e, partId, scope) => scopeVariable(scope, partId, "languageTag"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "languageTag"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "linkUrl",
-    (e, partId, scope) => scopeVariable(scope, partId, "url"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "url"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "linkText",
-    (e, partId, scope) => scopeVariable(scope, partId, "text"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "text"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "linkDescription",
-    (e, partId, scope) => scopeVariable(scope, partId, "description"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "description"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "ifLinkTarget",
-    (e, partId, scope, ifBlock, elseBlock) =>
-      ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
+    (e, partId, ifBlock, elseBlock) =>
+      ifScopeVariable(partId, "openInNewWindow", ifBlock, elseBlock),
+    [{ name: 'partId' }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
     {},
   ),
   createFunction(
     "imageAlt",
-    (e, partId, scope) => scopeVariable(scope, partId, "altText"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "altText"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "imageSrc",
-    (e, partId, scope) => scopeVariable(scope, partId, "srcUrl"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "srcUrl"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "imagePlaceholderSrc",
-    (e, partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "placeholderSrcUrl"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "imageSrcset",
-    (e, partId, scope) => scopeVariable(scope, partId, "srcset"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "srcset"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "imageDecorative",
-    (e, partId, scope) => scopeVariable(scope, partId, "decorative"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "decorative"),
+    [{ name: 'partId' }],
     {},
   ),
   createFunction(
     "ifCheckboxValue",
-    (e, partId, scope, ifBlock, elseBlock) =>
-      ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
+    (e, partId, ifBlock, elseBlock) =>
+      ifScopeVariable(partId, "value", ifBlock, elseBlock),
+    [{ name: 'partId' }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
     {},
   ),
   createFunction(
     "optionValue",
-    (e, partId, scope) => scopeVariable(scope, partId, "value"),
-    [{ name: 'partId' }, { name: 'scope', defaultValue: "root" }],
+    (e, partId) => scopeVariable(partId, "value"),
+    [{ name: 'partId' }],
     {},
   ),
   // TODO: dynamic-value-list

@@ -293,4 +293,15 @@ export default class TemplatePart extends AbstractBuilder {
     }
     return config;
   }
+
+  /**
+   * Clone the configuration. A deep clone gets a prefill of its own, which is what placing the same
+   * element into a dropzone more than once relies on (see {@link Dropzone#withContentElement}).
+   *
+   * @param {boolean} [shallow=true] - Create a shallow clone.
+   * @returns {TemplatePart}
+   */
+  clone(shallow) {
+    return this._clone(new TemplatePart(this._partId, this._label, this._partContextId), shallow);
+  }
 }

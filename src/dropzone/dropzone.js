@@ -56,12 +56,51 @@ export default class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  _name = undefined;
+  /**
+   * Content elements which are part of this dropzone from the start. Not part of the design.json:
+   * they are rendered into the template of the surrounding element, and their prefill is written to
+   * its context file.
+   *
+   * @type {TemplateElement[]}
+   * @private
+   */
+  _contentElements = [];
 
   /**
    * @returns {string|undefined}
    */
   get dropzone() {
     return this._dropzone;
+  }
+
+  /**
+   * @returns {string|undefined}
+   */
+  get name() {
+    return this._name;
+  }
+
+  /**
+   * @returns {TemplateElement[]}
+   */
+  get contentElements() {
+    return this._contentElements;
+  }
+
+  /**
+   * Name of this dropzone in the context scope of its nested content elements, see
+   * {@link ContextScope#segment}. The dropzone ID is the fallback, {@link withName} exists because
+   * that ID is usually a UUID and makes for an unreadable context file.
+   *
+   * @returns {string}
+   */
+  get contextScopeName() {
+    return this._name || this._dropzone;
   }
 
   /**
@@ -123,6 +162,80 @@ export default class Dropzone extends AbstractBuilder {
   withDropzone(dropzone) {
     this._dropzone = dropzone;
     return this;
+  }
+
+  /**
+   * Set a short name for this dropzone, used as the context scope of its nested content elements
+   * ('dzl' + position -> 'dzl_0'). Without a name the dropzone ID is used, which is usually a UUID.
+   * The name never appears in a template - the scope is computed and inserted by the build.
+   *
+   * @example
+   * cx.dropzone
+   *   .withDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348')
+   *   .withName('dzl')
+   * @param {string} name - The name of this dropzone.
+   * @returns {Dropzone}
+   */
+  withName(name) {
+    this._name = name;
+    return this;
+  }
+
+  /**
+   * Place content elements into this dropzone. They are rendered into the template of the
+   * surrounding element at the position of its <code>dropzone()</code> function, and their prefill
+   * is written to its context file under an automatically computed context scope.
+   *
+   * @example
+   * cx.dropzone
+   *   .withDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348')
+   *   .withName('dzl')
+   *   .withContentElements(require('./content-elements/content/template-button'))
+   * @see {@link withContentElement} to change the prefill of one occurrence
+   * @param {...TemplateElement} contentElements - The content elements to place.
+   * @returns {Dropzone}
+   */
+  withContentElements(...contentElements) {
+    contentElements.forEach(contentElement => this.withContentElement(contentElement));
+    return this;
+  }
+
+  /**
+   * Place a single content element into this dropzone and configure this occurrence of it.
+   *
+   * The element is cloned, so the same required element can be placed more than once with different
+   * values - and the module the design required stays untouched.
+   *
+   * @example
+   * cx.dropzone
+   *   .withDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348')
+   *   .withName('dzl')
+   *   .withContentElement(
+   *     require('./content-elements/content/template-button'),
+   *     button => button.withTemplatePartPrefill('multiline-plain-text-wmiRti', {value: 'Andere Info'}))
+   * @param {TemplateElement} contentElement - The content element to place.
+   * @param {function(TemplateElement):void} [configure] - Applied to the clone of the element.
+   * @returns {Dropzone}
+   */
+  withContentElement(contentElement, configure) {
+    let clone = contentElement.clone(false);
+
+    if (typeof configure === 'function') {
+      configure(clone);
+    }
+    this.addContentElement(clone);
+
+    return this;
+  }
+
+  /**
+   * @param {TemplateElement} contentElement - The content element to add as it is, without cloning.
+   * @returns {number} the position of the content element in this dropzone
+   */
+  addContentElement(contentElement) {
+    this._contentElements.push(contentElement);
+
+    return this._contentElements.length - 1;
   }
 
   /**

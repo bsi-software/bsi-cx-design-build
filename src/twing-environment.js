@@ -14,7 +14,7 @@ import {
   bsiCxJsModuleRuntimeInline,
   bsiCxLorem,
   bsiTemplatePart,
-  templateScope,
+  bsiDropzone,
   templatePartHelper,
 } from './twig-functions';
 import {findNodeModulesFolder} from './utility';
@@ -51,7 +51,7 @@ export default function (templateRoot, globals) {
   twing.addFunction(bsiCxLorem);
 
   twing.addFunction(bsiTemplatePart);
-  twing.addFunction(templateScope);
+  twing.addFunction(bsiDropzone);
   templatePartHelper.forEach(helper => twing.addFunction(helper));
 
   return twing;

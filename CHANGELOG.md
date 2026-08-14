@@ -7,6 +7,23 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
 * Restructure Scoping / Generation of context file to match CX requirements
+* The context scope is computed from the element hierarchy, a template never names one anymore:
+  place content elements with `Dropzone#withContentElements()` / `#withContentElement()` and mark
+  their position in the template with the `dropzone()` function. `Dropzone#withName()` sets the name
+  of a dropzone in the scope, the dropzone ID is the fallback.
+* **Breaking:** `ScopePrefill` and `cx.ScopePrefill()` are removed, as is the `scope` argument of the
+  template functions (`templateElement()`, `textValue()`, `linkUrl()`, ...). `templateScope()` is
+  gone. Migration: `cx.ScopePrefill('name', require('./element')).withOverrideValue(part, value)`
+  becomes `cx.dropzone.withDropzone(id).withName('name').withContentElement(require('./element'),
+  element => element.withTemplatePartPrefill(part, {value: value}))`.
+* Fixed: the prefill of a content element nested more than one level deep was written to its own
+  context file instead of the one being built, so it never reached the rendered template.
+* Fixed: overriding a prefill value wrote through to the required element, which changed that value
+  in every other place the element was used. Placed elements are cloned per occurrence.
+* Fixed: a deep clone (`clone(false)`) shared the state of the nested builders with its source.
+* Fixed: template parts of one scope no longer overwrite each other, and the context file is built
+  from scratch on every build instead of accumulating.
+* Unit tests for the design build itself: `npm run test:unit` (vitest, `test/unit`).
 
 
 

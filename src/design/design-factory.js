@@ -4,7 +4,6 @@ import PartFactory from "../content-element/part/part-factory";
 import TemplateElement from "../content-element/template-element";
 import TemplatePartFactory from "../content-element/template-part/template-part-factory";
 import Dropzone from "../dropzone/dropzone";
-import ScopePrefill from "../content-element/template-part/scope-prefill";
 import HtmlEditorConfig from "../html-editor-config/html-editor-config";
 import NLS from "../nls/nls";
 import Translation from "../nls/translation";
@@ -209,24 +208,6 @@ export default class DesignFactory {
    */
   Dropzone(dropzoneId, allowedElements, maxAllowedElements) {
     return new Dropzone(dropzoneId, allowedElements, maxAllowedElements);
-  }
-
-  /**
-   * Get a new scopePrefill Object.
-   * 
-   * @example cx.ScopePrefill('scopeA', require('./my-element'));
-   * 
-   * use it within the Dropzone to define the prefill
-   * 
-   * @example cx.Dropzone(..)
-   *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
-   *
-   * @param {string} scope
-   * @param {TemplateElement} element
-   * @returns {ScopePrefill}
-   */
-  ScopePrefill(scope, element) {
-    return new ScopePrefill(scope, element);
   }
 
   /**
