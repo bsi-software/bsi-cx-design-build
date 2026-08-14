@@ -18,7 +18,9 @@
     "preserve": "node \"./test/install.js\"",
     "serve": "cd test && webpack serve --config webpack.config.js --mode development --progress",
     "postserve": "node \"./test/uninstall.js\"",
-    "buildAndTest": "webpack --config webpack.config.js --mode production && node \"./test/install.js\" && cd test && webpack --config webpack.config.js --mode development --progress"
+    "buildAndTest": "webpack --config webpack.config.js --mode production && node \"./test/install.js\" && cd test && webpack --config webpack.config.js --mode development --progress",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest"
   },
   "repository": "github:bsi-software/bsi-cx-design-build",
   "homepage": "https://github.com/bsi-software/bsi-cx-design-build/wiki",
@@ -67,6 +69,7 @@
   },
   "devDependencies": {
     "typescript": "^5.2.2",
+    "vitest": "^4.1.10",
     "webpack-node-externals": "^3.0.0",
     "webpack-shell-plugin-next": "^2.3.1"
   }

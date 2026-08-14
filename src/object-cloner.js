@@ -3,6 +3,16 @@ import AbstractBuilder from './abstract-builder';
 
 export default class ObjectCloner {
   /**
+   * Nested builders are cloned with the same depth as the object which contains them. Otherwise a
+   * deep clone would still share the state of every nested builder with its source - a prefill
+   * changed on the clone would change the original as well.
+   *
+   * @type {boolean}
+   * @private
+   */
+  _shallow = true;
+
+  /**
    * @template T
    * @param {T} source
    * @param {T} target
@@ -11,6 +21,8 @@ export default class ObjectCloner {
    * @private
    */
   _clone(source, target, shallow) {
+    this._shallow = shallow;
+
     for (let [propertyName, valueToClone] of Object.entries(source)) {
       target[propertyName] = shallow ? valueToClone : this._cloneValue(valueToClone);
     }
@@ -37,11 +49,11 @@ export default class ObjectCloner {
       case typeof value === 'bigint' || value instanceof BigInt:
         return value;
       case value instanceof AbstractBuilder:
-        return value.clone();
+        return value.clone(this._shallow);
       case value instanceof AbstractConstant:
         return value;
       case typeof value.clone === 'function':
-        return value.clone();
+        return value.clone(this._shallow);
       case value instanceof Array || Array.isArray(value):
         return this._cloneArray(value);
       case value instanceof Object || typeof value === 'object':

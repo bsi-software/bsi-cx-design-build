@@ -2,6 +2,7 @@ import AbstractBuilder from "../abstract-builder";
 import { builderObjectValue, constantObjectValue, identity, uuid } from '../browser-utility';
 import DesignJsonProperty from "../design-json-property";
 import DesignJsonPropertyExtension from '../design-json-property-extension';
+import ContextScope from '../context-scope';
 import RawValue from '../raw-value';
 import TemplatePart from "./template-part/template-part";
 
@@ -537,26 +538,236 @@ export default class TemplateElement extends AbstractBuilder {
     return this;
   }
 
+  /**
+   * Place a content element into one of the dropzones of this element, see
+   * {@link Dropzone#withContentElement}.
+   *
+   * @param {string} dropzoneId - The ID of the dropzone to place the element into.
+   * @param {TemplateElement} contentElement - The content element to place.
+   * @param {function(TemplateElement):void} [configure] - Applied to the clone of the element.
+   * @returns {TemplateElement}
+   */
+  addToDropzone(dropzoneId, contentElement, configure) {
+    let dropzone = this._getDropzone(dropzoneId);
+
+    dropzone.withContentElement(contentElement, configure);
+
+    return this;
+  }
+
+  /**
+   * Returns the requested template part of this element by its part context ID, if it exists.
+   *
+   * @param {string} partContextId - The context ID of the template part (eg 'link-1wfD2H').
+   * @returns {TemplatePart|undefined}
+   */
+  templatePart(partContextId) {
+    if (!Array.isArray(this._templateParts)) {
+      return undefined;
+    }
+
+    return this._templateParts.find(templatePart => templatePart.partContextId === partContextId);
+  }
+
+  /**
+   * Set the prefill of one template part of this element. Meant for a single occurrence of a nested
+   * content element, see {@link Dropzone#withContentElement}.
+   *
+   * @param {string} partContextId - The context ID of the template part (eg 'link-1wfD2H').
+   * @param {{}} prefill - The prefill of that template part.
+   * @returns {TemplateElement}
+   */
+  withTemplatePartPrefill(partContextId, prefill) {
+    let templatePart = this.templatePart(partContextId);
+
+    if (!templatePart) {
+      throw new Error(`Unknown template part "${partContextId}" on template element `
+        + `"${this.elementId}". Template parts have to be defined with withTemplateParts() first.`);
+    }
+    templatePart.withRawPrefill(prefill);
+
+    return this;
+  }
+
   isCompatible() {
     return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
   /**
-   * Internal function to load prefill of template parts into context file
+   * The context scope of this element itself. A nested element is scoped by its parent, which knows
+   * the dropzone and the position - so only the two cases of a root element are decided here:
+   *
+   * <ul>
+   *   <li>own template parts <em>and</em> nested content elements: the artificial scope 'root',
+   *   which keeps the own parts separable from the nested ones,</li>
+   *   <li>anything else: no scope at all, the part context IDs are the top level properties of the
+   *   context file and the variables of the template stay unprefixed.</li>
+   * </ul>
+   *
+   * @returns {string|undefined}
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
-    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
+  createAbsoluteContextScope() {
+    return this._hasTemplateParts() && this._hasContentElements() ? ContextScope.ROOT : undefined;
+  }
+
+  /**
+   * The context scope of a content element nested in one of the dropzones of this element. The scope
+   * of the element itself is the prefix, so the scope of an element nested two levels deep reads
+   * 'dzl_0_template-button_dzr_0' - unique within the context file it belongs to.
+   *
+   * @param {string|undefined} scope - The context scope of this element.
+   * @param {Dropzone} dropzone - The dropzone the nested element sits in.
+   * @param {number} index - The position of the nested element within that dropzone.
+   * @returns {string}
+   * @private
+   */
+  _createNestedContextScope(scope, dropzone, index) {
+    let segment = ContextScope.segment(dropzone.contextScopeName, index);
+
+    // 'root' is the scope of the own template parts of a root element, not a path to its children.
+    if (!scope || scope === ContextScope.ROOT) {
+      return segment;
+    }
+
+    return `${scope}_${this.elementId}_${segment}`;
+  }
+
+  /**
+   * Renders the template of this content element: the nested content elements of every dropzone are
+   * rendered into it, and the context scope placeholders are replaced with the scope of the element
+   * they belong to. The result is the .hbs file BSI CX renders a second time at runtime.
+   *
+   * @param {string|undefined} [scope] - The context scope of this element, computed by its parent.
+   * @returns {string}
+   */
+  render(scope) {
+    let content = TemplateElement._unwrapTemplateModule(this._file?.content ?? '');
+
+    content = content.replace(ContextScope.DROPZONE,
+      (placeholder, dropzoneId) => this._renderDropzone(dropzoneId, scope));
+
+    return ContextScope.apply(content, scope);
+  }
+
+  /**
+   * A required template file is the source of a webpack module ('module.exports = "..."'), the
+   * plugin evaluates it while it exports the design. A nested content element is rendered into its
+   * parent long before that, so the template of every element is unwrapped here instead.
+   *
+   * @param {string} content
+   * @returns {string} the template, or the content unchanged if it is not a module of a template
+   * @private
+   */
+  static _unwrapTemplateModule(content) {
+    let templateModule = /^module\.exports\s*=\s*([\s\S]*?);?\s*$/.exec(content);
+
+    if (!templateModule) {
+      return content;
+    }
+
+    try {
+      return JSON.parse(templateModule[1]);
+    } catch (ignored) {
+      // Not a template exported as a string literal - leave it to the plugin.
+      return content;
+    }
+  }
+
+  /**
+   * @param {string} dropzoneId
+   * @param {string|undefined} scope - The context scope of this element.
+   * @returns {string}
+   * @private
+   */
+  _renderDropzone(dropzoneId, scope) {
+    let dropzone = this._getDropzone(dropzoneId);
+
+    return dropzone.contentElements
+      .map((contentElement, index) =>
+        contentElement.render(this._createNestedContextScope(scope, dropzone, index)))
+      .join('\n');
+  }
+
+  /**
+   * The context file of this content element: the prefill of its own template parts and of all
+   * nested content elements, each below its context scope.
+   *
+   * <pre>
+   * {
+   *   "root": {"link-1wfD2H": {"url": "..."}},
+   *   "dzl_0": {"multiline-plain-text-wmiRti": {"value": "..."}}
+   * }
+   * </pre>
+   *
+   * @returns {{}}
+   */
+  exportDesignContextFile() {
+    let contexts = {};
+
+    this.collectDesignContexts(contexts, this.createAbsoluteContextScope());
+
+    return contexts;
+  }
+
+  /**
+   * Collects the prefill of this element and of all nested ones into <code>contexts</code> - one flat
+   * object keyed by absolute context scope, which is exactly the path the rendered template expects.
+   *
+   * @param {{}} contexts - The context file being built, passed down the whole hierarchy.
+   * @param {string|undefined} scope - The context scope of this element.
+   */
+  collectDesignContexts(contexts, scope) {
+    let scopedContexts = scope ? (contexts[scope] = contexts[scope] ?? {}) : contexts;
+
+    if (Array.isArray(this._templateParts)) {
+      this._templateParts
+        .filter(templatePart => Object.keys(templatePart.prefill ?? {}).length > 0)
+        .forEach(templatePart => {
+          // A copy: the context file must not alias the prefill of the template part.
+          scopedContexts[templatePart.partContextId] =
+            Object.assign(scopedContexts[templatePart.partContextId] ?? {}, templatePart.prefill);
+        });
+    }
+
+    this._dropzones.forEach(dropzone => dropzone.contentElements
+      .forEach((contentElement, index) => contentElement
+        .collectDesignContexts(contexts, this._createNestedContextScope(scope, dropzone, index))));
+  }
+
+  /**
+   * @param {string} dropzoneId
+   * @returns {Dropzone}
+   * @private
+   */
+  _getDropzone(dropzoneId) {
+    let dropzone = this._dropzones?.find(dropzone => dropzone.dropzone === dropzoneId);
+
+    if (!dropzone) {
+      throw new Error(`Unknown dropzone "${dropzoneId}" on template element "${this.elementId}". `
+        + 'Dropzones have to be defined with withDropzones() first.');
+    }
+
+    return dropzone;
+  }
+
+  /**
+   * @returns {boolean}
+   * @private
+   */
+  _hasTemplateParts() {
+    return Array.isArray(this._templateParts) ? this._templateParts.length > 0 : !!this._templateParts;
+  }
+
+  /**
+   * @returns {boolean}
+   * @private
+   */
+  _hasContentElements() {
+    return this._dropzones.some(dropzone => dropzone.contentElements.length > 0);
   }
 
   _buildInternal() {
     let config = { type: "template-element" };
-
-    this._loadPrefillIntoContextFile();
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -571,7 +782,42 @@ export default class TemplateElement extends AbstractBuilder {
     this._applyPropertyIfDefined(DesignJsonPropertyExtension.DROPZONES, config, builderObjectValue);
     this._applyPropertyIfDefined(DesignJsonProperty.CONTEXT_FILE, config, identity);
 
+    this._applyRenderedTemplate(config);
+    this._applyContextFile(config);
+
     return config;
+  }
+
+  /**
+   * The template of a content element reaches the design.json as the rendered result, not as the
+   * template file: the nested content elements are part of it and the context scopes are resolved.
+   * A new file object, the required module is shared with every other occurrence of this element.
+   *
+   * @param {{}} config
+   * @private
+   */
+  _applyRenderedTemplate(config) {
+    if (!this._file) {
+      return;
+    }
+
+    config[DesignJsonProperty.FILE] = {
+      ...this._file,
+      content: this.render(this.createAbsoluteContextScope())
+    };
+  }
+
+  /**
+   * @param {{}} config
+   * @private
+   */
+  _applyContextFile(config) {
+    // A raw context file provided by the design wins - it replaces the generated one entirely.
+    if (Object.keys(this._contextFile ?? {}).length > 0) {
+      return;
+    }
+
+    config[DesignJsonProperty.CONTEXT_FILE] = this.exportDesignContextFile();
   }
 
   /**

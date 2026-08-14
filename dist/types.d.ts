@@ -654,6 +654,15 @@ declare module "src/object-cloner" {
          */
         static cloneValue<T>(value: T): T;
         /**
+         * Nested builders are cloned with the same depth as the object which contains them. Otherwise a
+         * deep clone would still share the state of every nested builder with its source - a prefill
+         * changed on the clone would change the original as well.
+         *
+         * @type {boolean}
+         * @private
+         */
+        private _shallow;
+        /**
          * @template T
          * @param {T} source
          * @param {T} target
@@ -4444,6 +4453,72 @@ declare module "src/content-element/part/part" {
     }
     import AbstractBuilder from "src/abstract-builder";
 }
+declare module "src/context-scope" {
+    /**
+     * The context scope is the first path segment of every template part variable in a rendered template
+     * (.hbs) and the top level property of the context file (.json):
+     *
+     * <pre>
+     * {{ dzl_0.link-1wfD2H.url }}   ->   {"dzl_0": {"link-1wfD2H": {"url": "..."}}}
+     * </pre>
+     *
+     * A template never names a scope. The Twig functions emit the placeholders of this class and
+     * {@link TemplateElement#render} replaces them with the scope computed from the element hierarchy.
+     * The rendered template and the context file are two halves of one contract - both are built from
+     * the methods below, change them together or BSI CX resolves nothing at runtime.
+     */
+    export default class ContextScope {
+        /**
+         * Artificial scope of a root element which has own template parts *and* nested content elements:
+         * its own parts need a scope of their own to stay separable from the nested ones.
+         */
+        static ROOT: string;
+        /**
+         * Stands for '[scope].' in a template part variable, and for nothing at all if the element has no
+         * context scope.
+         */
+        static VARIABLE_PREFIX: string;
+        /**
+         * Stands for the data-bsi-context-scope attribute, and for nothing at all if the element has no
+         * context scope.
+         */
+        static ATTRIBUTE: string;
+        /**
+         * Marks the position of the statically nested content elements of a dropzone.
+         */
+        static DROPZONE: RegExp;
+        /**
+         * @param {string} dropzoneId
+         * @returns {string}
+         */
+        static dropzone(dropzoneId: string): string;
+        /**
+         * The scope segment of one nested content element: the name of the dropzone it sits in plus its
+         * position within that dropzone.
+         *
+         * @param {string} dropzoneName
+         * @param {number} index
+         * @returns {string}
+         */
+        static segment(dropzoneName: string, index: number): string;
+        /**
+         * A scope is a path segment of a Handlebars expression, a dropzone ID is usually a UUID. Hyphens
+         * and leading digits would break the expression, so they are replaced.
+         *
+         * @param {string} name
+         * @returns {string}
+         */
+        static sanitize(name: string): string;
+        /**
+         * Replaces the placeholders of a rendered template with the context scope of its content element.
+         *
+         * @param {string} content - rendered template of one content element
+         * @param {string|undefined} scope - the absolute context scope, undefined if the element has none
+         * @returns {string}
+         */
+        static apply(content: string, scope: string | undefined): string;
+    }
+}
 declare module "src/html-editor-config/enter-mode" {
     /** @typedef {import('./html-editor-config').default} HtmlEditorConfig */
     export class EnterMode extends AbstractConstant {
@@ -5246,80 +5321,21 @@ declare module "src/content-element/template-part/template-part" {
          * @returns {this}
          */
         withRawPrefill(prefill: any): this;
+        /**
+         * Clone the configuration. A deep clone gets a prefill of its own, which is what placing the same
+         * element into a dropzone more than once relies on (see {@link Dropzone#withContentElement}).
+         *
+         * @param {boolean} [shallow=true] - Create a shallow clone.
+         * @returns {TemplatePart}
+         */
+        clone(shallow?: boolean): TemplatePart;
     }
     import AbstractBuilder from "src/abstract-builder";
     import HtmlEditorConfig from "src/html-editor-config/html-editor-config";
 }
-declare module "src/dropzone/scope-prefill" {
-    /** @typedef {import('../content-element/template-element').default} TemplateElement */
-    /**
-     * This is the builder class to specify a scope prefill for a dropzone.
-     *
-     * @example cx.ScopePrefill('scopeA', require('./my-element'));
-     *
-     * Use it within the Dropzone to define the prefill
-     *
-     * @example cx.Dropzone(..)
-     *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
-     *
-     */
-    export default class ScopePrefill extends AbstractBuilder {
-        constructor(scope: any, element: any);
-        /**
-         * @type {string}
-         * @private
-         */
-        private _scope;
-        /**
-         * @type {TemplateElement}
-         * @private
-         */
-        private _element;
-        /**
-         * @type {Object}
-         * @private
-         */
-        private _overrideValues;
-        /**
-         * @returns {string}
-         */
-        get scope(): string;
-        /**
-         * @returns {TemplateElement}
-         */
-        get element(): TemplateElement;
-        /**
-         * @returns {Object}
-         */
-        get overrideValues(): any;
-        /**
-         * Shorthand to overwrite prefill values within the element.
-         *
-         * @example
-         * cx.scopePrefill('scope', require('element'))
-         *   .withOverrideValue('part-id', 'different-text')
-         *
-         * @param {string} templatePartId
-         * @param {string} value
-         * @returns {ScopePrefill}
-         */
-        withOverrideValue(templatePartId: string, value: string): ScopePrefill;
-        /**
-         * Add scope with element to contextFile
-         *
-         * @protected
-         * @param {Object} contextFile
-         */
-        protected addPrefillTo(contextFile: any): void;
-    }
-    export type TemplateElement = import("src/content-element/template-element").default;
-    import AbstractBuilder from "src/abstract-builder";
-    import TemplateElement from "src/content-element/template-element";
-}
 declare module "src/dropzone/dropzone" {
     /** @typedef {import('../content-element/content-element').default} ContentElement */
     /** @typedef {import('../content-element/template-element').default} TemplateElement */
-    /** @typedef {import('./scope-prefill').default} ScopePrefill */
     /**
      * This is the builder class to specify a dropzone.
      *
@@ -5378,14 +5394,39 @@ declare module "src/dropzone/dropzone" {
          */
         private _moveAllowed;
         /**
-         * @type {ScopePrefill[]}
+         * @type {string|undefined}
          * @private
          */
-        private _scopePrefills;
+        private _name;
+        /**
+         * Content elements which are part of this dropzone from the start. Not part of the design.json:
+         * they are rendered into the template of the surrounding element, and their prefill is written to
+         * its context file.
+         *
+         * @type {TemplateElement[]}
+         * @private
+         */
+        private _contentElements;
         /**
          * @returns {string|undefined}
          */
         get dropzone(): string | undefined;
+        /**
+         * @returns {string|undefined}
+         */
+        get name(): string | undefined;
+        /**
+         * @returns {TemplateElement[]}
+         */
+        get contentElements(): TemplateElement[];
+        /**
+         * Name of this dropzone in the context scope of its nested content elements, see
+         * {@link ContextScope#segment}. The dropzone ID is the fallback, {@link withName} exists because
+         * that ID is usually a UUID and makes for an unreadable context file.
+         *
+         * @returns {string}
+         */
+        get contextScopeName(): string;
         /**
          * @returns {RawValue|ContentElement[]|TemplateElement[]|undefined}
          */
@@ -5407,10 +5448,6 @@ declare module "src/dropzone/dropzone" {
          */
         get moveAllowed(): boolean | undefined;
         /**
-         * @returns {Array<ScopePrefill>|undefined}
-         */
-        get scopePrefills(): Array<ScopePrefill> | undefined;
-        /**
          * Set the identifier of this dropzone. <strong>It is highly recommended using a
          * {@link https://duckduckgo.com/?q=uuid|UUID}.</strong>
          *
@@ -5418,6 +5455,57 @@ declare module "src/dropzone/dropzone" {
          * @returns {Dropzone}
          */
         withDropzone(dropzone: string): Dropzone;
+        /**
+         * Set a short name for this dropzone, used as the context scope of its nested content elements
+         * ('dzl' + position -> 'dzl_0'). Without a name the dropzone ID is used, which is usually a UUID.
+         * The name never appears in a template - the scope is computed and inserted by the build.
+         *
+         * @example
+         * cx.dropzone
+         *   .withDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348')
+         *   .withName('dzl')
+         * @param {string} name - The name of this dropzone.
+         * @returns {Dropzone}
+         */
+        withName(name: string): Dropzone;
+        /**
+         * Place content elements into this dropzone. They are rendered into the template of the
+         * surrounding element at the position of its <code>dropzone()</code> function, and their prefill
+         * is written to its context file under an automatically computed context scope.
+         *
+         * @example
+         * cx.dropzone
+         *   .withDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348')
+         *   .withName('dzl')
+         *   .withContentElements(require('./content-elements/content/template-button'))
+         * @see {@link withContentElement} to change the prefill of one occurrence
+         * @param {...TemplateElement} contentElements - The content elements to place.
+         * @returns {Dropzone}
+         */
+        withContentElements(...contentElements: TemplateElement[]): Dropzone;
+        /**
+         * Place a single content element into this dropzone and configure this occurrence of it.
+         *
+         * The element is cloned, so the same required element can be placed more than once with different
+         * values - and the module the design required stays untouched.
+         *
+         * @example
+         * cx.dropzone
+         *   .withDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348')
+         *   .withName('dzl')
+         *   .withContentElement(
+         *     require('./content-elements/content/template-button'),
+         *     button => button.withTemplatePartPrefill('multiline-plain-text-wmiRti', {value: 'Andere Info'}))
+         * @param {TemplateElement} contentElement - The content element to place.
+         * @param {function(TemplateElement):void} [configure] - Applied to the clone of the element.
+         * @returns {Dropzone}
+         */
+        withContentElement(contentElement: TemplateElement, configure?: (arg0: TemplateElement) => void): Dropzone;
+        /**
+         * @param {TemplateElement} contentElement - The content element to add as it is, without cloning.
+         * @returns {number} the position of the content element in this dropzone
+         */
+        addContentElement(contentElement: TemplateElement): number;
         /**
          * Set the allowed elements.
          * They should be of the same Type (ContentElement or Template Element)
@@ -5466,21 +5554,6 @@ declare module "src/dropzone/dropzone" {
          */
         withMoveAllowed(moveAllowed: boolean): Dropzone;
         /**
-         * Define prefill for this dropzone.
-         * Scope must be identical to scope variable in template file
-         *
-         * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
-         * @returns {Dropzone}
-         */
-        withScopePrefills(...scopePrefills: ScopePrefill[]): Dropzone;
-        /**
-         * Adds prefill for Dropzone to context file.
-         *
-         * @protected
-         * @param {Object} contextFile
-         */
-        protected addPrefillTo(contextFile: any): void;
-        /**
          * Clone the configuration.
          *
          * @param {boolean} [shallow=true] - Create a shallow clone.
@@ -5490,10 +5563,9 @@ declare module "src/dropzone/dropzone" {
     }
     export type ContentElement = import("src/content-element/content-element").default;
     export type TemplateElement = import("src/content-element/template-element").default;
-    export type ScopePrefill = import("src/dropzone/scope-prefill").default;
     import AbstractBuilder from "src/abstract-builder";
-    import RawValue from "src/raw-value";
     import TemplateElement from "src/content-element/template-element";
+    import RawValue from "src/raw-value";
 }
 declare module "src/content-element/template-element" {
     /** @typedef {import('./icon').Icon} Icon */
@@ -5503,6 +5575,16 @@ declare module "src/content-element/template-element" {
      * TODO: MinVersion 25.1
      */
     export default class TemplateElement extends AbstractBuilder {
+        /**
+         * A required template file is the source of a webpack module ('module.exports = "..."'), the
+         * plugin evaluates it while it exports the design. A nested content element is rendered into its
+         * parent long before that, so the template of every element is unwrapped here instead.
+         *
+         * @param {string} content
+         * @returns {string} the template, or the content unchanged if it is not a module of a template
+         * @private
+         */
+        private static _unwrapTemplateModule;
         /**
          * @type {string|undefined}
          * @private
@@ -5886,12 +5968,128 @@ declare module "src/content-element/template-element" {
          */
         withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
         /**
-         * Internal function to load prefill of template parts into context file
+         * Place a content element into one of the dropzones of this element, see
+         * {@link Dropzone#withContentElement}.
+         *
+         * @param {string} dropzoneId - The ID of the dropzone to place the element into.
+         * @param {TemplateElement} contentElement - The content element to place.
+         * @param {function(TemplateElement):void} [configure] - Applied to the clone of the element.
+         * @returns {TemplateElement}
          */
-        _loadPrefillIntoContextFile(): void;
+        addToDropzone(dropzoneId: string, contentElement: TemplateElement, configure?: (arg0: TemplateElement) => void): TemplateElement;
+        /**
+         * Returns the requested template part of this element by its part context ID, if it exists.
+         *
+         * @param {string} partContextId - The context ID of the template part (eg 'link-1wfD2H').
+         * @returns {TemplatePart|undefined}
+         */
+        templatePart(partContextId: string): TemplatePart | undefined;
+        /**
+         * Set the prefill of one template part of this element. Meant for a single occurrence of a nested
+         * content element, see {@link Dropzone#withContentElement}.
+         *
+         * @param {string} partContextId - The context ID of the template part (eg 'link-1wfD2H').
+         * @param {{}} prefill - The prefill of that template part.
+         * @returns {TemplateElement}
+         */
+        withTemplatePartPrefill(partContextId: string, prefill: {}): TemplateElement;
+        /**
+         * The context scope of this element itself. A nested element is scoped by its parent, which knows
+         * the dropzone and the position - so only the two cases of a root element are decided here:
+         *
+         * <ul>
+         *   <li>own template parts <em>and</em> nested content elements: the artificial scope 'root',
+         *   which keeps the own parts separable from the nested ones,</li>
+         *   <li>anything else: no scope at all, the part context IDs are the top level properties of the
+         *   context file and the variables of the template stay unprefixed.</li>
+         * </ul>
+         *
+         * @returns {string|undefined}
+         */
+        createAbsoluteContextScope(): string | undefined;
+        /**
+         * The context scope of a content element nested in one of the dropzones of this element. The scope
+         * of the element itself is the prefix, so the scope of an element nested two levels deep reads
+         * 'dzl_0_template-button_dzr_0' - unique within the context file it belongs to.
+         *
+         * @param {string|undefined} scope - The context scope of this element.
+         * @param {Dropzone} dropzone - The dropzone the nested element sits in.
+         * @param {number} index - The position of the nested element within that dropzone.
+         * @returns {string}
+         * @private
+         */
+        private _createNestedContextScope;
+        /**
+         * Renders the template of this content element: the nested content elements of every dropzone are
+         * rendered into it, and the context scope placeholders are replaced with the scope of the element
+         * they belong to. The result is the .hbs file BSI CX renders a second time at runtime.
+         *
+         * @param {string|undefined} [scope] - The context scope of this element, computed by its parent.
+         * @returns {string}
+         */
+        render(scope?: string | undefined): string;
+        /**
+         * @param {string} dropzoneId
+         * @param {string|undefined} scope - The context scope of this element.
+         * @returns {string}
+         * @private
+         */
+        private _renderDropzone;
+        /**
+         * The context file of this content element: the prefill of its own template parts and of all
+         * nested content elements, each below its context scope.
+         *
+         * <pre>
+         * {
+         *   "root": {"link-1wfD2H": {"url": "..."}},
+         *   "dzl_0": {"multiline-plain-text-wmiRti": {"value": "..."}}
+         * }
+         * </pre>
+         *
+         * @returns {{}}
+         */
+        exportDesignContextFile(): {};
+        /**
+         * Collects the prefill of this element and of all nested ones into <code>contexts</code> - one flat
+         * object keyed by absolute context scope, which is exactly the path the rendered template expects.
+         *
+         * @param {{}} contexts - The context file being built, passed down the whole hierarchy.
+         * @param {string|undefined} scope - The context scope of this element.
+         */
+        collectDesignContexts(contexts: {}, scope: string | undefined): void;
+        /**
+         * @param {string} dropzoneId
+         * @returns {Dropzone}
+         * @private
+         */
+        private _getDropzone;
+        /**
+         * @returns {boolean}
+         * @private
+         */
+        private _hasTemplateParts;
+        /**
+         * @returns {boolean}
+         * @private
+         */
+        private _hasContentElements;
         _buildInternal(): {
             type: string;
         };
+        /**
+         * The template of a content element reaches the design.json as the rendered result, not as the
+         * template file: the nested content elements are part of it and the context scopes are resolved.
+         * A new file object, the required module is shared with every other occurrence of this element.
+         *
+         * @param {{}} config
+         * @private
+         */
+        private _applyRenderedTemplate;
+        /**
+         * @param {{}} config
+         * @private
+         */
+        private _applyContextFile;
         /**
          * Clone the configuration.
          *
@@ -8498,21 +8696,6 @@ declare module "src/design/design-factory" {
          */
         Dropzone(dropzoneId: string, allowedElements: Array<[ContentElement | TemplateElement]>, maxAllowedElements: number): Dropzone;
         /**
-         * Get a new scopePrefill Object.
-         *
-         * @example cx.ScopePrefill('scopeA', require('./my-element'));
-         *
-         * use it within the Dropzone to define the prefill
-         *
-         * @example cx.Dropzone(..)
-         *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
-         *
-         * @param {string} scope
-         * @param {TemplateElement} element
-         * @returns {ScopePrefill}
-         */
-        ScopePrefill(scope: string, element: TemplateElement): ScopePrefill;
-        /**
          * Get a new website page include builder instance.
          *
          * @example
@@ -8750,7 +8933,6 @@ declare module "src/design/design-factory" {
     import Website from "src/website/website";
     import Include from "src/website/include";
     import Dropzone from "src/dropzone/dropzone";
-    import ScopePrefill from "src/dropzone/scope-prefill";
     import PageInclude from "src/website/page-include";
     import Pagination from "src/website/pagination";
     import { Features } from "src/design/features";

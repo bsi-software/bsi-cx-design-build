@@ -151,6 +151,90 @@ class Constant {
   static BSI_CX_DEFAULT_LOCALE = '###BSI_CX_DEFAULT_LOCALE###';
 };
 
+;// ./src/context-scope.js
+/**
+ * The context scope is the first path segment of every template part variable in a rendered template
+ * (.hbs) and the top level property of the context file (.json):
+ *
+ * <pre>
+ * {{ dzl_0.link-1wfD2H.url }}   ->   {"dzl_0": {"link-1wfD2H": {"url": "..."}}}
+ * </pre>
+ *
+ * A template never names a scope. The Twig functions emit the placeholders of this class and
+ * {@link TemplateElement#render} replaces them with the scope computed from the element hierarchy.
+ * The rendered template and the context file are two halves of one contract - both are built from
+ * the methods below, change them together or BSI CX resolves nothing at runtime.
+ */
+class ContextScope {
+  /**
+   * Artificial scope of a root element which has own template parts *and* nested content elements:
+   * its own parts need a scope of their own to stay separable from the nested ones.
+   */
+  static ROOT = 'root';
+  /**
+   * Stands for '[scope].' in a template part variable, and for nothing at all if the element has no
+   * context scope.
+   */
+  static VARIABLE_PREFIX = '@@bsi-context-scope@@';
+  /**
+   * Stands for the data-bsi-context-scope attribute, and for nothing at all if the element has no
+   * context scope.
+   */
+  static ATTRIBUTE = '@@bsi-context-scope-attribute@@';
+  /**
+   * Marks the position of the statically nested content elements of a dropzone.
+   */
+  static DROPZONE = /@@bsi-dropzone:(.*?)@@/g;
+
+  /**
+   * @param {string} dropzoneId
+   * @returns {string}
+   */
+  static dropzone(dropzoneId) {
+    return `@@bsi-dropzone:${dropzoneId}@@`;
+  }
+
+  /**
+   * The scope segment of one nested content element: the name of the dropzone it sits in plus its
+   * position within that dropzone.
+   *
+   * @param {string} dropzoneName
+   * @param {number} index
+   * @returns {string}
+   */
+  static segment(dropzoneName, index) {
+    return `${ContextScope.sanitize(dropzoneName)}_${index}`;
+  }
+
+  /**
+   * A scope is a path segment of a Handlebars expression, a dropzone ID is usually a UUID. Hyphens
+   * and leading digits would break the expression, so they are replaced.
+   *
+   * @param {string} name
+   * @returns {string}
+   */
+  static sanitize(name) {
+    let sanitized = String(name).replace(/[^A-Za-z0-9_$]+/g, '_');
+    return /^[0-9]/.test(sanitized) ? `dz_${sanitized}` : sanitized;
+  }
+
+  /**
+   * Replaces the placeholders of a rendered template with the context scope of its content element.
+   *
+   * @param {string} content - rendered template of one content element
+   * @param {string|undefined} scope - the absolute context scope, undefined if the element has none
+   * @returns {string}
+   */
+  static apply(content, scope) {
+    let variablePrefix = scope ? `${scope}.` : '';
+    let attribute = scope ? ` data-bsi-context-scope="${scope}"` : '';
+
+    return content
+      .split(ContextScope.VARIABLE_PREFIX).join(variablePrefix)
+      .split(ContextScope.ATTRIBUTE).join(attribute);
+  }
+}
+
 ;// ./src/query-constant.js
 class QueryConstant {
   /**
@@ -420,6 +504,7 @@ function findNodeModulesFolder(startFolder) {
 
 
 
+
 /**
  *
  * @type {string[]}
@@ -461,7 +546,7 @@ const bsiCxAsset = (0,external_twing_namespaceObject.createFunction)('bsi_cx_ass
   let assetQuery = !!inline ? QueryConstant.INLINE : '';
   let assetRequest = `${absoluteAssetPath}?${assetQuery}`.replace(/\?$/g, '');
   return strToPromise(`@ref(${assetRequest})`);
-}, [{name: 'assetPath'}, {name: 'inline', defaultValue: false}]);
+}, [{ name: 'assetPath' }, { name: 'inline', defaultValue: false }]);
 
 /**
  * Get URL to the CSS asset.
@@ -485,7 +570,7 @@ const bsiCxJsModuleHref = (0,external_twing_namespaceObject.createFunction)('bsi
     module: module
   };
   return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, false));
-}, [{name: 'module'}]);
+}, [{ name: 'module' }]);
 
 /**
  * Get the content of the requested JS module.
@@ -495,7 +580,7 @@ const bsiCxJsModuleInline = (0,external_twing_namespaceObject.createFunction)('b
     module: module
   };
   return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, true));
-}, [{name: 'module'}]);
+}, [{ name: 'module' }]);
 
 /**
  * Import all missing JS module chunks.
@@ -506,7 +591,7 @@ const bsiCxJsModuleMissingChunksImport = (0,external_twing_namespaceObject.creat
     attributes: attributes || {}
   };
   return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, false));
-}, [{name: 'attributes', defaultValue: {}}]);
+}, [{ name: 'attributes', defaultValue: {} }]);
 
 /**
  * Inline all missing JS module chunks.
@@ -517,7 +602,7 @@ const bsiCxJsModuleMissingChunksInline = (0,external_twing_namespaceObject.creat
     attributes: attributes || {}
   };
   return (0,external_twing_namespaceObject.createMarkup)(await bsiCxJsModuleImport(executionContext, config, true));
-}, [{name: 'attributes', defaultValue: {}}]);
+}, [{ name: 'attributes', defaultValue: {} }]);
 
 /**
  * Get URL to the JS runtime module.
@@ -542,115 +627,127 @@ const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lor
   let phrase = LOREM_IPSUM.slice(0, end).join(' ');
 
   return strToPromise(phrase);
-}, [{name: 'words', defaultValue: ''}])
+}, [{ name: 'words', defaultValue: '' }])
 
 
 /**
- * Helper function to create scoped template element
+ * Attributes of a template element: the element ID and - only if the element has one - the context
+ * scope. The scope is not known while the template is rendered, it is inserted by the design build,
+ * see {@link ContextScope}.
  */
 const bsiTemplatePart = (0,external_twing_namespaceObject.createFunction)(
   "templateElement",
-  (elementId, scope) =>
-  strToPromise(` data-bsi-element="${elementId}" ${scope ? `data-bsi-context-scope="${scope}" ` : ""}`),
-  [{name: 'elementId'}, {name: 'scope', defaultValue: null}],
+  (e, elementId) => strToPromise(` data-bsi-element="${elementId}"` + ContextScope.ATTRIBUTE),
+  [{ name: 'elementId' }],
+  { is_safe: ["html"] },
+);
+
+/**
+ * Marks the position of the content elements which are placed into the given dropzone
+ * (Dropzone#withContentElements). They are rendered into this template by the design build.
+ */
+const bsiDropzone = (0,external_twing_namespaceObject.createFunction)(
+  "dropzone",
+  (e, dropzoneId) => strToPromise(ContextScope.dropzone(dropzoneId)),
+  [{ name: 'dropzoneId' }],
   { is_safe: ["html"] },
 );
 
 /**
  * Helper functions to create hbs variables
  */
-const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope ? scope + "." : ""}${partId}.${variable} }}`);
+const scopeVariable = (partId, variable) =>
+  strToPromise(`{{ ${ContextScope.VARIABLE_PREFIX}${partId}.${variable} }}`);
 
-const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+const ifScopeVariable = (partId, variable, ifBlock, elseBlock) =>
+  strToPromise(`{{#if ${ContextScope.VARIABLE_PREFIX}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 const templatePartHelper = [
   (0,external_twing_namespaceObject.createFunction)(
     "textValue",
-    (partId, scope) =>  scopeVariable(scope, partId, "value"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "value"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "formattedHtml",
-    (partId, scope) => scopeVariable(scope, partId, "html"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "html"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "formattedLanguage",
-    (partId, scope) => scopeVariable(scope, partId, "languageTag"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "languageTag"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "linkUrl",
-    (partId, scope) => scopeVariable(scope, partId, "url"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "url"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "linkText",
-    (partId, scope) => scopeVariable(scope, partId, "text"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "text"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "linkDescription",
-    (partId, scope) => scopeVariable(scope, partId, "description"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "description"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "ifLinkTarget",
-    (partId, scope, ifBlock, elseBlock) =>
-      ifScopeVariable(scope, partId, "openInNewWindow", ifBlock, elseBlock),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    (e, partId, ifBlock, elseBlock) =>
+      ifScopeVariable(partId, "openInNewWindow", ifBlock, elseBlock),
+    [{ name: 'partId' }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageAlt",
-    (partId, scope) => scopeVariable(scope, partId, "altText"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "altText"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageSrc",
-    (partId, scope) => scopeVariable(scope, partId, "srcUrl"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "srcUrl"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imagePlaceholderSrc",
-    (partId, scope) => scopeVariable(scope, partId, "placeholderSrcUrl"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "placeholderSrcUrl"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageSrcset",
-    (partId, scope) => scopeVariable(scope, partId, "srcset"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "srcset"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "imageDecorative",
-    (partId, scope) => scopeVariable(scope, partId, "decorative"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "decorative"),
+    [{ name: 'partId' }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "ifCheckboxValue",
-    (partId, scope, ifBlock, elseBlock) =>
-      ifScopeVariable(scope, partId, "value", ifBlock, elseBlock),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}, {name: 'ifBlock'}, {name: 'elseBlock', defaultValue: null}],
+    (e, partId, ifBlock, elseBlock) =>
+      ifScopeVariable(partId, "value", ifBlock, elseBlock),
+    [{ name: 'partId' }, { name: 'ifBlock' }, { name: 'elseBlock', defaultValue: null }],
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
     "optionValue",
-    (partId, scope) => scopeVariable(scope, partId, "value"),
-    [{name: 'partId'}, {name: 'scope', defaultValue: null}],
+    (e, partId) => scopeVariable(partId, "value"),
+    [{ name: 'partId' }],
     {},
   ),
   // TODO: dynamic-value-list
@@ -697,6 +794,7 @@ __webpack_require__.dn(twing_environment);
   twing.addFunction(bsiCxLorem);
 
   twing.addFunction(bsiTemplatePart);
+  twing.addFunction(bsiDropzone);
   templatePartHelper.forEach(helper => twing.addFunction(helper));
 
   return twing;
