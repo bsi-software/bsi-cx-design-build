@@ -130,11 +130,23 @@ export default class AbstractBuilder {
   }
 
   /**
-   * @param {string} property
-   * @param {{}} targetObj
-   * @param {function} extractFunc
-   * @param {boolean} [arrayToObject=false]
-   * @param {boolean} [setMetaProperty=false]
+   * Reads `this[property]` and, if it is defined, computes its design-json representation and writes it to
+   * `targetObj[property]`. Properties left `undefined` on the builder are skipped entirely, ie. omitted from
+   * the built output instead of being written as `undefined`/`null`.
+   *
+   * A {@link RawValue} bypasses all processing below and is unwrapped via its `value` directly. Otherwise,
+   * array values are filtered for compatibility and mapped through `extractFunc`, while a single value is
+   * passed through `extractFunc` only if compatible (see {@link _checkCompatibility}).
+   *
+   * `label`/`description`/`name` set to an NLS instance are resolved as well: on CX 23.2+ they become an
+   * `${nlsKey:<identifier>}` placeholder resolved by CX at runtime, on older targets they're inlined as the
+   * translation for the default (or wildcard) locale at build time instead.
+   *
+   * @param {string} property - Name of the getter on this builder and of the resulting json property.
+   * @param {{}} targetObj - The json object under construction to write the computed value to.
+   * @param {function} extractFunc - Extracts the json representation of a single (non-raw) value.
+   * @param {boolean} [arrayToObject=false] - Merge an array of computed single-key objects into one object, see {@link _applyArrayToObject}.
+   * @param {boolean} [setMetaProperty=false] - Additionally store the built value(s) under `_<property>`, see {@link _applyMetaPropertyFromValue}.
    * @protected
    */
   _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject, setMetaProperty) {
@@ -194,12 +206,25 @@ export default class AbstractBuilder {
   }
 
   /**
-   * @param {string} property
-   * @param {{}} targetObj
-   * @param {AbstractBuilder|AbstractBuilder[]} value
+   * If `this[property]` is defined, builds `value` (or, when it's an array, each of its items) via
+   * {@link build} and stores the result(s) under a `_<property>` meta key on `targetObj`, independently of
+   * whatever `_applyPropertyIfDefined` itself writes to `targetObj[property]`.
+   *
+   * This lets a builder carry the full definition of a value (eg. a style or an html editor config) next to
+   * a lightweight reference (eg. its identifier) that ends up as the actual `property` in the design json.
+   * Array items whose `build()` returns `undefined` (ie. incompatible with the current build target) are
+   * dropped from the result; if the resulting value is `undefined`, no meta property is written at all.
+   *
+   * @param {string} property - Name of the builder property used to derive the `_<property>` meta key.
+   * @param {{}} targetObj - The json object under construction to write the meta property to.
+   * @param {AbstractBuilder|AbstractBuilder[]} value - The builder value(s) to build and store as meta property.
    * @private
    */
   _applyMetaPropertyFromValue(property, targetObj, value) {
+    if (typeof this[property] === 'undefined') {
+      return;
+    }
+
     let computedValue;
     let metaProperty = `_${property}`;
 

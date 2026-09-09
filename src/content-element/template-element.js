@@ -542,7 +542,21 @@ export default class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Internal function to load prefill of template parts into context file
+   * Merges the prefill values into the context file of this element, so it can be used as the
+   * <code>context.json</code> for this template element in the design output.
+   *
+   * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
+   * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
+   * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+   *
+   * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
+   * well: the context file of the referenced element is built recursively, any override values are applied
+   * and the result is stored under <code>_contextFile[scope]</code>.
+   *
+   * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
+   * recursively while resolving nested elements assigned as dropzone prefills.
+   *
+   * @private
    */
   _loadPrefillIntoContextFile() {
     this.templateParts.forEach(templatePart => {

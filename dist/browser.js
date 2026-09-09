@@ -1,31 +1,16 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
-/******/ 	const __webpack_require__ = {};
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
-/******/ 		// define getter/value functions for harmony exports
+/******/ 		// define getter functions for harmony exports
 /******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			if(Array.isArray(definition)) {
-/******/ 				var i = 0;
-/******/ 				while(i < definition.length) {
-/******/ 					var key = definition[i++];
-/******/ 					var binding = definition[i++];
-/******/ 					if(!__webpack_require__.o(exports, key)) {
-/******/ 						if(binding === 0) {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
-/******/ 						} else {
-/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
-/******/ 						}
-/******/ 					} else if(binding === 0) { i++; }
-/******/ 				}
-/******/ 			} else {
-/******/ 				for(var key in definition) {
-/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 					}
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
@@ -52,7 +37,7 @@
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
 /******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(Symbol.toStringTag) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
@@ -60,7 +45,7 @@
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-let __webpack_exports__ = {};
+var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -1149,11 +1134,23 @@ class AbstractBuilder {
   }
 
   /**
-   * @param {string} property
-   * @param {{}} targetObj
-   * @param {function} extractFunc
-   * @param {boolean} [arrayToObject=false]
-   * @param {boolean} [setMetaProperty=false]
+   * Reads `this[property]` and, if it is defined, computes its design-json representation and writes it to
+   * `targetObj[property]`. Properties left `undefined` on the builder are skipped entirely, ie. omitted from
+   * the built output instead of being written as `undefined`/`null`.
+   *
+   * A {@link RawValue} bypasses all processing below and is unwrapped via its `value` directly. Otherwise,
+   * array values are filtered for compatibility and mapped through `extractFunc`, while a single value is
+   * passed through `extractFunc` only if compatible (see {@link _checkCompatibility}).
+   *
+   * `label`/`description`/`name` set to an NLS instance are resolved as well: on CX 23.2+ they become an
+   * `${nlsKey:<identifier>}` placeholder resolved by CX at runtime, on older targets they're inlined as the
+   * translation for the default (or wildcard) locale at build time instead.
+   *
+   * @param {string} property - Name of the getter on this builder and of the resulting json property.
+   * @param {{}} targetObj - The json object under construction to write the computed value to.
+   * @param {function} extractFunc - Extracts the json representation of a single (non-raw) value.
+   * @param {boolean} [arrayToObject=false] - Merge an array of computed single-key objects into one object, see {@link _applyArrayToObject}.
+   * @param {boolean} [setMetaProperty=false] - Additionally store the built value(s) under `_<property>`, see {@link _applyMetaPropertyFromValue}.
    * @protected
    */
   _applyPropertyIfDefined(property, targetObj, extractFunc, arrayToObject, setMetaProperty) {
@@ -1213,12 +1210,25 @@ class AbstractBuilder {
   }
 
   /**
-   * @param {string} property
-   * @param {{}} targetObj
-   * @param {AbstractBuilder|AbstractBuilder[]} value
+   * If `this[property]` is defined, builds `value` (or, when it's an array, each of its items) via
+   * {@link build} and stores the result(s) under a `_<property>` meta key on `targetObj`, independently of
+   * whatever `_applyPropertyIfDefined` itself writes to `targetObj[property]`.
+   *
+   * This lets a builder carry the full definition of a value (eg. a style or an html editor config) next to
+   * a lightweight reference (eg. its identifier) that ends up as the actual `property` in the design json.
+   * Array items whose `build()` returns `undefined` (ie. incompatible with the current build target) are
+   * dropped from the result; if the resulting value is `undefined`, no meta property is written at all.
+   *
+   * @param {string} property - Name of the builder property used to derive the `_<property>` meta key.
+   * @param {{}} targetObj - The json object under construction to write the meta property to.
+   * @param {AbstractBuilder|AbstractBuilder[]} value - The builder value(s) to build and store as meta property.
    * @private
    */
   _applyMetaPropertyFromValue(property, targetObj, value) {
+    if (typeof this[property] === 'undefined') {
+      return;
+    }
+
     let computedValue;
     let metaProperty = `_${property}`;
 
@@ -4400,7 +4410,21 @@ class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Internal function to load prefill of template parts into context file
+   * Merges the prefill values into the context file of this element, so it can be used as the
+   * <code>context.json</code> for this template element in the design output.
+   *
+   * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
+   * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
+   * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+   *
+   * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
+   * well: the context file of the referenced element is built recursively, any override values are applied
+   * and the result is stored under <code>_contextFile[scope]</code>.
+   *
+   * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
+   * recursively while resolving nested elements assigned as dropzone prefills.
+   *
+   * @private
    */
   _loadPrefillIntoContextFile() {
     this.templateParts.forEach(templatePart => {
@@ -8944,7 +8968,7 @@ const cx = new DesignFactory();
 
 
 
-const __webpack_export_target__ = exports;
+var __webpack_export_target__ = exports;
 for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
