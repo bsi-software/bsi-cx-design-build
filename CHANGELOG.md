@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+* Fix twing functions
+* Make `_applyMetaPropertyFromValue()` null-safe
 
 
 
