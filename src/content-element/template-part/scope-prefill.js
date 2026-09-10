@@ -1,18 +1,22 @@
 import AbstractBuilder from "../../abstract-builder";
-import TemplateElement from "../template-element";
 
 /** @typedef {import('../template-element').default} TemplateElement */
 
 /**
- * This is the builder class to specify a scope prefill for a dropzone.
+ * Describes a template element that is used to prefill a named scope.
  *
- * @example cx.ScopePrefill('scopeA', require('./my-element'));
+ * A scope prefill can be assigned to a `TemplateElement` or `Dropzone`.
+ * The referenced element's template-part prefills are written to the
+ * corresponding scope in the context file.
  *
- * Use it within the Dropzone to define the prefill
+ * @example
+ * cx.ScopePrefill('header', require('./headline'));
  *
- * @example cx.Dropzone(..)
- *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
- *
+ * @example
+ * cx.templateElement
+ *   .withScopePrefills(
+ *     cx.ScopePrefill('header', require('./headline'))
+ *   );
  */
 export default class ScopePrefill extends AbstractBuilder {
   /**
@@ -20,17 +24,25 @@ export default class ScopePrefill extends AbstractBuilder {
    * @private
    */
   _scope;
+
   /**
    * @type {TemplateElement}
    * @private
    */
   _element;
+
   /**
-   * @type {Object}
+   * Values that override the referenced element's default prefills.
+   *
+   * @type {Object<string, string>}
    * @private
    */
   _overrideValues = {};
 
+  /**
+   * @param {string} scope - Name of the scope to prefill.
+   * @param {TemplateElement} element - Template element providing the prefills.
+   */
   constructor(scope, element) {
     super();
     this._scope = scope;
@@ -38,55 +50,65 @@ export default class ScopePrefill extends AbstractBuilder {
   }
 
   /**
-   * @returns {string}
+   * Returns the name of the target scope.
+   *
+   * @returns {string} The scope name.
    */
   get scope() {
     return this._scope;
   }
+
   /**
-   * @returns {TemplateElement}
+   * Returns the template element whose prefills are used.
+   *
+   * @returns {TemplateElement} The prefill element.
    */
   get element() {
     return this._element;
   }
+
   /**
-   * @returns {Object}
+   * Returns values that override the element's default part prefills.
+   *
+   * @returns {Object<string, string>} Map of template-part IDs to values.
    */
   get overrideValues() {
     return this._overrideValues;
   }
 
   /**
-   * Shorthand to overwrite prefill values within the element.
+   * Overrides the prefill value of a template part.
    *
-   * @example
-   * cx.scopePrefill('scope', require('element'))
-   *   .withOverrideValue('part-id', 'different-text')
-   *
-   * @param {string} templatePartId
-   * @param {string} value
-   * @returns {ScopePrefill}
+   * @param {string} templatePartId - ID of the template part to override.
+   * @param {string} value - Replacement value.
+   * @returns {ScopePrefill} This scope prefill.
    */
   withOverrideValue(templatePartId, value) {
     this._overrideValues[templatePartId] = value;
     return this;
   }
 
-  // TODO: nicht nur values überschreiben
-
   /**
-   * Add scope with element to contextFile
-   * 
+   * Adds this prefill to the context file.
+   *
+   * The target scope is composed from the parent scope and this prefill's
+   * scope name, separated by an underscore. The referenced element's
+   * prefills are written first; configured override values are applied
+   * afterwards.
+   *
    * @protected
-   * @param {Object} contextFile 
+   * @param {Object} contextFile - Context file receiving the prefill.
+   * @param {string} [parentScope=""] - Optional parent scope name.
+   * @returns {void}
    */
-  addPrefillTo(contextFile, parentScope) {
+  addPrefillTo(contextFile, parentScope = "") {
     let combinedScope = parentScope ? `${parentScope}_${this.scope}` : this.scope;
     this.element._loadPrefillIntoContextFile(contextFile, combinedScope);
-    let override = Object.entries(this.overrideValues);
-    override.forEach(
-      ([templatePartId, value]) =>
-        (contextFile[combinedScope][templatePartId].value = value),
+
+    Object.entries(this.overrideValues).forEach(
+      ([templatePartId, value]) => {
+        contextFile[combinedScope][templatePartId].value = value;
+      },
     );
   }
 }
