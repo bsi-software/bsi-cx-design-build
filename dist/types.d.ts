@@ -599,18 +599,39 @@ declare module "src/abstract-builder" {
          */
         isCompatible(): boolean;
         /**
-         * @param {string} property
-         * @param {{}} targetObj
-         * @param {function} extractFunc
-         * @param {boolean} [arrayToObject=false]
-         * @param {boolean} [setMetaProperty=false]
+         * Reads `this[property]` and, if it is defined, computes its design-json representation and writes it to
+         * `targetObj[property]`. Properties left `undefined` on the builder are skipped entirely, ie. omitted from
+         * the built output instead of being written as `undefined`/`null`.
+         *
+         * A {@link RawValue} bypasses all processing below and is unwrapped via its `value` directly. Otherwise,
+         * array values are filtered for compatibility and mapped through `extractFunc`, while a single value is
+         * passed through `extractFunc` only if compatible (see {@link _checkCompatibility}).
+         *
+         * `label`/`description`/`name` set to an NLS instance are resolved as well: on CX 23.2+ they become an
+         * `${nlsKey:<identifier>}` placeholder resolved by CX at runtime, on older targets they're inlined as the
+         * translation for the default (or wildcard) locale at build time instead.
+         *
+         * @param {string} property - Name of the getter on this builder and of the resulting json property.
+         * @param {{}} targetObj - The json object under construction to write the computed value to.
+         * @param {function} extractFunc - Extracts the json representation of a single (non-raw) value.
+         * @param {boolean} [arrayToObject=false] - Merge an array of computed single-key objects into one object, see {@link _applyArrayToObject}.
+         * @param {boolean} [setMetaProperty=false] - Additionally store the built value(s) under `_<property>`, see {@link _applyMetaPropertyFromValue}.
          * @protected
          */
         protected _applyPropertyIfDefined(property: string, targetObj: {}, extractFunc: Function, arrayToObject?: boolean, setMetaProperty?: boolean): void;
         /**
-         * @param {string} property
-         * @param {{}} targetObj
-         * @param {AbstractBuilder|AbstractBuilder[]} value
+         * If `this[property]` is defined, builds `value` (or, when it's an array, each of its items) via
+         * {@link build} and stores the result(s) under a `_<property>` meta key on `targetObj`, independently of
+         * whatever `_applyPropertyIfDefined` itself writes to `targetObj[property]`.
+         *
+         * This lets a builder carry the full definition of a value (eg. a style or an html editor config) next to
+         * a lightweight reference (eg. its identifier) that ends up as the actual `property` in the design json.
+         * Array items whose `build()` returns `undefined` (ie. incompatible with the current build target) are
+         * dropped from the result; if the resulting value is `undefined`, no meta property is written at all.
+         *
+         * @param {string} property - Name of the builder property used to derive the `_<property>` meta key.
+         * @param {{}} targetObj - The json object under construction to write the meta property to.
+         * @param {AbstractBuilder|AbstractBuilder[]} value - The builder value(s) to build and store as meta property.
          * @private
          */
         private _applyMetaPropertyFromValue;
@@ -5886,9 +5907,23 @@ declare module "src/content-element/template-element" {
          */
         withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
         /**
-         * Internal function to load prefill of template parts into context file
+         * Merges the prefill values into the context file of this element, so it can be used as the
+         * <code>context.json</code> for this template element in the design output.
+         *
+         * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
+         * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
+         * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+         *
+         * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
+         * well: the context file of the referenced element is built recursively, any override values are applied
+         * and the result is stored under <code>_contextFile[scope]</code>.
+         *
+         * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
+         * recursively while resolving nested elements assigned as dropzone prefills.
+         *
+         * @private
          */
-        _loadPrefillIntoContextFile(): void;
+        private _loadPrefillIntoContextFile;
         _buildInternal(): {
             type: string;
         };
