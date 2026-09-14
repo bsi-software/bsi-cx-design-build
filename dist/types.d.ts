@@ -5824,20 +5824,24 @@ declare module "src/content-element/template-element" {
          */
         withReducedDropzone(id: string, ...elements: TemplateElement[]): TemplateElement;
         /**
-         * Merges the prefill values into the context file of this element, so it can be used as the
-         * <code>context.json</code> for this template element in the design output.
+         * Defines prefills for named scopes in the template context.
          *
-         * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
-         * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
-         * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+         * The scope name must match the corresponding scope variable used in
+         * the template file.
          *
-         * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
-         * well: the context file of the referenced element is built recursively, any override values are applied
-         * and the result is stored under <code>_contextFile[scope]</code>.
+         * @param {...ScopePrefill} scopePrefills - Prefills to apply to the template scopes.
+         * @returns {TemplateElement} This template element.
+         */
+        withScopePrefills(...scopePrefills: ScopePrefill[]): TemplateElement;
+        /**
+         * Loads template-part and scope prefills into the context file.
          *
-         * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
-         * recursively while resolving nested elements assigned as dropzone prefills.
+         * Template-part prefills are assigned to the specified scope. If no scope
+         * is provided, the default scope name is `root`.
          *
+         * @param {Object} context - Context object that receives the template-part prefills.
+         * @param {string} [scope=""] - Target scope name. Defaults to `root`.
+         * @returns {void}
          * @private
          */
         private _loadPrefillIntoContextFile;

@@ -1,16 +1,31 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	const __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
+/******/ 		// define getter/value functions for harmony exports
 /******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			if(Array.isArray(definition)) {
+/******/ 				var i = 0;
+/******/ 				while(i < definition.length) {
+/******/ 					var key = definition[i++];
+/******/ 					var binding = definition[i++];
+/******/ 					if(!__webpack_require__.o(exports, key)) {
+/******/ 						if(binding === 0) {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
+/******/ 						} else {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
+/******/ 						}
+/******/ 					} else if(binding === 0) { i++; }
+/******/ 				}
+/******/ 			} else {
+/******/ 				for(var key in definition) {
+/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 					}
 /******/ 				}
 /******/ 			}
 /******/ 		};
@@ -37,7 +52,7 @@
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
 /******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			if(Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
@@ -45,7 +60,7 @@
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+let __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -4433,20 +4448,14 @@ class TemplateElement extends AbstractBuilder {
   }
 
   /**
-   * Merges the prefill values into the context file of this element, so it can be used as the
-   * <code>context.json</code> for this template element in the design output.
+   * Loads template-part and scope prefills into the context file.
    *
-   * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
-   * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
-   * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+   * Template-part prefills are assigned to the specified scope. If no scope
+   * is provided, the default scope name is `root`.
    *
-   * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
-   * well: the context file of the referenced element is built recursively, any override values are applied
-   * and the result is stored under <code>_contextFile[scope]</code>.
-   *
-   * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
-   * recursively while resolving nested elements assigned as dropzone prefills.
-   *
+   * @param {Object} context - Context object that receives the template-part prefills.
+   * @param {string} [scope=""] - Target scope name. Defaults to `root`.
+   * @returns {void}
    * @private
    */
   _loadPrefillIntoContextFile(context, scope = "") {
@@ -8987,7 +8996,7 @@ const cx = new DesignFactory();
 
 
 
-var __webpack_export_target__ = exports;
+const __webpack_export_target__ = exports;
 for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
