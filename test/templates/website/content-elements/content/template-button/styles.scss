@@ -1,16 +1,13 @@
-.bsi-template-part-element {
-    &.background-green {
-        background-color: greenyellow;
-    }
+.bsi-template-button {
+    display: grid;
+    justify-content: start;
+    gap: 0.5rem;
 
-    img {
-        width: 100%;
-        min-height: 300px;
-        object-fit: contain;
-    }
-
-    &::before {
-        content: attr(option-tag);
-        background-color: aqua;
+    a {
+        background: #96c5b0;
+        border: 1px solid #779E8D;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        text-decoration: none;
     }
 }

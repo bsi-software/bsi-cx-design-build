@@ -27,14 +27,14 @@ module.exports = cx.design
           .withAddStyleConfigs(require('./styles/new-text-color'))
           .withRemoveStyleConfigs(require('./styles/text-color')),
         require('./content-elements/content/column-1')
-          .withExtendedDropzone(
-            'b6608fe9-4815-4ef1-a118-6e945ead513f',
-            require('./content-elements/content/title')),
+          .withExtendAllDropzones(
+            require('./content-elements/content/title'), 
+            require('../website/content-elements/content/template-button')),
         require('./content-elements/content/column-2')
-          .withReducedDropzone('20816df1-f8c0-47d1-94a1-1cd124c2b348', require('./content-elements/content/title')),
+          .withExtendAllDropzones(require('../website/content-elements/content/template-button')),
         require('./content-elements/content/text'),
-        require('../website/content-elements/content/template-button'))
-      )
+        require('../website/content-elements/content/template-button'),
+      ))
   .withDropzones(
     cx.dropzone
       .withDropzone('a1683342-d4a7-4c26-924e-bce162c4399f')

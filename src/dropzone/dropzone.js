@@ -6,7 +6,6 @@ import RawValue from '../raw-value';
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
-/** @typedef {import('./scope-prefill').default} ScopePrefill */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -57,11 +56,6 @@ export default class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
-  /**
-   * @type {ScopePrefill[]}
-   * @private
-   */
-  _scopePrefills = [];
 
   /**
    * @returns {string|undefined}
@@ -103,13 +97,6 @@ export default class Dropzone extends AbstractBuilder {
    */
   get moveAllowed() {
     return this._moveAllowed;
-  }
-
-  /**
-   * @returns {Array<ScopePrefill>|undefined}
-   */
-  get scopePrefills() {
-    return this._scopePrefills;
   }
 
   /**
@@ -207,27 +194,6 @@ export default class Dropzone extends AbstractBuilder {
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
     return this;
-  }
-  /**
-   * Define prefill for this dropzone.
-   * Scope must be identical to scope variable in template file
-   * 
-   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
-   * @returns {Dropzone}
-   */
-  withScopePrefills(...scopePrefills) {
-    this._scopePrefills = scopePrefills;
-    return this;
-  }
-
-  /**
-   * Adds prefill for Dropzone to context file.
-   * 
-   * @protected
-   * @param {Object} contextFile 
-   */
-  addPrefillTo(contextFile) {
-    this.scopePrefills.forEach(scopePrefill => scopePrefill.addPrefillTo(contextFile));
   }
 
   _buildInternal() {

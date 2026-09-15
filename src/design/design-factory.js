@@ -4,7 +4,7 @@ import PartFactory from "../content-element/part/part-factory";
 import TemplateElement from "../content-element/template-element";
 import TemplatePartFactory from "../content-element/template-part/template-part-factory";
 import Dropzone from "../dropzone/dropzone";
-import ScopePrefill from "../dropzone/scope-prefill";
+import ScopePrefill from "../content-element/template-part/scope-prefill";
 import HtmlEditorConfig from "../html-editor-config/html-editor-config";
 import NLS from "../nls/nls";
 import Translation from "../nls/translation";

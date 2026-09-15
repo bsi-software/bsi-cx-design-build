@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## latest
 * Fix twing functions
 * Make `_applyMetaPropertyFromValue()` null-safe
+* Fix Scoping and Generation of context file to match CX requirements
 
 
 

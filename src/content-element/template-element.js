@@ -73,6 +73,12 @@ export default class TemplateElement extends AbstractBuilder {
    * @private
    */
   _dropzones = [];
+  /**
+   * @type {ScopePrefill[]}
+   * @private
+   */
+  _scopePrefills = [];
+
 
   /**
    * @returns {string|undefined}
@@ -156,6 +162,13 @@ export default class TemplateElement extends AbstractBuilder {
    */
   get dropzones() {
     return this._dropzones;
+  }
+
+  /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get scopePrefills() {
+    return this._scopePrefills;
   }
 
   /**
@@ -537,40 +550,52 @@ export default class TemplateElement extends AbstractBuilder {
     return this;
   }
 
-  isCompatible() {
-    return super.isCompatible() && !this._hasIncompatibleParts();
+  /**
+   * Defines prefills for named scopes in the template context.
+   *
+   * The scope name must match the corresponding scope variable used in
+   * the template file.
+   *
+   * @param {...ScopePrefill} scopePrefills - Prefills to apply to the template scopes.
+   * @returns {TemplateElement} This template element.
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
+    return this;
   }
 
   /**
-   * Merges the prefill values into the context file of this element, so it can be used as the
-   * <code>context.json</code> for this template element in the design output.
+   * Loads template-part and scope prefills into the context file.
    *
-   * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
-   * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
-   * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+   * Template-part prefills are assigned to the specified scope. If no scope
+   * is provided, the default scope name is `root`.
    *
-   * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
-   * well: the context file of the referenced element is built recursively, any override values are applied
-   * and the result is stored under <code>_contextFile[scope]</code>.
-   *
-   * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
-   * recursively while resolving nested elements assigned as dropzone prefills.
-   *
+   * @param {Object} context - Context object that receives the template-part prefills.
+   * @param {string} [scope=""] - Target scope name. Defaults to `root`.
+   * @returns {void}
    * @private
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
-    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
+  _loadPrefillIntoContextFile(context, scope = "") {
+    let defaultScope = scope || "root";
+
+    if (this.templateParts && this.templateParts.length) {
+      let entries = this.templateParts.map(tP => [tP.partContextId, tP.prefill]);
+      context[defaultScope] = Object.fromEntries(entries);
+    }
+
+    this._scopePrefills.forEach(sP =>
+      sP.addPrefillTo(this._contextFile, scope)
+    );
+  }
+
+  isCompatible() {
+    return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
   _buildInternal() {
     let config = { type: "template-element" };
 
-    this._loadPrefillIntoContextFile();
+    this._loadPrefillIntoContextFile(this._contextFile);
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);

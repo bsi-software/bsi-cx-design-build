@@ -1,16 +1,31 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	const __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
+/******/ 		// define getter/value functions for harmony exports
 /******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			if(Array.isArray(definition)) {
+/******/ 				var i = 0;
+/******/ 				while(i < definition.length) {
+/******/ 					var key = definition[i++];
+/******/ 					var binding = definition[i++];
+/******/ 					if(!__webpack_require__.o(exports, key)) {
+/******/ 						if(binding === 0) {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, value: definition[i++] });
+/******/ 						} else {
+/******/ 							Object.defineProperty(exports, key, { enumerable: true, get: binding });
+/******/ 						}
+/******/ 					} else if(binding === 0) { i++; }
+/******/ 				}
+/******/ 			} else {
+/******/ 				for(var key in definition) {
+/******/ 					if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 						Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 					}
 /******/ 				}
 /******/ 			}
 /******/ 		};
@@ -37,7 +52,7 @@
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
 /******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			if(Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
@@ -45,7 +60,7 @@
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
+let __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -3941,6 +3956,12 @@ class TemplateElement extends AbstractBuilder {
    * @private
    */
   _dropzones = [];
+  /**
+   * @type {ScopePrefill[]}
+   * @private
+   */
+  _scopePrefills = [];
+
 
   /**
    * @returns {string|undefined}
@@ -4024,6 +4045,13 @@ class TemplateElement extends AbstractBuilder {
    */
   get dropzones() {
     return this._dropzones;
+  }
+
+  /**
+   * @returns {Array<ScopePrefill>|undefined}
+   */
+  get scopePrefills() {
+    return this._scopePrefills;
   }
 
   /**
@@ -4405,40 +4433,52 @@ class TemplateElement extends AbstractBuilder {
     return this;
   }
 
-  isCompatible() {
-    return super.isCompatible() && !this._hasIncompatibleParts();
+  /**
+   * Defines prefills for named scopes in the template context.
+   *
+   * The scope name must match the corresponding scope variable used in
+   * the template file.
+   *
+   * @param {...ScopePrefill} scopePrefills - Prefills to apply to the template scopes.
+   * @returns {TemplateElement} This template element.
+   */
+  withScopePrefills(...scopePrefills) {
+    this._scopePrefills = scopePrefills;
+    return this;
   }
 
   /**
-   * Merges the prefill values into the context file of this element, so it can be used as the
-   * <code>context.json</code> for this template element in the design output.
+   * Loads template-part and scope prefills into the context file.
    *
-   * For each of this element's {@link templateParts}, its {@link TemplatePart#prefill} is merged into
-   * <code>_contextFile[partContextId]</code>. Prefill values take precedence over values already present
-   * there (eg. set via {@link withRawContextFile}) for the same key, while additional existing keys are kept.
+   * Template-part prefills are assigned to the specified scope. If no scope
+   * is provided, the default scope name is `root`.
    *
-   * For each {@link Dropzone} of this element, the <code>ScopePrefill</code>s defined on it are resolved as
-   * well: the context file of the referenced element is built recursively, any override values are applied
-   * and the result is stored under <code>_contextFile[scope]</code>.
-   *
-   * Mutates {@link _contextFile} in place and is safe to call multiple times, since it's also invoked
-   * recursively while resolving nested elements assigned as dropzone prefills.
-   *
+   * @param {Object} context - Context object that receives the template-part prefills.
+   * @param {string} [scope=""] - Target scope name. Defaults to `root`.
+   * @returns {void}
    * @private
    */
-  _loadPrefillIntoContextFile() {
-    this.templateParts.forEach(templatePart => {
-      let partContextId = templatePart.partContextId;
-      let contextFileObj = this._contextFile[partContextId] || {};
-      this._contextFile[partContextId] = Object.assign(contextFileObj, templatePart.prefill);
-    });
-    this.dropzones.forEach((dropzone) => dropzone.addPrefillTo(this._contextFile));
+  _loadPrefillIntoContextFile(context, scope = "") {
+    let defaultScope = scope || "root";
+
+    if (this.templateParts && this.templateParts.length) {
+      let entries = this.templateParts.map(tP => [tP.partContextId, tP.prefill]);
+      context[defaultScope] = Object.fromEntries(entries);
+    }
+
+    this._scopePrefills.forEach(sP =>
+      sP.addPrefillTo(this._contextFile, scope)
+    );
+  }
+
+  isCompatible() {
+    return super.isCompatible() && !this._hasIncompatibleParts();
   }
 
   _buildInternal() {
     let config = { type: "template-element" };
 
-    this._loadPrefillIntoContextFile();
+    this._loadPrefillIntoContextFile(this._contextFile);
 
     this._applyPropertyIfDefined(DesignJsonProperty.ELEMENT_ID, config, identity);
     this._applyPropertyIfDefined(DesignJsonProperty.LABEL, config, identity);
@@ -4486,7 +4526,6 @@ class TemplateElement extends AbstractBuilder {
 
 /** @typedef {import('../content-element/content-element').default} ContentElement */
 /** @typedef {import('../content-element/template-element').default} TemplateElement */
-/** @typedef {import('./scope-prefill').default} ScopePrefill */
 
 /**
  * This is the builder class to specify a dropzone.
@@ -4537,11 +4576,6 @@ class Dropzone extends AbstractBuilder {
    * @private
    */
   _moveAllowed = undefined;
-  /**
-   * @type {ScopePrefill[]}
-   * @private
-   */
-  _scopePrefills = [];
 
   /**
    * @returns {string|undefined}
@@ -4583,13 +4617,6 @@ class Dropzone extends AbstractBuilder {
    */
   get moveAllowed() {
     return this._moveAllowed;
-  }
-
-  /**
-   * @returns {Array<ScopePrefill>|undefined}
-   */
-  get scopePrefills() {
-    return this._scopePrefills;
   }
 
   /**
@@ -4687,27 +4714,6 @@ class Dropzone extends AbstractBuilder {
   withMoveAllowed(moveAllowed) {
     this._moveAllowed = moveAllowed;
     return this;
-  }
-  /**
-   * Define prefill for this dropzone.
-   * Scope must be identical to scope variable in template file
-   * 
-   * @param {ScopePrefill[]} scopePrefills - scopePrefills for this Dropzone
-   * @returns {Dropzone}
-   */
-  withScopePrefills(...scopePrefills) {
-    this._scopePrefills = scopePrefills;
-    return this;
-  }
-
-  /**
-   * Adds prefill for Dropzone to context file.
-   * 
-   * @protected
-   * @param {Object} contextFile 
-   */
-  addPrefillTo(contextFile) {
-    this.scopePrefills.forEach(scopePrefill => scopePrefill.addPrefillTo(contextFile));
   }
 
   _buildInternal() {
@@ -8063,22 +8069,26 @@ class TemplatePartFactory {
   }
 }
 
-;// ./src/dropzone/scope-prefill.js
+;// ./src/content-element/template-part/scope-prefill.js
 
 
-
-/** @typedef {import('../content-element/template-element').default} TemplateElement */
+/** @typedef {import('../template-element').default} TemplateElement */
 
 /**
- * This is the builder class to specify a scope prefill for a dropzone.
+ * Describes a template element that is used to prefill a named scope.
  *
- * @example cx.ScopePrefill('scopeA', require('./my-element'));
+ * A scope prefill can be assigned to a `TemplateElement` or `Dropzone`.
+ * The referenced element's template-part prefills are written to the
+ * corresponding scope in the context file.
  *
- * Use it within the Dropzone to define the prefill
+ * @example
+ * cx.ScopePrefill('header', require('./headline'));
  *
- * @example cx.Dropzone(..)
- *   .withScopePrefills(cx.ScopePrefill('scopeA', require('./my-element')));
- *
+ * @example
+ * cx.templateElement
+ *   .withScopePrefills(
+ *     cx.ScopePrefill('header', require('./headline'))
+ *   );
  */
 class ScopePrefill extends AbstractBuilder {
   /**
@@ -8086,17 +8096,25 @@ class ScopePrefill extends AbstractBuilder {
    * @private
    */
   _scope;
+
   /**
    * @type {TemplateElement}
    * @private
    */
   _element;
+
   /**
-   * @type {Object}
+   * Values that override the referenced element's default prefills.
+   *
+   * @type {Object<string, string>}
    * @private
    */
   _overrideValues = {};
 
+  /**
+   * @param {string} scope - Name of the scope to prefill.
+   * @param {TemplateElement} element - Template element providing the prefills.
+   */
   constructor(scope, element) {
     super();
     this._scope = scope;
@@ -8104,34 +8122,38 @@ class ScopePrefill extends AbstractBuilder {
   }
 
   /**
-   * @returns {string}
+   * Returns the name of the target scope.
+   *
+   * @returns {string} The scope name.
    */
   get scope() {
     return this._scope;
   }
+
   /**
-   * @returns {TemplateElement}
+   * Returns the template element whose prefills are used.
+   *
+   * @returns {TemplateElement} The prefill element.
    */
   get element() {
     return this._element;
   }
+
   /**
-   * @returns {Object}
+   * Returns values that override the element's default part prefills.
+   *
+   * @returns {Object<string, string>} Map of template-part IDs to values.
    */
   get overrideValues() {
     return this._overrideValues;
   }
 
   /**
-   * Shorthand to overwrite prefill values within the element.
+   * Overrides the prefill value of a template part.
    *
-   * @example
-   * cx.scopePrefill('scope', require('element'))
-   *   .withOverrideValue('part-id', 'different-text')
-   *
-   * @param {string} templatePartId
-   * @param {string} value
-   * @returns {ScopePrefill}
+   * @param {string} templatePartId - ID of the template part to override.
+   * @param {string} value - Replacement value.
+   * @returns {ScopePrefill} This scope prefill.
    */
   withOverrideValue(templatePartId, value) {
     this._overrideValues[templatePartId] = value;
@@ -8139,23 +8161,29 @@ class ScopePrefill extends AbstractBuilder {
   }
 
   /**
-   * Add scope with element to contextFile
-   * 
+   * Adds this prefill to the context file.
+   *
+   * The target scope is composed from the parent scope and this prefill's
+   * scope name, separated by an underscore. The referenced element's
+   * prefills are written first; configured override values are applied
+   * afterwards.
+   *
    * @protected
-   * @param {Object} contextFile 
+   * @param {Object} contextFile - Context file receiving the prefill.
+   * @param {string} [parentScope=""] - Optional parent scope name.
+   * @returns {void}
    */
-  addPrefillTo(contextFile) {
-    this.element._loadPrefillIntoContextFile();
-    const context = JSON.parse(JSON.stringify(this.element.contextFile));
-    let override = Object.entries(this.overrideValues);
-    override.forEach(
-      ([templatePartId, value]) =>
-        (context[templatePartId].value = value),
+  addPrefillTo(contextFile, parentScope = "") {
+    let combinedScope = parentScope ? `${parentScope}_${this.scope}` : this.scope;
+    this.element._loadPrefillIntoContextFile(contextFile, combinedScope);
+
+    Object.entries(this.overrideValues).forEach(
+      ([templatePartId, value]) => {
+        contextFile[combinedScope][templatePartId].value = value;
+      },
     );
-    contextFile[this.scope] = context;
   }
 }
-
 ;// ./src/website/pagination.js
 
 
@@ -8968,7 +8996,7 @@ const cx = new DesignFactory();
 
 
 
-var __webpack_export_target__ = exports;
+const __webpack_export_target__ = exports;
 for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
