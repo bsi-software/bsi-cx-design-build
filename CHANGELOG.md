@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## latest
+
+
+
+## [2.0.3] - 16.09.2025
+* Fix Scoping and Generation of context file to match CX requirements
 * Fix twing functions
 * Make `_applyMetaPropertyFromValue()` null-safe
-* Fix Scoping and Generation of context file to match CX requirements
 
-
+[2.0.3]: https://github.com/bsi-software/bsi-cx-design-build/compare/2.0.2...2.0.3
 
 ## [2.0.2] - 02.07.2025
 * Add prefill property to template parts and compile it into context.json
