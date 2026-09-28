@@ -4434,15 +4434,16 @@ class TemplateElement extends AbstractBuilder {
    * @private
    */
   _loadPrefillIntoContextFile(context, scope = "") {
-    let defaultScope = scope || "root";
-
     if (this.templateParts && this.templateParts.length) {
-      let entries = this.templateParts.map(tP => [tP.partContextId, tP.prefill]);
-      context[defaultScope] = Object.fromEntries(entries);
+      if (scope) {
+        let entries = this.templateParts.map(tP => [tP.partContextId, tP.prefill]);
+        context[scope] = Object.fromEntries(entries)
+      }
+      else { this.templateParts.map(tP => context[tP.partContextId] = tP.prefill) }
     }
 
     this._scopePrefills.forEach(sP =>
-      sP.addPrefillTo(this._contextFile, scope)
+      sP.addPrefillTo(context, scope || "root")
     );
   }
 
