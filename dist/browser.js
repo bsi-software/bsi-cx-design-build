@@ -3855,6 +3855,7 @@ class TemplatePart extends AbstractBuilder {
     return config;
   }
 }
+
 ;// ./src/content-element/template-element.js
 
 
@@ -4437,15 +4438,16 @@ class TemplateElement extends AbstractBuilder {
     if (this.templateParts && this.templateParts.length) {
       let prefillObject = Object.fromEntries(this.templateParts.map(tP => [tP.partContextId, tP.prefill]));
       if (this._scopePrefills.length || scope) {
-        context[scope || "root"] = prefillObject;
+        scope = scope || "root";
+        context[scope] = prefillObject;
       }
       else {
-        context = prefillObject;
+        Object.assign(context, prefillObject);
       }
     }
 
     this._scopePrefills.forEach(sP =>
-      sP.addPrefillTo(context, scope || "root")
+      sP.addPrefillTo(context, scope)
     );
   }
 
@@ -8050,6 +8052,14 @@ class TemplatePartFactory {
 ;// ./src/content-element/template-part/scope-prefill.js
 
 
+
+
+// interface OverrideValue {
+//   partId: String;
+//   value: String;
+//   attribute: String;
+// }
+
 /** @typedef {import('../template-element').default} TemplateElement */
 
 /**
@@ -8084,10 +8094,10 @@ class ScopePrefill extends AbstractBuilder {
   /**
    * Values that override the referenced element's default prefills.
    *
-   * @type {Object<string, string>}
+   * @type {Object[]}
    * @private
    */
-  _overrideValues = {};
+  _overrideValues = [];
 
   /**
    * @param {string} scope - Name of the scope to prefill.
@@ -8096,7 +8106,7 @@ class ScopePrefill extends AbstractBuilder {
   constructor(scope, element) {
     super();
     this._scope = scope;
-    this._element = element;
+    this._element = Object.assign(new TemplateElement(), element);
   }
 
   /**
@@ -8120,7 +8130,7 @@ class ScopePrefill extends AbstractBuilder {
   /**
    * Returns values that override the element's default part prefills.
    *
-   * @returns {Object<string, string>} Map of template-part IDs to values.
+   * @returns {Object[]} Map of template-part IDs to values.
    */
   get overrideValues() {
     return this._overrideValues;
@@ -8133,8 +8143,13 @@ class ScopePrefill extends AbstractBuilder {
    * @param {string} value - Replacement value.
    * @returns {ScopePrefill} This scope prefill.
    */
-  withOverrideValue(templatePartId, value) {
-    this._overrideValues[templatePartId] = value;
+  withOverrideValue(templatePartId, value, attribute = "value") {
+    // new OverrideValue(templatePartId, value, attribute)
+    this._overrideValues.push({
+      partId: templatePartId,
+      value: value,
+      attribute: attribute
+    });
     return this;
   }
 
@@ -8154,14 +8169,26 @@ class ScopePrefill extends AbstractBuilder {
   addPrefillTo(contextFile, parentScope = "") {
     let combinedScope = parentScope ? `${parentScope}_${this.scope}` : this.scope;
     this.element._loadPrefillIntoContextFile(contextFile, combinedScope);
+    // contextFile[combinedScope] = this._element.templateParts.map(tP => contextFile[combinedScope] = tP.prefill)
+    
+      console.warn('B5:');
+      console.warn(contextFile)
+    // console.warn('B3: '+ JSON.stringify(this.overrideValues))
+    this.overrideValues.forEach((override) => {
+      let overrideObj = {}
+      overrideObj[override.attribute] = override.value;
+      Object.assign(contextFile[combinedScope][override.partId], overrideObj)
+    })
+    // this.element._loadPrefillIntoContextFile(contextFile, combinedScope);
 
-    Object.entries(this.overrideValues).forEach(
-      ([templatePartId, value]) => {
-        contextFile[combinedScope][templatePartId].value = value;
-      },
-    );
+    // Object.entries(this.overrideValues).forEach(
+    //   ([templatePartId, value]) => {
+    //     contextFile[combinedScope][templatePartId].value = value;
+    //   },
+    // );
   }
 }
+
 ;// ./src/website/pagination.js
 
 

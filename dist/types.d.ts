@@ -8182,7 +8182,7 @@ declare module "src/content-element/template-part/scope-prefill" {
         /**
          * Values that override the referenced element's default prefills.
          *
-         * @type {Object<string, string>}
+         * @type {Object[]}
          * @private
          */
         private _overrideValues;
@@ -8201,11 +8201,9 @@ declare module "src/content-element/template-part/scope-prefill" {
         /**
          * Returns values that override the element's default part prefills.
          *
-         * @returns {Object<string, string>} Map of template-part IDs to values.
+         * @returns {Object[]} Map of template-part IDs to values.
          */
-        get overrideValues(): {
-            [x: string]: string;
-        };
+        get overrideValues(): any[];
         /**
          * Overrides the prefill value of a template part.
          *
@@ -8213,7 +8211,7 @@ declare module "src/content-element/template-part/scope-prefill" {
          * @param {string} value - Replacement value.
          * @returns {ScopePrefill} This scope prefill.
          */
-        withOverrideValue(templatePartId: string, value: string): ScopePrefill;
+        withOverrideValue(templatePartId: string, value: string, attribute?: string): ScopePrefill;
         /**
          * Adds this prefill to the context file.
          *
@@ -8231,6 +8229,7 @@ declare module "src/content-element/template-part/scope-prefill" {
     }
     export type TemplateElement = import("src/content-element/template-element").default;
     import AbstractBuilder from "src/abstract-builder";
+    import TemplateElement from "src/content-element/template-element";
 }
 declare module "src/website/pagination" {
     /**

@@ -579,15 +579,16 @@ export default class TemplateElement extends AbstractBuilder {
     if (this.templateParts && this.templateParts.length) {
       let prefillObject = Object.fromEntries(this.templateParts.map(tP => [tP.partContextId, tP.prefill]));
       if (this._scopePrefills.length || scope) {
-        context[scope || "root"] = prefillObject;
+        scope = scope || "root";
+        context[scope] = prefillObject;
       }
       else {
-        context = prefillObject;
+        Object.assign(context, prefillObject);
       }
     }
 
     this._scopePrefills.forEach(sP =>
-      sP.addPrefillTo(context, scope || "root")
+      sP.addPrefillTo(context, scope)
     );
   }
 
