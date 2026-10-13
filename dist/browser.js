@@ -576,8 +576,6 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PAGE_INCLUDE = '__page__';
-
-  static CONFIG_EDITOR_ENABLED = "configEditorEnabled";
 }
 
 ;// ./src/raw-value.js
@@ -3690,13 +3688,6 @@ class TemplatePart extends AbstractBuilder {
     return this._htmlEditorConfig;
   }
 
-   /**
-   * No need of script prefill. If a js is need in the template, implement it directly in the project.
-   */
-  /*withScriptPrefill(srcUrl, scriptConf) {
-
-  }*/
- 
   /**
    * Used internally
    * Set the htmlEditorConfig like this:
@@ -3874,7 +3865,6 @@ class TemplatePart extends AbstractBuilder {
     return config;
   }
 }
-
 ;// ./src/content-element/template-element.js
 
 
@@ -7883,23 +7873,6 @@ class PartFactory {
 
 
 class TemplatePartFactory {
-
-  /**
-   * Build a new script content element part builder instance.
-   * All variables here define the behavior in the Content Editor.
-   *
-   * @example cx.templatePart.Script("script", "script-abc123")
-   *
-   * @param {string} label
-   * @param {string} partContextId
-   * @param {boolean?} [configEditorEnabled=true] - optional parameter
-   * @returns {TemplatePart}
-   */
-  Script(label, partContextId, configEditorEnabled = true) {
-    var part = new TemplatePart('script', label, partContextId);
-    part = part.addConfigValueIfNotNull(DesignJsonProperty.CONFIG_EDITOR_ENABLED, configEditorEnabled, true);
-    return part;
-  }
 
   /**
    * Build a new plain text content element part builder instance.
