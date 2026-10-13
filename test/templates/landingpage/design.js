@@ -29,11 +29,10 @@ module.exports = cx.design
         require('./content-elements/content/column-1')
           .withExtendAllDropzones(
             require('./content-elements/content/title'), 
-            require('../website/content-elements/content/template-button')),
-        require('./content-elements/content/column-2')
-          .withExtendAllDropzones(require('../website/content-elements/content/template-button')),
+            ),
+        require('./content-elements/content/column-2'),
         require('./content-elements/content/text'),
-        require('../website/content-elements/content/template-button'),
+        require('./content-elements/content/script'),
       ))
   .withDropzones(
     cx.dropzone
@@ -43,7 +42,8 @@ module.exports = cx.design
         require('./content-elements/content/text'),
         require('./content-elements/content/column-1'),
         require('./content-elements/content/column-2'),
-        require('../website/content-elements/content/template-button')))
+        require('./content-elements/content/script'),
+        ))
   .withHtmlEditorConfigs(
     require('./html-editor-configs/normal'))
   .withNLS(...require('./nls'));
