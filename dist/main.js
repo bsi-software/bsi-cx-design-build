@@ -747,8 +747,6 @@ class DesignJsonProperty {
    * @type {string}
    */
   static PAGE_INCLUDE = '__page__';
-
-  static CONFIG_EDITOR_ENABLED = "configEditorEnabled";
 }
 
 ;// ./src/abstract-builder.js
