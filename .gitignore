@@ -3,13 +3,3 @@
 *.swp
 thumbs.db
 /*.tgz
-/test/*
-/dist/
-dist/browser.js
-dist/browser.js.map
-dist/main.js
-dist/main.js.map
-dist/template-loader.js.map
-dist/twing-loader.js.map
-dist/types.d.ts
-dist/types.d.ts.map
