@@ -275,6 +275,8 @@ export default class DesignJsonProperty {
    * @type {string}
    */
   static PAGE_INCLUDE = '__page__';
-
+  /**
+   * @type {string}
+   */
   static CONFIG_EDITOR_ENABLED = "configEditorEnabled";
 }

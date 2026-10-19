@@ -120,10 +120,10 @@ export default class TemplatePart extends AbstractBuilder {
    /**
    * No need of script prefill. If a js is need in the template, implement it directly in the project.
    */
-  /*withScriptPrefill(srcUrl, scriptConf) {
+  withScriptPrefill(srcUrl, scriptConf) {
+    return this;
+  }
 
-  }*/
- 
   /**
    * Used internally
    * Set the htmlEditorConfig like this:
