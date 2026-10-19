@@ -1,4 +1,5 @@
 import AbstractBuilder from "../../abstract-builder";
+import TemplateElement from "../template-element";
 
 /** @typedef {import('../template-element').default} TemplateElement */
 
@@ -34,10 +35,10 @@ export default class ScopePrefill extends AbstractBuilder {
   /**
    * Values that override the referenced element's default prefills.
    *
-   * @type {Object<string, string>}
+   * @type {Object[]}
    * @private
    */
-  _overrideValues = {};
+  _overrideValues = [];
 
   /**
    * @param {string} scope - Name of the scope to prefill.
@@ -46,7 +47,7 @@ export default class ScopePrefill extends AbstractBuilder {
   constructor(scope, element) {
     super();
     this._scope = scope;
-    this._element = element;
+    this._element = Object.assign(new TemplateElement(), element);
   }
 
   /**
@@ -70,7 +71,7 @@ export default class ScopePrefill extends AbstractBuilder {
   /**
    * Returns values that override the element's default part prefills.
    *
-   * @returns {Object<string, string>} Map of template-part IDs to values.
+   * @returns {Object[]} Map of template-part IDs to values.
    */
   get overrideValues() {
     return this._overrideValues;
@@ -83,8 +84,12 @@ export default class ScopePrefill extends AbstractBuilder {
    * @param {string} value - Replacement value.
    * @returns {ScopePrefill} This scope prefill.
    */
-  withOverrideValue(templatePartId, value) {
-    this._overrideValues[templatePartId] = value;
+  withOverrideValue(templatePartId, value, attribute = "value") {
+    this._overrideValues.push({
+      partId: templatePartId,
+      value: value,
+      attribute: attribute
+    });
     return this;
   }
 
@@ -104,11 +109,10 @@ export default class ScopePrefill extends AbstractBuilder {
   addPrefillTo(contextFile, parentScope = "") {
     let combinedScope = parentScope ? `${parentScope}_${this.scope}` : this.scope;
     this.element._loadPrefillIntoContextFile(contextFile, combinedScope);
-
-    Object.entries(this.overrideValues).forEach(
-      ([templatePartId, value]) => {
-        contextFile[combinedScope][templatePartId].value = value;
-      },
-    );
+    this.overrideValues.forEach((override) => {
+      let overrideObj = {};
+      overrideObj[override.attribute] = override.value;
+      Object.assign(contextFile[combinedScope][override.partId], overrideObj)
+    });
   }
 }

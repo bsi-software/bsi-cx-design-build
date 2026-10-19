@@ -525,7 +525,7 @@ const bsiCxLorem = (0,external_twing_namespaceObject.createFunction)('bsi_cx_lor
 const bsiTemplatePart = (0,external_twing_namespaceObject.createFunction)(
   "templateElement",
   (executionContext, elementId, scope) =>
-    strToPromise(` data-bsi-element="${elementId}" data-bsi-context-scope="${scope || "root"}"`),
+    strToPromise(` data-bsi-element="${elementId}" ${ scope ? `data-bsi-context-scope="${scope}"` : ""}`),
   [{ name: 'elementId' }, { name: 'scope', defaultValue: "root" }],
   { is_safe: ["html"] },
 );
@@ -545,10 +545,10 @@ const templateScope = (0,external_twing_namespaceObject.createFunction)(
  * Helper functions to create hbs variables
  */
 const scopeVariable = (scope, partId, variable) =>
-  strToPromise(`{{ ${scope || "root"}.${partId}.${variable} }}`);
+  strToPromise(`{{ ${scope ? scope + "." :""}${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
-  strToPromise(`{{#if ${scope || "root"}.${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+  strToPromise(`{{#if ${scope ? scope + "." :""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
 
 
 const templatePartHelper = [
