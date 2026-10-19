@@ -8,7 +8,11 @@ export default class CssColor extends AbstractCssProperty {
   /**
    * @type {RegExp}
    */
-  static RGBA = /^rgb[a]?\(([0-9.,\W]+)\)$/i;
+  static RGBA = /^rgba?\((.*)\)$/i;
+  /**
+   * @type {RegExp}
+   */
+  static RGB_VALUES = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*(\d*\.?\d+))?\s*$/;
   /**
    * @type {RegExp}
    */
@@ -66,7 +70,7 @@ export default class CssColor extends AbstractCssProperty {
      * @type {number}
      * @private
      */
-    this._alpha = this._assertColor(alpha);
+    this._alpha = this._assertColor(Math.round(alpha));
   }
 
   /**
@@ -168,7 +172,7 @@ export default class CssColor extends AbstractCssProperty {
       ];
       // hex channel is only required if alpha is lower than 255 (omit adding FF)
       if (this.alpha < 255) {
-        channels.push(this._toHex(this.alpha));
+        channels.push(this._toHex(Math.round(this.alpha)));
       }
       return '#' + channels.join('');
     }
@@ -230,12 +234,64 @@ export default class CssColor extends AbstractCssProperty {
    * @returns {CssColor}
    */
   static fromRGBString(str) {
-    let match = CssColor.RGBA.exec(str);
-    let [red, green, blue, alpha] = match[1]
-      .split(',')
-      .map(channel => parseInt(channel));
+    if (typeof str !== 'string') {
+      throw new TypeError('RGB color must be a string.');
+    }
 
-    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, (alpha ?? 1) * 255);
+    const match = CssColor.RGBA.exec(str.trim());
+
+    if (!match) {
+      throw new Error(`Invalid RGB/RGBA color: ${str}`);
+    }
+
+    const parts = match[1].trim().split(/\s*[,/]\s*|\s+/)
+      .filter(Boolean);
+
+    if (parts.length !== 3 && parts.length !== 4) {
+      throw new Error(`Invalid RGB/RGBA color: ${str}`);
+    }
+
+    const [red, green, blue] = parts.slice(0, 3).map(Number);
+    const alpha = parts.length === 4 ? Number(parts[3]) : 1;
+
+    if (
+      ![red, green, blue].every(
+        value => Number.isInteger(value) && value >= 0 && value <= 255
+      )
+    ) {
+      throw new Error('RGB channels must be integers between 0 and 255.');
+    }
+
+    if (!Number.isFinite(alpha) || alpha < 0 || alpha > 1) {
+      throw new Error('Alpha must be between 0 and 1.');
+    }
+
+    return new CssColor(red, green, blue, alpha * 255);
+  }
+
+  /**
+   * @param {string} str
+   * @returns {CssColor}
+   */
+  static fromRGBValues(str) {
+    if (typeof str !== 'string') {
+      throw new TypeError('RGB values must be a string.');
+    }
+
+    const match = CssColor.RGB_VALUES.exec(str);
+
+    if (!match) {
+      throw new Error(`Invalid RGB values: ${str}`);
+    }
+
+    const [, red, green, blue, alpha] = match;
+
+    return CssColor.fromRGB(
+      Number(red),
+      Number(green),
+      Number(blue),
+      alpha === undefined ? 1 : Number(alpha)
+    );
   }
 
   /**
@@ -255,13 +311,25 @@ export default class CssColor extends AbstractCssProperty {
    * @returns {function(*):CssColor|undefined}
    */
   static getParser(value) {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const input = value.trim();
+
     switch (true) {
-      case CssColor.RGBA.test(value):
+      case CssColor.RGBA.test(input):
         return CssColor.fromRGBString;
-      case CssColor.HEX.test(value):
+
+      case CssColor.HEX.test(input):
         return CssColor.fromHex;
-      case CssColor.COLORS.hasOwnProperty(value):
+
+      case Object.hasOwn(CssColor.COLORS, input.toLowerCase()):
         return CssColor.fromKeyword;
+
+      case CssColor.RGB_VALUES.test(input):
+        return CssColor.fromRGBValues;
+
       default:
         return undefined;
     }
