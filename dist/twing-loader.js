@@ -548,7 +548,11 @@ const scopeVariable = (scope, partId, variable) =>
   strToPromise(`{{ ${scope || "root"}.${partId}.${variable} }}`);
 
 const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
+<<<<<<< HEAD
   strToPromise(`{{#if ${scope || "root"}.${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+=======
+  strToPromise(`{{#if ${scope ? scope + "." : ""}${partId}.${variable} }}${ifBlock}${elseBlock ? "{{else}}" + elseBlock : ""}{{/if }}`);
+>>>>>>> c8a441c (Rewrite css rgb, restructure Tests)
 
 
 const templatePartHelper = [
@@ -682,7 +686,10 @@ __webpack_require__.dn(twing_environment);
   twing.addFunction(bsiCxLorem);
 
   twing.addFunction(bsiTemplatePart);
+<<<<<<< HEAD
   twing.addFunction(templateScope);
+=======
+>>>>>>> c8a441c (Rewrite css rgb, restructure Tests)
   templatePartHelper.forEach(helper => twing.addFunction(helper));
 
   return twing;

@@ -5303,7 +5303,7 @@ class CssColor extends AbstractCssProperty {
   /**
    * @type {RegExp}
    */
-  static RGBA = /^rgb[a]?\(([0-9.,\W]+)\)$/i;
+  static RGB_VALUES = /rgb[a]?\((\d+)[\s\/,]*(\d+)[\s\/,]*(\d+)([\s\/,]+[\d\.]+)?\)/;
   /**
    * @type {RegExp}
    */
@@ -5361,7 +5361,7 @@ class CssColor extends AbstractCssProperty {
      * @type {number}
      * @private
      */
-    this._alpha = this._assertColor(alpha);
+    this._alpha = this._assertColor(Math.round(alpha));
   }
 
   /**
@@ -5463,7 +5463,7 @@ class CssColor extends AbstractCssProperty {
       ];
       // hex channel is only required if alpha is lower than 255 (omit adding FF)
       if (this.alpha < 255) {
-        channels.push(this._toHex(this.alpha));
+        channels.push(this._toHex(Math.round(this.alpha)));
       }
       return '#' + channels.join('');
     }
@@ -5525,12 +5525,21 @@ class CssColor extends AbstractCssProperty {
    * @returns {CssColor}
    */
   static fromRGBString(str) {
-    let match = CssColor.RGBA.exec(str);
-    let [red, green, blue, alpha] = match[1]
-      .split(',')
-      .map(channel => parseInt(channel));
+    if (typeof str !== 'string') {
+      throw new TypeError('RGB color must be a string.');
+    }
+    const colors = CssColor.RGB_VALUES.exec(str.trim());
 
-    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, (alpha ?? 1) * 255);
+    if (!(colors && colors.length === 5)) {
+      throw new Error(`Invalid RGB/RGBA color: ${str}`);
+    }
+
+    // the alpha value must be extracted, because it's optional
+    const alphaRegex = /[^\d]*([\d\.]+)/;
+    colors[4] = (colors[4] || "1").match(alphaRegex)[1];
+    const [red, green, blue, alpha] = colors.slice(1).map(Number);
+
+    return new CssColor(red, green, blue, alpha * 255);
   }
 
   /**
@@ -5550,13 +5559,22 @@ class CssColor extends AbstractCssProperty {
    * @returns {function(*):CssColor|undefined}
    */
   static getParser(value) {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+
+    const input = value.trim();
+
     switch (true) {
-      case CssColor.RGBA.test(value):
+      case CssColor.RGB_VALUES.test(input):
         return CssColor.fromRGBString;
-      case CssColor.HEX.test(value):
+
+      case CssColor.HEX.test(input):
         return CssColor.fromHex;
-      case CssColor.COLORS.hasOwnProperty(value):
+
+      case Object.hasOwn(CssColor.COLORS, input.toLowerCase()):
         return CssColor.fromKeyword;
+
       default:
         return undefined;
     }
