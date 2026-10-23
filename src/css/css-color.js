@@ -8,7 +8,7 @@ export default class CssColor extends AbstractCssProperty {
   /**
    * @type {RegExp}
    */
-  static RGB_VALUES = /rgb[a]?\((\d+)[\s\/,]*(\d+)[\s\/,]*(\d+)([\s\/,]+[\d\.]+)?\)/;
+  static RGBA = /rgb[a]?\((\d+)[\s\/,]*(\d+)[\s\/,]*(\d+)([\s\/,]+[\d\.]+)?\)/;
   /**
    * @type {RegExp}
    */
@@ -221,8 +221,8 @@ export default class CssColor extends AbstractCssProperty {
    * @param {number} blue
    * @param {number} [alpha=1]
    */
-  static fromRGB(red, green, blue, alpha) {
-    return new CssColor(red, green, blue, (alpha ?? 1) * 255);
+  static fromRGB(red, green, blue, alpha = 1) {
+    return new CssColor(red, green, blue, alpha * 255);
   }
 
   /**
@@ -233,18 +233,19 @@ export default class CssColor extends AbstractCssProperty {
     if (typeof str !== 'string') {
       throw new TypeError('RGB color must be a string.');
     }
-    const colors = CssColor.RGB_VALUES.exec(str.trim());
+    const colors = CssColor.RGBA.exec(str.trim());
 
     if (!(colors && colors.length === 5)) {
       throw new Error(`Invalid RGB/RGBA color: ${str}`);
     }
 
-    // the alpha value must be extracted, because it's optional
+    // alpha needs special handling because the match can be ", 0.1", "/ 0.1", or empty
+    // normalize the alpha channel: strip the separator, default missing values to 1, and convert the CSS 0..1 value to the internal 0..255 range
     const alphaRegex = /[^\d]*([\d\.]+)/;
-    colors[4] = (colors[4] || "1").match(alphaRegex)[1];
-    const [red, green, blue, alpha] = colors.slice(1).map(Number);
+    let alpha = (colors[4] || "1").match(alphaRegex)[1];
+    colors[4] = Number(alpha) * 255;
 
-    return new CssColor(red, green, blue, alpha * 255);
+    return new CssColor(...colors.slice(1).map(Number));
   }
 
   /**
@@ -267,19 +268,15 @@ export default class CssColor extends AbstractCssProperty {
     if (typeof value !== 'string') {
       return undefined;
     }
-
-    const input = value.trim();
+    value = value.trim();
 
     switch (true) {
-      case CssColor.RGB_VALUES.test(input):
+      case CssColor.RGBA.test(value):
         return CssColor.fromRGBString;
-
-      case CssColor.HEX.test(input):
+      case CssColor.HEX.test(value):
         return CssColor.fromHex;
-
-      case Object.hasOwn(CssColor.COLORS, input.toLowerCase()):
+      case CssColor.COLORS.hasOwnProperty(value):
         return CssColor.fromKeyword;
-
       default:
         return undefined;
     }

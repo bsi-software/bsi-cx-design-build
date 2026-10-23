@@ -2452,7 +2452,7 @@ declare module "src/css/css-color" {
         /**
          * @type {RegExp}
          */
-        static RGB_VALUES: RegExp;
+        static RGBA: RegExp;
         /**
          * @type {RegExp}
          */
