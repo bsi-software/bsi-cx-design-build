@@ -8,7 +8,7 @@ export default class CssColor extends AbstractCssProperty {
   /**
    * @type {RegExp}
    */
-  static RGBA = /^rgb[a]?\(([0-9.,\W]+)\)$/i;
+  static RGBA = /rgb[a]?\((\d+)[\s\/,]*(\d+)[\s\/,]*(\d+)([\s\/,]+[\d\.]+)?\)/;
   /**
    * @type {RegExp}
    */
@@ -66,7 +66,7 @@ export default class CssColor extends AbstractCssProperty {
      * @type {number}
      * @private
      */
-    this._alpha = this._assertColor(alpha);
+    this._alpha = this._assertColor(Math.round(alpha));
   }
 
   /**
@@ -168,7 +168,7 @@ export default class CssColor extends AbstractCssProperty {
       ];
       // hex channel is only required if alpha is lower than 255 (omit adding FF)
       if (this.alpha < 255) {
-        channels.push(this._toHex(this.alpha));
+        channels.push(this._toHex(Math.round(this.alpha)));
       }
       return '#' + channels.join('');
     }
@@ -221,8 +221,8 @@ export default class CssColor extends AbstractCssProperty {
    * @param {number} blue
    * @param {number} [alpha=1]
    */
-  static fromRGB(red, green, blue, alpha) {
-    return new CssColor(red, green, blue, (alpha ?? 1) * 255);
+  static fromRGB(red, green, blue, alpha = 1) {
+    return new CssColor(red, green, blue, alpha * 255);
   }
 
   /**
@@ -230,12 +230,20 @@ export default class CssColor extends AbstractCssProperty {
    * @returns {CssColor}
    */
   static fromRGBString(str) {
-    let match = CssColor.RGBA.exec(str);
-    let [red, green, blue, alpha] = match[1]
-      .split(',')
-      .map(channel => parseInt(channel));
+    // colors: [wholeString, red, green, blue, alpha]
+    const colors = CssColor.RGBA.exec(str.trim());
 
-    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, (alpha ?? 1) * 255);
+    if (!(colors && colors.length === 5)) {
+      throw new Error(`Invalid RGB/RGBA color: ${str}`);
+    }
+
+    // alpha needs special handling because the match can be ", 0.1", "/ 0.1", or empty
+    // normalize the alpha channel: strip the separator, default missing values to 1, and convert the CSS 0..1 value to the internal 0..255 range
+    const alphaRegex = /[^\d]*([\d\.]+)/;
+    let alpha = (colors[4] || "1").match(alphaRegex)[1];
+    colors[4] = Number(alpha) * 255;
+
+    return new CssColor(...colors.slice(1).map(Number));
   }
 
   /**
@@ -255,6 +263,11 @@ export default class CssColor extends AbstractCssProperty {
    * @returns {function(*):CssColor|undefined}
    */
   static getParser(value) {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+    value = value.trim();
+
     switch (true) {
       case CssColor.RGBA.test(value):
         return CssColor.fromRGBString;

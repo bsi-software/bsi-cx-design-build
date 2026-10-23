@@ -1,51 +1,63 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The require scope
-/******/ 	const __webpack_require__ = {};
+/******/ 	var __webpack_require__ = {};
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = (module) => {
-/******/ 		const getter = module && module.__esModule ?
-/******/ 			() => (module['default']) :
-/******/ 			() => (module);
-/******/ 		__webpack_require__.d(getter, { a: getter });
-/******/ 		return getter;
-/******/ 	};
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	// define getter/value functions for harmony exports
-/******/ 	__webpack_require__.d = (exports, definition) => {
-/******/ 		for(var key in definition) {
-/******/ 			if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
 /******/ 			}
-/******/ 		}
-/******/ 	};
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
-/******/ 	__webpack_require__.g = (function() {
-/******/ 		if (typeof globalThis === 'object') return globalThis;
-/******/ 		try {
-/******/ 			return this || new Function('return this')();
-/******/ 		} catch (e) {
-/******/ 			if (typeof window === 'object') return window;
-/******/ 		}
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop));
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = (exports) => {
-/******/ 		Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
-let __webpack_exports__ = {};
+var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -53,27 +65,14 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.d(__webpack_exports__, {
   BuildConfig: () => (/* reexport */ BuildConfig),
   DefaultBuildConfig: () => (/* reexport */ DefaultBuildConfig),
-  DesignType: () => (/* reexport */ src_design_type_namespaceObject),
+  DesignType: () => (/* reexport */ design_type_namespaceObject),
   ModuleConfig: () => (/* reexport */ ModuleConfig),
-  Version: () => (/* reexport */ src_version_namespaceObject),
+  Version: () => (/* reexport */ version_namespaceObject),
   WebpackConfigBuilder: () => (/* reexport */ WebpackConfigBuilder),
   css: () => (/* reexport */ helper_namespaceObject)
 });
 
 // NAMESPACE OBJECT: ./src/design-type.js
-var src_design_type_namespaceObject = {};
-__webpack_require__.r(src_design_type_namespaceObject);
-__webpack_require__.d(src_design_type_namespaceObject, {
-  ALL_TYPES: () => (ALL_TYPES),
-  DesignType: () => (DesignType),
-  EMAIL: () => (EMAIL),
-  LANDINGPAGE: () => (LANDINGPAGE),
-  LEGACY_TYPES: () => (LEGACY_TYPES),
-  TARGET: () => (TARGET),
-  WEBSITE: () => (WEBSITE)
-});
-
-// NAMESPACE OBJECT (decoupled): ./src/design-type.js
 var design_type_namespaceObject = {};
 __webpack_require__.r(design_type_namespaceObject);
 __webpack_require__.d(design_type_namespaceObject, {
@@ -87,29 +86,6 @@ __webpack_require__.d(design_type_namespaceObject, {
 });
 
 // NAMESPACE OBJECT: ./src/version.js
-var src_version_namespaceObject = {};
-__webpack_require__.r(src_version_namespaceObject);
-__webpack_require__.d(src_version_namespaceObject, {
-  CX_1_3: () => (CX_1_3),
-  CX_22_0: () => (CX_22_0),
-  CX_23_1: () => (CX_23_1),
-  CX_23_2: () => (CX_23_2),
-  CX_24_1: () => (CX_24_1),
-  CX_24_2: () => (CX_24_2),
-  CX_25_1: () => (CX_25_1),
-  CX_25_2: () => (CX_25_2),
-  CX_26_1: () => (CX_26_1),
-  CX_26_2: () => (CX_26_2),
-  CX_27_1: () => (CX_27_1),
-  CX_27_2: () => (CX_27_2),
-  STUDIO_1_0: () => (STUDIO_1_0),
-  STUDIO_1_1: () => (STUDIO_1_1),
-  STUDIO_1_2: () => (STUDIO_1_2),
-  TARGET: () => (version_TARGET),
-  Version: () => (Version)
-});
-
-// NAMESPACE OBJECT (decoupled): ./src/version.js
 var version_namespaceObject = {};
 __webpack_require__.r(version_namespaceObject);
 __webpack_require__.d(version_namespaceObject, {
@@ -1139,8 +1115,6 @@ class ValidationError extends Error {
 }
 
 ;// ./src/utility.js
-/* unused harmony import specifier */ var path;
-/* unused harmony import specifier */ var fs;
 
 
 
@@ -5303,7 +5277,7 @@ class CssColor extends AbstractCssProperty {
   /**
    * @type {RegExp}
    */
-  static RGBA = /^rgb[a]?\(([0-9.,\W]+)\)$/i;
+  static RGBA = /rgb[a]?\((\d+)[\s\/,]*(\d+)[\s\/,]*(\d+)([\s\/,]+[\d\.]+)?\)/;
   /**
    * @type {RegExp}
    */
@@ -5361,7 +5335,7 @@ class CssColor extends AbstractCssProperty {
      * @type {number}
      * @private
      */
-    this._alpha = this._assertColor(alpha);
+    this._alpha = this._assertColor(Math.round(alpha));
   }
 
   /**
@@ -5463,7 +5437,7 @@ class CssColor extends AbstractCssProperty {
       ];
       // hex channel is only required if alpha is lower than 255 (omit adding FF)
       if (this.alpha < 255) {
-        channels.push(this._toHex(this.alpha));
+        channels.push(this._toHex(Math.round(this.alpha)));
       }
       return '#' + channels.join('');
     }
@@ -5516,8 +5490,8 @@ class CssColor extends AbstractCssProperty {
    * @param {number} blue
    * @param {number} [alpha=1]
    */
-  static fromRGB(red, green, blue, alpha) {
-    return new CssColor(red, green, blue, (alpha ?? 1) * 255);
+  static fromRGB(red, green, blue, alpha = 1) {
+    return new CssColor(red, green, blue, alpha * 255);
   }
 
   /**
@@ -5525,12 +5499,20 @@ class CssColor extends AbstractCssProperty {
    * @returns {CssColor}
    */
   static fromRGBString(str) {
-    let match = CssColor.RGBA.exec(str);
-    let [red, green, blue, alpha] = match[1]
-      .split(',')
-      .map(channel => parseInt(channel));
+    // colors: [wholeString, red, green, blue, alpha]
+    const colors = CssColor.RGBA.exec(str.trim());
 
-    return new CssColor(red ?? 0, green ?? 0, blue ?? 0, (alpha ?? 1) * 255);
+    if (!(colors && colors.length === 5)) {
+      throw new Error(`Invalid RGB/RGBA color: ${str}`);
+    }
+
+    // alpha needs special handling because the match can be ", 0.1", "/ 0.1", or empty
+    // normalize the alpha channel: strip the separator, default missing values to 1, and convert the CSS 0..1 value to the internal 0..255 range
+    const alphaRegex = /[^\d]*([\d\.]+)/;
+    let alpha = (colors[4] || "1").match(alphaRegex)[1];
+    colors[4] = Number(alpha) * 255;
+
+    return new CssColor(...colors.slice(1).map(Number));
   }
 
   /**
@@ -5550,6 +5532,11 @@ class CssColor extends AbstractCssProperty {
    * @returns {function(*):CssColor|undefined}
    */
   static getParser(value) {
+    if (typeof value !== 'string') {
+      return undefined;
+    }
+    value = value.trim();
+
     switch (true) {
       case CssColor.RGBA.test(value):
         return CssColor.fromRGBString;
@@ -7240,7 +7227,7 @@ function number(value) {
 
 
 
-const __webpack_export_target__ = exports;
+var __webpack_export_target__ = exports;
 for(var __webpack_i__ in __webpack_exports__) __webpack_export_target__[__webpack_i__] = __webpack_exports__[__webpack_i__];
 if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
