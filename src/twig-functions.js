@@ -171,7 +171,7 @@ export const templatePartHelper = [
     {},
   ),
   createFunction(
-    "srcValue",
+    "scriptUrl",
     (executionContext, partId, scope) => scopeVariable(scope, partId, "scriptUrl"),
     [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
     {},
