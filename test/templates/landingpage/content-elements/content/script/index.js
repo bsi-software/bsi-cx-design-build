@@ -1,7 +1,7 @@
 const { cx, Icon } = require('@bsi-cx/design-build');
 
 module.exports = cx.templateElement
-  .withFile(require('./template.hbs'))
+  .withFile(require('./template.hbs.twig'))
   .withElementId('script-1As38Ui')
   .withLabel('Script')
   .withIcon(Icon.TEXT)
