@@ -230,9 +230,7 @@ export default class CssColor extends AbstractCssProperty {
    * @returns {CssColor}
    */
   static fromRGBString(str) {
-    if (typeof str !== 'string') {
-      throw new TypeError('RGB color must be a string.');
-    }
+    // colors: [wholeString, red, green, blue, alpha]
     const colors = CssColor.RGBA.exec(str.trim());
 
     if (!(colors && colors.length === 5)) {
