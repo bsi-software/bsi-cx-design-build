@@ -20,9 +20,8 @@ module.exports = cx.templateElement
         require("../title"),
         require("../text"),
       ),
-  )
-  .withScopePrefills(
+  )/* .withScopePrefills(
     cx
       .ScopePrefill("buttonLeft", require("../../../../website/content-elements/content/template-button"))
       .withOverrideValue("multiline-plain-text-wmiRti", "Andere Info"),
-  );
+  ); */

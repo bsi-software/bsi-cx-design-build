@@ -4,6 +4,23 @@ import DesignJsonProperty from '../../design-json-property';
 export default class TemplatePartFactory {
 
   /**
+   * Build a new script content element part builder instance.
+   * All variables here define the behavior in the Content Editor.
+   *
+   * @example cx.templatePart.Script("script", "script-abc123")
+   *
+   * @param {string} label
+   * @param {string} partContextId
+   * @param {boolean?} [configEditorEnabled=true] - optional parameter
+   * @returns {TemplatePart}
+   */
+  Script(label, partContextId, configEditorEnabled = true) {
+    var part = new TemplatePart('script', label, partContextId);
+    part = part.addConfigValueIfNotNull(DesignJsonProperty.CONFIG_EDITOR_ENABLED, configEditorEnabled, true);
+    return part;
+  }
+
+  /**
    * Build a new plain text content element part builder instance.
    * All variables here define the behavior in the Content Editor.
    * The content is prefilled by the `.withTextPrefill()` function.

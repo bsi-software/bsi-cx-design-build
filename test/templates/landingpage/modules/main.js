@@ -6,4 +6,3 @@ export default function say(message) {
 };
 
 alert('test');
-

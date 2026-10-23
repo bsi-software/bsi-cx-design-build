@@ -553,6 +553,18 @@ const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
 
 const templatePartHelper = [
   (0,external_twing_namespaceObject.createFunction)(
+    "scriptConfig",
+    (executionContext, partId, scope) => scopeVariable(scope, partId, "scriptConfig"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
+    "srcValue",
+    (executionContext, partId, scope) => scopeVariable(scope, partId, "scriptUrl"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
+    {},
+  ),
+  (0,external_twing_namespaceObject.createFunction)(
     "textValue",
     (executionContext, partId, scope) => scopeVariable(scope, partId, "value"),
     [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
