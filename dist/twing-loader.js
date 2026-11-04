@@ -557,7 +557,7 @@ const templatePartHelper = [
     {},
   ),
   (0,external_twing_namespaceObject.createFunction)(
-    "srcValue",
+    "scriptUrl",
     (executionContext, partId, scope) => scopeVariable(scope, partId, "scriptUrl"),
     [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
     {},
