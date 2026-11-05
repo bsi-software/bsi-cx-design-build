@@ -165,6 +165,18 @@ const ifScopeVariable = (scope, partId, variable, ifBlock, elseBlock) =>
 
 export const templatePartHelper = [
   createFunction(
+    "scriptConfig",
+    (executionContext, partId, scope) => scopeVariable(scope, partId, "scriptConfig"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
+    {},
+  ),
+  createFunction(
+    "scriptUrl",
+    (executionContext, partId, scope) => scopeVariable(scope, partId, "scriptUrl"),
+    [{ name: 'partId' }, { name: 'scope', defaultValue: null }],
+    {},
+  ),
+  createFunction(
     "textValue",
     (executionContext, partId, scope) => scopeVariable(scope, partId, "value"),
     [{ name: 'partId' }, { name: 'scope', defaultValue: null }],

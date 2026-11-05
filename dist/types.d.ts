@@ -515,6 +515,10 @@ declare module "src/design-json-property" {
          * @type {string}
          */
         static PAGE_INCLUDE: string;
+        /**
+         * @type {string}
+         */
+        static CONFIG_EDITOR_ENABLED: string;
     }
 }
 declare module "src/abstract-builder" {
@@ -5172,6 +5176,10 @@ declare module "src/content-element/template-part/template-part" {
          */
         get htmlEditorConfig(): HtmlEditorConfig | undefined;
         /**
+        * No need of script prefill. If a js is need in the template, implement it directly in the project.
+        */
+        withScriptPrefill(srcUrl: any, scriptConf: any): this;
+        /**
          * Used internally
          * Set the htmlEditorConfig like this:
          * @example cx.templatePart.FormattedText("Accordion Content", "accordion-content-abc123", require('../my-html-editor-config.js'))
@@ -8021,6 +8029,18 @@ declare module "src/content-element/part/part-factory" {
 }
 declare module "src/content-element/template-part/template-part-factory" {
     export default class TemplatePartFactory {
+        /**
+         * Build a new script content element part builder instance.
+         * All variables here define the behavior in the Content Editor.
+         *
+         * @example cx.templatePart.Script("script", "script-abc123")
+         *
+         * @param {string} label
+         * @param {string} partContextId
+         * @param {boolean?} [configEditorEnabled=true] - optional parameter
+         * @returns {TemplatePart}
+         */
+        Script(label: string, partContextId: string, configEditorEnabled?: boolean | null): TemplatePart;
         /**
          * Build a new plain text content element part builder instance.
          * All variables here define the behavior in the Content Editor.
