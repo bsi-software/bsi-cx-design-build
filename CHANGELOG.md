@@ -10,6 +10,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.4] - 17.11.2026
 * Add adjustments for correct alpha-channel parsing
+* Add script element template-part
 
 [2.0.4]: https://github.com/bsi-software/bsi-cx-design-build/compare/2.0.3...2.0.4
 
